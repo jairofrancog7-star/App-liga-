@@ -1,0 +1,224 @@
+/* V824 — Pronostica Seis intro: restaurar composición de referencia.
+   Corrige el override inmersivo V799 que sacaba la cabecera del flujo y hacía
+   que los 6 cuadros invadieran el título. Solo afecta #/predictorSix intro. */
+@media(max-width:1023px){
+  html body[data-app-route="predictorSix"] #screen{
+    height:calc(100dvh - var(--v34-nav-h,60px) - env(safe-area-inset-bottom))!important;
+    min-height:0!important;
+    padding:0!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    background:#07065f!important;
+    scroll-padding-top:0!important;
+  }
+
+  html body[data-app-route="predictorSix"] .v589-page.intro{
+    position:relative!important;
+    box-sizing:border-box!important;
+    width:100%!important;
+    min-height:100%!important;
+    height:auto!important;
+    margin:0!important;
+    padding:0!important;
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    grid-template-rows:
+      86px
+      58px
+      minmax(252px,1fr)
+      auto
+      auto!important;
+    align-content:stretch!important;
+    overflow:visible!important;
+    background:
+      radial-gradient(500px 250px at 50% 18%,rgba(21,66,226,.54),transparent 72%),
+      linear-gradient(180deg,#071b9b 0%,#07106e 38%,#080762 70%,#172de7 100%)!important;
+  }
+
+  /* La cabecera propia vuelve a ocupar su fila; V799 la había hecho absolute. */
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-top{
+    grid-row:1!important;
+    position:relative!important;
+    z-index:5!important;
+    inset:auto!important;
+    top:auto!important;
+    left:auto!important;
+    right:auto!important;
+    width:100%!important;
+    height:86px!important;
+    min-height:86px!important;
+    max-height:86px!important;
+    box-sizing:border-box!important;
+    margin:0!important;
+    padding:0 18px!important;
+    display:grid!important;
+    grid-template-columns:54px minmax(0,1fr) 54px!important;
+    align-items:center!important;
+    overflow:hidden!important;
+    pointer-events:auto!important;
+    background:
+      radial-gradient(190px 95px at 16% 5%,rgba(28,230,255,.42),transparent 60%),
+      radial-gradient(230px 115px at 69% -25%,rgba(31,235,239,.34),transparent 65%),
+      linear-gradient(180deg,#0625dc 0%,#071994 50%,#05065f 100%)!important;
+  }
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-top::after{
+    display:block!important;
+  }
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-top h1{
+    display:flex!important;
+    visibility:visible!important;
+    opacity:1!important;
+    align-items:center!important;
+    justify-self:start!important;
+    min-height:52px!important;
+    margin:0!important;
+    color:#fff!important;
+    font-size:18px!important;
+    line-height:1!important;
+    font-weight:800!important;
+    letter-spacing:-.02em!important;
+  }
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-top button{
+    pointer-events:auto!important;
+  }
+  /* En la referencia de introducción no hay menú de tres puntos. */
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-more{
+    visibility:hidden!important;
+    pointer-events:none!important;
+  }
+
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-sponsor{
+    grid-row:2!important;
+    position:relative!important;
+    z-index:4!important;
+    width:100%!important;
+    height:58px!important;
+    min-height:58px!important;
+    margin:0!important;
+    padding:6px 18px!important;
+    box-sizing:border-box!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:12px!important;
+    background:#1b438d!important;
+  }
+
+  /* Seis cuadros: fila propia, centrados y sin tocar el texto. */
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-icons{
+    grid-row:3!important;
+    position:relative!important;
+    z-index:2!important;
+    align-self:center!important;
+    justify-self:center!important;
+    box-sizing:border-box!important;
+    width:min(72vw,320px)!important;
+    margin:0 auto!important;
+    padding:0!important;
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    grid-auto-rows:58px!important;
+    gap:7px!important;
+    transform:none!important;
+  }
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-icons span{
+    box-sizing:border-box!important;
+    width:100%!important;
+    height:58px!important;
+    min-height:58px!important;
+    max-height:58px!important;
+    margin:0!important;
+    padding:0!important;
+  }
+
+  /* Texto siempre debajo de los cuadros, como la imagen 2. */
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-copy{
+    grid-row:4!important;
+    position:relative!important;
+    z-index:3!important;
+    align-self:start!important;
+    width:100%!important;
+    box-sizing:border-box!important;
+    margin:0!important;
+    padding:20px 34px 52px!important;
+    transform:none!important;
+    text-align:center!important;
+    background:transparent!important;
+  }
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-copy h2{
+    margin:0!important;
+    font-size:16px!important;
+    line-height:1.12!important;
+    font-weight:900!important;
+  }
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-copy p{
+    max-width:370px!important;
+    margin:14px auto 0!important;
+    font-size:12px!important;
+    line-height:1.42!important;
+  }
+
+  /* Puntos entre descripción y botones, no encima de ningún elemento. */
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-dots{
+    position:absolute!important;
+    left:0!important;
+    right:0!important;
+    bottom:18px!important;
+    z-index:4!important;
+    margin:0!important;
+    display:flex!important;
+    justify-content:center!important;
+    gap:8px!important;
+    transform:none!important;
+  }
+
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-actions{
+    grid-row:5!important;
+    position:relative!important;
+    z-index:3!important;
+    align-self:end!important;
+    box-sizing:border-box!important;
+    width:100%!important;
+    margin:0!important;
+    padding:0 30px 22px!important;
+    display:grid!important;
+    gap:8px!important;
+    background:transparent!important;
+  }
+}
+
+@media(max-width:390px){
+  html body[data-app-route="predictorSix"] .v589-page.intro{
+    grid-template-rows:
+      82px
+      54px
+      minmax(238px,1fr)
+      auto
+      auto!important;
+  }
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-top{
+    height:82px!important;
+    min-height:82px!important;
+    max-height:82px!important;
+    padding-inline:14px!important;
+    grid-template-columns:50px minmax(0,1fr) 50px!important;
+  }
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-sponsor{
+    height:54px!important;
+    min-height:54px!important;
+  }
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-icons{
+    grid-auto-rows:54px!important;
+  }
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-icons span{
+    height:54px!important;
+    min-height:54px!important;
+    max-height:54px!important;
+  }
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-copy{
+    padding:18px 26px 48px!important;
+  }
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-actions{
+    padding:0 30px 18px!important;
+  }
+}
