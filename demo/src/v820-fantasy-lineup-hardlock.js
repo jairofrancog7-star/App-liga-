@@ -1,4 +1,4 @@
-/* V834 — restore the previous real downloaded 3/4 Fantasy shirts.
+/* V836 — validate full transparent 3/4 Fantasy shirts.
    Removes the old "Jerseys" header control and paints the 50-design 3/4 pool directly in filled lineup slots. */
 (function(){
 'use strict';
@@ -28,22 +28,43 @@ function loadImage(src,timeout=6000){
 }
 function silhouetteOk(data,w,h){
   let count=0,minX=w,minY=h,maxX=-1,maxY=-1;
+  let wideRows=0,bodyRows=0;
+  const torsoX0=Math.floor(w*.24),torsoX1=Math.ceil(w*.76);
+  const torsoY0=Math.floor(h*.32),torsoY1=Math.ceil(h*.90);
+  let torsoOpaque=0,torsoTotal=Math.max(1,(torsoX1-torsoX0)*(torsoY1-torsoY0));
+
   for(let y=0;y<h;y++){
+    let rowCount=0,rowMin=w,rowMax=-1;
     for(let x=0;x<w;x++){
       const a=data[(y*w+x)*4+3];
       if(a<72)continue;
-      count++;
+      count++;rowCount++;
       if(x<minX)minX=x;if(x>maxX)maxX=x;
       if(y<minY)minY=y;if(y>maxY)maxY=y;
+      if(x<rowMin)rowMin=x;if(x>rowMax)rowMax=x;
+      if(x>=torsoX0&&x<torsoX1&&y>=torsoY0&&y<torsoY1)torsoOpaque++;
+    }
+    if(rowMax>=0){
+      const rowWidth=rowMax-rowMin+1;
+      if(rowWidth>=w*.36 && rowCount>=w*.08)wideRows++;
+      if(y>=h*.28&&y<=h*.88&&rowWidth>=w*.22&&rowCount>=w*.06)bodyRows++;
     }
   }
   if(!count||maxX<0||maxY<0)return false;
+
   const bw=maxX-minX+1,bh=maxY-minY+1;
   const frac=count/(w*h);
   const bwf=bw/w,bhf=bh/h;
-  // A usable jersey must occupy a real shirt-sized silhouette.
-  if(frac<.035||frac>.78)return false;
-  if(bwf<.28||bhf<.38)return false;
+  const torsoFill=torsoOpaque/torsoTotal;
+
+  // Reject logos, sponsor badges and tiny floating fragments. A real shirt
+  // must have a broad shoulder/body silhouette and visible torso area.
+  if(frac<.045||frac>.78)return false;
+  if(bwf<.36||bhf<.46)return false;
+  if(wideRows<h*.055)return false;
+  if(bodyRows<h*.16)return false;
+  if(torsoFill<.075)return false;
+
   // Reject images where the old rectangular background survived.
   if(bwf>.965&&bhf>.965&&frac>.58)return false;
   return true;
@@ -316,7 +337,7 @@ async function decorate(){
     }
 
     const logo=logoFor(team);
-    const stamp=String(item.id||idx)+'|'+player+'|'+team+'|restore-real-v834';
+    const stamp=String(item.id||idx)+'|'+player+'|'+team+'|transparent-full-v836';
     if(wrap.dataset.v820Stamp===stamp&&wrap.querySelector('.v820-lineup-jersey'))continue;
 
     const removeId=wrap.querySelector('[data-v576-remove]')?.getAttribute('data-v576-remove')||slotId;
@@ -354,7 +375,7 @@ async function decorate(){
   document.body.dataset.v820FantasyLineup='active';
   document.body.dataset.v820FantasyJerseyPool=String(Math.min(items.length,50));
   document.body.dataset.v830RejectedJerseys=String(badTransparentSources.size);
-  document.body.dataset.v834RestoredRealShirts='1';
+  document.body.dataset.v836TransparentFullShirts='1';
 }
 
 let raf=0;
