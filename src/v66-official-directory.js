@@ -10,6 +10,18 @@ const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/m
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_LABEL={'1':'Veteranos 50+','2':'Veteranos 35+','3':'Primera Fuerza','4':'Segunda Fuerza','5':'Intermedia'};
+
+/* V812 — Tienda: catálogo limitado a los clubes activos de la temporada 2026.
+   Fuente: public/data/temporada-actual-2026.json (52 registros por categoría,
+   50 clubes únicos porque Juventus y Boavista participan en más de una categoría). */
+const V812_ACTIVE_STORE_TEAMS=[
+  'BOAVISTA','FRANCO-TAVERA-JR','HURACAN','CUENDA','AMERICA','AGUILARES','JUVENTUS','LEYENDAS FC','PSV','LA TRINIDAD',
+  'La Esperanza','Dynamo','Boca Jrs','Toros de Cuenda','Manchester',
+  'San José FC','Linces','Napoli','Hermanos','Franco FC','Herreras FC','Abejas','Terrícolas','Lobos CDG','Galácticos',
+  'La Canchita Deportes','Galeana','Aldama FC','Malvinas','Capibaras','La Cuadrilla','Mazacotes FC','Dep. Maravillas','Osasuna','San Antonio Jrs','Populares','Promesas FC','La Huerta',
+  'Tavera FC','Pachangas FC','San Juan FC','Tapatío','Dep. La Luz','San Julián','Barza','San José Jrs','San Antonio FC','Célticos FC','Dep. Nopalero','Dep. Zapata'
+];
+window.LJR_V812_ACTIVE_STORE_TEAMS=V812_ACTIVE_STORE_TEAMS.slice();
 const CAT_LOGOS_V630={
   '3':'./assets/branding/primera-fuerza-hd.png',
   '5':'./assets/categories/intermedia.webp',
@@ -168,13 +180,17 @@ function playerTeamRail(){
       }).join('')+
     '</div>';
 }
+function v812IsActiveStoreTeam(name){
+  return V812_ACTIVE_STORE_TEAMS.some(n=>same(n,name));
+}
 function teamMarkup(store=false){
   const q=norm(teamQuery);
-  const list=teamList().filter(t=>!q||norm(t.name).includes(q)||norm(t.category).includes(q));
+  const source=store?teamList().filter(t=>v812IsActiveStoreTeam(t.name)):teamList();
+  const list=source.filter(t=>!q||norm(t.name).includes(q)||norm(t.category).includes(q));
   return '<section class="v66-directory" data-v66-directory="'+(store?'store':'teams')+'">'+
     (store?'<header class="v510-store-head"><button type="button" data-v447-store-back aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button><span class="v510-store-crest" aria-hidden="true"></span><button type="button" data-route="profile" class="v510-store-profile" aria-label="Perfil"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19c.7-3.4 3-5.5 6.5-5.5s5.8 2.1 6.5 5.5"/></svg></button></header>':'')+
-    '<div class="v66-search"><span>⌕</span><input data-v66-team-search type="search" autocomplete="off" placeholder="Buscar equipo registrado" value="'+esc(teamQuery)+'"></div>'+
-    '<p class="v66-source-note">'+list.length+' equipos registrados · datos oficiales sincronizados</p>'+
+    '<div class="v66-search"><span>⌕</span><input data-v66-team-search type="search" autocomplete="off" placeholder="'+(store?'Buscar equipo activo':'Buscar equipo registrado')+'" value="'+esc(teamQuery)+'"></div>'+
+    '<p class="v66-source-note">'+list.length+(store?' equipos activos · temporada 2026':' equipos registrados · datos oficiales sincronizados')+'</p>'+
     '<div class="v66-team-grid">'+list.map(t=>'<button type="button" class="v66-team-card" data-v66-open-team="'+esc(t.name)+'" data-v66-cat-id="'+esc(t.cat)+'">'+teamLogo(t)+'<span><b>'+esc(t.name)+'</b><small>'+esc(t.category)+(store?' · Tienda':'')+'</small></span><i>›</i></button>').join('')+'</div>'+
   '</section>';
 }
@@ -1230,7 +1246,12 @@ function bind(team){
  root.querySelector("[data-v431-clear]").onclick=function(){writeCart([]);syncCart();toast("Carrito vacío")};syncCart();
 }
 async function renderStore(team,cat){
- if(route()!=="club-store"||!team)return;ensureStyle();await load();var screen=document.querySelector("#screen");if(!screen||route()!=="club-store")return;
+ if(route()!=="club-store"||!team)return;
+ var active=window.LJR_V812_ACTIVE_STORE_TEAMS;
+ if(Array.isArray(active)&&active.length&&!active.some(function(n){return norm(n)===norm(team)})){
+   sessionStorage.removeItem(OPEN_KEY);sessionStorage.removeItem(TEAM_KEY);sessionStorage.removeItem(CAT_KEY);return;
+ }
+ ensureStyle();await load();var screen=document.querySelector("#screen");if(!screen||route()!=="club-store")return;
  var logo=logoFor(team),roster=rosterFor(team,cat);document.body.dataset.appRoute="club-store";screen.innerHTML=markup(team,cat,roster,logo);bind(team);
  try{screen.scrollTop=0;window.scrollTo({top:0,left:0,behavior:"instant"})}catch(_){window.scrollTo(0,0)}
 }
