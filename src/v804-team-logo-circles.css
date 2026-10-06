@@ -1,13 +1,13 @@
-/* V804 — círculos de escudos según referencia del usuario.
-   Calendario: local arriba dentro del círculo principal; visitante en círculo
-   pequeño superpuesto atrás/abajo a la derecha.
-   Directorio/Tienda: ningún escudo puede sobresalir del círculo. */
+/* V806 — calendario: escudos limpios, sin círculos de fondo.
+   - Ningún escudo lleva fondo gris/azul ni aro por defecto.
+   - El visitante queda como logo pequeño transparente superpuesto.
+   - Sólo el día tocado muestra UN aro azul alrededor del escudo principal. */
 
 body.v415-calendar-active .v415-day-logos{
   position:relative!important;
   z-index:3!important;
-  width:62px!important;
-  height:58px!important;
+  width:56px!important;
+  height:54px!important;
   display:block!important;
   margin:0 auto!important;
   overflow:visible!important;
@@ -17,41 +17,30 @@ body.v415-calendar-active .v415-day-logos .v415-logo{
   box-sizing:border-box!important;
   display:grid!important;
   place-items:center!important;
-  overflow:hidden!important;
-  border-radius:50%!important;
+  overflow:visible!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
 }
 
+/* Escudo principal: sólo el PNG/WebP transparente, sin círculo. */
 body.v415-calendar-active .v415-day-logos .v415-logo.is-home{
   position:absolute!important;
   z-index:3!important;
-  left:1px!important;
-  top:1px!important;
-  width:51px!important;
-  height:51px!important;
-  padding:6px!important;
-  border:3px solid #4b8fff!important;
-  background:#08142f!important;
-  box-shadow:
-    0 0 0 2px rgba(23,51,112,.40),
-    0 5px 12px rgba(0,0,35,.24)!important;
-}
-
-body.v415-calendar-active .v415-day-logos .v415-logo.is-home img{
-  width:100%!important;
-  height:100%!important;
-  max-width:100%!important;
-  max-height:100%!important;
-  display:block!important;
-  margin:auto!important;
+  left:7px!important;
+  top:6px!important;
+  width:40px!important;
+  height:40px!important;
   padding:0!important;
-  object-fit:contain!important;
-  object-position:center!important;
-  transform:none!important;
-  filter:none!important;
+  border:0!important;
   border-radius:0!important;
   background:transparent!important;
+  box-shadow:none!important;
 }
 
+/* Escudo visitante: pequeño y superpuesto, pero SIN disco gris detrás. */
 body.v415-calendar-active .v415-day-logos .v415-logo.is-away{
   position:absolute!important;
   z-index:4!important;
@@ -59,16 +48,16 @@ body.v415-calendar-active .v415-day-logos .v415-logo.is-away{
   bottom:0!important;
   left:auto!important;
   top:auto!important;
-  width:29px!important;
-  height:29px!important;
-  padding:4px!important;
-  border:2px solid #5e6e94!important;
-  border-radius:50%!important;
-  background:#536181!important;
-  box-shadow:0 3px 8px rgba(0,0,30,.30)!important;
+  width:24px!important;
+  height:24px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
 }
 
-body.v415-calendar-active .v415-day-logos .v415-logo.is-away img{
+body.v415-calendar-active .v415-day-logos .v415-logo img{
   width:100%!important;
   height:100%!important;
   max-width:100%!important;
@@ -79,20 +68,92 @@ body.v415-calendar-active .v415-day-logos .v415-logo.is-away img{
   object-fit:contain!important;
   object-position:center!important;
   transform:none!important;
-  filter:none!important;
+  clip-path:none!important;
+  border:0!important;
   border-radius:0!important;
   background:transparent!important;
+  box-shadow:none!important;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.18))!important;
 }
 
-/* Anula el antiguo is-second para que nunca se dibuje un tercer aro encima. */
+/* Elimina cualquier aro heredado del calendario en días NO seleccionados. */
+body.v415-calendar-active .v415-day:not(.selected):before,
+body.v415-calendar-active .v415-day.has-match:not(.selected):before{
+  content:none!important;
+  display:none!important;
+}
+
+/* Al tocar el día: un solo aro azul. */
+body.v415-calendar-active .v415-day.selected:before{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  inset:auto!important;
+  left:50%!important;
+  top:50%!important;
+  width:56px!important;
+  height:56px!important;
+  min-width:56px!important;
+  min-height:56px!important;
+  max-width:56px!important;
+  max-height:56px!important;
+  aspect-ratio:1/1!important;
+  transform:translate(-50%,-50%)!important;
+  box-sizing:border-box!important;
+  border:3px solid #3d8bff!important;
+  border-radius:50%!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  z-index:1!important;
+}
+
+/* Dentro del aro sólo va el escudo principal; el visitante sigue flotando sin fondo. */
+body.v415-calendar-active .v415-day.selected .v415-day-logos{
+  width:56px!important;
+  height:54px!important;
+}
+body.v415-calendar-active .v415-day.selected .v415-day-logos .v415-logo.is-home,
+body.v415-calendar-active .v415-day.selected .v415-day-logos .v415-logo:first-child{
+  left:8px!important;
+  top:7px!important;
+  width:38px!important;
+  height:38px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+body.v415-calendar-active .v415-day.selected .v415-day-logos .v415-logo.is-away{
+  display:grid!important;
+  right:-1px!important;
+  bottom:-1px!important;
+  width:23px!important;
+  height:23px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+/* Si queda una clase vieja is-second, también se limpia completamente. */
 body.v415-calendar-active .v415-day-logos .v415-logo.is-second{
-  left:auto!important;
-  top:auto!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
 }
 
-/* El número de hoy queda encima sin tapar los dos escudos. */
+/* Los puntitos de partidos múltiples se conservan, sin crear otro círculo. */
+body.v415-calendar-active .v415-day-dots{
+  z-index:5!important;
+}
+
+/* El número de hoy no debe crear un segundo aro sobre un día con partido. */
 body.v415-calendar-active .v415-day.today.has-match .v415-today-badge{
-  z-index:6!important;
+  display:none!important;
 }
 
 /* Tarjetas/listados de equipos (incluye Tienda de clubes).
