@@ -267,6 +267,21 @@ async function enrollBiometric(account,kind='biometric'){
   overlay('Identidad confirmada',wantsFace?'El teléfono confirmó un acceso biométrico. Android/Chrome decide si usa rostro, huella o PIN; la app no guarda una foto de tu cara.':'La biometría quedó activada para esta cuenta.','ok');closeOverlay();
   return trusted;
 }
+async function saveVisualFaceScan(account,result){
+  if(!account||!result?.ok)throw new Error('Escaneo facial no completado');
+  const auth=authState(),idx=auth.accounts.findIndex(a=>a.id===account.id);
+  if(idx<0)throw new Error('Cuenta no encontrada');
+  auth.accounts[idx].faceScan={
+    completedAt:result.completedAt||nowIso(),
+    engine:String(result.engine||'camera-face-detector'),
+    storesImage:false
+  };
+  saveAuth(auth);
+  updateMainStoreAccount(auth.accounts[idx]);
+  setAppUser(auth.accounts[idx]);
+  return auth.accounts[idx];
+}
+
 async function configureFaceAccess(account){
   if(!account)throw new Error('Cuenta no encontrada');
   // If an older platform credential already exists, do not try to create a duplicate
@@ -473,16 +488,19 @@ function authShell(kind){
     if(!a)return authShell('accountLogin');
     const enabled=biometricEnabled(a),faceRequested=faceSetupRequested(a);
     const lastVerified=a.biometric?.lastVerifiedAt||'';
+    const faceScanAt=a.faceScan?.completedAt||'',faceScanDone=!!faceScanAt;
     return '<section class="v569-page" data-v569-page="security">'+
-      header('SEGURIDAD','Rostro, huella y biometría','Prueba aquí la biometría real del teléfono. Esta página no puede escanear ni guardar tu cara.')+
+      header('SEGURIDAD','Rostro, huella y biometría','Primero comprueba la cámara con un escaneo visual. Después prueba la biometría segura del teléfono.')+
       '<section class="v569-card">'+
-        '<div class="v569-security-state '+(enabled?'on':'off')+'"><span>◉</span><div><b>'+(enabled?'Biometría vinculada':'Biometría no vinculada')+'</b><small>'+(enabled?esc(a.biometric.device||deviceName())+(lastVerified?' · última prueba '+esc(fmtDate(lastVerified)):' · todavía sin prueba confirmada'):'Primero configura la biometría del teléfono y después vincúlala aquí.')+'</small></div></div>'+
-        '<div class="v803-face-state '+(lastVerified?'ready':faceRequested?'legacy':'pending')+'"><span>🙂</span><div><b>'+(lastVerified?'Biometría probada correctamente':faceRequested?'Rostro / Face ID solicitado, falta probarlo':'Rostro / Face ID no confirmado')+'</b><small>'+(lastVerified?'El teléfono aceptó una biometría. Por privacidad, Android/Chrome no le dice a esta página si fue cara o huella.':faceRequested?'La app todavía no puede afirmar que usó tu cara. Toca “Probar biometría ahora” y usa el método que muestre tu teléfono.':'Registra primero tu rostro en Ajustes de seguridad del teléfono. Después vuelve aquí y toca “Configurar acceso biométrico”.')+'</small></div></div>'+
+        '<div class="v806-scan-row '+(faceScanDone?'done':'')+'"><span>📷</span><div><b>'+(faceScanDone?'Rostro detectado por la cámara':'Escaneo visual de rostro pendiente')+'</b><small>'+(faceScanDone?'Escaneo completado '+esc(fmtDate(faceScanAt))+' · no se guardó ninguna foto.':'Abre la cámara frontal y mantén tu cara centrada dentro del óvalo.')+'</small></div></div>'+
+        '<button class="v569-primary" type="button" data-v806-face-scan>📷 '+(faceScanDone?'Volver a escanear rostro':'Escanear rostro con cámara')+'</button>'+
+        '<div class="v569-security-state '+(enabled?'on':'off')+'"><span>◉</span><div><b>'+(enabled?'Biometría vinculada':'Biometría no vinculada')+'</b><small>'+(enabled?esc(a.biometric.device||deviceName())+(lastVerified?' · última prueba '+esc(fmtDate(lastVerified)):' · todavía sin prueba confirmada'):'Después del escaneo visual puedes vincular la biometría segura del teléfono.')+'</small></div></div>'+
+        '<div class="v803-face-state '+(lastVerified?'ready':faceRequested?'legacy':'pending')+'"><span>🙂</span><div><b>'+(lastVerified?'Biometría probada correctamente':faceRequested?'Acceso facial solicitado, falta probarlo':'Acceso biométrico no confirmado')+'</b><small>'+(lastVerified?'El teléfono aceptó una biometría. Android/Chrome no informa si fue cara o huella.':faceRequested?'El escaneo de cámara y Face ID son pasos distintos. Usa “Probar biometría ahora” para comprobar la seguridad del teléfono.':'El escaneo de cámara sólo comprueba que detecta un rostro; la autenticación real la controla Android/iPhone.')+'</small></div></div>'+
         (!enabled?'<button class="v569-primary" type="button" data-v569-enable-face>🙂 Configurar acceso biométrico</button>':'')+
         (enabled?'<button class="v569-primary v803-test-bio" type="button" data-v569-test-bio>✓ Probar biometría ahora</button>':'')+
         (enabled?'<button class="v569-danger" type="button" data-v569-disable-bio>Desactivar biometría</button>':'<button class="v569-secondary bio" type="button" data-v569-enable-bio>◉ Activar huella / biometría</button>')+
-        '<div class="v803-face-steps"><b>Cómo comprobarlo</b><span>1. Registra tu rostro en los ajustes de seguridad de tu teléfono.</span><span>2. Vuelve aquí y configura el acceso biométrico.</span><span>3. Toca “Probar biometría ahora”. Si el teléfono acepta la verificación, la app marcará la fecha de la prueba.</span></div>'+
-        '<p class="v569-note"><b>Importante:</b> en Android/Chrome una web no recibe una foto ni un escaneo facial y tampoco puede saber si el sistema usó cara o huella. Sólo recibe “verificación aprobada” o “rechazada”.</p>'+
+        '<div class="v803-face-steps"><b>Cómo comprobarlo</b><span>1. Toca “Escanear rostro con cámara” y centra tu cara.</span><span>2. Cuando marque “Rostro detectado”, la cámara y el detector ya funcionan.</span><span>3. Después configura y prueba la biometría del teléfono para el acceso seguro.</span></div>'+
+        '<p class="v569-note"><b>Privacidad:</b> el escaneo visual no guarda foto ni video. Tampoco identifica quién eres; sólo confirma que hay un rostro centrado. Face ID/Android Biometrics sigue siendo responsabilidad del sistema del teléfono.</p>'+
       '</section></section>';
   }
   if(kind==='accountPassword'){
@@ -706,6 +724,16 @@ document.addEventListener('click',async e=>{
   if(e.target.closest('[data-v569-login-bio]')){e.preventDefault();await biometricLogin(e.target.closest('[data-v569-page]'));return}
   if(e.target.closest('[data-v569-save-profile]')){e.preventDefault();await saveProfile(e.target.closest('[data-v569-page]'));return}
   if(e.target.closest('[data-v569-change-pass]')){e.preventDefault();await changePassword(e.target.closest('[data-v569-page]'));return}
+  if(e.target.closest('[data-v806-face-scan]')){e.preventDefault();try{
+    const scanner=window.LJR_FACE_CAMERA_SCAN;
+    if(!scanner?.open)throw new Error('El escáner facial todavía no está cargado');
+    const result=await scanner.open();
+    await saveVisualFaceScan(currentAccount(),result);
+    toast('Rostro detectado correctamente');
+    schedule();
+  }catch(err){
+    if(err?.name!=='AbortError')toast(err?.name==='NotAllowedError'?'Permite el acceso a la cámara para escanear tu rostro':(err?.message||'No se pudo escanear el rostro'));
+  }return}
   if(e.target.closest('[data-v569-enable-face]')){e.preventDefault();try{await configureFaceAccess(currentAccount());schedule()}catch(err){closeOverlay();toast(err?.name==='NotAllowedError'?'Activación facial cancelada':(err?.message||'No se pudo activar el acceso facial'))}return}
   if(e.target.closest('[data-v569-enable-bio]')){e.preventDefault();try{await enrollBiometric(currentAccount(),'biometric');schedule()}catch(err){closeOverlay();toast(err?.name==='NotAllowedError'?'Activación cancelada':(err?.message||'No se pudo activar'))}return}
   if(e.target.closest('[data-v569-test-bio]')){e.preventDefault();try{await verifyBiometric(currentAccount());schedule()}catch(err){closeOverlay();toast(err?.name==='NotAllowedError'?'Prueba biométrica cancelada':(err?.message||'No se pudo completar la prueba'))}return}
