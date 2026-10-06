@@ -175,11 +175,16 @@ async function refreshOfficial(){
 }
 async function activateNotifications(){
   try{
-    const push=window.Capacitor?.Plugins?.PushNotifications;
-    if(push){const p=await push.requestPermissions();if(p.receive==='granted'){await push.register();toast('Registro de push solicitado')}else toast('Permiso de push no concedido');return}
-    if(!('Notification' in window)){toast('Este dispositivo no admite avisos desde esta vista');return}
-    const p=await Notification.requestPermission();if(p==='granted')new Notification('Liga Juventino',{body:'Avisos activados en este dispositivo.'});else toast('Permiso de notificaciones no concedido');
-  }catch(_){toast('No fue posible activar avisos')}
+    // V840: los avisos del APK pertenecen a Liga Juventino; no registrar un push
+    // genérico desde el módulo AdminFut para evitar avisos duplicados o con otra identidad.
+    if(window.LJR_V840_NOTIFICATIONS?.requestPermission){
+      const ok=await window.LJR_V840_NOTIFICATIONS.requestPermission();
+      toast(ok?'Avisos de Liga Juventino activados':'Permiso de notificaciones no concedido');
+      return;
+    }
+    location.hash='#/notifications';
+    toast('Configura los avisos desde Notificaciones de Liga Juventino');
+  }catch(_){location.hash='#/notifications'}
 }
 async function syncQueue(){
   const s=readState(),pending=s.queue.filter(x=>!x.synced);if(!pending.length)return;
