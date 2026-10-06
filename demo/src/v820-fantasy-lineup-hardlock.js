@@ -299,17 +299,19 @@ async function decorate(){
       teamKit.set(team,item);
     }
     const realSrc=String(item?.url||'').trim();
-    const fallbackSrc=generatedTransparentJersey(hash(team+'|fallback|'+slotId+'|v833'));
-    const shirtSrc=realSrc||fallbackSrc;
+    const fallbackSrc=generatedTransparentJersey(hash(team+'|fallback|'+slotId+'|v835'));
+    const cleanedRealSrc=realSrc ? await transparentJersey(realSrc) : '';
+    if(gen!==renderGeneration||!wrap.isConnected)continue;
+    const shirtSrc=cleanedRealSrc||fallbackSrc;
     const logo=logoFor(team);
-    const stamp=String(item?.id||'real-v833')+'|'+player+'|'+team+'|real-three-quarter-v833';
+    const stamp=String(item?.id||'real-v835')+'|'+player+'|'+team+'|transparent-three-quarter-v835';
     if(wrap.dataset.v820Stamp===stamp&&wrap.querySelector('.v820-lineup-jersey'))continue;
 
     const removeId=wrap.querySelector('[data-v576-remove]')?.getAttribute('data-v576-remove')||slotId;
     wrap.dataset.v820Stamp=stamp;
     wrap.dataset.v830Transparent='1';
-    wrap.dataset.v829Generated=realSrc?'0':'1';
-    wrap.dataset.v833RealMockup=realSrc?'1':'0';
+    wrap.dataset.v829Generated=cleanedRealSrc?'0':'1';
+    wrap.dataset.v833RealMockup=cleanedRealSrc?'1':'0';
     wrap.style.setProperty('--v820-badge-x',Number(item?.badgeX??57)+'%');
     wrap.style.setProperty('--v820-badge-y',Number(item?.badgeY??27)+'%');
     wrap.style.setProperty('--v820-badge-w',Number(item?.badgeW??16)+'%');
@@ -338,7 +340,7 @@ async function decorate(){
   document.body.dataset.v820FantasyLineup='active';
   document.body.dataset.v820FantasyJerseyPool=String(Math.min(items.length,50));
   document.body.dataset.v830RejectedJerseys=String(badTransparentSources.size);
-  document.body.dataset.v833RealMockups='1';
+  document.body.dataset.v833RealMockups='transparent-clean-v835';
 }
 
 let raf=0;
