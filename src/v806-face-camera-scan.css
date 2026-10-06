@@ -1,0 +1,77 @@
+/* V806 — Escaneo visual facial con cámara frontal */
+.v806-face-overlay{
+  position:fixed!important;z-index:2147483000!important;inset:0!important;
+  display:grid!important;place-items:end center!important;
+  background:rgba(0,4,37,.72)!important;backdrop-filter:blur(8px)!important;
+}
+.v806-face-sheet{
+  width:min(100%,520px)!important;max-height:94dvh!important;overflow:auto!important;
+  padding:16px 16px 22px!important;border-radius:24px 24px 0 0!important;
+  border:1px solid rgba(94,148,240,.45)!important;
+  background:linear-gradient(180deg,#0d1d77 0%,#07125d 62%,#050b45 100%)!important;
+  color:#fff!important;box-shadow:0 -22px 50px rgba(0,0,35,.36)!important;
+}
+.v806-face-sheet header{display:flex!important;justify-content:space-between!important;align-items:center!important;margin-bottom:12px!important}
+.v806-face-sheet header small{display:block!important;color:#51e2ef!important;font-size:10px!important;font-weight:900!important;letter-spacing:.14em!important}
+.v806-face-sheet header h2{margin:3px 0 0!important;font-size:24px!important;line-height:1!important}
+.v806-face-sheet header button{
+  width:40px!important;height:40px!important;border:1px solid rgba(115,156,224,.46)!important;border-radius:13px!important;
+  background:#14266f!important;color:#70e8f3!important;font-size:25px!important
+}
+.v806-camera{
+  position:relative!important;width:100%!important;aspect-ratio:3/4!important;max-height:58dvh!important;
+  overflow:hidden!important;border-radius:22px!important;background:#020820!important;
+  border:1px solid rgba(69,145,239,.55)!important
+}
+.v806-camera video{
+  width:100%!important;height:100%!important;object-fit:cover!important;
+  transform:scaleX(-1)!important;background:#020820!important
+}
+.v806-face-guide{
+  position:absolute!important;left:50%!important;top:48%!important;transform:translate(-50%,-50%)!important;
+  width:58%!important;aspect-ratio:.76!important;border:3px solid rgba(255,255,255,.72)!important;border-radius:48% 48% 45% 45%!important;
+  box-shadow:0 0 0 999px rgba(0,7,42,.30)!important;transition:border-color .16s ease,box-shadow .16s ease!important
+}
+.v806-face-guide::before,.v806-face-guide::after{
+  content:""!important;position:absolute!important;left:50%!important;transform:translateX(-50%)!important;
+  width:42%!important;height:3px!important;border-radius:99px!important;background:rgba(255,255,255,.78)!important
+}
+.v806-face-guide::before{top:33%!important}.v806-face-guide::after{bottom:29%!important}
+.v806-face-guide.has-face{border-color:#ffd96c!important}
+.v806-face-guide.is-centered{border-color:#37e2ed!important;box-shadow:0 0 25px rgba(55,226,237,.26),0 0 0 999px rgba(0,7,42,.24)!important}
+.v806-camera-state{
+  position:absolute!important;left:12px!important;right:12px!important;bottom:12px!important;
+  padding:9px 11px!important;border-radius:12px!important;background:rgba(1,9,48,.76)!important;
+  color:#eefaff!important;font-size:11px!important;font-weight:800!important;text-align:center!important;backdrop-filter:blur(8px)!important
+}
+.v806-face-copy{display:grid!important;gap:5px!important;padding:13px 3px 7px!important}
+.v806-face-copy b{font-size:16px!important}.v806-face-copy span{color:#aebce1!important;font-size:11px!important;line-height:1.4!important}
+.v806-face-meter{height:7px!important;margin:4px 3px 11px!important;overflow:hidden!important;border-radius:99px!important;background:#17276c!important}
+.v806-face-meter i{display:block!important;width:0;height:100%!important;border-radius:99px!important;background:linear-gradient(90deg,#22c8dd,#41edf4)!important;transition:width .15s linear!important}
+.v806-face-sheet>p{margin:0 3px 12px!important;color:#8fa0ca!important;font-size:9.5px!important;line-height:1.45!important}
+.v806-cancel{
+  width:100%!important;min-height:46px!important;border:1px solid rgba(94,124,202,.54)!important;border-radius:14px!important;
+  background:#12246f!important;color:#fff!important;font-size:12px!important;font-weight:850!important
+}
+.v806-face-overlay.is-success .v806-face-guide{border-color:#4aefbc!important;box-shadow:0 0 30px rgba(74,239,188,.28),0 0 0 999px rgba(0,7,42,.18)!important}
+.v806-face-overlay.is-success .v806-camera-state{color:#79f2cb!important}
+.v806-face-overlay.is-error .v806-face-guide{border-color:#ff6f8b!important}
+
+.v806-scan-row{
+  display:grid!important;grid-template-columns:52px minmax(0,1fr)!important;gap:12px!important;align-items:center!important;
+  margin:12px 0!important;padding:13px!important;border-radius:15px!important;border:1px solid rgba(87,128,218,.32)!important;
+  background:rgba(8,20,94,.62)!important
+}
+.v806-scan-row>span{
+  width:48px!important;height:48px!important;display:grid!important;place-items:center!important;border-radius:50%!important;
+  background:rgba(45,91,183,.25)!important;border:1px solid rgba(96,149,241,.34)!important;font-size:22px!important
+}
+.v806-scan-row b,.v806-scan-row small{display:block!important}
+.v806-scan-row b{font-size:11.5px!important;color:#fff!important}
+.v806-scan-row small{margin-top:4px!important;color:#9fadd2!important;font-size:8.5px!important;line-height:1.4!important}
+.v806-scan-row.done{border-color:rgba(55,226,237,.38)!important}.v806-scan-row.done>span{border-color:#35dfe9!important}
+body[data-app-route="accountSecurity"] [data-v806-face-scan]{
+  min-height:50px!important;margin-top:10px!important;border-radius:14px!important;
+  border:1px solid #35dce8!important;background:linear-gradient(180deg,#27dce9,#18b8ca)!important;
+  color:#06134b!important;font-size:11px!important;font-weight:900!important
+}
