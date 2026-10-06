@@ -137,8 +137,26 @@ window.addEventListener('hashchange',()=>setTimeout(()=>refreshShared(),350));
 function alertsEnabled(){
   try{return localStorage.getItem(ALERTS_KEY)==='1'}catch(_){return false}
 }
+function livePrefKey(c){
+  const clean=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  return 'ljr-match-live-prefs-v854:'+clean(c?.home)+'__'+clean(c?.away);
+}
+function eventAlertsEnabled(c,type){
+  const map={goal:'goals','phase-first':'startFinal','phase-halftime':'halftime','phase-second':'halftime','phase-final':'startFinal',red:'redCards',sub:'subs'};
+  const prefKey=map[type];
+  try{
+    const saved=JSON.parse(localStorage.getItem(livePrefKey(c))||'null');
+    if(saved&&prefKey in saved)return !!saved[prefKey];
+  }catch(_){}
+  return alertsEnabled();
+}
 async function requestAlerts(){
   try{localStorage.setItem(ALERTS_KEY,'1')}catch(_){}
+  if(window.LJR_V840_NOTIFICATIONS?.requestPermission){
+    const ok=await window.LJR_V840_NOTIFICATIONS.requestPermission();
+    toast(ok?'Avisos de inicio, goles, medio tiempo, rojas, cambios y final activados.':'Avisos dentro de la app activados.');
+    schedule();return;
+  }
   if(!('Notification' in window)){
     toast('Avisos dentro de la app activados. Este navegador no ofrece notificaciones del sistema.');
     schedule();return;
@@ -160,11 +178,14 @@ function scoreText(s,c){
   return c.home+' '+x.home.goals+'–'+x.away.goals+' '+c.away;
 }
 function matchAlert(c,s,type,side='',eventId=''){
-  if(!alertsEnabled())return;
+  if(!eventAlertsEnabled(c,type))return;
   const id=eventId||type+'|'+s.phase+'|'+String(s.updatedAt||'');
   const key=c.key+'|'+id;if(sentAlerts.has(key))return;sentAlerts.add(key);
   let title='',body='',vibe=[180,90,180];
-  if(type==='goal'){
+  if(type==='phase-first'){
+    title='🏟️ PARTIDO EN VIVO';
+    body=scoreText(s,c)+' · Comenzó el partido.';
+  }else if(type==='goal'){
     const team=side==='home'?c.home:side==='away'?c.away:'';
     title='⚽ ¡GOL'+(team?' DE '+team.toUpperCase():'')+'!';
     body=scoreText(s,c)+(minute(s)?' · '+minute(s)+'′':'');
@@ -175,6 +196,15 @@ function matchAlert(c,s,type,side='',eventId=''){
   }else if(type==='phase-second'){
     title='▶ TERMINÓ EL DESCANSO';
     body=scoreText(s,c)+' · Comienza el segundo tiempo.';
+  }else if(type==='red'){
+    const team=side==='home'?c.home:side==='away'?c.away:'';
+    title='🟥 TARJETA ROJA'+(team?' · '+team:'');
+    body=scoreText(s,c)+(minute(s)?' · '+minute(s)+'′':'');
+    vibe=[240,100,240];
+  }else if(type==='sub'){
+    const team=side==='home'?c.home:side==='away'?c.away:'';
+    title='↔ CAMBIO'+(team?' · '+team:'');
+    body=scoreText(s,c)+(minute(s)?' · '+minute(s)+'′':'');
   }else if(type==='phase-final'){
     title='🏁 PARTIDO TERMINADO';
     body='Final · '+scoreText(s,c);
@@ -182,6 +212,16 @@ function matchAlert(c,s,type,side='',eventId=''){
   }else return;
   toast(title+' · '+body);
   try{navigator.vibrate?.(vibe)}catch(_){}
+  const x=counters(s);
+  if(window.LJR_V840_NOTIFICATIONS?.pushLive){
+    void window.LJR_V840_NOTIFICATIONS.pushLive({
+      matchKey:c.key,eventId:id,type,home:c.home,away:c.away,hs:x.home.goals,as:x.away.goals,
+      category:(c.category?'EN VIVO · '+c.category:'EN VIVO · Liga Juventino Rosas'),
+      status:title+(minute(s)?' · '+minute(s)+'′':''),
+      route:'v4-matchcenter',ts:Date.now()
+    });
+    return;
+  }
   if('Notification' in window&&Notification.permission==='granted'){
     try{
       const n=new Notification(title,{body,tag:'ljr-'+c.key+'-'+type,renotify:true,vibrate:vibe,icon:'./icons/icon-192.png',badge:'./icons/icon-192.png'});
@@ -304,7 +344,7 @@ function addEvent(s,c,type,side='',note='',source='operator',player=''){
   if(type==='phase-second'){s.phase='second';s.secondStartedAt=now();e.minute='46′'}
   if(type==='phase-final'){s.phase='final';s.finishedAt=now();e.minute='Final'}
   s.events.push(e);save(s);
-  if(type==='goal'||type==='phase-halftime'||type==='phase-second'||type==='phase-final')matchAlert(c,s,type,side,e.id);
+  if(type==='goal'||type==='red'||type==='sub'||type==='phase-first'||type==='phase-halftime'||type==='phase-second'||type==='phase-final')matchAlert(c,s,type,side,e.id);
   return e;
 }
 function addSuggestion(s,o){
@@ -406,7 +446,7 @@ function hubHtml(c,s){
     '<p class="v144-live-help">Facebook · YouTube · TikTok · Local. Reproduce el enlace publicado por la Liga.</p>'+
     streamEmbedHtml(s)+
     '<div class="v144-stats"><div><small>'+esc(c.home)+'</small><b>'+x.home.goals+'</b><span>'+x.home.subs+' cambios · '+x.home.yellow+' 🟨 · '+x.home.red+' 🟥</span></div><div><small>'+esc(c.away)+'</small><b>'+x.away.goals+'</b><span>'+x.away.subs+' cambios · '+x.away.yellow+' 🟨 · '+x.away.red+' 🟥</span></div></div>'+
-    '<div class="v144-alerts"><span><b>🔔 Avisos del partido</b><small>Gol · medio tiempo · regreso del descanso · final</small></span><button type="button" class="'+(alertsEnabled()?'active':'')+'" data-v144-alerts>'+(alertsEnabled()?'Avisos activos':'Activar avisos')+'</button></div>'+
+    '<div class="v144-alerts"><span><b>🔔 Avisos del partido</b><small>Inicio · gol · medio tiempo · roja · cambios · final</small></span><button type="button" class="'+(alertsEnabled()?'active':'')+'" data-v144-alerts>'+(alertsEnabled()?'Avisos activos':'Activar avisos')+'</button></div>'+
     '<div class="v144-ai"><button class="'+(listening?'active':'')+'" data-v144-listen>'+(listening?'■ Detener escucha':'🎙 Detectar narración')+'</button><button data-v144-config>Fuente y narración</button><small>Escucha el micrófono y transcribe en español. Los eventos se confirman manualmente, salvo que actives el modo automático.</small></div>'+
     narrationHtml(s)+
     (s.lastTranscript?'<div class="v144-transcript"><small>ÚLTIMA TRANSCRIPCIÓN</small><span>'+esc(s.lastTranscript)+'</span></div>':'')+
