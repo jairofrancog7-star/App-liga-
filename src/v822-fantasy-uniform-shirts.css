@@ -213,3 +213,43 @@ html body[data-app-route="fantasyTeam"] .v576-slot.filled:focus-visible .v820-li
     max-width:60px!important;
   }
 }
+
+
+/* V830 — transparent jersey hard lock.
+   No source-image panel, color box, pseudo background or browser image backdrop. */
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v590-kit-wrap,
+html body.v587-fantasy-team-open .v576-slot.filled .v590-kit-wrap,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v820-lineup-kit,
+html body.v587-fantasy-team-open .v576-slot.filled .v820-lineup-kit,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v820-lineup-jersey,
+html body.v587-fantasy-team-open .v576-slot.filled .v820-lineup-jersey{
+  background:transparent!important;
+  background-color:transparent!important;
+  background-image:none!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  clip-path:none!important;
+}
+
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v590-kit-wrap::before,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v590-kit-wrap::after,
+html body.v587-fantasy-team-open .v576-slot.filled .v590-kit-wrap::before,
+html body.v587-fantasy-team-open .v576-slot.filled .v590-kit-wrap::after,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v820-lineup-kit::before,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v820-lineup-kit::after,
+html body.v587-fantasy-team-open .v576-slot.filled .v820-lineup-kit::before,
+html body.v587-fantasy-team-open .v576-slot.filled .v820-lineup-kit::after{
+  content:none!important;
+  display:none!important;
+}
+
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v820-lineup-jersey,
+html body.v587-fantasy-team-open .v576-slot.filled .v820-lineup-jersey{
+  opacity:1!important;
+  visibility:visible!important;
+  mix-blend-mode:normal!important;
+  filter:none!important;
+  -webkit-mask-image:none!important;
+  mask-image:none!important;
+}
