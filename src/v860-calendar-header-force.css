@@ -177,8 +177,8 @@
     display:none!important;
   }
 
-  /* V862 — borde inferior restaurado con difuminado azul → fondo oscuro.
-     Sin línea blanca/cyan dura: la cabecera se integra con el contenido. */
+  /* V863 — borde inferior mejor integrado: azul profundo -> fondo oscuro.
+     Sin línea marcada ni brillo duro; se pierde suavemente en el color de la página. */
   html body.v415-calendar-active.v839-reference-calendar
   #screen .v839-reference-page .v415-reference-topbar::before{
     content:""!important;
@@ -187,18 +187,17 @@
     left:0!important;
     right:0!important;
     bottom:-1px!important;
-    height:18px!important;
+    height:24px!important;
     z-index:4!important;
     pointer-events:none!important;
     background:
       linear-gradient(180deg,
-        rgba(30,126,255,.42) 0%,
-        rgba(20,83,205,.28) 28%,
-        rgba(12,36,124,.18) 52%,
-        rgba(17,18,38,.72) 78%,
+        rgba(8,30,128,.08) 0%,
+        rgba(7,20,99,.22) 22%,
+        rgba(10,16,72,.42) 48%,
+        rgba(15,17,52,.72) 72%,
         #111226 100%)!important;
-    box-shadow:
-      0 5px 14px rgba(13,57,162,.20)!important;
+    box-shadow:none!important;
     opacity:1!important;
   }
 
