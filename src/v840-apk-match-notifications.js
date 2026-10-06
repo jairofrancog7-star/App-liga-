@@ -1,5 +1,5 @@
 import {Capacitor,registerPlugin} from '@capacitor/core';
-/* V840 — Liga Juventino APK match notifications.
+/* V850 — Liga Juventino APK match notifications.
    Own notification center + Android native notifications with both team logos.
    No AdminFut push registration is used. */
 (function(){
@@ -84,11 +84,29 @@ function inbox(){return read(INBOX,[])}
 function saveInbox(list){
   const seen=new Set(),out=[];
   for(const x of list.sort((a,b)=>(b.ts||0)-(a.ts||0))){
-    const k=x.id||x.key+'|'+x.type+'|'+x.hs+'|'+x.as;
+    // One current notification per match/type. A corrected score replaces
+    // stale 0-0 / duplicate results instead of creating another row.
+    const k=String(x.key||'')+'|'+String(x.type||'final');
     if(seen.has(k))continue;seen.add(k);out.push(x);
     if(out.length>=MAX_INBOX)break;
   }
   write(INBOX,out);
+}
+function reconcileInbox(matches){
+  const byKey=new Map(matches.map(m=>[m.key,m]));
+  const rows=inbox().map(e=>{
+    const m=byKey.get(e.key);
+    if(!m)return e;
+    return {
+      ...e,
+      home:m.home,away:m.away,hs:m.hs,as:m.as,category:m.category,
+      field:m.field,date:m.date,stamp:m.stamp||e.stamp,
+      status:(m.hs!==null&&m.as!==null)?'Finalizado':e.status,
+      homeLogo:logoFor(m.home),awayLogo:logoFor(m.away),
+      id:m.key+'|'+String(e.type||'final')+'|'+String(m.hs)+'|'+String(m.as)
+    };
+  });
+  saveInbox(rows);
 }
 function entryFor(m,type='final',ts=Date.now()){
   const scored=m.hs!==null&&m.as!==null;
@@ -164,7 +182,7 @@ async function systemNotify(e){
 }
 async function processChanges(matches){
   const prev=read(SNAP,null);
-  if(!prev){write(SNAP,snapshot(matches));seedInbox(matches);renderFeed();return}
+  if(!prev){write(SNAP,snapshot(matches));seedInbox(matches);reconcileInbox(matches);renderFeed();return}
   const added=[];
   for(const m of matches){
     const old=prev[m.key];if(!old)continue;
@@ -181,6 +199,7 @@ async function processChanges(matches){
     await systemNotify(e);
   }
   if(added.length)saveInbox([...added,...inbox()]);
+  reconcileInbox(matches);
   write(SNAP,snapshot(matches));
   seedInbox(matches);
   renderFeed();
