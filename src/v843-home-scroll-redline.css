@@ -1,0 +1,72 @@
+/* V843 — INICIO: punto exacto del scroll según la línea roja.
+   La línea roja de referencia cae ~18% del ancho de pantalla desde el borde
+   superior del arte móvil. El scroll debe iniciar ahí, en el difuminado azul. */
+@media (max-width:1023px){
+  html body[data-app-route="home"]{
+    --v843-home-scroll-start:clamp(68px,18vw,74px);
+  }
+
+  html body.v768-scroll-root[data-app-route="home"]{
+    --v768-head-h:var(--v843-home-scroll-start)!important;
+  }
+
+  html body[data-app-route="home"] #app>.topbar,
+  html body[data-app-route="home"] .app-shell>.topbar,
+  html body.v10-header-collapsed[data-app-route="home"] #app>.topbar,
+  html body.ljr-v777[data-mobile-layout="v775"][data-app-route="home"] #app>.topbar,
+  html body.ljr-v777[data-mobile-layout="v775"][data-app-route="home"][data-header-owner="global"] #app>.topbar{
+    position:fixed!important;
+    top:0!important;
+    left:0!important;
+    right:0!important;
+    width:100%!important;
+    height:var(--v843-home-scroll-start)!important;
+    min-height:var(--v843-home-scroll-start)!important;
+    max-height:var(--v843-home-scroll-start)!important;
+    margin:0!important;
+    background-size:100% auto!important;
+    background-position:center top!important;
+    overflow:hidden!important;
+    z-index:100!important;
+  }
+
+  html body.v768-scroll-root[data-app-route="home"] #screen{
+    position:fixed!important;
+    top:var(--v843-home-scroll-start)!important;
+    bottom:var(--ui-master-bottom-nav-h,69px)!important;
+    left:0!important;
+    right:0!important;
+    height:auto!important;
+    min-height:0!important;
+    margin:0!important;
+    padding-top:0!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+    touch-action:pan-y!important;
+    scroll-padding-top:0!important;
+  }
+
+  /* La primera fila debe arrancar completa: ningún círculo queda debajo del header. */
+  html body[data-app-route="home"] #screen>.stories{
+    position:relative!important;
+    z-index:2!important;
+    margin-top:0!important;
+    padding-top:12px!important;
+    overflow-x:auto!important;
+    overflow-y:visible!important;
+  }
+  html body[data-app-route="home"] #screen>.stories .story,
+  html body[data-app-route="home"] #screen>.stories .story-ring,
+  html body[data-app-route="home"] #screen>.stories .story-inner{
+    opacity:1!important;
+    visibility:visible!important;
+  }
+}
+
+/* En móviles muy angostos conserva exactamente el mismo punto visual. */
+@media (max-width:360px){
+  html body[data-app-route="home"]{
+    --v843-home-scroll-start:68px;
+  }
+}
