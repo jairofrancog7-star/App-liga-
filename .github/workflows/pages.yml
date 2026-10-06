@@ -43,6 +43,12 @@ jobs:
       - name: Build for GitHub Pages
         run: npm run build -- --base=/App-liga-/
 
+      - name: Verify requested mobile workflows
+        run: |
+          npm install --no-save playwright --no-audit --no-fund
+          npx playwright install --with-deps chromium
+          node tests/review-v875.mjs
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
         with:

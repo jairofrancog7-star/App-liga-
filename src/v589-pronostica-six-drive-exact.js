@@ -19,7 +19,7 @@ const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'ho
 
 let games=[],journeys=[],officialGames=[];
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
-function officialLogo(name){return window.LJR_TEAM_LOGOS?.get?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name)||LEAGUE}
+function officialLogo(name){return window.LJR_SEASON_LOGOS?.get?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name)||LEAGUE}
 function refreshGames(){
  const data=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA;
  if(!data?.categories)return;

@@ -31,11 +31,10 @@
 
   function markLegacy(card){
     if(!card || card.dataset.v731DetailReady==='1')return;
-    card.dataset.v731DetailReady='1';
-    card.classList.add('v731-history-card');
-
     const copy=card.querySelector('.v370-legacy-copy');
     if(!copy)return;
+    card.dataset.v731DetailReady='1';
+    card.classList.add('v731-history-card');
 
     const detail=document.createElement('span');
     detail.className='v731-legacy-extra v731-history-detail-copy';

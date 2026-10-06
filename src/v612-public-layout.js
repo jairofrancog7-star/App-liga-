@@ -39,8 +39,8 @@ function update(){
     button.classList.toggle('v612-admin-locked',!allowed);
     /* V624: todos los cuadros de administración permanecen visibles y pulsables.
        Si falta sesión, el mismo clic abre el acceso; si está recordada, entra directo. */
-    button.hidden=!allowed;
-    button.disabled=!allowed;
+    button.hidden=false;
+    button.disabled=false;
     button.removeAttribute('aria-disabled');
   }
  });

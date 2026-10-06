@@ -160,6 +160,8 @@
       ? document.querySelector('body[data-app-route="publications"] .v60-tool-page')
       : document.querySelector('body[data-app-route="publicationCenter"] [data-v561-publications-mount]');
     if(!host)return;
+    // Wait for the PNG generator; inserting this panel first prevents its mount.
+    if(r==='publicationCenter'&&!host.querySelector('.v561-league'))return;
     const existing=host.querySelector('[data-v161-global-center]');
     if(existing){
       bindPanel(existing);
