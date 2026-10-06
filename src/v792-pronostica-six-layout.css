@@ -60,7 +60,18 @@
     margin:14px auto 0!important;
   }
   body[data-app-route="predictorSix"] .v589-page.intro .v589-dots{
-    margin-top:20px!important;
+    /* V767 — bajar los 4 indicadores hasta la parte baja,
+       justo encima de los botones, sin mover el texto ni los cuadros. */
+    position:absolute!important;
+    left:0!important;
+    right:0!important;
+    bottom:140px!important;
+    z-index:8!important;
+    margin:0!important;
+    transform:none!important;
+    display:flex!important;
+    justify-content:center!important;
+    gap:8px!important;
   }
 
   /* Empuja los dos botones hacia la parte baja disponible y mantiene el mismo azul detrás. */
@@ -129,6 +140,9 @@
   }
   body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-actions{
     padding-bottom:20px!important;
+  }
+  body[data-app-route="predictorSix"] .v589-page.intro .v589-dots{
+    bottom:136px!important;
   }
   body[data-app-route="predictor"] .v37-predictor-reference-image{
     object-position:center 46%!important;
