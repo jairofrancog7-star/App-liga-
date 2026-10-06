@@ -303,3 +303,54 @@ html body[data-app-route="fantasyTeam"] .v597-real-kit::after{
     min-width:31px!important;
   }
 }
+
+/* V805 — restaurar acciones secundarias del acceso Fantasy.
+   Mantiene visibles "Iniciaré sesión después" y "Prueba como invitado"
+   debajo del botón principal en ambas pantallas. */
+html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-actions,
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-actions{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  flex:0 0 auto!important;
+  overflow:visible!important;
+  position:relative!important;
+  z-index:30!important;
+}
+html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-later,
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-later{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:auto!important;
+  min-width:220px!important;
+  max-width:88%!important;
+  min-height:42px!important;
+  height:auto!important;
+  margin-top:18px!important;
+  padding:8px 18px!important;
+  border:0!important;
+  background:transparent!important;
+  color:#20e4ef!important;
+  font:600 clamp(15px,3.2vw,18px)/1.2 Inter,Roboto,Arial,sans-serif!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+}
+html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-login,
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-login{
+  flex:0 0 auto!important;
+}
+@media(max-height:760px){
+  html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-later,
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-later{
+    margin-top:10px!important;
+    min-height:36px!important;
+    padding-top:5px!important;
+    padding-bottom:5px!important;
+  }
+}
