@@ -22,6 +22,7 @@ const V812_ACTIVE_STORE_TEAMS=[
   'Tavera FC','Pachangas FC','San Juan FC','Tapatío','Dep. La Luz','San Julián','Barza','San José Jrs','San Antonio FC','Célticos FC','Dep. Nopalero','Dep. Zapata'
 ];
 window.LJR_V812_ACTIVE_STORE_TEAMS=V812_ACTIVE_STORE_TEAMS.slice();
+window.LJR_V812_IS_ACTIVE_STORE_TEAM=function(name){return V812_ACTIVE_STORE_TEAMS.some(n=>same(n,name))};
 const CAT_LOGOS_V630={
   '3':'./assets/branding/primera-fuerza-hd.png',
   '5':'./assets/categories/intermedia.webp',
@@ -1247,8 +1248,8 @@ function bind(team){
 }
 async function renderStore(team,cat){
  if(route()!=="club-store"||!team)return;
- var active=window.LJR_V812_ACTIVE_STORE_TEAMS;
- if(Array.isArray(active)&&active.length&&!active.some(function(n){return norm(n)===norm(team)})){
+ var activeCheck=window.LJR_V812_IS_ACTIVE_STORE_TEAM;
+ if(typeof activeCheck==="function"&&!activeCheck(team)){
    sessionStorage.removeItem(OPEN_KEY);sessionStorage.removeItem(TEAM_KEY);sessionStorage.removeItem(CAT_KEY);return;
  }
  ensureStyle();await load();var screen=document.querySelector("#screen");if(!screen||route()!=="club-store")return;
