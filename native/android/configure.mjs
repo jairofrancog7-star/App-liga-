@@ -6,7 +6,7 @@ for(const name of ['MainActivity.java','LigaPiPPlugin.java','LigaBiometricPlugin
 const manifest='android/app/src/main/AndroidManifest.xml';
 let xml=fs.readFileSync(manifest,'utf8');
 xml=xml.replace(/<activity\b[^>]*android:name="\.MainActivity"[^>]*>/,tag=>tag.includes('android:supportsPictureInPicture')?tag:tag.replace('<activity','<activity android:supportsPictureInPicture="true" android:resizeableActivity="true"'));
-for(const permission of ['CAMERA','RECORD_AUDIO','MODIFY_AUDIO_SETTINGS','USE_BIOMETRIC','USE_FINGERPRINT','POST_NOTIFICATIONS']){
+for(const permission of ['CAMERA','RECORD_AUDIO','MODIFY_AUDIO_SETTINGS','USE_BIOMETRIC','USE_FINGERPRINT','POST_NOTIFICATIONS','READ_CALENDAR','WRITE_CALENDAR']){
  if(!xml.includes('android.permission.'+permission))xml=xml.replace('</manifest>','    <uses-permission android:name="android.permission.'+permission+'" />\n</manifest>');
 }
 if(!xml.includes('android.speech.RecognitionService'))xml=xml.replace('</manifest>','<queries><intent><action android:name="android.speech.RecognitionService" /></intent></queries></manifest>');
