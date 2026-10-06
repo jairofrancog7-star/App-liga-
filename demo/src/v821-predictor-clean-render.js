@@ -46,7 +46,11 @@ function draw(state){
   const scale=Math.max(outW/sw,outH/sh);
   const dw=sw*scale, dh=sh*scale;
   const dx=(outW-dw)/2;
-  const dy=(outH-dh)/2;
+  // Baja ligeramente el arte para que el borde del estadio llegue
+  // visualmente hasta la línea morada/blanca sobre la barra real.
+  // No cambia la escala: conserva exactamente la misma proporción.
+  const yShift=Math.round(outH*0.012);
+  const dy=(outH-dh)/2+yShift;
   ctx.drawImage(img,sx,sy,sw,sh,dx,dy,dw,dh);
 }
 function mount(){
