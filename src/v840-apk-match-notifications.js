@@ -162,20 +162,22 @@ async function systemNotify(e){
         id:hash(e.id)&0x7fffffff,title,body,
         homeLogo:e.homeLogo||'',awayLogo:e.awayLogo||'',
         imageUrl:e.imageUrl||'',
-        group:'liga-'+norm(e.category).replace(/\s+/g,'-')
+        group:'liga-'+norm(e.category).replace(/\s+/g,'-'),
+        route:String(e.route||'competition')
       });
       return true;
     }catch(_){return false}
   }
   if('Notification'in window&&Notification.permission==='granted'){
     try{
+      const targetRoute=String(e.route||'competition');
       const n=new Notification(title,{
         body,tag:'ljr-'+e.id,renotify:true,
         icon:e.homeLogo||'./icons/icon-192.png',
         badge:'./icons/icon-192.png',
         vibrate:prefs().vibration!==false?[220,100,220]:[]
       });
-      n.onclick=()=>{try{window.focus();location.hash='#/notifications';n.close()}catch(_){}};
+      n.onclick=()=>{try{window.focus();location.hash='#/'+targetRoute.replace(/^#\/?/,'').replace(/^\//,'');n.close()}catch(_){}};
       return true;
     }catch(_){}
   }
@@ -188,6 +190,7 @@ async function sendRichNotification(input={}){
   const imageUrl=String(input.imageUrl||'');
   const iconUrl=String(input.iconUrl||'');
   const group=String(input.group||'liga-noticias');
+  const route=String(input.route||'notifications');
   const id=Number(input.id||hash(title+'|'+body+'|'+imageUrl+'|'+Date.now()))&0x7fffffff;
   if(Capacitor.isNativePlatform()){
     const perm=read(PERM,{});
@@ -196,7 +199,7 @@ async function sendRichNotification(input={}){
       if(!ok)return false;
     }
     try{
-      await NativeNotifications.notifyRich({id,title,body,imageUrl,iconUrl,group});
+      await NativeNotifications.notifyRich({id,title,body,imageUrl,iconUrl,group,route});
       return true;
     }catch(_){return false}
   }
