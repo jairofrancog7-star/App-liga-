@@ -26,3 +26,25 @@ if(!gradleText.includes('androidx.biometric:biometric')){
   gradleText=gradleText.replace(/dependencies\s*\{/,match=>match+'\n    implementation "androidx.biometric:biometric:1.1.0"');
   fs.writeFileSync(gradle,gradleText);
 }
+
+
+/* Keep every generated APK installable as an update and expose the current web build
+   as the Android version name. GitHub Actions supplies a monotonically increasing
+   run number; local builds fall back to a date-based value. */
+const indexPath='index.html';
+let appBuild='liga-juventino';
+try{
+  const html=fs.readFileSync(indexPath,'utf8');
+  const match=html.match(/<meta\s+name=["']app-build["']\s+content=["']([^"']+)["']/i);
+  if(match?.[1])appBuild=match[1].trim();
+}catch(_){}
+const fallbackCode=Number(new Date().toISOString().slice(2,10).replace(/-/g,''))||1;
+const requestedCode=Number(process.env.LJR_VERSION_CODE||fallbackCode);
+const versionCode=Number.isInteger(requestedCode)&&requestedCode>0?Math.min(requestedCode,2147483647):fallbackCode;
+const versionName=String(process.env.LJR_VERSION_NAME||appBuild||'liga-juventino')
+  .replace(/["\\\r\n]/g,'-')
+  .slice(0,100);
+gradleText=gradleText
+  .replace(/\bversionCode\s+\d+/, 'versionCode '+versionCode)
+  .replace(/\bversionName\s+["'][^"']*["']/, 'versionName "'+versionName+'"');
+fs.writeFileSync(gradle,gradleText);
