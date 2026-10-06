@@ -87,6 +87,12 @@ const HISTORY_LOGO_PATHS={
   'toros de cuenda':'assets/official-logos/toros-de-cuenda.png'
 };
 
+const HISTORY_FORCE_LOGOS={
+  'manchester':RAW+'assets/official-logos/manchester.png?v=20261006-v873',
+  'la esperanza':RAW+'assets/official-logos/la-esperanza.png?v=20261006-v873',
+  'toros de cuenda':RAW+'assets/official-logos/toros-de-cuenda.png?v=20261006-v873'
+};
+
 function logoUrl(name){
   const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
   const normalizePath=p=>{
@@ -94,11 +100,13 @@ function logoUrl(name){
     if(/^(?:https?:|data:|blob:)/i.test(p))return p;
     return RAW+p.replace(/^\.\//,'').replace(/^\//,'');
   };
+  const key=norm(name);
+  const forced=HISTORY_FORCE_LOGOS[key];
+  if(forced)return forced;
   try{
     const stable=window.LJR_TEAM_LOGOS?.get?.(name)||window.V66_OFFICIAL_DIRECTORY?.logoFor?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name);
     if(stable)return normalizePath(stable);
   }catch(_){}
-  const key=norm(name);
   const fixed=HISTORY_LOGO_PATHS[key];
   if(fixed)return normalizePath(fixed);
   const hit=Object.entries(db?.team_logos||{}).find(([k])=>norm(k)===key)?.[1];
