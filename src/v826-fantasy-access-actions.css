@@ -157,3 +157,21 @@ html body[data-app-route="fantasyAccess"] .v588-side-arrow.next{
   box-shadow:none!important;
   text-shadow:none!important;
 }
+
+
+/* V828 — lower the "Elige tu equipo" text block so it no longer touches the cards. */
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy{
+  transform:translateY(24px)!important;
+}
+
+@media(max-height:820px){
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy{
+    transform:translateY(18px)!important;
+  }
+}
+
+@media(max-height:700px){
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy{
+    transform:translateY(12px)!important;
+  }
+}
