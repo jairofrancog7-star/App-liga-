@@ -5,7 +5,7 @@
 if(window.__LJR_V194_SCORERS__)return;
 window.__LJR_V194_SCORERS__=true;
 window.__LJR_SCORERS_UI_OWNER__='v194-reference';
-window.__LJR_SCORERS_BUILD__='v601-clean-feature-cards';
+window.__LJR_SCORERS_BUILD__='v600-single-player-avatar-team-fallback';
 
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_FALLBACK={
@@ -110,13 +110,7 @@ function playerAvatar(name,team,id=catId(),cls='v576-player-avatar v576-scorer-a
 }
 function heroPlayerPhoto(name,team,id=catId()){
   const src=playerPhoto(name,team,id);
-  if(!src)return '';
-  const teamLogo=exactLogo(team);
-  const clean=v=>String(v||'').trim().replace(/[?#].*$/,'').replace(/^https?:\/\/raw\.githubusercontent\.com\//i,'').replace(/^https?:\/\/github\.com\//i,'').toLowerCase();
-  /* Si el registro del jugador trae por error el mismo archivo que el escudo,
-     no lo usamos como foto gigante del jugador. El escudo ya aparece abajo. */
-  if(teamLogo&&clean(src)===clean(teamLogo))return '';
-  return '<img class="v576-scorer-hero-photo" src="'+esc(src)+'" alt="'+esc(name)+'" loading="eager" decoding="async" referrerpolicy="no-referrer">';
+  return src?'<img class="v576-scorer-hero-photo" src="'+esc(src)+'" alt="'+esc(name)+'" loading="eager" decoding="async" referrerpolicy="no-referrer">':'';
 }
 function scorerRows(id=catId()){
   const cid=String(id);
@@ -262,29 +256,32 @@ function teamTable(){
 }
 function heroScorerCard(r,slot){
   if(!r)return '';
-  return '<article class="v391-feature v847-legacy-feature rank-'+slot+'">'+
-    '<div class="v391-feature-photo v847-legacy-photo">'+
-      '<span class="v391-feature-kicker">#'+esc(String(r.rank||slot))+' Máximo goleador</span>'+
+  const shownRank=String(r.rank||slot);
+  const hasPlayerPhoto=!!playerPhoto(r.player,r.team,catId());
+  return '<article class="v391-feature rank-'+slot+'">'+
+    '<div class="v391-feature-photo">'+heroPlayerPhoto(r.player,r.team,catId())+
+      '<span class="v391-feature-kicker">#'+esc(shownRank)+' Máximo goleador</span>'+
       '<span class="v391-feature-media"><small>00:'+(slot===1?'38':'36')+'</small><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 7.5 17 12l-8 4.5z"/></svg></i></span>'+
+      '<span class="v391-feature-watermark">'+logoHtml(r.team,'v391-watermark-logo')+'</span>'+
     '</div>'+
-    '<div class="v391-feature-info v847-legacy-info">'+
-      '<div class="v391-feature-person v847-legacy-person" data-v194-player="'+esc(r.player)+'" data-v194-team="'+esc(r.team)+'">'+
-        logoHtml(r.team,'v391-feature-logo v847-feature-logo')+
-        '<span><b>'+esc(r.team)+'</b><strong>'+esc(r.player)+'</strong></span>'+
+    '<div class="v391-feature-info">'+
+      '<div class="v391-feature-person v576-with-photo" data-v194-player="'+esc(r.player)+'" data-v194-team="'+esc(r.team)+'">'+
+        playerAvatar(r.player,r.team,catId(),'v576-player-avatar')+
+        '<span><strong>'+esc(r.player)+'</strong><b>'+(hasPlayerPhoto?logoHtml(r.team,'v391-feature-logo'):'')+esc(r.team)+'</b></span>'+
       '</div>'+
-      '<span class="v391-feature-goals v847-legacy-goals"><b>'+r.goals+'</b><small>goles</small></span>'+
+      '<span class="v391-feature-goals"><b>'+r.goals+'</b><small>goles</small></span>'+
     '</div>'+
   '</article>';
 }
 function scorerListRows(rows){
-  return '<div class="v391-ranking v847-legacy-ranking">'+rows.map((r,i)=>{
+  return '<div class="v391-ranking">'+rows.map((r,i)=>{
     const pos=String(r.rank||i+3);
-    return '<button type="button" class="v391-rank-row v847-legacy-row" data-v194-player="'+esc(r.player)+'" data-v194-team="'+esc(r.team)+'">'+
+    return '<div class="v391-rank-row v576-with-photo" data-v194-player="'+esc(r.player)+'" data-v194-team="'+esc(r.team)+'">'+
       '<span class="v391-rank-pos">#'+esc(pos)+'</span>'+
-      logoHtml(r.team,'v391-rank-logo v847-row-logo')+
-      '<span class="v391-rank-copy"><b>'+esc(r.team)+'</b><small>'+esc(r.player)+'</small></span>'+
+      playerAvatar(r.player,r.team,catId())+
+      '<span class="v391-rank-copy"><b>'+esc(r.player)+'</b><small>'+logoHtml(r.team,'v391-rank-logo')+esc(r.team)+'</small></span>'+
       '<strong>'+r.goals+'</strong>'+
-    '</button>';
+    '</div>';
   }).join('')+'</div>';
 }
 function lowerStat(){
@@ -340,14 +337,11 @@ function categoryStrip(){
   '</section>';
 }
 function categoryBody(){
-  const id=catId(),rows=scorerRows(id),stat=lowerStat();
-  const lower=stat==='goals'
-    ?(rows.length>2?scorerListRows(rows.slice(2)):'')
-    :'<div class="v391-empty"><b>'+(stat==='shots'?'Remates':'Pases')+'</b><span>Esta estadística individual todavía no está publicada en los datos oficiales.</span></div>';
+  const id=catId(),rows=scorerRows(id);
   return '<div class="v391-category-body" data-v391-category-body data-v391-category="'+esc(id)+'">'+
     '<div class="v391-category-title"><small>'+esc(catName(id))+'</small><span>'+rows.length+' goleador'+(rows.length===1?'':'es')+' publicado'+(rows.length===1?'':'s')+'</span></div>'+
     (rows.length
-      ?heroScorerCard(rows[0],1)+heroScorerCard(rows[1],2)+lower
+      ?heroScorerCard(rows[0],1)+heroScorerCard(rows[1],2)+lowerRanking(rows)
       :'<div class="v391-empty">Todavía no hay goleadores oficiales publicados para '+esc(catName(id))+'.</div>')+
   '</div>';
 }
@@ -372,7 +366,6 @@ function referenceScorersView(){
 function markup(){
   const source=db()?.captured_at_utc||'';
   return '<div class="v194-scorers" data-v194-scorers>'+
-    '<header class="v775-scorers-head"><button type="button" data-route="more" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button><h1>Máximo goleador</h1><button type="button" data-route="profile" aria-label="Mi cuenta"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="8" r="3"/><path d="M5.5 18.5c1-3 3.3-4.5 6.5-4.5s5.5 1.5 6.5 4.5"/></svg></button></header>'+
     referenceScorersView()+
     '<p class="v194-source">Datos oficiales sincronizados'+(source?' · '+esc(new Date(source).toLocaleString('es-MX')):'')+'</p>'+
   '</div>';
@@ -524,14 +517,6 @@ function delegatedClick(e){
     if(row){e.preventDefault();window.LJR_PLAYER_PROFILE_API?.open({name:row.player,team:row.team,cat:catId()})}
   }
 }
-// A player card owns its click before legacy team-logo listeners see it.
-window.addEventListener('click',e=>{
- if(route()!=='scorers')return;
- const control=e.target.closest?.('[data-v194-player]');if(!control)return;
- const row=scorerRows().find(r=>norm(r.player)===norm(control.dataset.v194Player));
- if(!row)return;e.preventDefault();e.stopImmediatePropagation();
- window.LJR_PLAYER_PROFILE_API?.open({name:row.player,team:row.team,cat:catId()});
-},true);
 function delegatedChange(e){
   if(route()!=='scorers'||!(e.target instanceof Element))return;
   if(!e.target.matches('[data-v194-team]'))return;
@@ -609,12 +594,7 @@ window.addEventListener('ljr:official-data',()=>{
 document.addEventListener('visibilitychange',()=>{
   if(!document.hidden&&route()==='scorers')waitForOfficialData(true);
 });
-/* Recover only when another route renderer replaces our owned view.
-   Mutations inside the owned view do not trigger a repaint. */
-const routeScreen=document.querySelector('#screen');
-if(routeScreen)new MutationObserver(()=>{
- if(route()==='scorers'&&!rendering&&!routeScreen.querySelector('[data-v194-scorers]'))schedule(60);
-}).observe(routeScreen,{childList:true,subtree:true});
+/* No subtree MutationObserver: it caused self-triggered repaint cycles. */
 if(document.readyState==='loading'){
   document.addEventListener('DOMContentLoaded',()=>{waitForOfficialData(true);refreshCanonicalScorers()},{once:true});
 }else{
