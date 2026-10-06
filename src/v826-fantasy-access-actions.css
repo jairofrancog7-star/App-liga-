@@ -132,3 +132,28 @@ html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy{
     margin-bottom:4px!important;
   }
 }
+
+/* V827 — remove decorative side lines/arcs around the Fantasy arrows.
+   Keep only the white previous/next chevrons. */
+html body[data-app-route="fantasyAccess"] .v23-fantasy-access::after,
+html body[data-app-route="fantasyAccess"] .v23-fantasy-access::before,
+html body[data-app-route="fantasyAccess"] .v588-access-viewport::after,
+html body[data-app-route="fantasyAccess"] .v588-access-viewport::before,
+html body[data-app-route="fantasyAccess"] .v588-access-slide::after,
+html body[data-app-route="fantasyAccess"] .v588-access-slide::before{
+  content:none!important;
+  display:none!important;
+  border:0!important;
+  background:none!important;
+  box-shadow:none!important;
+}
+
+html body[data-app-route="fantasyAccess"] .v588-side-arrow,
+html body[data-app-route="fantasyAccess"] .v588-side-arrow.prev,
+html body[data-app-route="fantasyAccess"] .v588-side-arrow.next{
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  text-shadow:none!important;
+}
