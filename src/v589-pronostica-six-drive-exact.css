@@ -121,7 +121,19 @@
   .v589-intro-copy{align-self:end;padding:0 34px 14px;text-align:center}
   .v589-intro-copy h2{margin:0;font-size:16px;line-height:1.08;font-weight:900}
   .v589-intro-copy p{max-width:370px;margin:12px auto 0;color:#fff;font-size:12px;line-height:1.35}
-  .v589-dots{display:flex;justify-content:center;gap:6px;margin-top:20px}
+  /* V823 — bajar los 4 puntos de paginación hasta la parte inferior,
+     justo arriba de los botones, sin mover el texto ni los 6 cuadros. */
+  .v589-dots{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:138px;
+    z-index:8;
+    display:flex;
+    justify-content:center;
+    gap:7px;
+    margin:0;
+  }
   .v589-dots i{width:5px;height:5px;border-radius:50%;background:#7280b9}
   .v589-dots i.active{background:#fff}
   .v589-intro-actions{padding:0 30px 18px;display:grid;gap:8px}
