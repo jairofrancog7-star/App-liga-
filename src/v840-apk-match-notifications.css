@@ -1,0 +1,47 @@
+/* V840 — Match notification feed with both team logos, adapted to the blue app. */
+body[data-app-route="notifications"] .v840-match-feed{
+  margin:14px 0 18px!important;
+  padding:15px!important;
+  border:1px solid rgba(74,218,255,.28)!important;
+  border-radius:18px!important;
+  background:linear-gradient(180deg,rgba(12,59,165,.62),rgba(5,18,91,.76))!important;
+  box-shadow:0 14px 32px rgba(0,8,60,.20)!important;
+  color:#fff!important;
+}
+.v840-feed-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center}
+.v840-feed-head small{display:block;color:#45e8f1;font:800 11px/1.1 Inter,Roboto,Arial,sans-serif;letter-spacing:.12em}
+.v840-feed-head h3{margin:3px 0 4px;font:800 21px/1.05 Inter,Roboto,Arial,sans-serif}
+.v840-feed-head p{margin:0;color:#b9c9ee;font:500 12px/1.3 Inter,Roboto,Arial,sans-serif}
+.v840-feed-head button{
+  min-height:39px;padding:0 12px;border:1px solid #2ee3ef;border-radius:999px;
+  background:rgba(10,54,145,.72);color:#38e9f1;font:800 11px/1 Inter,Roboto,Arial,sans-serif;
+}
+.v840-feed-head button.on{background:#17d8e7;color:#05215f}
+.v840-feed-list{margin-top:13px;display:grid;gap:5px}
+.v840-notice-row{
+  width:100%;min-height:76px;display:grid;grid-template-columns:56px minmax(0,1fr) 18px;gap:10px;align-items:center;
+  padding:8px 6px;border:0;border-top:1px solid rgba(142,184,255,.14);background:transparent;color:#fff;text-align:left;
+}
+.v840-logos{position:relative;width:54px;height:48px;display:block}
+.v840-logos img,.v840-logo-fallback{
+  position:absolute;top:5px;width:36px;height:36px;object-fit:contain;border-radius:50%;
+  background:#fff;padding:3px;box-sizing:border-box;box-shadow:0 2px 8px rgba(0,0,0,.30)
+}
+.v840-logos img:first-child,.v840-logo-fallback:first-child{left:0;z-index:2}
+.v840-logos img:nth-child(2),.v840-logo-fallback:nth-child(2){right:0;z-index:1}
+.v840-logo-fallback{display:grid;place-items:center;color:#08307d;font-size:17px}
+.v840-notice-copy{min-width:0;display:block}
+.v840-notice-copy>span{display:flex;align-items:center;gap:7px}
+.v840-notice-copy b{font:800 13px/1.1 Inter,Roboto,Arial,sans-serif}
+.v840-notice-copy small{color:#9fb2de;font:500 11px/1 Inter,Roboto,Arial,sans-serif}
+.v840-notice-copy strong{display:block;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font:750 14px/1.12 Inter,Roboto,Arial,sans-serif}
+.v840-notice-copy em{display:block;margin-top:4px;color:#b6c5e8;font:500 11px/1.15 Inter,Roboto,Arial,sans-serif;font-style:normal}
+.v840-notice-row>i{color:#57e9f2;font:700 24px/1 Arial;font-style:normal}
+.v840-empty{padding:16px 4px;color:#aebfe7;font:500 13px/1.4 Inter,Roboto,Arial,sans-serif}
+@media(max-width:420px){
+  .v840-match-feed{margin:12px 0 16px!important;padding:12px!important}
+  .v840-feed-head{grid-template-columns:1fr}
+  .v840-feed-head button{width:max-content;max-width:100%}
+  .v840-notice-row{grid-template-columns:52px minmax(0,1fr) 14px;gap:8px}
+  .v840-notice-copy strong{font-size:13px}
+}
