@@ -263,17 +263,16 @@ function teamTable(){
 function heroScorerCard(r,slot){
   if(!r)return '';
   const shownRank=String(r.rank||slot);
-  const hasPlayerPhoto=!!playerPhoto(r.player,r.team,catId());
   return '<article class="v391-feature rank-'+slot+'">'+
-    '<div class="v391-feature-photo">'+heroPlayerPhoto(r.player,r.team,catId())+
+    '<div class="v391-feature-photo">'+
       '<span class="v391-feature-kicker">#'+esc(shownRank)+' Máximo goleador</span>'+
       '<span class="v391-feature-media"><small>00:'+(slot===1?'38':'36')+'</small><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 7.5 17 12l-8 4.5z"/></svg></i></span>'+
       '<span class="v391-feature-watermark">'+logoHtml(r.team,'v391-watermark-logo')+'</span>'+
     '</div>'+
     '<div class="v391-feature-info">'+
-      '<div class="v391-feature-person v576-with-photo" data-v194-player="'+esc(r.player)+'" data-v194-team="'+esc(r.team)+'">'+
-        playerAvatar(r.player,r.team,catId(),'v576-player-avatar')+
-        '<span><strong>'+esc(r.player)+'</strong><b>'+(hasPlayerPhoto?logoHtml(r.team,'v391-feature-logo'):'')+esc(r.team)+'</b></span>'+
+      '<div class="v391-feature-person" data-v194-player="'+esc(r.player)+'" data-v194-team="'+esc(r.team)+'">'+
+        logoHtml(r.team,'v391-feature-logo')+
+        '<span><strong>'+esc(r.player)+'</strong><b>'+esc(r.team)+'</b></span>'+
       '</div>'+
       '<span class="v391-feature-goals"><b>'+r.goals+'</b><small>goles</small></span>'+
     '</div>'+
@@ -282,10 +281,10 @@ function heroScorerCard(r,slot){
 function scorerListRows(rows){
   return '<div class="v391-ranking">'+rows.map((r,i)=>{
     const pos=String(r.rank||i+3);
-    return '<div class="v391-rank-row v576-with-photo" data-v194-player="'+esc(r.player)+'" data-v194-team="'+esc(r.team)+'">'+
+    return '<div class="v391-rank-row" data-v194-player="'+esc(r.player)+'" data-v194-team="'+esc(r.team)+'">'+
       '<span class="v391-rank-pos">#'+esc(pos)+'</span>'+
-      playerAvatar(r.player,r.team,catId())+
-      '<span class="v391-rank-copy"><b>'+esc(r.player)+'</b><small>'+logoHtml(r.team,'v391-rank-logo')+esc(r.team)+'</small></span>'+
+      logoHtml(r.team,'v391-rank-logo')+
+      '<span class="v391-rank-copy"><b>'+esc(r.player)+'</b><small>'+esc(r.team)+'</small></span>'+
       '<strong>'+r.goals+'</strong>'+
     '</div>';
   }).join('')+'</div>';
