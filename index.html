@@ -1438,5 +1438,104 @@ body[data-app-route="home"] .v446-relevant-team .crest *{
   <script defer src="./src/v803-css3d-animated-lineup.js?v=20261005-v804-fast-complete-field"></script>
   <script defer src="./src/v820-fantasy-lineup-hardlock.js?v=20261006-v837-solid-silhouettes"></script>
   <script defer src="./src/v821-predictor-clean-render.js?v=20261005-v822-pronostica-lower-align"></script>
+<script id="v828HomeLogoRuntimeContain">
+(function(){
+'use strict';
+if(window.__LJR_V828_HOME_LOGO_CONTAIN__)return;
+window.__LJR_V828_HOME_LOGO_CONTAIN__=true;
+
+function important(el,prop,val){
+  if(!el)return;
+  try{el.style.setProperty(prop,val,'important')}catch(_){}
+}
+function fitCircle(circle,pct){
+  if(!circle)return;
+  important(circle,'position','relative');
+  important(circle,'display','grid');
+  important(circle,'place-items','center');
+  important(circle,'overflow','hidden');
+  important(circle,'border-radius','50%');
+  important(circle,'clip-path','circle(50% at 50% 50%)');
+  important(circle,'background','#fff');
+  important(circle,'box-sizing','border-box');
+  important(circle,'transform','none');
+
+  const crest=circle.querySelector('.crest')||circle;
+  important(crest,'position','absolute');
+  important(crest,'inset','0');
+  important(crest,'width','100%');
+  important(crest,'height','100%');
+  important(crest,'max-width','100%');
+  important(crest,'max-height','100%');
+  important(crest,'display','grid');
+  important(crest,'place-items','center');
+  important(crest,'overflow','hidden');
+  important(crest,'border-radius','50%');
+  important(crest,'clip-path','circle(50% at 50% 50%)');
+  important(crest,'transform','none');
+  important(crest,'background','transparent');
+
+  const img=crest.querySelector('img')||circle.querySelector('img');
+  if(!img)return;
+  important(img,'position','absolute');
+  important(img,'left','50%');
+  important(img,'top','50%');
+  important(img,'right','auto');
+  important(img,'bottom','auto');
+  important(img,'width',pct+'%');
+  important(img,'height',pct+'%');
+  important(img,'min-width','0');
+  important(img,'min-height','0');
+  important(img,'max-width',pct+'%');
+  important(img,'max-height',pct+'%');
+  important(img,'margin','0');
+  important(img,'padding','0');
+  important(img,'object-fit','contain');
+  important(img,'object-position','50% 50%');
+  important(img,'border','0');
+  important(img,'border-radius','0');
+  important(img,'clip-path','none');
+  important(img,'background','transparent');
+  important(img,'transform','translate(-50%,-50%)');
+  important(img,'transform-origin','50% 50%');
+  important(img,'filter','none');
+}
+function apply(){
+  const route=(document.body?.dataset?.appRoute||String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home');
+  if(route!=='home')return;
+
+  document.querySelectorAll('.v446-home-club-logo').forEach(el=>{
+    important(el,'width','56px');
+    important(el,'height','56px');
+    important(el,'min-width','56px');
+    important(el,'min-height','56px');
+    important(el,'max-width','56px');
+    important(el,'max-height','56px');
+    fitCircle(el,60);
+  });
+
+  document.querySelectorAll('.v446-relevant-team .crest').forEach(el=>{
+    important(el,'width','34px');
+    important(el,'height','34px');
+    important(el,'min-width','34px');
+    important(el,'min-height','34px');
+    important(el,'max-width','34px');
+    important(el,'max-height','34px');
+    fitCircle(el,60);
+  });
+}
+let raf=0;
+function schedule(){
+  cancelAnimationFrame(raf);
+  raf=requestAnimationFrame(()=>requestAnimationFrame(apply));
+}
+new MutationObserver(schedule).observe(document.documentElement,{childList:true,subtree:true});
+window.addEventListener('hashchange',()=>setTimeout(schedule,20));
+document.addEventListener('DOMContentLoaded',schedule,{once:true});
+schedule();
+setTimeout(schedule,250);
+setTimeout(schedule,900);
+})();
+</script>
 </body>
 </html>
