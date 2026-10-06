@@ -68,8 +68,7 @@ async function removeSourceBadge(src,meta){
       const fromY=Math.max(0,Math.min(h-rh,sy+Math.round(rh*1.15)));
       x.save();
       x.beginPath();
-      const r=Math.max(2,Math.round(Math.min(rw,rh)*.24));
-      x.roundRect(sx,sy,rw,rh,r);
+      x.rect(sx,sy,rw,rh);
       x.clip();
       x.drawImage(c,sx,fromY,rw,rh,sx,sy,rw,rh);
       x.restore();
