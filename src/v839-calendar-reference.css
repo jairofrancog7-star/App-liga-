@@ -385,7 +385,7 @@ html body.v839-reference-calendar #screen > .v839-reference-page[data-view="play
 #screen .v839-reference-page .v839-picker-player small {display: block; font: 400 calc(12 * var(--u))/1.2 Roboto,Arial,sans-serif;}
 #screen .v839-reference-page .v839-picker-number {font-size: calc(14 * var(--u));}
 html body.v839-picker-open {overflow: hidden !important;}
-html body.v839-picker-open #app nav.bottom-nav {visibility: hidden !important;}
+html body.v839-reference-calendar.v839-picker-open #app nav.bottom-nav {visibility: hidden !important;}
 #screen .v839-reference-page .v415-filter-sheet {width: min(100vw,390px) !important; left: 50% !important; transform: translateX(-50%) !important; background: #111226 !important;}
 #screen .v839-reference-page .v415-team-picker-wrap {display: grid !important; grid-template-columns: 1fr !important; gap: 8px !important; margin: 12px 0 20px !important;}
 #screen .v839-reference-page .v415-team-picker-wrap select {width: 100% !important; padding: 12px !important; border: 1px solid #526eb5 !important; border-radius: 9px !important; background: #122951 !important; color: white !important;}
