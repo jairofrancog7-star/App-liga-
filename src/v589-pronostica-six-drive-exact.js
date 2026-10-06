@@ -88,14 +88,15 @@ function top(title,big=false){
 }
 function bottomSwitch(active){
   const predictionsIcon='<svg viewBox="0 0 32 32" aria-hidden="true">'+
-    '<path d="M7.5 5.5h17a2.5 2.5 0 0 1 2.5 2.5v16a2.5 2.5 0 0 1-2.5 2.5h-17A2.5 2.5 0 0 1 5 24V8a2.5 2.5 0 0 1 2.5-2.5Z"/>'+
-    '<path d="M10 21l4-4 3 2 5-6"/><path d="M21 13h3v3"/>'+
-    '<circle cx="11" cy="11" r="1.6"/>'+
+    '<rect x="5.5" y="6.5" width="21" height="19" rx="4"/>'+
+    '<path d="M10 20.5l4.2-4.2 3.2 2.6 4.8-6.1"/>'+
+    '<circle cx="10.2" cy="11.2" r="1.4"/>'+
   '</svg>';
   const leaguesIcon='<svg viewBox="0 0 32 32" aria-hidden="true">'+
-    '<path d="M11 6h10v5.5c0 4-2.2 6.5-5 7.5-2.8-1-5-3.5-5-7.5V6Z"/>'+
-    '<path d="M11 8H7.5v2.5c0 3 1.7 4.8 4.4 5.2M21 8h3.5v2.5c0 3-1.7 4.8-4.4 5.2"/>'+
-    '<path d="M16 19v4M12 26h8M13.5 23h5"/>'+
+    '<circle cx="12" cy="11" r="4"/>'+
+    '<circle cx="21.3" cy="12.2" r="3.3"/>'+
+    '<path d="M5.8 25c.7-5.2 3-7.8 6.2-7.8s5.5 2.6 6.2 7.8"/>'+
+    '<path d="M17.6 19.2c1-.9 2.2-1.4 3.7-1.4 2.8 0 4.7 2.1 5.2 6.2"/>'+
   '</svg>';
   return '<nav class="v589-switch" aria-label="Pronostica Seis">'+
     '<button type="button" data-v589-view="predictions" class="'+(active==='predictions'?'active':'')+'"><span class="v840-tab-icon">'+predictionsIcon+'</span><b>Pronósticos</b></button>'+
@@ -171,9 +172,14 @@ function predictions(){
   '</section>';
 }
 function leagues(){
+  const peopleIcon='<svg viewBox="0 0 72 72" aria-hidden="true">'+
+    '<circle cx="27" cy="23" r="10"/><circle cx="47" cy="26" r="8"/>'+
+    '<path d="M11 58c1.6-13 7.2-19 16-19s14.4 6 16 19"/>'+
+    '<path d="M40 42c2.1-2 4.8-3 7.8-3 7.1 0 11.6 5 12.9 16"/>'+
+  '</svg>';
   return '<section class="v589-page leagues" data-v589-root>'+top('Ligas',true)+
     bottomSwitch('leagues')+sponsor()+
-    '<main class="v589-league-empty"><div class="v589-people">♙♙</div><h2>Reta a tus amigos</h2><p>¿Quién tiene la mejor capacidad para pronosticar? ¡Inicia sesión y crea una liga para averiguarlo!</p>'+
+    '<main class="v589-league-empty"><div class="v589-people">'+peopleIcon+'</div><h2>Reta a tus amigos</h2><p>¿Quién tiene la mejor capacidad para pronosticar? ¡Inicia sesión y crea una liga para averiguarlo!</p>'+
     '<button type="button" class="v589-primary" data-v589-login>Inicia sesión ahora</button></main>'+
     (ui.menu?menuHtml():'')+
   '</section>';
