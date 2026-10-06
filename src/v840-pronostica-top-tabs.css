@@ -1,0 +1,271 @@
+/* V840 — Pronostica Seis: selector arriba, sin cuadros flotando sobre partidos.
+   También coloca el menú de tres puntos en la esquina superior derecha y moderniza iconos. */
+
+body[data-app-route="predictorSix"] .v589-page.predictions,
+body[data-app-route="predictorSix"] .v589-page.leagues{
+  padding-bottom:72px!important;
+  overflow-x:hidden!important;
+}
+
+/* Barra superior real: visible, compacta y con menú a la derecha. */
+body[data-app-route="predictorSix"] .v589-page.predictions .v589-top,
+body[data-app-route="predictorSix"] .v589-page.leagues .v589-top{
+  position:sticky!important;
+  top:0!important;
+  z-index:120!important;
+  height:76px!important;
+  min-height:76px!important;
+  max-height:76px!important;
+  padding:0 14px!important;
+  padding-bottom:0!important;
+  align-items:center!important;
+  grid-template-columns:46px minmax(0,1fr) 46px!important;
+  background:
+    radial-gradient(180px 88px at 16% 0%,rgba(36,226,255,.34),transparent 62%),
+    linear-gradient(180deg,#0a29df 0%,#07157f 100%)!important;
+  border-bottom:1px solid rgba(91,222,255,.24)!important;
+  box-shadow:0 5px 18px rgba(0,0,54,.20)!important;
+  overflow:hidden!important;
+}
+body[data-app-route="predictorSix"] .v589-page.predictions .v589-top.big h1,
+body[data-app-route="predictorSix"] .v589-page.leagues .v589-top.big h1{
+  font-size:22px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  align-self:center!important;
+  justify-self:start!important;
+}
+body[data-app-route="predictorSix"] .v589-page.predictions .v589-back,
+body[data-app-route="predictorSix"] .v589-page.predictions .v589-more,
+body[data-app-route="predictorSix"] .v589-page.leagues .v589-back,
+body[data-app-route="predictorSix"] .v589-page.leagues .v589-more{
+  width:40px!important;
+  height:40px!important;
+  min-width:40px!important;
+  min-height:40px!important;
+  display:grid!important;
+  place-items:center!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  border-radius:12px!important;
+  color:#fff!important;
+}
+body[data-app-route="predictorSix"] .v589-page.predictions .v589-back svg,
+body[data-app-route="predictorSix"] .v589-page.predictions .v589-more svg,
+body[data-app-route="predictorSix"] .v589-page.leagues .v589-back svg,
+body[data-app-route="predictorSix"] .v589-page.leagues .v589-more svg{
+  width:25px!important;
+  height:25px!important;
+  display:block!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:2.1!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+body[data-app-route="predictorSix"] .v589-page.predictions .v589-more,
+body[data-app-route="predictorSix"] .v589-page.leagues .v589-more{
+  justify-self:end!important;
+  background:rgba(16,31,116,.42)!important;
+  border:1px solid rgba(124,183,255,.24)!important;
+}
+body[data-app-route="predictorSix"] .v589-page.predictions .v589-more svg circle,
+body[data-app-route="predictorSix"] .v589-page.leagues .v589-more svg circle{
+  fill:currentColor!important;
+  stroke:none!important;
+}
+
+/* Sponsor debajo de la barra, sin mezclar los tres puntos con el logo. */
+body[data-app-route="predictorSix"] .v589-page.predictions .v589-sponsor,
+body[data-app-route="predictorSix"] .v589-page.leagues .v589-sponsor{
+  position:relative!important;
+  z-index:10!important;
+  height:58px!important;
+  min-height:58px!important;
+  justify-content:center!important;
+  background:#1d478f!important;
+}
+
+/* Pronósticos / Ligas deja de ser flotante. Va arriba del contenido. */
+body[data-app-route="predictorSix"] .v589-page.predictions .v589-switch,
+body[data-app-route="predictorSix"] .v589-page.leagues .v589-switch{
+  position:relative!important;
+  z-index:12!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  transform:none!important;
+  width:calc(100% - 28px)!important;
+  max-width:460px!important;
+  height:68px!important;
+  margin:12px auto 10px!important;
+  padding:5px!important;
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:5px!important;
+  border:1px solid rgba(99,132,235,.38)!important;
+  border-radius:18px!important;
+  background:
+    linear-gradient(180deg,rgba(41,42,132,.96),rgba(29,28,108,.98))!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 10px 26px rgba(0,0,52,.22)!important;
+}
+body[data-app-route="predictorSix"] .v589-switch button{
+  position:relative!important;
+  box-sizing:border-box!important;
+  width:100%!important;
+  height:56px!important;
+  min-height:56px!important;
+  max-height:56px!important;
+  margin:0!important;
+  padding:0 12px!important;
+  border:1px solid transparent!important;
+  border-radius:14px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:9px!important;
+  color:#eef3ff!important;
+  background:transparent!important;
+  font-size:13px!important;
+  font-weight:850!important;
+  transition:background .16s ease,border-color .16s ease,transform .16s ease!important;
+}
+body[data-app-route="predictorSix"] .v589-switch button.active{
+  color:#38e7ef!important;
+  border-color:rgba(77,229,241,.26)!important;
+  background:
+    radial-gradient(circle at 24% 0%,rgba(63,221,238,.12),transparent 40%),
+    linear-gradient(180deg,#3a3ca5,#31318d)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 5px 12px rgba(0,0,40,.16)!important;
+}
+body[data-app-route="predictorSix"] .v589-switch button:active{
+  transform:scale(.985)!important;
+}
+body[data-app-route="predictorSix"] .v589-switch .v840-tab-icon{
+  width:30px!important;
+  height:30px!important;
+  display:grid!important;
+  place-items:center!important;
+  flex:0 0 30px!important;
+  color:currentColor!important;
+}
+body[data-app-route="predictorSix"] .v589-switch .v840-tab-icon svg{
+  width:28px!important;
+  height:28px!important;
+  display:block!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:1.8!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+body[data-app-route="predictorSix"] .v589-switch button b{
+  font-size:13px!important;
+  font-weight:850!important;
+  letter-spacing:-.01em!important;
+}
+
+/* Jornada ya no se pega encima del selector. */
+body[data-app-route="predictorSix"] .v589-page.predictions .v589-journeys{
+  position:relative!important;
+  top:auto!important;
+  z-index:8!important;
+  height:58px!important;
+  margin-top:0!important;
+  background:#080664!important;
+}
+body[data-app-route="predictorSix"] .v589-page.predictions .v589-journeys button{
+  height:57px!important;
+}
+
+/* Las tarjetas empiezan debajo de todos los controles, sin nada flotante encima. */
+body[data-app-route="predictorSix"] .v589-page.predictions .v589-list{
+  padding-top:18px!important;
+  padding-bottom:26px!important;
+}
+
+/* Menú de tres puntos: anclado visualmente a la barra superior derecha. */
+body[data-app-route="predictorSix"] .v589-page.predictions .v589-menu-pop,
+body[data-app-route="predictorSix"] .v589-page.leagues .v589-menu-pop{
+  position:fixed!important;
+  z-index:500!important;
+  top:calc(76px + env(safe-area-inset-top,0px))!important;
+  right:max(12px,calc((100vw - 520px)/2 + 12px))!important;
+  width:min(240px,calc(100vw - 28px))!important;
+  padding:7px!important;
+  border:1px solid rgba(105,134,222,.30)!important;
+  border-radius:16px!important;
+  background:linear-gradient(180deg,#191978,#11105e)!important;
+  box-shadow:0 16px 38px rgba(0,0,35,.44)!important;
+}
+body[data-app-route="predictorSix"] .v589-menu-pop button{
+  min-height:46px!important;
+  padding:0 14px!important;
+  border-radius:11px!important;
+  font-size:13px!important;
+}
+body[data-app-route="predictorSix"] .v589-menu-pop button:active{
+  background:#292b94!important;
+}
+
+/* Ligas: usar icono moderno en vez de peones tipográficos. */
+body[data-app-route="predictorSix"] .v589-page.leagues .v589-people{
+  width:78px!important;
+  height:78px!important;
+  margin:0 auto!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  color:transparent!important;
+  letter-spacing:0!important;
+  transform:none!important;
+  border-radius:24px!important;
+  background:
+    radial-gradient(circle at 30% 20%,rgba(62,226,240,.20),transparent 45%),
+    linear-gradient(180deg,#252c9f,#14186e)!important;
+  border:1px solid rgba(92,218,238,.26)!important;
+}
+body[data-app-route="predictorSix"] .v589-page.leagues .v589-people::before{
+  content:""!important;
+  width:42px!important;
+  height:42px!important;
+  display:block!important;
+  background:
+    radial-gradient(circle at 30% 32%,#fff 0 13%,transparent 14%),
+    radial-gradient(circle at 70% 37%,#fff 0 11%,transparent 12%),
+    radial-gradient(ellipse at 30% 83%,transparent 0 30%,#fff 31% 37%,transparent 38%),
+    radial-gradient(ellipse at 70% 82%,transparent 0 27%,#fff 28% 34%,transparent 35%)!important;
+  opacity:.95!important;
+}
+
+@media(max-width:390px){
+  body[data-app-route="predictorSix"] .v589-page.predictions .v589-top,
+  body[data-app-route="predictorSix"] .v589-page.leagues .v589-top{
+    height:72px!important;
+    min-height:72px!important;
+    max-height:72px!important;
+  }
+  body[data-app-route="predictorSix"] .v589-page.predictions .v589-top.big h1,
+  body[data-app-route="predictorSix"] .v589-page.leagues .v589-top.big h1{
+    font-size:20px!important;
+  }
+  body[data-app-route="predictorSix"] .v589-page.predictions .v589-switch,
+  body[data-app-route="predictorSix"] .v589-page.leagues .v589-switch{
+    width:calc(100% - 22px)!important;
+    margin-top:10px!important;
+    margin-bottom:9px!important;
+  }
+  body[data-app-route="predictorSix"] .v589-switch button{
+    gap:7px!important;
+    padding:0 8px!important;
+  }
+  body[data-app-route="predictorSix"] .v589-switch button b{
+    font-size:12px!important;
+  }
+}
