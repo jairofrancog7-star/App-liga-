@@ -2,7 +2,7 @@
    Alpha belongs to the downloaded silhouette. Never infer background from fabric. */
 (function(){
 'use strict';
-const images=new Map(),art=new Map(),pending=new WeakMap();
+const images=new Map(),art=new Map(),complete=new Map(),pending=new WeakMap();
 const assets=()=>window.LJR_JERSEY_ASSETS;
 function image(src){
  if(images.has(src))return images.get(src);
@@ -12,24 +12,24 @@ function image(src){
  });images.set(src,p);return p;
 }
 function normalize(im,item){
- const canvas=document.createElement('canvas');canvas.width=256;canvas.height=288;
+ const canvas=document.createElement('canvas');canvas.width=512;canvas.height=576;
  const ctx=canvas.getContext('2d',{willReadFrequently:true});
  const [left,top,right,bottom]=item.bounds;
- const scale=Math.min(248/(right-left),280/(bottom-top));
- const w=(right-left)*scale,h=(bottom-top)*scale,x=(256-w)/2,y=288-h;
+ const scale=Math.min(496/(right-left),560/(bottom-top));
+ const w=(right-left)*scale,h=(bottom-top)*scale,x=(512-w)/2,y=576-h;
  ctx.drawImage(im,left,top,right-left,bottom-top,x,y,w,h);
  return {canvas,ctx,scale,x,y,left,top};
 }
 function printCrest(surface,logo,item){
  const {canvas,ctx,scale,x,y,left,top}=surface;
  const cx=x+(item.width*item.badgeX-left)*scale,cy=y+(item.height*item.badgeY-top)*scale;
- const bw=84*scale,bh=92*scale,px=Math.round(cx-bw/2),py=Math.round(cy-bh/2),pw=Math.ceil(bw),ph=Math.ceil(bh);
- const data=ctx.getImageData(0,0,256,288),original=new Uint8ClampedArray(data.data);
+ const bw=(item.badgeWidth||84)*scale,bh=(item.badgeHeight||92)*scale,px=Math.round(cx-bw/2),py=Math.round(cy-bh/2),pw=Math.ceil(bw),ph=Math.ceil(bh);
+ const data=ctx.getImageData(0,0,512,576),original=new Uint8ClampedArray(data.data);
  // Interpolate fabric above/below the badge at the same horizontal coordinate.
  // Retain vertical stripes and local lighting, avoiding a darker rectangle.
  for(let dy=0;dy<ph;dy++)for(let dx=0;dx<pw;dx++){
-  const tx=px+dx,ty=py+dy;if(tx<0||tx>=256||ty<0||ty>=288)continue;
-  const i=(ty*256+tx)*4,a=(Math.max(0,py-2)*256+tx)*4,b=(Math.min(287,py+ph+2)*256+tx)*4;
+  const tx=px+dx,ty=py+dy;if(tx<0||tx>=512||ty<0||ty>=576)continue;
+  const i=(ty*512+tx)*4,a=(Math.max(0,py-2)*512+tx)*4,b=(Math.min(575,py+ph+2)*512+tx)*4;
   if(original[i+3]<100||original[a+3]<200||original[b+3]<200)continue;
   const blend=Math.min(1,Math.min(dx,dy,pw-1-dx,ph-1-dy)/4),f=dy/(ph-1);
   for(let c=0;c<3;c++){
@@ -38,13 +38,13 @@ function printCrest(surface,logo,item){
   }
  }
  ctx.putImageData(data,0,0);
- const fabric=ctx.getImageData(0,0,256,288).data;
- const crest=document.createElement('canvas');crest.width=256;crest.height=288;
- const cc=crest.getContext('2d',{willReadFrequently:true}),size=73*scale;
+ const fabric=ctx.getImageData(0,0,512,576).data;
+ const crest=document.createElement('canvas');crest.width=512;crest.height=576;
+ const cc=crest.getContext('2d',{willReadFrequently:true}),size=(item.badgeSize||68)*scale;
  const ratio=Math.min(size/logo.naturalWidth,size/logo.naturalHeight),lw=logo.naturalWidth*ratio,lh=logo.naturalHeight*ratio;
  // Follow the left chest plane, then use the fabric light map inside the raster.
  cc.setTransform(.94,-.045,-.07,1,cx,cy);cc.drawImage(logo,-lw/2,-lh/2,lw,lh);cc.setTransform(1,0,0,1,0,0);
- const stamp=cc.getImageData(0,0,256,288);
+ const stamp=cc.getImageData(0,0,512,576);
  for(let i=0;i<stamp.data.length;i+=4){
   if(!stamp.data[i+3])continue;
   const light=(fabric[i]*.2126+fabric[i+1]*.7152+fabric[i+2]*.0722)/255,shade=.83+.16*light;
@@ -58,8 +58,8 @@ async function kitFor(team){
  if(art.has(item.team))return art.get(item.team);
  const task=(async()=>{
   const [shirt,logo]=await Promise.all([image(item.url),image(item.logo)]);if(!shirt)return null;
-  const surface=normalize(shirt,item),src=logo?printCrest(surface,logo,item):surface.canvas.toDataURL('image/png');
-  return {...item,storeSrc:src,src};
+  const surface=normalize(shirt,item),src=logo&&!item.keepCrest?printCrest(surface,logo,item):surface.canvas.toDataURL('image/png');
+  const finished={...item,storeSrc:src,src};complete.set(item.team,finished);return finished;
  })();art.set(item.team,task);return task;
 }
 function squad(){try{return JSON.parse(localStorage.getItem('v576-fantasy-squad')||'[]')}catch(_){return []}}
@@ -100,10 +100,13 @@ function decorate(){
 let queued=false;
 function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;decorate()})}
 function boot(){
+ document.body.classList.add('v837-jerseys');
+ for(const p of squad())kitFor(p.team).catch(()=>{});
  const screen=document.getElementById('screen');
  if(screen)new MutationObserver(m=>{if(m.some(x=>[...x.addedNodes,...x.removedNodes].some(n=>n.nodeType===1)))schedule()}).observe(screen,{childList:true,subtree:true});
  window.addEventListener('hashchange',schedule);window.addEventListener('ljr:jersey-library-ready',schedule);schedule();
 }
-window.LJR_JERSEY_ART={kitFor,decorate,applyStore,normalize,printCrest};
+window.LJR_JERSEY_ART={kitFor,decorate,applyStore,normalize,printCrest,cached:team=>complete.get(assets()?.teamFor(team)?.name)};
+document.body.classList.add('v837-jerseys');
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
