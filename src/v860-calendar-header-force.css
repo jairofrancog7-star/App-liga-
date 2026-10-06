@@ -72,8 +72,8 @@
       radial-gradient(180px 78px at 71% -10%,rgba(209,255,255,.60) 0%,rgba(27,201,255,.31) 22%,rgba(15,101,247,.20) 48%,transparent 72%),
       linear-gradient(180deg,#0b4bea 0%,#0b35cf 31%,#0a1e9d 66%,#070d6c 100%)!important;
     box-shadow:
-      0 8px 18px rgba(8,49,164,.24),
-      inset 0 -7px 12px rgba(4,8,70,.28)!important;
+      0 7px 18px rgba(8,49,164,.16),
+      inset 0 -10px 18px rgba(5,10,72,.22)!important;
     isolation:isolate!important;
     pointer-events:auto!important;
   }
@@ -177,7 +177,8 @@
     display:none!important;
   }
 
-  /* V861 — transición fina entre la cabecera azul y el fondo oscuro. */
+  /* V862 — borde inferior restaurado con difuminado azul → fondo oscuro.
+     Sin línea blanca/cyan dura: la cabecera se integra con el contenido. */
   html body.v415-calendar-active.v839-reference-calendar
   #screen .v839-reference-page .v415-reference-topbar::before{
     content:""!important;
@@ -185,23 +186,20 @@
     position:absolute!important;
     left:0!important;
     right:0!important;
-    bottom:0!important;
-    height:6px!important;
+    bottom:-1px!important;
+    height:18px!important;
     z-index:4!important;
     pointer-events:none!important;
     background:
-      linear-gradient(90deg,
-        transparent 0%,
-        rgba(65,190,255,.18) 8%,
-        rgba(103,221,255,.72) 28%,
-        rgba(196,247,255,.96) 50%,
-        rgba(103,221,255,.72) 72%,
-        rgba(65,190,255,.18) 92%,
-        transparent 100%)!important;
+      linear-gradient(180deg,
+        rgba(30,126,255,.42) 0%,
+        rgba(20,83,205,.28) 28%,
+        rgba(12,36,124,.18) 52%,
+        rgba(17,18,38,.72) 78%,
+        #111226 100%)!important;
     box-shadow:
-      0 2px 6px rgba(80,210,255,.36),
-      0 7px 14px rgba(20,83,210,.18)!important;
-    opacity:.92!important;
+      0 5px 14px rgba(13,57,162,.20)!important;
+    opacity:1!important;
   }
 
 }
