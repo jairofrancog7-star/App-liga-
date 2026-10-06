@@ -48,15 +48,18 @@ test('a stale photo from a transferred player cannot be used for their new team'
   assert.deepEqual(await registeredTeamPhotos(registry,'2026–2027','Azul','3',[{name:'Jose Perez'}],async()=>({name:'José Pérez',team:'Verde',dataUrl:'wrong'})),{});
 });
 
-test('direct Google Calendar drafts retain every match field and safely encode Android extras', () => {
+test('Android calendar chooser drafts retain every match field and safely encode extras', () => {
   const event=calendarEvent({...game,home:'América; FC',away:'PSV',iso:'2026-10-31',time:'15:30',venue:'Campo 2'});
   assert.equal(googleCalendarDestination(event),event.googleURL);
   const intent=googleCalendarDestination(event,true);
   const extras=Object.fromEntries(intent.split('#Intent;')[1].split(';').filter(part=>part.includes('=')).map(part=>{const i=part.indexOf('=');return [part.slice(0,i),decodeURIComponent(part.slice(i+1))]}));
-  assert.equal(extras.package,'com.google.android.calendar');
+  assert.equal(extras.package,undefined);
   assert.equal(extras.action,'android.intent.action.INSERT');
   assert.equal(extras['S.title'],'América; FC - PSV');
   assert.equal(extras['S.eventLocation'],'Campo 2');
+  assert.match(extras['S.description'],/Primera Fuerza/);
+  assert.match(extras['S.description'],/Jornada 8/);
+  assert.equal(extras['S.eventTimezone'],'America/Mexico_City');
   assert.equal(+extras['l.beginTime'],Date.UTC(2026,9,31,21,30));
   assert.equal(+extras['l.endTime']-+extras['l.beginTime'],7200000);
   assert.equal(extras['B.allDay'],'false');
