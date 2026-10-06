@@ -220,3 +220,195 @@ html body img[alt="HERMANOS"]{
   object-fit:contain!important;
   object-position:center!important;
 }
+
+/* V811_CALENDAR_VIDEO_ALIGNMENT */
+/* Ajuste exacto según el video de referencia:
+   - solamente DOS puntos
+   - puntos separados del aro
+   - escudos más chicos
+   - aro seleccionado perfectamente centrado y circular */
+body.v415-calendar-active .v415-day{
+  position:relative!important;
+  overflow:visible!important;
+}
+
+/* Grupo de escudos más compacto y centrado en cada celda. */
+body.v415-calendar-active .v415-day-logos{
+  position:relative!important;
+  z-index:3!important;
+  width:46px!important;
+  height:46px!important;
+  margin:0 auto!important;
+  overflow:visible!important;
+  transform:none!important;
+}
+
+/* Escudo principal más pequeño, como la referencia. */
+body.v415-calendar-active .v415-day-logos .v415-logo.is-home,
+body.v415-calendar-active .v415-day-logos .v415-logo:first-child{
+  position:absolute!important;
+  left:8px!important;
+  top:7px!important;
+  width:30px!important;
+  height:30px!important;
+  min-width:30px!important;
+  min-height:30px!important;
+  max-width:30px!important;
+  max-height:30px!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+/* Segundo escudo: pequeño y discreto, sin tapar al principal. */
+body.v415-calendar-active .v415-day-logos .v415-logo.is-away,
+body.v415-calendar-active .v415-day-logos .v415-logo.is-second{
+  position:absolute!important;
+  z-index:4!important;
+  left:auto!important;
+  top:auto!important;
+  right:-1px!important;
+  bottom:0!important;
+  width:18px!important;
+  height:18px!important;
+  min-width:18px!important;
+  min-height:18px!important;
+  max-width:18px!important;
+  max-height:18px!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+body.v415-calendar-active .v415-day-logos .v415-logo img{
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  margin:auto!important;
+  padding:0!important;
+  transform:none!important;
+}
+
+/* Un solo aro, cuadrado matemáticamente y centrado respecto a la celda. */
+body.v415-calendar-active .v415-day.selected:before{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  width:52px!important;
+  height:52px!important;
+  min-width:52px!important;
+  min-height:52px!important;
+  max-width:52px!important;
+  max-height:52px!important;
+  aspect-ratio:1 / 1!important;
+  transform:translate(-50%,-50%)!important;
+  box-sizing:border-box!important;
+  border:2.5px solid #4a8cff!important;
+  border-radius:50%!important;
+  background:transparent!important;
+  box-shadow:0 0 0 1px rgba(74,140,255,.10)!important;
+  z-index:1!important;
+}
+
+/* En seleccionado conservar exactamente las mismas proporciones pequeñas. */
+body.v415-calendar-active .v415-day.selected .v415-day-logos{
+  width:46px!important;
+  height:46px!important;
+}
+body.v415-calendar-active .v415-day.selected .v415-day-logos .v415-logo.is-home,
+body.v415-calendar-active .v415-day.selected .v415-day-logos .v415-logo:first-child{
+  left:8px!important;
+  top:7px!important;
+  width:30px!important;
+  height:30px!important;
+}
+body.v415-calendar-active .v415-day.selected .v415-day-logos .v415-logo.is-away,
+body.v415-calendar-active .v415-day.selected .v415-day-logos .v415-logo.is-second{
+  display:grid!important;
+  right:-1px!important;
+  bottom:0!important;
+  width:18px!important;
+  height:18px!important;
+}
+
+/* DOS puntos solamente; centrados y fuera del aro, nunca encima. */
+body.v415-calendar-active .v415-day-dots,
+body.v415-calendar-active .v415-day.selected .v415-day-dots{
+  position:absolute!important;
+  z-index:6!important;
+  left:50%!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:2px!important;
+  transform:translateX(-50%)!important;
+  width:auto!important;
+  height:5px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:5px!important;
+  margin:0!important;
+  padding:0!important;
+  pointer-events:none!important;
+}
+
+/* Si por caché queda un tercer punto heredado, ocultarlo. */
+body.v415-calendar-active .v415-day-dots i:nth-child(n+3){
+  display:none!important;
+}
+body.v415-calendar-active .v415-day-dots i{
+  flex:0 0 4px!important;
+  width:4px!important;
+  height:4px!important;
+  min-width:4px!important;
+  min-height:4px!important;
+  max-width:4px!important;
+  max-height:4px!important;
+  margin:0!important;
+  border-radius:50%!important;
+  background:#59627d!important;
+  box-shadow:none!important;
+}
+body.v415-calendar-active .v415-day-dots i.on{
+  background:#7598ff!important;
+}
+
+/* Deja aire real entre el aro/escudos y los indicadores inferiores. */
+@media (max-width:600px){
+  body.v415-calendar-active .v415-grid{
+    grid-auto-rows:78px!important;
+  }
+  body.v415-calendar-active .v415-day{
+    height:78px!important;
+    padding:5px 1px 8px!important;
+  }
+  body.v415-calendar-active .v415-day.selected:before{
+    top:46%!important;
+    width:50px!important;
+    height:50px!important;
+    min-width:50px!important;
+    min-height:50px!important;
+    max-width:50px!important;
+    max-height:50px!important;
+  }
+  body.v415-calendar-active .v415-day-dots,
+  body.v415-calendar-active .v415-day.selected .v415-day-dots{
+    bottom:1px!important;
+  }
+}
+/* V811_CALENDAR_VIDEO_ALIGNMENT_END */
