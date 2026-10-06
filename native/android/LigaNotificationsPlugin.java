@@ -159,7 +159,7 @@ public class LigaNotificationsPlugin extends Plugin {
             Bitmap largeIcon = downloadBitmap(iconUrl);
             Bitmap bigPicture = downloadBitmap(imageUrl);
 
-            Notification.Builder builder = baseBuilder(id, group)
+            Notification.Builder builder = baseBuilder(id, group, route)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setSubText("Liga Juventino Rosas")
