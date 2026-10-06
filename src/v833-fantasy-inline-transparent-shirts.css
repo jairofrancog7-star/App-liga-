@@ -1,0 +1,71 @@
+/* V833 — hard final transparent shirts. No external matte/background images. */
+html body[data-app-route="fantasyTeam"] .v820-lineup-kit,
+html body.v587-fantasy-team-open .v820-lineup-kit{
+  background:transparent!important;
+  overflow:visible!important;
+}
+html body[data-app-route="fantasyTeam"] .v833-transparent-shirt,
+html body.v587-fantasy-team-open .v833-transparent-shirt{
+  position:absolute!important;
+  z-index:2!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  background:transparent!important;
+  pointer-events:none!important;
+  transform:rotate(var(--v820-tilt,0deg))!important;
+  transform-origin:50% 50%!important;
+}
+html body[data-app-route="fantasyTeam"] .v833-shirt-svg,
+html body.v587-fantasy-team-open .v833-shirt-svg{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  overflow:visible!important;
+  background:transparent!important;
+}
+html body[data-app-route="fantasyTeam"] .v820-lineup-jersey,
+html body[data-app-route="fantasyTeam"] .v827-transparent-shirt,
+html body.v587-fantasy-team-open .v820-lineup-jersey,
+html body.v587-fantasy-team-open .v827-transparent-shirt{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+}
+html body[data-app-route="fantasyTeam"] .v820-source-cover,
+html body[data-app-route="fantasyTeam"] .v821-source-eraser,
+html body.v587-fantasy-team-open .v820-source-cover,
+html body.v587-fantasy-team-open .v821-source-eraser{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+}
+html body[data-app-route="fantasyTeam"] .v821-team-crest,
+html body.v587-fantasy-team-open .v821-team-crest{
+  z-index:8!important;
+  top:27%!important;
+  left:57%!important;
+  width:17px!important;
+  height:17px!important;
+  max-width:17px!important;
+  max-height:17px!important;
+  background:transparent!important;
+}
+html body[data-app-route="fantasyTeam"] .v821-team-crest img,
+html body.v587-fantasy-team-open .v821-team-crest img{
+  width:17px!important;
+  height:17px!important;
+  max-width:17px!important;
+  max-height:17px!important;
+  object-fit:contain!important;
+  background:transparent!important;
+}
+@media(max-width:390px){
+  html body[data-app-route="fantasyTeam"] .v821-team-crest,
+  html body[data-app-route="fantasyTeam"] .v821-team-crest img,
+  html body.v587-fantasy-team-open .v821-team-crest,
+  html body.v587-fantasy-team-open .v821-team-crest img{
+    width:15px!important;height:15px!important;max-width:15px!important;max-height:15px!important;
+  }
+}
