@@ -101,3 +101,38 @@ html body[data-app-route="home"] .v444-result-team:has(img[alt*="Franco"]) .v444
   margin:auto!important;
   object-fit:contain!important;
 }
+
+
+/* V870_HOME_DARK_BLUE_HARDLOCK */
+/* Fondo único de Inicio: mismo azul oscuro de la referencia (#000144).
+   Mantiene intactas las tarjetas, imágenes y banners internos. */
+html body[data-app-route="home"]{
+  --v868-home-bg:#000144!important;
+  --v10-deep:#000144!important;
+  background:#000144!important;
+  background-image:none!important;
+}
+html body[data-app-route="home"] #app,
+html body[data-app-route="home"] .app-shell,
+html body[data-app-route="home"] #screen,
+html body[data-app-route="home"] .screen,
+html body[data-app-route="home"] #safeHomeExtra,
+html body[data-app-route="home"] #v105-bottom[data-v105-route="home"],
+html body[data-app-route="home"] .v6-home-super,
+html body[data-app-route="home"] .v6-section,
+html body[data-app-route="home"] .v73-home-interleaved{
+  background-color:#000144!important;
+  background-image:none!important;
+}
+
+/* Secciones normales transparentes para que no formen franjas de otro azul. */
+html body[data-app-route="home"] #screen > .section:not(.hero),
+html body[data-app-route="home"] .v65-home-table,
+html body[data-app-route="home"] .v65-home-fields,
+html body[data-app-route="home"] .v74-home-scorers,
+html body[data-app-route="home"] .v78-home-calendar,
+html body[data-app-route="home"] .v427-home-feed{
+  background-color:transparent!important;
+  background-image:none!important;
+}
+/* V870_HOME_DARK_BLUE_HARDLOCK_END */
