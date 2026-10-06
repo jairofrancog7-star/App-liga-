@@ -15,12 +15,18 @@ test('Android camera and video capture remain discoverable after repeated config
     for(let i=0;i<2;i++)execFileSync(process.execPath,['native/android/configure.mjs'],{cwd:fixture});
     const xml=fs.readFileSync(path.join(app,'src/main/AndroidManifest.xml'),'utf8');
     for(const action of ['android.media.action.VIDEO_CAPTURE','android.media.action.IMAGE_CAPTURE'])assert.equal(xml.split(action).length-1,1);
-    for(const permission of ['CAMERA','RECORD_AUDIO'])assert.equal(xml.split('android.permission.'+permission).length-1,1);
+    for(const permission of ['CAMERA','RECORD_AUDIO','READ_CALENDAR','WRITE_CALENDAR'])assert.equal(xml.split('android.permission.'+permission).length-1,1);
     assert.equal(xml.split('<queries>').length-1,1);
     assert.match(xml,/<queries>[\s\S]*VIDEO_CAPTURE[\s\S]*<\/queries>/);
     assert.equal(xml.split('vnd.android.cursor.item/event').length-1,1);
     assert.match(xml,/<action android:name="android.intent.action.INSERT" \/><data android:mimeType="vnd.android.cursor.item\/event"/);
     assert.equal(xml.split('<package android:name="com.google.android.calendar"').length-1,1);
-    assert.ok(fs.existsSync(path.join(app,'src/main/java/mx/ligajuventino/app/LigaCalendarPlugin.java')));
+    const calendarPlugin=path.join(app,'src/main/java/mx/ligajuventino/app/LigaCalendarPlugin.java');
+    assert.ok(fs.existsSync(calendarPlugin));
+    const java=fs.readFileSync(calendarPlugin,'utf8');
+    assert.match(java,/READ_CALENDAR/);
+    assert.match(java,/WRITE_CALENDAR/);
+    assert.match(java,/resolver\.insert\(CalendarContract\.Events\.CONTENT_URI/);
+    assert.match(java,/findWritableGoogleCalendar/);
   }finally{fs.rmSync(fixture,{recursive:true,force:true});}
 });
