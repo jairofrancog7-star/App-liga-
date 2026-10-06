@@ -254,7 +254,7 @@ function formHtml(rec){
     '<section class="v853-review">'+
       '<div class="v853-section-head"><span><small>04 · REVISIÓN</small><b>Antes de publicar en la app</b></span></div>'+
       '<p>Envía la vista previa a WhatsApp '+ADMIN_LOCAL+' o compártela en Facebook. Después se habilita la publicación.</p>'+
-      '<label class="v853-review-required"><input type="checkbox" name="reviewRequired" checked> Exigir revisión antes de publicar</label>'+
+      '<div class="v853-review-required v853-review-lock">🔒 La revisión es obligatoria antes de publicar en la app.</div>'+
       '<div class="v853-review-actions"><button type="button" data-v853-whatsapp>🟢 WhatsApp '+ADMIN_LOCAL+'</button><button type="button" data-v853-facebook>🔵 Facebook</button><button type="button" data-v852-preview>🔔 Probar notificación</button></div>'+
       '<div class="v853-review-state" data-v853-review-state>○ Pendiente de revisión</div>'+
     '</section>'+
@@ -274,9 +274,8 @@ function previewFromForm(form){
   '</div>';
 }
 function refreshGate(form){
-  const required=!!form.querySelector('[name="reviewRequired"]')?.checked;
   const btn=form.querySelector('[data-v853-publish]');
-  if(btn)btn.disabled=required&&!studio.reviewed;
+  if(btn)btn.disabled=!studio.reviewed;
   const state=form.querySelector('[data-v853-review-state]');
   if(state){
     state.classList.toggle('ok',studio.reviewed);
@@ -429,8 +428,8 @@ async function saveAdmin(form,rec,status,publish){
   const btn=publish?form.querySelector('[data-v853-publish]'):form.querySelector('[data-v853-draft]');
   if(btn)btn.disabled=true;
   try{
-    const d=formData(form),required=!!form.querySelector('[name="reviewRequired"]')?.checked;
-    if(publish&&required&&!studio.reviewed)throw Error('Primero envía la vista previa a WhatsApp o Facebook para revisión.');
+    const d=formData(form);
+    if(publish&&!studio.reviewed)throw Error('Primero envía la vista previa a WhatsApp o Facebook para revisión.');
     let image='';
     if(d.useGenerated==='on'&&studio.generatedFile){
       image=studio.reviewImageUrl||await ensureReviewImage(form,status);
