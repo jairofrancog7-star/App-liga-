@@ -62,7 +62,7 @@
     height:clamp(82px,21.68vw,90px)!important;
     min-height:clamp(82px,21.68vw,90px)!important;
     max-height:clamp(82px,21.68vw,90px)!important;
-    margin:0 0 18px!important;
+    margin:0!important;
     padding:0!important;
     overflow:hidden!important;
     border:0!important;
@@ -70,10 +70,14 @@
     background:
       radial-gradient(190px 82px at 9% -4%,rgba(105,237,255,.66) 0%,rgba(25,164,255,.34) 30%,transparent 72%),
       radial-gradient(180px 78px at 71% -10%,rgba(209,255,255,.60) 0%,rgba(27,201,255,.31) 22%,rgba(15,101,247,.20) 48%,transparent 72%),
-      linear-gradient(180deg,#0b4bea 0%,#0b35cf 31%,#0a1e9d 66%,#070d6c 100%)!important;
-    box-shadow:
-      0 7px 18px rgba(8,49,164,.16),
-      inset 0 -10px 18px rgba(5,10,72,.22)!important;
+      linear-gradient(180deg,
+        #0b4bea 0%,
+        #0b35cf 28%,
+        #0a269f 56%,
+        #091b79 72%,
+        #0d1548 88%,
+        #111226 100%)!important;
+    box-shadow:none!important;
     isolation:isolate!important;
     pointer-events:auto!important;
   }
@@ -177,28 +181,12 @@
     display:none!important;
   }
 
-  /* V866 — difuminado inferior suave: azul de cabecera -> azul oscuro de la página.
-     Sin corte recto y sin línea cyan. */
+  /* V867 — sin barra inferior extra: el propio fondo de la cabecera termina
+     gradualmente en #111226, igual al fondo del calendario. */
   html body.v415-calendar-active.v839-reference-calendar
   #screen .v839-reference-page .v415-reference-topbar::before{
-    content:""!important;
-    display:block!important;
-    position:absolute!important;
-    left:0!important;
-    right:0!important;
-    bottom:-1px!important;
-    height:32px!important;
-    z-index:4!important;
-    pointer-events:none!important;
-    background:
-      linear-gradient(180deg,
-        rgba(17,18,38,0) 0%,
-        rgba(17,18,38,.12) 20%,
-        rgba(17,18,38,.34) 45%,
-        rgba(17,18,38,.68) 72%,
-        #111226 100%)!important;
-    box-shadow:none!important;
-    opacity:1!important;
+    content:none!important;
+    display:none!important;
   }
 
 }
