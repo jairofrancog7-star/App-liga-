@@ -21,7 +21,6 @@ public class LigaCalendarPlugin extends Plugin {
         }
         getActivity().runOnUiThread(() -> {
             Intent event = new Intent(Intent.ACTION_INSERT)
-                .setPackage("com.google.android.calendar")
                 .setDataAndType(CalendarContract.Events.CONTENT_URI, "vnd.android.cursor.item/event")
                 .putExtra(CalendarContract.Events.TITLE, title)
                 .putExtra(CalendarContract.Events.DESCRIPTION, call.getString("description", ""))
@@ -35,7 +34,8 @@ public class LigaCalendarPlugin extends Plugin {
                     call.reject("No hay una aplicación de calendario disponible.", "NO_CALENDAR_APP");
                     return;
                 }
-                getActivity().startActivity(event);
+                Intent chooser = Intent.createChooser(event, "Completar acción utilizando");
+                getActivity().startActivity(chooser);
                 call.resolve();
             } catch (ActivityNotFoundException error) {
                 call.reject("No hay una aplicación de calendario disponible.", "NO_CALENDAR_APP", error);
