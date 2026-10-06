@@ -5568,3 +5568,218 @@ body[data-app-route="quizArena"] .v531-turbos.v614-turbos>button:not(:disabled):
   }
 }
 /* V769_TURBOS_EXACT_REFERENCE_END */
+
+/* V816_TURBOS_IMAGE1_FINAL_START */
+/* Referencia imagen 1: solo un marco exterior por botón.
+   Ningún span/b/icono puede volver a dibujar cajas internas. */
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:16px!important;
+  width:100%!important;
+  margin:26px 0 10px!important;
+  padding:34px 0 0!important;
+  overflow:visible!important;
+}
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos::before{
+  content:"Tus turbos"!important;
+  position:absolute!important;
+  inset:0 0 auto 0!important;
+  height:24px!important;
+  display:block!important;
+  color:#b8bad1!important;
+  text-align:center!important;
+  font-family:Arial,Roboto,sans-serif!important;
+  font-size:16px!important;
+  line-height:24px!important;
+  font-weight:400!important;
+}
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos>button{
+  position:relative!important;
+  width:100%!important;
+  height:78px!important;
+  min-height:78px!important;
+  max-height:78px!important;
+  margin:0!important;
+  padding:0 18px!important;
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:0!important;
+  border:2.5px solid #fff!important;
+  border-radius:30px!important;
+  background:#060457!important;
+  color:#fff!important;
+  box-shadow:none!important;
+  outline:0!important;
+  overflow:hidden!important;
+  appearance:none!important;
+  -webkit-appearance:none!important;
+}
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos>button::before,
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos>button::after{
+  content:none!important;
+  display:none!important;
+}
+
+/* Borra definitivamente las cajas internas heredadas de .v531-turbos span. */
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos>button *,
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos>button>b,
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos>button>b>span,
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos .v617-turbo-icon,
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos .v767-ball-wrap{
+  min-width:0!important;
+  min-height:0!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-right:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  outline:0!important;
+}
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos>button>small{
+  display:none!important;
+}
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos>button>b{
+  width:auto!important;
+  height:auto!important;
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:16px!important;
+  color:#fff!important;
+  font-family:Arial,Roboto,sans-serif!important;
+  font-size:18px!important;
+  line-height:1!important;
+  font-weight:700!important;
+  white-space:nowrap!important;
+}
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos>button>b>span{
+  width:auto!important;
+  height:auto!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  color:#fff!important;
+}
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos .v617-turbo-icon{
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  min-height:34px!important;
+  flex:0 0 34px!important;
+  display:grid!important;
+  place-items:center!important;
+}
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos .v617-turbo-svg{
+  display:block!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:none!important;
+}
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos .v617-lightning-svg{
+  width:30px!important;
+  height:30px!important;
+  fill:#fff!important;
+  stroke:none!important;
+}
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos .v767-ball-wrap{
+  position:relative!important;
+  width:36px!important;
+  height:36px!important;
+  min-width:36px!important;
+  min-height:36px!important;
+  flex:0 0 36px!important;
+  display:grid!important;
+  place-items:center!important;
+}
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos .v767-ball-wrap .v617-ball-svg{
+  width:31px!important;
+  height:31px!important;
+  fill:none!important;
+  stroke:#fff!important;
+  stroke-width:1.8!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos .v767-ball-badge{
+  position:absolute!important;
+  right:-1px!important;
+  bottom:-1px!important;
+  width:13px!important;
+  height:13px!important;
+  min-width:13px!important;
+  min-height:13px!important;
+  display:grid!important;
+  place-items:center!important;
+  border:1px solid #15dff2!important;
+  border-radius:50%!important;
+  background:#08105f!important;
+  color:#15dff2!important;
+  font-family:Arial,sans-serif!important;
+  font-size:8px!important;
+  line-height:13px!important;
+  font-weight:800!important;
+  font-style:normal!important;
+}
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos>button:disabled{
+  opacity:.46!important;
+}
+body[data-app-route="quizArena"] .v531-turbos.v614-turbos>button:not(:disabled):active{
+  transform:scale(.988)!important;
+}
+
+@media(max-width:390px){
+  body[data-app-route="quizArena"] .v531-turbos.v614-turbos{
+    gap:12px!important;
+    margin-top:22px!important;
+    padding-top:31px!important;
+  }
+  body[data-app-route="quizArena"] .v531-turbos.v614-turbos::before{
+    font-size:15px!important;
+  }
+  body[data-app-route="quizArena"] .v531-turbos.v614-turbos>button{
+    height:70px!important;
+    min-height:70px!important;
+    max-height:70px!important;
+    padding:0 12px!important;
+    border-width:2px!important;
+    border-radius:27px!important;
+  }
+  body[data-app-route="quizArena"] .v531-turbos.v614-turbos>button>b{
+    gap:12px!important;
+    font-size:16px!important;
+  }
+  body[data-app-route="quizArena"] .v531-turbos.v614-turbos .v617-turbo-icon{
+    width:31px!important;
+    height:31px!important;
+    min-width:31px!important;
+    min-height:31px!important;
+    flex-basis:31px!important;
+  }
+  body[data-app-route="quizArena"] .v531-turbos.v614-turbos .v617-lightning-svg{
+    width:28px!important;
+    height:28px!important;
+  }
+  body[data-app-route="quizArena"] .v531-turbos.v614-turbos .v767-ball-wrap{
+    width:33px!important;
+    height:33px!important;
+    min-width:33px!important;
+    min-height:33px!important;
+    flex-basis:33px!important;
+  }
+  body[data-app-route="quizArena"] .v531-turbos.v614-turbos .v767-ball-wrap .v617-ball-svg{
+    width:29px!important;
+    height:29px!important;
+  }
+}
+/* V816_TURBOS_IMAGE1_FINAL_END */
