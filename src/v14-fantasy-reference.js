@@ -194,6 +194,49 @@ function v588Guest(){
   window.dispatchEvent(new CustomEvent('ljr:fantasy-guest'));
 }
 
+function v807EnsureAccessButtons(screen){
+  const root=screen?.querySelector('[data-v23-access]');
+  if(!root)return;
+
+  const loginActions=root.querySelector('.v588-slide-login .v23-access-actions');
+  if(loginActions){
+    let later=loginActions.querySelector('.v23-access-later[data-v588-next]');
+    if(!later){
+      later=document.createElement('button');
+      later.type='button';
+      later.className='v23-access-later';
+      later.dataset.v588Next='';
+      loginActions.append(later);
+    }
+    later.textContent='Iniciaré sesión después';
+    later.dataset.v807Restored='1';
+    later.style.setProperty('display','flex','important');
+    later.style.setProperty('visibility','visible','important');
+    later.style.setProperty('opacity','1','important');
+    later.style.setProperty('pointer-events','auto','important');
+    later.onclick=e=>{e.preventDefault();e.stopPropagation();v588SetSlide(1)};
+  }
+
+  const teamActions=root.querySelector('.v588-slide-team .v23-access-actions');
+  if(teamActions){
+    let guest=teamActions.querySelector('.v23-access-later[data-v588-guest]');
+    if(!guest){
+      guest=document.createElement('button');
+      guest.type='button';
+      guest.className='v23-access-later';
+      guest.dataset.v588Guest='';
+      teamActions.append(guest);
+    }
+    guest.textContent='Prueba como invitado';
+    guest.dataset.v807Restored='1';
+    guest.style.setProperty('display','flex','important');
+    guest.style.setProperty('visibility','visible','important');
+    guest.style.setProperty('opacity','1','important');
+    guest.style.setProperty('pointer-events','auto','important');
+    guest.onclick=e=>{e.preventDefault();e.stopPropagation();v588Guest()};
+  }
+}
+
 async function patchV23Fantasy(){
   const route=v23Route();
   if(route!=='fantasy' && route!=='fantasyAccess') return;
@@ -205,6 +248,7 @@ async function patchV23Fantasy(){
   if(route==='fantasyAccess'){
     if(!screen.querySelector('[data-v23-access]')) screen.innerHTML=v23AccessMarkup();
     v24ApplyTransparentFantasyLogo(screen);
+    v807EnsureAccessButtons(screen);
     v588SetSlide(v588AccessSlide);
     screen.querySelectorAll('[data-v588-login]').forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();v588Login()});
     screen.querySelectorAll('[data-v588-next]').forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();v588SetSlide(Math.min(1,v588AccessSlide+1))});
