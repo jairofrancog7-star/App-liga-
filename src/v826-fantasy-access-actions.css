@@ -1,0 +1,134 @@
+/* V826 — Fantasy access: keep the secondary action visible below "Inicia sesión para jugar".
+   Applies to both onboarding slides and stays above the fixed bottom navigation. */
+html body[data-app-route="fantasyAccess"] .v588-access-slide{
+  box-sizing:border-box!important;
+  position:absolute!important;
+  inset:0!important;
+  overflow:hidden!important;
+  padding-bottom:112px!important;
+}
+
+html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-actions,
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-actions{
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  bottom:8px!important;
+  top:auto!important;
+  width:100%!important;
+  min-height:94px!important;
+  margin:0!important;
+  padding:0 18px!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  overflow:visible!important;
+  visibility:visible!important;
+  opacity:1!important;
+  z-index:120!important;
+  pointer-events:auto!important;
+}
+
+html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-login,
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-login{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:min(82%,430px)!important;
+  min-height:52px!important;
+  height:52px!important;
+  flex:0 0 52px!important;
+  margin:0!important;
+  opacity:1!important;
+  visibility:visible!important;
+  pointer-events:auto!important;
+  z-index:121!important;
+}
+
+html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-later,
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-later,
+html body[data-app-route="fantasyAccess"] [data-v807-restored="1"]{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:min(82%,430px)!important;
+  min-height:34px!important;
+  height:34px!important;
+  flex:0 0 34px!important;
+  margin:7px 0 0!important;
+  padding:2px 14px!important;
+  border:0!important;
+  background:transparent!important;
+  color:#19e6ef!important;
+  font-size:15px!important;
+  line-height:1.1!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  opacity:1!important;
+  visibility:visible!important;
+  pointer-events:auto!important;
+  z-index:122!important;
+}
+
+/* Reserve the lower space so text/cards never cover the two actions. */
+html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-copy,
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy{
+  position:relative!important;
+  z-index:20!important;
+}
+
+@media(max-height:820px){
+  html body[data-app-route="fantasyAccess"] .v588-access-slide{
+    padding-bottom:102px!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-actions,
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-actions{
+    min-height:86px!important;
+    bottom:4px!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-login,
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-login{
+    min-height:46px!important;
+    height:46px!important;
+    flex-basis:46px!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-later,
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-later,
+  html body[data-app-route="fantasyAccess"] [data-v807-restored="1"]{
+    min-height:32px!important;
+    height:32px!important;
+    flex-basis:32px!important;
+    margin-top:5px!important;
+    font-size:14px!important;
+  }
+}
+
+@media(max-height:700px){
+  html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-photo{
+    max-height:210px!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-copy{
+    margin-top:18px!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-copy p{
+    margin-top:10px!important;
+    line-height:1.32!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-card-stage{
+    height:168px!important;
+    min-height:168px!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy{
+    margin-top:10px!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy p{
+    margin-top:8px!important;
+    line-height:1.30!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-dots{
+    margin-top:6px!important;
+    margin-bottom:4px!important;
+  }
+}
