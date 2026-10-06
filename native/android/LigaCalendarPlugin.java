@@ -21,7 +21,7 @@ public class LigaCalendarPlugin extends Plugin {
         }
         getActivity().runOnUiThread(() -> {
             Intent event = new Intent(Intent.ACTION_INSERT)
-                .setDataAndType(CalendarContract.Events.CONTENT_URI, CalendarContract.Events.CONTENT_ITEM_TYPE)
+                .setDataAndType(CalendarContract.Events.CONTENT_URI, "vnd.android.cursor.item/event")
                 .putExtra(CalendarContract.Events.TITLE, title)
                 .putExtra(CalendarContract.Events.DESCRIPTION, call.getString("description", ""))
                 .putExtra(CalendarContract.Events.EVENT_LOCATION, call.getString("location", ""))
