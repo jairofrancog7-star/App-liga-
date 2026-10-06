@@ -2461,3 +2461,32 @@ body.v415-calendar-active #screen > [data-v415-calendar]{
     height:64px!important;
   }
 }
+
+
+/* V730 — barra superior del calendario: más separada del borde y filtro alineado */
+@media (max-width:1023px){
+  body.v415-calendar-active .v415-top-row{
+    margin:18px 27px 0!important;
+    padding:0!important;
+    min-height:40px!important;
+    align-items:center!important;
+  }
+  body.v415-calendar-active .v415-segment{
+    align-self:center!important;
+    margin:0!important;
+  }
+  body.v415-calendar-active .v415-filter{
+    align-self:center!important;
+    justify-self:center!important;
+    margin:0!important;
+    padding:0!important;
+    transform:none!important;
+    display:grid!important;
+    place-items:center!important;
+  }
+  body.v415-calendar-active .v415-filter svg{
+    display:block!important;
+    margin:0!important;
+    transform:none!important;
+  }
+}
