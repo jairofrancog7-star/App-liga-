@@ -1,0 +1,103 @@
+/* V868 — Inicio: logos contenidos en sus círculos + fondo global de un solo color.
+   Solo afecta #/home. No cambia datos, navegación ni estructura. */
+:root{
+  --v868-home-bg:#000144;
+}
+
+html body[data-app-route="home"],
+html body[data-app-route="home"] #app,
+html body[data-app-route="home"] .app-shell,
+html body[data-app-route="home"] #screen,
+html body[data-app-route="home"] #safeHomeExtra,
+html body[data-app-route="home"] #v105-bottom[data-v105-route="home"]{
+  background-color:var(--v868-home-bg)!important;
+  background-image:none!important;
+}
+
+/* Los espacios entre módulos conservan el mismo azul en toda la pantalla. */
+html body[data-app-route="home"] #screen > .section:not(.hero),
+html body[data-app-route="home"] .v6-home-super,
+html body[data-app-route="home"] .v6-section,
+html body[data-app-route="home"] .v65-home-table,
+html body[data-app-route="home"] .v65-home-fields,
+html body[data-app-route="home"] .v74-home-scorers,
+html body[data-app-route="home"] .v78-home-calendar,
+html body[data-app-route="home"] .v427-home-feed{
+  background-color:transparent!important;
+  background-image:none!important;
+}
+
+/* Círculos del resumen / Partidos relevantes: ningún escudo puede salirse. */
+html body[data-app-route="home"] .v446-home-club-logo,
+html body[data-app-route="home"] .v446-relevant-team .crest,
+html body[data-app-route="home"] .v444-home-club-logo,
+html body[data-app-route="home"] .v444-result-logo{
+  overflow:hidden!important;
+  border-radius:50%!important;
+  box-sizing:border-box!important;
+}
+
+/* Herreras FC y Franco FC: reducir el arte dentro del círculo sin deformarlo. */
+html body[data-app-route="home"] .v446-home-club[data-team="HFC"] .v446-home-club-logo .crest,
+html body[data-app-route="home"] .v446-home-club[data-team="FRA"] .v446-home-club-logo .crest,
+html body[data-app-route="home"] .v446-relevant-team[data-team-code="HFC"] .crest,
+html body[data-app-route="home"] .v446-relevant-team[data-team-code="FRA"] .crest{
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  padding:3px!important;
+  border-radius:50%!important;
+  background:#fff!important;
+  box-sizing:border-box!important;
+}
+
+html body[data-app-route="home"] .v446-home-club[data-team="HFC"] .v446-home-club-logo .crest img,
+html body[data-app-route="home"] .v446-home-club[data-team="FRA"] .v446-home-club-logo .crest img,
+html body[data-app-route="home"] .v446-relevant-team[data-team-code="HFC"] .crest img,
+html body[data-app-route="home"] .v446-relevant-team[data-team-code="FRA"] .crest img{
+  position:static!important;
+  width:82%!important;
+  height:82%!important;
+  max-width:82%!important;
+  max-height:82%!important;
+  margin:auto!important;
+  padding:0!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  border-radius:0!important;
+  clip-path:none!important;
+  transform:none!important;
+  filter:none!important;
+  background:transparent!important;
+}
+
+/* Variante que todavía usa el bloque V444. */
+html body[data-app-route="home"] .v444-home-club[data-v444-team="Herreras FC"] .v444-home-club-logo,
+html body[data-app-route="home"] .v444-home-club[data-v444-team="Franco FC"] .v444-home-club-logo{
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  padding:4px!important;
+}
+html body[data-app-route="home"] .v444-home-club[data-v444-team="Herreras FC"] .v444-home-club-logo img,
+html body[data-app-route="home"] .v444-home-club[data-v444-team="Franco FC"] .v444-home-club-logo img{
+  width:82%!important;
+  height:82%!important;
+  max-width:82%!important;
+  max-height:82%!important;
+  margin:auto!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  transform:none!important;
+}
+
+/* Si aparecen en filas de resultados, aplica la misma contención. */
+html body[data-app-route="home"] .v444-result-team:has(img[alt*="Herreras"]) .v444-result-logo img,
+html body[data-app-route="home"] .v444-result-team:has(img[alt*="Franco"]) .v444-result-logo img{
+  width:78%!important;
+  height:78%!important;
+  max-width:78%!important;
+  max-height:78%!important;
+  margin:auto!important;
+  object-fit:contain!important;
+}
