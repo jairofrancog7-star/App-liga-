@@ -155,7 +155,8 @@ async function fieldPicker(target,button){
 }
 function buildQuickButton(native,type,label){
   const b=document.createElement('button');b.type='button';b.className='v159-picker';b.dataset.v159Picker=type;
-  const current=native.value||'Por confirmar';
+  const rawCurrent=native.value||'';
+  const current=(window.LJR_FIELDS?.canonical?.(rawCurrent)||rawCurrent)||'Por confirmar';
   let sub=type==='field'?'Escoge uno de los campos registrados':'Filtra por categoría o escribe el nombre';
   if(type==='team'&&native.selectedOptions?.[0]?.dataset?.category)sub=native.selectedOptions[0].dataset.category;
   b.innerHTML='<span class="v159-picker-icon">'+(type==='field'?'⌖':'⌕')+'</span><span><b>'+esc(current)+'</b><small>'+esc(sub)+'</small></span><i>›</i>';
