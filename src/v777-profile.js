@@ -20,18 +20,35 @@ const SHIRT_CATEGORY_LOGOS={
  'veteranos35':'assets/categories/veteranos-35-user.png',
  'veteranos50':'assets/categories/veteranos-50.webp'
 };
+const SHIRT_TEAM_CATEGORY_FALLBACK={
+ 'Primera Fuerza':['Hermanos','San José FC','Linces','Juventus','Napoli','Lobos CDG','Terrícolas','Galácticos de Pozos','Galácticos','Franco FC','Herreras FC','Abejas'],
+ 'Intermedia':['La Canchita Deportes','Galeana','Atl. Galeana','Aldama FC','Malvinas','Capibaras','La Cuadrilla','Mazacotes FC','Dep. Maravillas','Osasuna','San Antonio JRS','Populares','Promesas FC','La Huerta'],
+ 'Segunda Fuerza':['Tavera FC','Pachangas FC','San Juan FC','Tapatío','Dep. La Luz','San Julián','Barza','San José JRS','San Antonio FC','Célticos FC','Celticos','Dep. Nopalero','Dep. Zapata'],
+ 'Veteranos 35+':['Franco-Tavera-JR','Huracán','Cuenda','América','America','Aguilares','Leyendas FC','PSV','La Trinidad'],
+ 'Veteranos 50+':['La Esperanza','Dynamo','Boca JRS','Toros de Cuenda','Manchester']
+};
 function categoryLogo(name){
  const p=SHIRT_CATEGORY_LOGOS[norm(name)];
  return p?SHIRT_CATEGORY_ROOT+p:'';
 }
 function categoryForTeam(name){
  const target=norm(name);if(!target)return '';
+ // Prefer the app's official normalized team registry when available.
+ try{
+   const hit=(window.LJR_V100?.officialTeams?.()||[]).find(x=>norm(x?.name)===target&&x?.category);
+   if(hit?.category)return String(hit.category).trim();
+ }catch(_){}
+ // Then inspect the live official category payload.
  const db=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{};
  for(const [id,cat] of Object.entries(db.categories||{})){
    const names=[];
    (cat?.teams||[]).forEach(t=>names.push(typeof t==='string'?t:t?.name));
    Object.keys(cat?.rosters||{}).forEach(t=>names.push(t));
    if(names.some(t=>norm(t)===target))return String(cat?.name||cat?.label||CAT_BY_ID[id]||'').trim();
+ }
+ // Stable fallback used while the official payload is still loading.
+ for(const [cat,names] of Object.entries(SHIRT_TEAM_CATEGORY_FALLBACK)){
+   if(names.some(t=>norm(t)===target))return cat;
  }
  return '';
 }
@@ -77,8 +94,8 @@ function shirtViewer(){
      '<button type="button" data-shirt-spin aria-pressed="false"><span class="v803-control-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5"/><path d="M19 12a7 7 0 1 0-2 5"/></svg></span><span class="v803-control-label" data-shirt-spin-label>Girar</span></button>'+
      '<button type="button" data-shirt-shot><span class="v803-control-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h3l1.5-2h5L16 8h3v11H5Z"/><circle cx="12" cy="13" r="3"/></svg></span><span class="v803-control-label">PNG</span></button>'+
    '</div>'+
-   '<div class="v803-shirt-foot"><span>Arrastra con el dedo para mover la camiseta libremente.</span><b>Liga al frente · categoría en espalda</b></div>'+
-   '<div class="v803-shirt-open-source">Camiseta corta 3D: logo de la Liga al frente y escudo de categoría grande en la espalda, ambos integrados en la tela y sin fondo.</div>'+
+   '<div class="v803-shirt-foot"><span>Arrastra con el dedo para mover la camiseta libremente.</span><b>Liga + equipo al frente · categoría en espalda</b></div>'+
+   '<div class="v803-shirt-open-source">Camiseta corta 3D: logo de la Liga y escudo del equipo al frente; escudo de categoría grande en la espalda. Los tres van integrados en la tela y sin fondo.</div>'+
  '</div>';
 }
 
@@ -117,7 +134,7 @@ function open(){
  const teams=leagueTeams();
  const selectedTeam=String(a.shirtTeam||a.team||'').trim();
  const selectedColor=cleanColor(a.shirtColor||'#0b4bd8');
- const selectedCategory=String(a.shirtCategory||a.category||categoryForTeam(selectedTeam)||'').trim();
+ const selectedCategory=String(categoryForTeam(selectedTeam)||a.shirtCategory||a.category||'').trim();
  const teamOptions='<option value="">Sin escudo</option>'+teams.map(team=>'<option value="'+esc(team)+'" '+(norm(team)===norm(selectedTeam)?'selected':'')+'>'+esc(team)+'</option>').join('');
  const categoryOptions='<option value="">Selecciona categoría</option>'+SHIRT_CATEGORIES.map(cat=>'<option value="'+esc(cat)+'" '+(norm(cat)===norm(selectedCategory)?'selected':'')+'>'+esc(cat)+'</option>').join('');
  const n=media().modal('Mi avatar y mi camiseta',
@@ -135,7 +152,7 @@ function open(){
      '<div class="v893-shirt-customize">'+
        '<label class="v893-shirt-color">Color de la camiseta<span class="v893-color-control"><input name="shirtColor" type="color" value="'+esc(selectedColor)+'" aria-label="Color de la camiseta"><b data-shirt-color-text>'+esc(selectedColor.toUpperCase())+'</b></span></label>'+
        '<label class="v893-shirt-team">Equipo · 50 equipos<select name="shirtTeam">'+teamOptions+'</select><span class="v893-team-preview" data-shirt-team-preview aria-live="polite"></span></label>'+
-       '<label class="v902-shirt-category">Escudo de categoría en la espalda<select name="shirtCategory">'+categoryOptions+'</select><small>El escudo va grande y sin fondo debajo del número.</small></label>'+
+       '<label class="v902-shirt-category">Categoría automática según el equipo<select name="shirtCategory">'+categoryOptions+'</select><small>Al cambiar de equipo se asigna su categoría y el escudo grande de la espalda.</small><span class="v906-category-preview" data-shirt-category-preview aria-live="polite"></span></label>'+
      '</div>'+
      shirtViewer()+
      '<button type="submit" class="ljr-save-profile">Guardar mi perfil</button>'+
@@ -155,10 +172,18 @@ function open(){
    window.LJR_FOOTBALL_SHIRT_3D?.update?.(shirtHost,{name:shirtName,number:shirtNumber,color:shirtColor,team:shirtTeam,logo,category:shirtCategory,categoryLogo:categoryCrest});
    const colorText=n.querySelector('[data-shirt-color-text]');if(colorText)colorText.textContent=shirtColor.toUpperCase();
    const badge=n.querySelector('[data-shirt-team-preview]');
-   if(badge)badge.innerHTML=shirtTeam?(logo?'<img src="'+esc(logo)+'" alt=""><span><b>'+esc(shirtTeam)+'</b><small>'+esc(shirtCategory||'Sin categoría')+' · logo de categoría va en espalda</small></span>':'<span><b>'+esc(shirtTeam)+'</b><small>'+esc(shirtCategory||'Sin categoría')+'</small></span>'):'<span><b>Sin equipo</b><small>'+esc(shirtCategory||'Selecciona categoría')+'</small></span>';
+   if(badge)badge.innerHTML=shirtTeam?(logo?'<img src="'+esc(logo)+'" alt=""><span><b>'+esc(shirtTeam)+'</b><small>Escudo del equipo · frente</small></span>':'<span><b>'+esc(shirtTeam)+'</b><small>Escudo del equipo pendiente</small></span>'):'<span><b>Sin equipo</b><small>Selecciona uno de los 50 equipos</small></span>';
+   const catBadge=n.querySelector('[data-shirt-category-preview]');
+   if(catBadge)catBadge.innerHTML=shirtCategory?(categoryCrest?'<img src="'+esc(categoryCrest)+'" alt=""><span><b>'+esc(shirtCategory)+'</b><small>Escudo de categoría · espalda</small></span>':'<span><b>'+esc(shirtCategory)+'</b><small>Escudo de categoría pendiente</small></span>'):'<span><b>Sin categoría</b><small>Se asigna al elegir equipo</small></span>';
    n.querySelectorAll('[data-preset]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.preset===preset&&!photo)));
  };
- form.oninput=preview;preview();bindShirtViewer(n);
+ form.oninput=preview;
+ const syncCategoryFromTeam=()=>{
+   const auto=categoryForTeam(form.elements.shirtTeam.value);
+   if(auto&&norm(form.elements.shirtCategory.value)!==norm(auto))form.elements.shirtCategory.value=auto;
+ };
+ form.elements.shirtTeam?.addEventListener('change',()=>{syncCategoryFromTeam();preview()});
+ syncCategoryFromTeam();preview();bindShirtViewer(n);
  n.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>{preset=b.dataset.preset;photo='';preview()});
  n.querySelector('[data-photo]').onchange=async e=>{
    const f=e.target.files?.[0];if(!f)return;
