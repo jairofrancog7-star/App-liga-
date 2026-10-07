@@ -1,0 +1,51 @@
+/* V892 — Más: el generador/diseños vive en Más herramientas, nunca debajo de Más. */
+@media(max-width:1023px){
+  html body[data-app-route="more"] #screen :is(
+    [data-v161-global-center],
+    .v161-global-center,
+    .v668-native-global-center,
+    .v161-wa-admin
+  ){
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    pointer-events:none!important;
+    height:0!important;
+    min-height:0!important;
+    max-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    overflow:hidden!important;
+  }
+
+  /* Más sólo conserva sus filas originales y el bloque Síguenos aprobado.
+     Cualquier panel grande inyectado por módulos de diseños/publicaciones queda fuera. */
+  html body[data-app-route="more"] #screen > .v19-more-page > :not(.v19-more-logo):not(.v19-more-menu):not(.v19-more-label):not(.v19-more-bottom):not(.v413-shell){
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    pointer-events:none!important;
+    height:0!important;
+    min-height:0!important;
+    max-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    overflow:hidden!important;
+  }
+
+  html body[data-app-route="more"] #screen > .v19-more-page ~ *{
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    pointer-events:none!important;
+    height:0!important;
+    min-height:0!important;
+    max-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    overflow:hidden!important;
+  }
+}
