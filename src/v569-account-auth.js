@@ -641,6 +641,32 @@ function loggedProfileMarkup(a){
     '<div class="v569-profile-buttons"><button type="button" data-v569-route="accountEdit">Editar perfil</button><button type="button" data-v569-route="accountSecurity">Seguridad</button></div>'+
   '</div>';
 }
+function v569ProfileMenuIcon(type){
+  const icons={
+    password:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="15" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m11 12 8-8 2 2-2 2 1 1-2 2-1-1-2 2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    devices:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.8" width="10" height="18.4" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M10 6h4M11 18.2h2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',
+    biometrics:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.2 5.3A6.4 6.4 0 0 1 18 10.7M6 8.1A6.4 6.4 0 0 0 6.2 16M9 3.7A8.8 8.8 0 0 1 20.2 15M4 11.2A8.8 8.8 0 0 0 8.6 20" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/><path d="M9.2 9.4a3.3 3.3 0 0 1 5.6 2.4c0 2.7-.7 5.3-2.2 7.6M9 13.2c.1 2-.3 3.7-1.2 5.2" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/></svg>',
+    fingerprint:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.8 7.4A6 6 0 0 1 18 11.7M6.2 10.4A6 6 0 0 0 7 16.8M9.2 5A8.4 8.4 0 0 1 20.4 14M3.8 12.1A8.4 8.4 0 0 0 8.6 20" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/><path d="M9.4 10.2a3.2 3.2 0 0 1 5.4 2.3c0 3-.8 5.7-2.2 7.6M9.2 14c0 1.8-.3 3.2-1 4.6" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/></svg>',
+    logout:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5H5v14h5M14 8l4 4-4 4M18 12H9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    chevron:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+  };
+  return icons[type]||'';
+}
+function v569ProfileAccountRow(icon,label,routeName){
+  return '<button type="button" class="v569-profile-menu-row" data-v569-route="'+routeName+'"><span>'+v569ProfileMenuIcon(icon)+'</span><b>'+label+'</b><i>'+v569ProfileMenuIcon('chevron')+'</i></button>';
+}
+function v569EnsureLogoutLast(menu){
+  if(!menu)return;
+  let logout=menu.querySelector('[data-v569-logout]');
+  if(!logout){
+    logout=document.createElement('button');
+    logout.type='button';
+    logout.className='v12-profile-row v569-profile-logout-row logout';
+    logout.dataset.v569Logout='';
+    logout.innerHTML='<span class="v12-profile-row-icon" aria-hidden="true">'+v569ProfileMenuIcon('logout')+'</span><span class="v12-profile-row-label">Cerrar sesión</span><span class="v12-profile-row-chevron" aria-hidden="true">'+v569ProfileMenuIcon('chevron')+'</span>';
+  }
+  if(logout.parentElement!==menu||logout!==menu.lastElementChild)menu.append(logout);
+}
 function enhanceProfile(){
   if(route()!=='profile')return;
   const root=$('[data-v12-profile]');if(!root)return;
@@ -652,13 +678,14 @@ function enhanceProfile(){
     let menu=$('.v12-profile-menu',root);
     if(menu&&!$('[data-v569-account-menu]',root)){
       const box=document.createElement('div');box.dataset.v569AccountMenu='';box.className='v569-profile-account-menu';
-      box.innerHTML='<button type="button" data-v569-route="accountPassword"><span>🔑</span><b>Cambiar contraseña</b><i>›</i></button>'+
-        '<button type="button" data-v569-route="accountDevices"><span>📱</span><b>Dispositivos</b><i>›</i></button>'+
-        '<button type="button" data-v569-route="accountSecurity"><span>🙂</span><b>Biometría del teléfono</b><i>›</i></button>'+
-        '<button type="button" data-v569-route="accountSecurity"><span>◉</span><b>Huella / biometría</b><i>›</i></button>'+
-        '<button type="button" class="logout" data-v569-logout><span>↪</span><b>Cerrar sesión</b><i>›</i></button>';
+      box.innerHTML=
+        v569ProfileAccountRow('password','Cambiar contraseña','accountPassword')+
+        v569ProfileAccountRow('devices','Dispositivos','accountDevices')+
+        v569ProfileAccountRow('biometrics','Biometría del teléfono','accountSecurity')+
+        v569ProfileAccountRow('fingerprint','Huella / biometría','accountSecurity');
       menu.insertAdjacentElement('beforebegin',box);
     }
+    v569EnsureLogoutLast(menu);
   }else{
     const card=$('.v12-profile-card',root);
     if(card){
@@ -667,6 +694,7 @@ function enhanceProfile(){
       if(create){create.textContent='Crear una cuenta';delete create.dataset.v569Route}
     }
     $('[data-v569-account-menu]',root)?.remove();
+    root.querySelector('[data-v569-logout]')?.remove();
   }
 }
 function mountPage(){
