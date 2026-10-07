@@ -1,8 +1,34 @@
 <!doctype html>
 <html lang="es-MX">
 <head>
+  <script>
+    (function(){
+      if(window.__LJR_PREDICTOR_LAST5_HARD_GUARD_V898__)return;
+      window.__LJR_PREDICTOR_LAST5_HARD_GUARD_V898__=true;
+      function route(){
+        return String(location.hash||'').replace(/^#\\/?/,'').split('?')[0]||
+          String(document.body&&document.body.dataset&&document.body.dataset.appRoute||'home');
+      }
+      document.addEventListener('click',function(e){
+        if(route()!=='predictorSix'||!(e.target instanceof Element))return;
+        var hit=e.target.closest('[data-v851-card-form],[data-v851-form]');
+        if(!hit)return;
+        e.preventDefault();
+        e.stopPropagation();
+        if(typeof e.stopImmediatePropagation==='function')e.stopImmediatePropagation();
+        try{localStorage.removeItem('v42-open-compare')}catch(_){}
+        var api=window.LJR_V589_PREDICTOR_API;
+        if(!api)return;
+        if(hit.hasAttribute('data-v851-card-form')){
+          api.openLastFiveByGame(hit.getAttribute('data-v851-card-form')||'');
+        }else{
+          api.openLastFiveTeam(hit.getAttribute('data-v851-form')||'');
+        }
+      },true);
+    })();
+  </script>
   <script src="./src/v776-navigation.js"></script>
-  <meta name="app-build" content="v896-news-single-social">
+  <meta name="app-build" content="v901-profile-load-fix">
   <style data-ljr-entry-guard>
     html.ljr-preboot #app{visibility:hidden!important}
     html.ljr-preboot body{background:#000144!important}
@@ -521,7 +547,7 @@ html body.v587-fantasy-team-open .v576-field-row.por{
   height:80px!important;align-items:start!important;
 }
 </style>
-  <script type="module" crossorigin src="./assets/index-DLv-Ti_N.js"></script>
+  <script type="module" crossorigin src="./assets/index-iZC4E_8Q.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-B7MxYu_Y.css">
 </head>
 <body>
