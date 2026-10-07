@@ -1,135 +1,167 @@
-/* V897 — Pronostica Seis · modal de marcador alineado a las capturas de referencia.
-   Sólo modifica el bottom-sheet del juego. Conserva equipos/logos oficiales y lógica de guardado. */
+/* V898 — Pronostica Seis · geometría de referencia.
+   Medidas proporcionales a las capturas del usuario:
+   sheet 142.7vw de alto, fondo #0A0A60, marcador 16.5vw,
+   espaciados, tipografía, línea, CTA y forma inferior en las mismas posiciones. */
 @media (max-width:1023px){
+  html body[data-app-route="predictorSix"]:has(.v897-reference-overlay) .bottom-nav{
+    opacity:0!important;
+    visibility:hidden!important;
+    pointer-events:none!important;
+  }
+
   html body[data-app-route="predictorSix"] .v897-reference-overlay{
+    z-index:2147483646!important;
     align-items:flex-end!important;
     justify-content:center!important;
+    background:transparent!important;
+  }
+  html body[data-app-route="predictorSix"] .v897-reference-overlay .v589-dim{
+    background:transparent!important;
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
   }
 
   html body[data-app-route="predictorSix"] .v897-reference-overlay .v897-reference-sheet{
     box-sizing:border-box!important;
-    width:min(100%,520px)!important;
-    min-height:min(92dvh,880px)!important;
-    max-height:calc(100dvh - 8px)!important;
+    width:min(100%,760px)!important;
+    height:min(142.7vw,calc(100dvh - 4px))!important;
+    min-height:0!important;
+    max-height:calc(100dvh - 4px)!important;
     margin:0!important;
-    padding:18px 26px calc(26px + env(safe-area-inset-bottom))!important;
+    padding:0 4.8vw calc(3.8vw + env(safe-area-inset-bottom))!important;
     overflow-y:auto!important;
     overflow-x:hidden!important;
     border:0!important;
-    border-radius:28px 28px 0 0!important;
-    background:linear-gradient(180deg,#111171 0%,#0c0b6c 46%,#090963 100%)!important;
-    box-shadow:0 -18px 42px rgba(0,0,42,.44)!important;
+    border-radius:4.5vw 4.5vw 0 0!important;
+    background:#0a0a60!important;
+    box-shadow:none!important;
+    color:#fff!important;
+    scrollbar-width:none!important;
+  }
+  html body[data-app-route="predictorSix"] .v897-reference-sheet::-webkit-scrollbar{
+    display:none!important;
   }
 
+  /* Tirador: posición y tamaño exactos de la referencia. */
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v589-handle{
-    width:48px!important;
-    height:6px!important;
-    margin:0 auto clamp(44px,6.5dvh,72px)!important;
+    display:block!important;
+    width:9.3vw!important;
+    height:.95vw!important;
+    max-height:7px!important;
+    margin:6.35vw auto 15.8vw!important;
     border-radius:999px!important;
     background:#fff!important;
+    box-shadow:none!important;
   }
 
+  /* Equipo · selector · selector · equipo. */
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-sheet-score{
     display:grid!important;
-    grid-template-columns:minmax(0,1fr) 88px 88px minmax(0,1fr)!important;
-    align-items:center!important;
-    gap:12px!important;
+    grid-template-columns:minmax(0,1fr) 16.5vw 16.5vw minmax(0,1fr)!important;
+    align-items:start!important;
+    gap:3.35vw!important;
     width:100%!important;
     margin:0!important;
   }
 
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-team{
+    box-sizing:border-box!important;
     min-width:0!important;
-    min-height:150px!important;
+    min-height:29.4vw!important;
     display:flex!important;
     flex-direction:column!important;
     align-items:center!important;
-    justify-content:center!important;
-    gap:12px!important;
-    padding-top:22px!important;
+    justify-content:flex-start!important;
+    gap:2.45vw!important;
+    padding-top:7vw!important;
   }
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-team img{
-    width:86px!important;
-    height:86px!important;
-    max-width:86px!important;
-    max-height:86px!important;
+    width:13.9vw!important;
+    height:13.9vw!important;
+    max-width:106px!important;
+    max-height:106px!important;
     object-fit:contain!important;
-    filter:drop-shadow(0 4px 5px rgba(0,0,0,.22))!important;
+    filter:none!important;
   }
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-team b{
     width:100%!important;
-    min-height:34px!important;
+    min-height:4.8vw!important;
     margin:0!important;
     display:flex!important;
     align-items:flex-start!important;
     justify-content:center!important;
     color:#fff!important;
-    font-size:16px!important;
-    line-height:1.08!important;
-    font-weight:800!important;
+    font-size:3.45vw!important;
+    line-height:1.07!important;
+    font-weight:700!important;
+    letter-spacing:-.025em!important;
     text-align:center!important;
     text-transform:none!important;
   }
 
+  /* Rueda vertical: número anterior / actual / siguiente. */
   html body[data-app-route="predictorSix"] .v897-score-picker{
     min-width:0!important;
     display:grid!important;
-    grid-template-rows:31px 88px 31px!important;
+    grid-template-rows:7vw 16.5vw 7vw!important;
     align-items:center!important;
     justify-items:center!important;
-    gap:4px!important;
+    gap:0!important;
   }
   html body[data-app-route="predictorSix"] .v897-score-picker .v589-big-score{
     box-sizing:border-box!important;
-    width:88px!important;
-    min-width:88px!important;
-    max-width:88px!important;
-    height:88px!important;
-    min-height:88px!important;
-    max-height:88px!important;
+    width:16.5vw!important;
+    min-width:16.5vw!important;
+    max-width:126px!important;
+    height:16.5vw!important;
+    min-height:16.5vw!important;
+    max-height:126px!important;
     margin:0!important;
     padding:0!important;
     display:grid!important;
     place-items:center!important;
-    border:4px solid #21e2ec!important;
-    border-radius:18px!important;
-    background:#111174!important;
+    border:.62vw solid #26defa!important;
+    border-radius:2.55vw!important;
+    background:#080d57!important;
     color:#fff!important;
-    box-shadow:inset 0 0 0 1px rgba(255,255,255,.025)!important;
+    box-shadow:none!important;
+    transition:none!important;
   }
   html body[data-app-route="predictorSix"] .v897-score-picker .v589-big-score b{
     display:block!important;
-    font-size:47px!important;
+    font-size:7.75vw!important;
     line-height:1!important;
     font-weight:650!important;
-    letter-spacing:-.04em!important;
+    letter-spacing:-.045em!important;
   }
   html body[data-app-route="predictorSix"] .v897-score-picker .v589-big-score small{
     display:none!important;
   }
   html body[data-app-route="predictorSix"] .v897-score-ghost{
+    box-sizing:border-box!important;
     width:100%!important;
-    height:31px!important;
-    min-height:31px!important;
+    height:7vw!important;
+    min-height:0!important;
     margin:0!important;
     padding:0!important;
     border:0!important;
     background:transparent!important;
-    color:rgba(173,176,214,.50)!important;
-    font:600 38px/31px Inter,Roboto,Arial,sans-serif!important;
+    color:rgba(183,185,211,.34)!important;
+    font:600 7.2vw/7vw Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:-.035em!important;
     text-align:center!important;
   }
   html body[data-app-route="predictorSix"] button.v897-score-ghost{
-    cursor:pointer!important;
     -webkit-tap-highlight-color:transparent!important;
   }
 
+  /* Línea central debajo del marcador. */
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-score-line{
     position:relative!important;
     display:block!important;
     width:100%!important;
-    height:26px!important;
-    margin:18px 0 30px!important;
+    height:4.2vw!important;
+    margin:10.0vw 0 5.0vw!important;
   }
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-score-line span{
     position:absolute!important;
@@ -137,106 +169,142 @@
     right:0!important;
     top:50%!important;
     width:100%!important;
-    height:2px!important;
+    height:.28vw!important;
     transform:translateY(-50%)!important;
     border-radius:99px!important;
-    background:#5962aa!important;
+    background:#333280!important;
   }
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-score-line::after{
     content:""!important;
     position:absolute!important;
     left:50%!important;
     top:50%!important;
-    width:13px!important;
-    height:13px!important;
-    border:3px solid #5962aa!important;
+    width:2.9vw!important;
+    height:2.9vw!important;
+    border:.48vw solid #494a96!important;
     border-radius:50%!important;
-    background:#0d0d69!important;
+    background:#0a0a60!important;
     transform:translate(-50%,-50%)!important;
   }
+  html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-score-line::before{
+    content:""!important;
+    position:absolute!important;
+    left:50%!important;
+    top:50%!important;
+    width:1.15vw!important;
+    height:1.15vw!important;
+    border-radius:50%!important;
+    background:#333280!important;
+    transform:translate(-50%,-50%)!important;
+    z-index:2!important;
+  }
 
+  /* Pronósticos populares. */
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-popular{
     width:100%!important;
-    margin:0 0 30px!important;
+    margin:0 0 7.0vw!important;
     padding:0!important;
     border:0!important;
+    border-radius:0!important;
     background:transparent!important;
     box-shadow:none!important;
   }
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-popular>small{
     display:block!important;
-    margin:0 0 16px!important;
-    color:#d0d3ee!important;
-    font-size:16px!important;
-    line-height:1.1!important;
-    font-weight:500!important;
+    margin:0 0 2.75vw!important;
+    color:#c9c9e5!important;
+    font-size:3.15vw!important;
+    line-height:1.08!important;
+    font-weight:400!important;
     text-align:center!important;
   }
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-popular>div:not(.v589-pct){
     display:grid!important;
-    grid-template-columns:repeat(3,minmax(0,1fr))!important;
-    gap:18px!important;
-    width:min(100%,330px)!important;
+    grid-template-columns:repeat(3,13.5vw)!important;
+    justify-content:center!important;
+    gap:3.55vw!important;
+    width:100%!important;
     margin:0 auto!important;
   }
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-popular>div:not(.v589-pct) span{
     box-sizing:border-box!important;
     min-width:0!important;
-    padding:8px 9px!important;
-    border:2px solid #54dff4!important;
-    border-radius:24px!important;
+    height:6.7vw!important;
+    display:grid!important;
+    place-items:center!important;
+    padding:0!important;
+    border:.3vw solid #45cbe9!important;
+    border-radius:4vw!important;
     background:transparent!important;
-    color:#33def1!important;
-    font-size:17px!important;
+    color:#20dcef!important;
+    font-size:3.3vw!important;
     line-height:1!important;
-    font-weight:700!important;
+    font-weight:600!important;
     text-align:center!important;
   }
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-popular .v589-pct{
     display:grid!important;
-    grid-template-columns:repeat(3,minmax(0,1fr))!important;
-    gap:18px!important;
-    width:min(100%,330px)!important;
-    margin:10px auto 0!important;
+    grid-template-columns:repeat(3,13.5vw)!important;
+    justify-content:center!important;
+    gap:3.55vw!important;
+    width:100%!important;
+    margin:2.0vw auto 0!important;
   }
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-popular .v589-pct em{
-    color:#b9badd!important;
-    font-size:13px!important;
+    min-width:0!important;
+    color:#b9b9d9!important;
+    font-size:2.85vw!important;
+    line-height:1!important;
     font-style:normal!important;
+    font-weight:400!important;
     text-align:center!important;
   }
 
+  /* CTA cyan: mismo ancho, alto, radio y tipografía. */
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-save{
+    box-sizing:border-box!important;
     width:100%!important;
-    height:62px!important;
-    min-height:62px!important;
+    height:13.8vw!important;
+    min-height:0!important;
+    max-height:106px!important;
     margin:0!important;
+    padding:0!important;
     border:0!important;
-    border-radius:18px!important;
-    background:linear-gradient(180deg,#27dfe8 0%,#20d3df 100%)!important;
-    color:#061a4d!important;
-    font-size:18px!important;
+    border-radius:4.0vw!important;
+    background:#01eefe!important;
+    color:#071747!important;
+    font-size:3.8vw!important;
     line-height:1!important;
-    font-weight:900!important;
+    font-weight:500!important;
+    letter-spacing:-.02em!important;
     box-shadow:none!important;
+    transition:none!important;
   }
 
+  /* El comodín no forma parte de la pantalla de referencia. */
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v851-joker{
     display:none!important;
   }
 
+  /* Últimos cinco: icono de tres barras, nombre y círculos. */
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form{
     display:grid!important;
     grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
-    gap:22px!important;
+    gap:8.5vw!important;
     width:100%!important;
-    margin:34px 0 2px!important;
+    margin:9.0vw 0 0!important;
   }
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form .v851-form-trigger{
+    box-sizing:border-box!important;
     min-width:0!important;
-    min-height:76px!important;
+    min-height:0!important;
     margin:0!important;
     padding:0!important;
+    display:flex!important;
+    flex-wrap:wrap!important;
+    align-items:flex-start!important;
+    align-content:flex-start!important;
+    gap:0!important;
     border:0!important;
     background:transparent!important;
     color:#fff!important;
@@ -245,113 +313,93 @@
     width:100%!important;
     display:flex!important;
     align-items:center!important;
-    gap:9px!important;
+    gap:2.0vw!important;
   }
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form .v851-form-trigger.away .v851-form-trigger-head{
     flex-direction:row-reverse!important;
   }
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form .v851-form-icon{
-    width:28px!important;
-    height:25px!important;
-    flex:0 0 28px!important;
+    width:4.7vw!important;
+    height:4.7vw!important;
+    flex:0 0 4.7vw!important;
     fill:none!important;
     stroke:#fff!important;
-    stroke-width:2.2!important;
+    stroke-width:3.1!important;
     stroke-linecap:round!important;
     stroke-linejoin:round!important;
+    opacity:1!important;
+    filter:none!important;
   }
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form .v851-form-trigger b{
     flex:1 1 auto!important;
     min-width:0!important;
     color:#fff!important;
-    font-size:15px!important;
-    line-height:1.08!important;
-    font-weight:800!important;
+    font-size:3.35vw!important;
+    line-height:1.05!important;
+    font-weight:700!important;
+    letter-spacing:-.02em!important;
+    white-space:normal!important;
   }
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form .v851-form-marks{
+    flex-basis:100%!important;
     width:100%!important;
     display:flex!important;
     align-items:center!important;
-    gap:8px!important;
-    margin-top:10px!important;
+    gap:2.15vw!important;
+    margin-top:4.45vw!important;
   }
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form .away .v851-form-marks{
     justify-content:flex-end!important;
   }
   html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form .v851-form-marks i{
-    width:29px!important;
-    height:29px!important;
-    min-width:29px!important;
+    box-sizing:border-box!important;
+    width:6.25vw!important;
+    height:6.25vw!important;
+    min-width:6.25vw!important;
     display:grid!important;
     place-items:center!important;
     margin:0!important;
     border:0!important;
     border-radius:50%!important;
     color:#fff!important;
-    font-size:12px!important;
+    font-size:2.7vw!important;
     line-height:1!important;
     font-style:normal!important;
-    font-weight:800!important;
+    font-weight:700!important;
+    box-shadow:none!important;
   }
-  html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form .v851-form-marks i.win{background:#29b943!important}
-  html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form .v851-form-marks i.loss{background:#d93b47!important}
-  html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form .v851-form-marks i.draw{background:#6f77a8!important}
-}
+  html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form .v851-form-marks i.win{background:#2caf3d!important}
+  html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form .v851-form-marks i.loss{background:#d13a43!important}
+  html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form .v851-form-marks i.draw{background:#7378a8!important}
 
-@media (max-width:390px){
-  html body[data-app-route="predictorSix"] .v897-reference-overlay .v897-reference-sheet{
-    padding-left:20px!important;
-    padding-right:20px!important;
-  }
-  html body[data-app-route="predictorSix"] .v897-reference-sheet .v589-handle{
-    margin-bottom:38px!important;
-  }
-  html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-sheet-score{
-    grid-template-columns:minmax(0,1fr) 72px 72px minmax(0,1fr)!important;
-    gap:8px!important;
-  }
-  html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-team img{
-    width:68px!important;
-    height:68px!important;
-    max-width:68px!important;
-    max-height:68px!important;
-  }
-  html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-team b{font-size:14px!important}
-  html body[data-app-route="predictorSix"] .v897-score-picker{
-    grid-template-rows:27px 76px 27px!important;
-    gap:3px!important;
-  }
-  html body[data-app-route="predictorSix"] .v897-score-picker .v589-big-score{
-    width:72px!important;
-    min-width:72px!important;
-    max-width:72px!important;
-    height:76px!important;
-    min-height:76px!important;
-    max-height:76px!important;
-    border-width:3px!important;
-    border-radius:15px!important;
-  }
-  html body[data-app-route="predictorSix"] .v897-score-picker .v589-big-score b{font-size:40px!important}
-  html body[data-app-route="predictorSix"] .v897-score-ghost{
-    height:27px!important;
-    min-height:27px!important;
-    font-size:31px!important;
-    line-height:27px!important;
-  }
-  html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-popular>div:not(.v589-pct),
-  html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-popular .v589-pct{
-    gap:10px!important;
-  }
-  html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-popular>div:not(.v589-pct) span{font-size:15px!important}
-  html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form{
-    gap:14px!important;
-    margin-top:30px!important;
-  }
-  html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form .v851-form-marks{gap:5px!important}
-  html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form .v851-form-marks i{
-    width:25px!important;
-    height:25px!important;
-    min-width:25px!important;
-    font-size:10px!important;
+  /* Tope para tablets: conserva proporción sin agrandar de más. */
+  @media (min-width:760px){
+    html body[data-app-route="predictorSix"] .v897-reference-overlay .v897-reference-sheet{
+      height:min(1085px,calc(100dvh - 4px))!important;
+      padding-left:36px!important;
+      padding-right:36px!important;
+      border-radius:34px 34px 0 0!important;
+    }
+    html body[data-app-route="predictorSix"] .v897-reference-sheet .v589-handle{width:70px!important;height:7px!important;margin:48px auto 120px!important}
+    html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-sheet-score{grid-template-columns:minmax(0,1fr) 125px 125px minmax(0,1fr)!important;gap:25px!important}
+    html body[data-app-route="predictorSix"] .v897-score-picker{grid-template-rows:53px 125px 53px!important}
+    html body[data-app-route="predictorSix"] .v897-score-picker .v589-big-score{width:125px!important;min-width:125px!important;height:125px!important;min-height:125px!important;border-width:5px!important;border-radius:19px!important}
+    html body[data-app-route="predictorSix"] .v897-score-picker .v589-big-score b{font-size:59px!important}
+    html body[data-app-route="predictorSix"] .v897-score-ghost{height:53px!important;font-size:55px!important;line-height:53px!important}
+    html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-team{min-height:230px!important;padding-top:53px!important;gap:18px!important}
+    html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-team img{width:106px!important;height:106px!important}
+    html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-team b{font-size:26px!important}
+    html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-score-line{height:32px!important;margin:76px 0 38px!important}
+    html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-popular>small{font-size:24px!important;margin-bottom:21px!important}
+    html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-popular>div:not(.v589-pct),
+    html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-popular .v589-pct{grid-template-columns:repeat(3,103px)!important;gap:27px!important}
+    html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-popular>div:not(.v589-pct) span{height:51px!important;font-size:25px!important}
+    html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-popular .v589-pct em{font-size:22px!important}
+    html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-save{height:105px!important;border-radius:30px!important;font-size:29px!important}
+    html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form{gap:65px!important;margin-top:68px!important}
+    html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form .v851-form-icon{width:36px!important;height:36px!important;flex-basis:36px!important}
+    html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form .v851-form-trigger b{font-size:25px!important}
+    html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form .v851-form-marks{gap:16px!important;margin-top:34px!important}
+    html body[data-app-route="predictorSix"] .v897-reference-sheet .v897-form .v851-form-marks i{width:47px!important;height:47px!important;min-width:47px!important;font-size:20px!important}
   }
 }
