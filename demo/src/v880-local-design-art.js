@@ -75,9 +75,10 @@ async function draw(v,canvas,c,background,custom,helpers){
    if(!short&&v.body)fitCopy(c,v.body,85,y+40,w-170,h-y-185,30,'#c5c8d0');
    if(custom.person&&!short){const im=custom.person;c.save();c.beginPath();c.arc(w-135,h-175,58,0,Math.PI*2);c.clip();const s=Math.max(116/im.naturalWidth,116/im.naturalHeight);c.drawImage(im,w-135-im.naturalWidth*s/2,h-175-im.naturalHeight*s/2,im.naturalWidth*s,im.naturalHeight*s);c.restore()}
   }else{
-   const title=v.title||'NOTICIAS DE LA LIGA';text(c,title,85,short?245:285,w-170,short?36:54,'#fff',900);
-   fitCopy(c,v.body||v.details,85,short?330:405,w-170,short?155:h*.22,short?27:34,'#d1d3d9');
-   if(custom.person||background){const photo=custom.person||background,x=85,y=h*.58,pw=w-170,ph=h*.28;c.save();c.beginPath();c.roundRect(x,y,pw,ph,28);c.clip();const s=Math.max(pw/photo.naturalWidth,ph/photo.naturalHeight);c.drawImage(photo,x+(pw-photo.naturalWidth*s)/2,y+(ph-photo.naturalHeight*s)/2,photo.naturalWidth*s,photo.naturalHeight*s);c.restore()}
+   const hasPhoto=!!(custom.person||background),copyWidth=short&&hasPhoto?w*.44:w-170;
+   fitCopy(c,v.title||'NOTICIAS DE LA LIGA',85,short?245:285,copyWidth,short?90:150,short?36:54,'#fff');
+   fitCopy(c,v.body||v.details,85,short?350:445,copyWidth,short?145:h*.20,short?27:34,'#d1d3d9');
+   if(hasPhoto){const photo=custom.person||background,x=short?w*.59:85,y=short?230:h*.58,pw=short?w*.31:w-170,ph=short?h-300:h*.28;c.save();c.beginPath();c.roundRect(x,y,pw,ph,28);c.clip();const s=Math.max(pw/photo.naturalWidth,ph/photo.naturalHeight);c.drawImage(photo,x+(pw-photo.naturalWidth*s)/2,y+(ph-photo.naturalHeight*s)/2,photo.naturalWidth*s,photo.naturalHeight*s);c.restore()}
   }return true;
  }
  const title=(v.title||type).toUpperCase();centered(c,title,w/2,short?147:175,w-110,short?52:84,gold?metal(c,100,100,w-200):v.style==='yellow'?accent:'#fff',true);
@@ -115,7 +116,7 @@ async function draw(v,canvas,c,background,custom,helpers){
   if(gold)cup(c,w/2,cy,short?95:210,accent);else centered(c,'VS',w/2,cy+18,w*.22,short?42:85,accent,true);
   centered(c,v.home||'EQUIPO LOCAL',w*.23,cy+sz*.7,w*.4,short?23:33);centered(c,v.away||'EQUIPO VISITANTE',w*.77,cy+sz*.7,w*.4,short?23:33);
   const yy=cy+sz*.7+(short?48:90);c.fillStyle='#ffffff0c';roundRect(c,60,yy-35,w-120,70,12);centered(c,v.details||'Completa fecha, hora y campo',w/2,yy+8,w-160,short?24:32,accent);
-  if(v.body)fitCopy(c,v.body,60,yy+(short?75:110),w-120,h-yy-(short?195:230),short?22:28,'#d6e2f8');
+  if(v.body)fitCopy(c,v.body,60,yy+(short?75:110),w-120,h-yy-(short?(v.transmission?175:155):230),short?22:28,'#d6e2f8');
  }
  if(!champion){centered(c,v.transmission?('TRANSMITIDO POR · '+v.transmission):match?'':v.details,w/2,h-107,w-120,20,'#cce7ff');if(v.sponsor)centered(c,'PATROCINADO POR · '+v.sponsor,w/2,h-72,w-120,19,'#bacded')}
  c.fillStyle=accent;c.fillRect(55,h-43,w-110,2);centered(c,'LIGA MUNICIPAL DE FÚTBOL · JUVENTINO ROSAS, GTO.',w/2,h-18,w-100,16,light?'#214c7f':'#a6bcdb');return true;
