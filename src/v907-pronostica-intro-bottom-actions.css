@@ -182,3 +182,119 @@
     font-size:16px!important;
   }
 }
+
+
+/* V908 — centrar de verdad los cuadros de Pronostica Seis */
+@media (max-width:1023px){
+  /* El contenedor ocupa todo el ancho real: nada hereda desplazamientos laterales. */
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro{
+    position:relative!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro:not(.v839-dragging) .v589-intro-icons{
+    left:0!important;
+    right:0!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    transform:none!important;
+  }
+
+  /* Los 6 cuadros: bloque 3 x 2 centrado geométricamente en el viewport. */
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v851-six-art{
+    position:absolute!important;
+    left:50%!important;
+    right:auto!important;
+    top:50%!important;
+    width:min(80vw,390px)!important;
+    max-width:calc(100vw - 56px)!important;
+    margin:0!important;
+    padding:0!important;
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    grid-template-rows:repeat(2,auto)!important;
+    gap:12px!important;
+    justify-content:center!important;
+    align-content:center!important;
+    transform:translate3d(-50%,-50%,0)!important;
+    transform-origin:center center!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v851-six-art>span{
+    box-sizing:border-box!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    height:auto!important;
+    min-height:0!important;
+    aspect-ratio:1.46 / 1!important;
+    margin:0!important;
+    display:grid!important;
+    place-items:center!important;
+    border-radius:9px!important;
+  }
+
+  /* También fija el centro de los otros artes del carrusel. */
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v851-event-art,
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v851-friends-art{
+    position:absolute!important;
+    left:50%!important;
+    right:auto!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    transform-origin:center center!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v851-friends-art{
+    transform:translate3d(-50%,-50%,0)!important;
+  }
+
+  /* Los dos cuadros/botones inferiores quedan exactamente centrados
+     y con aire real antes de la barra inferior. */
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-actions{
+    position:absolute!important;
+    left:50%!important;
+    right:auto!important;
+    bottom:28px!important;
+    width:min(75vw,430px)!important;
+    max-width:calc(100vw - 52px)!important;
+    margin:0!important;
+    padding:0!important;
+    transform:translateX(-50%)!important;
+    gap:12px!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-actions button{
+    width:100%!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+  }
+
+  /* Reserva el espacio de esos botones para que los puntos/texto no los pisen. */
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-copy{
+    padding-bottom:178px!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-dots{
+    position:absolute!important;
+    left:50%!important;
+    right:auto!important;
+    bottom:174px!important;
+    margin:0!important;
+    transform:translateX(-50%)!important;
+  }
+}
+
+@media (max-width:420px) and (max-height:760px){
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v851-six-art{
+    width:min(78vw,330px)!important;
+    max-width:calc(100vw - 48px)!important;
+    gap:9px!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-actions{
+    bottom:20px!important;
+    width:min(78vw,330px)!important;
+    max-width:calc(100vw - 44px)!important;
+    gap:9px!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-copy{
+    padding-bottom:154px!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-dots{
+    bottom:150px!important;
+  }
+}
