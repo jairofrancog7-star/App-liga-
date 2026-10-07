@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v909-pronostica-actions-centered';
+const CACHE='liga-juventino-v910-pronostica-actions-left-up';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
