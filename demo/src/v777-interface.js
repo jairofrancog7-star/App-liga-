@@ -83,9 +83,18 @@ function patch(){
   const a=account();document.body.dataset.authState=a?'signed-in':'guest';
   document.querySelectorAll('.v569-profile-avatar').forEach(n=>{if(n.innerHTML!==avatar(a))n.innerHTML=avatar(a)});
   const name=document.querySelector('.v569-profile-copy h1');if(name&&a&&name.textContent!=='Hola, '+a.name)name.textContent='Hola, '+a.name;
-  const root=document.querySelector('#screen'),settingsBtn=root?.querySelector('[data-ljr-account-settings]');
+  const root=document.querySelector('#screen');let settingsBtn=root?.querySelector('[data-ljr-account-settings]');
   if(!a){settingsBtn?.remove()}
-  else if(root&&!settingsBtn){const b=document.createElement('button');b.className='btn outline full';b.dataset.ljrAccountSettings='';b.textContent='Ajustes de la aplicación';b.onclick=settings;root.append(b)}
+  else if(root){
+   if(!settingsBtn){settingsBtn=document.createElement('button');settingsBtn.dataset.ljrAccountSettings=''}
+   settingsBtn.type='button';
+   settingsBtn.className='v12-profile-row ljr-profile-action-row ljr-profile-settings-row';
+   settingsBtn.removeAttribute('style');
+   settingsBtn.innerHTML='<span class="v12-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Zm8.1 5.1v-2.6l-2.2-.8a7 7 0 0 0-.7-1.7l1-2.1-1.8-1.8-2.1 1a7 7 0 0 0-1.7-.7L11.8 2H9.2l-.8 2.2a7 7 0 0 0-1.7.7l-2.1-1-1.8 1.8 1 2.1a7 7 0 0 0-.7 1.7l-2.2.8v2.6l2.2.8a7 7 0 0 0 .7 1.7l-1 2.1 1.8 1.8 2.1-1a7 7 0 0 0 1.7.7l.8 2.2h2.6l.8-2.2a7 7 0 0 0 1.7-.7l2.1 1 1.8-1.8-1-2.1a7 7 0 0 0 .7-1.7l2.2-.8Z" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round"/></svg></span><span class="v12-profile-row-label">Ajustes de la aplicación</span><span class="v12-profile-row-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+   settingsBtn.onclick=settings;
+   const menu=root.querySelector('.v12-profile-menu');
+   if(menu&&settingsBtn.parentElement!==menu)menu.append(settingsBtn);
+  }
  }
  if(['safe-about','history'].includes(route()))document.querySelectorAll('#screen h3,#screen b').forEach(n=>{if(/^(Videos 22-32-59 ya incorporados|Archivo comprobado)$/.test(n.textContent.trim()))n.closest('article')?.remove()});
  const fav=document.querySelector('.v414-ref-page');fav?.classList.add('ljr-blue-favorites');
