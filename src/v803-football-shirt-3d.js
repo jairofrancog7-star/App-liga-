@@ -182,12 +182,16 @@ function bakeLogo(ctx,url,texture,x,y,w,h){
   img.src=String(url);
 }
 function bakeLeagueLogo(ctx,texture){
-  // Frente: únicamente el logo oficial de la Liga.
-  bakeLogo(ctx,LEAGUE_LOGO,texture,300,205,205,205);
+  // Frente, pecho derecho del jugador (izquierda para quien mira).
+  bakeLogo(ctx,LEAGUE_LOGO,texture,245,205,205,205);
+}
+function bakeTeamLogo(ctx,url,texture){
+  // Frente, pecho izquierdo del jugador (derecha para quien mira).
+  bakeLogo(ctx,url,texture,620,215,190,190);
 }
 function bakeCategoryLogo(ctx,url,texture){
-  // Espalda: escudo de categoría grande, centrado debajo del número.
-  bakeLogo(ctx,url,texture,1388,735,296,270);
+  // Espalda: escudo de categoría grande, centrado y separado del número.
+  bakeLogo(ctx,url,texture,1326,700,420,300);
 }
 
 function fabricTexture(name='JAIRO',number='7',base='#0b4bd8',logoUrl='',category='',categoryLogoUrl=''){
@@ -201,7 +205,7 @@ function fabricTexture(name='JAIRO',number='7',base='#0b4bd8',logoUrl='',categor
 
   x.textAlign='center';x.textBaseline='middle';
 
-  // Back: player name + number + categoría, sublimated into the cloth.
+  // Back: player name + number; the category uses its official crest below.
   const cleanName=String(name||'').trim().toUpperCase().slice(0,18)||'JUGADOR';
   const cleanNumber=String(number??'').replace(/\D/g,'').slice(0,2)||'0';
   x.fillStyle='#fff';
@@ -212,9 +216,9 @@ function fabricTexture(name='JAIRO',number='7',base='#0b4bd8',logoUrl='',categor
     if(x.measureText(cleanName).width<790)break;
     nameSize-=6;
   }while(nameSize>54);
-  x.fillText(cleanName,1536,270);
-  x.font='900 390px Arial Black,Impact,sans-serif';
-  x.fillText(cleanNumber,1536,610);
+  x.fillText(cleanName,1536,205);
+  x.font='900 330px Arial Black,Impact,sans-serif';
+  x.fillText(cleanNumber,1536,485);
 
   // No texto de categoría: el escudo oficial ocupa esta zona.
   x.shadowColor='transparent';
@@ -226,6 +230,7 @@ function fabricTexture(name='JAIRO',number='7',base='#0b4bd8',logoUrl='',categor
   t.channel=0;
   t.needsUpdate=true;
   bakeLeagueLogo(x,t);
+  bakeTeamLogo(x,logoUrl,t);
   bakeCategoryLogo(x,categoryLogoUrl,t);
   return t;
 }
