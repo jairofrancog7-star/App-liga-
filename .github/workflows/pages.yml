@@ -17,7 +17,10 @@ permissions:
 
 concurrency:
   group: github-pages-v8-fast
-  cancel-in-progress: true
+  # No cancelar el despliegue que ya está corriendo: con muchos commits seguidos
+  # cancel-in-progress:true podía dejar GitHub Pages sin publicar ningún cambio.
+  # GitHub conservará como pendiente únicamente la ejecución más reciente.
+  cancel-in-progress: false
 
 jobs:
   build:
