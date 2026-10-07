@@ -475,8 +475,49 @@
     '</section>';
   }
 
-  function setNav(){/* Global nav is owned by V34. */}
-  function restoreNav(){/* Global nav is owned by V34. */}
+  function navNodes(){
+    return [...document.querySelectorAll('#app > .bottom-nav,.app-shell > .bottom-nav,#app > nav.bottom-nav,nav.bottom-nav')];
+  }
+  function restoreOneNav(nav){
+    if(!nav||nav.dataset.v28SheetNavHidden!=='1')return;
+    const had=nav.dataset.v28HadStyle==='1';
+    const previous=nav.dataset.v28PrevStyle||'';
+    if(had)nav.setAttribute('style',previous);else nav.removeAttribute('style');
+    delete nav.dataset.v28SheetNavHidden;
+    delete nav.dataset.v28HadStyle;
+    delete nav.dataset.v28PrevStyle;
+  }
+  function setNav(){
+    const hide=route()==='following'&&sheetOpen;
+    navNodes().forEach(nav=>{
+      if(!hide){restoreOneNav(nav);return}
+      if(nav.dataset.v28SheetNavHidden!=='1'){
+        nav.dataset.v28SheetNavHidden='1';
+        nav.dataset.v28HadStyle=nav.hasAttribute('style')?'1':'0';
+        nav.dataset.v28PrevStyle=nav.getAttribute('style')||'';
+      }
+      nav.style.setProperty('display','none','important');
+      nav.style.setProperty('visibility','hidden','important');
+      nav.style.setProperty('opacity','0','important');
+      nav.style.setProperty('pointer-events','none','important');
+      nav.style.setProperty('height','0','important');
+      nav.style.setProperty('min-height','0','important');
+      nav.style.setProperty('max-height','0','important');
+      nav.style.setProperty('transform','translateY(120%)','important');
+    });
+    const app=document.querySelector('#app');
+    if(app)app.classList.toggle('v28-sheet-nav-hidden',hide);
+    if(hide){
+      requestAnimationFrame(()=>navNodes().forEach(nav=>{
+        nav.style.setProperty('display','none','important');
+        nav.style.setProperty('visibility','hidden','important');
+      }));
+    }
+  }
+  function restoreNav(){
+    navNodes().forEach(restoreOneNav);
+    document.querySelector('#app')?.classList.remove('v28-sheet-nav-hidden');
+  }
   function bind(){
     document.querySelectorAll('[data-v28-back]').forEach(b=>b.onclick=()=>{location.hash='#/more'});
     document.querySelectorAll('[data-v28-picker]').forEach(b=>b.onclick=()=>{
