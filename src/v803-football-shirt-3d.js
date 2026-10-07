@@ -41,73 +41,133 @@ function makeFabricBump(){
   return t;
 }
 
+function cleanKitColor(value){
+  const v=String(value||'').trim();
+  return /^#[0-9a-f]{6}$/i.test(v)?v:'#0b4bd8';
+}
+
 function drawKitHalf(ctx,left,base){
-  const w=1024,h=1024;
-  const g=ctx.createLinearGradient(0,0,0,h);
-  g.addColorStop(0,'#1762ee');
-  g.addColorStop(.28,base);
-  g.addColorStop(.72,'#0a42c2');
-  g.addColorStop(1,'#072f95');
-  ctx.fillStyle=g;ctx.fillRect(left,0,w,h);
+  const w=1024,h=1024,color=cleanKitColor(base);
+  ctx.fillStyle=color;ctx.fillRect(left,0,w,h);
 
-  // Tonal side panels like a modern match shirt, without fake glossy plastic.
-  const side=ctx.createLinearGradient(left,0,left+190,0);
-  side.addColorStop(0,'rgba(1,18,82,.46)');
-  side.addColorStop(.58,'rgba(3,34,111,.17)');
-  side.addColorStop(1,'rgba(3,34,111,0)');
-  ctx.fillStyle=side;ctx.fillRect(left,0,200,h);
-  const sideR=ctx.createLinearGradient(left+w,0,left+w-190,0);
-  sideR.addColorStop(0,'rgba(1,18,82,.46)');
-  sideR.addColorStop(.58,'rgba(3,34,111,.17)');
-  sideR.addColorStop(1,'rgba(3,34,111,0)');
-  ctx.fillStyle=sideR;ctx.fillRect(left+w-200,0,200,h);
+  // Light and shade are transparent overlays, so every chosen color keeps its own hue.
+  const light=ctx.createLinearGradient(left,0,left+w,0);
+  light.addColorStop(0,'rgba(0,0,0,.24)');
+  light.addColorStop(.22,'rgba(255,255,255,.035)');
+  light.addColorStop(.52,'rgba(255,255,255,.12)');
+  light.addColorStop(.78,'rgba(255,255,255,.025)');
+  light.addColorStop(1,'rgba(0,0,0,.28)');
+  ctx.fillStyle=light;ctx.fillRect(left,0,w,h);
 
-  // Shoulder/upper-chest tonal panel.
-  const shoulder=ctx.createLinearGradient(0,0,0,260);
-  shoulder.addColorStop(0,'rgba(4,22,92,.30)');
-  shoulder.addColorStop(1,'rgba(4,22,92,0)');
-  ctx.fillStyle=shoulder;ctx.fillRect(left,0,w,275);
+  const vertical=ctx.createLinearGradient(0,0,0,h);
+  vertical.addColorStop(0,'rgba(255,255,255,.12)');
+  vertical.addColorStop(.30,'rgba(255,255,255,.015)');
+  vertical.addColorStop(.72,'rgba(0,0,0,.08)');
+  vertical.addColorStop(1,'rgba(0,0,0,.25)');
+  ctx.fillStyle=vertical;ctx.fillRect(left,0,w,h);
 
-  // Fine breathable knit/perforation texture.
+  // Match-shirt side panels and shoulders.
+  const side=ctx.createLinearGradient(left,0,left+205,0);
+  side.addColorStop(0,'rgba(0,0,0,.30)');
+  side.addColorStop(.7,'rgba(0,0,0,.07)');
+  side.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=side;ctx.fillRect(left,0,215,h);
+  const sideR=ctx.createLinearGradient(left+w,0,left+w-205,0);
+  sideR.addColorStop(0,'rgba(0,0,0,.30)');
+  sideR.addColorStop(.7,'rgba(0,0,0,.07)');
+  sideR.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=sideR;ctx.fillRect(left+w-215,0,215,h);
+
+  const shoulder=ctx.createLinearGradient(0,0,0,280);
+  shoulder.addColorStop(0,'rgba(0,0,0,.18)');
+  shoulder.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=shoulder;ctx.fillRect(left,0,w,290);
+
+  // Fine breathable fabric texture across the entire shirt.
   ctx.save();
-  ctx.globalAlpha=.12;
+  ctx.globalAlpha=.10;
   for(let y=4;y<h;y+=9){
     for(let xx=left+4;xx<left+w;xx+=9){
-      ctx.fillStyle=((xx+y)/9)%2<1?'#d7e9ff':'#001b72';
-      ctx.beginPath();ctx.arc(xx,y,.75,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle=((xx+y)/9)%2<1?'#ffffff':'#000000';
+      ctx.beginPath();ctx.arc(xx,y,.68,0,Math.PI*2);ctx.fill();
     }
   }
   ctx.restore();
-
-  // Very subtle vertical jacquard lines.
-  ctx.save();ctx.globalAlpha=.055;
+  ctx.save();ctx.globalAlpha=.045;
   for(let xx=left+22;xx<left+w;xx+=30){
-    ctx.fillStyle='#d7e7ff';ctx.fillRect(xx,0,1,h);
+    ctx.fillStyle='#ffffff';ctx.fillRect(xx,0,1,h);
   }
   ctx.restore();
 }
 
-function fabricTexture(name='JAIRO',number='7',base='#0b4bd8'){
+function drawLogoIntoFabric(ctx,img,x,y,maxW,maxH){
+  const ratio=Math.min(maxW/img.naturalWidth,maxH/img.naturalHeight);
+  const w=Math.max(1,img.naturalWidth*ratio),h=Math.max(1,img.naturalHeight*ratio);
+  const badge=document.createElement('canvas');
+  badge.width=Math.ceil(maxW);badge.height=Math.ceil(maxH);
+  const b=badge.getContext('2d');
+  const bx=(badge.width-w)/2,by=(badge.height-h)/2;
+  b.drawImage(img,bx,by,w,h);
+
+  // Put the textile grain inside the crest alpha itself so it reads as sublimated/printed,
+  // not as a flat DOM image hovering over the jersey.
+  b.globalCompositeOperation='source-atop';
+  b.globalAlpha=.10;
+  for(let yy=1;yy<badge.height;yy+=7){
+    b.fillStyle=yy%14?'#ffffff':'#000000';
+    b.fillRect(0,yy,badge.width,1);
+  }
+  b.globalAlpha=.055;
+  for(let xx=2;xx<badge.width;xx+=8){
+    b.fillStyle='#000000';b.fillRect(xx,0,1,badge.height);
+  }
+  b.globalAlpha=1;b.globalCompositeOperation='source-over';
+
+  ctx.save();
+  ctx.globalAlpha=.97;
+  ctx.shadowColor='rgba(0,0,0,.18)';
+  ctx.shadowBlur=2;ctx.shadowOffsetY=1;
+  ctx.drawImage(badge,x,y,maxW,maxH);
+  ctx.restore();
+}
+
+function bakeTeamLogo(ctx,url,texture){
+  if(!url)return;
+  const img=new Image();
+  try{img.crossOrigin='anonymous'}catch(_){}
+  img.decoding='async';
+  img.onload=()=>{
+    // Player's left chest (viewer right). It lives in the front half of the atlas,
+    // therefore it bends, shades and rotates with the actual 3D mesh.
+    drawLogoIntoFabric(ctx,img,620,224,165,165);
+    texture.needsUpdate=true;
+  };
+  img.onerror=()=>{};
+  img.src=String(url);
+}
+
+function fabricTexture(name='JAIRO',number='7',base='#0b4bd8',logoUrl=''){
   const c=document.createElement('canvas');
   c.width=2048;c.height=1024;
   const x=c.getContext('2d');
+  const color=cleanKitColor(base);
 
-  drawKitHalf(x,0,base);
-  drawKitHalf(x,1024,base);
+  drawKitHalf(x,0,color);
+  drawKitHalf(x,1024,color);
 
-  // Front: small, restrained league mark.
+  // Small league mark on the opposite chest.
   x.textAlign='center';x.textBaseline='middle';
-  x.fillStyle='rgba(255,255,255,.96)';
-  x.shadowColor='rgba(0,0,35,.28)';x.shadowBlur=4;x.shadowOffsetY=2;
-  x.font='900 56px Arial Black,Impact,sans-serif';
-  x.fillText('LJR',512,288);
+  x.fillStyle='rgba(255,255,255,.94)';
+  x.shadowColor='rgba(0,0,0,.22)';x.shadowBlur=3;x.shadowOffsetY=1;
+  x.font='900 42px Arial Black,Impact,sans-serif';
+  x.fillText('LJR',355,300);
   x.shadowColor='transparent';
 
-  // Back: player name + number, sublimated into the texture.
+  // Back: player name + number, sublimated into the cloth.
   const cleanName=String(name||'').trim().toUpperCase().slice(0,18)||'JUGADOR';
   const cleanNumber=String(number??'').replace(/\D/g,'').slice(0,2)||'0';
   x.fillStyle='#fff';
-  x.shadowColor='rgba(0,0,0,.32)';x.shadowBlur=8;x.shadowOffsetY=5;
+  x.shadowColor='rgba(0,0,0,.30)';x.shadowBlur=7;x.shadowOffsetY=4;
   let nameSize=106;
   do{
     x.font='900 '+nameSize+'px Arial Black,Impact,sans-serif';
@@ -125,6 +185,7 @@ function fabricTexture(name='JAIRO',number='7',base='#0b4bd8'){
   t.wrapS=t.wrapT=THREE.ClampToEdgeWrapping;
   t.channel=0;
   t.needsUpdate=true;
+  bakeTeamLogo(x,logoUrl,t);
   return t;
 }
 
@@ -268,7 +329,7 @@ async function buildRealJersey(current){
     if(o.isMesh&&o.geometry)o.geometry=o.geometry.clone();
   });
   const bounds=normalizeRealModel(group);
-  const texture=fabricTexture(current.name,current.number);
+  const texture=fabricTexture(current.name,current.number,current.color,current.logo);
   texture.channel=1;
   const bump=makeFabricBump();
   const materials=[];
@@ -289,7 +350,7 @@ async function buildRealJersey(current){
 
 function updateJerseyTexture(jersey,current){
   if(!jersey)return;
-  const next=fabricTexture(current.name,current.number);
+  const next=fabricTexture(current.name,current.number,current.color,current.logo);
   next.channel=jersey.uvChannel||0;
   jersey.materials.forEach(m=>{m.map=next;m.needsUpdate=true});
   jersey.texture?.dispose?.();
@@ -325,8 +386,8 @@ function createInstance(host,opts={}){
   const rim=new THREE.DirectionalLight(0x52bfff,1.9);rim.position.set(-3.5,2.5,-4.5);scene.add(rim);
   const rear=new THREE.DirectionalLight(0x3156ff,.8);rear.position.set(3,-.2,-4);scene.add(rear);
 
-  let current={name:opts.name||'JAIRO',number:opts.number||'7'};
-  let jersey=buildFallback(fabricTexture(current.name,current.number));
+  let current={name:opts.name||'JAIRO',number:opts.number||'7',color:cleanKitColor(opts.color||'#0b4bd8'),team:opts.team||'',logo:opts.logo||''};
+  let jersey=buildFallback(fabricTexture(current.name,current.number,current.color,current.logo));
   scene.add(jersey.group);
 
   const floor=new THREE.Mesh(
@@ -346,6 +407,8 @@ function createInstance(host,opts={}){
     scene.remove(old.group);
     jersey=real;
     scene.add(real.group);
+    // If the user changed color/team while the GLB was decoding, apply the latest choice.
+    updateJerseyTexture(real,current);
     disposeJersey(old);
   }).catch(err=>console.warn('Jersey 3D realista: se conserva el respaldo local.',err));
 
@@ -357,7 +420,7 @@ function createInstance(host,opts={}){
 
   const api={
     update(data={}){
-      current={...current,...data};
+      current={...current,...data,color:cleanKitColor(data.color??current.color)};
       updateJerseyTexture(jersey,current);
     },
     front(){
