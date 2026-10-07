@@ -57,7 +57,14 @@ try{
  assert.equal(await page.evaluate(()=>location.hash),'#/leagueTools');
  assert.ok(Math.abs(await page.locator('#screen').evaluate(el=>el.scrollTop)-previous)<3,'Back loses scroll');
  checks.push('Back restores scroll; repeated render preserves it');
- await go('more');await page.locator('#screen').evaluate(el=>el.scrollTop=600);
+ await go('more');await page.locator('#screen').evaluate(el=>el.scrollTop=0);await page.waitForTimeout(120);
+ const moreStart=await page.evaluate(()=>{
+  const screen=document.querySelector('#screen'),first=document.querySelector('.v19-more-menu .v19-more-item');
+  const sr=screen.getBoundingClientRect(),fr=first.getBoundingClientRect();
+  return {gap:fr.top-sr.top,screenTop:sr.top,firstTop:fr.top};
+ });
+ assert.ok(moreStart.gap>=-1&&moreStart.gap<=40,'Más menu starts too low below the header: '+moreStart.gap);
+ await page.locator('#screen').evaluate(el=>el.scrollTop=600);
  const restoredScroll=await page.locator('#screen').evaluate(el=>({top:el.scrollTop,overflow:getComputedStyle(el).overflowY}));
  assert.ok(restoredScroll.top>500,'Más keeps its independent mobile scroll');
  assert.match(restoredScroll.overflow,/auto|scroll/);
