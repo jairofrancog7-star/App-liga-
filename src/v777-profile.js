@@ -68,9 +68,19 @@ function teamLogo(name){
  if(!name)return '';
  const key=norm(name);
  let v='';
- // Para la camiseta 3D preferimos el mapa estable de escudos: sus rutas raw
- // permiten cargarse en canvas con CORS y evitan los placeholders de color.
- try{
+
+ // V913 — Lobos CDG: usar exactamente el archivo transparente que el usuario
+ // ya había entregado y que está guardado en season-2026 (original d24c81...).
+ if(key==='loboscdg'||key==='lobosjrs'||key==='lobosjrscerritodegasca'){
+   return './assets/season-2026/lobos-cdg.webp';
+ }
+
+ // Primero usar los escudos de temporada generados a partir de los archivos
+ // transparentes originales del usuario. No pasar por recortadores de fondo.
+ try{v=window.LJR_SEASON_LOGOS?.get?.(name)||''}catch(_){}
+
+ // Respaldo: registro estable de la Liga.
+ if(!v)try{
    const reg=window.LJR_TEAM_LOGOS;
    const hit=Object.entries(reg?.map||{}).find(([k])=>norm(k)===key)?.[1];
    if(hit){
@@ -78,7 +88,6 @@ function teamLogo(name){
      v=/^(https?:|data:|blob:)/i.test(raw)?raw:String(reg?.base||SHIRT_CATEGORY_ROOT)+raw.replace(/^\.\//,'');
    }
  }catch(_){}
- if(!v)try{v=window.LJR_SEASON_LOGOS?.get?.(name)||''}catch(_){}
  if(!v)try{v=window.LJR_TEAM_LOGOS?.get?.(name)||''}catch(_){}
  if(!v)try{v=window.LJR_OFFICIAL_API?.getLogo?.(name)||''}catch(_){}
  if(!v){
