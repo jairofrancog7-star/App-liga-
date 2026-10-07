@@ -4564,7 +4564,8 @@ function leagueToolsView(){
     v726ToolCard('matchday','Jornadas','Abre calendario, resultados, próximos partidos y pendientes de cada jornada.','', 'data-v60-comp="fixtures"','PARTIDOS')+
     v726ToolCard('center','Match Center','Marcador, cronología, alineaciones y contexto del partido en una sola pantalla.','v4-matchcenter','','EN VIVO')+
     v726ToolCard('download','Exportar tabla','Genera la tabla completa para descargar o compartir en PNG y CSV.','tableExport','','PNG / CSV')+
-    v726ToolCard('sim','Simulador','Prueba escenarios de clasificación sin modificar los datos oficiales de la Liga.','simulator','','PRUEBA');
+    v726ToolCard('sim','Simulador','Prueba escenarios de clasificación sin modificar los datos oficiales de la Liga.','simulator','','PRUEBA')+
+    v726ToolCard('trophy','Quiniela','Juego de pronósticos por partido: elige marcadores, guarda tus resultados y consulta tu quiniela.','quiniela','','JUEGO');
 
   const matchday=
     v726ToolCard('matchday','Match Day','Checklist para preparar y cerrar una jornada: campos, partidos, resultados y reporte.','matchday','','JORNADA')+
@@ -4610,6 +4611,7 @@ function leagueToolsView(){
         v726QuickCard('bracket','Liguilla','Cuadro eliminatorio','bracketBuilder')+
         v726QuickCard('bell','Avisos','Noticias y comunicados','news')+
         v726QuickCard('alert','Avisos AUTO','Programar fecha y hora','v38Alerts')+
+        v726QuickCard('trophy','Quiniela','Juego de pronósticos','quiniela')+
         v726QuickCard('news','Publicar','PNG y comunicados','publications')+
       '</div>'+
     '</section>'+
