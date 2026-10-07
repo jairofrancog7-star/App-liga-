@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v901-profile-load-fix';
+const CACHE='liga-juventino-v897-predictor-score-reference';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
