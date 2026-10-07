@@ -48,11 +48,54 @@ function fixtureDate(g){return new Intl.DateTimeFormat('es-MX',{weekday:'short',
 function locked(g){return /^\d+$/.test(g.homeScore)&&/^\d+$/.test(g.awayScore)||Date.now()>=Date.parse(g.date+'T'+(/\d{2}:\d{2}/.test(g.time)?g.time:'23:59')+':00-06:00')}
 function lastFive(team){return officialGames.filter(g=>(norm(g.home)===norm(team)||norm(g.away)===norm(team))&&/^\d+$/.test(g.homeScore)&&/^\d+$/.test(g.awayScore)).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5)}
 function formMark(g,team){const a=Number(norm(g.home)===norm(team)?g.homeScore:g.awayScore),b=Number(norm(g.home)===norm(team)?g.awayScore:g.homeScore);return a===b?'E':a>b?'V':'D'}
-function formButton(team){return '<button type="button" data-v851-form="'+esc(team)+'"><b>'+esc(team)+'</b><br>'+lastFive(team).map(g=>'<i>'+formMark(g,team)+'</i>').join('')+'</button>'}
+function categoryName(g){
+ const data=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA;
+ return String(data?.categories?.[g.cid]?.name||data?.categories?.[g.cid]?.title||'Liga Juventino Rosas');
+}
+function formIcon(){
+ return '<svg class="v851-form-icon" viewBox="0 0 34 30" aria-hidden="true"><rect x="3" y="4" width="28" height="22" rx="1.5"></rect><path d="M9 5v20M15 5v20M21 5v20M27 5v20"></path></svg>';
+}
+function formButton(team,side){
+ const rows=lastFive(team);
+ return '<button type="button" class="v851-form-trigger '+esc(side||'')+'" data-v851-form="'+esc(team)+'" aria-label="Ver últimos 5 partidos de '+esc(team)+'">'+
+   '<span class="v851-form-trigger-head">'+formIcon()+'<b>'+esc(team)+'</b></span>'+
+   '<span class="v851-form-marks">'+rows.map(g=>{const m=formMark(g,team);return '<i class="'+(m==='V'?'win':m==='D'?'loss':'draw')+'">'+m+'</i>'}).join('')+'</span>'+
+  '</button>'
+}
 function formSheet(team){
  const selected=games.find(g=>g.id===ui.game)||games.find(g=>norm(g.home)===norm(team)||norm(g.away)===norm(team));
  const rows=lastFive(team);
- return '<div class="v589-overlay" data-v589-overlay><button class="v589-dim" type="button" data-v589-close aria-label="Cerrar"></button><section class="v589-sheet v851-form-sheet"><span class="v589-handle"></span><h2>Últimos 5 partidos</h2><div class="v851-form-tabs">'+(selected?[selected.home,selected.away]:[team]).map(t=>'<button type="button" data-v851-form="'+esc(t)+'">'+esc(t)+'</button>').join('')+'</div><h3>'+esc(team)+'</h3>'+rows.map(g=>'<div class="v851-form-row"><small>'+esc(fixtureDate(g))+' · Jornada '+esc(g.round)+'</small><span>'+esc(g.home)+'</span><b>'+g.homeScore+' - '+g.awayScore+'</b><span>'+esc(g.away)+'</span></div>').join('')+(!rows.length?'<p>Todavía no hay resultados publicados para este equipo.</p>':'')+'</section></div>';
+ const tabs=(selected?[selected.home,selected.away]:[team]).map(t=>
+   '<button type="button" class="'+(norm(t)===norm(team)?'active':'')+'" data-v851-form="'+esc(t)+'">'+logo(officialLogo(t),t)+'<b>'+esc(t)+'</b></button>'
+ ).join('');
+ const matches=rows.map(g=>{
+   const mark=formMark(g,team);
+   return '<div class="v851-form-row">'+
+     '<span class="v851-form-result '+(mark==='V'?'win':mark==='D'?'loss':'draw')+'">'+mark+'</span>'+
+     '<span class="v851-form-match"><b><span>'+esc(g.home)+'</span><strong>'+esc(g.homeScore)+' - '+esc(g.awayScore)+'</strong><span>'+esc(g.away)+'</span></b>'+
+     '<small>'+esc(fixtureDate(g))+' · '+esc(categoryName(g))+'</small></span>'+
+   '</div>'
+ }).join('');
+ return '<div class="v589-overlay v851-form-overlay" data-v589-overlay data-v851-form-overlay>'+
+   '<button class="v589-dim" type="button" data-v851-form-close aria-label="Cerrar últimos partidos"></button>'+
+   '<section class="v589-sheet v851-form-sheet" role="dialog" aria-modal="true" aria-label="Últimos 5 partidos">'+
+     '<button type="button" class="v851-form-close" data-v851-form-close aria-label="Cerrar">×</button>'+
+     '<h2>Últimos 5 partidos</h2>'+
+     '<div class="v851-form-tabs">'+tabs+'</div>'+
+     '<div class="v851-form-list">'+(matches||'<p class="v851-form-empty">Todavía no hay resultados publicados para este equipo.</p>')+'</div>'+
+   '</section></div>';
+}
+function openFormSheet(team){
+ closeOverlay();
+ const root=$('[data-v589-root]');
+ if(root)root.insertAdjacentHTML('beforeend',formSheet(team));
+}
+function closeFormSheet(){
+ const o=$('[data-v851-form-overlay]');
+ if(o)o.remove();
+ const g=games.find(x=>x.id===ui.game);
+ const root=$('[data-v589-root]');
+ if(root&&g&&!$('[data-v589-overlay]',root))root.insertAdjacentHTML('beforeend',predictionSheet(g));
 }
 
 let ui={view:'intro',introSlide:0,journey:0,game:null,tempHome:0,tempAway:0,menu:false};
@@ -226,7 +269,7 @@ function predictionSheet(g){
       '<div class="v589-popular modal"><small>Pronósticos populares</small><div><span>1 - 0</span><span>1 - 1</span><span>0 - 1</span></div><div class="v589-pct"><em>—</em><em>—</em><em>—</em></div></div>'+
       '<button type="button" class="v589-primary save" data-v589-save>Guardar el pronóstico</button>'+
       '<button type="button" class="v851-joker '+(read().jokers?.[journeys[ui.journey-1]?.round]===g.id?'active':'')+'" data-v851-joker="'+g.id+'">Comodín · duplica tus puntos</button>'+
-      '<div class="v589-form">'+formButton(g.home)+formButton(g.away)+'</div>'+
+      '<div class="v589-form">'+formButton(g.home,'home')+formButton(g.away,'away')+'</div>'+
     '</section></div>';
 }
 function pointsSheet(){
@@ -347,7 +390,7 @@ function handleClick(e){
   const step=t.getAttribute('data-v851-intro-step');
   if(step!==null){e.preventDefault();e.stopPropagation();ui.introSlide=Math.max(0,Math.min(3,ui.introSlide+Number(step)));render();return}
   const form=t.getAttribute('data-v851-form');
-  if(form!==null){e.preventDefault();e.stopPropagation();closeOverlay();$('[data-v589-root]')?.insertAdjacentHTML('beforeend',formSheet(form));return}
+  if(form!==null){e.preventDefault();e.stopPropagation();openFormSheet(form);return}
   const joker=t.getAttribute('data-v851-joker');
   if(joker!==null){e.preventDefault();e.stopPropagation();const s=read();s.jokers=s.jokers||{};const round=journeys[ui.journey-1]?.round;s.jokers[round]=s.jokers[round]===joker?null:joker;write(s);t.classList.toggle('active',s.jokers[round]===joker);return}
   const introDot=t.getAttribute('data-v589-intro-dot');
@@ -385,6 +428,9 @@ function handleClick(e){
   }
   if(t.matches('[data-v589-info],[data-v589-points]')){
     e.preventDefault();e.stopPropagation();ui.menu=false;openPoints();return
+  }
+  if(t.matches('[data-v851-form-close]')){
+    e.preventDefault();e.stopPropagation();closeFormSheet();return
   }
   if(t.matches('[data-v589-close]')){
     e.preventDefault();e.stopPropagation();closeOverlay();return
