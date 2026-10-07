@@ -262,21 +262,43 @@ function leagues(){
 function menuHtml(){
   return '<div class="v589-menu-pop"><button type="button" data-v589-points>Cómo conseguir puntos</button><button type="button" data-v589-rules>Reglas de Pronostica Seis</button></div>';
 }
+function scorePicker(side,value){
+  const n=Math.max(0,Math.min(9,Number(value)||0));
+  const upper=n>0?n-1:1;
+  const lower=Math.min(9,n+1);
+  return '<div class="v897-score-picker" data-v897-score-picker="'+esc(side)+'">'+
+    '<button type="button" class="v897-score-ghost prev" data-v589-dec="'+esc(side)+'" aria-label="Bajar marcador">'+upper+'</button>'+
+    '<button type="button" class="v589-big-score" data-v589-inc="'+esc(side)+'" aria-label="Subir marcador"><b>'+n+'</b><small>Toca para subir</small></button>'+
+    '<span class="v897-score-ghost next" aria-hidden="true">'+lower+'</span>'+
+  '</div>';
+}
+function syncScorePicker(side){
+  const key=side==='home'?'tempHome':'tempAway';
+  const n=Math.max(0,Math.min(9,Number(ui[key])||0));
+  const picker=document.querySelector('[data-v897-score-picker="'+side+'"]');
+  if(!picker)return;
+  const current=picker.querySelector('.v589-big-score b');
+  const prev=picker.querySelector('.v897-score-ghost.prev');
+  const next=picker.querySelector('.v897-score-ghost.next');
+  if(current)current.textContent=String(n);
+  if(prev)prev.textContent=String(n>0?n-1:1);
+  if(next)next.textContent=String(Math.min(9,n+1));
+}
 function predictionSheet(g){
   const current=read().predictions[g.id]||{home:0,away:0};
   if(ui.game!==g.id){ui.game=g.id;ui.tempHome=Number(current.home)||0;ui.tempAway=Number(current.away)||0}
-  return '<div class="v589-overlay" data-v589-overlay><button class="v589-dim" type="button" data-v589-close aria-label="Cerrar"></button>'+
-    '<section class="v589-sheet prediction-sheet"><span class="v589-handle"></span>'+
-      '<div class="v589-sheet-score">'+
-        '<div class="v589-team">'+logo(g.homeLogo,g.home)+'<b>'+esc(g.home)+'</b></div>'+
-        '<button type="button" class="v589-big-score" data-v589-inc="home"><b>'+ui.tempHome+'</b><small>Toca para subir</small></button>'+
-        '<button type="button" class="v589-big-score" data-v589-inc="away"><b>'+ui.tempAway+'</b><small>Toca para subir</small></button>'+
-        '<div class="v589-team">'+logo(g.awayLogo,g.away)+'<b>'+esc(g.away)+'</b></div>'+
+  return '<div class="v589-overlay v897-reference-overlay" data-v589-overlay><button class="v589-dim" type="button" data-v589-close aria-label="Cerrar"></button>'+
+    '<section class="v589-sheet prediction-sheet v897-reference-sheet"><span class="v589-handle"></span>'+
+      '<div class="v589-sheet-score v897-sheet-score">'+
+        '<div class="v589-team v897-team home">'+logo(g.homeLogo,g.home)+'<b>'+esc(g.home)+'</b></div>'+
+        scorePicker('home',ui.tempHome)+
+        scorePicker('away',ui.tempAway)+
+        '<div class="v589-team v897-team away">'+logo(g.awayLogo,g.away)+'<b>'+esc(g.away)+'</b></div>'+
       '</div>'+
-      '<div class="v589-score-reset"><button type="button" data-v589-dec="home">−</button><span></span><button type="button" data-v589-dec="away">−</button></div>'+
-      '<div class="v589-popular modal"><small>Pronósticos populares</small><div><span>1 - 0</span><span>1 - 1</span><span>0 - 1</span></div><div class="v589-pct"><em>—</em><em>—</em><em>—</em></div></div>'+
-      '<button type="button" class="v589-primary save" data-v589-save>Guardar el pronóstico</button>'+
-      '<button type="button" class="v851-joker '+(read().jokers?.[journeys[ui.journey-1]?.round]===g.id?'active':'')+'" data-v851-joker="'+g.id+'">Comodín · duplica tus puntos</button>'+
+      '<div class="v589-score-reset v897-score-line"><span></span></div>'+
+      '<div class="v589-popular modal v897-popular"><small>Pronósticos populares</small><div><span>1 - 0</span><span>1 - 1</span><span>0 - 1</span></div><div class="v589-pct"><em>—</em><em>—</em><em>—</em></div></div>'+
+      '<button type="button" class="v589-primary save v897-save" data-v589-save>Guardar el pronóstico</button>'+
+      '<div class="v589-form v897-form">'+formButton(g.home,'home')+formButton(g.away,'away')+'</div>'+
     '</section></div>';
 }
 function pointsSheet(){
@@ -448,13 +470,13 @@ function handleClick(e){
     e.preventDefault();e.stopPropagation();
     const side=t.getAttribute('data-v589-inc');
     ui[side==='home'?'tempHome':'tempAway']=Math.min(9,ui[side==='home'?'tempHome':'tempAway']+1);
-    const b=t.querySelector('b');if(b)b.textContent=ui[side==='home'?'tempHome':'tempAway'];return;
+    syncScorePicker(side);return;
   }
   if(t.matches('[data-v589-dec]')){
     e.preventDefault();e.stopPropagation();
     const side=t.getAttribute('data-v589-dec');
     ui[side==='home'?'tempHome':'tempAway']=Math.max(0,ui[side==='home'?'tempHome':'tempAway']-1);
-    const b=$('[data-v589-inc="'+side+'"] b');if(b)b.textContent=ui[side==='home'?'tempHome':'tempAway'];return;
+    syncScorePicker(side);return;
   }
   if(t.matches('[data-v589-save]')){
     e.preventDefault();e.stopPropagation();savePrediction();return
