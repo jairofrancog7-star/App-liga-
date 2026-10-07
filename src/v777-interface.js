@@ -97,7 +97,12 @@ function patch(){
    }
    settingsBtn.onclick=settings;
    const menu=root.querySelector('.v12-profile-menu');
-   if(menu&&settingsBtn.parentElement!==menu)menu.append(settingsBtn);
+   if(menu){
+    const logout=menu.querySelector('[data-v569-logout]');
+    if(logout){
+     if(settingsBtn.parentElement!==menu||settingsBtn.nextElementSibling!==logout)menu.insertBefore(settingsBtn,logout);
+    }else if(settingsBtn.parentElement!==menu)menu.append(settingsBtn);
+   }
   }
  }
  if(['safe-about','history'].includes(route()))document.querySelectorAll('#screen h3,#screen b').forEach(n=>{if(/^(Videos 22-32-59 ya incorporados|Archivo comprobado)$/.test(n.textContent.trim()))n.closest('article')?.remove()});
