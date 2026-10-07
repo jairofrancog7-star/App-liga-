@@ -77,8 +77,8 @@ function shirtViewer(){
      '<button type="button" data-shirt-spin aria-pressed="false"><span class="v803-control-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5"/><path d="M19 12a7 7 0 1 0-2 5"/></svg></span><span class="v803-control-label" data-shirt-spin-label>Girar</span></button>'+
      '<button type="button" data-shirt-shot><span class="v803-control-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h3l1.5-2h5L16 8h3v11H5Z"/><circle cx="12" cy="13" r="3"/></svg></span><span class="v803-control-label">PNG</span></button>'+
    '</div>'+
-   '<div class="v803-shirt-foot"><span>Arrastra con el dedo para mover la camiseta libremente.</span><b>Color + escudo plasmados en la tela 3D</b></div>'+
-   '<div class="v803-shirt-open-source">Camiseta corta 3D: el escudo del equipo se integra en la textura y se deforma con la tela, no queda como imagen plana encima.</div>'+
+   '<div class="v803-shirt-foot"><span>Arrastra con el dedo para mover la camiseta libremente.</span><b>Liga al frente · categoría en espalda</b></div>'+
+   '<div class="v803-shirt-open-source">Camiseta corta 3D: logo de la Liga al frente y escudo de categoría grande en la espalda, ambos integrados en la tela y sin fondo.</div>'+
  '</div>';
 }
 
@@ -134,7 +134,7 @@ function open(){
      '</div>'+
      '<div class="v893-shirt-customize">'+
        '<label class="v893-shirt-color">Color de la camiseta<span class="v893-color-control"><input name="shirtColor" type="color" value="'+esc(selectedColor)+'" aria-label="Color de la camiseta"><b data-shirt-color-text>'+esc(selectedColor.toUpperCase())+'</b></span></label>'+
-       '<label class="v893-shirt-team">Escudo del equipo · 50 equipos<select name="shirtTeam">'+teamOptions+'</select><span class="v893-team-preview" data-shirt-team-preview aria-live="polite"></span></label>'+
+       '<label class="v893-shirt-team">Equipo · 50 equipos<select name="shirtTeam">'+teamOptions+'</select><span class="v893-team-preview" data-shirt-team-preview aria-live="polite"></span></label>'+
        '<label class="v902-shirt-category">Escudo de categoría en la espalda<select name="shirtCategory">'+categoryOptions+'</select><small>El escudo va grande y sin fondo debajo del número.</small></label>'+
      '</div>'+
      shirtViewer()+
