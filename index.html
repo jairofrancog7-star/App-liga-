@@ -2,7 +2,7 @@
 <html lang="es-MX">
 <head>
   <script src="./src/v776-navigation.js"></script>
-  <meta name="app-build" content="v890-profile-shirt-scroll">
+  <meta name="app-build" content="v891-news-single-social">
   <style data-ljr-entry-guard>
     html.ljr-preboot #app{visibility:hidden!important}
     html.ljr-preboot body{background:#000144!important}
@@ -1177,5 +1177,59 @@ html body.v587-fantasy-team-open .v576-field-row.por{
   <link rel="stylesheet" href="./src/v883-quiz-arena-overflow-fix.css?v=20261007-v886-card-last-five">
   <link rel="stylesheet" href="./src/v886-where-watch-topbar.css?v=20261007-v888-compact-height">
   <script defer src="./src/v875-review-corrections.js?v=20261007-v884-profile-photo"></script>
+
+  <script>
+    /* V891 — Noticias: un solo bloque SÍGUENOS. */
+    (function(){
+      if(window.__LJR_V891_NEWS_SINGLE_SOCIAL__)return;
+      window.__LJR_V891_NEWS_SINGLE_SOCIAL__=true;
+      var FB='https://www.facebook.com/share/19SsGuzsRi/';
+      function route(){return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||String(document.body&&document.body.dataset&&document.body.dataset.appRoute||'home')}
+      function share(){
+        var d={title:'Liga Municipal de Fútbol Juventino Rosas',text:'Facebook de la Liga Municipal de Fútbol Juventino Rosas',url:FB};
+        try{if(navigator.share){navigator.share(d).catch(function(){});return}}catch(_){}
+        try{navigator.clipboard&&navigator.clipboard.writeText(FB).catch(function(){})}catch(_){}
+      }
+      function style(){
+        if(document.getElementById('v891-news-single-social-style'))return;
+        var s=document.createElement('style');s.id='v891-news-single-social-style';
+        s.textContent=
+          'body[data-app-route="news"] [data-v411-zone="news"] .v411-social{display:none!important}'+
+          'body[data-app-route="news"] [data-v74-facebook-source="news"]{display:none!important}'+
+          'body[data-app-route="news"] [data-v412-screen="news"] .v412-news-socials{display:grid!important;gap:0!important;overflow:hidden!important;border-radius:21px!important}'+
+          'body[data-app-route="news"] [data-v412-screen="news"] .v891-news-social-extra{padding:12px 13px 13px!important;border-top:1px solid rgba(255,255,255,.10)!important;background:linear-gradient(180deg,rgba(7,20,86,.24),rgba(7,15,67,.54))!important}'+
+          'body[data-app-route="news"] [data-v412-screen="news"] .v891-news-social-extra p{margin:0!important;color:#b8c9ef!important;font:650 10.5px/1.42 Inter,Roboto,Arial,sans-serif!important}'+
+          'body[data-app-route="news"] [data-v412-screen="news"] .v891-news-tags{display:flex!important;flex-wrap:wrap!important;gap:6px!important;margin-top:10px!important}'+
+          'body[data-app-route="news"] [data-v412-screen="news"] .v891-news-tags span{min-height:28px!important;display:inline-flex!important;align-items:center!important;padding:0 10px!important;border:1px solid rgba(132,169,255,.20)!important;border-radius:999px!important;background:rgba(255,255,255,.045)!important;color:#d8e5ff!important;font:800 9px/1 Inter,Roboto,Arial,sans-serif!important}'+
+          'body[data-app-route="news"] [data-v412-screen="news"] .v891-news-actions{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:8px!important;margin-top:11px!important}'+
+          'body[data-app-route="news"] [data-v412-screen="news"] .v891-news-actions button{min-height:40px!important;padding:0 14px!important;border:1px solid rgba(77,224,255,.42)!important;border-radius:12px!important;background:linear-gradient(135deg,#39dcf0,#27c6e3)!important;color:#071050!important;font:900 10.5px/1 Inter,Roboto,Arial,sans-serif!important}'+
+          'body[data-app-route="news"] [data-v412-screen="news"] .v891-news-actions button+button{min-width:98px!important;border-color:rgba(255,255,255,.15)!important;background:rgba(255,255,255,.055)!important;color:#fff!important}';
+        document.head.appendChild(s);
+      }
+      function sync(){
+        if(route()!=='news')return;
+        style();
+        document.querySelectorAll('[data-v74-facebook-source="news"]').forEach(function(n){n.remove()});
+        document.querySelectorAll('[data-v411-zone="news"] .v411-social').forEach(function(n){n.remove()});
+        var social=document.querySelector('[data-v412-screen="news"] .v412-news-socials');
+        if(!social)return;
+        social.querySelectorAll('.v74-news-merged,.v891-news-social-extra').forEach(function(n){n.remove()});
+        var extra=document.createElement('div');
+        extra.className='v891-news-social-extra';
+        extra.innerHTML='<p>Facebook oficial · Tablas, calendarios, avisos, campeones, finales, historia y fotografías de la Liga.</p><div class="v891-news-tags"><span>Tablas</span><span>Calendarios</span><span>Avisos</span><span>Campeones</span><span>Historia</span></div><div class="v891-news-actions"><button type="button" data-v891-open>Ver publicaciones</button><button type="button" data-v891-share>Compartir</button></div>';
+        extra.querySelector('[data-v891-open]').onclick=function(){try{window.open(FB,'_blank','noopener,noreferrer')}catch(_){}};
+        extra.querySelector('[data-v891-share]').onclick=share;
+        social.appendChild(extra);
+      }
+      var queued=false;
+      function queue(){if(queued)return;queued=true;requestAnimationFrame(function(){queued=false;sync()})}
+      window.addEventListener('hashchange',queue);
+      document.addEventListener('DOMContentLoaded',queue,{once:true});
+      var screen=document.getElementById('screen');
+      if(screen)new MutationObserver(queue).observe(screen,{childList:true,subtree:true});
+      queue();
+    })();
+  </script>
+
 </body>
 </html>
