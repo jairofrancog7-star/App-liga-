@@ -10,6 +10,19 @@ const TEAM_50=[
  'CAPIBARAS','MAZACOTES FC','LA HUERTA','LA CANCHITA DEPORTES','POPULARES','MALVINAS','PROMESAS FC','LA CUADRILLA','DEP. MARAVILLAS','ATL. GALEANA',
  'SAN ANTONIO JRS','OSASUNA','ALDAMA FC','AGUILARES','CUENDA','FRANCO-TAVERA-JR','GALEANA','LA TRINIDAD','LEYENDAS FC','GALÁCTICOS DE POZOS'
 ];
+const SHIRT_CATEGORIES=['Primera Fuerza','Intermedia','Segunda Fuerza','Veteranos 35+','Veteranos 50+'];
+const CAT_BY_ID={'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'};
+function categoryForTeam(name){
+ const target=norm(name);if(!target)return '';
+ const db=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{};
+ for(const [id,cat] of Object.entries(db.categories||{})){
+   const names=[];
+   (cat?.teams||[]).forEach(t=>names.push(typeof t==='string'?t:t?.name));
+   Object.keys(cat?.rosters||{}).forEach(t=>names.push(t));
+   if(names.some(t=>norm(t)===target))return String(cat?.name||cat?.label||CAT_BY_ID[id]||'').trim();
+ }
+ return '';
+}
 function leagueTeams(){
  const seen=new Set(),out=[];
  const add=name=>{name=String(name||'').trim();const k=norm(name);if(!name||seen.has(k)||out.length>=50)return;seen.add(k);out.push(name)};
@@ -69,8 +82,9 @@ function bindShirtViewer(n){
    const number=String(form?.elements?.shirtNumber?.value||'7').trim();
    const color=cleanColor(form?.elements?.shirtColor?.value);
    const team=String(form?.elements?.shirtTeam?.value||'').trim();
+   const category=String(form?.elements?.shirtCategory?.value||categoryForTeam(team)||'').trim();
    const logo=teamLogo(team);
-   const viewer=engine.mount(host,{name,number,color,team,logo});
+   const viewer=engine.mount(host,{name,number,color,team,logo,category});
    n.querySelector('[data-shirt-front]')?.addEventListener('click',()=>viewer?.front?.());
    n.querySelector('[data-shirt-back]')?.addEventListener('click',()=>viewer?.back?.());
    n.querySelector('[data-shirt-spin]')?.addEventListener('click',e=>{
@@ -90,7 +104,9 @@ function open(){
  const teams=leagueTeams();
  const selectedTeam=String(a.shirtTeam||a.team||'').trim();
  const selectedColor=cleanColor(a.shirtColor||'#0b4bd8');
+ const selectedCategory=String(a.shirtCategory||a.category||categoryForTeam(selectedTeam)||'').trim();
  const teamOptions='<option value="">Sin escudo</option>'+teams.map(team=>'<option value="'+esc(team)+'" '+(norm(team)===norm(selectedTeam)?'selected':'')+'>'+esc(team)+'</option>').join('');
+ const categoryOptions='<option value="">Selecciona categoría</option>'+SHIRT_CATEGORIES.map(cat=>'<option value="'+esc(cat)+'" '+(norm(cat)===norm(selectedCategory)?'selected':'')+'>'+esc(cat)+'</option>').join('');
  const n=media().modal('Mi avatar y mi camiseta',
    '<form class="cms-form ljr-profile-form">'+
      '<div class="ljr-profile-preview" aria-label="Vista previa de tu avatar"><div data-avatar-preview></div><span>Así se verá tu perfil</span></div>'+
@@ -106,6 +122,7 @@ function open(){
      '<div class="v893-shirt-customize">'+
        '<label class="v893-shirt-color">Color de la camiseta<span class="v893-color-control"><input name="shirtColor" type="color" value="'+esc(selectedColor)+'" aria-label="Color de la camiseta"><b data-shirt-color-text>'+esc(selectedColor.toUpperCase())+'</b></span></label>'+
        '<label class="v893-shirt-team">Escudo del equipo · 50 equipos<select name="shirtTeam">'+teamOptions+'</select><span class="v893-team-preview" data-shirt-team-preview aria-live="polite"></span></label>'+
+       '<label class="v902-shirt-category">Categoría en la espalda<select name="shirtCategory">'+categoryOptions+'</select><small>Se imprime debajo del número en la tela 3D.</small></label>'+
      '</div>'+
      shirtViewer()+
      '<button type="submit" class="ljr-save-profile">Guardar mi perfil</button>'+
@@ -118,12 +135,13 @@ function open(){
    const shirtNumber=String(form.elements.shirtNumber.value||'').trim();
    const shirtColor=cleanColor(form.elements.shirtColor.value);
    const shirtTeam=String(form.elements.shirtTeam.value||'').trim();
+   const shirtCategory=String(form.elements.shirtCategory.value||categoryForTeam(shirtTeam)||'').trim();
    const logo=teamLogo(shirtTeam);
    const shirtHost=n.querySelector('[data-football-shirt-3d]');
-   window.LJR_FOOTBALL_SHIRT_3D?.update?.(shirtHost,{name:shirtName,number:shirtNumber,color:shirtColor,team:shirtTeam,logo});
+   window.LJR_FOOTBALL_SHIRT_3D?.update?.(shirtHost,{name:shirtName,number:shirtNumber,color:shirtColor,team:shirtTeam,logo,category:shirtCategory});
    const colorText=n.querySelector('[data-shirt-color-text]');if(colorText)colorText.textContent=shirtColor.toUpperCase();
    const badge=n.querySelector('[data-shirt-team-preview]');
-   if(badge)badge.innerHTML=shirtTeam?(logo?'<img src="'+esc(logo)+'" alt=""><span><b>'+esc(shirtTeam)+'</b><small>Escudo plasmado en la tela 3D</small></span>':'<span><b>'+esc(shirtTeam)+'</b><small>Escudo pendiente</small></span>'):'<span><b>Sin escudo</b><small>Puedes elegir cualquiera de los 50 equipos</small></span>';
+   if(badge)badge.innerHTML=shirtTeam?(logo?'<img src="'+esc(logo)+'" alt=""><span><b>'+esc(shirtTeam)+'</b><small>'+esc(shirtCategory||'Sin categoría')+' · escudo al frente</small></span>':'<span><b>'+esc(shirtTeam)+'</b><small>'+esc(shirtCategory||'Sin categoría')+' · escudo pendiente</small></span>'):'<span><b>Sin escudo</b><small>'+esc(shirtCategory||'Selecciona categoría')+'</small></span>';
    n.querySelectorAll('[data-preset]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.preset===preset&&!photo)));
  };
  form.oninput=preview;preview();bindShirtViewer(n);
@@ -137,7 +155,7 @@ function open(){
  form.onsubmit=e=>{
    e.preventDefault();
    const number=Number(form.elements.shirtNumber.value);if(!Number.isInteger(number)||number<0||number>99)return;
-   const update={...a,avatar:photo,avatarPreset:preset,shirtName:form.elements.shirtName.value.trim(),shirtNumber:String(number),shirtColor:cleanColor(form.elements.shirtColor.value),shirtTeam:String(form.elements.shirtTeam.value||'').trim()};
+   const update={...a,avatar:photo,avatarPreset:preset,shirtName:form.elements.shirtName.value.trim(),shirtNumber:String(number),shirtColor:cleanColor(form.elements.shirtColor.value),shirtTeam:String(form.elements.shirtTeam.value||'').trim(),shirtCategory:String(form.elements.shirtCategory.value||'').trim()};
    try{
      const auth=JSON.parse(localStorage.getItem('ljr-auth-v569')||'{}');const i=auth.accounts?.findIndex(x=>x.id===a.id);
      if(i>=0){auth.accounts[i]=update;localStorage.setItem('ljr-auth-v569',JSON.stringify(auth))}
