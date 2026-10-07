@@ -239,3 +239,89 @@ body[data-app-route="profile"] #screen .v569-profile-account-menu > button.logou
     font-size:15px!important;
   }
 }
+
+
+/* V897 — Perfil: la acción de Comunidad usa la misma fila transparente. */
+body[data-app-route="profile"] #screen > .v413-shell.v556-social-transparent{
+  width:auto!important;
+  margin-left:12px!important;
+  margin-right:12px!important;
+  padding-left:0!important;
+  padding-right:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+body[data-app-route="profile"] #screen > .v413-shell.v556-social-transparent .v413-facebook.v523-social-card{
+  width:100%!important;
+  height:64px!important;
+  min-height:64px!important;
+  max-height:64px!important;
+  display:grid!important;
+  grid-template-columns:34px minmax(0,1fr) 18px!important;
+  align-items:center!important;
+  column-gap:12px!important;
+  margin:0!important;
+  padding:0 2px!important;
+  border:0!important;
+  border-top:1px solid rgba(255,255,255,.07)!important;
+  border-bottom:1px solid rgba(255,255,255,.07)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  color:#fff!important;
+}
+body[data-app-route="profile"] #screen > .v413-shell.v556-social-transparent .v413-facebook.v523-social-card .v523-social-icon{
+  grid-column:1!important;
+  width:34px!important;
+  height:34px!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:#cbd3ee!important;
+  font-size:24px!important;
+}
+body[data-app-route="profile"] #screen > .v413-shell.v556-social-transparent .v413-facebook.v523-social-card .v523-social-copy{
+  grid-column:2!important;
+  min-width:0!important;
+  display:block!important;
+  margin:0!important;
+}
+body[data-app-route="profile"] #screen > .v413-shell.v556-social-transparent .v413-facebook.v523-social-card .v523-social-copy small,
+body[data-app-route="profile"] #screen > .v413-shell.v556-social-transparent .v413-facebook.v523-social-card .v523-social-copy em{
+  display:none!important;
+}
+body[data-app-route="profile"] #screen > .v413-shell.v556-social-transparent .v413-facebook.v523-social-card .v523-social-copy b{
+  margin:0!important;
+  color:#fff!important;
+  font:400 16px/1.15 Inter,Roboto,Arial,sans-serif!important;
+}
+body[data-app-route="profile"] #screen > .v413-shell.v556-social-transparent .v413-facebook.v523-social-card > i{
+  grid-column:3!important;
+  justify-self:end!important;
+  width:18px!important;
+  margin:0!important;
+  color:#fff!important;
+  font-size:20px!important;
+  line-height:1!important;
+  opacity:.92!important;
+}
+body[data-app-route="profile"] #screen > .v413-shell.v556-social-transparent .v413-facebook.v523-social-card:active{
+  background:rgba(255,255,255,.045)!important;
+}
+@media(max-width:390px){
+  body[data-app-route="profile"] #screen > .v413-shell.v556-social-transparent .v413-facebook.v523-social-card{
+    height:60px!important;
+    min-height:60px!important;
+    max-height:60px!important;
+    grid-template-columns:32px minmax(0,1fr) 18px!important;
+    column-gap:10px!important;
+  }
+  body[data-app-route="profile"] #screen > .v413-shell.v556-social-transparent .v413-facebook.v523-social-card .v523-social-copy b{
+    font-size:15px!important;
+  }
+}
