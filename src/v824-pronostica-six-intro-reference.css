@@ -256,3 +256,22 @@
     transform:translateY(-22px)!important;
   }
 }
+
+/* V884 — quitar la capa antigua V53 que aparecía un instante antes del diseño V589.
+   No cambia la geometría del diseño final; solo evita el flash de la pantalla duplicada. */
+@media (max-width:1023px){
+  html body[data-app-route="predictorSix"] #screen{
+    background:linear-gradient(180deg,#071d86 0%,#070777 46%,#1017ed 100%)!important;
+  }
+  html body[data-app-route="predictorSix"] #screen > .v53-predictor-six{
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    pointer-events:none!important;
+  }
+  html body[data-app-route="predictorSix"] #screen > [data-v589-root]{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+}
