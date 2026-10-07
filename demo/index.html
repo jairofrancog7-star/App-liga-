@@ -2,7 +2,7 @@
 <html lang="es-MX">
 <head>
   <script src="./src/v776-navigation.js"></script>
-  <meta name="app-build" content="v891-news-single-social">
+  <meta name="app-build" content="v896-news-single-social">
   <style data-ljr-entry-guard>
     html.ljr-preboot #app{visibility:hidden!important}
     html.ljr-preboot body{background:#000144!important}
@@ -521,8 +521,8 @@ html body.v587-fantasy-team-open .v576-field-row.por{
   height:80px!important;align-items:start!important;
 }
 </style>
-  <script type="module" crossorigin src="./assets/index-Bgr3bJO0.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DWerBpBS.css">
+  <script type="module" crossorigin src="./assets/index-C-htro7u.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CmDsdqE0.css">
 </head>
 <body>
 <div id="ljr-boot" aria-label="Cargando Liga Juventino" role="status"><i></i></div>
@@ -802,7 +802,7 @@ html body.v587-fantasy-team-open .v576-field-row.por{
 <script defer src="./src/v776-design-studio.js?v=20261007-v880"></script>
 <script defer src="./src/v776-preferences.js?v=777"></script>
 <script defer src="./src/v777-interface.js?v=20261007-v895-profile-action-rows"></script>
-<script defer src="./src/v777-profile.js?v=20261007-v895-profile-action-rows"></script>
+<script defer src="./src/v777-profile.js?v=20261007-v896-team-crest-color"></script>
   <script defer src="./src/v796-quiz-no-topbar.js?v=20261005-v797-quiz-clean-top"></script>
   <script defer src="./src/v802-css3d-football-reference.js?v=20261005-v802-css3d-football-real-players"></script>
   <script defer src="./src/v803-css3d-animated-lineup.js?v=20261005-v804-fast-complete-field"></script>
@@ -810,6 +810,7 @@ html body.v587-fantasy-team-open .v576-field-row.por{
   <script defer src="./src/v821-predictor-clean-render.js?v=20261005-v822-pronostica-lower-align"></script>
   <script defer src="./src/v849-scorers-old-ranking.js?v=20261006-v850-single-photo-clean"></script>
   <script defer src="./src/v875-review-corrections.js?v=20261007-v884-profile-photo"></script>
+  <script defer src="./src/v889-where-watch-title.js?v=20261007-v889-white-title"></script>
   <script defer src="./src/v892-more-tools-relocation.js?v=20261007-v893-more-tools-relocation"></script>
 
 
@@ -844,11 +845,16 @@ html body.v587-fantasy-team-open .v576-field-row.por{
       function sync(){
         if(route()!=='news')return;
         style();
-        document.querySelectorAll('[data-v74-facebook-source="news"]').forEach(function(n){n.remove()});
-        document.querySelectorAll('[data-v411-zone="news"] .v411-social').forEach(function(n){n.remove()});
+        document.querySelectorAll('[data-v74-facebook-source="news"],[data-v411-zone="news"] .v411-social,.v74-news-merged').forEach(function(n){n.remove()});
         var social=document.querySelector('[data-v412-screen="news"] .v412-news-socials');
         if(!social)return;
-        social.querySelectorAll('.v74-news-merged,.v891-news-social-extra').forEach(function(n){n.remove()});
+
+        var blocks=[].slice.call(social.querySelectorAll('.v891-news-social-extra'));
+        if(blocks.length){
+          blocks.slice(1).forEach(function(n){n.remove()});
+          return;
+        }
+
         var extra=document.createElement('div');
         extra.className='v891-news-social-extra';
         extra.innerHTML='<p>Facebook oficial · Tablas, calendarios, avisos, campeones, finales, historia y fotografías de la Liga.</p><div class="v891-news-tags"><span>Tablas</span><span>Calendarios</span><span>Avisos</span><span>Campeones</span><span>Historia</span></div><div class="v891-news-actions"><button type="button" data-v891-open>Ver publicaciones</button><button type="button" data-v891-share>Compartir</button></div>';
