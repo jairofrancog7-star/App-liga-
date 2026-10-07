@@ -973,3 +973,49 @@
     }
   }
 }
+
+
+/* V886 — últimos 5 partidos sólo desde el icono de la tarjeta. */
+@media(max-width:1023px){
+  html body[data-app-route="predictorSix"] .v589-card-head .v851-card-form{
+    position:relative!important;
+    box-sizing:border-box!important;
+    width:38px!important;
+    height:38px!important;
+    min-width:38px!important;
+    min-height:38px!important;
+    margin:0!important;
+    padding:5px!important;
+    display:grid!important;
+    place-items:center!important;
+    border:0!important;
+    border-radius:10px!important;
+    background:transparent!important;
+    color:#fff!important;
+    opacity:1!important;
+    cursor:pointer!important;
+    touch-action:manipulation!important;
+    z-index:4!important;
+  }
+  html body[data-app-route="predictorSix"] .v589-card-head .v851-card-form svg{
+    width:26px!important;
+    height:26px!important;
+    display:block!important;
+    fill:none!important;
+    stroke:currentColor!important;
+    stroke-width:3!important;
+    stroke-linecap:round!important;
+    stroke-linejoin:round!important;
+    filter:drop-shadow(0 0 4px rgba(255,255,255,.2))!important;
+  }
+  html body[data-app-route="predictorSix"] .v589-card-head .v851-card-form:active{
+    transform:scale(.94)!important;
+    background:rgba(255,255,255,.08)!important;
+  }
+  html body[data-app-route="predictorSix"] .prediction-sheet .v589-form{
+    display:none!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-overlay{
+    z-index:2147483647!important;
+  }
+}
