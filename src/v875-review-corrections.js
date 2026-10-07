@@ -73,7 +73,7 @@ function meeting(root){
 }
 function profiles(){
  if(route()!=='video')return;
- const icon='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>';
+ const icon='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"></circle><circle cx="12" cy="8.2" r="2.8"></circle><path d="M5.5 19c1.5-3.2 3.7-4.7 6.5-4.7s5 1.5 6.5 4.7"></path></svg>';
  document.querySelectorAll('.v17-tv-profile').forEach(button=>{
   if(button.querySelector('img')||!button.querySelector('svg'))button.innerHTML=icon;
   button.setAttribute('aria-label','Perfil');
