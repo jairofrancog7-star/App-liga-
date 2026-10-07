@@ -2688,7 +2688,7 @@
           "Equipos": 11,
           "Partidos Jugados": 0,
           "Partidos Pendientes": 55,
-          "Jugadores": 14
+          "Jugadores": 24
         },
         "current_cedulas": [],
         "logo_candidates": [
@@ -2738,7 +2738,7 @@
         "Equipos": 11,
         "Partidos Jugados": 0,
         "Partidos Pendientes": 55,
-        "Jugadores": 14
+        "Jugadores": 24
       },
       "standings": [],
       "scorers": [
@@ -9067,92 +9067,92 @@
             ],
             [
               "2",
-              "Miguel Antonio Llanos Aguirre",
-              "DEP. ZAPATA",
-              "2"
-            ],
-            [
-              "3",
-              "Giovanni Sanchez Delgado",
-              "CELTICOS",
-              "2"
-            ],
-            [
-              "4",
               "JOSE EMMANUEL MARTINEZ MENDOZA",
               "TAVERA FC",
               "2"
             ],
             [
-              "5",
-              "Francisco Javier Avila Huerta",
-              "TAVERA FC",
+              "3",
+              "Miguel Antonio Llanos Aguirre",
+              "DEP. ZAPATA",
               "2"
             ],
             [
-              "6",
+              "4",
+              "Giovanni Sanchez Delgado",
+              "CELTICOS",
+              "2"
+            ],
+            [
+              "5",
               "Moises Gudalupe Arce Gutierrez",
               "TAVERA FC",
               "2"
             ],
             [
+              "6",
+              "Francisco Javier Avila Huerta",
+              "TAVERA FC",
+              "2"
+            ],
+            [
               "7",
-              "Alejandro Tellez Campos",
-              "SAN JOSE JRS",
-              "1"
-            ],
-            [
-              "8",
-              "Jose de Jesus Garcia Villafuerte",
-              "SAN JULIAN",
-              "1"
-            ],
-            [
-              "9",
-              "Luis Julian Negrete Cervantes",
-              "PACHANGAS FC",
-              "1"
-            ],
-            [
-              "10",
-              "Juan Jesus Ojeda Ortega",
-              "CELTICOS",
-              "1"
-            ],
-            [
-              "11",
-              "Pablo Zavala Frias",
-              "SAN JULIAN",
-              "1"
-            ],
-            [
-              "12",
-              "Jose Guadalupe Flores Peñaloza",
-              "CELTICOS",
-              "1"
-            ],
-            [
-              "13",
               "Juan Yasbeth Landin Ramirez",
               "SAN JOSE JRS",
               "1"
             ],
             [
-              "14",
+              "8",
+              "BENJAMIN FIGUEROA ARELLANO",
+              "DEP. LA LUZ",
+              "1"
+            ],
+            [
+              "9",
+              "Honorio Ochoa Aguilar",
+              "TAVERA FC",
+              "1"
+            ],
+            [
+              "10",
+              "Luis Julian Negrete Cervantes",
+              "PACHANGAS FC",
+              "1"
+            ],
+            [
+              "11",
+              "Alejandro Tellez Campos",
+              "SAN JOSE JRS",
+              "1"
+            ],
+            [
+              "12",
               "Gilberto Yañez Ramirez",
               "SAN JULIAN",
               "1"
             ],
             [
-              "15",
+              "13",
               "Antonio Alejandro Guerrero Villegas",
               "SAN JULIAN",
               "1"
             ],
             [
-              "16",
+              "14",
+              "Jose de Jesus Garcia Villafuerte",
+              "SAN JULIAN",
+              "1"
+            ],
+            [
+              "15",
               "Bryan Doñates Zavala",
               "SAN JOSE JRS",
+              "1"
+            ],
+            [
+              "16",
+              "Kevin Gustavo Ojeda Ortega",
+              "CELTICOS",
               "1"
             ],
             [
@@ -9163,25 +9163,25 @@
             ],
             [
               "18",
-              "Alan Eduardo Meji Damian",
+              "Juan Jesus Ojeda Ortega",
               "CELTICOS",
               "1"
             ],
             [
               "19",
-              "BENJAMIN FIGUEROA ARELLANO",
-              "DEP. LA LUZ",
+              "Pablo Zavala Frias",
+              "SAN JULIAN",
               "1"
             ],
             [
               "20",
-              "Honorio Ochoa Aguilar",
-              "TAVERA FC",
+              "Jose Guadalupe Flores Peñaloza",
+              "CELTICOS",
               "1"
             ],
             [
               "21",
-              "Kevin Gustavo Ojeda Ortega",
+              "Alan Eduardo Meji Damian",
               "CELTICOS",
               "1"
             ],
@@ -14418,51 +14418,81 @@
         },
         {
           "id": 389,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/389/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/389/",
           "title": "Cédula Arbitral - TAVERA FC (Segunda Fuerza) vs PACHANGAS FC (Segunda Fuerza)",
           "local": "TAVERA FC",
           "away": "PACHANGAS FC",
-          "category": "Segunda Fuerza"
+          "category": "Segunda Fuerza",
+          "date": "20/09/2026 12:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 390,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/390/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/390/",
           "title": "Cédula Arbitral - SAN JUAN FC (Segunda Fuerza) vs TAPATIO (Segunda Fuerza)",
           "local": "SAN JUAN FC",
           "away": "TAPATIO",
-          "category": "Segunda Fuerza"
+          "category": "Segunda Fuerza",
+          "date": "20/09/2026 08:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 391,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/391/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/391/",
           "title": "Cédula Arbitral - SAN JULIAN (Segunda Fuerza) vs DEP. LA LUZ (Segunda Fuerza)",
           "local": "SAN JULIAN",
           "away": "DEP. LA LUZ",
-          "category": "Segunda Fuerza"
+          "category": "Segunda Fuerza",
+          "date": "20/09/2026 10:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 392,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/392/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/392/",
           "title": "Cédula Arbitral - SAN JOSE JRS (Segunda Fuerza) vs BARZA (Segunda Fuerza)",
           "local": "SAN JOSE JRS",
           "away": "BARZA",
-          "category": "Segunda Fuerza"
+          "category": "Segunda Fuerza",
+          "date": "20/09/2026 12:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 393,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/393/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/393/",
           "title": "Cédula Arbitral - SAN ANTONIO FC (Segunda Fuerza) vs CELTICOS (Segunda Fuerza)",
           "local": "SAN ANTONIO FC",
           "away": "CELTICOS",
-          "category": "Segunda Fuerza"
+          "category": "Segunda Fuerza",
+          "date": "20/09/2026 10:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 394,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/394/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/394/",
           "title": "Cédula Arbitral - DEP. NOPALERO (Segunda Fuerza) vs DEP. ZAPATA (Segunda Fuerza)",
           "local": "DEP. NOPALERO",
           "away": "DEP. ZAPATA",
-          "category": "Segunda Fuerza"
+          "category": "Segunda Fuerza",
+          "date": "20/09/2026 08:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         }
       ],
       "cedulas_scanned": [
@@ -20532,51 +20562,81 @@
         },
         {
           "id": 215,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/215/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/215/",
           "title": "Cédula Arbitral - LA CANCHITA DEPORTES (Intermedia) vs ATL. GALEANA (Intermedia)",
           "local": "LA CANCHITA DEPORTES",
           "away": "ATL. GALEANA",
-          "category": "Intermedia"
+          "category": "Intermedia",
+          "date": "20/09/2026 10:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 216,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/216/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/216/",
           "title": "Cédula Arbitral - ALDAMA FC (Intermedia) vs MALVINAS (Intermedia)",
           "local": "ALDAMA FC",
           "away": "MALVINAS",
-          "category": "Intermedia"
+          "category": "Intermedia",
+          "date": "20/09/2026 10:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 217,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/217/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/217/",
           "title": "Cédula Arbitral - CAPIBARAS (Intermedia) vs LA CUADRILLA (Intermedia)",
           "local": "CAPIBARAS",
           "away": "LA CUADRILLA",
-          "category": "Intermedia"
+          "category": "Intermedia",
+          "date": "20/09/2026 10:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 218,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/218/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/218/",
           "title": "Cédula Arbitral - MAZACOTES FC (Intermedia) vs DEP. MARAVILLAS (Intermedia)",
           "local": "MAZACOTES FC",
           "away": "DEP. MARAVILLAS",
-          "category": "Intermedia"
+          "category": "Intermedia",
+          "date": "20/09/2026 08:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 219,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/219/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/219/",
           "title": "Cédula Arbitral - POPULARES (Intermedia) vs PROMESAS FC (Intermedia)",
           "local": "POPULARES",
           "away": "PROMESAS FC",
-          "category": "Intermedia"
+          "category": "Intermedia",
+          "date": "20/09/2026 08:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 220,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/220/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/220/",
           "title": "Cédula Arbitral - OSASUNA (Intermedia) vs SAN ANTONIO JRS (Intermedia)",
           "local": "OSASUNA",
           "away": "SAN ANTONIO JRS",
-          "category": "Intermedia"
+          "category": "Intermedia",
+          "date": "20/09/2026 12:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         }
       ],
       "cedulas_scanned": [
