@@ -90,12 +90,18 @@ function openFormSheet(team){
  const root=$('[data-v589-root]');
  if(root)root.insertAdjacentHTML('beforeend',formSheet(team));
 }
+function openCardForm(id){
+ const g=games.find(x=>x.id===id);
+ if(!g)return;
+ ui.game=id;
+ closeOverlay();
+ const root=$('[data-v589-root]');
+ if(root)root.insertAdjacentHTML('beforeend',formSheet(g.home));
+}
 function closeFormSheet(){
  const o=$('[data-v851-form-overlay]');
  if(o)o.remove();
- const g=games.find(x=>x.id===ui.game);
- const root=$('[data-v589-root]');
- if(root&&g&&!$('[data-v589-overlay]',root))root.insertAdjacentHTML('beforeend',predictionSheet(g));
+ ui.game=null;
 }
 
 let ui={view:'intro',introSlide:0,journey:0,game:null,tempHome:0,tempAway:0,menu:false};
@@ -216,7 +222,7 @@ function savedText(id){
 function card(g,i){
   const saved=savedText(g.id);
   return '<article class="v589-match-card" data-v589-card="'+g.id+'">'+
-    '<small class="v871-game-category">'+esc(({'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'})[g.cid])+'</small><div class="v589-card-head"><button type="button" data-v589-info aria-label="Cómo conseguir puntos">ⓘ</button><b>'+esc(fixtureDate(g))+', '+esc(g.time)+'</b><span>▥</span></div>'+
+    '<small class="v871-game-category">'+esc(({'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'})[g.cid])+'</small><div class="v589-card-head"><button type="button" data-v589-info aria-label="Cómo conseguir puntos">ⓘ</button><b>'+esc(fixtureDate(g))+', '+esc(g.time)+'</b><button type="button" class="v851-card-form" data-v851-card-form="'+g.id+'" aria-label="Ver últimos 5 partidos"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M6 21V13M14 21V7M22 21V11"/></svg></button></div>'+
     '<div class="v589-teams">'+
       '<div class="v589-team">'+logo(g.homeLogo,g.home)+'<b>'+esc(g.home)+'</b></div>'+
       '<button type="button" class="v589-score-pair" data-v589-open="'+g.id+'" aria-label="Pronosticar '+esc(g.home)+' contra '+esc(g.away)+'">'+
@@ -269,7 +275,6 @@ function predictionSheet(g){
       '<div class="v589-popular modal"><small>Pronósticos populares</small><div><span>1 - 0</span><span>1 - 1</span><span>0 - 1</span></div><div class="v589-pct"><em>—</em><em>—</em><em>—</em></div></div>'+
       '<button type="button" class="v589-primary save" data-v589-save>Guardar el pronóstico</button>'+
       '<button type="button" class="v851-joker '+(read().jokers?.[journeys[ui.journey-1]?.round]===g.id?'active':'')+'" data-v851-joker="'+g.id+'">Comodín · duplica tus puntos</button>'+
-      '<div class="v589-form">'+formButton(g.home,'home')+formButton(g.away,'away')+'</div>'+
     '</section></div>';
 }
 function pointsSheet(){
@@ -389,6 +394,8 @@ function handleClick(e){
   }
   const step=t.getAttribute('data-v851-intro-step');
   if(step!==null){e.preventDefault();e.stopPropagation();ui.introSlide=Math.max(0,Math.min(3,ui.introSlide+Number(step)));render();return}
+  const cardForm=t.getAttribute('data-v851-card-form');
+  if(cardForm!==null){e.preventDefault();e.stopPropagation();openCardForm(cardForm);return}
   const form=t.getAttribute('data-v851-form');
   if(form!==null){e.preventDefault();e.stopPropagation();openFormSheet(form);return}
   const joker=t.getAttribute('data-v851-joker');
