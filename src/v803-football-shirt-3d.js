@@ -100,34 +100,42 @@ function drawKitHalf(ctx,left,base){
   ctx.restore();
 }
 
-function removeConnectedLogoBackground(canvas,ctx){
+function removeConnectedLogoBackground(canvas,ctx,rect){
   let image;
   try{image=ctx.getImageData(0,0,canvas.width,canvas.height)}catch(_){return}
   const d=image.data,w=canvas.width,h=canvas.height;
-  const sample=(x,y)=>{const i=(y*w+x)*4;return d[i+3]>20?[d[i],d[i+1],d[i+2]]:null};
+  const x0=Math.max(0,Math.floor(rect?.x||0)),y0=Math.max(0,Math.floor(rect?.y||0));
+  const x1=Math.min(w-1,Math.ceil((rect?.x||0)+(rect?.w||w))-1);
+  const y1=Math.min(h-1,Math.ceil((rect?.y||0)+(rect?.h||h))-1);
+  if(x1<=x0||y1<=y0)return;
+  const px=(x,y)=>{const i=(y*w+x)*4;return [d[i],d[i+1],d[i+2],d[i+3]]};
+  const corners=[px(x0,y0),px(x1,y0),px(x0,y1),px(x1,y1)];
+  const opaqueCorners=corners.filter(p=>p[3]>220);
+  // PNG/WebP ya transparente: no tocar sus colores internos.
+  if(opaqueCorners.length<3)return;
   const palette=[
-    sample(0,0),sample(w-1,0),sample(0,h-1),sample(w-1,h-1),
-    sample(Math.floor(w/2),0),sample(Math.floor(w/2),h-1),
-    sample(0,Math.floor(h/2)),sample(w-1,Math.floor(h/2))
-  ].filter(Boolean);
+    px(x0,y0),px(x1,y0),px(x0,y1),px(x1,y1),
+    px((x0+x1)>>1,y0),px((x0+x1)>>1,y1),
+    px(x0,(y0+y1)>>1),px(x1,(y0+y1)>>1)
+  ].filter(p=>p[3]>180);
   if(!palette.length)return;
   const close=i=>{
     if(d[i+3]<=20)return false;
     for(const p of palette){
       const dr=d[i]-p[0],dg=d[i+1]-p[1],db=d[i+2]-p[2];
-      if(dr*dr+dg*dg+db*db<105*105)return true;
+      if(dr*dr+dg*dg+db*db<82*82)return true;
     }
     return false;
   };
   const seen=new Uint8Array(w*h),q=[];
   const push=(x,y)=>{
-    if(x<0||y<0||x>=w||y>=h)return;
+    if(x<x0||y<y0||x>x1||y>y1)return;
     const n=y*w+x;if(seen[n])return;
     const i=n*4;if(!close(i))return;
     seen[n]=1;q.push(n);
   };
-  for(let x=0;x<w;x++){push(x,0);push(x,h-1)}
-  for(let y=0;y<h;y++){push(0,y);push(w-1,y)}
+  for(let x=x0;x<=x1;x++){push(x,y0);push(x,y1)}
+  for(let y=y0;y<=y1;y++){push(x0,y);push(x1,y)}
   for(let k=0;k<q.length;k++){
     const n=q[k],x=n%w,y=(n/w)|0,i=n*4;
     d[i+3]=0;
@@ -145,7 +153,7 @@ function drawLogoIntoFabric(ctx,img,x,y,maxW,maxH){
   b.drawImage(img,bx,by,w,h);
   // Los archivos históricos de Liga/categorías pueden venir con fondo negro/blanco
   // aunque la extensión diga PNG/WebP. Quitamos sólo el fondo conectado al borde.
-  removeConnectedLogoBackground(badge,b);
+  removeConnectedLogoBackground(badge,b,{x:bx,y:by,w,h});
 
   // Put the textile grain inside the crest alpha itself so it reads as sublimated/printed,
   // not as a flat DOM image hovering over the jersey.
