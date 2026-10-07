@@ -173,8 +173,8 @@ async function systemNotify(e){
       const targetRoute=String(e.route||'competition');
       const n=new Notification(title,{
         body,tag:'ljr-'+e.id,renotify:true,
-        icon:e.homeLogo||'./icons/icon-192.png',
-        badge:'./icons/icon-192.png',
+        icon:e.homeLogo||'./assets/reference/predictor-v36/liga-crest-white.webp',
+        badge:'./assets/reference/predictor-v36/liga-crest-white.webp',
         vibrate:prefs().vibration!==false?[220,100,220]:[]
       });
       n.onclick=()=>{try{window.focus();location.hash='#/'+targetRoute.replace(/^#\/?/,'').replace(/^\//,'');n.close()}catch(_){}};
@@ -199,7 +199,8 @@ async function sendRichNotification(input={}){
       if(!ok)return false;
     }
     try{
-      await NativeNotifications.notifyRich({id,title,body,imageUrl,iconUrl,group,route});
+      const asNativeImage=async source=>{if(!source.startsWith('blob:'))return source;const blob=await fetch(source).then(r=>r.blob());return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result));reader.onerror=()=>reject(Error('No se pudo leer la imagen.'));reader.readAsDataURL(blob)})};
+      await NativeNotifications.notifyRich({id,title,body,imageUrl:await asNativeImage(imageUrl),iconUrl:await asNativeImage(iconUrl),group,route});
       return true;
     }catch(_){return false}
   }
@@ -213,12 +214,12 @@ async function sendRichNotification(input={}){
       body,
       tag:'ljr-rich-'+id,
       renotify:true,
-      icon:iconUrl||'./icons/icon-192.png',
+      icon:iconUrl||'./assets/reference/predictor-v36/liga-crest-white.webp',
       image:imageUrl||undefined,
-      badge:'./icons/icon-192.png',
+      badge:'./assets/reference/predictor-v36/liga-crest-white.webp',
       vibrate:prefs().vibration!==false?[220,100,220]:[]
     });
-    n.onclick=()=>{try{window.focus();location.hash='#/notifications';n.close()}catch(_){}};
+    n.onclick=()=>{try{window.focus();location.hash='#/'+route.replace(/^#\/?/,'').replace(/^\//,'');n.close()}catch(_){}};
     return true;
   }catch(_){return false}
 }
@@ -260,7 +261,7 @@ async function sendSampleRich(){
   return sendRichNotification({
     title:'Liga Juventino Rosas',
     body:'Notificación con imagen grande, agrupación y vista expandible activada.',
-    iconUrl:'./icons/icon-192.png',
+    iconUrl:'./assets/reference/predictor-v36/liga-crest-white.webp',
     group:'liga-pruebas'
   });
 }

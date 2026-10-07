@@ -16,6 +16,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Build;
 import android.text.TextPaint;
+import android.util.Base64;
 
 import com.getcapacitor.JSObject;
 import com.getcapacitor.PermissionState;
@@ -275,6 +276,24 @@ public class LigaNotificationsPlugin extends Plugin {
         if (raw == null || raw.trim().isEmpty()) return null;
         HttpURLConnection conn = null;
         try {
+            if (raw.startsWith("data:image/")) {
+                int comma = raw.indexOf(',');
+                if (comma < 0 || !raw.substring(0, comma).endsWith(";base64") || raw.length() > 16 * 1024 * 1024) return null;
+                byte[] bytes = Base64.decode(raw.substring(comma + 1), Base64.DEFAULT);
+                return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            }
+            String localPath = raw;
+            if (raw.startsWith("http://localhost/") || raw.startsWith("https://localhost/")) {
+                localPath = new URL(raw).getPath();
+            }
+            while (localPath.startsWith("./")) localPath = localPath.substring(2);
+            while (localPath.startsWith("/")) localPath = localPath.substring(1);
+            localPath = localPath.split("\\?", 2)[0];
+            if (!localPath.contains("..") && (localPath.startsWith("assets/") || localPath.startsWith("icons/"))) {
+                try (InputStream in = getContext().getAssets().open("public/" + localPath)) {
+                    return BitmapFactory.decodeStream(in);
+                }
+            }
             URL url = new URL(raw);
             conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(5500);

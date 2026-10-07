@@ -10,11 +10,11 @@ function cleanText(root){
  const walk=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;
  while((n=walk.nextNode())){
   if(n.parentElement?.closest('script,style,textarea,input,[contenteditable="true"]'))continue;
-  const old=n.nodeValue;let value=old.replace(/\badmin\s*fut\b/gi,'Liga Juventino Rosas').replace(/\badmin\s*food\b/gi,'Liga Juventino Rosas');
+  const old=n.nodeValue;let value=old.replace(/\badmin\s*f[uú]t\b/gi,'Liga Juventino Rosas').replace(/\badmin\s*food\b/gi,'Liga Juventino Rosas');
   if(n.parentElement?.closest('.v35-history-page'))value=value.replace(/\b(recuperad[oa]s?|extraíd[oa]s?)\b/gi,'').replace(/\bdel ZIP\b/gi,'').replace(/\baño por precisar\b/gi,'Histórico').replace(/\bfuente\s*:[^.]*\.?/gi,'').replace(/\b(fuente|fuentes)\b/gi,'');
   if(value!==old)n.nodeValue=value;
  }
- root.querySelectorAll('[title],[aria-label]').forEach(el=>{for(const key of ['title','aria-label']){const value=el.getAttribute(key);if(value&&/admin\s*(fut|food)/i.test(value))el.setAttribute(key,value.replace(/admin\s*(fut|food)/gi,'Liga Juventino Rosas'))}});
+ root.querySelectorAll('[title],[aria-label]').forEach(el=>{for(const key of ['title','aria-label']){const value=el.getAttribute(key);if(value&&/admin\s*(f[uú]t|food)/i.test(value))el.setAttribute(key,value.replace(/admin\s*(f[uú]t|food)/gi,'Liga Juventino Rosas'))}});
 }
 function history(root){
  root.querySelectorAll('.v35-history-sources,.v358-stats-source-note,.v358-stat-source,.v35-archive-method').forEach(el=>el.hidden=true);
@@ -39,11 +39,12 @@ function studioEntry(root){
  if(!['more','leagueTools','publicationCenter','ligaControl','jrControl','publications'].includes(route()))return;
  if(root.querySelector('[data-v875-studio]'))return;
  const box=document.createElement('section');box.className='v875-studio-entry';
- box.innerHTML='<span>DISEÑOS NUEVOS PARA TU LIGA</span><h2>Generador de publicaciones</h2><p>Comunicados, jornadas, tablas, eliminatorias, felicitaciones, reclutamiento y escudos. Elige un estilo, completa los datos y genera tu próxima publicación en HD.</p><div><button type="button" data-v875-studio>Crear diseño nuevo</button><button type="button" data-v875-canva>Crear con Canva IA</button><button type="button" data-v875-results>Resultados PNG</button><button type="button" data-v875-bulletins>Boletines y avisos</button></div>';
+ box.innerHTML='<span>DISEÑOS NUEVOS PARA TU LIGA</span><h2>Generador de publicaciones</h2><p>Comunicados, jornadas, tablas, eliminatorias, felicitaciones, reclutamiento y escudos. Créalo aquí con el editor local: elige un estilo, completa los datos y descarga un PNG HD. También puedes crear notificaciones con fotos y marcador.</p><div><button type="button" data-v875-studio>Crear diseño nuevo</button><button type="button" data-v880-notification>Crear notificación moderna</button><button type="button" data-v875-canva>Canva IA · opción adicional</button><button type="button" data-v875-results>Resultados PNG</button><button type="button" data-v875-bulletins>Boletines y avisos</button></div>';
  const host=root.querySelector('.v726-tools-page,.v105-more-content,.v105-more-page,.v561-league')||root;host.prepend(box);
  box.querySelector('[data-v875-results]').onclick=()=>{localStorage.setItem('v561-publication-kind','results');window.LJR_MAIN_ROUTE?.go('publicationCenter')};
  box.querySelector('[data-v875-bulletins]').onclick=()=>window.LJR_MAIN_ROUTE?.go('publications');
  box.querySelector('[data-v875-studio]').onclick=()=>window.LJR_DESIGN_STUDIO?.open();
+ box.querySelector('[data-v880-notification]').onclick=()=>window.LJR_V852_RICH_NOTIFICATIONS?.openAdmin();
  box.querySelector('[data-v875-canva]').onclick=()=>window.LJR_DESIGN_STUDIO?.open('Comunicado');
 }
 function poll(root){
@@ -71,7 +72,7 @@ function meeting(root){
  wrap.querySelectorAll('[data-add-topic]').forEach(button=>button.onclick=()=>{const agenda=form.querySelector('[data-x="agenda"]');if(agenda&&!agenda.value.includes(button.dataset.addTopic))agenda.value+='\n• '+button.dataset.addTopic});
 }
 function profiles(){
- const image=window.LJR_CHROME?.avatar?.()||'<img src="./assets/reference/predictor-v36/liga-crest-white.webp" alt="Liga Juventino Rosas">';
+ const image='<img src="./assets/reference/predictor-v36/liga-crest-white.webp" alt="Liga Juventino Rosas">';
  document.querySelectorAll('.v17-tv-profile,.v408-tv-profile,.v160-tv-profile').forEach(button=>{if(button.innerHTML!==image)button.innerHTML=image});
 }
 function liveCard(root){

@@ -20,3 +20,13 @@ test('invalid model output does not overwrite the administrator draft', () => {
  assert.throws(()=>readDraft([{generated_text:'No puedo responder'}]),/propuesta válida/);
  assert.throws(()=>readDraft([{generated_text:'{"title":"Algo"}'}]),/propuesta válida/);
 });
+
+test('local AI can propose an allowed visual style without changing match data', () => {
+ const draft=readDraft([{generated_text:JSON.stringify({title:'GRAN FINAL',body:'Domingo en el campo.',style:'gold',accent:'#F2C45A',logoShape:'circle',logoSymbol:'star',home:'Inventado',scoreHome:9})}]);
+ assert.deepEqual(draft,{title:'GRAN FINAL',body:'Domingo en el campo.',style:'gold',accent:'#F2C45A',logoShape:'circle',logoSymbol:'star'});
+ const unsafe=readDraft([{generated_text:JSON.stringify({title:'AVISO',body:'Información.',style:'unknown',accent:'url(x)',logoShape:'triangle',logoSymbol:'script'})}]);
+ assert.deepEqual(unsafe,{title:'AVISO',body:'Información.'});
+ const brief=JSON.parse(designMessages({participants:'Barza\nOsasuna',style:'neon',logoSymbol:'star'})[1].content);
+ assert.equal(brief.participants,'Barza\nOsasuna');
+ assert.equal(brief.style,'neon');
+});

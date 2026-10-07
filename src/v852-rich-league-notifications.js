@@ -12,13 +12,16 @@ const KIND='notification';
 const SEEN='ljr-rich-cms-seen-v852';
 const INIT='ljr-rich-cms-init-v852';
 const EXPANDED='ljr-rich-expanded-v852';
-const DEFAULT_ICON='./icons/icon-192.png';
+const DEFAULT_ICON='./assets/reference/predictor-v36/liga-crest-white.webp';
 const ADMIN_LOCAL='4121715599';
 const ADMIN_E164='524121715599';
 const FACEBOOK_PAGE='https://www.facebook.com/share/19SsGuzsRi/';
 const FACEBOOK_WEBHOOK_KEY='ljr-v713-facebook-webhook';
 const AI_WEBHOOK_KEY='ljr-v855-ai-webhook';
+const LOCAL_AI_WORKER=new URL('../design-ai-worker.js?v=20261007-v880',document.currentScript.src);
+let localAI=null,localAITimer=0;
 let renderTimer=0,syncing=false,lastRecords=[],scheduledSyncing=false;
+const renderedFeeds=new WeakMap();
 let studio={generatedFile:null,generatedUrl:'',reviewImageUrl:'',reviewed:false,previewFileUrl:'',iconFileUrl:''};
 
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -91,14 +94,7 @@ async function syncPublished(){
       seen[rec.id]=rev;changed=true;
       const p=payload(rec);
       if(p.notifyDevice!==false&&window.LJR_V840_NOTIFICATIONS?.sendRich){
-        await window.LJR_V840_NOTIFICATIONS.sendRich({
-          title:String(p.title||'Liga Juventino Rosas'),
-          body:String(p.body||'Nueva actualización de la Liga.'),
-          imageUrl:String(p.image||''),
-          iconUrl:String(iconFor(p)||DEFAULT_ICON),
-          group:'liga-'+String(p.type||'avisos').toLowerCase().replace(/[^a-z0-9]+/g,'-'),
-          route:safeRoute(p.route||'notifications')
-        });
+        await window.LJR_V840_NOTIFICATIONS.sendRich(deviceNotice(p));
       }
     }
     if(!initialized){localStorage.setItem(INIT,'1');changed=true}
@@ -109,6 +105,7 @@ async function syncPublished(){
 
 function recordMarkup(rec){
   const p=payload(rec),expanded=read(EXPANDED,{})[rec.id]===true;
+  if(p.presentation!=='classic')return modernMarkup(p,rec.id,expanded,timeText(rec));
   const img=String(p.image||''),icon=String(iconFor(p)||DEFAULT_ICON);
   const accent=color(p.accent,'#52e8f3'),bg=color(p.background,'#08194f'),tx=color(p.textColor,'#ffffff');
   const style='--v853-accent:'+accent+';--v853-card-bg:'+bg+';--v853-card-text:'+tx;
@@ -130,6 +127,25 @@ function recordMarkup(rec){
     '</div>':'')+
   '</article>';
 }
+function teamLogo(name){return window.LJR_SEASON_LOGOS?.get?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name)||''}
+function modernMarkup(p,id,expanded=true,when='ahora'){
+ const match=p.presentation==='match',icon=iconFor(p),events=String(p.events||'').split('\n').map(s=>s.trim()).filter(Boolean).slice(0,5);
+ const team=(name,key)=>'<span><img src="'+esc(p[key]||teamLogo(name)||DEFAULT_ICON)+'" alt=""><b>'+esc(name||'Equipo')+'</b></span>';
+ return '<article class="v880-notice '+(expanded?'is-expanded':'')+'" data-v852-record="'+esc(id)+'">'+
+  '<button type="button" class="v880-notice-head" data-v852-toggle="'+esc(id)+'" aria-expanded="'+expanded+'"><img src="'+esc(icon)+'" alt="Liga Juventino Rosas"><span>Liga Juventino Rosas <small>· '+esc(when)+'</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+(expanded?'M6 15l6-6 6 6':'M6 9l6 6 6-6')+'"/></svg></button>'+
+  '<div class="v880-notice-copy"><h3>'+esc(p.title||'Noticias de la liga')+'</h3><p>'+esc(p.body||'')+'</p></div>'+
+  (match?'<div class="v880-notice-score">'+team(p.home,'homeLogo')+'<strong>'+esc(p.scoreHome??0)+' – '+esc(p.scoreAway??0)+'<small>'+esc(p.minute?String(p.minute)+"′":'Resultado directo')+'</small></strong>'+team(p.away,'awayLogo')+'</div>':'')+
+  (expanded?'<div class="v880-notice-details">'+(match&&events.length?'<div class="v880-notice-events">'+events.map(e=>'<div><span aria-hidden="true">⚽</span><p>'+esc(e)+'</p></div>').join('')+'</div>':'')+
+   (p.image?'<img class="v880-notice-photo" src="'+esc(p.image)+'" alt="'+esc(p.title||'Liga')+'">':'')+
+   (p.playerPhoto?'<img class="v880-player-photo" src="'+esc(p.playerPhoto)+'" alt="'+esc(p.player||'Jugador')+'">':'')+
+   (id==='preview'?'':'<button type="button" class="v852-open" data-v852-open="'+esc(safeRoute(p.route))+'">Ver detalles</button>')+'</div>':'')+'</article>';
+}
+function presentationData(d){
+ const p={presentation:['photo','match','classic'].includes(d.presentation)?d.presentation:'photo',home:String(d.home||'').trim().slice(0,100),away:String(d.away||'').trim().slice(0,100),minute:String(d.minute||'').slice(0,3),events:String(d.events||'').slice(0,1000),player:String(d.player||'').slice(0,100),playerPhoto:String(d.playerPhoto||'').trim()};
+ for(const key of ['scoreHome','scoreAway']){const n=Number(d[key]||0);if(!Number.isInteger(n)||n<0||n>99)throw Error('Usa marcadores entre 0 y 99.');p[key]=n}
+ if(p.presentation==='match'&&(!p.home||!p.away))throw Error('Completa los dos equipos para la notificación de partido.');return p;
+}
+function deviceNotice(p){return {title:String(p.title||'Liga Juventino Rosas'),body:p.presentation==='match'?[p.home+' '+(p.scoreHome??0)+' – '+(p.scoreAway??0)+' '+p.away,p.minute?String(p.minute)+"′":'',p.body,p.events].filter(Boolean).join('\n'):String(p.body||''),imageUrl:String(p.image||''),iconUrl:String(p.icon||DEFAULT_ICON),group:p.presentation==='match'?'liga-partido-'+slug(p.home+'-'+p.away):'liga-'+String(p.type||'avisos'),route:safeRoute(p.route)}}
 function feedMarkup(){
   const list=records().slice(0,12),isAdmin=!!media()?.admin;
   return '<section class="v852-feed" data-v852-feed>'+
@@ -151,14 +167,16 @@ function host(){
 function render(){
   if(route()!=='notifications')return;
   const h=host();if(!h)return;
-  h.querySelector('[data-v852-feed]')?.remove();
+  const old=h.querySelector('[data-v852-feed]'),signature=JSON.stringify([records().slice(0,12).map(r=>[r,timeText(r)]),read(EXPANDED,{}),!!media()?.admin]);
+  if(old&&renderedFeeds.get(old)===signature)return;
+  old?.remove();
   const match=h.querySelector('[data-v840-feed]');
   if(match)match.insertAdjacentHTML('beforebegin',feedMarkup());
   else{
     const device=h.querySelector('.v46-ref-device,.v414-device-card');
     if(device)device.insertAdjacentHTML('afterend',feedMarkup());else h.insertAdjacentHTML('afterbegin',feedMarkup());
   }
-  bind(h.querySelector('[data-v852-feed]'));
+  const feed=h.querySelector('[data-v852-feed]');if(feed)renderedFeeds.set(feed,signature);bind(feed);
 }
 function bind(root){
   if(!root)return;
@@ -222,23 +240,27 @@ function clearStudioUrls(){
     const u=studio[k];if(/^blob:/i.test(u||''))try{URL.revokeObjectURL(u)}catch(_){}
   }
 }
-function closeAdmin(){clearStudioUrls();document.querySelector('[data-v852-admin-modal]')?.remove()}
+function closeAdmin(){clearTimeout(localAITimer);localAI?.terminate();localAI=null;clearStudioUrls();document.querySelector('[data-v852-admin-modal]')?.remove()}
 function formData(form){return Object.fromEntries(new FormData(form))}
 function formHtml(rec){
   const p=rec?.payload||{};
-  const design=p.design||'neon',accent=color(p.accent,'#2fe2ee'),background=color(p.background,'#071541'),textColor=color(p.textColor,'#ffffff');
+  const design=p.design||'neon',accent=color(p.accent,'#2fe2ee'),background=color(p.background,'#27292e'),textColor=color(p.textColor,'#ffffff');
   const publishValue=p.publishAt?localDateTimeValue(Date.parse(p.publishAt)):localDateTimeValue();
   return '<form class="v852-admin-form v853-admin-form" data-v852-form>'+
     '<section class="v853-smart">'+
-      '<div class="v853-section-head"><span><small>01 · TEXTO RÁPIDO</small><b>Asistente IA + rápido</b></span><em>1 toque</em></div>'+
+      '<div class="v853-section-head"><span><small>01 · REDACCIÓN</small><b>Texto rápido o IA local</b></span><em>1 toque</em></div>'+
       '<label><span>Datos rápidos</span><input name="details" maxlength="220" value="" placeholder="Ej. Juventus vs Manchester · domingo 10:00 · Campo 1"></label>'+
-      '<div class="v853-smart-actions"><button type="button" data-v853-ai="quick">🤖 IA</button><button type="button" data-v853-ai="short">Corto</button><button type="button" data-v853-ai="formal">Formal</button><button type="button" data-v853-ai="viral">Viral</button><button type="button" data-v853-ai="urgent">Urgente</button></div>'+
+      '<div class="v853-smart-actions"><button type="button" data-v853-ai="quick">Texto rápido</button><button type="button" data-v853-ai="short">Corto</button><button type="button" data-v853-ai="formal">Formal</button><button type="button" data-v853-ai="viral">Viral</button><button type="button" data-v853-ai="urgent">Urgente</button><button type="button" data-v880-notice-ai>Proponer con IA local</button><button type="button" data-v880-cancel-ai hidden>Cancelar IA</button></div><small>IA local opcional: primera descarga de unos 800 MB. Redacta en tu dispositivo; revisa la propuesta. El cartel se genera aquí.</small>'+
     '</section>'+
     '<section class="v853-edit">'+
       '<div class="v853-section-head"><span><small>02 · CONTENIDO</small><b>Editar todo</b></span></div>'+
       '<label><span>Tipo de aviso</span><select name="type">'+
         ['aviso','partido','resultado','noticia','evento','transmision','urgente'].map(v=>'<option value="'+v+'" '+(p.type===v?'selected':'')+'>'+typeIcon(v)+' '+typeLabel(v)+'</option>').join('')+
       '</select></label>'+
+      '<label><span>Presentación de la notificación</span><select name="presentation">'+[['photo','Noticia con imagen'],['match','Partido · marcador y eventos'],['classic','Aviso compacto']].map(([v,label])=>'<option value="'+v+'" '+((p.presentation||'photo')===v?'selected':'')+'>'+label+'</option>').join('')+'</select></label>'+
+      '<div class="v880-match-fields"><label><span>Equipo local</span><input name="home" maxlength="100" value="'+esc(p.home||'')+'"></label><label><span>Equipo visitante</span><input name="away" maxlength="100" value="'+esc(p.away||'')+'"></label><label><span>Goles local</span><input name="scoreHome" type="number" min="0" max="99" value="'+esc(p.scoreHome??0)+'"></label><label><span>Goles visitante</span><input name="scoreAway" type="number" min="0" max="99" value="'+esc(p.scoreAway??0)+'"></label><label><span>Minuto</span><input name="minute" type="number" min="0" max="150" value="'+esc(p.minute||'')+'"></label><label><span>Nombre del jugador</span><input name="player" maxlength="100" value="'+esc(p.player||'')+'"></label></div>'+
+      '<label><span>Eventos · uno por línea</span><textarea name="events" rows="4" maxlength="1000" placeholder="54′ · Gol de Juan Pérez&#10;45′ · Segundo tiempo">'+esc(p.events||'')+'</textarea></label>'+
+      '<label><span>Foto del jugador · enlace</span><input name="playerPhoto" type="url" value="'+esc(p.playerPhoto||'')+'" placeholder="Opcional · foto propia del jugador"></label>'+
       '<label><span>Título</span><input name="title" maxlength="90" required value="'+esc(p.title||'')+'" placeholder="Ej. ¡Partidazo este domingo!"></label>'+
       '<label><span>Texto</span><textarea name="body" rows="5" maxlength="420" required placeholder="Escribe el mensaje que verán los aficionados">'+esc(p.body||'')+'</textarea></label>'+
       '<label><span>Imagen principal · enlace</span><input name="image" type="url" value="'+esc(p.image||'')+'" placeholder="https://..."></label>'+
@@ -282,6 +304,7 @@ function previewFromForm(form){
   const image=studio.generatedUrl||studio.previewFileUrl||p.image||'';
   const icon=studio.iconFileUrl||p.icon||DEFAULT_ICON;
   const box=document.querySelector('[data-v852-preview-box]');if(!box)return;
+  if(p.presentation!=='classic'){box.innerHTML=modernMarkup({...p,image,icon},'preview',true);return}
   box.innerHTML='<div class="v852-preview-card" style="--v853-accent:'+color(p.accent,'#2fe2ee')+';--v853-preview-bg:'+color(p.background,'#071541')+';--v853-preview-text:'+color(p.textColor,'#ffffff')+'">'+
     '<div class="v852-preview-top"><img src="'+esc(icon)+'" alt=""><b>Liga Juventino Rosas</b><small>ahora</small></div>'+
     '<h3>'+esc(p.title||'Título del aviso')+'</h3>'+
@@ -333,6 +356,12 @@ function wrapLines(ctx,text,maxWidth,maxLines=8){
 async function makeDesign(form,status){
   const d=formData(form),main=form.querySelector('[data-v852-file]')?.files?.[0]||d.image||'';
   status.textContent='Creando diseño HD…';
+  const info=presentationData(d);
+  if(info.presentation==='match'&&window.LJR_DESIGN_STUDIO?.createCanvas){
+    const canvas=await window.LJR_DESIGN_STUDIO.createCanvas({...info,type:'Notificación de partido',title:d.title,body:d.body,accent:color(d.accent,'#2fe2ee')},{person:main});
+    const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw Error('No se pudo crear el diseño.');
+    if(studio.generatedUrl)URL.revokeObjectURL(studio.generatedUrl);studio.generatedFile=new File([blob],slug(d.title)+'-partido.png',{type:'image/png'});studio.generatedUrl=URL.createObjectURL(studio.generatedFile);studio.reviewed=false;studio.reviewImageUrl='';previewFromForm(form);refreshGate(form);status.textContent='Notificación de partido lista en PNG HD.';return studio.generatedFile;
+  }
   const c=document.createElement('canvas');c.width=1080;c.height=1350;const x=c.getContext('2d');
   const bg=color(d.background,'#071541'),accent=color(d.accent,'#2fe2ee'),tx=color(d.textColor,'#ffffff');
   x.fillStyle=bg;x.fillRect(0,0,1080,1350);
@@ -462,7 +491,7 @@ async function generateAI(form,status,mode='quick'){
   }
   const draft=smartDraft(d.type,mode,d.details);
   form.elements.title.value=draft.title;form.elements.body.value=draft.body;
-  studio.reviewed=false;previewFromForm(form);refreshGate(form);toast(endpoint?'Respaldo local listo':'Texto IA rápido listo');
+  studio.reviewed=false;previewFromForm(form);refreshGate(form);toast(endpoint?'Texto de respaldo listo':'Texto rápido listo');
 }
 async function scheduleAdmin(form,rec,status){
   const btn=form.querySelector('[data-v855-schedule]');if(btn)btn.disabled=true;
@@ -483,7 +512,7 @@ async function scheduleAdmin(form,rec,status){
     }
     const icon=await uploadIcon(form,status),now=Date.now(),id=rec?.id||'notification:'+crypto.randomUUID();
     const out={
-      type:String(d.type||'aviso'),title:String(d.title||'Liga Juventino Rosas').trim(),body:String(d.body||'').trim(),
+      ...presentationData(d),type:String(d.type||'aviso'),title:String(d.title||'Liga Juventino Rosas').trim(),body:String(d.body||'').trim(),
       image,icon,route:safeRoute(d.route),design:String(d.design||'neon'),
       accent:color(d.accent,'#2fe2ee'),background:color(d.background,'#071541'),textColor:color(d.textColor,'#ffffff'),
       createdAt:Number(rec?.payload?.createdAt||now),updatedAt:now,reviewedAt:now,
@@ -526,7 +555,7 @@ async function processScheduled(){
         }
       }
       if(next.notifyDevice!==false&&window.LJR_V840_NOTIFICATIONS?.sendRich){
-        await window.LJR_V840_NOTIFICATIONS.sendRich({title:next.title,body:next.body,imageUrl:next.image,iconUrl:next.icon||DEFAULT_ICON,group:'liga-'+next.type});
+        await window.LJR_V840_NOTIFICATIONS.sendRich(deviceNotice(next));
       }
       const seen=read(SEEN,{});seen[rec.id]=String(result?.revision??next.updatedAt);write(SEEN,seen);
     }
@@ -554,7 +583,7 @@ async function saveAdmin(form,rec,status,publish){
     }
     const icon=await uploadIcon(form,status),now=Date.now();
     const out={
-      type:String(d.type||'aviso'),title:String(d.title||'Liga Juventino Rosas').trim(),body:String(d.body||'').trim(),
+      ...presentationData(d),type:String(d.type||'aviso'),title:String(d.title||'Liga Juventino Rosas').trim(),body:String(d.body||'').trim(),
       image,icon,route:safeRoute(d.route),design:String(d.design||'neon'),
       accent:color(d.accent,'#2fe2ee'),background:color(d.background,'#071541'),textColor:color(d.textColor,'#ffffff'),
       createdAt:Number(rec?.payload?.createdAt||now),updatedAt:now,reviewedAt:studio.reviewed?now:Number(rec?.payload?.reviewedAt||0),
@@ -567,7 +596,7 @@ async function saveAdmin(form,rec,status,publish){
     status.textContent=publish?'Publicado en la app azul.':'Borrador guardado sin publicar.';
     if(cms()?.refresh)await cms().refresh();
     if(publish&&window.LJR_V840_NOTIFICATIONS?.sendRich){
-      await window.LJR_V840_NOTIFICATIONS.sendRich({title:out.title,body:out.body,imageUrl:out.image,iconUrl:out.icon||DEFAULT_ICON,group:'liga-'+out.type,route:safeRoute(out.route||'notifications')});
+      await window.LJR_V840_NOTIFICATIONS.sendRich(deviceNotice(out));
       const seen=read(SEEN,{});seen[id]=String(result?.revision??rec?.revision??out.updatedAt);write(SEEN,seen);
     }
     setTimeout(()=>{closeAdmin();render()},800);
@@ -598,7 +627,7 @@ async function openAdmin(editRec=null){
   overlay.addEventListener('click',e=>{if(e.target===overlay)closeAdmin()});
   const form=overlay.querySelector('[data-v852-form]'),status=overlay.querySelector('[data-v852-status]');
   previewFromForm(form);refreshGate(form);
-  form.addEventListener('input',e=>{if(!e.target.closest('.v855-schedule'))studio.reviewed=false;previewFromForm(form);refreshGate(form)});
+  form.addEventListener('input',e=>{if(!e.target.closest('.v855-schedule')){studio.reviewed=false;studio.reviewImageUrl='';if(e.target.name!=='useGenerated'){studio.generatedFile=null;if(studio.generatedUrl)URL.revokeObjectURL(studio.generatedUrl);studio.generatedUrl=''}}previewFromForm(form);refreshGate(form)});
   form.querySelector('[data-v852-file]')?.addEventListener('change',e=>{
     if(studio.previewFileUrl)try{URL.revokeObjectURL(studio.previewFileUrl)}catch(_){}
     studio.previewFileUrl=e.target.files?.[0]?URL.createObjectURL(e.target.files[0]):'';
@@ -611,7 +640,11 @@ async function openAdmin(editRec=null){
     previewFromForm(form);
   });
   form.querySelectorAll('[data-v853-ai]').forEach(b=>b.onclick=()=>generateAI(form,status,b.dataset.v853Ai||'quick'));
-  form.querySelector('[data-v853-generate-design]').onclick=()=>makeDesign(form,status);
+  const aiButton=form.querySelector('[data-v880-notice-ai]'),cancelAI=form.querySelector('[data-v880-cancel-ai]');
+  const finishAI=()=>{clearTimeout(localAITimer);localAI?.terminate();localAI=null;aiButton.disabled=false;cancelAI.hidden=true};
+  cancelAI.onclick=()=>{finishAI();status.textContent='IA cancelada. Tu texto se conserva.'};
+  aiButton.onclick=()=>{const d=formData(form);if(!d.details.trim()&&!d.body.trim()){status.textContent='Escribe primero tu idea o los datos del aviso.';return}try{aiButton.disabled=true;cancelAI.hidden=false;status.textContent='Iniciando IA local…';localAI=new Worker(LOCAL_AI_WORKER,{type:'module'});localAI.onmessage=({data:m})=>{if(m.type==='progress')status.textContent=m.text;else if(m.type==='result'){finishAI();form.elements.title.value=m.draft.title.slice(0,90);form.elements.body.value=m.draft.body.slice(0,420);if(m.draft.accent)form.elements.accent.value=m.draft.accent;form.elements.body.dispatchEvent(new Event('input',{bubbles:true}));status.textContent='Propuesta local lista. Revisa los datos antes de generar y publicar.'}else if(m.type==='error'){finishAI();status.textContent=m.text}};localAI.onerror=()=>{finishAI();status.textContent='No se pudo cargar la IA. Tu texto se conserva y puedes generar el cartel.'};localAITimer=setTimeout(()=>{finishAI();status.textContent='La carga está tardando demasiado. Tu texto se conserva.'},600000);localAI.postMessage({type:'generate',values:{...d,type:'Comunicado'}})}catch{finishAI();status.textContent='Este dispositivo no pudo iniciar la IA local. Puedes generar el diseño con tu texto.'}};
+  form.querySelector('[data-v853-generate-design]').onclick=()=>makeDesign(form,status).catch(e=>status.textContent=e.message||'No se pudo crear el diseño.');
   form.querySelector('[data-v853-whatsapp]').onclick=()=>sendWhatsApp(form,status);
   form.querySelector('[data-v853-facebook]').onclick=()=>shareFacebook(form,status);
   form.querySelector('[data-v852-preview]').onclick=async()=>{

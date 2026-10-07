@@ -1,4 +1,4 @@
-import {designMessages,readDraft} from './design-ai-core.mjs';
+import {designMessages,readDraft} from './design-ai-core.mjs?v=20261007-v880';
 let writer;
 self.onmessage=async({data})=>{
  if(data?.type!=='generate')return;

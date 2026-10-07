@@ -6,7 +6,7 @@ import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_EXECUTABLE_PATH||undefined,args:JSON.parse(process.env.BROWSER_ARGS||'["--no-sandbox"]')});
-const checks=[],errors=[];let feedback=null;
+const checks=[],errors=[];let feedback=null,savedContent=null,contentItems=[];
 checks.push=(...items)=>{for(const item of items)process.stderr.write(item+"\n");return Array.prototype.push.apply(checks,items)};
 try{
  const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
@@ -17,7 +17,8 @@ try{
   const request=route.request(),url=new URL(request.url());
   if(url.pathname.endsWith('/me'))return route.fulfill({json:{admin:{id:'test-admin',name:'Test administrator',owner:true}}});
   if(url.pathname.endsWith('/feedback')&&request.method()==='POST'){feedback=request.postDataJSON();return route.fulfill({json:{ok:true,id:'test-feedback'}})}
-  return route.fulfill({json:{items:[],ok:true}});
+  if(url.pathname.includes('/content/')&&request.method()==='PUT'){savedContent=request.postDataJSON();return route.fulfill({json:{ok:true,revision:1}})}
+  return route.fulfill({json:{items:url.pathname.endsWith('/content')?contentItems:[],ok:true}});
  });
  await page.context().route('http://app.test/**',async route=>{
   const name=new URL(route.request().url()).pathname.replace(/^\/App-liga-\//,'/');
@@ -25,7 +26,7 @@ try{
   try{const ext=path.extname(file).slice(1);await route.fulfill({body:fs.readFileSync(file),contentType:({html:'text/html',js:'application/javascript',mjs:'application/javascript',css:'text/css',json:'application/json',png:'image/png',webp:'image/webp',jpg:'image/jpeg',svg:'image/svg+xml'})[ext]||'application/octet-stream'})}
   catch{await route.fulfill({status:404,body:'Not found'})}
  });
- await page.addInitScript(()=>{try{localStorage.setItem('liga-media-session','test-only-token')}catch{}});
+ await page.addInitScript(()=>{try{localStorage.setItem('liga-media-session','test-only-token');if(!crypto.randomUUID)crypto.randomUUID=()=> '00000000-0000-4000-a000-000000000001'}catch{}});
  await page.goto('http://app.test/App-liga-/?mode=apk#/home',{waitUntil:'domcontentloaded'});
  await page.waitForTimeout(1500);
  const go=async route=>{await page.evaluate(route=>window.LJR_MAIN_ROUTE.go(route),route);await page.waitForTimeout(700)};
@@ -47,6 +48,8 @@ try{
  assert.equal(await page.evaluate(()=>location.hash),'#/leagueTools');
  assert.ok(Math.abs(await page.locator('#screen').evaluate(el=>el.scrollTop)-previous)<3,'Back loses scroll');
  checks.push('Back restores scroll; repeated render preserves it');
+ for(const route of ['more','leagueTools']){await go(route);await page.locator('#screen').evaluate(el=>el.scrollTop=600);const chrome=await page.locator('#app>.topbar').evaluate(el=>{const s=getComputedStyle(el);return {bg:s.backgroundImage,opacity:s.opacity,mask:s.maskImage,filter:s.backdropFilter}});assert.doesNotMatch(chrome.bg,/transparent|rgba/);assert.equal(chrome.opacity,'1');assert.equal(chrome.mask,'none');assert.equal(chrome.filter,'none')}
+ checks.push('Más and tools scroll under an opaque blue header');
  await go('history');
  const tabs=await page.locator('[data-v35-tab]').evaluateAll(es=>es.map(el=>el.dataset.v35Tab));
  let count=0;
@@ -75,6 +78,7 @@ try{
  }
  assert.equal(await page.locator('.v589-more').isVisible(),true);
  checks.push('All four predictor slides fit; white top controls visible');
+ await go('video');assert.match(await page.locator('.v17-tv-profile img').getAttribute('src'),/liga-crest-white/);checks.push('Video profile control uses the league crest');
  await go('leagueTools');await page.locator('[data-v875-results]').click();await page.waitForTimeout(900);
  assert.equal(await page.locator('[data-pub-type]').inputValue(),'results');await page.locator('[data-pub-generate]').click();await page.locator('[data-pub-preview] canvas').waitFor({timeout:20000});
  assert.equal(await page.locator('[data-pub-preview] canvas').count(),1);
@@ -101,7 +105,7 @@ try{
  await page.locator('[data-cancel-ai]').click();
  assert.equal(await studio.locator('[name="body"]').inputValue(),'Preparar un comunicado para la próxima junta.');
  assert.equal(await page.locator('[data-local-ai]').isEnabled(),true);
- await studio.locator('.cms-extra-design summary').click();
+ await studio.locator('.cms-extra-design summary').first().click();
  await studio.locator('[name="participants"]').fill('Barza\nOsasuna');
  await studio.locator('[name="type"]').selectOption('Bracket completo');
  await studio.locator('[name="format"]').selectOption('landscape');
@@ -116,6 +120,26 @@ try{
  await studio.locator('[name="type"]').selectOption('Feliz Navidad');await page.waitForTimeout(250);
  assert.equal(await page.locator('.liga-media-modal canvas').first().evaluate(el=>el.width),1080);
  await page.locator('.liga-media-modal [data-close]').last().click();checks.push('New design presets, transparent crest, cancelable local writing and HD preview');
+ const generated=await page.evaluate(async()=>{
+  const types=['Campeón de campeones','Notificación con foto','Notificación de partido','Reclutamiento de jugadores','Cuartos de final','Bracket completo'];
+  const output=[];for(const type of types){const c=await window.LJR_DESIGN_STUDIO.createCanvas({type,style:'gold',home:'Barza',away:'Osasuna',body:'Una publicación nueva de la liga.',details:'Domingo · 10:00 · Campo 1',participants:'Barza\nOsasuna\nJuventus\nLa Huerta',scoreHome:'2',scoreAway:'1',minute:'54',events:'54′ · Gol\n45′ · Segundo tiempo'});output.push({type,w:c.width,h:c.height,bytes:c.toDataURL('image/png').length})}
+  const logos=[];for(const logoShape of ['shield','circle','hexagon'])for(const logoSymbol of ['ball','star','crown','monogram']){const c=await window.LJR_DESIGN_STUDIO.createCanvas({type:'Logo del equipo',home:'Nuevo Club',logoShape,logoSymbol});logos.push({shape:logoShape,symbol:logoSymbol,alpha:c.getContext('2d').getImageData(0,0,1,1).data[3],url:c.toDataURL('image/png')})}
+  return {output,logos};
+ });
+ for(const row of generated.output){assert.equal(row.w,1080,row.type);assert.equal(row.h,1350,row.type);assert.ok(row.bytes>10000,row.type)}
+ assert.equal(new Set(generated.logos.map(x=>x.url)).size,12);assert.ok(generated.logos.every(x=>x.alpha===0));checks.push('New local poster families and 12 distinct transparent crest variants render');
+ await go('leagueTools');await page.locator('[data-v880-notification]').click();await page.waitForTimeout(300);
+ const notice=page.locator('[data-v852-form]');await notice.locator('[name="presentation"]').selectOption('match');await notice.locator('[name="home"]').fill('Barza');await notice.locator('[name="away"]').fill('Osasuna');await notice.locator('[name="scoreHome"]').fill('2');await notice.locator('[name="scoreAway"]').fill('1');await notice.locator('[name="minute"]').fill('54');await notice.locator('[name="events"]').fill('54′ · Gol de Juan Pérez\n45′ · Segundo tiempo');await notice.locator('[name="title"]').fill('¡Barza marcó!');await notice.locator('[name="body"]').fill('Actualización del partido.');
+ assert.match(await page.locator('.v880-notice-score').innerText(),/2 – 1/);assert.equal(await page.locator('.v880-notice-events>div').count(),2);
+ await notice.locator('[data-v880-notice-ai]').click();assert.equal(await notice.locator('[data-v880-cancel-ai]').isVisible(),true);await notice.locator('[data-v880-cancel-ai]').click();assert.equal(await notice.locator('[name="body"]').inputValue(),'Actualización del partido.');assert.equal(await notice.locator('[data-v880-notice-ai]').isEnabled(),true);
+ await notice.locator('[data-v853-generate-design]').click();await page.waitForFunction(()=>document.querySelector('.v880-notice-photo')?.src.startsWith('blob:'));
+ await notice.locator('[name="scoreHome"]').fill('3');assert.equal(await page.locator('.v880-notice-photo').count(),0,'Edited score retains stale PNG');
+ await notice.locator('[data-v853-draft]').click();await page.waitForTimeout(300);assert.equal(savedContent.published,false);assert.equal(savedContent.payload.presentation,'match');assert.equal(savedContent.payload.home,'Barza');assert.equal(savedContent.payload.scoreHome,3);assert.match(savedContent.payload.events,/Juan Pérez/);
+ await page.locator('[data-v852-close]').click();checks.push('Modern notice previews match logos, events and scores; edits invalidate old images; draft preserves fields');
+ await go('notifications');contentItems=[{id:'test-rich-notice',kind:'notification',published:true,payload:{presentation:'photo',title:'Noticias de la Liga',body:'Mensaje con imagen propia.',image:'http://app.test/App-liga-/assets/reference/predictor-v36/liga-crest-white.webp'}}];await page.evaluate(async()=>{await window.LJR_CMS.refresh();window.LJR_V852_RICH_NOTIFICATIONS.render()});
+ await page.locator('[data-v852-toggle="test-rich-notice"]').click();assert.equal(await page.locator('[data-v852-record="test-rich-notice"] .v880-notice-photo').count(),1);await page.locator('[data-v852-toggle="test-rich-notice"]').click();assert.equal(await page.locator('[data-v852-record="test-rich-notice"] .v880-notice-photo').count(),0);
+ checks.push('Published news expand and collapse their full-width image');
+ const notificationRoute=await page.evaluate(async()=>{class TestNotice{static permission='granted';constructor(){window.__testNotice=this}close(){}}window.Notification=TestNotice;await window.LJR_V840_NOTIFICATIONS.sendRich({title:'Prueba local',body:'No se envía al dispositivo.',route:'calendar'});window.__testNotice.onclick();return location.hash});assert.equal(notificationRoute,'#/calendar');checks.push('Tapping a rich web notice opens its configured destination');
  await page.evaluate(()=>localStorage.setItem('ljr-auth-v569',JSON.stringify({version:1,currentId:'test-member',accounts:[{id:'test-member',name:'Prueba de usuario',email:'member@example.test'}]})));
  await go('notifications');await page.locator('[data-v105-action="poll"]').first().click();await page.waitForTimeout(300);
  const mailbox=page.locator('[data-v875-mailbox]'),box=mailbox.locator('textarea');
@@ -133,6 +157,10 @@ try{
  checks.push('Private mailbox submits long registered proposals; weekly meeting saves options');
  const imgs=await page.evaluate(async()=>{const result=[];for(const team of window.LJR_JERSEY_ASSETS.teams){const kit=await window.LJR_JERSEY_ART.kitFor(team.name);result.push(!!kit?.src?.startsWith('data:image/png'))}return result});
  assert.equal(imgs.length,50);assert.ok(imgs.every(Boolean));checks.push('All 50 complete jersey rasters load');
+ const cloth=await page.evaluate(async()=>{
+  const c=document.createElement('canvas');c.width=512;c.height=576;const x=c.getContext('2d');const pixels=x.createImageData(512,576);for(let y=0;y<576;y++)for(let xx=0;xx<512;xx++){const i=(y*512+xx)*4;pixels.data[i]=(xx*5+y*3)%255;pixels.data[i+1]=100;pixels.data[i+2]=150;pixels.data[i+3]=255}x.putImageData(pixels,0,0);
+  const before=[...x.getImageData(288,288,1,1).data],im=new Image();im.src='./assets/reference/predictor-v36/liga-crest-white.webp';await im.decode();window.LJR_JERSEY_ART.printCrest({canvas:c,ctx:x,scale:1,x:0,y:0,left:0,top:0},im,{width:512,height:576,badgeX:.5,badgeY:.5,badgeWidth:40,badgeHeight:40,badgeSize:16});return {before,after:[...x.getImageData(288,288,1,1).data],alpha:x.getImageData(256,288,1,1).data[3]};
+ });assert.deepEqual(cloth.after,cloth.before,'Cloth outside measured badge area must not be repainted');assert.equal(cloth.alpha,255);checks.push('Crest replacement respects measured boundaries and keeps shirt pixels opaque');
  console.log(JSON.stringify({checks,errors},null,2));
  if(errors.length)throw Error('Browser runtime errors: '+errors.join('; '));
 }finally{await browser.close()}

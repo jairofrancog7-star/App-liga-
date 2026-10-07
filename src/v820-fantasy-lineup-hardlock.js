@@ -23,8 +23,8 @@ function normalize(im,item){
 function printCrest(surface,logo,item){
  const {canvas,ctx,scale,x,y,left,top}=surface;
  const cx=x+(item.width*item.badgeX-left)*scale,cy=y+(item.height*item.badgeY-top)*scale;
- const bw=Math.max(item.badgeWidth||0,128)*scale,bh=Math.max(item.badgeHeight||0,150)*scale,px=Math.round(cx-bw/2),py=Math.round(cy-bh/2),pw=Math.ceil(bw),ph=Math.ceil(bh);
- const data=ctx.getImageData(0,0,512,576),original=new Uint8ClampedArray(data.data);
+ // Per-shirt measurements take precedence; a large minimum made flat cloth patches.
+ const bw=(item.badgeWidth||88)*scale,bh=(item.badgeHeight||110)*scale;
  // Erase every original club mark, including extra national badges.
  function erase(cx,cy,bw,bh,direction='vertical'){
   const data=ctx.getImageData(0,0,512,576),original=new Uint8ClampedArray(data.data);
@@ -34,16 +34,16 @@ function printCrest(surface,logo,item){
    const i=(ty*512+tx)*4;
    // Sample cloth below the badge, away from collars, stars and club lettering.
    // Preserve the downloaded garment's alpha; never make opaque shirt pixels transparent.
-   const below=(Math.min(575,ty+ph+14)*512+tx)*4;
-   const above=(Math.max(0,ty-ph-14)*512+tx)*4;
-   const nearLeft=(ty*512+Math.max(0,px-12))*4,nearRight=(ty*512+Math.min(511,px+pw+12))*4;
+   const below=(Math.min(575,py+ph+6)*512+tx)*4;
+   const above=(Math.max(0,py-6)*512+tx)*4;
+   const nearLeft=(ty*512+Math.max(0,px-6))*4,nearRight=(ty*512+Math.min(511,px+pw+6))*4;
    if(original[i+3]<100)continue;
    const horizontal=direction==='horizontal';
-   const a=horizontal?nearLeft:(original[below+3]>200?below:above);
-   const b=horizontal?nearRight:a;
+   let a=horizontal?nearLeft:above,b=horizontal?nearRight:below;
+   if(original[a+3]<200)a=b;if(original[b+3]<200)b=a;
    if(original[a+3]<200||original[b+3]<200)continue;
-   const f=horizontal?dx/Math.max(1,pw-1):0;
-   const edge=Math.min(dx,dy,pw-1-dx,ph-1-dy),blend=Math.min(1,edge/10);
+   const f=horizontal?dx/Math.max(1,pw-1):dy/Math.max(1,ph-1);
+   const edge=Math.min(dx,dy,pw-1-dx,ph-1-dy),blend=Math.min(1,edge/6);
    for(let c=0;c<3;c++)data.data[i+c]=Math.round(original[i+c]*(1-blend)+(original[a+c]*(1-f)+original[b+c]*f)*blend);
   }
   ctx.putImageData(data,0,0);
