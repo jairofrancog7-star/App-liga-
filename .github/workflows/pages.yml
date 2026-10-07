@@ -17,10 +17,9 @@ permissions:
 
 concurrency:
   group: github-pages-v8-fast
-  # No cancelar el despliegue que ya está corriendo: con muchos commits seguidos
-  # cancel-in-progress:true podía dejar GitHub Pages sin publicar ningún cambio.
-  # GitHub conservará como pendiente únicamente la ejecución más reciente.
-  cancel-in-progress: false
+  # Publicar siempre la versión más reciente. Con muchos commits seguidos,
+  # cancelar el build anterior evita que Pages se quede mostrando cambios viejos.
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -47,6 +46,7 @@ jobs:
         run: npm run build -- --base=/App-liga-/
 
       - name: Verify requested mobile workflows
+        if: github.event_name == 'workflow_dispatch'
         continue-on-error: true
         run: |
           npm install --no-save playwright --no-audit --no-fund
