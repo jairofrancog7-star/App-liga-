@@ -12,6 +12,18 @@ const TEAM_50=[
 ];
 const SHIRT_CATEGORIES=['Primera Fuerza','Intermedia','Segunda Fuerza','Veteranos 35+','Veteranos 50+'];
 const CAT_BY_ID={'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'};
+const SHIRT_CATEGORY_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+const SHIRT_CATEGORY_LOGOS={
+ 'primerafuerza':'assets/branding/primera-fuerza-hd.png',
+ 'intermedia':'assets/categories/intermedia.webp',
+ 'segundafuerza':'assets/categories/segunda-fuerza.webp',
+ 'veteranos35':'assets/categories/veteranos-35-user.png',
+ 'veteranos50':'assets/categories/veteranos-50.webp'
+};
+function categoryLogo(name){
+ const p=SHIRT_CATEGORY_LOGOS[norm(name)];
+ return p?SHIRT_CATEGORY_ROOT+p:'';
+}
 function categoryForTeam(name){
  const target=norm(name);if(!target)return '';
  const db=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{};
@@ -65,8 +77,8 @@ function shirtViewer(){
      '<button type="button" data-shirt-spin aria-pressed="false"><span class="v803-control-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5"/><path d="M19 12a7 7 0 1 0-2 5"/></svg></span><span class="v803-control-label" data-shirt-spin-label>Girar</span></button>'+
      '<button type="button" data-shirt-shot><span class="v803-control-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h3l1.5-2h5L16 8h3v11H5Z"/><circle cx="12" cy="13" r="3"/></svg></span><span class="v803-control-label">PNG</span></button>'+
    '</div>'+
-   '<div class="v803-shirt-foot"><span>Arrastra con el dedo para mover la camiseta libremente.</span><b>Color + escudo plasmados en la tela 3D</b></div>'+
-   '<div class="v803-shirt-open-source">Camiseta corta 3D: el escudo del equipo se integra en la textura y se deforma con la tela, no queda como imagen plana encima.</div>'+
+   '<div class="v803-shirt-foot"><span>Arrastra con el dedo para mover la camiseta libremente.</span><b>Liga al frente · categoría en espalda</b></div>'+
+   '<div class="v803-shirt-open-source">Camiseta corta 3D: logo de la Liga al frente y escudo de categoría grande en la espalda, ambos integrados en la tela y sin fondo.</div>'+
  '</div>';
 }
 
@@ -84,7 +96,8 @@ function bindShirtViewer(n){
    const team=String(form?.elements?.shirtTeam?.value||'').trim();
    const category=String(form?.elements?.shirtCategory?.value||categoryForTeam(team)||'').trim();
    const logo=teamLogo(team);
-   const viewer=engine.mount(host,{name,number,color,team,logo,category});
+   const categoryCrest=categoryLogo(category);
+   const viewer=engine.mount(host,{name,number,color,team,logo,category,categoryLogo:categoryCrest});
    n.querySelector('[data-shirt-front]')?.addEventListener('click',()=>viewer?.front?.());
    n.querySelector('[data-shirt-back]')?.addEventListener('click',()=>viewer?.back?.());
    n.querySelector('[data-shirt-spin]')?.addEventListener('click',e=>{
@@ -121,8 +134,8 @@ function open(){
      '</div>'+
      '<div class="v893-shirt-customize">'+
        '<label class="v893-shirt-color">Color de la camiseta<span class="v893-color-control"><input name="shirtColor" type="color" value="'+esc(selectedColor)+'" aria-label="Color de la camiseta"><b data-shirt-color-text>'+esc(selectedColor.toUpperCase())+'</b></span></label>'+
-       '<label class="v893-shirt-team">Escudo del equipo · 50 equipos<select name="shirtTeam">'+teamOptions+'</select><span class="v893-team-preview" data-shirt-team-preview aria-live="polite"></span></label>'+
-       '<label class="v902-shirt-category">Categoría en la espalda<select name="shirtCategory">'+categoryOptions+'</select><small>Se imprime debajo del número en la tela 3D.</small></label>'+
+       '<label class="v893-shirt-team">Equipo · 50 equipos<select name="shirtTeam">'+teamOptions+'</select><span class="v893-team-preview" data-shirt-team-preview aria-live="polite"></span></label>'+
+       '<label class="v902-shirt-category">Escudo de categoría en la espalda<select name="shirtCategory">'+categoryOptions+'</select><small>El escudo va grande y sin fondo debajo del número.</small></label>'+
      '</div>'+
      shirtViewer()+
      '<button type="submit" class="ljr-save-profile">Guardar mi perfil</button>'+
@@ -137,11 +150,12 @@ function open(){
    const shirtTeam=String(form.elements.shirtTeam.value||'').trim();
    const shirtCategory=String(form.elements.shirtCategory.value||categoryForTeam(shirtTeam)||'').trim();
    const logo=teamLogo(shirtTeam);
+   const categoryCrest=categoryLogo(shirtCategory);
    const shirtHost=n.querySelector('[data-football-shirt-3d]');
-   window.LJR_FOOTBALL_SHIRT_3D?.update?.(shirtHost,{name:shirtName,number:shirtNumber,color:shirtColor,team:shirtTeam,logo,category:shirtCategory});
+   window.LJR_FOOTBALL_SHIRT_3D?.update?.(shirtHost,{name:shirtName,number:shirtNumber,color:shirtColor,team:shirtTeam,logo,category:shirtCategory,categoryLogo:categoryCrest});
    const colorText=n.querySelector('[data-shirt-color-text]');if(colorText)colorText.textContent=shirtColor.toUpperCase();
    const badge=n.querySelector('[data-shirt-team-preview]');
-   if(badge)badge.innerHTML=shirtTeam?(logo?'<img src="'+esc(logo)+'" alt=""><span><b>'+esc(shirtTeam)+'</b><small>'+esc(shirtCategory||'Sin categoría')+' · escudo al frente</small></span>':'<span><b>'+esc(shirtTeam)+'</b><small>'+esc(shirtCategory||'Sin categoría')+' · escudo pendiente</small></span>'):'<span><b>Sin escudo</b><small>'+esc(shirtCategory||'Selecciona categoría')+'</small></span>';
+   if(badge)badge.innerHTML=shirtTeam?(logo?'<img src="'+esc(logo)+'" alt=""><span><b>'+esc(shirtTeam)+'</b><small>'+esc(shirtCategory||'Sin categoría')+' · logo de categoría va en espalda</small></span>':'<span><b>'+esc(shirtTeam)+'</b><small>'+esc(shirtCategory||'Sin categoría')+'</small></span>'):'<span><b>Sin equipo</b><small>'+esc(shirtCategory||'Selecciona categoría')+'</small></span>';
    n.querySelectorAll('[data-preset]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.preset===preset&&!photo)));
  };
  form.oninput=preview;preview();bindShirtViewer(n);
