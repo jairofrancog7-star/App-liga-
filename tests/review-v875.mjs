@@ -101,6 +101,16 @@ try{
  await page.locator('[data-cancel-ai]').click();
  assert.equal(await studio.locator('[name="body"]').inputValue(),'Preparar un comunicado para la próxima junta.');
  assert.equal(await page.locator('[data-local-ai]').isEnabled(),true);
+ await studio.locator('.cms-extra-design summary').click();
+ await studio.locator('[name="participants"]').fill('Barza\nOsasuna');
+ await studio.locator('[name="type"]').selectOption('Bracket completo');
+ await studio.locator('[name="format"]').selectOption('landscape');
+ await page.locator('[data-canva]').click();
+ const canvaBrief=await page.locator('.liga-media-modal [data-status]').textContent();
+ assert.match(canvaBrief,/1200 × 630/);
+ assert.match(canvaBrief,/Barza\nOsasuna/);
+ await studio.locator('[name="format"]').selectOption('portrait');
+
  const options=await studio.locator('[name="type"] option').allTextContents();
  for(const type of ['Campeón','Jugador destacado','Felicitaciones · cumpleaños','Registro de nuevos equipos'])assert.ok(options.includes(type));
  await studio.locator('[name="type"]').selectOption('Feliz Navidad');await page.waitForTimeout(250);
