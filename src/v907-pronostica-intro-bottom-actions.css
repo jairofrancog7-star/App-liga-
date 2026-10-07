@@ -1,0 +1,184 @@
+/* V907 — Pronostica Seis · introducción con arte centrado y botones abajo.
+   Referencia: capturas Drive 12:41–12:42. Sólo afecta la introducción de predictorSix. */
+@media (max-width:1023px){
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro{
+    box-sizing:border-box!important;
+    width:100%!important;
+    height:100%!important;
+    min-height:100%!important;
+    max-height:100%!important;
+    display:flex!important;
+    flex-direction:column!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    background:
+      radial-gradient(520px 235px at 50% 17%,rgba(25,67,231,.50),transparent 72%),
+      linear-gradient(180deg,#071b9b 0%,#07106e 38%,#080762 69%,#172de7 100%)!important;
+  }
+
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-top{
+    flex:0 0 86px!important;
+    height:86px!important;
+    min-height:86px!important;
+    max-height:86px!important;
+  }
+
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-sponsor{
+    flex:0 0 58px!important;
+    height:58px!important;
+    min-height:58px!important;
+    max-height:58px!important;
+  }
+
+  /* Los cuadros/arte quedan realmente centrados en su zona, sin irse a los lados. */
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-icons{
+    position:relative!important;
+    box-sizing:border-box!important;
+    flex:1 1 auto!important;
+    width:100%!important;
+    min-width:0!important;
+    min-height:180px!important;
+    max-height:270px!important;
+    margin:0!important;
+    padding:12px 42px 6px!important;
+    display:block!important;
+    overflow:visible!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v851-six-art{
+    left:50%!important;
+    top:50%!important;
+    width:min(72vw,330px)!important;
+    max-width:calc(100% - 84px)!important;
+    gap:9px!important;
+    transform:translate(-50%,-50%)!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v851-event-art,
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v851-friends-art{
+    left:50%!important;
+    top:50%!important;
+  }
+
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-copy{
+    position:relative!important;
+    flex:0 0 auto!important;
+    width:100%!important;
+    margin:0!important;
+    padding:8px 28px 0!important;
+    box-sizing:border-box!important;
+    text-align:center!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-copy h2{
+    width:min(100%,440px)!important;
+    margin:0 auto 12px!important;
+    font-size:clamp(18px,5.2vw,22px)!important;
+    line-height:1.12!important;
+    font-weight:900!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-copy p{
+    width:min(100%,430px)!important;
+    margin:0 auto!important;
+    font-size:clamp(13px,3.55vw,15px)!important;
+    line-height:1.4!important;
+  }
+
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-dots{
+    position:static!important;
+    inset:auto!important;
+    flex:0 0 auto!important;
+    height:10px!important;
+    margin:18px auto 18px!important;
+    padding:0!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:9px!important;
+    transform:none!important;
+  }
+
+  /* Los dos cuadros grandes van abajo, pero con aire antes de la barra inferior. */
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-actions{
+    position:static!important;
+    flex:0 0 auto!important;
+    box-sizing:border-box!important;
+    width:min(82%,430px)!important;
+    min-width:0!important;
+    margin:auto auto 0!important;
+    padding:0 0 24px!important;
+    display:grid!important;
+    gap:12px!important;
+    transform:none!important;
+    background:transparent!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-actions button{
+    box-sizing:border-box!important;
+    width:100%!important;
+    height:56px!important;
+    min-height:56px!important;
+    max-height:56px!important;
+    margin:0!important;
+    padding:0 14px!important;
+    border-radius:19px!important;
+    font-size:clamp(16px,4.4vw,20px)!important;
+    line-height:1!important;
+    font-weight:500!important;
+    white-space:normal!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-actions .v589-primary{
+    border:0!important;
+    background:#18d4df!important;
+    color:#06123c!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-actions .v589-secondary{
+    border:2px solid #18cfe8!important;
+    background:transparent!important;
+    color:#18ddec!important;
+  }
+}
+
+/* Teléfonos bajos: conserva el hueco con la barra sin cortar contenido. */
+@media (max-width:420px) and (max-height:760px){
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-top{
+    flex-basis:76px!important;
+    height:76px!important;
+    min-height:76px!important;
+    max-height:76px!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-sponsor{
+    flex-basis:50px!important;
+    height:50px!important;
+    min-height:50px!important;
+    max-height:50px!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-icons{
+    min-height:145px!important;
+    max-height:180px!important;
+    padding-top:5px!important;
+    padding-bottom:3px!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-copy{
+    padding:4px 24px 0!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-copy h2{
+    margin-bottom:7px!important;
+    font-size:17px!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-copy p{
+    font-size:12.5px!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-dots{
+    margin:11px auto 11px!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-actions{
+    width:calc(100% - 48px)!important;
+    padding-bottom:18px!important;
+    gap:9px!important;
+  }
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-actions button{
+    height:50px!important;
+    min-height:50px!important;
+    max-height:50px!important;
+    border-radius:16px!important;
+    font-size:16px!important;
+  }
+}
