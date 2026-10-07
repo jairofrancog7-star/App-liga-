@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v898-predictor-reference-final';
+const CACHE='liga-juventino-v899-predictor-popular-pills';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
