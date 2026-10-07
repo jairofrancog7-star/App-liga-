@@ -142,14 +142,6 @@ html body .v840-notice-copy strong{font-size:24px!important;font-weight:800!impo
 /* Keep the global back control; the player portrait needs no second arrow. */
 html body.ljr-v777[data-app-route="playerDetail"] #screen .v379-hero>[data-v379-back]{display:none!important}
 
-/* V880: solid blue chrome while Más scrolls, and full-width rich notifications. */
-@media(max-width:1023px){
- html body.ljr-v777:is([data-app-route="more"],[data-app-route="leagueTools"]) #app>.topbar{
-  background-color:#06075f!important;background-image:linear-gradient(180deg,#1164f0 0%,#103bcc 42%,#06075f 100%)!important;
-  opacity:1!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;mask-image:none!important;-webkit-mask-image:none!important;
- }
- html body.ljr-v777:is([data-app-route="more"],[data-app-route="leagueTools"]) #app #screen{mask-image:none!important;-webkit-mask-image:none!important;background:#06075f!important}
-}
 .v880-notice{padding:18px 16px;margin:12px 0;border-radius:24px;background:var(--v880-bg,#27292e)!important;color:var(--v880-text,#f6f7fa);border:1px solid #ffffff14;box-sizing:border-box;overflow:hidden}
 .v880-notice-head{display:grid;grid-template-columns:36px minmax(0,1fr) 32px;gap:9px;align-items:center;width:100%;padding:0;margin:0 0 15px;background:none;border:0;text-align:left;color:#d2d4dc}
 .v880-notice-head>img{width:36px;height:36px;object-fit:contain;border-radius:50%;background:#14264b;padding:3px;box-sizing:border-box}
