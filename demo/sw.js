@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v906-team-category-jersey';
+const CACHE='liga-juventino-v907-jersey-real-logos';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
