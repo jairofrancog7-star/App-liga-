@@ -100,6 +100,41 @@ function drawKitHalf(ctx,left,base){
   ctx.restore();
 }
 
+function removeConnectedLogoBackground(canvas,ctx){
+  let image;
+  try{image=ctx.getImageData(0,0,canvas.width,canvas.height)}catch(_){return}
+  const d=image.data,w=canvas.width,h=canvas.height;
+  const sample=(x,y)=>{const i=(y*w+x)*4;return d[i+3]>20?[d[i],d[i+1],d[i+2]]:null};
+  const palette=[
+    sample(0,0),sample(w-1,0),sample(0,h-1),sample(w-1,h-1),
+    sample(Math.floor(w/2),0),sample(Math.floor(w/2),h-1),
+    sample(0,Math.floor(h/2)),sample(w-1,Math.floor(h/2))
+  ].filter(Boolean);
+  if(!palette.length)return;
+  const close=i=>{
+    if(d[i+3]<=20)return false;
+    for(const p of palette){
+      const dr=d[i]-p[0],dg=d[i+1]-p[1],db=d[i+2]-p[2];
+      if(dr*dr+dg*dg+db*db<105*105)return true;
+    }
+    return false;
+  };
+  const seen=new Uint8Array(w*h),q=[];
+  const push=(x,y)=>{
+    if(x<0||y<0||x>=w||y>=h)return;
+    const n=y*w+x;if(seen[n])return;
+    const i=n*4;if(!close(i))return;
+    seen[n]=1;q.push(n);
+  };
+  for(let x=0;x<w;x++){push(x,0);push(x,h-1)}
+  for(let y=0;y<h;y++){push(0,y);push(w-1,y)}
+  for(let k=0;k<q.length;k++){
+    const n=q[k],x=n%w,y=(n/w)|0,i=n*4;
+    d[i+3]=0;
+    push(x-1,y);push(x+1,y);push(x,y-1);push(x,y+1);
+  }
+  ctx.putImageData(image,0,0);
+}
 function drawLogoIntoFabric(ctx,img,x,y,maxW,maxH){
   const ratio=Math.min(maxW/img.naturalWidth,maxH/img.naturalHeight);
   const w=Math.max(1,img.naturalWidth*ratio),h=Math.max(1,img.naturalHeight*ratio);
@@ -108,6 +143,9 @@ function drawLogoIntoFabric(ctx,img,x,y,maxW,maxH){
   const b=badge.getContext('2d');
   const bx=(badge.width-w)/2,by=(badge.height-h)/2;
   b.drawImage(img,bx,by,w,h);
+  // Los archivos históricos de Liga/categorías pueden venir con fondo negro/blanco
+  // aunque la extensión diga PNG/WebP. Quitamos sólo el fondo conectado al borde.
+  removeConnectedLogoBackground(badge,b);
 
   // Put the textile grain inside the crest alpha itself so it reads as sublimated/printed,
   // not as a flat DOM image hovering over the jersey.
@@ -143,16 +181,16 @@ function bakeLogo(ctx,url,texture,x,y,w,h){
   img.onerror=()=>{};
   img.src=String(url);
 }
-function bakeTeamLogo(ctx,url,texture){
-  // Escudo del equipo: pecho izquierdo del jugador (derecha para quien mira).
-  bakeLogo(ctx,url,texture,620,224,165,165);
-}
 function bakeLeagueLogo(ctx,texture){
-  // Logo oficial de la Liga: pecho derecho del jugador (izquierda para quien mira).
-  bakeLogo(ctx,LEAGUE_LOGO,texture,250,222,170,170);
+  // Frente: únicamente el logo oficial de la Liga.
+  bakeLogo(ctx,LEAGUE_LOGO,texture,300,205,205,205);
+}
+function bakeCategoryLogo(ctx,url,texture){
+  // Espalda: escudo de categoría grande, centrado debajo del número.
+  bakeLogo(ctx,url,texture,1388,735,296,270);
 }
 
-function fabricTexture(name='JAIRO',number='7',base='#0b4bd8',logoUrl='',category=''){
+function fabricTexture(name='JAIRO',number='7',base='#0b4bd8',logoUrl='',category='',categoryLogoUrl=''){
   const c=document.createElement('canvas');
   c.width=2048;c.height=1024;
   const x=c.getContext('2d');
@@ -178,17 +216,7 @@ function fabricTexture(name='JAIRO',number='7',base='#0b4bd8',logoUrl='',categor
   x.font='900 390px Arial Black,Impact,sans-serif';
   x.fillText(cleanNumber,1536,610);
 
-  const cleanCategory=String(category||'').trim().toUpperCase().slice(0,28);
-  if(cleanCategory){
-    x.font='900 58px Arial Black,Impact,sans-serif';
-    let categorySize=58;
-    do{
-      x.font='900 '+categorySize+'px Arial Black,Impact,sans-serif';
-      if(x.measureText(cleanCategory).width<760)break;
-      categorySize-=4;
-    }while(categorySize>34);
-    x.fillText(cleanCategory,1536,900);
-  }
+  // No texto de categoría: el escudo oficial ocupa esta zona.
   x.shadowColor='transparent';
 
   const t=new THREE.CanvasTexture(c);
@@ -197,8 +225,8 @@ function fabricTexture(name='JAIRO',number='7',base='#0b4bd8',logoUrl='',categor
   t.wrapS=t.wrapT=THREE.ClampToEdgeWrapping;
   t.channel=0;
   t.needsUpdate=true;
-  bakeTeamLogo(x,logoUrl,t);
   bakeLeagueLogo(x,t);
+  bakeCategoryLogo(x,categoryLogoUrl,t);
   return t;
 }
 
@@ -351,7 +379,7 @@ async function buildRealJersey(current){
     if(o.isMesh&&o.geometry)o.geometry=o.geometry.clone();
   });
   const bounds=normalizeRealModel(group);
-  const texture=fabricTexture(current.name,current.number,current.color,current.logo,current.category);
+  const texture=fabricTexture(current.name,current.number,current.color,current.logo,current.category,current.categoryLogo);
   texture.channel=1;
   const bump=makeFabricBump();
   const materials=[];
@@ -372,7 +400,7 @@ async function buildRealJersey(current){
 
 function updateJerseyTexture(jersey,current){
   if(!jersey)return;
-  const next=fabricTexture(current.name,current.number,current.color,current.logo,current.category);
+  const next=fabricTexture(current.name,current.number,current.color,current.logo,current.category,current.categoryLogo);
   next.channel=jersey.uvChannel||0;
   jersey.materials.forEach(m=>{m.map=next;m.needsUpdate=true});
   jersey.texture?.dispose?.();
@@ -408,8 +436,8 @@ function createInstance(host,opts={}){
   const rim=new THREE.DirectionalLight(0x52bfff,1.9);rim.position.set(-3.5,2.5,-4.5);scene.add(rim);
   const rear=new THREE.DirectionalLight(0x3156ff,.8);rear.position.set(3,-.2,-4);scene.add(rear);
 
-  let current={name:opts.name||'JAIRO',number:opts.number||'7',color:cleanKitColor(opts.color||'#0b4bd8'),team:opts.team||'',logo:opts.logo||'',category:opts.category||''};
-  let jersey=buildFallback(fabricTexture(current.name,current.number,current.color,current.logo,current.category));
+  let current={name:opts.name||'JAIRO',number:opts.number||'7',color:cleanKitColor(opts.color||'#0b4bd8'),team:opts.team||'',logo:opts.logo||'',category:opts.category||'',categoryLogo:opts.categoryLogo||''};
+  let jersey=buildFallback(fabricTexture(current.name,current.number,current.color,current.logo,current.category,current.categoryLogo));
   scene.add(jersey.group);
 
   const floor=new THREE.Mesh(
