@@ -4581,7 +4581,7 @@ function leagueToolsView(){
     v726ToolCard('file','Permisos y autorizaciones','Genera permisos para jugador o delegado y expórtalos en PDF, PNG, JPG o SVG.','permissionBuilder','','PDF / PNG')+
     v726ToolCard('card','Generar credencial','Crea la credencial del jugador con fotografía, equipo, categoría y datos del registro.','credentialBuilder','','CREDENCIAL')+
     v726ToolCard('rules','Reglamento','Consulta dentro de la app el reglamento oficial vigente de la Liga.','rulebook','','OFICIAL')+
-    v726ToolCard('news','Publicaciones','Prepara contenido de jornada para compartir en los canales de la Liga.','publications','','COMPARTIR');
+    v726ToolCard('news','Generador de diseños','Resultados PNG, boletines, avisos y publicaciones de la Liga, ahora dentro de Más herramientas.','publications','','DISEÑOS / PNG');
 
   const info=
     v726ToolCard('history','Historia','Consulta temporadas, campeones, finales, récords y el archivo histórico de la Liga.','history','','ARCHIVO')+
