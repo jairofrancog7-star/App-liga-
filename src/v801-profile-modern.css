@@ -98,67 +98,75 @@ body[data-app-route="profile"] .v569-profile-account-menu button.logout b{
   color:#ffb2bd!important;
 }
 
-/* Botones grandes inferiores de Perfil. */
+/* V889 — Perfil: accesos inferiores como filas transparentes.
+   Se integran con las opciones superiores y eliminan las tarjetas azules pesadas. */
 body[data-app-route="profile"] [data-ljr-account-settings],
 body[data-app-route="profile"] .v801-profile-shirt-entry{
   position:relative!important;
+  display:flex!important;
+  align-items:center!important;
   width:calc(100% - 32px)!important;
-  min-height:58px!important;
-  margin:14px 16px 0!important;
-  padding:0 54px 0 20px!important;
-  border:1px solid rgba(103,158,246,.58)!important;
-  border-radius:18px!important;
-  background:
-    radial-gradient(circle at 82% 10%,rgba(49,222,235,.14),transparent 30%),
-    linear-gradient(180deg,#224da7 0%,#193c8f 100%)!important;
+  min-height:62px!important;
+  margin:0 16px!important;
+  padding:0 50px 0 14px!important;
+  border:0!important;
+  border-bottom:1px solid rgba(255,255,255,.10)!important;
+  border-radius:0!important;
+  background:transparent!important;
   color:#fff!important;
   text-align:left!important;
   font-size:15px!important;
-  font-weight:850!important;
-  letter-spacing:-.015em!important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.14),
-    0 12px 28px rgba(0,17,87,.22)!important;
+  font-weight:760!important;
+  letter-spacing:-.012em!important;
+  box-shadow:none!important;
+  -webkit-tap-highlight-color:transparent!important;
+  transition:background .16s ease,transform .16s ease!important;
+}
+body[data-app-route="profile"] [data-ljr-account-settings]{
+  border-top:1px solid rgba(255,255,255,.10)!important;
 }
 body[data-app-route="profile"] [data-ljr-account-settings]::after,
 body[data-app-route="profile"] .v801-profile-shirt-entry::after{
   content:"›"!important;
   position:absolute!important;
-  right:19px!important;
+  right:16px!important;
   top:50%!important;
   transform:translateY(-52%)!important;
-  color:#d7ecff!important;
-  font-size:27px!important;
-  font-weight:400!important;
+  color:#f6fbff!important;
+  font-size:28px!important;
+  line-height:1!important;
+  font-weight:350!important;
+  opacity:.94!important;
+}
+body[data-app-route="profile"] [data-ljr-account-settings]::before,
+body[data-app-route="profile"] .v801-profile-shirt-entry::before{
+  display:inline-grid!important;
+  place-items:center!important;
+  flex:0 0 34px!important;
+  width:34px!important;
+  height:34px!important;
+  margin-right:13px!important;
+  border:0!important;
+  border-radius:10px!important;
+  background:rgba(24,69,165,.22)!important;
+  box-shadow:none!important;
 }
 body[data-app-route="profile"] [data-ljr-account-settings]::before{
   content:"⚙"!important;
-  display:inline-grid!important;
-  place-items:center!important;
-  width:30px!important;height:30px!important;
-  margin-right:11px!important;
-  border-radius:10px!important;
-  background:rgba(13,29,99,.42)!important;
+  color:#fff!important;
+  font-size:21px!important;
 }
 body[data-app-route="profile"] .v801-profile-shirt-entry{
-  margin-top:10px!important;
-  background:
-    radial-gradient(circle at 82% 10%,rgba(31,229,239,.19),transparent 31%),
-    linear-gradient(180deg,#163e96 0%,#112d78 100%)!important;
+  margin-top:0!important;
 }
 body[data-app-route="profile"] .v801-profile-shirt-entry::before{
   content:"👕"!important;
-  display:inline-grid!important;
-  place-items:center!important;
-  width:30px!important;height:30px!important;
-  margin-right:11px!important;
-  border-radius:10px!important;
-  background:rgba(18,74,151,.40)!important;
+  font-size:18px!important;
 }
 body[data-app-route="profile"] [data-ljr-account-settings]:active,
 body[data-app-route="profile"] .v801-profile-shirt-entry:active{
-  transform:scale(.988)!important;
-  filter:brightness(1.06)!important;
+  transform:scale(.992)!important;
+  background:rgba(28,79,177,.18)!important;
 }
 
 /* Refuerzo del modal de camiseta: no permitir que el estilo viejo lo aplaste. */
