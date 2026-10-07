@@ -183,8 +183,11 @@ function mountProfileEntry(){
  const menu=root.querySelector('.v12-profile-menu');
  const settings=root.querySelector('[data-ljr-account-settings]');
  if(menu){
+   const logout=menu.querySelector('[data-v569-logout]');
    if(settings&&settings.parentElement===menu){
      if(btn.parentElement!==menu||btn.previousElementSibling!==settings)settings.insertAdjacentElement('afterend',btn);
+   }else if(logout){
+     if(btn.parentElement!==menu||btn.nextElementSibling!==logout)menu.insertBefore(btn,logout);
    }else if(btn.parentElement!==menu)menu.append(btn);
  }
 
