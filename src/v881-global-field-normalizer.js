@@ -9,10 +9,10 @@ const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'')
   .toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');
 
 const CATALOG=[
-  {name:'Campo 1 · Unidad Deportiva Sur',aliases:['1','Campo 1','Campo 1 Empastado','Campo 1 (Empastado)','Campo 1 Unidad Deportiva Sur','Campo 1 · Unidad Deportiva Sur']},
-  {name:'Campo 2 · Unidad Deportiva Sur',aliases:['2','Campo 2','Campo 2 Unidad Deportiva Sur','Campo 2 · Unidad Deportiva Sur']},
-  {name:'Campo 3 · Unidad Deportiva Sur',aliases:['3','Campo 3','Campo 3 Unidad Deportiva Sur','Campo 3 · Unidad Deportiva Sur']},
-  {name:'Campo 4 · Emiliano Zapata',aliases:['4','Campo 4','Campo 4 Emiliano Zapata','Campo 4 · Emiliano Zapata']},
+  {name:'Campo 1 · Unidad Deportiva Sur',aliases:['Campo 1','Campo 1 Empastado','Campo 1 (Empastado)','Campo 1 Unidad Deportiva Sur','Campo 1 · Unidad Deportiva Sur']},
+  {name:'Campo 2 · Unidad Deportiva Sur',aliases:['Campo 2','Campo 2 Unidad Deportiva Sur','Campo 2 · Unidad Deportiva Sur']},
+  {name:'Campo 3 · Unidad Deportiva Sur',aliases:['Campo 3','Campo 3 Unidad Deportiva Sur','Campo 3 · Unidad Deportiva Sur']},
+  {name:'Campo 4 · Emiliano Zapata',aliases:['Campo 4','Campo 4 Emiliano Zapata','Campo 4 · Emiliano Zapata']},
   {name:'Campo Cerrito de Gasca',aliases:['Cerrito de Gasca','C. de Gasca','Campo Cerrito de Gasca']},
   {name:'Campo de Tavera',aliases:['Tavera','Franco Tavera','Campo Tavera','Campo de Tavera']},
   {name:'Campo San Juan de la Cruz',aliases:['San Juan','S. Juan de la Cruz','San Juan de la Cruz','Campo San Juan de la Cruz']},
