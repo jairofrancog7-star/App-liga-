@@ -67,6 +67,7 @@
     ABE:V6_LOGO_BASE+'assets/official-logos/abejas.png',
     LOB:V6_LOGO_BASE+'assets/official-logos/lobos-cdg.png',
     TER:V6_LOGO_BASE+'assets/official-logos/terricolas.png',
+    GAC:V6_LOGO_BASE+'assets/teams/galacticos-pozos.webp',
     DYN:V6_LOGO_BASE+'assets/official-logos/dynamo.png',
     MAN:V6_LOGO_BASE+'assets/official-logos/manchester.png',
     ESP:V6_LOGO_BASE+'assets/official-logos/la-esperanza.png',
