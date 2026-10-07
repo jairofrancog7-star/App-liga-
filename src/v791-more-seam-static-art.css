@@ -87,3 +87,182 @@
     --v768-head-h:calc(var(--more-master-header-h,96px) + env(safe-area-inset-top,0px));
   }
 }
+
+/* V889 — RESTAURACIÓN VISUAL DE LA BARRA SUPERIOR DE MÁS.
+   Recupera la referencia aprobada: título grande abajo a la izquierda,
+   arte azul continuo, sin flecha ni wordmark, y el perfil abajo a la derecha.
+   Sólo toca la cabecera de #/more; no modifica el contenido ni la barra inferior. */
+@media(max-width:1023px){
+  html body.ljr-v777[data-app-route="more"],
+  html body[data-app-route="more"]{
+    --more-master-header-h:104px;
+    --v768-head-h:calc(104px + env(safe-area-inset-top,0px));
+  }
+
+  html body.ljr-v777[data-app-route="more"][data-header-owner="global"] #app>.topbar,
+  html body[data-app-route="more"] #app>.topbar,
+  html body[data-app-route="more"] .app-shell>.topbar{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:sticky!important;
+    top:0!important;
+    width:100%!important;
+    height:calc(104px + env(safe-area-inset-top,0px))!important;
+    min-height:calc(104px + env(safe-area-inset-top,0px))!important;
+    max-height:calc(104px + env(safe-area-inset-top,0px))!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    isolation:isolate!important;
+    background-color:#080b82!important;
+    background-image:url('../public/more-bg-v19.webp?v=20261007-v889-more-topbar')!important;
+    background-repeat:no-repeat!important;
+    background-size:100% auto!important;
+    background-position:center top!important;
+    border:0!important;
+    box-shadow:none!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+    transform:none!important;
+    z-index:2147483400!important;
+  }
+
+  html body.ljr-v777[data-app-route="more"] #app>.topbar::before,
+  html body[data-app-route="more"] #app>.topbar::before{
+    content:none!important;
+    display:none!important;
+  }
+
+  html body.ljr-v777[data-app-route="more"][data-header-owner="global"] #app>.topbar::after,
+  html body[data-app-route="more"] #app>.topbar::after{
+    content:"Más"!important;
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:absolute!important;
+    left:22px!important;
+    right:auto!important;
+    top:auto!important;
+    bottom:17px!important;
+    width:auto!important;
+    height:auto!important;
+    margin:0!important;
+    padding:0!important;
+    color:#f4f4f8!important;
+    font-family:Inter,Roboto,Arial,sans-serif!important;
+    font-size:31px!important;
+    line-height:1!important;
+    font-weight:700!important;
+    letter-spacing:-.035em!important;
+    white-space:nowrap!important;
+    transform:none!important;
+    pointer-events:none!important;
+    z-index:8!important;
+  }
+
+  html body.ljr-v777[data-app-route="more"] #app>.topbar>.wordmark,
+  html body[data-app-route="more"] #app>.topbar>.wordmark{
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    pointer-events:none!important;
+  }
+
+  /* V777 mueve los controles a este contenedor; en Más lo colocamos
+     exactamente en la esquina inferior derecha del header de referencia. */
+  html body.ljr-v777[data-app-route="more"] #app>.topbar>.ljr-chrome-actions{
+    position:absolute!important;
+    left:14px!important;
+    right:18px!important;
+    top:auto!important;
+    bottom:14px!important;
+    height:32px!important;
+    min-height:32px!important;
+    margin:0!important;
+    padding:0!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:flex-end!important;
+    background:transparent!important;
+    border:0!important;
+    pointer-events:none!important;
+    z-index:12!important;
+  }
+  html body.ljr-v777[data-app-route="more"] #app>.topbar>.ljr-chrome-actions>.ljr-chrome-left{
+    display:none!important;
+    visibility:hidden!important;
+    width:0!important;
+    min-width:0!important;
+    max-width:0!important;
+    pointer-events:none!important;
+  }
+  html body.ljr-v777[data-app-route="more"] #app>.topbar>.ljr-chrome-actions>.ljr-chrome-right{
+    margin-left:auto!important;
+    transform:scale(.78)!important;
+    transform-origin:right bottom!important;
+    pointer-events:auto!important;
+  }
+
+  html body.ljr-v777[data-app-route="more"] #app>.topbar .ljr-profile-control,
+  html body.ljr-v777[data-app-route="more"] #app>.topbar .profile-button{
+    border:0!important;
+    box-shadow:none!important;
+    background-color:transparent!important;
+  }
+
+  html body.ljr-v777[data-app-route="more"] #app>.topbar .ljr-profile-control>.ljr-profile-image,
+  html body.ljr-v777[data-app-route="more"] #app>.topbar .ljr-profile-control>.ljr-profile-initial,
+  html body.ljr-v777[data-app-route="more"] #app>.topbar .ljr-profile-control>.ljr-gamer-avatar{
+    border-radius:0!important;
+    box-shadow:none!important;
+  }
+}
+
+@media(max-width:560px){
+  html body.ljr-v777[data-app-route="more"],
+  html body[data-app-route="more"]{
+    --more-master-header-h:100px;
+    --v768-head-h:calc(100px + env(safe-area-inset-top,0px));
+  }
+  html body.ljr-v777[data-app-route="more"][data-header-owner="global"] #app>.topbar,
+  html body[data-app-route="more"] #app>.topbar{
+    height:calc(100px + env(safe-area-inset-top,0px))!important;
+    min-height:calc(100px + env(safe-area-inset-top,0px))!important;
+    max-height:calc(100px + env(safe-area-inset-top,0px))!important;
+  }
+  html body.ljr-v777[data-app-route="more"] #app>.topbar::after,
+  html body[data-app-route="more"] #app>.topbar::after{
+    left:20px!important;
+    bottom:16px!important;
+    font-size:29px!important;
+  }
+  html body.ljr-v777[data-app-route="more"] #app>.topbar>.ljr-chrome-actions{
+    right:16px!important;
+    bottom:13px!important;
+  }
+}
+
+@media(max-width:390px){
+  html body.ljr-v777[data-app-route="more"],
+  html body[data-app-route="more"]{
+    --more-master-header-h:96px;
+    --v768-head-h:calc(96px + env(safe-area-inset-top,0px));
+  }
+  html body.ljr-v777[data-app-route="more"][data-header-owner="global"] #app>.topbar,
+  html body[data-app-route="more"] #app>.topbar{
+    height:calc(96px + env(safe-area-inset-top,0px))!important;
+    min-height:calc(96px + env(safe-area-inset-top,0px))!important;
+    max-height:calc(96px + env(safe-area-inset-top,0px))!important;
+  }
+  html body.ljr-v777[data-app-route="more"] #app>.topbar::after,
+  html body[data-app-route="more"] #app>.topbar::after{
+    left:18px!important;
+    bottom:15px!important;
+    font-size:28px!important;
+  }
+  html body.ljr-v777[data-app-route="more"] #app>.topbar>.ljr-chrome-actions{
+    right:14px!important;
+    bottom:12px!important;
+  }
+}
