@@ -5,7 +5,6 @@ The primary mesh is the MIT-licensed classic shirt GLB from Mini Jersey 3D Studi
 (Francesco Castaldi). It keeps its original normal/occlusion detail while the
 Liga texture is projected on a separate UV channel. See THIRD_PARTY_NOTICES.md.
 */
-import './v893-realistic-football-shirt-model.js';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -319,8 +318,17 @@ function materialForRealModel(source,atlas,bump){
   return m;
 }
 
-async function buildRealJersey(current){
+async function ensureRealisticModel(){
+  if(window.SHIRT_GLB)return;
+  // Important on Android/APK: this model is ~1.4 MB as an embedded GLB.
+  // Load it only when the user actually opens the jersey editor so the whole app
+  // never blocks on parsing the 3D asset during startup.
+  await import('./v893-realistic-football-shirt-model.js');
   if(!window.SHIRT_GLB)throw new Error('Modelo realista no disponible');
+}
+
+async function buildRealJersey(current){
+  await ensureRealisticModel();
   const gltf=await new Promise((resolve,reject)=>{
     new GLTFLoader().load(window.SHIRT_GLB,resolve,undefined,reject);
   });
