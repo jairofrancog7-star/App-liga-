@@ -171,9 +171,13 @@ function mountProfileEntry(){
    btn.type='button';
  }
  btn.type='button';
- btn.className='v12-profile-row ljr-profile-action-row ljr-profile-shirt-row v801-profile-shirt-entry';
+ const rowClass='v12-profile-row ljr-profile-action-row ljr-profile-shirt-row v801-profile-shirt-entry';
+ if(btn.className!==rowClass)btn.className=rowClass;
  btn.removeAttribute('style');
- btn.innerHTML='<span class="v12-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m8 4 2-1h4l2 1 4 3-2.2 4-1.8-1v10H8V10l-1.8 1L4 7l4-3Z" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round"/><path d="M10 3c.2 1.3.9 2 2 2s1.8-.7 2-2" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/></svg></span><span class="v12-profile-row-label">Mi avatar y mi camiseta</span><span class="v12-profile-row-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+ if(btn.dataset.v901Markup!=='1'){
+   btn.innerHTML='<span class="v12-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m8 4 2-1h4l2 1 4 3-2.2 4-1.8-1v10H8V10l-1.8 1L4 7l4-3Z" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round"/><path d="M10 3c.2 1.3.9 2 2 2s1.8-.7 2-2" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/></svg></span><span class="v12-profile-row-label">Mi avatar y mi camiseta</span><span class="v12-profile-row-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+   btn.dataset.v901Markup='1';
+ }
  btn.dataset.v803ProfileShirt='1';
 
  const menu=root.querySelector('.v12-profile-menu');
