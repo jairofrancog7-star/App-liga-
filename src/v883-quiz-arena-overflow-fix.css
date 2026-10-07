@@ -672,3 +672,304 @@
     transition:none!important;
   }
 }
+
+
+/* V885 — icono de forma + modal Últimos 5 partidos. */
+@media(max-width:1023px){
+  html body[data-app-route="predictorSix"] .prediction-sheet .v589-form button::before{
+    display:none!important;
+    content:none!important;
+  }
+  html body[data-app-route="predictorSix"] .prediction-sheet .v851-form-trigger{
+    cursor:pointer!important;
+    touch-action:manipulation!important;
+  }
+  html body[data-app-route="predictorSix"] .prediction-sheet .v851-form-trigger-head{
+    width:100%!important;
+    display:flex!important;
+    align-items:center!important;
+    gap:10px!important;
+  }
+  html body[data-app-route="predictorSix"] .prediction-sheet .v851-form-trigger.away .v851-form-trigger-head{
+    flex-direction:row-reverse!important;
+  }
+  html body[data-app-route="predictorSix"] .prediction-sheet .v851-form-icon{
+    width:29px!important;
+    height:25px!important;
+    flex:0 0 29px!important;
+    fill:none!important;
+    stroke:#fff!important;
+    stroke-width:2.2!important;
+    stroke-linecap:round!important;
+    stroke-linejoin:round!important;
+    opacity:.98!important;
+    filter:drop-shadow(0 0 4px rgba(255,255,255,.16))!important;
+  }
+  html body[data-app-route="predictorSix"] .prediction-sheet .v851-form-trigger b{
+    flex:1 1 auto!important;
+    min-width:0!important;
+  }
+  html body[data-app-route="predictorSix"] .prediction-sheet .v851-form-marks{
+    flex-basis:100%!important;
+    display:flex!important;
+    align-items:center!important;
+    gap:8px!important;
+    margin-top:2px!important;
+  }
+  html body[data-app-route="predictorSix"] .prediction-sheet .v851-form-trigger.away .v851-form-marks{
+    justify-content:flex-end!important;
+  }
+  html body[data-app-route="predictorSix"] .prediction-sheet .v851-form-marks i.win{
+    background:#29b943!important;
+    color:#fff!important;
+  }
+  html body[data-app-route="predictorSix"] .prediction-sheet .v851-form-marks i.loss{
+    background:#d93b47!important;
+    color:#fff!important;
+  }
+  html body[data-app-route="predictorSix"] .prediction-sheet .v851-form-marks i.draw{
+    background:#6f77a8!important;
+    color:#fff!important;
+  }
+
+  html body[data-app-route="predictorSix"] .v851-form-overlay{
+    z-index:2147483646!important;
+    box-sizing:border-box!important;
+    align-items:center!important;
+    justify-content:center!important;
+    padding:24px 48px calc(24px + env(safe-area-inset-bottom))!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-overlay .v589-dim{
+    background:rgba(0,0,33,.72)!important;
+    -webkit-backdrop-filter:brightness(.55)!important;
+    backdrop-filter:brightness(.55)!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-sheet{
+    position:relative!important;
+    box-sizing:border-box!important;
+    width:min(100%,460px)!important;
+    max-height:min(76dvh,650px)!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:26px 30px 28px!important;
+    overflow:auto!important;
+    border:1px solid rgba(70,77,190,.38)!important;
+    border-radius:22px!important;
+    background:
+      radial-gradient(300px 160px at 50% -12%,rgba(48,70,224,.16),transparent 72%),
+      linear-gradient(180deg,#171378 0%,#12106f 100%)!important;
+    box-shadow:0 18px 50px rgba(0,0,40,.5)!important;
+    color:#fff!important;
+    scrollbar-width:none!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-sheet::-webkit-scrollbar{
+    display:none!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-sheet .v589-handle{
+    display:none!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-sheet h2{
+    margin:0 36px 22px 0!important;
+    color:#fff!important;
+    font-size:24px!important;
+    line-height:1.1!important;
+    font-weight:850!important;
+    letter-spacing:-.02em!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-close{
+    position:absolute!important;
+    top:19px!important;
+    right:19px!important;
+    width:34px!important;
+    height:34px!important;
+    display:grid!important;
+    place-items:center!important;
+    padding:0!important;
+    border:0!important;
+    background:transparent!important;
+    color:#a9abd3!important;
+    font-size:36px!important;
+    line-height:1!important;
+    font-weight:300!important;
+    cursor:pointer!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-tabs{
+    position:relative!important;
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:0!important;
+    width:100%!important;
+    margin:0 0 24px!important;
+    border-bottom:2px solid rgba(120,127,188,.42)!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-tabs button{
+    position:relative!important;
+    min-width:0!important;
+    min-height:56px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:10px!important;
+    padding:5px 7px 14px!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    color:#d9d9ec!important;
+    box-shadow:none!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-tabs button::after{
+    content:""!important;
+    position:absolute!important;
+    left:0!important;
+    right:0!important;
+    bottom:-2px!important;
+    height:4px!important;
+    border-radius:999px 999px 0 0!important;
+    background:transparent!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-tabs button.active{
+    color:#fff!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-tabs button.active::after{
+    background:#23dce8!important;
+    box-shadow:0 0 9px rgba(35,220,232,.45)!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-tabs img{
+    width:31px!important;
+    height:31px!important;
+    object-fit:contain!important;
+    flex:0 0 31px!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-tabs b{
+    min-width:0!important;
+    overflow:hidden!important;
+    color:inherit!important;
+    font-size:16px!important;
+    line-height:1.08!important;
+    font-weight:800!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+  }
+
+  html body[data-app-route="predictorSix"] .v851-form-list{
+    display:grid!important;
+    gap:3px!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-row{
+    display:grid!important;
+    grid-template-columns:42px minmax(0,1fr)!important;
+    align-items:center!important;
+    gap:10px!important;
+    min-height:67px!important;
+    padding:7px 0!important;
+    border:0!important;
+    color:#fff!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-result{
+    width:40px!important;
+    height:40px!important;
+    display:grid!important;
+    place-items:center!important;
+    border-radius:50%!important;
+    color:#fff!important;
+    font-size:14px!important;
+    line-height:1!important;
+    font-weight:900!important;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-result.win{background:#2eb945!important}
+  html body[data-app-route="predictorSix"] .v851-form-result.loss{background:#d53b49!important}
+  html body[data-app-route="predictorSix"] .v851-form-result.draw{background:#767da8!important}
+  html body[data-app-route="predictorSix"] .v851-form-match{
+    min-width:0!important;
+    display:block!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-match b{
+    min-width:0!important;
+    display:flex!important;
+    align-items:baseline!important;
+    gap:7px!important;
+    color:#fff!important;
+    font-size:16px!important;
+    line-height:1.12!important;
+    font-weight:500!important;
+    white-space:nowrap!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-match b>span{
+    min-width:0!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-match b>span:last-child{
+    text-align:left!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-match strong{
+    flex:0 0 auto!important;
+    color:#fff!important;
+    font-size:17px!important;
+    font-weight:900!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-match small{
+    display:block!important;
+    margin-top:4px!important;
+    color:#bdc0df!important;
+    font-size:13px!important;
+    line-height:1.1!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+  html body[data-app-route="predictorSix"] .v851-form-empty{
+    margin:10px 0 0!important;
+    color:#c6c8e3!important;
+    font-size:14px!important;
+    line-height:1.4!important;
+    text-align:center!important;
+  }
+
+  html body[data-app-route="predictorSix"]:has(.v851-form-overlay) .bottom-nav{
+    opacity:.3!important;
+    visibility:visible!important;
+    pointer-events:none!important;
+  }
+
+  @media(max-width:390px){
+    html body[data-app-route="predictorSix"] .v851-form-overlay{
+      padding-left:30px!important;
+      padding-right:30px!important;
+    }
+    html body[data-app-route="predictorSix"] .v851-form-sheet{
+      padding:24px 22px 25px!important;
+    }
+    html body[data-app-route="predictorSix"] .v851-form-sheet h2{
+      font-size:22px!important;
+    }
+    html body[data-app-route="predictorSix"] .v851-form-tabs b{
+      font-size:14px!important;
+    }
+    html body[data-app-route="predictorSix"] .v851-form-tabs img{
+      width:27px!important;
+      height:27px!important;
+      flex-basis:27px!important;
+    }
+    html body[data-app-route="predictorSix"] .v851-form-match b{
+      gap:5px!important;
+      font-size:14px!important;
+    }
+    html body[data-app-route="predictorSix"] .v851-form-match strong{
+      font-size:15px!important;
+    }
+    html body[data-app-route="predictorSix"] .v851-form-match small{
+      font-size:12px!important;
+    }
+    html body[data-app-route="predictorSix"] .v851-form-result{
+      width:36px!important;
+      height:36px!important;
+      font-size:13px!important;
+    }
+    html body[data-app-route="predictorSix"] .v851-form-row{
+      grid-template-columns:38px minmax(0,1fr)!important;
+      min-height:62px!important;
+    }
+  }
+}
