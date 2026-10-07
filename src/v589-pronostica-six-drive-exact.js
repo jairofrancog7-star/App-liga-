@@ -86,6 +86,7 @@ function formSheet(team){
    '</section></div>';
 }
 function openFormSheet(team){
+ try{localStorage.removeItem('v42-open-compare')}catch(_){}
  closeOverlay();
  const root=$('[data-v589-root]');
  if(root)root.insertAdjacentHTML('beforeend',formSheet(team));
@@ -93,6 +94,7 @@ function openFormSheet(team){
 function openCardForm(id){
  const g=games.find(x=>x.id===id);
  if(!g)return;
+ try{localStorage.removeItem('v42-open-compare')}catch(_){}
  ui.game=id;
  closeOverlay();
  const root=$('[data-v589-root]');
@@ -395,7 +397,7 @@ function handleClick(e){
   const step=t.getAttribute('data-v851-intro-step');
   if(step!==null){e.preventDefault();e.stopPropagation();ui.introSlide=Math.max(0,Math.min(3,ui.introSlide+Number(step)));render();return}
   const cardForm=t.getAttribute('data-v851-card-form');
-  if(cardForm!==null){e.preventDefault();e.stopPropagation();openCardForm(cardForm);return}
+  if(cardForm!==null){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();openCardForm(cardForm);return}
   const form=t.getAttribute('data-v851-form');
   if(form!==null){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();openFormSheet(form);return}
   const joker=t.getAttribute('data-v851-joker');
@@ -476,6 +478,11 @@ function mount(){
   if(!screen.querySelector('[data-v589-root]'))render();
 }
 function schedule(ms=40){clearTimeout(mountTimer);mountTimer=setTimeout(mount,ms)}
+
+window.LJR_V589_PREDICTOR_API={
+  openLastFiveByGame(id){if(route()===ROUTE)openCardForm(String(id||''))},
+  openLastFiveTeam(team){if(route()===ROUTE)openFormSheet(String(team||''))}
+};
 
 document.addEventListener('click',handleClick,true);
 window.addEventListener('ljr:official-data',()=>{if(route()===ROUTE)render()});
