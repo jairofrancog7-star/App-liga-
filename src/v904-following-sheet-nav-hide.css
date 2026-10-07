@@ -1,0 +1,29 @@
+/* V904 — Siguiendo: la hoja de opciones ocupa el fondo completo.
+   La barra inferior solo se oculta mientras está abierto el panel del equipo. */
+html body[data-app-route="following"].v28-follow-sheet-open #app > .bottom-nav,
+html body[data-app-route="following"].v28-follow-sheet-open .app-shell > .bottom-nav,
+html body[data-app-route="following"].v28-follow-sheet-open #app > nav.bottom-nav,
+html body[data-app-route="following"].v28-follow-sheet-open nav.bottom-nav{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  transform:translateY(120%)!important;
+}
+html body[data-app-route="following"].v28-follow-sheet-open #app,
+html body[data-app-route="following"].v28-follow-sheet-open .app-shell{
+  padding-bottom:0!important;
+}
+html body[data-app-route="following"].v28-follow-sheet-open .v28-sheet-layer{
+  inset:0!important;
+  bottom:0!important;
+  z-index:2147483600!important;
+  padding-bottom:env(safe-area-inset-bottom)!important;
+}
+html body[data-app-route="following"].v28-follow-sheet-open .v28-sheet{
+  margin-bottom:0!important;
+  padding-bottom:calc(18px + env(safe-area-inset-bottom))!important;
+}
