@@ -9,12 +9,13 @@ if(window.__LJR_V659_REFERENCE_LOCK__)return;
 window.__LJR_V659_REFERENCE_LOCK__=true;
 
 const BUILD='20261003-v654-full-bracket-reference-exact';
+const ASSET_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CATS=[
-  {id:'3',name:'Primera Fuerza',logo:'./assets/branding/primera-fuerza-hd.png'},
-  {id:'5',name:'Intermedia',logo:'./assets/categories/intermedia.webp'},
-  {id:'4',name:'Segunda Fuerza',logo:'./assets/categories/segunda-fuerza.webp'},
-  {id:'2',name:'Veteranos 35+',logo:'./assets/categories/veteranos-35-user.png'},
-  {id:'1',name:'Veteranos 50+',logo:'./assets/categories/veteranos-50.webp'}
+  {id:'3',name:'Primera Fuerza',logo:ASSET_ROOT+'assets/branding/primera-fuerza-hd.png'},
+  {id:'5',name:'Intermedia',logo:ASSET_ROOT+'assets/categories/intermedia.webp'},
+  {id:'4',name:'Segunda Fuerza',logo:ASSET_ROOT+'assets/categories/segunda-fuerza.webp'},
+  {id:'2',name:'Veteranos 35+',logo:ASSET_ROOT+'assets/categories/veteranos-35-user.png'},
+  {id:'1',name:'Veteranos 50+',logo:ASSET_ROOT+'assets/categories/veteranos-50.webp'}
 ];
 const STAGES={
   r16:{name:'Octavos de final',short:'ROUND OF 16',slots:16},
@@ -27,7 +28,8 @@ const DESIGNS={
   full:{name:'Diseño 2 · Full Bracket exacto',slug:'full-bracket'},
   quarters:{name:'Diseño 3 · Cuartos exacto',slug:'cuartos-exacto'}
 };
-const LEAGUE_LOGO='./assets/liga-logo.webp';
+const LEAGUE_LOGO='./assets/reference/predictor-v36/liga-crest-white.webp';
+const LEAGUE_LOGO_FALLBACK=ASSET_ROOT+'assets/liga-logo.webp';
 const TROPHY='./assets/reference/final-trophy-drive.png';
 const TROPHY_FALLBACK='./final-trophy-drive.png';
 const W=1228,H=1536;
@@ -1019,8 +1021,8 @@ async function mount(){
   const cat=currentCategory(),meta=catMeta(cat),design=String(localStorage.getItem('v651-bracket-design')||'round');
   page.dataset.v651='1';page.dataset.v651Design=DESIGNS[design]?design:'round';page.dataset.v643='2';
   page.innerHTML=
-    '<section class="v651-hero"><div class="v651-brand"><img src="'+esc(LEAGUE_LOGO)+'" alt=""><span><small>LIGA JUVENTINO ROSAS</small><h1>Generador de Bracket</h1></span></div><p>La generación ahora aparece inmediatamente debajo de Categoría y Etapa: Round of 16, Full Bracket y Cuartos de Final, cada uno con PNG y PDF.</p></section>'+
-    '<section class="v651-controls"><div class="v651-catrow"><span class="v651-catlogo"><img data-v651-cat-logo src="'+esc(meta.logo)+'" alt=""></span><div class="v651-grid">'+
+    '<section class="v651-hero"><div class="v651-brand"><img src="'+esc(LEAGUE_LOGO)+'" data-v651-league-logo alt="Liga Juventino Rosas"><span><small>LIGA JUVENTINO ROSAS</small><h1>Generador de Bracket</h1></span></div><p>La generación ahora aparece inmediatamente debajo de Categoría y Etapa: Round of 16, Full Bracket y Cuartos de Final, cada uno con PNG y PDF.</p></section>'+
+    '<section class="v651-controls"><div class="v651-catrow"><span class="v651-catlogo"><img data-v651-cat-logo src="'+esc(meta.logo)+'" alt="'+esc(meta.name)+'"></span><div class="v651-grid">'+
       '<label>CATEGORÍA<select data-v651-cat>'+CATS.map(c=>'<option value="'+c.id+'" '+(c.id===cat?'selected':'')+'>'+esc(c.name)+'</option>').join('')+'</select></label>'+
       '<label>ETAPA<select data-v651-stage><option value="auto">Automático</option><option value="r16">Octavos de final</option><option value="qf">Cuartos de final</option><option value="sf">Semifinales</option><option value="final">Final</option></select></label>'+
     '</div></div><div class="v651-auto" data-v651-auto></div></section>'+
@@ -1053,7 +1055,7 @@ async function mount(){
   renderSlots(page,false);autoFill(page);loadResultState(page);renderResultsEditor(page);refreshSelectedCards(page);queueAllPreviews(page);
   catSel.addEventListener('change',()=>{
     const id=catSel.value,m=catMeta(id);try{localStorage.setItem('v651-bracket-cat',id);localStorage.setItem('v62-category',id)}catch(_){}
-    page.querySelector('[data-v651-cat-logo]').src=m.logo;resetResultState(page,false);renderSlots(page,false);autoFill(page);loadResultState(page);renderResultsEditor(page);stageInfo(page);queueAllPreviews(page);
+    const catLogo=page.querySelector('[data-v651-cat-logo]');if(catLogo){catLogo.alt=m.name;catLogo.src=m.logo;}resetResultState(page,false);renderSlots(page,false);autoFill(page);loadResultState(page);renderResultsEditor(page);stageInfo(page);queueAllPreviews(page);
   });
   stageSel.addEventListener('change',()=>{
     try{localStorage.setItem('v651-bracket-stage',stageSel.value)}catch(_){}
