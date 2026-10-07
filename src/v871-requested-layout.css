@@ -10,11 +10,6 @@
  html body[data-app-route="home"] #app #screen>.stories .story-ring{margin-top:0!important;transform:none!important}
  html body.v415-calendar-active.v839-reference-calendar #app #screen .v415-reference-topbar{height:82px!important;min-height:82px!important;max-height:82px!important}
  html body.v415-calendar-active.v839-reference-calendar #app #screen .v415-reference-trophy{display:none!important}
- html body.v415-calendar-active.v839-reference-calendar #app #screen .v415-top-row{display:flex!important;gap:9px!important;padding:12px 14px 10px!important;margin:0!important;box-sizing:border-box!important}
- html body.v415-calendar-active.v839-reference-calendar #app #screen .v415-segment{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important;flex:1!important;min-width:0!important;padding:0!important;border:0!important;background:none!important;box-shadow:none!important}
- html body.v415-calendar-active.v839-reference-calendar #app #screen .v415-segment button{margin:0!important;border-radius:8px!important;min-width:0!important;padding:10px 3px!important;font-size:12px!important;line-height:1.2!important;border:1px solid #7384b240!important;background:#1a2649!important}
- html body.v415-calendar-active.v839-reference-calendar #app #screen .v415-segment button.active{background:#a9dcff!important;color:#09214d!important;border-color:#a9dcff!important}
- html body.v415-calendar-active.v839-reference-calendar #app #screen .v415-filter{position:static!important;align-self:center!important;flex:0 0 34px!important;width:34px!important;height:34px!important;margin:0!important;transform:none!important}
  html body[data-app-route="fantasyTeam"] #app #screen>:not([data-v576-builder]){display:none!important}
  html body[data-app-route="fantasyTeam"] #app #screen [data-v576-builder]{visibility:visible!important}
 }
