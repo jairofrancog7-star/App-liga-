@@ -2,7 +2,7 @@
 <html lang="es-MX">
 <head>
   <script src="./src/v776-navigation.js"></script>
-  <meta name="app-build" content="v892-news-social-dedupe">
+  <meta name="app-build" content="v896-news-single-social">
   <style data-ljr-entry-guard>
     html.ljr-preboot #app{visibility:hidden!important}
     html.ljr-preboot body{background:#000144!important}
@@ -1213,11 +1213,16 @@ html body.v587-fantasy-team-open .v576-field-row.por{
       function sync(){
         if(route()!=='news')return;
         style();
-        document.querySelectorAll('[data-v74-facebook-source="news"]').forEach(function(n){n.remove()});
-        document.querySelectorAll('[data-v411-zone="news"] .v411-social').forEach(function(n){n.remove()});
+        document.querySelectorAll('[data-v74-facebook-source="news"],[data-v411-zone="news"] .v411-social,.v74-news-merged').forEach(function(n){n.remove()});
         var social=document.querySelector('[data-v412-screen="news"] .v412-news-socials');
         if(!social)return;
-        social.querySelectorAll('.v74-news-merged,.v891-news-social-extra').forEach(function(n){n.remove()});
+
+        var blocks=[].slice.call(social.querySelectorAll('.v891-news-social-extra'));
+        if(blocks.length){
+          blocks.slice(1).forEach(function(n){n.remove()});
+          return;
+        }
+
         var extra=document.createElement('div');
         extra.className='v891-news-social-extra';
         extra.innerHTML='<p>Facebook oficial · Tablas, calendarios, avisos, campeones, finales, historia y fotografías de la Liga.</p><div class="v891-news-tags"><span>Tablas</span><span>Calendarios</span><span>Avisos</span><span>Campeones</span><span>Historia</span></div><div class="v891-news-actions"><button type="button" data-v891-open>Ver publicaciones</button><button type="button" data-v891-share>Compartir</button></div>';
