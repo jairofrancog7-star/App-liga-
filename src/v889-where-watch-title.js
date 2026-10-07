@@ -1,50 +1,71 @@
-/* V889 — Título real de "Dónde verlo" en la barra superior. */
+/* V890 — Título "Dónde verlo" visible en la barra superior. */
 (function(){
   'use strict';
-  if(window.__LJR_V889_WHERE_TITLE__)return;
-  window.__LJR_V889_WHERE_TITLE__=true;
+  if(window.__LJR_V890_WHERE_TITLE__)return;
+  window.__LJR_V890_WHERE_TITLE__=true;
 
-  function route(){
+  function currentRoute(){
     return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||
       String(document.body?.dataset?.appRoute||'home');
   }
 
-  function sync(){
-    const wordmark=document.querySelector('#app > .topbar .wordmark, .app-shell > .topbar .wordmark');
-    if(!wordmark)return;
-
-    const isWhere=route()==='whereToWatch' || document.body?.dataset?.appRoute==='whereToWatch' ||
+  function isWhere(){
+    return currentRoute()==='whereToWatch' ||
+      String(document.body?.dataset?.appRoute||'')==='whereToWatch' ||
       !!document.querySelector('#screen [data-v412-screen="where"]');
+  }
 
-    if(isWhere){
-      if(!wordmark.dataset.v889OriginalHtml){
-        wordmark.dataset.v889OriginalHtml=wordmark.innerHTML;
-        wordmark.dataset.v889OriginalAria=wordmark.getAttribute('aria-label')||'';
-      }
-      if(wordmark.textContent.trim()!=='Dónde verlo')wordmark.textContent='Dónde verlo';
-      wordmark.classList.add('v889-where-title');
-      wordmark.setAttribute('aria-label','Dónde verlo');
-      return;
+  function getTopbar(){
+    return document.querySelector('#app > .topbar, .app-shell > .topbar');
+  }
+
+  function ensureLabel(topbar){
+    let label=topbar.querySelector('.v890-where-title-label');
+    if(!label){
+      label=document.createElement('span');
+      label.className='v890-where-title-label';
+      label.textContent='Dónde verlo';
+      label.setAttribute('aria-hidden','true');
+      topbar.appendChild(label);
     }
+    return label;
+  }
 
-    if(wordmark.classList.contains('v889-where-title')){
-      const original=wordmark.dataset.v889OriginalHtml;
-      if(original)wordmark.innerHTML=original;
-      const aria=wordmark.dataset.v889OriginalAria;
-      if(aria)wordmark.setAttribute('aria-label',aria); else wordmark.removeAttribute('aria-label');
-      wordmark.classList.remove('v889-where-title');
+  function sync(){
+    const topbar=getTopbar();
+    if(!topbar)return;
+
+    const active=isWhere();
+    topbar.classList.toggle('v890-where-topbar',active);
+
+    const label=ensureLabel(topbar);
+    label.hidden=!active;
+
+    if(active){
+      label.textContent='Dónde verlo';
+      const wordmark=topbar.querySelector('.wordmark');
+      if(wordmark)wordmark.setAttribute('aria-label','Dónde verlo');
     }
   }
 
   function burst(){
     sync();
     requestAnimationFrame(sync);
-    setTimeout(sync,80);
-    setTimeout(sync,220);
+    setTimeout(sync,60);
+    setTimeout(sync,180);
+    setTimeout(sync,500);
   }
 
   window.addEventListener('hashchange',burst);
+  window.addEventListener('pageshow',burst);
   document.addEventListener('DOMContentLoaded',burst,{once:true});
-  new MutationObserver(()=>requestAnimationFrame(sync)).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['data-app-route']});
+
+  new MutationObserver(()=>requestAnimationFrame(sync)).observe(document.documentElement,{
+    subtree:true,
+    childList:true,
+    attributes:true,
+    attributeFilter:['data-app-route','class']
+  });
+
   burst();
 })();
