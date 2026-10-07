@@ -286,3 +286,105 @@
   .v729-schedule-grid input,.v729-schedule-grid select{font-size:9.7px!important}
   .v729-ai-presets{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
+
+
+/* V883 — PROGRAMACIÓN: encajar Día / Hora / Recordatorio / Categoría sin desbordes.
+   Solo toca la tarjeta "Fecha, hora y categoría". */
+.v729-schedule-card{
+  overflow:hidden!important;
+}
+.v729-schedule-card .v729-card-title{
+  min-width:0!important;
+}
+.v729-schedule-card .v729-card-title>div{
+  min-width:0!important;
+}
+.v729-schedule-card .v729-card-title b{
+  max-width:100%!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+.v729-schedule-card .v729-schedule-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:8px!important;
+  width:100%!important;
+  min-width:0!important;
+}
+.v729-schedule-card .v729-schedule-grid label{
+  min-width:0!important;
+  width:100%!important;
+  min-height:68px!important;
+  padding:7px!important;
+  align-content:start!important;
+  overflow:hidden!important;
+}
+.v729-schedule-card .v729-schedule-grid label>span{
+  display:block!important;
+  width:100%!important;
+  margin:0 0 5px!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  line-height:1.05!important;
+}
+.v729-schedule-card .v729-schedule-grid input,
+.v729-schedule-card .v729-schedule-grid select{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  height:38px!important;
+  min-height:38px!important;
+  margin:0!important;
+  padding:7px 28px 7px 8px!important;
+  box-sizing:border-box!important;
+  font-size:9.4px!important;
+  line-height:1.1!important;
+  letter-spacing:-.01em!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+.v729-schedule-card .v729-schedule-grid input[type="date"],
+.v729-schedule-card .v729-schedule-grid input[type="time"]{
+  font-variant-numeric:tabular-nums!important;
+}
+.v729-schedule-card .v729-schedule-grid input[type="date"]::-webkit-calendar-picker-indicator,
+.v729-schedule-card .v729-schedule-grid input[type="time"]::-webkit-calendar-picker-indicator{
+  width:15px!important;
+  height:15px!important;
+  margin:0!important;
+  padding:0!important;
+  opacity:.95!important;
+}
+.v729-schedule-card .v729-schedule-grid select{
+  padding-right:25px!important;
+  text-overflow:ellipsis!important;
+}
+.v729-schedule-card .v729-schedule-grid select[data-v713-category]{
+  font-size:9px!important;
+  font-weight:700!important;
+}
+
+@media(max-width:390px){
+  .v729-schedule-card .v729-schedule-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:6px!important;
+  }
+  .v729-schedule-card .v729-schedule-grid label{
+    min-height:64px!important;
+    padding:6px!important;
+  }
+  .v729-schedule-card .v729-schedule-grid input,
+  .v729-schedule-card .v729-schedule-grid select{
+    height:36px!important;
+    min-height:36px!important;
+    padding-left:7px!important;
+    font-size:8.8px!important;
+  }
+  .v729-schedule-card .v729-schedule-grid select[data-v713-category]{
+    font-size:8.4px!important;
+  }
+}
