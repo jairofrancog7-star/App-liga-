@@ -28,7 +28,7 @@
     })();
   </script>
   <script src="./src/v776-navigation.js"></script>
-  <meta name="app-build" content="v911.1-pronostica-actions-hard-position">
+  <meta name="app-build" content="v912-pronostica-centered-buttons-dots-flow">
   <style data-ljr-entry-guard>
     html.ljr-preboot #app{visibility:hidden!important}
     html.ljr-preboot body{background:#000144!important}
@@ -548,6 +548,7 @@ html body.v587-fantasy-team-open .v576-field-row.por{
 }
 </style>
   <!-- V911.1_PAGES_TRIGGER -->
+  <!-- V912_PAGES_TRIGGER -->
   <script type="module" crossorigin src="./assets/index-Bn_O0suC.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-S6t42csc.css">
 </head>
@@ -900,17 +901,18 @@ html body.v587-fantasy-team-open .v576-field-row.por{
   </script>
 
 
-  <style id="V911_PRONOSTICA_ACTIONS_HARD_POSITION">
-    /* V911 — Pronostica Seis: hardfix visual final para los dos botones inferiores. */
+  <style id="V912_PRONOSTICA_ACTIONS_CENTER_AND_DOTS">
+    /* V912 — botones centrados y puntos en flujo, sin tapar el texto. */
     @media (max-width:1023px){
       body[data-app-route="predictorSix"] #screen .v589-page.intro{
         position:relative!important;
       }
+
       body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-actions{
         position:absolute!important;
-        left:calc(50% - 34px)!important;
+        left:50%!important;
         right:auto!important;
-        bottom:70px!important;
+        bottom:64px!important;
         width:min(calc(100% - 56px),430px)!important;
         max-width:430px!important;
         margin:0!important;
@@ -921,45 +923,66 @@ html body.v587-fantasy-team-open .v576-field-row.por{
         gap:12px!important;
         z-index:40!important;
       }
+
       body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-actions button{
+        box-sizing:border-box!important;
         width:100%!important;
+        min-width:0!important;
+        max-width:none!important;
         margin:0!important;
+        padding-left:16px!important;
+        padding-right:16px!important;
         display:flex!important;
         align-items:center!important;
         justify-content:center!important;
         text-align:center!important;
       }
+
+      /* Los puntos vuelven al flujo natural: debajo del texto y arriba de los botones. */
       body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-dots{
-        position:absolute!important;
-        left:50%!important;
+        position:static!important;
+        left:auto!important;
         right:auto!important;
-        bottom:216px!important;
-        margin:0!important;
-        transform:translateX(-50%)!important;
+        bottom:auto!important;
+        top:auto!important;
+        width:max-content!important;
+        height:10px!important;
+        margin:18px auto 0!important;
+        padding:0!important;
+        display:flex!important;
+        align-items:center!important;
+        justify-content:center!important;
+        gap:9px!important;
+        transform:none!important;
+        z-index:auto!important;
       }
+
+      /* Reserva inferior para que botones y puntos jamás se monten sobre el texto. */
       body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-copy{
-        padding-bottom:210px!important;
+        padding-bottom:190px!important;
       }
     }
+
     @media (max-width:420px){
       body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-actions{
-        left:calc(50% - 28px)!important;
-        bottom:58px!important;
+        left:50%!important;
+        bottom:54px!important;
         width:min(calc(100% - 44px),360px)!important;
         max-width:360px!important;
+        transform:translateX(-50%)!important;
       }
       body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-dots{
-        bottom:196px!important;
+        margin-top:14px!important;
       }
       body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-copy{
-        padding-bottom:192px!important;
+        padding-bottom:174px!important;
       }
     }
   </style>
   <script>
     (function(){
-      if(window.__LJR_V911_PRONOSTICA_ACTIONS_HARD_POSITION__)return;
-      window.__LJR_V911_PRONOSTICA_ACTIONS_HARD_POSITION__=true;
+      if(window.__LJR_V912_PRONOSTICA_ACTIONS_CENTER_AND_DOTS__)return;
+      window.__LJR_V912_PRONOSTICA_ACTIONS_CENTER_AND_DOTS__=true;
 
       function route(){
         return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||
@@ -972,6 +995,7 @@ html body.v587-fantasy-team-open .v576-field-row.por{
         if(route()!=='predictorSix')return;
         var page=document.querySelector('#screen .v589-page.intro');
         if(!page)return;
+
         var actions=page.querySelector('.v589-intro-actions');
         var dots=page.querySelector('.v589-dots');
         var copy=page.querySelector('.v589-intro-copy');
@@ -979,9 +1003,9 @@ html body.v587-fantasy-team-open .v576-field-row.por{
 
         if(actions){
           imp(actions,'position','absolute');
-          imp(actions,'left',small?'calc(50% - 28px)':'calc(50% - 34px)');
+          imp(actions,'left','50%');
           imp(actions,'right','auto');
-          imp(actions,'bottom',small?'58px':'70px');
+          imp(actions,'bottom',small?'54px':'64px');
           imp(actions,'width',small?'min(calc(100% - 44px),360px)':'min(calc(100% - 56px),430px)');
           imp(actions,'max-width',small?'360px':'430px');
           imp(actions,'margin','0');
@@ -991,8 +1015,11 @@ html body.v587-fantasy-team-open .v576-field-row.por{
           imp(actions,'grid-template-columns','1fr');
           imp(actions,'gap','12px');
           imp(actions,'z-index','40');
+
           actions.querySelectorAll('button').forEach(function(btn){
             imp(btn,'width','100%');
+            imp(btn,'min-width','0');
+            imp(btn,'max-width','none');
             imp(btn,'margin','0');
             imp(btn,'display','flex');
             imp(btn,'align-items','center');
@@ -1000,15 +1027,27 @@ html body.v587-fantasy-team-open .v576-field-row.por{
             imp(btn,'text-align','center');
           });
         }
+
         if(dots){
-          imp(dots,'position','absolute');
-          imp(dots,'left','50%');
+          imp(dots,'position','static');
+          imp(dots,'left','auto');
           imp(dots,'right','auto');
-          imp(dots,'bottom',small?'196px':'216px');
-          imp(dots,'margin','0');
-          imp(dots,'transform','translateX(-50%)');
+          imp(dots,'bottom','auto');
+          imp(dots,'top','auto');
+          imp(dots,'width','max-content');
+          imp(dots,'height','10px');
+          imp(dots,'margin',small?'14px auto 0':'18px auto 0');
+          imp(dots,'padding','0');
+          imp(dots,'display','flex');
+          imp(dots,'align-items','center');
+          imp(dots,'justify-content','center');
+          imp(dots,'gap','9px');
+          imp(dots,'transform','none');
         }
-        if(copy)imp(copy,'padding-bottom',small?'192px':'210px');
+
+        if(copy){
+          imp(copy,'padding-bottom',small?'174px':'190px');
+        }
       }
 
       var queued=false;

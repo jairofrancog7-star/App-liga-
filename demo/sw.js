@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v911-pronostica-actions-hard-position';
+const CACHE='liga-juventino-v912-pronostica-centered-buttons-dots-flow';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
