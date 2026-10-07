@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v887-quiniela-visible';
+const CACHE='liga-juventino-v888-quiniela-visible';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
