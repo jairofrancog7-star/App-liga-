@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v905-jersey-category-crest-back';
+const CACHE='liga-juventino-v898-predictor-reference-exact';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
