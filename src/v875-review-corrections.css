@@ -199,3 +199,31 @@ html body.ljr-v777[data-app-route="playerDetail"] #screen .v379-hero>[data-v379-
     margin-bottom:22px!important;
   }
 }
+
+
+/* V888 — Datos/Estadísticas abierto desde Más:
+   la superficie de scroll termina ARRIBA de la barra inferior real.
+   No cambia tamaños, colores ni navegación; sólo evita que el último cuadro quede tapado. */
+@media(max-width:1023px){
+  html body.v768-scroll-root[data-app-route="v38Stats"] #screen{
+    bottom:var(--v774-nav-h,84px)!important;
+    padding-bottom:28px!important;
+    scroll-padding-bottom:28px!important;
+  }
+
+  /* Respaldo para las rutas históricas de Datos que no usan V768. */
+  html body[data-app-route="stats"].v33-data-active #screen,
+  html body[data-app-route="leagueData"].v33-data-active #screen,
+  html body[data-app-route="safe-data"].v33-data-active #screen{
+    padding-bottom:calc(118px + env(safe-area-inset-bottom))!important;
+    scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))!important;
+  }
+
+  /* El bloque inferior de Datos conserva aire visible al final del scroll. */
+  html body[data-app-route="v38Stats"] #screen > :last-child,
+  html body[data-app-route="stats"] #screen > :last-child,
+  html body[data-app-route="leagueData"] #screen > :last-child,
+  html body[data-app-route="safe-data"] #screen > :last-child{
+    margin-bottom:28px!important;
+  }
+}
