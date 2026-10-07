@@ -131,7 +131,7 @@ function teamLogo(name){return window.LJR_SEASON_LOGOS?.get?.(name)||window.LJR_
 function modernMarkup(p,id,expanded=true,when='ahora'){
  const match=p.presentation==='match',icon=iconFor(p),events=String(p.events||'').split('\n').map(s=>s.trim()).filter(Boolean).slice(0,5);
  const team=(name,key)=>'<span><img src="'+esc(p[key]||teamLogo(name)||DEFAULT_ICON)+'" alt=""><b>'+esc(name||'Equipo')+'</b></span>';
- return '<article class="v880-notice '+(expanded?'is-expanded':'')+'" data-v852-record="'+esc(id)+'">'+
+ return '<article class="v880-notice '+(expanded?'is-expanded':'')+'" style="--v880-bg:'+color(p.background,'#27292e')+';--v880-text:'+color(p.textColor,'#ffffff')+';--v880-accent:'+color(p.accent,'#63e5ee')+'" data-v852-record="'+esc(id)+'">'+
   '<button type="button" class="v880-notice-head" data-v852-toggle="'+esc(id)+'" aria-expanded="'+expanded+'"><img src="'+esc(icon)+'" alt="Liga Juventino Rosas"><span>Liga Juventino Rosas <small>· '+esc(when)+'</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+(expanded?'M6 15l6-6 6 6':'M6 9l6 6 6-6')+'"/></svg></button>'+
   '<div class="v880-notice-copy"><h3>'+esc(p.title||'Noticias de la liga')+'</h3><p>'+esc(p.body||'')+'</p></div>'+
   (match?'<div class="v880-notice-score">'+team(p.home,'homeLogo')+'<strong>'+esc(p.scoreHome??0)+' – '+esc(p.scoreAway??0)+'<small>'+esc(p.minute?String(p.minute)+"′":'Resultado directo')+'</small></strong>'+team(p.away,'awayLogo')+'</div>':'')+
@@ -284,9 +284,8 @@ function formHtml(rec){
     '</select></label>'+
     '<section class="v853-review">'+
       '<div class="v853-section-head"><span><small>04 · REVISIÓN</small><b>Antes de publicar en la app</b></span></div>'+
-      '<p>Envía la vista previa a WhatsApp '+ADMIN_LOCAL+' o compártela en Facebook. Después se habilita la publicación.</p>'+
-      '<div class="v853-review-required v853-review-lock">🔒 La revisión es obligatoria antes de publicar en la app.</div>'+
-      '<div class="v853-review-actions"><button type="button" data-v853-whatsapp>🟢 WhatsApp '+ADMIN_LOCAL+'</button><button type="button" data-v853-facebook>🔵 Facebook</button><button type="button" data-v852-preview>🔔 Probar notificación</button></div>'+
+      '<p>Revisa el texto, los equipos y la imagen en la vista previa. Puedes confirmar aquí o compartirla para revisión.</p>'+
+      '<div class="v853-review-actions"><button type="button" data-v880-reviewed>Revisado en la app</button><button type="button" data-v853-whatsapp>🟢 WhatsApp '+ADMIN_LOCAL+'</button><button type="button" data-v853-facebook>🔵 Facebook</button><button type="button" data-v852-preview>🔔 Probar notificación</button></div>'+
       '<div class="v853-review-state" data-v853-review-state>○ Pendiente de revisión</div>'+
     '</section>'+
     '<section class="v855-schedule">'+
@@ -320,7 +319,7 @@ function refreshGate(form){
   const state=form.querySelector('[data-v853-review-state]');
   if(state){
     state.classList.toggle('ok',studio.reviewed);
-    state.textContent=studio.reviewed?'✓ Revisión preparada · listo para publicar':'○ Pendiente de revisión';
+    state.textContent=studio.reviewed?'✓ Vista previa revisada · listo para publicar':'○ Revisa la vista previa';
   }
 }
 async function imgFrom(source){
@@ -358,7 +357,7 @@ async function makeDesign(form,status){
   status.textContent='Creando diseño HD…';
   const info=presentationData(d);
   if(info.presentation==='match'&&window.LJR_DESIGN_STUDIO?.createCanvas){
-    const canvas=await window.LJR_DESIGN_STUDIO.createCanvas({...info,type:'Notificación de partido',title:d.title,body:d.body,accent:color(d.accent,'#2fe2ee')},{person:main});
+    const canvas=await window.LJR_DESIGN_STUDIO.createCanvas({...info,type:'Notificación de partido',title:d.title,body:d.body,accent:color(d.accent,'#2fe2ee'),notificationBackground:color(d.background,'#27292e'),notificationText:color(d.textColor,'#ffffff')},{person:main});
     const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw Error('No se pudo crear el diseño.');
     if(studio.generatedUrl)URL.revokeObjectURL(studio.generatedUrl);studio.generatedFile=new File([blob],slug(d.title)+'-partido.png',{type:'image/png'});studio.generatedUrl=URL.createObjectURL(studio.generatedFile);studio.reviewed=false;studio.reviewImageUrl='';previewFromForm(form);refreshGate(form);status.textContent='Notificación de partido lista en PNG HD.';return studio.generatedFile;
   }
@@ -497,7 +496,7 @@ async function scheduleAdmin(form,rec,status){
   const btn=form.querySelector('[data-v855-schedule]');if(btn)btn.disabled=true;
   try{
     const d=formData(form);
-    if(!studio.reviewed)throw Error('Primero envía la vista previa a WhatsApp o Facebook para revisión.');
+    if(!studio.reviewed)throw Error('Revisa primero la vista previa y pulsa Revisado en la app.');
     const publishAt=new Date(String(d.publishAt||''));
     if(!Number.isFinite(publishAt.getTime())||publishAt.getTime()<=Date.now()+10000)throw Error('Selecciona una fecha y hora futura.');
     let image='';
@@ -570,7 +569,7 @@ async function saveAdmin(form,rec,status,publish){
   if(btn)btn.disabled=true;
   try{
     const d=formData(form);
-    if(publish&&!studio.reviewed)throw Error('Primero envía la vista previa a WhatsApp o Facebook para revisión.');
+    if(publish&&!studio.reviewed)throw Error('Revisa primero la vista previa y pulsa Revisado en la app.');
     let image='';
     if(d.useGenerated==='on'&&studio.generatedFile){
       image=studio.reviewImageUrl||await ensureReviewImage(form,status);
@@ -647,6 +646,7 @@ async function openAdmin(editRec=null){
   form.querySelector('[data-v853-generate-design]').onclick=()=>makeDesign(form,status).catch(e=>status.textContent=e.message||'No se pudo crear el diseño.');
   form.querySelector('[data-v853-whatsapp]').onclick=()=>sendWhatsApp(form,status);
   form.querySelector('[data-v853-facebook]').onclick=()=>shareFacebook(form,status);
+  form.querySelector('[data-v880-reviewed]').onclick=()=>{studio.reviewed=true;refreshGate(form);status.textContent='Vista previa revisada. Puedes publicar o programar desde aquí.'};
   form.querySelector('[data-v852-preview]').onclick=async()=>{
     previewFromForm(form);const d=formData(form);
     if(window.LJR_V840_NOTIFICATIONS?.sendRich){
