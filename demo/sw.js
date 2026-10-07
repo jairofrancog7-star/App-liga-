@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v883-schedule-fit';
+const CACHE='liga-juventino-v884-pronostica-no-legacy-layer';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
