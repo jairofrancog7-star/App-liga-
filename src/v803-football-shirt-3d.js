@@ -1,5 +1,5 @@
 /*
-V893 — Realistic Football Jersey 3D
+V913 — Realistic Football Jersey 3D · original transparent crests
 Only the jersey model/rendering is changed in this revision.
 The primary mesh is the MIT-licensed classic shirt GLB from Mini Jersey 3D Studio
 (Francesco Castaldi). It keeps its original normal/occlusion detail while the
@@ -144,36 +144,17 @@ function removeConnectedLogoBackground(canvas,ctx,rect){
   ctx.putImageData(image,0,0);
 }
 function drawLogoIntoFabric(ctx,img,x,y,maxW,maxH){
+  // V913: usar el archivo transparente EXACTO tal como fue entregado.
+  // No quitar fondos, no recolorear, no aplicar grano, máscaras ni filtros:
+  // eso podía borrar el escudo/figura central de logos que ya traen alpha correcto.
   const ratio=Math.min(maxW/img.naturalWidth,maxH/img.naturalHeight);
   const w=Math.max(1,img.naturalWidth*ratio),h=Math.max(1,img.naturalHeight*ratio);
-  const badge=document.createElement('canvas');
-  badge.width=Math.ceil(maxW);badge.height=Math.ceil(maxH);
-  const b=badge.getContext('2d');
-  const bx=(badge.width-w)/2,by=(badge.height-h)/2;
-  b.drawImage(img,bx,by,w,h);
-  // Los archivos históricos de Liga/categorías pueden venir con fondo negro/blanco
-  // aunque la extensión diga PNG/WebP. Quitamos sólo el fondo conectado al borde.
-  removeConnectedLogoBackground(badge,b,{x:bx,y:by,w,h});
-
-  // Put the textile grain inside the crest alpha itself so it reads as sublimated/printed,
-  // not as a flat DOM image hovering over the jersey.
-  b.globalCompositeOperation='source-atop';
-  b.globalAlpha=.10;
-  for(let yy=1;yy<badge.height;yy+=7){
-    b.fillStyle=yy%14?'#ffffff':'#000000';
-    b.fillRect(0,yy,badge.width,1);
-  }
-  b.globalAlpha=.055;
-  for(let xx=2;xx<badge.width;xx+=8){
-    b.fillStyle='#000000';b.fillRect(xx,0,1,badge.height);
-  }
-  b.globalAlpha=1;b.globalCompositeOperation='source-over';
-
+  const dx=x+(maxW-w)/2,dy=y+(maxH-h)/2;
   ctx.save();
-  ctx.globalAlpha=.97;
-  ctx.shadowColor='rgba(0,0,0,.18)';
-  ctx.shadowBlur=2;ctx.shadowOffsetY=1;
-  ctx.drawImage(badge,x,y,maxW,maxH);
+  ctx.globalAlpha=1;
+  ctx.imageSmoothingEnabled=true;
+  ctx.imageSmoothingQuality='high';
+  ctx.drawImage(img,dx,dy,w,h);
   ctx.restore();
 }
 
