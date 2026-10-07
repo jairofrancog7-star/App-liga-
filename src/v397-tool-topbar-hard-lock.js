@@ -189,15 +189,28 @@
     if(back){
       back.classList.remove('is-hidden');
       if(reference){
-        setImp(back,'left','14px');
-        setImp(back,'top','50%');
-        setImp(back,'width','25px');
-        setImp(back,'height','25px');
-        setImp(back,'min-width','25px');
-        setImp(back,'min-height','25px');
-        setImp(back,'max-width','25px');
-        setImp(back,'max-height','25px');
-        setImp(back,'transform','translateY(-50%)');
+        if(leagueToolsCompact){
+          const backSize=small?'20px':'22px';
+          setImp(back,'left',small?'7px':'8px');
+          setImp(back,'top','50%');
+          setImp(back,'width',backSize);
+          setImp(back,'height',backSize);
+          setImp(back,'min-width',backSize);
+          setImp(back,'min-height',backSize);
+          setImp(back,'max-width',backSize);
+          setImp(back,'max-height',backSize);
+          setImp(back,'transform','translateY(-50%)');
+        }else{
+          setImp(back,'left','14px');
+          setImp(back,'top','50%');
+          setImp(back,'width','25px');
+          setImp(back,'height','25px');
+          setImp(back,'min-width','25px');
+          setImp(back,'min-height','25px');
+          setImp(back,'max-width','25px');
+          setImp(back,'max-height','25px');
+          setImp(back,'transform','translateY(-50%)');
+        }
       }else{
         setImp(back,'left',small?'2px':'3px');
         setImp(back,'top','10px');
