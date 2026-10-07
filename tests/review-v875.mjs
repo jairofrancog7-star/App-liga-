@@ -57,8 +57,16 @@ try{
  assert.equal(await page.evaluate(()=>location.hash),'#/leagueTools');
  assert.ok(Math.abs(await page.locator('#screen').evaluate(el=>el.scrollTop)-previous)<3,'Back loses scroll');
  checks.push('Back restores scroll; repeated render preserves it');
- for(const route of ['more','leagueTools']){await go(route);await page.locator('#screen').evaluate(el=>el.scrollTop=600);const chrome=await page.locator('#app>.topbar').evaluate(el=>{const s=getComputedStyle(el);return {bg:s.backgroundImage,opacity:s.opacity,mask:s.maskImage,filter:s.backdropFilter}});assert.doesNotMatch(chrome.bg,/transparent|rgba/);assert.equal(chrome.opacity,'1');assert.equal(chrome.mask,'none');assert.equal(chrome.filter,'none')}
- checks.push('Más and tools scroll under an opaque blue header');
+ await go('more');await page.locator('#screen').evaluate(el=>el.scrollTop=600);
+ const restoredScroll=await page.locator('#screen').evaluate(el=>({top:el.scrollTop,overflow:getComputedStyle(el).overflowY}));
+ assert.ok(restoredScroll.top>500,'Más keeps its independent mobile scroll');
+ assert.match(restoredScroll.overflow,/auto|scroll/);
+ await go('leagueTools');
+ const restoredArrow=await page.locator('#app>.topbar .back-button').evaluate(el=>{const s=getComputedStyle(el);return {display:s.display,visibility:s.visibility,opacity:s.opacity,width:s.width,height:s.height,border:s.borderTopWidth,radius:s.borderRadius,bg:s.backgroundImage,left:s.left}});
+ assert.notEqual(restoredArrow.display,'none');assert.equal(restoredArrow.visibility,'visible');assert.equal(restoredArrow.opacity,'1');
+ assert.ok(parseFloat(restoredArrow.width)<=28&&parseFloat(restoredArrow.height)<=28,'Back arrow is compact');
+ assert.equal(restoredArrow.border,'0px');assert.equal(restoredArrow.radius,'0px');assert.match(restoredArrow.bg,/data:image\/svg\+xml/);assert.ok(parseFloat(restoredArrow.left)<=12,'Back arrow stays at the left edge');
+ checks.push('Más keeps the restored scroll chrome; tools keeps the compact white back arrow');
  await go('history');
  const tabs=await page.locator('[data-v35-tab]').evaluateAll(es=>es.map(el=>el.dataset.v35Tab));
  let count=0;
