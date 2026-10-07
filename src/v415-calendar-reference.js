@@ -1,6 +1,6 @@
 import { rosterGroups, monthIndicator } from './v839-reference-data.js';
 import { Capacitor, registerPlugin } from '@capacitor/core';
-import { calendarEvent, googleCalendarDestination } from './v843-calendar-event.js?v=20261006-v869-calendar-chooser';
+import { calendarEvent, googleCalendarDestination } from './v843-calendar-event.js?v=20261007-v886-calendar-prefill-restore';
 import { registeredTeamPhotos } from './v843-registered-player-photos.js';
 /* V415 — Calendario referencia: calendario visual con escudos, meses y tarjeta de partido.
    Sólo reemplaza #/v4-calendar. Usa datos oficiales ya publicados y conserva la navegación global. */
@@ -318,12 +318,14 @@ function standingsMarkup(){
 }
 async function addToCalendar(game){
   if(!game)return;
-  const event=calendarEvent({...game,allDay:true});
+  const event=calendarEvent(game);
   try{await nativeCalendar.openEvent(event)}catch(_){location.assign(event.googleURL)}
 }
 function calendarLink(game){
   // Keep the prefilled match in the Google web editor on Android browsers too.
-  return googleCalendarDestination(calendarEvent({...game,allDay:true}));
+  const event=calendarEvent(game);
+  const android=/Android/i.test(String(navigator.userAgent||''));
+  return googleCalendarDestination(event,android);
 }
 
 function dayLogoStack(dayGames){
