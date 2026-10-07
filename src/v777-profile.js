@@ -83,7 +83,9 @@ function open(){
      if(i>=0){auth.accounts[i]=update;localStorage.setItem('ljr-auth-v569',JSON.stringify(auth))}
      const st=JSON.parse(localStorage.getItem('lj-store-v3')||'{}');st.user={...(st.user||{}),...update};
      localStorage.setItem('lj-store-v3',JSON.stringify(st));if(window.LJR_MAIN_ROUTE?.state)window.LJR_MAIN_ROUTE.state.user=st.user;
-     dispatchEvent(new Event('storage'));n.querySelector('[data-status]').textContent='Perfil guardado.';
+     dispatchEvent(new Event('storage'));
+     try{dispatchEvent(new CustomEvent('ljr:profile-updated',{detail:{accountId:a.id}}))}catch(_){}
+     n.querySelector('[data-status]').textContent='Perfil guardado.';
      n.querySelector('[data-avatar-preview]').classList.add('ljr-avatar-reveal');
    }catch{n.querySelector('[data-status]').textContent='No se pudo guardar: elige una foto más pequeña.'}
  };
