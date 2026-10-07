@@ -72,8 +72,12 @@ function meeting(root){
  wrap.querySelectorAll('[data-add-topic]').forEach(button=>button.onclick=()=>{const agenda=form.querySelector('[data-x="agenda"]');if(agenda&&!agenda.value.includes(button.dataset.addTopic))agenda.value+='\n• '+button.dataset.addTopic});
 }
 function profiles(){
- const image='<img src="./assets/reference/predictor-v36/liga-crest-white.webp" alt="Liga Juventino Rosas">';
- document.querySelectorAll('.v17-tv-profile,.v408-tv-profile,.v160-tv-profile').forEach(button=>{if(button.innerHTML!==image)button.innerHTML=image});
+ if(route()!=='video')return;
+ const icon='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>';
+ document.querySelectorAll('.v17-tv-profile').forEach(button=>{
+  if(button.querySelector('img')||!button.querySelector('svg'))button.innerHTML=icon;
+  button.setAttribute('aria-label','Perfil');
+ });
 }
 function liveCard(root){
  if(route()!=='notifications')return;
