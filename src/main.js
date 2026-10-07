@@ -4611,7 +4611,6 @@ function leagueToolsView(){
         v726QuickCard('bracket','Liguilla','Cuadro eliminatorio','bracketBuilder')+
         v726QuickCard('bell','Avisos','Noticias y comunicados','news')+
         v726QuickCard('alert','Avisos AUTO','Programar fecha y hora','v38Alerts')+
-        v726QuickCard('trophy','Quiniela','Juego de pronósticos','quiniela')+
         v726QuickCard('news','Publicar','PNG y comunicados','publications')+
       '</div>'+
     '</section>'+
