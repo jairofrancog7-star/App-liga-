@@ -10,6 +10,7 @@ function copyStaticReferences() {
         ['src/v606-control-registro-tools.js', 'dist/src/v606-control-registro-tools.js'],
         ['src/v606-control-registro-tools.css', 'dist/src/v606-control-registro-tools.css'],
         ['assets/liga-logo-original.webp', 'dist/assets/liga-logo-original.webp'],
+        ['assets/liga-logo.webp', 'dist/assets/liga-logo.webp'],
         ['assets/reference/final-trophy-drive.png', 'dist/assets/reference/final-trophy-drive.png'],
         ['assets/reference/predictor-v36/liga-crest-white.webp', 'dist/assets/reference/predictor-v36/liga-crest-white.webp'],
         ['assets/moments/moments-original-a.png', 'dist/assets/moments/moments-original-a.png'],
