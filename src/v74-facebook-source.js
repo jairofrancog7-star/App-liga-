@@ -55,11 +55,28 @@
 
   function mountNews(){
     const screen=document.querySelector('#screen');
-    if(!screen||screen.querySelector('[data-v74-facebook-source="news"]'))return;
-    const title=[...screen.querySelectorAll('h1')].find(h=>(h.textContent||'').trim()==='Noticias');
-    if(!title)return;
-    /* Noticias mantiene primero su contenido propio; la fuente queda como bloque de respaldo al final. */
-    screen.appendChild(card('news'));
+    if(!screen)return;
+
+    /* V771: Noticias usa un solo bloque social. Elimina la tarjeta antigua
+       "Fuente de la Liga" y mete sus acciones dentro del diseño SÍGUENOS. */
+    screen.querySelectorAll('[data-v74-facebook-source="news"]').forEach(n=>n.remove());
+
+    const social=screen.querySelector('[data-v412-screen="news"] .v412-news-socials');
+    if(!social||social.querySelector('[data-v74-news-merged]'))return;
+
+    const extra=document.createElement('div');
+    extra.className='v74-news-merged';
+    extra.dataset.v74NewsMerged='1';
+    extra.innerHTML=
+      '<p class="v74-news-source-copy">Facebook oficial · Tablas, calendarios, avisos, campeones, finales, historia y fotografías de la Liga.</p>'+
+      '<div class="v74-news-tags"><span>Tablas</span><span>Calendarios</span><span>Avisos</span><span>Campeones</span><span>Historia</span></div>'+
+      '<div class="v74-news-actions">'+
+        '<button type="button" data-v74-open>Ver publicaciones</button>'+
+        '<button type="button" data-v74-share>Compartir</button>'+
+      '</div>';
+    extra.querySelector('[data-v74-open]')?.addEventListener('click',openFacebook);
+    extra.querySelector('[data-v74-share]')?.addEventListener('click',shareFacebook);
+    social.appendChild(extra);
   }
 
   function mountTools(){
