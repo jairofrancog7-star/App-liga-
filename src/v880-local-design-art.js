@@ -60,24 +60,25 @@ async function draw(v,canvas,c,background,custom,helpers){
  const league=await img('./assets/reference/predictor-v36/liga-crest-white.webp');if(league)badgeImage(c,league,w-140,30,80);
  text(c,'LIGA JUVENTINO ROSAS',55,65,w-220,23,accent,800);
  if(notification){
-  c.fillStyle='#27292e';roundRect(c,40,110,w-80,h-165,42);if(league)badgeImage(c,league,75,135,60);
+  const cardBackground=/^#[0-9a-f]{6}$/i.test(v.notificationBackground||'')?v.notificationBackground:'#27292e',cardText=/^#[0-9a-f]{6}$/i.test(v.notificationText||'')?v.notificationText:'#ffffff';
+  c.fillStyle=cardBackground;roundRect(c,40,110,w-80,h-165,42);if(league)badgeImage(c,league,75,135,60);
   text(c,'Liga Juventino Rosas · ahora',155,175,w-260,26,'#ccd0d6',600);
   const isMatch=type==='Notificación de partido';
   if(isMatch){
    const left=custom.home||await img(logo(v.home)),right=custom.away||await img(logo(v.away)),cy=short?330:450,sz=short?75:135;
    if(left)badgeImage(c,left,w*.22-sz/2,cy-sz/2,sz);if(right)badgeImage(c,right,w*.78-sz/2,cy-sz/2,sz);
-   centered(c,(v.scoreHome||'0')+' – '+(v.scoreAway||'0'),w/2,cy+18,w*.32,short?55:86);
-   centered(c,v.home||'Equipo local',w*.22,cy+sz/2+45,w*.33,27);centered(c,v.away||'Equipo visitante',w*.78,cy+sz/2+45,w*.33,27);
-   centered(c,v.title||'RESULTADO DIRECTO',w/2,short?235:260,w-160,short?30:42);
+   centered(c,(v.scoreHome||'0')+' – '+(v.scoreAway||'0'),w/2,cy+18,w*.32,short?55:86,cardText);
+   centered(c,v.home||'Equipo local',w*.22,cy+sz/2+45,w*.33,27,cardText);centered(c,v.away||'Equipo visitante',w*.78,cy+sz/2+45,w*.33,27,cardText);
+   centered(c,v.title||'RESULTADO DIRECTO',w/2,short?235:260,w-160,short?30:42,cardText);
    centered(c,v.minute?String(v.minute)+"′ · EN VIVO":'MARCADOR DEL PARTIDO',w/2,short?270:325,w-160,24,accent);
    let y=cy+sz/2+115;const events=String(v.events||'').split('\n').map(s=>s.trim()).filter(Boolean);
-   for(const event of events.slice(0,short?1:5)){c.fillStyle='#ffffff10';roundRect(c,75,y-35,w-150,70,18);ball(c,110,y,17);text(c,event,145,y+8,w-255,27);y+=88}
-   if(!short&&v.body)fitCopy(c,v.body,85,y+40,w-170,h-y-185,30,'#c5c8d0');
+   for(const event of events.slice(0,short?1:5)){c.fillStyle='#ffffff10';roundRect(c,75,y-35,w-150,70,18);ball(c,110,y,17);text(c,event,145,y+8,w-255,27,cardText);y+=88}
+   if(!short&&v.body)fitCopy(c,v.body,85,y+40,w-170,h-y-185,30,v.notificationText?cardText:'#c5c8d0');
    if(custom.person&&!short){const im=custom.person;c.save();c.beginPath();c.arc(w-135,h-175,58,0,Math.PI*2);c.clip();const s=Math.max(116/im.naturalWidth,116/im.naturalHeight);c.drawImage(im,w-135-im.naturalWidth*s/2,h-175-im.naturalHeight*s/2,im.naturalWidth*s,im.naturalHeight*s);c.restore()}
   }else{
    const hasPhoto=!!(custom.person||background),copyWidth=short&&hasPhoto?w*.44:w-170;
-   fitCopy(c,v.title||'NOTICIAS DE LA LIGA',85,short?245:285,copyWidth,short?90:150,short?36:54,'#fff');
-   fitCopy(c,v.body||v.details,85,short?350:445,copyWidth,short?145:h*.20,short?27:34,'#d1d3d9');
+   fitCopy(c,v.title||'NOTICIAS DE LA LIGA',85,short?245:285,copyWidth,short?90:150,short?36:54,cardText);
+   fitCopy(c,v.body||v.details,85,short?350:445,copyWidth,short?145:h*.20,short?27:34,v.notificationText?cardText:'#d1d3d9');
    if(hasPhoto){const photo=custom.person||background,x=short?w*.59:85,y=short?230:h*.58,pw=short?w*.31:w-170,ph=short?h-300:h*.28;c.save();c.beginPath();c.roundRect(x,y,pw,ph,28);c.clip();const s=Math.max(pw/photo.naturalWidth,ph/photo.naturalHeight);c.drawImage(photo,x+(pw-photo.naturalWidth*s)/2,y+(ph-photo.naturalHeight*s)/2,photo.naturalWidth*s,photo.naturalHeight*s);c.restore()}
   }return true;
  }
