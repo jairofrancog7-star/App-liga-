@@ -7,9 +7,9 @@
     visibility:visible!important;
     opacity:1!important;
     pointer-events:auto!important;
-    height:136px!important;
-    min-height:136px!important;
-    max-height:136px!important;
+    height:88px!important;
+    min-height:88px!important;
+    max-height:88px!important;
     margin:0!important;
     padding:0 18px!important;
     grid-template-columns:42px minmax(0,1fr) 42px!important;
@@ -47,7 +47,7 @@
     display:block!important;
     min-width:0!important;
     color:#fff!important;
-    font-size:20px!important;
+    font-size:18px!important;
     line-height:1.1!important;
     font-weight:900!important;
     letter-spacing:-.02em!important;
@@ -99,6 +99,9 @@
 @media (max-width:390px){
   html body[data-app-route="whereToWatch"] #app > .topbar,
   html body #app:has(#screen [data-v412-screen="where"]) > .topbar{
+    height:82px!important;
+    min-height:82px!important;
+    max-height:82px!important;
     padding-left:14px!important;
     padding-right:14px!important;
   }
@@ -109,6 +112,6 @@
   }
   html body[data-app-route="whereToWatch"] #app > .topbar .wordmark::after,
   html body #app:has(#screen [data-v412-screen="where"]) > .topbar .wordmark::after{
-    font-size:19px!important;
+    font-size:18px!important;
   }
 }
