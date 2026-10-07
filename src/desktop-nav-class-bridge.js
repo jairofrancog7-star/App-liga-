@@ -1,6 +1,8 @@
 /* Bridge for desktop navigation class names. Ensures dropdown enhancements bind to the rendered desktop shell. */
 (function(){
 'use strict';
+const __LJR_DESKTOP_MODE=new URLSearchParams(location.search).get('mode');
+if(__LJR_DESKTOP_MODE==='mobile'||__LJR_DESKTOP_MODE==='apk')return;
 function bridge(){
   document.querySelectorAll('.desk-menu').forEach(nav=>nav.classList.add('ds-menu'));
 }

@@ -1,6 +1,8 @@
 /* Desktop dropdown navigation, directory and login screens based on supplied references. */
 (function(){
 'use strict';
+const __LJR_DESKTOP_MODE=new URLSearchParams(location.search).get('mode');
+if(__LJR_DESKTOP_MODE==='mobile'||__LJR_DESKTOP_MODE==='apk')return;
 const desktop=()=>document.body.classList.contains('lj-desktop')||new URLSearchParams(location.search).get('mode')==='desktop'||innerWidth>=1024;
 const route=()=>location.hash.replace(/^#\/?/,'')||'home';
 const go=r=>{location.hash='#/'+r};
