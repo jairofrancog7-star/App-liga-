@@ -37,7 +37,10 @@ html body .v370-legacy-team .v731-history-details{position:relative!important;z-
 html body .v35-history-page :is(.v370-legacy-crest,.v370-legacy-logo){width:64px!important;height:64px!important;flex:0 0 64px!important;border-radius:50%!important;display:grid!important;place-items:center!important;overflow:hidden!important}
 html body .v35-history-page :is(.v370-legacy-crest,.v370-legacy-logo) img{width:80%!important;height:80%!important;object-fit:contain!important;object-position:center!important;transform:none!important;filter:none!important}
 html body .v35-history-page :is(.v340-champion-logo,.v35-season-logo,.v35-champion-crest,.v340-champion-crest,.v357-champion-logo) img{width:72%!important;height:72%!important;object-fit:contain!important;object-position:center!important;transform:none!important}
-html body .v17-tv-profile img,html body .v408-tv-profile img{width:36px!important;height:36px!important;object-fit:contain!important;border-radius:50%!important}
+html body .v17-tv-profile img,html body .v408-tv-profile img{width:36px!important;height:36px!important;border-radius:50%!important}
+html body .v17-tv-profile img.v17-tv-profile-icon{object-fit:contain!important}
+html body .v17-tv-profile img.ljr-profile-image,html body .v17-tv-profile img.v17-tv-profile-photo{object-fit:cover!important;background:#0a2b68!important}
+html body .v17-tv-profile .ljr-gamer-avatar,html body .v17-tv-profile .ljr-profile-initial{width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;border-radius:50%!important;display:grid!important;place-items:center!important;overflow:hidden!important}
 html body.ljr-v777[data-app-route="playerCompare"] #app #screen{overflow:hidden!important;height:calc(100dvh - 160px - env(safe-area-inset-bottom))!important;min-height:0!important;padding-bottom:0!important}
 html body.ljr-v777[data-app-route="playerCompare"] #app #screen .v123-player-compare{height:100%!important;min-height:0!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;padding:0!important}
 html body.ljr-v777[data-app-route="playerCompare"] #app #screen .v123-back{display:none!important}
