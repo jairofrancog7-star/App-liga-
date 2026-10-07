@@ -346,3 +346,117 @@ body:has(.liga-media-modal .ljr-profile-form){
 @media(prefers-reduced-motion:reduce){
   .v803-shirt-controls button,.ljr-profile-form .ljr-avatar-gallery button,.ljr-profile-form .ljr-save-profile{transition:none!important}
 }
+
+
+/* V893 — Personalización de camiseta corta: color + 50 escudos de la liga. */
+.v893-shirt-customize{
+  display:grid!important;
+  grid-template-columns:minmax(0,.9fr) minmax(0,1.6fr)!important;
+  gap:10px!important;
+  margin:2px 0 4px!important;
+  padding:12px!important;
+  border:1px solid rgba(77,126,215,.40)!important;
+  border-radius:18px!important;
+  background:linear-gradient(180deg,rgba(20,46,124,.56),rgba(8,25,82,.48))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045)!important;
+}
+.v893-shirt-customize>label{
+  min-width:0!important;
+  display:grid!important;
+  gap:7px!important;
+  margin:0!important;
+  color:#b9c8ea!important;
+  font-size:10px!important;
+  font-weight:800!important;
+  letter-spacing:.01em!important;
+}
+.v893-color-control{
+  min-height:48px!important;
+  display:grid!important;
+  grid-template-columns:50px minmax(0,1fr)!important;
+  align-items:center!important;
+  gap:9px!important;
+  padding:5px 9px!important;
+  border:1px solid rgba(81,128,214,.52)!important;
+  border-radius:13px!important;
+  background:#0b225f!important;
+  box-sizing:border-box!important;
+}
+.v893-color-control input[type="color"]{
+  width:46px!important;
+  height:36px!important;
+  min-width:46px!important;
+  min-height:36px!important;
+  padding:2px!important;
+  border:0!important;
+  border-radius:10px!important;
+  background:transparent!important;
+  overflow:hidden!important;
+}
+.v893-color-control b{
+  color:#fff!important;
+  font-size:11px!important;
+  font-weight:900!important;
+  letter-spacing:.04em!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+.v893-shirt-team select{
+  width:100%!important;
+  min-width:0!important;
+  min-height:48px!important;
+  padding:0 36px 0 12px!important;
+  border:1px solid rgba(81,128,214,.52)!important;
+  border-radius:13px!important;
+  background:#0b225f!important;
+  color:#fff!important;
+  font-size:11px!important;
+  font-weight:800!important;
+  box-sizing:border-box!important;
+}
+.v893-team-preview{
+  min-height:54px!important;
+  display:grid!important;
+  grid-template-columns:44px minmax(0,1fr)!important;
+  align-items:center!important;
+  gap:9px!important;
+  padding:7px 9px!important;
+  border:1px solid rgba(67,109,192,.32)!important;
+  border-radius:13px!important;
+  background:rgba(5,20,70,.58)!important;
+  box-sizing:border-box!important;
+}
+.v893-team-preview:not(:has(img)){
+  grid-template-columns:1fr!important;
+}
+.v893-team-preview img{
+  width:42px!important;
+  height:42px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  display:block!important;
+  filter:drop-shadow(0 3px 5px rgba(0,0,0,.26))!important;
+}
+.v893-team-preview span{
+  min-width:0!important;
+  display:grid!important;
+  gap:2px!important;
+}
+.v893-team-preview b{
+  color:#f5f9ff!important;
+  font-size:10px!important;
+  line-height:1.15!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+.v893-team-preview small{
+  color:#79dfec!important;
+  font-size:8.5px!important;
+  line-height:1.2!important;
+}
+@media(max-width:430px){
+  .v893-shirt-customize{grid-template-columns:1fr!important;padding:10px!important}
+  .v893-color-control{grid-template-columns:46px minmax(0,1fr)!important}
+}
