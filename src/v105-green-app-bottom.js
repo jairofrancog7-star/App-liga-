@@ -816,8 +816,10 @@ function v160Players(){
  return out;
 }
 function v160FieldOptions(selected=''){
- const fields=['Campo 1 (Empastado)','Campo 2','Campo 3','Campo 4','Fraccionamiento','Romerillo','Tavera','Cuenda','Cerrito de Gasca','San José de la Montaña','San Juan de la Cruz','Pozos'];
- return fields.map(x=>'<option '+(norm(x)===norm(selected)?'selected':'')+'>'+esc(x)+'</option>').join('');
+ const raw=['Campo 1 · Unidad Deportiva Sur','Campo 2 · Unidad Deportiva Sur','Campo 3 · Unidad Deportiva Sur','Campo 4 · Emiliano Zapata','Campo Fraccionamiento Comontuoso','Campo San Antonio de Romerillo','Campo de Tavera','Unidad Deportiva Santiago de Cuenda','Campo Cerrito de Gasca','Campo San José de la Montaña','Campo San Juan de la Cruz','Campo de Fútbol de Pozos','Campo Rincón de Centeno','Campo San Julián Tierra Blanca'];
+ const fields=window.LJR_FIELDS?.normalizeList?.(raw)||raw;
+ const current=window.LJR_FIELDS?.canonical?.(selected)||selected;
+ return fields.map(x=>'<option value="'+esc(x)+'" '+(norm(x)===norm(current)?'selected':'')+'>'+esc(x)+'</option>').join('');
 }
 function registerAlerts(){
  const cats=v160Categories(),old=read('v160-alert-profile',{name:'',email:'',cat:cats[0]?.id||'',team:''});
