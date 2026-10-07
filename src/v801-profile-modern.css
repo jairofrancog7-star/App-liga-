@@ -233,3 +233,46 @@ body[data-app-route="profile"] .v801-profile-shirt-entry:active{
   line-height:1.25!important;
   font-weight:700!important;
 }
+
+
+/* V906 — vista separada del escudo de categoría asignado por equipo. */
+.v906-category-preview{
+  min-height:72px!important;
+  display:grid!important;
+  grid-template-columns:58px minmax(0,1fr)!important;
+  align-items:center!important;
+  gap:10px!important;
+  margin-top:5px!important;
+  padding:8px 10px!important;
+  border:1px solid rgba(67,109,192,.32)!important;
+  border-radius:14px!important;
+  background:rgba(5,20,70,.58)!important;
+  box-sizing:border-box!important;
+}
+.v906-category-preview:not(:has(img)){
+  grid-template-columns:1fr!important;
+}
+.v906-category-preview img{
+  width:58px!important;
+  height:58px!important;
+  display:block!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  filter:drop-shadow(0 3px 5px rgba(0,0,0,.22))!important;
+}
+.v906-category-preview span{
+  min-width:0!important;
+  display:grid!important;
+  gap:3px!important;
+}
+.v906-category-preview b{
+  color:#f5f9ff!important;
+  font-size:10.5px!important;
+  line-height:1.15!important;
+}
+.v906-category-preview small{
+  margin:0!important;
+  color:#79dfec!important;
+  font-size:8.5px!important;
+  line-height:1.2!important;
+}
