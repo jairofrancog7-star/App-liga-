@@ -156,6 +156,64 @@ function v16SyncProfile(){
   button.setAttribute('aria-label',account?'Mi perfil':'Perfil');
 }
 
+
+function v16SyncTvOverlayProfile(){
+  const button=document.querySelector('.v408-tv-profile');
+  if(!button) return;
+  let account=null;
+  try{account=window.LJR_V569_AUTH?.currentAccount?.()||window.LJR_MAIN_ROUTE?.state?.user||null}catch(_){}
+  if(!account){
+    try{
+      const auth=JSON.parse(localStorage.getItem('ljr-auth-v569')||'{}');
+      account=Array.isArray(auth.accounts)?auth.accounts.find(x=>x&&x.id===auth.currentId)||null:null;
+    }catch(_){}
+  }
+  if(!account){
+    button.classList.remove('v16-tv-overlay-account','has-account-avatar');
+    button.setAttribute('aria-label','Perfil');
+    return;
+  }
+
+  const photo=String(account.avatar||account.photoURL||account.picture||'').trim();
+  if(photo){
+    let img=button.querySelector(':scope > img.v16-tv-overlay-photo');
+    if(!img){
+      img=document.createElement('img');
+      img.className='v16-tv-overlay-photo ljr-profile-image';
+      img.alt='Mi perfil';
+      img.decoding='async';
+      button.replaceChildren(img);
+    }
+    if(img.getAttribute('src')!==photo) img.src=photo;
+  }else if(window.LJR_CHROME?.avatar){
+    const html=window.LJR_CHROME.avatar(account);
+    if(html) button.innerHTML=html;
+  }else{
+    let initial=button.querySelector(':scope > .v16-tv-overlay-initial');
+    if(!initial){
+      initial=document.createElement('span');
+      initial.className='v16-tv-overlay-initial';
+      button.replaceChildren(initial);
+    }
+    initial.textContent=(String(account.name||account.alias||'U').trim().charAt(0)||'U').toUpperCase();
+  }
+
+  button.classList.add('v16-tv-overlay-account','has-account-avatar');
+  button.setAttribute('aria-label','Mi perfil');
+  button.title=account.name||account.alias||'Mi perfil';
+
+  if(!document.getElementById('v16-tv-overlay-profile-style')){
+    const style=document.createElement('style');
+    style.id='v16-tv-overlay-profile-style';
+    style.textContent=
+      '.v408-tv-profile.v16-tv-overlay-account{width:27px!important;height:27px!important;border-radius:50%!important;overflow:hidden!important;border:1px solid rgba(255,255,255,.94)!important;background:#0b2c9f!important;box-shadow:0 0 0 1px rgba(64,218,255,.22)!important}'+
+      '.v408-tv-profile.v16-tv-overlay-account>img,.v408-tv-profile.v16-tv-overlay-account img{display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:50%!important;object-fit:cover!important;object-position:center!important}'+
+      '.v408-tv-profile.v16-tv-overlay-account>:not(img){width:100%!important;height:100%!important;margin:0!important;border-radius:50%!important;overflow:hidden!important}'+
+      '.v16-tv-overlay-initial{display:grid!important;place-items:center!important;color:#fff!important;font:900 12px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;background:linear-gradient(145deg,#1d73ff,#091b88)!important}';
+    document.head.appendChild(style);
+  }
+}
+
 function v16ApplySlide(animate=true){
   const root=document.querySelector('.v17-tv');
   if(!root) return;
@@ -309,7 +367,7 @@ document.addEventListener('touchend',e=>{
 document.addEventListener('visibilitychange',()=>{
   if(document.hidden)v16StopAuto();else{v16StartAuto();v16SyncProfile()}
 });
-for(const event of ['storage','ljr:profile-updated','pageshow'])window.addEventListener(event,()=>{if(v16IsVideo())v16SyncProfile()});
+for(const event of ['storage','ljr:profile-updated','pageshow'])window.addEventListener(event,()=>{if(v16IsVideo())v16SyncProfile();v16SyncTvOverlayProfile()});
 window.setTimeout(()=>{if(v16IsVideo())v16SyncProfile()},500);
 window.setTimeout(()=>{if(v16IsVideo())v16SyncProfile()},1400);
 
@@ -321,5 +379,9 @@ if(v16Target){
     if(!v16IsVideo()) v16StopAuto();
   }).observe(v16Target,{childList:true,subtree:false});
 }
+const v16TvOverlayObserver=new MutationObserver(()=>v16SyncTvOverlayProfile());
+if(document.body)v16TvOverlayObserver.observe(document.body,{childList:true,subtree:true});
+v16SyncTvOverlayProfile();
+
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',v16Schedule,{once:true});
 else v16Schedule();
