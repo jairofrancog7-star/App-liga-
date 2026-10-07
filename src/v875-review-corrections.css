@@ -180,3 +180,22 @@ html body.ljr-v777[data-app-route="playerDetail"] #screen .v379-hero>[data-v379-
   }
 }
 
+
+
+/* V887 — Datos desde Más: el último cuadro nunca queda debajo de la barra inferior.
+   Usa la altura real medida de la navegación sin cambiar su diseño. */
+@media(max-width:1023px){
+  html body.v768-scroll-root[data-app-route="leagueData"] #screen{
+    bottom:var(--v774-nav-h,var(--ui-master-bottom-nav-h,69px))!important;
+    padding-bottom:22px!important;
+    scroll-padding-bottom:22px!important;
+  }
+  html body:not(.v768-scroll-root)[data-app-route="leagueData"] #screen{
+    padding-bottom:calc(var(--v774-nav-h,84px) + 24px + env(safe-area-inset-bottom))!important;
+    scroll-padding-bottom:calc(var(--v774-nav-h,84px) + 24px + env(safe-area-inset-bottom))!important;
+  }
+  html body[data-app-route="leagueData"] #screen > #v105-bottom:last-child,
+  html body[data-app-route="leagueData"] #screen > .v105-bottom:last-child{
+    margin-bottom:22px!important;
+  }
+}
