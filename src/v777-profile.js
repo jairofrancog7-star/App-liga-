@@ -5,15 +5,16 @@ const current=()=>window.LJR_V569_AUTH?.currentAccount ? window.LJR_V569_AUTH.cu
 
 function shirtViewer(){
  return '<div class="ljr-shirt-preview v803-shirt-preview" data-shirt-stage aria-label="Camiseta de fútbol 3D editable">'+
-   '<div class="v803-shirt-badge">FÚTBOL 3D · HD</div>'+
+   '<div class="v803-shirt-badge">CAMISETA PRO · 3D</div>'+
    '<div class="v803-shirt-stage" data-football-shirt-3d></div>'+
-   '<div class="v803-shirt-controls">'+
-     '<button type="button" data-shirt-front>Frente</button>'+
-     '<button type="button" data-shirt-back>Espalda</button>'+
-     '<button type="button" data-shirt-spin>Girar 360°</button>'+
+   '<div class="v803-shirt-controls" aria-label="Controles de camiseta 3D">'+
+     '<button type="button" data-shirt-front><span class="v803-control-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4 4 6 2 10l4 2v8h12v-8l4-2-2-4-4-2c-.6 1.5-1.9 2.3-4 2.3S8.6 5.5 8 4Z"/></svg></span><span class="v803-control-label">Frente</span></button>'+
+     '<button type="button" data-shirt-back><span class="v803-control-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4 4 6 2 10l4 2v8h12v-8l4-2-2-4-4-2"/><path d="M9 8h6"/></svg></span><span class="v803-control-label">Espalda</span></button>'+
+     '<button type="button" data-shirt-spin aria-pressed="false"><span class="v803-control-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5"/><path d="M19 12a7 7 0 1 0-2 5"/></svg></span><span class="v803-control-label" data-shirt-spin-label>Girar</span></button>'+
+     '<button type="button" data-shirt-shot><span class="v803-control-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h3l1.5-2h5L16 8h3v11H5Z"/><circle cx="12" cy="13" r="3"/></svg></span><span class="v803-control-label">PNG</span></button>'+
    '</div>'+
    '<div class="v803-shirt-foot"><span>Arrastra con el dedo para mover la camiseta libremente.</span><b>Nombre y número impresos en la tela</b></div>'+
-   '<div class="v803-shirt-open-source">Motor local con Three.js. El nombre y el número se hornean en la textura HD de la camiseta y giran junto con el modelo.</div>'+
+   '<div class="v803-shirt-open-source">Modelo local optimizado para APK: tela PBR, costuras, microtextura y luces de estudio. El nombre y el número forman parte de la textura de la camiseta.</div>'+
  '</div>';
 }
 
@@ -33,8 +34,11 @@ function bindShirtViewer(n){
    n.querySelector('[data-shirt-spin]')?.addEventListener('click',e=>{
      const active=viewer?.toggleSpin?.();
      e.currentTarget.classList.toggle('active',!!active);
-     e.currentTarget.textContent=active?'Detener giro':'Girar 360°';
+     e.currentTarget.setAttribute('aria-pressed',String(!!active));
+     const label=e.currentTarget.querySelector('[data-shirt-spin-label]');
+     if(label)label.textContent=active?'Detener':'Girar';
    });
+   n.querySelector('[data-shirt-shot]')?.addEventListener('click',()=>viewer?.snapshot?.());
  };
  boot();
 }
