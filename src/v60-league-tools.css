@@ -1517,7 +1517,7 @@ body[data-app-route="v38Stats"] .v520-stats-topbar button:active{
     font-weight:700!important;
   }
   body.v553-printing .v553-week-range::before{
-    content:"AdminFut\A";
+    content:"Liga Juventino Rosas\A";
     white-space:pre!important;
     display:block!important;
     color:#aaa!important;
@@ -1675,7 +1675,7 @@ body.v553-printing .v553-print-sheet .v553-week-range{
   font-weight:700!important;
 }
 body.v553-printing .v553-print-sheet .v553-week-range::before{
-  content:"AdminFut\A";
+  content:"Liga Juventino Rosas\A";
   white-space:pre!important;
   display:block!important;
   margin-bottom:3mm!important;

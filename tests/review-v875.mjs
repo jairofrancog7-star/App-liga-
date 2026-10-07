@@ -29,6 +29,14 @@ try{
  await page.addInitScript(()=>{try{localStorage.setItem('liga-media-session','test-only-token');if(!crypto.randomUUID)crypto.randomUUID=()=> '00000000-0000-4000-a000-000000000001'}catch{}});
  await page.goto('http://app.test/App-liga-/?mode=apk#/home',{waitUntil:'domcontentloaded'});
  await page.waitForTimeout(1500);
+ await page.emulateMedia({media:'print'});
+ const printBrands=await page.evaluate(()=>{
+  const fixture=document.createElement('div');fixture.innerHTML='<div class="v553-week-range">Semana de la Liga</div><div class="v553-print-sheet"><div class="v553-week-range">Semana de la Liga</div></div>';document.body.append(fixture);document.body.classList.add('v553-printing');
+  const brands=[...fixture.querySelectorAll('.v553-week-range')].map(el=>getComputedStyle(el,'::before').content);
+  fixture.remove();document.body.classList.remove('v553-printing');return brands;
+ });
+ for(const brand of printBrands){assert.doesNotMatch(brand,/admin\s*f[uú]t/i);assert.match(brand,/Liga Juventino Rosas/)}
+ await page.emulateMedia({media:'screen'});checks.push('Weekly print and PDF fallback headers carry league branding');
  const go=async route=>{await page.evaluate(route=>window.LJR_MAIN_ROUTE.go(route),route);await page.waitForTimeout(700)};
  await go('leagueTools');
  assert.equal(await page.locator('[data-v875-studio]').count(),1);
@@ -39,6 +47,7 @@ try{
   await button.click();await page.waitForTimeout(500);
   assert.equal(await page.evaluate(()=>location.hash.split('?')[0]),'#/'+destination,destination+' does not open');
   assert.ok((await page.locator('#screen').innerText()).trim().length>5,destination+' blank');
+  assert.doesNotMatch(await page.locator('#screen').innerText(),/admin\s*f[uú]t|Cortes recuperados|TABLAS DE GOLEO DEL ZIP/i,destination+' shows reference labels');
  }
  checks.push(destinations.length+' tool routes open');
  await go('leagueTools');await page.evaluate(()=>document.querySelector('#screen').scrollTop=620);await page.waitForTimeout(150);
