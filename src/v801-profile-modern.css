@@ -208,3 +208,28 @@ body[data-app-route="profile"] .v801-profile-shirt-entry:active{
     height:370px!important;
   }
 }
+
+
+/* V902 — categoría visible en la espalda de la camiseta 3D. */
+.v902-shirt-category{
+  grid-column:1/-1!important;
+}
+.v902-shirt-category select{
+  min-height:48px!important;
+  padding:0 36px 0 12px!important;
+  border:1px solid rgba(81,128,214,.52)!important;
+  border-radius:13px!important;
+  background:#0b225f!important;
+  color:#fff!important;
+  font-size:11px!important;
+  font-weight:800!important;
+  box-sizing:border-box!important;
+}
+.v902-shirt-category small{
+  display:block!important;
+  margin-top:-2px!important;
+  color:#79dfec!important;
+  font-size:8.5px!important;
+  line-height:1.25!important;
+  font-weight:700!important;
+}
