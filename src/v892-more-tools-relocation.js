@@ -5,8 +5,8 @@
   if(window.__LJR_V892_MORE_TOOLS_RELOCATION__)return;
   window.__LJR_V892_MORE_TOOLS_RELOCATION__=true;
 
-  const route=()=>String(location.hash||'').replace(/^#\\/?/,'').split('?')[0]||String(document.body?.dataset?.appRoute||'home');
-  const norm=v=>String(v||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().replace(/\\s+/g,' ').trim();
+  const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||String(document.body?.dataset?.appRoute||'home');
+  const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
 
   function collapse(el){
     if(!el||el.dataset?.v892Hidden==='1')return;
