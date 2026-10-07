@@ -957,6 +957,8 @@ function patchTeams(){
 }
 function intercept(){
   document.addEventListener('click',e=>{
+    /* V898 — nada dentro de Pronostica Seis navega a ficha/comparación. */
+    if(route()==='predictorSix')return;
     /* V681 — Permisos tiene selectores locales de equipo/jugador.
        V62 no debe interpretar ningún toque de esta pantalla como navegación
        a ficha, comparar equipos o cambio de equipo global. */
