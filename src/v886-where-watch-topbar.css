@@ -1,5 +1,5 @@
-/* V886 — Dónde verlo: una sola cabecera.
-   Elimina la barra azul duplicada de la pantalla y sube el título a la cabecera principal. */
+/* V887 — Dónde verlo: quitar por completo la segunda barra.
+   Solo queda la barra superior principal con flecha, título y perfil. */
 @media (max-width:1023px){
   html body[data-app-route="whereToWatch"] #app > .topbar,
   html body #app:has(#screen [data-v412-screen="where"]) > .topbar{
@@ -11,49 +11,41 @@
     min-height:136px!important;
     max-height:136px!important;
     margin:0!important;
+    padding:0 18px!important;
+    grid-template-columns:42px minmax(0,1fr) 42px!important;
+    align-items:center!important;
     overflow:hidden!important;
   }
 
+  /* El título vive en la barra superior; nunca se crea otra franja debajo. */
   html body[data-app-route="whereToWatch"] #app > .topbar .wordmark,
-  html body #app:has(#screen [data-v412-screen="where"]) > .topbar .wordmark,
-  html body[data-app-route="whereToWatch"] #app > .topbar .wordmark strong,
-  html body #app:has(#screen [data-v412-screen="where"]) > .topbar .wordmark strong{
-    color:transparent!important;
-    text-shadow:none!important;
-  }
-
-  html body[data-app-route="whereToWatch"] #screen .v412-where-head,
-  html body #app:has(#screen [data-v412-screen="where"]) #screen .v412-where-head{
-    position:fixed!important;
-    top:0!important;
-    left:50%!important;
-    z-index:2147482500!important;
-    width:min(100%,520px)!important;
-    height:136px!important;
-    min-height:136px!important;
-    margin:0!important;
-    padding:0 72px!important;
-    transform:translateX(-50%)!important;
+  html body #app:has(#screen [data-v412-screen="where"]) > .topbar .wordmark{
     display:flex!important;
     align-items:center!important;
     justify-content:flex-start!important;
+    width:100%!important;
+    min-width:0!important;
+    height:100%!important;
+    margin:0!important;
+    padding:0 12px!important;
     border:0!important;
     background:transparent!important;
-    box-shadow:none!important;
-    pointer-events:none!important;
+    color:transparent!important;
+    font-size:0!important;
+    text-shadow:none!important;
+    overflow:hidden!important;
   }
 
-  html body[data-app-route="whereToWatch"] #screen .v412-where-head button,
-  html body #app:has(#screen [data-v412-screen="where"]) #screen .v412-where-head button{
+  html body[data-app-route="whereToWatch"] #app > .topbar .wordmark strong,
+  html body #app:has(#screen [data-v412-screen="where"]) > .topbar .wordmark strong{
     display:none!important;
   }
 
-  html body[data-app-route="whereToWatch"] #screen .v412-where-head h2,
-  html body #app:has(#screen [data-v412-screen="where"]) #screen .v412-where-head h2{
+  html body[data-app-route="whereToWatch"] #app > .topbar .wordmark::after,
+  html body #app:has(#screen [data-v412-screen="where"]) > .topbar .wordmark::after{
+    content:"Dónde verlo"!important;
     display:block!important;
     min-width:0!important;
-    margin:0!important;
-    padding:0!important;
     color:#fff!important;
     font-size:20px!important;
     line-height:1.1!important;
@@ -65,6 +57,32 @@
     text-shadow:0 1px 8px rgba(0,0,70,.24)!important;
   }
 
+  /* ESTA es la sobre-barra de abajo: se elimina totalmente. */
+  html body[data-app-route="whereToWatch"] #screen .v412-where-head,
+  html body #app:has(#screen [data-v412-screen="where"]) #screen .v412-where-head{
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    pointer-events:none!important;
+    position:static!important;
+    width:0!important;
+    height:0!important;
+    min-height:0!important;
+    max-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    background:none!important;
+    box-shadow:none!important;
+    overflow:hidden!important;
+  }
+
+  html body[data-app-route="whereToWatch"] #screen,
+  html body #app:has(#screen [data-v412-screen="where"]) #screen{
+    padding-top:0!important;
+    margin-top:0!important;
+  }
+
   html body[data-app-route="whereToWatch"] #screen .v412-shell[data-v412-screen="where"],
   html body #app:has(#screen [data-v412-screen="where"]) #screen .v412-shell[data-v412-screen="where"]{
     margin-top:0!important;
@@ -73,18 +91,24 @@
 
   html body[data-app-route="whereToWatch"] #screen .v412-shell[data-v412-screen="where"] > .v412-daystrip,
   html body #app:has(#screen [data-v412-screen="where"]) #screen .v412-shell[data-v412-screen="where"] > .v412-daystrip{
+    margin-top:0!important;
     padding-top:10px!important;
   }
 }
 
 @media (max-width:390px){
-  html body[data-app-route="whereToWatch"] #screen .v412-where-head,
-  html body #app:has(#screen [data-v412-screen="where"]) #screen .v412-where-head{
-    padding-left:66px!important;
-    padding-right:62px!important;
+  html body[data-app-route="whereToWatch"] #app > .topbar,
+  html body #app:has(#screen [data-v412-screen="where"]) > .topbar{
+    padding-left:14px!important;
+    padding-right:14px!important;
   }
-  html body[data-app-route="whereToWatch"] #screen .v412-where-head h2,
-  html body #app:has(#screen [data-v412-screen="where"]) #screen .v412-where-head h2{
+  html body[data-app-route="whereToWatch"] #app > .topbar .wordmark,
+  html body #app:has(#screen [data-v412-screen="where"]) > .topbar .wordmark{
+    padding-left:10px!important;
+    padding-right:10px!important;
+  }
+  html body[data-app-route="whereToWatch"] #app > .topbar .wordmark::after,
+  html body #app:has(#screen [data-v412-screen="where"]) > .topbar .wordmark::after{
     font-size:19px!important;
   }
 }
