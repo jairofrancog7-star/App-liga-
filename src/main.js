@@ -6381,6 +6381,7 @@ function moreView(){
     '<div class="v19-more-label">Gaming</div>'+
     '<div class="v19-more-menu">'+
       v19MoreButton('score','Pronostica Seis','predictor')+
+      v19MoreButton('score','Quiniela','quiniela')+
       v19MoreButton('quiz','Quiz Arena','quizArena')+
       v19MoreButton('arrows','Más O Menos','moreLess')+
     '</div>'+
