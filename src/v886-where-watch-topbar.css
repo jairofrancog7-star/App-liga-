@@ -1,0 +1,90 @@
+/* V886 — Dónde verlo: una sola cabecera.
+   Elimina la barra azul duplicada de la pantalla y sube el título a la cabecera principal. */
+@media (max-width:1023px){
+  html body[data-app-route="whereToWatch"] #app > .topbar,
+  html body #app:has(#screen [data-v412-screen="where"]) > .topbar{
+    display:grid!important;
+    visibility:visible!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+    height:136px!important;
+    min-height:136px!important;
+    max-height:136px!important;
+    margin:0!important;
+    overflow:hidden!important;
+  }
+
+  html body[data-app-route="whereToWatch"] #app > .topbar .wordmark,
+  html body #app:has(#screen [data-v412-screen="where"]) > .topbar .wordmark,
+  html body[data-app-route="whereToWatch"] #app > .topbar .wordmark strong,
+  html body #app:has(#screen [data-v412-screen="where"]) > .topbar .wordmark strong{
+    color:transparent!important;
+    text-shadow:none!important;
+  }
+
+  html body[data-app-route="whereToWatch"] #screen .v412-where-head,
+  html body #app:has(#screen [data-v412-screen="where"]) #screen .v412-where-head{
+    position:fixed!important;
+    top:0!important;
+    left:50%!important;
+    z-index:2147482500!important;
+    width:min(100%,520px)!important;
+    height:136px!important;
+    min-height:136px!important;
+    margin:0!important;
+    padding:0 72px!important;
+    transform:translateX(-50%)!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    border:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    pointer-events:none!important;
+  }
+
+  html body[data-app-route="whereToWatch"] #screen .v412-where-head button,
+  html body #app:has(#screen [data-v412-screen="where"]) #screen .v412-where-head button{
+    display:none!important;
+  }
+
+  html body[data-app-route="whereToWatch"] #screen .v412-where-head h2,
+  html body #app:has(#screen [data-v412-screen="where"]) #screen .v412-where-head h2{
+    display:block!important;
+    min-width:0!important;
+    margin:0!important;
+    padding:0!important;
+    color:#fff!important;
+    font-size:20px!important;
+    line-height:1.1!important;
+    font-weight:900!important;
+    letter-spacing:-.02em!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    text-shadow:0 1px 8px rgba(0,0,70,.24)!important;
+  }
+
+  html body[data-app-route="whereToWatch"] #screen .v412-shell[data-v412-screen="where"],
+  html body #app:has(#screen [data-v412-screen="where"]) #screen .v412-shell[data-v412-screen="where"]{
+    margin-top:0!important;
+    padding-top:0!important;
+  }
+
+  html body[data-app-route="whereToWatch"] #screen .v412-shell[data-v412-screen="where"] > .v412-daystrip,
+  html body #app:has(#screen [data-v412-screen="where"]) #screen .v412-shell[data-v412-screen="where"] > .v412-daystrip{
+    padding-top:10px!important;
+  }
+}
+
+@media (max-width:390px){
+  html body[data-app-route="whereToWatch"] #screen .v412-where-head,
+  html body #app:has(#screen [data-v412-screen="where"]) #screen .v412-where-head{
+    padding-left:66px!important;
+    padding-right:62px!important;
+  }
+  html body[data-app-route="whereToWatch"] #screen .v412-where-head h2,
+  html body #app:has(#screen [data-v412-screen="where"]) #screen .v412-where-head h2{
+    font-size:19px!important;
+  }
+}
