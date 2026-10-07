@@ -92,3 +92,150 @@ body[data-app-route="profile"] #screen .v12-profile-menu > .ljr-profile-action-r
     font-size:15px!important;
   }
 }
+
+
+/* V896 — Perfil: una sola familia visual para TODOS los botones de menú. */
+/* Cambiar contraseña, Dispositivos, Biometría, Siguiendo, Notificaciones,
+   Idioma, Ayúdanos, Privacidad, Términos, Ajustes y Avatar/Camiseta
+   comparten la misma fila transparente. */
+body[data-app-route="profile"] #screen .v569-profile-account-menu{
+  display:block!important;
+  width:auto!important;
+  margin:18px 12px 0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  gap:0!important;
+}
+body[data-app-route="profile"] #screen .v569-profile-account-menu + .v12-profile-menu{
+  padding-top:0!important;
+}
+
+body[data-app-route="profile"] #screen .v569-profile-account-menu > button,
+body[data-app-route="profile"] #screen .v12-profile-menu > .v12-profile-row{
+  position:relative!important;
+  width:100%!important;
+  min-width:0!important;
+  height:64px!important;
+  min-height:64px!important;
+  max-height:64px!important;
+  display:grid!important;
+  grid-template-columns:34px minmax(0,1fr) 18px!important;
+  align-items:center!important;
+  column-gap:12px!important;
+  margin:0!important;
+  padding:0 2px!important;
+  border:0!important;
+  border-bottom:1px solid rgba(255,255,255,.07)!important;
+  border-radius:0!important;
+  outline:0!important;
+  background:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  color:#fff!important;
+  text-align:left!important;
+  font:400 16px/1.15 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:0!important;
+  transform:none!important;
+  filter:none!important;
+  -webkit-appearance:none!important;
+  appearance:none!important;
+}
+body[data-app-route="profile"] #screen .v569-profile-account-menu > button:first-child,
+body[data-app-route="profile"] #screen .v12-profile-menu > .v12-profile-row:first-child{
+  border-top:1px solid rgba(255,255,255,.07)!important;
+}
+
+body[data-app-route="profile"] #screen .v569-profile-account-menu > button > span,
+body[data-app-route="profile"] #screen .v12-profile-menu > .v12-profile-row .v12-profile-row-icon{
+  grid-column:1!important;
+  width:34px!important;
+  height:34px!important;
+  display:grid!important;
+  place-items:center!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  color:#cbd3ee!important;
+  opacity:1!important;
+  font-size:22px!important;
+  line-height:1!important;
+}
+body[data-app-route="profile"] #screen .v12-profile-menu > .v12-profile-row .v12-profile-row-icon svg{
+  width:24px!important;
+  height:24px!important;
+  display:block!important;
+}
+
+body[data-app-route="profile"] #screen .v569-profile-account-menu > button > b,
+body[data-app-route="profile"] #screen .v12-profile-menu > .v12-profile-row .v12-profile-row-label{
+  grid-column:2!important;
+  min-width:0!important;
+  margin:0!important;
+  color:#fff!important;
+  font:400 16px/1.15 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:0!important;
+  white-space:normal!important;
+}
+
+body[data-app-route="profile"] #screen .v569-profile-account-menu > button > i,
+body[data-app-route="profile"] #screen .v12-profile-menu > .v12-profile-row .v12-profile-row-chevron{
+  grid-column:3!important;
+  justify-self:end!important;
+  width:18px!important;
+  height:28px!important;
+  display:grid!important;
+  place-items:center!important;
+  margin:0!important;
+  color:#fff!important;
+  opacity:.92!important;
+  font-size:20px!important;
+  font-style:normal!important;
+  font-weight:300!important;
+  line-height:1!important;
+}
+body[data-app-route="profile"] #screen .v12-profile-menu > .v12-profile-row .v12-profile-row-chevron svg{
+  width:20px!important;
+  height:20px!important;
+  display:block!important;
+}
+
+body[data-app-route="profile"] #screen .v569-profile-account-menu > button:active,
+body[data-app-route="profile"] #screen .v12-profile-menu > .v12-profile-row:active{
+  background:rgba(255,255,255,.045)!important;
+  transform:none!important;
+  filter:none!important;
+}
+
+/* Cerrar sesión conserva sólo el color de advertencia, no un diseño distinto. */
+body[data-app-route="profile"] #screen .v569-profile-account-menu > button.logout{
+  border-color:rgba(255,255,255,.07)!important;
+  background:transparent!important;
+}
+body[data-app-route="profile"] #screen .v569-profile-account-menu > button.logout > span,
+body[data-app-route="profile"] #screen .v569-profile-account-menu > button.logout > b{
+  color:#ffb2bd!important;
+}
+body[data-app-route="profile"] #screen .v569-profile-account-menu > button.logout > i{
+  color:#ffd0d7!important;
+}
+
+@media(max-width:390px){
+  body[data-app-route="profile"] #screen .v569-profile-account-menu > button,
+  body[data-app-route="profile"] #screen .v12-profile-menu > .v12-profile-row{
+    height:60px!important;
+    min-height:60px!important;
+    max-height:60px!important;
+    grid-template-columns:32px minmax(0,1fr) 18px!important;
+    column-gap:10px!important;
+  }
+  body[data-app-route="profile"] #screen .v569-profile-account-menu > button > b,
+  body[data-app-route="profile"] #screen .v12-profile-menu > .v12-profile-row .v12-profile-row-label{
+    font-size:15px!important;
+  }
+}
