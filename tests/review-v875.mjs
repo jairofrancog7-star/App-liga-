@@ -87,7 +87,7 @@ try{
  }
  assert.equal(await page.locator('.v589-more').isVisible(),true);
  checks.push('All four predictor slides fit; white top controls visible');
- await go('video');assert.match(await page.locator('.v17-tv-profile img').getAttribute('src'),/liga-crest-white/);checks.push('Video profile control uses the league crest');
+ await go('video');assert.equal(await page.locator('.v17-tv-profile svg').count(),1);assert.equal(await page.locator('.v17-tv-profile img').count(),0);checks.push('Video profile control uses the profile icon');
  await go('leagueTools');await page.locator('[data-v875-results]').click();await page.waitForTimeout(900);
  assert.equal(await page.locator('[data-pub-type]').inputValue(),'results');await page.locator('[data-pub-generate]').click();await page.locator('[data-pub-preview] canvas').waitFor({timeout:20000});
  assert.equal(await page.locator('[data-pub-preview] canvas').count(),1);
