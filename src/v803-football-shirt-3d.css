@@ -248,7 +248,7 @@ body:has(.liga-media-modal .ljr-profile-form){
   backdrop-filter:blur(10px)!important;pointer-events:none!important;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important;
 }
-.v803-shirt-badge::before{content:"●"!important;color:#2ee8ae!important;font-size:8px!important}
+.v803-shirt-badge::before{content:none!important;display:none!important}
 
 .v803-shirt-controls{
   position:relative!important;z-index:4!important;
