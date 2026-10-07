@@ -10,6 +10,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const INSTANCES=new WeakMap();
+const LEAGUE_LOGO='./assets/liga-logo.webp';
 
 function makeFabricBump(){
   const c=document.createElement('canvas');
@@ -130,22 +131,28 @@ function drawLogoIntoFabric(ctx,img,x,y,maxW,maxH){
   ctx.restore();
 }
 
-function bakeTeamLogo(ctx,url,texture){
+function bakeLogo(ctx,url,texture,x,y,w,h){
   if(!url)return;
   const img=new Image();
   try{img.crossOrigin='anonymous'}catch(_){}
   img.decoding='async';
   img.onload=()=>{
-    // Player's left chest (viewer right). It lives in the front half of the atlas,
-    // therefore it bends, shades and rotates with the actual 3D mesh.
-    drawLogoIntoFabric(ctx,img,620,224,165,165);
+    drawLogoIntoFabric(ctx,img,x,y,w,h);
     texture.needsUpdate=true;
   };
   img.onerror=()=>{};
   img.src=String(url);
 }
+function bakeTeamLogo(ctx,url,texture){
+  // Escudo del equipo: pecho izquierdo del jugador (derecha para quien mira).
+  bakeLogo(ctx,url,texture,620,224,165,165);
+}
+function bakeLeagueLogo(ctx,texture){
+  // Logo oficial de la Liga: pecho derecho del jugador (izquierda para quien mira).
+  bakeLogo(ctx,LEAGUE_LOGO,texture,250,222,170,170);
+}
 
-function fabricTexture(name='JAIRO',number='7',base='#0b4bd8',logoUrl=''){
+function fabricTexture(name='JAIRO',number='7',base='#0b4bd8',logoUrl='',category=''){
   const c=document.createElement('canvas');
   c.width=2048;c.height=1024;
   const x=c.getContext('2d');
@@ -154,15 +161,9 @@ function fabricTexture(name='JAIRO',number='7',base='#0b4bd8',logoUrl=''){
   drawKitHalf(x,0,color);
   drawKitHalf(x,1024,color);
 
-  // Small league mark on the opposite chest.
   x.textAlign='center';x.textBaseline='middle';
-  x.fillStyle='rgba(255,255,255,.94)';
-  x.shadowColor='rgba(0,0,0,.22)';x.shadowBlur=3;x.shadowOffsetY=1;
-  x.font='900 42px Arial Black,Impact,sans-serif';
-  x.fillText('LJR',355,300);
-  x.shadowColor='transparent';
 
-  // Back: player name + number, sublimated into the cloth.
+  // Back: player name + number + categoría, sublimated into the cloth.
   const cleanName=String(name||'').trim().toUpperCase().slice(0,18)||'JUGADOR';
   const cleanNumber=String(number??'').replace(/\D/g,'').slice(0,2)||'0';
   x.fillStyle='#fff';
@@ -176,6 +177,18 @@ function fabricTexture(name='JAIRO',number='7',base='#0b4bd8',logoUrl=''){
   x.fillText(cleanName,1536,270);
   x.font='900 390px Arial Black,Impact,sans-serif';
   x.fillText(cleanNumber,1536,610);
+
+  const cleanCategory=String(category||'').trim().toUpperCase().slice(0,28);
+  if(cleanCategory){
+    x.font='900 58px Arial Black,Impact,sans-serif';
+    let categorySize=58;
+    do{
+      x.font='900 '+categorySize+'px Arial Black,Impact,sans-serif';
+      if(x.measureText(cleanCategory).width<760)break;
+      categorySize-=4;
+    }while(categorySize>34);
+    x.fillText(cleanCategory,1536,900);
+  }
   x.shadowColor='transparent';
 
   const t=new THREE.CanvasTexture(c);
@@ -185,6 +198,7 @@ function fabricTexture(name='JAIRO',number='7',base='#0b4bd8',logoUrl=''){
   t.channel=0;
   t.needsUpdate=true;
   bakeTeamLogo(x,logoUrl,t);
+  bakeLeagueLogo(x,t);
   return t;
 }
 
@@ -337,7 +351,7 @@ async function buildRealJersey(current){
     if(o.isMesh&&o.geometry)o.geometry=o.geometry.clone();
   });
   const bounds=normalizeRealModel(group);
-  const texture=fabricTexture(current.name,current.number,current.color,current.logo);
+  const texture=fabricTexture(current.name,current.number,current.color,current.logo,current.category);
   texture.channel=1;
   const bump=makeFabricBump();
   const materials=[];
@@ -358,7 +372,7 @@ async function buildRealJersey(current){
 
 function updateJerseyTexture(jersey,current){
   if(!jersey)return;
-  const next=fabricTexture(current.name,current.number,current.color,current.logo);
+  const next=fabricTexture(current.name,current.number,current.color,current.logo,current.category);
   next.channel=jersey.uvChannel||0;
   jersey.materials.forEach(m=>{m.map=next;m.needsUpdate=true});
   jersey.texture?.dispose?.();
@@ -394,8 +408,8 @@ function createInstance(host,opts={}){
   const rim=new THREE.DirectionalLight(0x52bfff,1.9);rim.position.set(-3.5,2.5,-4.5);scene.add(rim);
   const rear=new THREE.DirectionalLight(0x3156ff,.8);rear.position.set(3,-.2,-4);scene.add(rear);
 
-  let current={name:opts.name||'JAIRO',number:opts.number||'7',color:cleanKitColor(opts.color||'#0b4bd8'),team:opts.team||'',logo:opts.logo||''};
-  let jersey=buildFallback(fabricTexture(current.name,current.number,current.color,current.logo));
+  let current={name:opts.name||'JAIRO',number:opts.number||'7',color:cleanKitColor(opts.color||'#0b4bd8'),team:opts.team||'',logo:opts.logo||'',category:opts.category||''};
+  let jersey=buildFallback(fabricTexture(current.name,current.number,current.color,current.logo,current.category));
   scene.add(jersey.group);
 
   const floor=new THREE.Mesh(
