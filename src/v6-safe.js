@@ -67,7 +67,7 @@
     ABE:V6_LOGO_BASE+'assets/official-logos/abejas.png',
     LOB:V6_LOGO_BASE+'assets/official-logos/lobos-cdg.png',
     TER:V6_LOGO_BASE+'assets/official-logos/terricolas.png',
-    GAC:V6_LOGO_BASE+'assets/teams/galacticos-pozos.webp',
+    GAC:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/768d83b77ccbe73e8bf557f0189886fb6f246f84/assets/teams/galacticos-pozos.webp?v=20261007-v882',
     DYN:V6_LOGO_BASE+'assets/official-logos/dynamo.png',
     MAN:V6_LOGO_BASE+'assets/official-logos/manchester.png',
     ESP:V6_LOGO_BASE+'assets/official-logos/la-esperanza.png',
@@ -96,9 +96,13 @@
     return s?.[4]?v6PrettyTeam(s[4]):code;
   };
   function v6Crest(code){
-    const name=v6TeamName(code),src=V6_LOGOS[code]||'';
+    const name=v6TeamName(code);
+    const forced=String(code||'').toUpperCase()==='GAC'
+      ?'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/768d83b77ccbe73e8bf557f0189886fb6f246f84/assets/teams/galacticos-pozos.webp?v=20261007-v882'
+      :'';
+    const src=forced||V6_LOGOS[code]||'';
     return src
-      ?`<span class="v6-crest v6-crest-image"><img src="${src}" alt="${esc(name)}" loading="lazy" decoding="async"></span>`
+      ?`<span class="v6-crest v6-crest-image"><img src="${src}" alt="${esc(name)}" loading="eager" decoding="async"></span>`
       :`<span class="v6-crest">${esc(code)}</span>`;
   }
   const scorerTeamMark=(code,officialName='')=>{
