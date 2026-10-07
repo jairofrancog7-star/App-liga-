@@ -6377,13 +6377,13 @@ function moreView(){
     '<img class="v19-more-logo" src="'+V19_MORE_LOGO+'" alt="Liga Municipal de Fútbol Juventino Rosas" loading="eager" decoding="async">'+
     '<div class="v19-more-menu">'+
       v19MoreButton('star','Siguiendo','following')+
-      v19MoreButton('users','Equipos','teams')+
+      v19MoreButton('shield','Equipos','teams')+
       v19MoreButton('performance','Performance Zone','safe-performance',true)+
       v19MoreButton('medal','Máximo goleador','scorers')+
       v19MoreButton('video','Momentos','moments')+
       v19MoreButton('data','Datos','leagueData',true)+
       v19MoreButton('qr','QR de la Liga','ligaQR')+
-      v19MoreButton('idcard','Liga Control / Registro','ligaControl')+
+      v19MoreButton('shield','Liga Control / Registro','ligaControl')+
     '</div>'+
     '<div class="v19-more-label">Gaming</div>'+
     '<div class="v19-more-menu">'+
@@ -6394,14 +6394,14 @@ function moreView(){
     '</div>'+
     '<div class="v19-more-label compare">Comparar</div>'+
     '<div class="v19-more-menu">'+
-      v19MoreButton('comparePlayers','Comparar jugadores','playerCompare')+
-      v19MoreButton('compareTeams','Comparar equipos','teams')+
+      v19MoreButton('performance','Comparar jugadores','playerCompare')+
+      v19MoreButton('shield','Comparar equipos','teams')+
     '</div>'+
     '<div class="v19-more-label event">En el evento</div>'+
-    '<div class="v19-more-menu">'+v19MoreButton('vip','Hospitalidad','hospitality')+'</div>'+
+    '<div class="v19-more-menu">'+v19MoreButton('glasses','Hospitalidad','hospitality')+'</div>'+
     '<div class="v19-more-menu">'+
-      v19MoreButton('book','Reglamento','rulebook')+
-      v19MoreButton('tools','Más herramientas','leagueTools')+
+      v19MoreButton('info','Reglamento','rulebook')+
+      v19MoreButton('data','Más herramientas','leagueTools')+
     '</div>'+
     '<div class="v19-more-label explore">Explorar</div>'+
     '<div class="v19-more-menu">'+
