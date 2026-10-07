@@ -1,0 +1,29 @@
+/* V903 — Más: alinear el avatar de sesión con el icono de perfil de la referencia.
+   Mantiene el avatar elegido por el usuario; solo corrige su escala y eje visual. */
+@media(max-width:1023px){
+  html body.ljr-v777[data-app-route="more"] #app>.topbar>.ljr-chrome-actions>.ljr-chrome-right{
+    transform:scale(.75)!important;
+    transform-origin:right top!important;
+  }
+
+  html body.ljr-v777[data-app-route="more"] #app>.topbar .ljr-profile-control,
+  html body.ljr-v777[data-app-route="more"] #app>.topbar .profile-button{
+    margin:0!important;
+    padding:0!important;
+    place-items:center!important;
+  }
+
+  html body.ljr-v777[data-app-route="more"] #app>.topbar .ljr-profile-control>.ljr-profile-image,
+  html body.ljr-v777[data-app-route="more"] #app>.topbar .ljr-profile-control>.ljr-profile-initial,
+  html body.ljr-v777[data-app-route="more"] #app>.topbar .ljr-profile-control>.ljr-gamer-avatar{
+    width:32px!important;
+    height:32px!important;
+    min-width:32px!important;
+    min-height:32px!important;
+    max-width:32px!important;
+    max-height:32px!important;
+    margin:0!important;
+    transform:none!important;
+    transform-origin:center!important;
+  }
+}
