@@ -429,10 +429,12 @@ window.addEventListener('ljr:official-data',()=>{if(route()===ROUTE)render()});
 window.addEventListener('hashchange',()=>{
   const returning=route()===ROUTE&&consumeAfterAuth();
   ui={view:returning?(ui.view||'predictions'):'intro',introSlide:0,journey:0,game:null,tempHome:0,tempAway:0,menu:false};
-  schedule(20)
+  /* V884: montar en el mismo tick para que nunca se pinte primero la capa V53 antigua. */
+  mount();
+  schedule(24);
 });
 new MutationObserver(()=>{if(route()===ROUTE)schedule(30)}).observe(document.documentElement,{childList:true,subtree:true});
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>schedule(40),{once:true});else schedule(20);
-setTimeout(mount,400);
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{mount();schedule(40)},{once:true});else{mount();schedule(20)}
+setTimeout(mount,180);
 })();
 
