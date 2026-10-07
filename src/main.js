@@ -4460,6 +4460,14 @@ function v19MoreIcon(name){
     alert:'<path d="M12 3 2.8 20h18.4L12 3Z"/><path d="M12 9v5m0 3h.01"/>',
     download:'<path d="M12 3v11m0 0 4-4m-4 4-4-4"/><path d="M5 18v2h14v-2"/>',
     news:'<path d="M5 4h12v16H5V4Z"/><path d="M8 8h6m-6 4h6m-6 4h4"/><path d="M17 7h2v11a2 2 0 0 1-2 2"/>',
+    idcard:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8" cy="11" r="2.2"/><path d="M5.5 16c.7-2 1.6-3 2.5-3s1.8 1 2.5 3M13 9h5m-5 3h5m-5 3h3"/>',
+    predict:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/>',
+    ticket:'<path d="M4 7a2 2 0 0 0 0 4v6h16v-6a2 2 0 0 0 0-4V5H4v2Z"/><path d="M9 5v12M13 9h4m-4 4h4"/>',
+    comparePlayers:'<circle cx="7.5" cy="8" r="2.5"/><circle cx="16.5" cy="8" r="2.5"/><path d="M3.5 16a4 4 0 0 1 8 0m1 0a4 4 0 0 1 8 0M8 20h8m0 0-2-2m2 2-2 2"/>',
+    compareTeams:'<path d="M7 4 11 5.7v3.1c0 2.7-1.6 5-4 6-2.4-1-4-3.3-4-6V5.7L7 4Zm10 0 4 1.7v3.1c0 2.7-1.6 5-4 6-2.4-1-4-3.3-4-6V5.7L17 4Z"/><path d="M8 19h8m0 0-2-2m2 2-2 2"/>',
+    vip:'<path d="M4 6h16v12H4z"/><path d="m12 8 1.1 2.2 2.4.3-1.7 1.7.4 2.4-2.2-1.2-2.2 1.2.4-2.4-1.7-1.7 2.4-.3L12 8Z"/>',
+    book:'<path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H12v17H7.5A3.5 3.5 0 0 0 4 22V5.5Zm16 0A3.5 3.5 0 0 0 16.5 2H12v17h4.5A3.5 3.5 0 0 1 20 22V5.5Z"/>',
+    tools:'<path d="M14.5 5.5a4 4 0 0 0-5 5L3 17l4 4 6.5-6.5a4 4 0 0 0 5-5l-2.5 2.5-2.5-2.5 2.5-2.5 2.5-2.5a4 4 0 0 0-4 1Z"/><path d="m4 4 6 6"/>',
     whistle:'<path d="M5 13a5 5 0 1 0 10 0 5 5 0 0 0-10 0Z"/><path d="m14 9 5-3 2 3-5 3M3 7l2 2M8 4v3"/>'
 
   };
@@ -6369,31 +6377,31 @@ function moreView(){
     '<img class="v19-more-logo" src="'+V19_MORE_LOGO+'" alt="Liga Municipal de Fútbol Juventino Rosas" loading="eager" decoding="async">'+
     '<div class="v19-more-menu">'+
       v19MoreButton('star','Siguiendo','following')+
-      v19MoreButton('shield','Equipos','teams')+
+      v19MoreButton('users','Equipos','teams')+
       v19MoreButton('performance','Performance Zone','safe-performance',true)+
       v19MoreButton('medal','Máximo goleador','scorers')+
       v19MoreButton('video','Momentos','moments')+
       v19MoreButton('data','Datos','leagueData',true)+
       v19MoreButton('qr','QR de la Liga','ligaQR')+
-      v19MoreButton('shield','Liga Control / Registro','ligaControl')+
+      v19MoreButton('idcard','Liga Control / Registro','ligaControl')+
     '</div>'+
     '<div class="v19-more-label">Gaming</div>'+
     '<div class="v19-more-menu">'+
-      v19MoreButton('score','Pronostica Seis','predictor')+
-      v19MoreButton('score','Quiniela','quiniela')+
+      v19MoreButton('predict','Pronostica Seis','predictor')+
+      v19MoreButton('ticket','Quiniela','quiniela')+
       v19MoreButton('quiz','Quiz Arena','quizArena')+
       v19MoreButton('arrows','Más O Menos','moreLess')+
     '</div>'+
     '<div class="v19-more-label compare">Comparar</div>'+
     '<div class="v19-more-menu">'+
-      v19MoreButton('performance','Comparar jugadores','playerCompare')+
-      v19MoreButton('shield','Comparar equipos','teams')+
+      v19MoreButton('comparePlayers','Comparar jugadores','playerCompare')+
+      v19MoreButton('compareTeams','Comparar equipos','teams')+
     '</div>'+
     '<div class="v19-more-label event">En el evento</div>'+
-    '<div class="v19-more-menu">'+v19MoreButton('glasses','Hospitalidad','hospitality')+'</div>'+
+    '<div class="v19-more-menu">'+v19MoreButton('vip','Hospitalidad','hospitality')+'</div>'+
     '<div class="v19-more-menu">'+
-      v19MoreButton('info','Reglamento','rulebook')+
-      v19MoreButton('data','Más herramientas','leagueTools')+
+      v19MoreButton('book','Reglamento','rulebook')+
+      v19MoreButton('tools','Más herramientas','leagueTools')+
     '</div>'+
     '<div class="v19-more-label explore">Explorar</div>'+
     '<div class="v19-more-menu">'+
