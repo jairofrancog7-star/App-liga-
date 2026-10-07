@@ -115,3 +115,26 @@
     font-size:18px!important;
   }
 }
+
+
+/* V889 — texto real de la barra superior. */
+html body[data-app-route="whereToWatch"] #app > .topbar .wordmark.v889-where-title,
+html body #app:has(#screen [data-v412-screen="where"]) > .topbar .wordmark.v889-where-title{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  color:#fff!important;
+  font-size:18px!important;
+  line-height:1.1!important;
+  font-weight:900!important;
+  letter-spacing:-.02em!important;
+  text-align:left!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+html body[data-app-route="whereToWatch"] #app > .topbar .wordmark.v889-where-title::after,
+html body #app:has(#screen [data-v412-screen="where"]) > .topbar .wordmark.v889-where-title::after{
+  content:none!important;
+  display:none!important;
+}
