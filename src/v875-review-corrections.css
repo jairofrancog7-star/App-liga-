@@ -161,3 +161,25 @@ html body.ljr-v777[data-app-route="playerDetail"] #screen .v379-hero>[data-v379-
 .v880-player-photo{display:block;object-fit:cover;object-position:top;width:58px;height:58px;border-radius:50%;margin:15px 0 0 auto}
 .v880-match-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.v880-match-fields label,.v880-match-fields input{min-width:0!important;max-width:100%!important;box-sizing:border-box!important}
 .v852-admin-sheet .v880-notice{width:100%;margin:0}.v852-admin-sheet .v880-notice-head{pointer-events:none}
+
+/* V885 — Más: el contenido desplazable comienza inmediatamente bajo la cabecera.
+   Conserva el fondo/arte fijo y el diseño existente; sólo elimina el hueco vertical inicial. */
+@media(max-width:1023px){
+  html body[data-app-route="more"].v768-scroll-root #screen,
+  html body[data-app-route="more"] #screen{
+    padding-top:0!important;
+    scroll-padding-top:0!important;
+  }
+  html body[data-app-route="more"] #screen > .v19-more-page{
+    top:0!important;
+    margin-top:0!important;
+    padding-top:8px!important;
+  }
+  html body[data-app-route="more"] #screen > .v19-more-page > .v19-more-menu:first-of-type{
+    margin-top:0!important;
+    padding-top:0!important;
+    top:auto!important;
+    transform:none!important;
+  }
+}
+
