@@ -28,8 +28,8 @@ const DESIGNS={
   full:{name:'Diseño 2 · Full Bracket exacto',slug:'full-bracket'},
   quarters:{name:'Diseño 3 · Cuartos exacto',slug:'cuartos-exacto'}
 };
-const LEAGUE_LOGO='./assets/reference/predictor-v36/liga-crest-white.webp';
-const LEAGUE_LOGO_FALLBACK=ASSET_ROOT+'assets/liga-logo.webp';
+const LEAGUE_LOGO='./assets/liga-logo.webp';
+const LEAGUE_LOGO_FALLBACK='./assets/reference/predictor-v36/liga-crest-white.webp';
 const TROPHY='./assets/reference/final-trophy-drive.png';
 const TROPHY_FALLBACK='./final-trophy-drive.png';
 const W=1228,H=1536;
