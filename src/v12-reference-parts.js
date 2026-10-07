@@ -224,6 +224,8 @@ function v12ProfileIcon(type){
     notifications:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m19.29 17.29-1.29-1.29v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5S10.5 3.17 10.5 4v.68C7.63 5.36 6 7.92 6 11v5l-1.29 1.29C4.08 17.92 4.52 19 5.41 19h13.17c.9 0 1.34-1.08.71-1.71ZM16 17H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6Zm-4 5c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2Z" fill="currentColor"/></svg>',
     language:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M3.6 12h16.8M12 3c2.35 2.45 3.55 5.45 3.55 9S14.35 18.55 12 21M12 3C9.65 5.45 8.45 8.45 8.45 12S9.65 18.55 12 21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',
     feedback:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.8 4.8h14.4v10.8H5.853L4.8 16.653V4.8ZM4.8 3C3.81 3 3.009 3.81 3.009 4.8L3 21l3.6-3.6h12.6c.99 0 1.8-.81 1.8-1.8V4.8C21 3.81 20.19 3 19.2 3H4.8Zm1.8 9h7.2v1.8H6.6V12Zm0-2.7h10.8v1.8H6.6V9.3Zm0-2.7h10.8v1.8H6.6V6.6Z" fill="currentColor"/></svg>',
+    privacy:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.6 2.9 8.4 7 10 4.1-1.6 7-5.4 7-10V6l-7-3Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9.5 11.3V10a2.5 2.5 0 0 1 5 0v1.3M9 11.3h6v4.6H9Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>',
+    terms:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v15H6Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M15 3v4h4M9 11h6M9 14h6M9 17h4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',
     chevron:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.705 6.705a.997.997 0 0 0-1.41 0 .997.997 0 0 0-.001 1.41L13.17 12l-3.876 3.885a.997.997 0 1 0 1.411 1.41l4.588-4.588a1 1 0 0 0 0-1.414l-4.588-4.588Z" fill="currentColor"/></svg>'
   };
   return icons[type]||'';
@@ -254,10 +256,10 @@ function patchProfile(){
     '<div class="v12-profile-menu">'+
       profileMenuRow('following','Siguiendo','following',null,true)+
       profileMenuRow('notifications','Notificaciones','notifications',null,true)+
-      profileMenuRow('language','Tu idioma preferido',null,'language',false)+
-      profileMenuRow('feedback','Ayúdanos a mejorar',null,'feedback',false)+
-      profileMenuRow(null,'Ajustes de privacidad',null,'privacy',true)+
-      profileMenuRow(null,'Términos y condiciones',null,'terms',true)+
+      profileMenuRow('language','Tu idioma preferido',null,'language',true)+
+      profileMenuRow('feedback','Ayúdanos a mejorar',null,'feedback',true)+
+      profileMenuRow('privacy','Ajustes de privacidad',null,'privacy',true)+
+      profileMenuRow('terms','Términos y condiciones',null,'terms',true)+
     '</div>'+
   '</section>';
 }
