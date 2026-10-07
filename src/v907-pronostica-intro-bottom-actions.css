@@ -298,3 +298,53 @@
     bottom:150px!important;
   }
 }
+
+
+/* V909 — centrar botones inferiores de Pronostica Seis */
+@media (max-width:1023px){
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-actions{
+    position:absolute!important;
+    left:0!important;
+    right:0!important;
+    bottom:28px!important;
+    width:calc(100% - 56px)!important;
+    max-width:430px!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    padding:0!important;
+    transform:none!important;
+    box-sizing:border-box!important;
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    justify-items:stretch!important;
+    align-items:center!important;
+    gap:12px!important;
+  }
+
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-actions button{
+    box-sizing:border-box!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:0 16px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    text-align:center!important;
+    overflow:visible!important;
+  }
+}
+
+@media (max-width:420px) and (max-height:760px){
+  html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-intro-actions{
+    left:0!important;
+    right:0!important;
+    bottom:20px!important;
+    width:calc(100% - 44px)!important;
+    max-width:360px!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    transform:none!important;
+  }
+}
