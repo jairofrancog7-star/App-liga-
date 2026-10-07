@@ -7,27 +7,27 @@
   const OFFICIAL_DATA='./data/official-live.json?v=20261001-v490-vet35-all-pages';
 
   const FRIENDLY_BY_ID={
-    'sur-1':'Campo 1',
-    'sur-2':'Campo 2',
-    'sur-3':'Campo 3',
+    'sur-1':'Campo 1 · Unidad Deportiva Sur',
+    'sur-2':'Campo 2 · Unidad Deportiva Sur',
+    'sur-3':'Campo 3 · Unidad Deportiva Sur',
     'zapata-4':'Campo 4 · Emiliano Zapata',
-    'cerrito':'Cerrito de Gasca',
-    'tavera':'Tavera',
-    'san-juan':'San Juan de la Cruz',
-    'cuenda':'Santiago de Cuenda',
-    'romerillo':'San Antonio de Romerillo',
-    'fraccionamiento':'Fraccionamiento Comontuoso',
-    'pozos':'Pozos',
-    'rincon':'Rincón de Centeno',
-    'san-jose':'San José de la Montaña',
-    'san-julian':'San Julián Tierra Blanca'
+    'cerrito':'Campo Cerrito de Gasca',
+    'tavera':'Campo de Tavera',
+    'san-juan':'Campo San Juan de la Cruz',
+    'cuenda':'Unidad Deportiva Santiago de Cuenda',
+    'romerillo':'Campo San Antonio de Romerillo',
+    'fraccionamiento':'Campo Fraccionamiento Comontuoso',
+    'pozos':'Campo de Fútbol de Pozos',
+    'rincon':'Campo Rincón de Centeno',
+    'san-jose':'Campo San José de la Montaña',
+    'san-julian':'Campo San Julián Tierra Blanca'
   };
 
   const FALLBACK=[
-    'Campo 1','Campo 2','Campo 3','Campo 4 · Emiliano Zapata',
-    'Cerrito de Gasca','Tavera','San Juan de la Cruz','Santiago de Cuenda',
-    'San Antonio de Romerillo','Fraccionamiento Comontuoso','Pozos',
-    'Rincón de Centeno','San José de la Montaña','San Julián Tierra Blanca'
+    'Campo 1 · Unidad Deportiva Sur','Campo 2 · Unidad Deportiva Sur','Campo 3 · Unidad Deportiva Sur','Campo 4 · Emiliano Zapata',
+    'Campo Cerrito de Gasca','Campo de Tavera','Campo San Juan de la Cruz','Unidad Deportiva Santiago de Cuenda',
+    'Campo San Antonio de Romerillo','Campo Fraccionamiento Comontuoso','Campo de Fútbol de Pozos',
+    'Campo Rincón de Centeno','Campo San José de la Montaña','Campo San Julián Tierra Blanca'
   ];
 
   let cachedFields=null;
@@ -41,8 +41,9 @@
       .toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');
   }
   function addUnique(list,value){
-    const v=String(value||'').trim();
-    if(!v||/^por confirmar$/i.test(v)||/^campo por confirmar$/i.test(v))return;
+    const raw=String(value||'').trim();
+    if(!raw||/^por confirmar$/i.test(raw)||/^campo por confirmar$/i.test(raw))return;
+    const v=window.LJR_FIELDS?.canonical?.(raw)||raw;
     if(!list.some(x=>norm(x)===norm(v)))list.push(v);
   }
   async function loadFields(){
@@ -95,7 +96,8 @@
     const fields=await loadFields();
     if(route()!=='cedulaBuilder')return;
 
-    const current=String(old.value||localStorage.getItem('v66-cedula-field')||'').trim();
+    const saved=String(old.value||localStorage.getItem('v66-cedula-field')||'').trim();
+    const current=window.LJR_FIELDS?.canonical?.(saved)||saved;
     const select=document.createElement('select');
     select.setAttribute('data-v64-ced-field','');
     select.dataset.v158FieldPicker='1';
@@ -103,7 +105,7 @@
     select.appendChild(option('','Por confirmar',!current));
 
     const groups={
-      'Unidad Deportiva Sur':['Campo 1','Campo 2','Campo 3','Campo 4 · Emiliano Zapata'],
+      'Unidad Deportiva Sur':['Campo 1 · Unidad Deportiva Sur','Campo 2 · Unidad Deportiva Sur','Campo 3 · Unidad Deportiva Sur','Campo 4 · Emiliano Zapata'],
       'Comunidades y otras sedes':[]
     };
     for(const f of fields){
