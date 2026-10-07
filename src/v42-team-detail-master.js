@@ -371,9 +371,8 @@ function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}
    la ficha completa. No captura navegación inferior ni controles internos V42. */
 document.addEventListener('click',async e=>{
  if(['teamDetail','club-store','quizArena','moreLess','moreLessGallery'].includes(route())||e.target.closest?.('.liga-media-modal'))return;
- /* V897 — los nombres/logos dentro de “Últimos 5 partidos” sólo cambian
-    la pestaña del popup; no son accesos a ficha ni a comparar equipos. */
- if(route()==='predictorSix'&&e.target instanceof Element&&e.target.closest('[data-v851-form-overlay],[data-v851-card-form]'))return;
+ /* V898 — Pronostica Seis administra por completo los equipos de su popup. */
+ if(route()==='predictorSix')return;
  if(route()==='v4-calendar'&&e.target instanceof Element&&e.target.closest('[data-v415-calendar]'))return;
 
  /* V639 — Buscar en la Liga:
