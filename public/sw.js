@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v887-real-league-logo';
+const CACHE='liga-juventino-v886-quiniela-tools';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
