@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v912-pronostica-centered-buttons-dots-flow';
+const CACHE='liga-juventino-v913-jersey-original-transparent-crests';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
