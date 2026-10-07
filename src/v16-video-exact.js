@@ -100,7 +100,7 @@ function v16VideoMarkup(){
         </div>
 
         <button class="v17-tv-profile" data-v16-route="profile" aria-label="Perfil">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"></circle><circle cx="12" cy="8.2" r="2.8"></circle><path d="M5.5 19c1.5-3.2 3.7-4.7 6.5-4.7s5 1.5 6.5 4.7"></path></svg>
+          <img class="v17-tv-profile-icon" src="./profile-reference.svg" alt="">
         </button>
 
         <div class="v17-tv-title">
@@ -125,6 +125,35 @@ function v16VideoMarkup(){
         </div>
       </div>
     </section>`;
+}
+
+function v16SyncProfile(){
+  const button=document.querySelector('.v17-tv-profile');
+  if(!button) return;
+  let account=null;
+  try{account=window.LJR_V569_AUTH?.currentAccount?.()||window.LJR_MAIN_ROUTE?.state?.user||null}catch(_){}
+  const photo=account&&(account.avatar||account.photoURL||account.picture);
+  const gamer=account&&/^gamer:[0-8]$/.test(account.avatarPreset||'');
+  if(photo){
+    let img=button.querySelector('img.ljr-profile-image');
+    if(!img){
+      img=document.createElement('img');
+      img.className='ljr-profile-image v17-tv-profile-photo';
+      img.alt='Mi perfil';
+      button.replaceChildren(img);
+    }
+    if(img.getAttribute('src')!==String(photo))img.setAttribute('src',String(photo));
+    button.classList.add('has-account-avatar');
+  }else if(gamer&&window.LJR_CHROME?.avatar){
+    const html=window.LJR_CHROME.avatar(account);
+    if(button.innerHTML!==html)button.innerHTML=html;
+    button.classList.add('has-account-avatar');
+  }else{
+    const fallback='<img class="v17-tv-profile-icon" src="./profile-reference.svg" alt="">';
+    if(button.innerHTML!==fallback)button.innerHTML=fallback;
+    button.classList.remove('has-account-avatar');
+  }
+  button.setAttribute('aria-label',account?'Mi perfil':'Perfil');
 }
 
 function v16ApplySlide(animate=true){
@@ -234,6 +263,7 @@ function v16PatchVideo(){
   }else{
     v16ApplySlide(false);
   }
+  v16SyncProfile();
   v16StartAuto();
 }
 
@@ -277,8 +307,11 @@ document.addEventListener('touchend',e=>{
 },{passive:true,capture:true});
 
 document.addEventListener('visibilitychange',()=>{
-  if(document.hidden)v16StopAuto();else v16StartAuto();
+  if(document.hidden)v16StopAuto();else{v16StartAuto();v16SyncProfile()}
 });
+for(const event of ['storage','ljr:profile-updated','pageshow'])window.addEventListener(event,()=>{if(v16IsVideo())v16SyncProfile()});
+window.setTimeout(()=>{if(v16IsVideo())v16SyncProfile()},500);
+window.setTimeout(()=>{if(v16IsVideo())v16SyncProfile()},1400);
 
 window.addEventListener('hashchange',v16Schedule);
 const v16Target=document.querySelector('#screen');
