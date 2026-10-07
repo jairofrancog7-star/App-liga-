@@ -16,7 +16,7 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const read=()=>{try{return JSON.parse(localStorage.getItem(STORE_KEY)||'[]')}catch{return []}};
 const write=v=>{try{localStorage.setItem(STORE_KEY,JSON.stringify(v))}catch{}};
-let db=null,loading=null,currentNotice=null,fieldCatalog=null,fieldLoading=null;
+let db=null,loading=null,currentNotice=null,fieldCatalog=null,fieldLoading=null,fieldAliases=new Map();
 
 function toast(msg){
   let t=document.querySelector('.v129-toast');
@@ -39,9 +39,23 @@ async function loadData(){
   return loading;
 }
 
+function canonicalField(value){
+  const raw=String(value||'').trim();
+  const n=norm(raw);
+  if(!n)return raw;
+  const fixed={
+    'campo 1':'Campo 1 · Unidad Deportiva Sur',
+    'campo 1 empastado':'Campo 1 · Unidad Deportiva Sur',
+    'campo 2':'Campo 2 · Unidad Deportiva Sur',
+    'campo 3':'Campo 3 · Unidad Deportiva Sur',
+    'campo 4':'Campo 4 · Emiliano Zapata'
+  };
+  return fieldAliases.get(n)||fixed[n]||raw;
+}
 function addField(list,value){
-  const v=String(value||'').trim();
-  if(!v||/^por confirmar$/i.test(v)||/^campo por confirmar$/i.test(v))return;
+  const raw=String(value||'').trim();
+  if(!raw||/^por confirmar$/i.test(raw)||/^campo por confirmar$/i.test(raw))return;
+  const v=canonicalField(raw);
   if(!list.some(x=>norm(x)===norm(v)))list.push(v);
 }
 async function loadFields(){
@@ -53,7 +67,13 @@ async function loadFields(){
       const r=await fetch(FIELD_DATA,{cache:'no-store'});
       if(r.ok){
         const data=await r.json();
-        for(const f of data.fields||[])addField(out,f.name||f.community);
+        for(const f of data.fields||[]){
+          const name=String(f?.name||f?.community||'').trim();
+          if(!name)continue;
+          fieldAliases.set(norm(name),name);
+          for(const alias of f?.aliases||[])fieldAliases.set(norm(alias),name);
+          addField(out,name);
+        }
       }
     }catch(_){}
     try{
@@ -77,9 +97,10 @@ async function loadFields(){
 }
 function venueOptions(current=''){
   const fields=fieldCatalog||[];
+  const selected=canonicalField(current);
   const unit=fields.filter(v=>/^campo [123]\b/i.test(v)||/^campo 4\b/i.test(v));
   const other=fields.filter(v=>!unit.includes(v));
-  const options=(items)=>items.map(v=>'<option value="'+esc(v)+'"'+(norm(v)===norm(current)?' selected':'')+'>'+esc(v)+'</option>').join('');
+  const options=(items)=>items.map(v=>'<option value="'+esc(v)+'"'+(norm(v)===norm(selected)?' selected':'')+'>'+esc(v)+'</option>').join('');
   return '<option value="">Selecciona una cancha</option>'+
     '<optgroup label="Unidad Deportiva Sur">'+options(unit)+'</optgroup>'+
     '<optgroup label="Comunidades y otras sedes">'+options(other)+'</optgroup>'+
@@ -90,7 +111,8 @@ function syncVenueInput(root,value=''){
   const custom=root.querySelector('[data-v129-venue-custom]');
   if(!sel||!custom)return;
   const v=String(value||'').trim();
-  const known=(fieldCatalog||[]).find(x=>norm(x)===norm(v));
+  const canonical=canonicalField(v);
+  const known=(fieldCatalog||[]).find(x=>norm(x)===norm(canonical));
   if(known){sel.value=known;custom.hidden=true;custom.value='';return}
   if(v){sel.value='__custom__';custom.hidden=false;custom.value=v;return}
   sel.value='';custom.hidden=true;custom.value='';
