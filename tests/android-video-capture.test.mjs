@@ -24,9 +24,12 @@ test('Android camera and video capture remain discoverable after repeated config
     const calendarPlugin=path.join(app,'src/main/java/mx/ligajuventino/app/LigaCalendarPlugin.java');
     assert.ok(fs.existsSync(calendarPlugin));
     const java=fs.readFileSync(calendarPlugin,'utf8');
-    assert.match(java,/READ_CALENDAR/);
-    assert.match(java,/WRITE_CALENDAR/);
-    assert.match(java,/resolver\.insert\(CalendarContract\.Events\.CONTENT_URI/);
-    assert.match(java,/findWritableGoogleCalendar/);
+    assert.match(java,/new Intent\(Intent\.ACTION_INSERT\)/);
+    assert.match(java,/CalendarContract\.Events\.CONTENT_URI/);
+    assert.match(java,/CalendarContract\.Events\.TITLE/);
+    assert.match(java,/CalendarContract\.EXTRA_EVENT_BEGIN_TIME/);
+    assert.match(java,/CalendarContract\.EXTRA_EVENT_END_TIME/);
+    assert.doesNotMatch(java,/resolver\.insert\(/);
+    assert.doesNotMatch(java,/findWritableGoogleCalendar/);
   }finally{fs.rmSync(fixture,{recursive:true,force:true});}
 });
