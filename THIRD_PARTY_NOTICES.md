@@ -5,7 +5,7 @@ Three.js is used under the MIT License.
 https://github.com/mrdoob/three.js
 
 ## Mini Jersey 3D Studio
-The procedural jersey geometry and UV strategy in `src/v803-football-shirt-3d.js` was informed by the MIT-licensed Mini Jersey 3D Studio by Francesco Castaldi.
+The profile jersey viewer in `src/v803-football-shirt-3d.js` uses the classic shirt GLB embedded in `src/v893-realistic-football-shirt-model.js`, and adapts the UV/rendering approach from the MIT-licensed Mini Jersey 3D Studio by Francesco Castaldi.
 https://github.com/FrancescoCastaldi/mini-jersey-studio
 
 MIT License
