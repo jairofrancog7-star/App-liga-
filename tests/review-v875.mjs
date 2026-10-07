@@ -5,24 +5,27 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
-const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_EXECUTABLE_PATH||undefined,args:['--no-sandbox']});
+const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_EXECUTABLE_PATH||undefined,args:JSON.parse(process.env.BROWSER_ARGS||'["--no-sandbox"]')});
 const checks=[],errors=[];let feedback=null;
+checks.push=(...items)=>{for(const item of items)process.stderr.write(item+"\n");return Array.prototype.push.apply(checks,items)};
 try{
  const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
  page.on('pageerror',e=>errors.push(e.message));
+ // Hold model loading to exercise cancellation without downloading weights in CI.
+ await page.context().route('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1',route=>route.fulfill({contentType:'application/javascript',body:'export const env={backends:{onnx:{wasm:{}}}}; export const pipeline=()=>new Promise(()=>{});'}));
  await page.route('https://liga-juventino-media.ruchiz27mb0698.chatgpt.site/api/**',async route=>{
   const request=route.request(),url=new URL(request.url());
   if(url.pathname.endsWith('/me'))return route.fulfill({json:{admin:{id:'test-admin',name:'Test administrator',owner:true}}});
   if(url.pathname.endsWith('/feedback')&&request.method()==='POST'){feedback=request.postDataJSON();return route.fulfill({json:{ok:true,id:'test-feedback'}})}
   return route.fulfill({json:{items:[],ok:true}});
  });
- await page.route('http://app.test/**',async route=>{
+ await page.context().route('http://app.test/**',async route=>{
   const name=new URL(route.request().url()).pathname.replace(/^\/App-liga-\//,'/');
   const file=path.join(process.cwd(),'dist',name==='/'?'index.html':name);
-  try{const ext=path.extname(file).slice(1);await route.fulfill({body:fs.readFileSync(file),contentType:({html:'text/html',js:'application/javascript',css:'text/css',json:'application/json',png:'image/png',webp:'image/webp',jpg:'image/jpeg',svg:'image/svg+xml'})[ext]||'application/octet-stream'})}
+  try{const ext=path.extname(file).slice(1);await route.fulfill({body:fs.readFileSync(file),contentType:({html:'text/html',js:'application/javascript',mjs:'application/javascript',css:'text/css',json:'application/json',png:'image/png',webp:'image/webp',jpg:'image/jpeg',svg:'image/svg+xml'})[ext]||'application/octet-stream'})}
   catch{await route.fulfill({status:404,body:'Not found'})}
  });
- await page.addInitScript(()=>localStorage.setItem('liga-media-session','test-only-token'));
+ await page.addInitScript(()=>{try{localStorage.setItem('liga-media-session','test-only-token')}catch{}});
  await page.goto('http://app.test/App-liga-/?mode=apk#/home',{waitUntil:'domcontentloaded'});
  await page.waitForTimeout(1500);
  const go=async route=>{await page.evaluate(route=>window.LJR_MAIN_ROUTE.go(route),route);await page.waitForTimeout(700)};
@@ -61,6 +64,8 @@ try{
  const compare=await page.locator('.v123-player-compare').evaluate(el=>({h:el.getBoundingClientRect().height,available:el.parentElement.clientHeight}));
  assert.ok(compare.h<=compare.available+1,'Comparator does not fit');
  checks.push('Static comparator fits with one back arrow');
+ await go('playerDetail');
+ assert.equal(await page.locator('.v379-hero [data-v379-back]').isVisible(),false,'Player photo has a duplicate back arrow');
  await go('predictorSix');
  for(let i=0;i<4;i++){
   await page.locator('[data-v589-intro-dot="'+i+'"]').click();
@@ -71,17 +76,36 @@ try{
  assert.equal(await page.locator('.v589-more').isVisible(),true);
  checks.push('All four predictor slides fit; white top controls visible');
  await go('leagueTools');await page.locator('[data-v875-results]').click();await page.waitForTimeout(900);
- assert.equal(await page.locator('[data-pub-type]').inputValue(),'results');await page.locator('[data-pub-generate]').click();await page.waitForTimeout(1200);
+ assert.equal(await page.locator('[data-pub-type]').inputValue(),'results');await page.locator('[data-pub-generate]').click();await page.locator('[data-pub-preview] canvas').waitFor({timeout:20000});
  assert.equal(await page.locator('[data-pub-preview] canvas').count(),1);
  checks.push('Results PNG produces a canvas');
  await go('leagueTools');await page.locator('[data-v875-studio]').click();await page.waitForTimeout(700);
  const studio=page.locator('.cms-design-form');
  assert.equal(await studio.count(),1);
+ assert.equal(await page.locator('.cms-reference-gallery').count(),0,'Old published posters must remain references, not new designs');
+ await page.locator('[data-design-preset="Cuartos de final"]').click();
+ assert.equal(await studio.locator('[name="type"]').inputValue(),'Cuartos de final');
+ assert.equal(await studio.locator('[name="style"]').inputValue(),'yellow');
+ await studio.locator('[name="style"]').selectOption('red');
+ await studio.locator('[name="type"]').selectOption('Logo del equipo');
+ await studio.locator('[name="home"]').fill('Nuevo Club');
+ await studio.locator('[name="type"]').dispatchEvent('change');
+ await studio.locator('[type="submit"]').click();
+ await page.waitForTimeout(500);
+ const transparent=await page.locator('.liga-media-modal canvas').first().evaluate(el=>({w:el.width,h:el.height,alpha:el.getContext('2d').getImageData(0,0,1,1).data[3]}));
+ assert.deepEqual(transparent,{w:1080,h:1080,alpha:0});
+ assert.equal(await page.locator('[data-local-ai]').count(),1);
+ await studio.locator('[name="body"]').fill('Preparar un comunicado para la próxima junta.');
+ await page.locator('[data-local-ai]').click();
+ assert.equal(await page.locator('[data-cancel-ai]').isVisible(),true);
+ await page.locator('[data-cancel-ai]').click();
+ assert.equal(await studio.locator('[name="body"]').inputValue(),'Preparar un comunicado para la próxima junta.');
+ assert.equal(await page.locator('[data-local-ai]').isEnabled(),true);
  const options=await studio.locator('[name="type"] option').allTextContents();
  for(const type of ['Campeón','Jugador destacado','Felicitaciones · cumpleaños','Registro de nuevos equipos'])assert.ok(options.includes(type));
  await studio.locator('[name="type"]').selectOption('Feliz Navidad');await page.waitForTimeout(250);
  assert.equal(await page.locator('.liga-media-modal canvas').first().evaluate(el=>el.width),1080);
- await page.locator('.liga-media-modal [data-close]').last().click();checks.push('Studio includes league templates and HD preview');
+ await page.locator('.liga-media-modal [data-close]').last().click();checks.push('New design presets, transparent crest, cancelable local writing and HD preview');
  await page.evaluate(()=>localStorage.setItem('ljr-auth-v569',JSON.stringify({version:1,currentId:'test-member',accounts:[{id:'test-member',name:'Prueba de usuario',email:'member@example.test'}]})));
  await go('notifications');await page.locator('[data-v105-action="poll"]').first().click();await page.waitForTimeout(300);
  const mailbox=page.locator('[data-v875-mailbox]'),box=mailbox.locator('textarea');

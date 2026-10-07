@@ -561,7 +561,7 @@ function calendarGenerator(){
    const gh=r?.[3],ga=r?.[5],score=(gh!==undefined&&ga!==undefined&&(String(gh)!=='-'||String(ga)!=='-'))?' · '+String(gh)+'-'+String(ga):'';
    return 'J'+j+' · '+when+' · '+home+' vs '+away+score+' · '+venue;
  };
- const m=modal('Calendarios oficiales','Los cruces ya están hechos en AdminFut. Aquí se consultan y se descargan; no se generan partidos nuevos.','<div class="v105-form"><label><span>Categoría</span><select data-cat>'+cats.map(c=>'<option value="'+esc(c.id)+'">'+esc(c.name)+'</option>').join('')+'</select></label></div><div class="v105-actions"><button class="v105-btn" data-open>Abrir oficial</button><button class="v105-btn alt" data-pdf>Descargar PDF</button><button class="v105-btn alt" data-img>Descargar imagen</button></div><div class="v105-output" data-out></div>');
+ const m=modal('Calendarios oficiales','Los cruces ya están hechos en Liga Juventino Rosas. Aquí se consultan y se descargan; no se generan partidos nuevos.','<div class="v105-form"><label><span>Categoría</span><select data-cat>'+cats.map(c=>'<option value="'+esc(c.id)+'">'+esc(c.name)+'</option>').join('')+'</select></label></div><div class="v105-actions"><button class="v105-btn" data-open>Abrir oficial</button><button class="v105-btn alt" data-pdf>Descargar PDF</button><button class="v105-btn alt" data-img>Descargar imagen</button></div><div class="v105-output" data-out></div>');
  const current=()=>cats.find(c=>c.id===$('[data-cat]',m).value)||cats[0];
  const render=()=>{
    const c=current(),rows=c.rows||[],out=$('[data-out]',m);
@@ -594,7 +594,7 @@ function calendarGenerator(){
      const header=()=>{
        doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text('Liga Municipal de Futbol Juventino Rosas',margin,y);y+=24;
        doc.setFontSize(14);doc.text('Calendario oficial - '+c.name,margin,y);y+=20;
-       doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text('Fuente: AdminFut · '+officialUrl(c),margin,y,{maxWidth:maxW});y+=22;
+       doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text('LIGA JUVENTINO ROSAS',margin,y,{maxWidth:maxW});y+=22;
      };
      header();doc.setFontSize(9);
      for(const r of rows){
@@ -617,7 +617,7 @@ function calendarGenerator(){
    ctx.fillStyle='#42dff5';ctx.fillRect(0,0,width,10);
    ctx.fillStyle='#fff';ctx.font='700 42px Arial';ctx.fillText('LIGA JUVENTINO ROSAS',pad,72);
    ctx.font='700 32px Arial';ctx.fillText('CALENDARIO OFICIAL · '+c.name.toUpperCase(),pad,122);
-   ctx.fillStyle='#b9c7ff';ctx.font='22px Arial';ctx.fillText('Cruces oficiales publicados en AdminFut',pad,160);
+   ctx.fillStyle='#b9c7ff';ctx.font='22px Arial';ctx.fillText('Cruces oficiales publicados en Liga Juventino Rosas',pad,160);
    let y=headH;
    rows.forEach((r,i)=>{
      if(i%2===0){ctx.fillStyle='rgba(255,255,255,.045)';ctx.fillRect(pad-18,y-30,width-pad*2+36,rowH-2)}

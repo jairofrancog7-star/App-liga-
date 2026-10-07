@@ -244,7 +244,7 @@ function pageMarkup(){
   if(!rows.length)return shell+'<div class="v28-category-empty"><b>'+catName(id)+'</b><span>Sin goleadores publicados para esta categoría.</span></div></section>';
   return shell+feature(rows[0],'one')+feature(rows[1],'two')+
     (rows.length>2?'<div class="v28-ranking">'+rows.slice(2).map(rowMarkup).join('')+'</div>':'')+
-    '<p class="v28-criteria">Datos oficiales publicados por categoría en AdminFut. No se inventan goles ni jugadores.</p></section>';
+    '<p class="v28-criteria">Datos oficiales publicados por categoría en Liga Juventino Rosas. No se inventan goles ni jugadores.</p></section>';
 }
 function setMoreActive(){/* Global nav active state is owned by V34. */}
 function render(){

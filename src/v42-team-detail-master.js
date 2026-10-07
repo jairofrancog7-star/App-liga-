@@ -220,7 +220,7 @@ function statsMarkup(t){
   '<div class="v42-wdl"><p><i></i>Ganados <b>'+esc(r[3])+'</b></p><p><i></i>Empates <b>'+esc(r[4])+'</b></p><p><i></i>Perdidos <b>'+esc(r[5])+'</b></p></div>'+
   '<div><b>'+esc(r[6])+'</b><small>Goles marcados</small></div><div><b>'+esc(r[7])+'</b><small>Goles recibidos</small></div>'+
   '<div><b>'+esc(r[8])+'</b><small>Diferencia de goles</small></div><div><b>'+esc(r[9])+'</b><small>Puntos</small></div></div>'+
-  '<p class="empty-mini">No se muestran posesión, pases, disparos u otras métricas que AdminFut no publique.</p></section></main>';
+  '<p class="empty-mini">No se muestran posesión, pases, disparos u otras métricas que Liga Juventino Rosas no publique.</p></section></main>';
 }
 function body(t){if(activeTab==='matches')return matchesMarkup(t);if(activeTab==='standings')return standingsMarkup(t);if(activeTab==='squad')return squadMarkup(t);if(activeTab==='stats')return statsMarkup(t);return summaryMarkup(t)}
 function setTeamTab(tab){

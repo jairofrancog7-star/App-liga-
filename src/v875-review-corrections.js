@@ -39,12 +39,12 @@ function studioEntry(root){
  if(!['more','leagueTools','publicationCenter','ligaControl','jrControl','publications'].includes(route()))return;
  if(root.querySelector('[data-v875-studio]'))return;
  const box=document.createElement('section');box.className='v875-studio-entry';
- box.innerHTML='<span>DISEÑOS DE LA LIGA</span><h2>Estudio de publicaciones</h2><p>Comunicados, jornadas, goleo, posiciones, finales, felicitaciones y equipos.</p><div><button type="button" data-v875-studio>Crear diseño PNG HD</button><button type="button" data-v875-canva>Mis plantillas de Canva</button><button type="button" data-v875-results>Resultados PNG</button><button type="button" data-v875-bulletins>Boletines y avisos</button></div>';
+ box.innerHTML='<span>DISEÑOS NUEVOS PARA TU LIGA</span><h2>Generador de publicaciones</h2><p>Comunicados, jornadas, tablas, eliminatorias, felicitaciones, reclutamiento y escudos. Elige un estilo, completa los datos y genera tu próxima publicación en HD.</p><div><button type="button" data-v875-studio>Crear diseño nuevo</button><button type="button" data-v875-canva>Crear con Canva IA</button><button type="button" data-v875-results>Resultados PNG</button><button type="button" data-v875-bulletins>Boletines y avisos</button></div>';
  const host=root.querySelector('.v726-tools-page,.v105-more-content,.v105-more-page,.v561-league')||root;host.prepend(box);
  box.querySelector('[data-v875-results]').onclick=()=>{localStorage.setItem('v561-publication-kind','results');window.LJR_MAIN_ROUTE?.go('publicationCenter')};
  box.querySelector('[data-v875-bulletins]').onclick=()=>window.LJR_MAIN_ROUTE?.go('publications');
  box.querySelector('[data-v875-studio]').onclick=()=>window.LJR_DESIGN_STUDIO?.open();
- box.querySelector('[data-v875-canva]').onclick=()=>modal('Mis diseños de Canva','<p>Abre y edita las plantillas de tu liga. Después exporta el PNG o PDF.</p><div class="v875-canva-list">'+canva.map(([name,url])=>'<a target="_blank" rel="noopener" href="'+url+'">'+esc(name)+' <span>Editar ↗</span></a>').join('')+'</div>');
+ box.querySelector('[data-v875-canva]').onclick=()=>window.LJR_DESIGN_STUDIO?.open('Comunicado');
 }
 function poll(root){
  const host=root.querySelector('.v105-poll-status')?.parentElement;if(!host||host.querySelector('[data-v875-mailbox]'))return;

@@ -102,12 +102,12 @@ function homeMarkup(){
     '<header class="v562-head"><button type="button" data-v562-back aria-label="Volver">‹</button><div><small>JR CONTROL · ADMINFUT</small><h1>Modo árbitro offline</h1><p>Partidos, borradores y cédulas guardados en este teléfono.</p></div><span class="v562-net '+(navigator.onLine?'on':'off')+'" data-v562-net>'+(navigator.onLine?'EN LÍNEA':'OFFLINE')+'</span></header>'+
     '<div class="v562-kpis"><span><b>'+drafts+'</b><small>Borradores</small></span><span><b>'+pending+'</b><small>En cola</small></span><span><b>'+matches.length+'</b><small>Partidos visibles</small></span></div>'+
     '<article class="v562-info"><div><small>DATOS OFICIALES</small><b>Primera: '+esc(sum.teams)+' equipos · '+esc(sum.played)+' jugados · '+esc(sum.pending)+' pendientes</b><em>'+esc(sum.players)+' jugadores en snapshot · verificado '+esc(sum.verified||'pendiente')+'</em></div><button type="button" data-v562-refresh>Actualizar</button></article>'+
-    '<article class="v562-parity"><h2>Funciones tomadas del flujo del APK AdminFut</h2><div><span>✓ Mis partidos sin señal</span><span>✓ Borradores de cédula</span><span>✓ Cola pendiente</span><span>✓ Titular / cambio / tarjetas / goles</span><span>✓ Default y motivo</span><span>✓ Exportación de pendientes</span></div></article>'+
+    '<article class="v562-parity"><h2>Funciones tomadas del flujo del APK Liga Juventino Rosas</h2><div><span>✓ Mis partidos sin señal</span><span>✓ Borradores de cédula</span><span>✓ Cola pendiente</span><span>✓ Titular / cambio / tarjetas / goles</span><span>✓ Default y motivo</span><span>✓ Exportación de pendientes</span></div></article>'+
     '<div class="v562-tools"><label><span>Categoría</span><select data-v562-filter>'+cats.map(id=>'<option value="'+id+'" '+(s.filter===id?'selected':'')+'>'+(id==='all'?'Todas':esc(CAT_NAMES[id]))+'</option>').join('')+'</select></label><label class="search"><span>Buscar</span><input data-v562-search type="search" value="'+esc(s.search)+'" placeholder="Equipo, campo o fecha"></label></div>'+
     '<div class="v562-actions"><button type="button" data-v562-notify>Activar avisos</button><button type="button" data-v562-export '+(pending?'':'disabled')+'>Exportar cola ('+pending+')</button><button type="button" data-v562-sync '+(pending?'':'disabled')+'>Sincronizar</button></div>'+
     '<div class="v562-cap"><span class="'+(cap.native?'ok':'')+'"><b>APK nativa</b><small>'+(cap.native?'Detectada':'Vista web / Pages')+'</small></span><span class="'+(cap.push?'ok':'')+'"><b>Push nativo</b><small>'+(cap.push?'Disponible':'Pendiente de Firebase/plugin')+'</small></span><span class="'+(cap.biometric?'ok':'')+'"><b>Biometría</b><small>'+(cap.biometric?'Disponible':'Pendiente en tu APK')+'</small></span></div>'+
     '<h2 class="v562-title">Mis partidos / partidos oficiales</h2><div class="v562-match-list">'+(matches.length?matches.map(matchCard).join(''):'<div class="v562-empty">No hay partidos para este filtro.</div>')+'</div>'+
-    '<p class="v562-note">La liga azul usa aquí datos deportivos públicos. La sincronización privada con AdminFut no se ejecuta hasta tener autenticación oficial; los borradores permanecen locales y no exponen CURP, INE ni documentos.</p>'+
+    '<p class="v562-note">La liga azul usa aquí datos deportivos públicos. La sincronización privada con Liga Juventino Rosas no se ejecuta hasta tener autenticación oficial; los borradores permanecen locales y no exponen CURP, INE ni documentos.</p>'+
   '</section>';
 }
 function matchCard(m){
@@ -137,7 +137,7 @@ function editorMarkup(m){
     '<label class="v562-ref"><span>Árbitro</span><input type="text" data-v562-referee value="'+esc(d.referee||'')+'" placeholder="Nombre del árbitro"></label>'+
     teamEditor('home',m.home,hp,d)+teamEditor('away',m.away,ap,d)+
     '<div class="v562-savebar"><button type="button" data-v562-save>💾 Guardar borrador</button><button type="button" data-v562-queue>📥 Guardar en cola</button><button class="primary" type="button" data-v562-final>✅ Guardar y finalizar</button></div>'+
-    '<p class="v562-note">Funciona sin señal después de cargar esta pantalla en el APK. “Finalizar” solo coloca la cédula en la cola local; no modifica AdminFut hasta que exista una conexión autenticada.</p></section>';
+    '<p class="v562-note">Funciona sin señal después de cargar esta pantalla en el APK. “Finalizar” solo coloca la cédula en la cola local; no modifica Liga Juventino Rosas hasta que exista una conexión autenticada.</p></section>';
 }
 function captureDraft(m){
   const root=document.querySelector('[data-v562-editor-root]');if(!root)return draftFor(m);
@@ -190,7 +190,7 @@ async function syncQueue(){
   const s=readState(),pending=s.queue.filter(x=>!x.synced);if(!pending.length)return;
   const api=window.LJR_ADMINFUT_SYNC;
   if(!navigator.onLine){toast('Sigues sin conexión; la cola queda guardada');return}
-  if(!api||typeof api.send!=='function'){toast('Falta vincular la autenticación privada de AdminFut; no se envió nada');return}
+  if(!api||typeof api.send!=='function'){toast('Falta vincular la autenticación privada de Liga Juventino Rosas; no se envió nada');return}
   let ok=0;
   for(const item of pending){try{const res=await api.send(item);if(res?.ok){item.synced=true;item.syncedAt=Date.now();ok++}}catch(_){}}
   writeState(s);toast(ok?'Sincronizadas '+ok+' cédulas':'No se pudo sincronizar la cola');render();

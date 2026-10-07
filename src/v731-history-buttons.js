@@ -7,6 +7,12 @@
   window.__LJR_V731_HISTORY_DETAILS__=true;
 
   const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
+  const expanded=new Set();
+  const cardKey=card=>card.dataset.v710Name?'club:'+card.dataset.v710Name:'record:'+(card.querySelector('h3,h4')?.textContent||'')+':'+(card.querySelector('p')?.textContent||'');
+  function restoreDetails(card,btn){
+    const open=expanded.has(cardKey(card));card.classList.toggle('is-v731-open',open);btn.setAttribute('aria-expanded',String(open));
+    btn.querySelector('span').textContent=open?'Ocultar detalles':'Ver detalles';btn.querySelector('i').textContent=open?'⌃':'›';
+  }
 
   function markRecord(card){
     if(!card || card.dataset.v731DetailReady==='1')return;
@@ -27,6 +33,7 @@
     btn.setAttribute('aria-expanded','false');
     btn.innerHTML='<span>Ver detalles</span><i aria-hidden="true">›</i>';
     (card.querySelector(':scope > div:last-child')||card).appendChild(btn);
+    restoreDetails(card,btn);
   }
 
   function markLegacy(card){
@@ -52,6 +59,7 @@
     btn.setAttribute('aria-expanded','false');
     btn.innerHTML='<span>Ver detalles</span><i aria-hidden="true">›</i>';
     copy.appendChild(btn);
+    restoreDetails(card,btn);
   }
 
   function enhance(){
@@ -85,6 +93,7 @@
     const card=btn.closest('.v731-history-card');
     if(!card)return;
     const open=!card.classList.contains('is-v731-open');
+    if(open)expanded.add(cardKey(card));else expanded.delete(cardKey(card));
     card.classList.toggle('is-v731-open',open);
     btn.setAttribute('aria-expanded',open?'true':'false');
     const label=btn.querySelector('span');

@@ -428,7 +428,7 @@ function patchHomeScorers(force=false){
       (validScorerRows('3').length?'Primera Fuerza · datos oficiales':'Goleadores oficiales publicados · Primera Fuerza aún sin tabla de goleo')+
       '</p>';
   }else{
-    card.innerHTML='<div class="v74-scorer-empty"><b>Sin goleadores publicados</b><span>AdminFut todavía no registra goles oficiales para mostrar.</span></div>';
+    card.innerHTML='<div class="v74-scorer-empty"><b>Sin goleadores publicados</b><span>Liga Juventino Rosas todavía no registra goles oficiales para mostrar.</span></div>';
   }
   section.appendChild(card);
   card.querySelectorAll('[data-v62-team]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();openTeam(b.dataset.v62Team)},{once:true}));

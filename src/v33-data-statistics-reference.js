@@ -179,7 +179,7 @@ function playerDetailedView(){
    players:(Array.isArray(names)?names:[]).map(name=>({team,name}))
  })).filter(g=>g.players.length);
  if(!groups.length){
-   return '<main class="v33-data-content v33-detailed v593-detail-horizontal"><section class="v33-general-section v593-detail-section"><div class="v33-general-title"><h2>Jugadores registrados</h2></div><div class="v33-carousel v593-detail-carousel"><article class="v33-stat-card"><div class="v33-stat-list"><div class="v33-stat-row"><span class="v33-row-copy"><b>No hay jugadores publicados</b><small>AdminFut no expone una plantilla pública para esta categoría.</small></span></div></div></article></div></section></main>';
+   return '<main class="v33-data-content v33-detailed v593-detail-horizontal"><section class="v33-general-section v593-detail-section"><div class="v33-general-title"><h2>Jugadores registrados</h2></div><div class="v33-carousel v593-detail-carousel"><article class="v33-stat-card"><div class="v33-stat-list"><div class="v33-stat-row"><span class="v33-row-copy"><b>No hay jugadores publicados</b><small>Liga Juventino Rosas no expone una plantilla pública para esta categoría.</small></span></div></div></article></div></section></main>';
  }
  /* V593: las plantillas también comparten el mismo carrusel/tamaño de General. */
  return '<main class="v33-data-content v33-detailed v593-detail-horizontal">'+

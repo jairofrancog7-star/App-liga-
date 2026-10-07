@@ -122,3 +122,22 @@ html body .v840-notice-row{border-radius:18px!important;padding:18px 12px!import
 html body .v840-logos{display:flex!important;gap:8px!important;min-width:0!important}
 html body .v840-logos img{width:42px!important;height:42px!important;object-fit:contain!important;border-radius:0!important}
 html body .v840-notice-copy strong{font-size:24px!important;font-weight:800!important;letter-spacing:.02em!important}
+/* New publication editor: reference styles, fresh league data and optional local copy. */
+.cms-design-intro{font-size:14px;line-height:1.5;color:#c6d6f5}
+.cms-design-presets{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 20px}
+.cms-design-presets button{padding:9px 11px!important;min-height:36px!important;background:#18357c!important;border:1px solid #365da5!important;color:#e8f5ff!important;font-size:12px!important}
+.cms-design-form{margin-top:12px}
+.cms-design-form label,.cms-design-two>*{min-width:0;max-width:100%}
+.cms-design-form :is(input,select,textarea){width:100%;min-width:0;max-width:100%;box-sizing:border-box}
+.cms-design-form input[type=color]{height:44px;padding:5px}
+.cms-local-ai{padding:14px;border:1px solid #3b5d9b;border-radius:14px;background:#132451;display:grid;gap:10px}
+.cms-local-ai small{font-size:12px;line-height:1.5;color:#bccbea}
+.cms-local-ai p{font-size:13px;line-height:1.5;margin:0;color:#9cecf4}
+.cms-local-ai [hidden]{display:none!important}
+.cms-poster-preview{background:repeating-conic-gradient(#152143 0 25%,#1b2b53 0 50%) 0/20px 20px;border-radius:14px;overflow:hidden}
+.liga-media-modal:has(.cms-design-form) .liga-media-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}
+.liga-media-modal:has(.cms-design-form) .liga-media-actions>*{min-width:0;text-align:center;overflow-wrap:anywhere}
+.liga-media-modal:has(.cms-design-form) .liga-media-actions a{display:grid;place-items:center;padding:10px;color:#80eef1;border:1px solid #31539f;border-radius:11px;text-decoration:none}
+@media(max-width:350px){.cms-design-two{grid-template-columns:1fr}.liga-media-modal:has(.cms-design-form) .liga-media-actions{grid-template-columns:1fr}}
+/* Keep the global back control; the player portrait needs no second arrow. */
+html body.ljr-v777[data-app-route="playerDetail"] #screen .v379-hero>[data-v379-back]{display:none!important}
