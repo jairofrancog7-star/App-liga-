@@ -88,9 +88,13 @@ function patch(){
   else if(root){
    if(!settingsBtn){settingsBtn=document.createElement('button');settingsBtn.dataset.ljrAccountSettings=''}
    settingsBtn.type='button';
-   settingsBtn.className='v12-profile-row ljr-profile-action-row ljr-profile-settings-row';
+   const settingsClass='v12-profile-row ljr-profile-action-row ljr-profile-settings-row';
+   if(settingsBtn.className!==settingsClass)settingsBtn.className=settingsClass;
    settingsBtn.removeAttribute('style');
-   settingsBtn.innerHTML='<span class="v12-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Zm8.1 5.1v-2.6l-2.2-.8a7 7 0 0 0-.7-1.7l1-2.1-1.8-1.8-2.1 1a7 7 0 0 0-1.7-.7L11.8 2H9.2l-.8 2.2a7 7 0 0 0-1.7.7l-2.1-1-1.8 1.8 1 2.1a7 7 0 0 0-.7 1.7l-2.2.8v2.6l2.2.8a7 7 0 0 0 .7 1.7l-1 2.1 1.8 1.8 2.1-1a7 7 0 0 0 1.7.7l.8 2.2h2.6l.8-2.2a7 7 0 0 0 1.7-.7l2.1 1 1.8-1.8-1-2.1a7 7 0 0 0 .7-1.7l2.2-.8Z" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round"/></svg></span><span class="v12-profile-row-label">Ajustes de la aplicación</span><span class="v12-profile-row-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+   if(settingsBtn.dataset.v901Markup!=='1'){
+     settingsBtn.innerHTML='<span class="v12-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Zm8.1 5.1v-2.6l-2.2-.8a7 7 0 0 0-.7-1.7l1-2.1-1.8-1.8-2.1 1a7 7 0 0 0-1.7-.7L11.8 2H9.2l-.8 2.2a7 7 0 0 0-1.7.7l-2.1-1-1.8 1.8 1 2.1a7 7 0 0 0-.7 1.7l-2.2.8v2.6l2.2.8a7 7 0 0 0 .7 1.7l-1 2.1 1.8 1.8 2.1-1a7 7 0 0 0 1.7.7l.8 2.2h2.6l.8-2.2a7 7 0 0 0 1.7-.7l2.1 1 1.8-1.8-1-2.1a7 7 0 0 0 .7-1.7l2.2-.8Z" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round"/></svg></span><span class="v12-profile-row-label">Ajustes de la aplicación</span><span class="v12-profile-row-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+     settingsBtn.dataset.v901Markup='1';
+   }
    settingsBtn.onclick=settings;
    const menu=root.querySelector('.v12-profile-menu');
    if(menu&&settingsBtn.parentElement!==menu)menu.append(settingsBtn);
