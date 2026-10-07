@@ -1,6 +1,32 @@
 <!doctype html>
 <html lang="es-MX">
 <head>
+  <script>
+    (function(){
+      if(window.__LJR_PREDICTOR_LAST5_HARD_GUARD_V898__)return;
+      window.__LJR_PREDICTOR_LAST5_HARD_GUARD_V898__=true;
+      function route(){
+        return String(location.hash||'').replace(/^#\\/?/,'').split('?')[0]||
+          String(document.body&&document.body.dataset&&document.body.dataset.appRoute||'home');
+      }
+      document.addEventListener('click',function(e){
+        if(route()!=='predictorSix'||!(e.target instanceof Element))return;
+        var hit=e.target.closest('[data-v851-card-form],[data-v851-form]');
+        if(!hit)return;
+        e.preventDefault();
+        e.stopPropagation();
+        if(typeof e.stopImmediatePropagation==='function')e.stopImmediatePropagation();
+        try{localStorage.removeItem('v42-open-compare')}catch(_){}
+        var api=window.LJR_V589_PREDICTOR_API;
+        if(!api)return;
+        if(hit.hasAttribute('data-v851-card-form')){
+          api.openLastFiveByGame(hit.getAttribute('data-v851-card-form')||'');
+        }else{
+          api.openLastFiveTeam(hit.getAttribute('data-v851-form')||'');
+        }
+      },true);
+    })();
+  </script>
   <script src="./src/v776-navigation.js"></script>
   <meta name="app-build" content="v901-profile-load-fix">
   <style data-ljr-entry-guard>
@@ -850,7 +876,7 @@ html body.v587-fantasy-team-open .v576-field-row.por{
   </script>
   <script src="./src/v488-cat3-global-sync.js?v=20261006-v850-v50-j7-global"></script>
   <script type="module" src="./src/main.js?20261007-v889-quiniela-single"></script>
-  <script type="module" src="./src/v589-pronostica-six-drive-exact.js?v=20261007-v897-predictor-last-five-isolated"></script>
+  <script type="module" src="./src/v589-pronostica-six-drive-exact.js?v=20261007-v898-no-team-compare"></script>
   <script type="module" src="./src/runtime-fixes.js?v=20261001-v493-official-all-categories&restore=v765"></script>
   <script type="module" src="./src/v4-super.js?v=20261001-v493-official-all-categories&restore=v765"></script>
   <script type="module" src="./src/v6-safe.js?v=20261007-galacticos-home-logo-v882"></script>
@@ -887,14 +913,14 @@ html body.v587-fantasy-team-open .v576-field-row.por{
 
   
   <script type="module" src="./src/v346-history-deferred-patches.js?v=20261001-v493-official-all-categories&restore=v765"></script>
-<script type="module" src="./src/v42-team-detail-master.js?20261007-v879"></script>
+<script type="module" src="./src/v42-team-detail-master.js?v=20261007-v898-no-team-compare"></script>
   <script type="module" src="./src/v40-competition-master.js?v=20261002-v588-sticky-horizontal-scroll&restore=v765"></script>
   <script type="module" src="./src/v46-account-reference.js?v=20261001-v493-official-all-categories&restore=v765"></script>
   <script type="module" src="./src/v51-bottom-nav-icon-lock.js?v=20261001-v493-official-all-categories&restore=v765"></script>
   <script type="module" src="./src/v52-moreless-hub.js?v=20261001-v493-official-all-categories&restore=v765"></script>
   <script type="module" src="./src/v531-quiz-moreless-drive-reference.js?v=20261005-v769-turbos-reference"></script>
   <script type="module" src="./src/v194-scorers-filters.js?v=20261006-v851"></script>
-  <script type="module" src="./src/v62-official-league-data.js?20261007-v879"></script>
+  <script type="module" src="./src/v62-official-league-data.js?v=20261007-v898-no-team-compare"></script>
   <script type="module" src="./src/v576-player-media-global.js?v=20261002-v579-player-faces-stats-profile&restore=v765"></script>
   <script type="module" src="./src/v562-registry-public-profiles.js?v=20261003-v696-registry-header-isolated&restore=v765"></script>
   <script type="module" src="./src/v576-player-photos-global.js?v=20261004-v770-no-double-team-logo&restore=v765"></script>
@@ -923,7 +949,7 @@ html body.v587-fantasy-team-open .v576-field-row.por{
 <script type="module" src="./src/v105-green-app-bottom.js?20261007-v881-fields"></script>
   <script type="module" src="./src/v164-history-log.js?v=20261006-v874-historylog-runtime-logo-fix"></script>
   <script type="module" src="./src/v120-navigation-history-fix.js?v=20261001-v493-official-all-categories&restore=v765"></script>
-  <script type="module" src="./src/v123-global-entity-compare.js?v=20261007-v897-predictor-last-five-isolated"></script>
+  <script type="module" src="./src/v123-global-entity-compare.js?v=20261007-v898-no-team-compare"></script>
   <script type="module" src="./src/v129-schedule-changes.js?v=20261007-field-selector-dedupe-v1&restore=v765"></script>
   <script type="module" src="./src/v131-cedula-onepage.js?v=20261003-v641-bundled-unified-card&restore=v765"></script>
   <script type="module" src="./src/v639-cedula-match-card.js?v=20261003-v641-bundled-unified-card&restore=v765"></script>
