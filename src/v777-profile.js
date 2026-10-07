@@ -66,17 +66,33 @@ function leagueTeams(){
 }
 function teamLogo(name){
  if(!name)return '';
+ const key=norm(name);
  let v='';
- try{v=window.LJR_SEASON_LOGOS?.get?.(name)||''}catch(_){}
+ // Para la camiseta 3D preferimos el mapa estable de escudos: sus rutas raw
+ // permiten cargarse en canvas con CORS y evitan los placeholders de color.
+ try{
+   const reg=window.LJR_TEAM_LOGOS;
+   const hit=Object.entries(reg?.map||{}).find(([k])=>norm(k)===key)?.[1];
+   if(hit){
+     const raw=String(hit);
+     v=/^(https?:|data:|blob:)/i.test(raw)?raw:String(reg?.base||SHIRT_CATEGORY_ROOT)+raw.replace(/^\.\//,'');
+   }
+ }catch(_){}
+ if(!v)try{v=window.LJR_SEASON_LOGOS?.get?.(name)||''}catch(_){}
  if(!v)try{v=window.LJR_TEAM_LOGOS?.get?.(name)||''}catch(_){}
  if(!v)try{v=window.LJR_OFFICIAL_API?.getLogo?.(name)||''}catch(_){}
  if(!v){
    const db=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{};
-   const hit=Object.entries(db.team_logos||{}).find(([k])=>norm(k)===norm(name));
+   const hit=Object.entries(db.team_logos||{}).find(([k])=>norm(k)===key);
    const raw=hit?.[1];
-   v=typeof raw==='string'?raw:(raw?.app||raw?.local||raw?.logo||raw?.source||'');
+   if(typeof raw==='string'){
+     v=/^(https?:|data:|blob:)/i.test(raw)?raw:SHIRT_CATEGORY_ROOT+raw.replace(/^\.\//,'');
+   }else if(raw){
+     const local=raw.local||raw.app||raw.source||raw.logo||raw.url||'';
+     v=local&&/^(https?:|data:|blob:)/i.test(String(local))?String(local):(local?SHIRT_CATEGORY_ROOT+String(local).replace(/^\.\//,''):'');
+   }
  }
- if(!v&&norm(name)==='galacticosdepozos')v='assets/teams/galacticos-pozos.webp';
+ if(!v&&key==='galacticosdepozos')v=SHIRT_CATEGORY_ROOT+'assets/teams/galacticos-pozos.webp';
  return String(v||'');
 }
 function cleanColor(value){
