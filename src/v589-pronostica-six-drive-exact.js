@@ -53,7 +53,7 @@ function categoryName(g){
  return String(data?.categories?.[g.cid]?.name||data?.categories?.[g.cid]?.title||'Liga Juventino Rosas');
 }
 function formIcon(){
- return '<svg class="v851-form-icon" viewBox="0 0 34 30" aria-hidden="true"><rect x="3" y="4" width="28" height="22" rx="1.5"></rect><path d="M9 5v20M15 5v20M21 5v20M27 5v20"></path></svg>';
+ return '<svg class="v851-form-icon" viewBox="0 0 30 30" aria-hidden="true"><path d="M6 16v9M15 6v19M24 18v7"></path></svg>';
 }
 function formButton(team,side){
  const rows=lastFive(team);
@@ -264,8 +264,8 @@ function menuHtml(){
 }
 function scorePicker(side,value){
   const n=Math.max(0,Math.min(9,Number(value)||0));
-  const upper=n>0?n-1:1;
-  const lower=Math.min(9,n+1);
+  const upper=n>0?n-1:'';
+  const lower=n<9?n+1:'';
   return '<div class="v897-score-picker" data-v897-score-picker="'+esc(side)+'">'+
     '<button type="button" class="v897-score-ghost prev" data-v589-dec="'+esc(side)+'" aria-label="Bajar marcador">'+upper+'</button>'+
     '<button type="button" class="v589-big-score" data-v589-inc="'+esc(side)+'" aria-label="Subir marcador"><b>'+n+'</b><small>Toca para subir</small></button>'+
@@ -281,8 +281,8 @@ function syncScorePicker(side){
   const prev=picker.querySelector('.v897-score-ghost.prev');
   const next=picker.querySelector('.v897-score-ghost.next');
   if(current)current.textContent=String(n);
-  if(prev)prev.textContent=String(n>0?n-1:1);
-  if(next)next.textContent=String(Math.min(9,n+1));
+  if(prev)prev.textContent=n>0?String(n-1):'';
+  if(next)next.textContent=n<9?String(n+1):'';
 }
 function predictionSheet(g){
   const current=read().predictions[g.id]||{home:0,away:0};
