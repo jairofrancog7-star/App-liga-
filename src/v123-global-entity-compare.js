@@ -447,9 +447,9 @@ function exactPlayerFromTarget(target,list){
 
 document.addEventListener('click',e=>{
  const currentRoute=route();
- /* V897 — Pronostica Seis administra internamente el selector de equipo
-    de “Últimos 5 partidos”. Nunca abrir Team Detail/Comparar desde ahí. */
- if(currentRoute==='predictorSix'&&e.target instanceof Element&&e.target.closest('[data-v851-form-overlay],[data-v851-card-form]'))return;
+ /* V898 — Pronostica Seis es dueño completo de sus toques de equipos.
+    Ningún nombre, escudo o pestaña puede abrir Team Detail/Comparar. */
+ if(currentRoute==='predictorSix')return;
  if(currentRoute==='playerCompare'||currentRoute==='club-store')return;
  /* V679 — Permisos administra internamente sus selectores de equipo/jugador.
     El comparador global corre en captura y antes podía secuestrar el toque,
