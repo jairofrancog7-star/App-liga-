@@ -397,7 +397,7 @@ function handleClick(e){
   const cardForm=t.getAttribute('data-v851-card-form');
   if(cardForm!==null){e.preventDefault();e.stopPropagation();openCardForm(cardForm);return}
   const form=t.getAttribute('data-v851-form');
-  if(form!==null){e.preventDefault();e.stopPropagation();openFormSheet(form);return}
+  if(form!==null){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();openFormSheet(form);return}
   const joker=t.getAttribute('data-v851-joker');
   if(joker!==null){e.preventDefault();e.stopPropagation();const s=read();s.jokers=s.jokers||{};const round=journeys[ui.journey-1]?.round;s.jokers[round]=s.jokers[round]===joker?null:joker;write(s);t.classList.toggle('active',s.jokers[round]===joker);return}
   const introDot=t.getAttribute('data-v589-intro-dot');
