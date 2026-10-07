@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v875-mobile-workflows';
+const CACHE='liga-juventino-v882-video-profile';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
