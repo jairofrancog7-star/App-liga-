@@ -73,10 +73,17 @@ function meeting(root){
 }
 function profiles(){
  if(route()!=='video')return;
- const icon='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"></circle><circle cx="12" cy="8.2" r="2.8"></circle><path d="M5.5 19c1.5-3.2 3.7-4.7 6.5-4.7s5 1.5 6.5 4.7"></path></svg>';
+ let a=null;try{a=window.LJR_V569_AUTH?.currentAccount?.()||window.LJR_MAIN_ROUTE?.state?.user||null}catch(_){}
+ const fallback='<img class="v17-tv-profile-icon" src="./profile-reference.svg" alt="">';
+ const photo=a&&(a.avatar||a.photoURL||a.picture);
+ const gamer=a&&/^gamer:[0-8]$/.test(a.avatarPreset||'');
+ let html=fallback;
+ if(photo)html='<img class="ljr-profile-image v17-tv-profile-photo" src="'+esc(photo)+'" alt="Mi perfil">';
+ else if(gamer&&window.LJR_CHROME?.avatar)html=window.LJR_CHROME.avatar(a);
  document.querySelectorAll('.v17-tv-profile').forEach(button=>{
-  if(button.querySelector('img')||!button.querySelector('svg'))button.innerHTML=icon;
-  button.setAttribute('aria-label','Perfil');
+  if(button.innerHTML!==html)button.innerHTML=html;
+  button.classList.toggle('has-account-avatar',!!(photo||gamer));
+  button.setAttribute('aria-label',a?'Mi perfil':'Perfil');
  });
 }
 function liveCard(root){
@@ -89,7 +96,7 @@ function liveCard(root){
 }
 function apply(){timer=0;const root=document.querySelector('#screen');if(!root)return;cleanText(document.body);if(route()==='history')history(root);studioEntry(root);poll(document);meeting(document);profiles();liveCard(root)}
 function schedule(){if(!timer)timer=setTimeout(apply,80)}
-new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true});for(const event of ['hashchange','liga:admin','liga:content','ljr:profile-updated'])addEventListener(event,schedule);
+new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true});for(const event of ['hashchange','liga:admin','liga:content','ljr:profile-updated','storage','pageshow'])addEventListener(event,schedule);
 document.addEventListener('click',e=>{if(e.target.closest('[data-v875-studio],[data-v875-canva]'))return;setTimeout(schedule,100)});
 window.LJR_REVIEW_V875={apply};schedule();
 })();
