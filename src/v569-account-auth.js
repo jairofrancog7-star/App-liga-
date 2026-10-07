@@ -130,16 +130,21 @@ function setAppUser(account){
   st.user={
     id:account.id,uid:account.id,name:account.name,alias:account.alias,
     email:account.email||'',phone:account.phone||'',authProvider:'liga-local',
+    avatar:account.avatar||'',avatarPreset:account.avatarPreset||'',
+    photoURL:account.photoURL||'',picture:account.picture||'',
+    shirtName:account.shirtName||'',shirtNumber:account.shirtNumber||'',
     biometric:biometricEnabled(account),trustedDevice:isRememberedDevice(account),deviceId:currentDeviceId()
   };
   writeJson(STORE_KEY,st);
   if(window.LJR_MAIN_ROUTE?.state)window.LJR_MAIN_ROUTE.state.user=st.user;
   const auth=authState();auth.currentId=account.id;saveAuth(auth);
+  try{dispatchEvent(new CustomEvent('ljr:profile-updated',{detail:{accountId:account.id,signedIn:true}}))}catch(_){}
 }
 function clearAppUser(){
   const st=readAppStore();st.user=null;writeJson(STORE_KEY,st);
   if(window.LJR_MAIN_ROUTE?.state)window.LJR_MAIN_ROUTE.state.user=null;
   const auth=authState();auth.currentId=null;saveAuth(auth);
+  try{dispatchEvent(new CustomEvent('ljr:profile-updated',{detail:{signedIn:false}}))}catch(_){}
 }
 async function pbkdf2(password,salt){
   if(!crypto?.subtle)throw new Error('WebCrypto no disponible');
