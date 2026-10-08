@@ -1,35 +1,31 @@
-/* V958 — Equipos / unión de color real.
-   Antes se desvanecía a "transparente" sobre un fondo AZUL OSCURO.
-   Resultado: la cabecera seguía oscura y aparecía una línea al comenzar
-   el azul iluminado de "Siguiendo".
-   La cabecera AHORA termina en el mismo azul iluminado de esa zona,
-   con un degradado horizontal similar al fondo del listado.
-   No hay superposición debajo del header; letras y escudos intactos. */
-@media (max-width:1023px) {
+/* V959 — Corrección definitiva de la unión sobre SIGUIENDO.
+   Un mismo color (#1938b5) en el borde inferior de la cabecera y
+   el principio del listado. El fundido sucede DENTRO de la cabecera,
+   mucho antes del título. Ninguna capa se extiende sobre las letras. */
+@media (max-width:1023px){
+  html body[data-app-route="teams"] #screen .v27-teams-page,
+  html body.v27-teams-active #screen .v27-teams-page{
+    background:linear-gradient(to bottom,
+      #1938b5 0px,
+      #1938b5 440px,
+      #122a97 760px,
+      #080765 1460px) !important;
+  }
   html body[data-app-route="teams"] #screen .v27-teams-page > .v27-teams-head,
-  html body.v27-teams-active #screen .v27-teams-page > .v27-teams-head {
-    background:
-      /* El oscuro se retira progresivamente EN LA PARTE ALTA. */
-      linear-gradient(to bottom,
-        #06085f 0%,
-        rgba(6,8,95,.96) 12%,
-        rgba(6,8,95,.78) 27%,
-        rgba(6,8,95,.48) 43%,
-        rgba(6,8,95,.18) 59%,
-        rgba(6,8,95,0) 76%,
-        rgba(6,8,95,0) 100%),
-      /* Azul de llegada tomado de la zona de "Siguiendo" de la referencia. */
-      linear-gradient(100deg,
-        #0e2089 0%,
-        #1b37b0 51%,
-        #2141c9 100%) !important;
+  html body.v27-teams-active #screen .v27-teams-page > .v27-teams-head{
+    background:linear-gradient(to bottom,
+      #07065f 0%,
+      #0a1075 20%,
+      #10228e 39%,
+      #1732a9 58%,
+      #1938b5 77%,
+      #1938b5 100%) !important;
     border-bottom:0!important;
     box-shadow:none!important;
-    /* El sticky sigue igual; no extender overlays encima del texto. */
+    background-color:#1938b5!important;
   }
-
   html body[data-app-route="teams"] #screen .v27-teams-page > .v27-teams-head::after,
-  html body.v27-teams-active #screen .v27-teams-page > .v27-teams-head::after {
+  html body.v27-teams-active #screen .v27-teams-page > .v27-teams-head::after{
     content:none!important;
     display:none!important;
   }
