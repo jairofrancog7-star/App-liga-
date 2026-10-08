@@ -6,6 +6,7 @@ if(window.__LJR_V970_QUINIELA_INSIGHTS__)return;
 window.__LJR_V970_QUINIELA_INSIGHTS__=true;
 const DATA='./data/official-live.json?quiniela=20261008-v970-insights';
 const CONFIDENCE_KEY='ljr-blue:quiniela:confianza:v1';
+const FILTER_KEY='ljr-blue:quiniela:game-filter:v1:';
 const LABELS={baja:'Baja',media:'Media',alta:'Alta'};
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
@@ -38,9 +39,9 @@ function savedPrediction(m,data,picks){
  const item=picks[key];
  return item?.fixtureKey===key&&Number.isInteger(item.home)&&Number.isInteger(item.away);
 }
-function formFor(team,cat){
+function formFor(team,cat,match){
  const key=norm(team);
- const games=cat.matches.filter(m=>m.complete&&m.iso&&m.iso<=new Date().toISOString().slice(0,10)&&
+ const games=cat.matches.filter(m=>m.complete&&m.status==='FINAL'&&m.iso&&(!match?.iso||m.iso<match.iso)&&
    (norm(m.home)===key||norm(m.away)===key))
   .sort((a,b)=>b.iso.localeCompare(a.iso)||b.time.localeCompare(a.time)).slice(0,5);
  const history=games.map(m=>{
@@ -53,8 +54,14 @@ function formFor(team,cat){
   draws:history.filter(x=>x.mark==='E').length,losses:history.filter(x=>x.mark==='P').length,
   gf:history.reduce((s,x)=>s+x.gf,0),gc:history.reduce((s,x)=>s+x.gc,0),history};
 }
-function formMarkup(team,cat){
- const s=formFor(team,cat);
+function suggestScore(home,away){
+ if(home.played<2||away.played<2)return null;
+ const cap=n=>Math.max(0,Math.min(6,Math.round(n)));
+ return {home:cap(((home.gf/home.played)+(away.gc/away.played))/2),
+  away:cap(((away.gf/away.played)+(home.gc/home.played))/2)};
+}
+function formMarkup(team,cat,match){
+ const s=formFor(team,cat,match);
  return '<div class="v970-form-team"><b>'+escapeHtml(team)+'</b>'+
   (s.played?'<div class="v970-form-summary"><strong>'+s.wins+'G · '+s.draws+'E · '+s.losses+'P</strong><span>'+s.gf+' GF · '+s.gc+' GC</span></div>'+
    '<div class="v970-form-marks" aria-label="Resultados recientes">'+s.history.map(x=>
@@ -66,18 +73,23 @@ function previewMarkup(m,cat,data){
  const key=matchKey(m,data);
  const confidence=safeRead(CONFIDENCE_KEY)[key]||'';
  const locked=isClosed(m);
+ const proposed=suggestScore(formFor(m.home,cat,m),formFor(m.away,cat,m));
  return '<div class="v970-pre-match" data-v970-match="'+escapeHtml(m.id)+'">'+
    '<button type="button" class="v970-preview-toggle" aria-expanded="false">'+
      '<span class="v970-insight-icon" aria-hidden="true">◷</span>Previa y forma de los equipos<span aria-hidden="true">⌄</span></button>'+
    '<section class="v970-preview-panel" hidden>'+
      '<p class="v970-preview-disclaimer">Últimos 5 resultados completos publicados · Solo referencia estadística, no garantía de resultado.</p>'+
-     '<div class="v970-form-grid">'+formMarkup(m.home,cat)+formMarkup(m.away,cat)+'</div>'+
+     '<div class="v970-form-grid">'+formMarkup(m.home,cat,m)+formMarkup(m.away,cat,m)+'</div>'+
      (!locked?'<div class="v970-shortcuts"><b>Marcador rápido <small>(solo borrador)</small></b>'+
        '<div class="v970-quick-buttons">'+
          '<button type="button" data-v970-score="home">Local 1–0</button>'+
          '<button type="button" data-v970-score="draw">Empate 1–1</button>'+
          '<button type="button" data-v970-score="away">Visita 0–1</button>'+
-       '</div><small>Se guarda únicamente al pulsar “Guardar pronóstico” o “Guardar todos”.</small></div>'
+       '</div>'+
+       '<button type="button" class="v973-suggestion" data-v973-suggest '+(proposed?'':'disabled')+'>'+
+         (proposed?'Sugerir '+proposed.home+' : '+proposed.away:'Sugerencia no disponible')+'</button>'+
+       '<small data-v973-suggest-note>'+(proposed?'Orientación estadística local; no se guarda automáticamente.':
+         'Se requieren dos resultados previos por equipo para una sugerencia.')+'</small></div>'
        :'<p class="v970-closed-note">El partido ya inició o terminó. Pronóstico cerrado.</p>')+
      '<div class="v970-confidence"><b>Mi confianza <small>(no modifica puntos)</small></b>'+
        '<div class="v970-confidence-choices">'+Object.entries(LABELS).map(([value,label])=>
@@ -136,6 +148,53 @@ function addProgress(root,cat,visibleMatches,data){
    (missing.length?'<button type="button" data-v970-jump>Pendientes →</button>':
      saved===count?'<span class="v970-progress-complete">✓ Jornada completa</span>':
      '<span class="v970-progress-complete">Partidos ya cerrados</span>')+'</div>';
+ const filterKey=FILTER_KEY+cat.id;
+ const symbols={
+  all:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg>',
+  pending:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg>',
+  saved:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h13l2 3v13H5zM8 4v6h8V4M9 16l2 2 4-4"/></svg>'
+ };
+ const filterBar=document.createElement('div');
+ filterBar.className='v973-game-filter-row';
+ filterBar.setAttribute('role','group');
+ filterBar.setAttribute('aria-label','Filtrar partidos de esta jornada');
+ filterBar.innerHTML=[['all','Todos'],['pending','Pendientes'],['saved','Guardados']].map(([key,label])=>
+   '<button type="button" data-v973-filter="'+key+'" aria-pressed="false">'+symbols[key]+'<span>'+label+'</span></button>').join('');
+ card.append(filterBar);
+ const index=new Map(visibleMatches.map(m=>[m.id,m]));
+ const cards=$('[data-q-match]',root);
+ const applyFilter=key=>{
+  const mode=['all','pending','saved'].includes(key)?key:'all';
+  const picks=safeRead('v561-quiniela');
+  let count=0;
+  for(const el of cards){
+   const m=index.get(el.dataset.qMatch);
+   if(!m)continue;
+   const isSaved=savedPrediction(m,data,picks);
+   const show=mode==='all'||(mode==='saved'?isSaved:!isClosed(m)&&!isSaved);
+   el.hidden=!show;if(show)count++;
+  }
+  $('.v973-game-filter-row button',card).forEach(btn=>{
+   const active=btn.dataset.v973Filter===mode;
+   btn.classList.toggle('active',active);
+   btn.setAttribute('aria-pressed',String(active));
+  });
+  let empty=$('.v973-filter-empty',root);
+  if(!count&&cards.length){
+   if(!empty){
+    empty=document.createElement('div');empty.className='v973-filter-empty';
+    $('.v618-q-matches',root)?.append(empty);
+   }
+   empty.textContent=mode==='saved'?'Aún no hay pronósticos guardados en esta jornada.':
+    mode==='pending'?'No quedan partidos abiertos sin pronosticar.':'No hay partidos para mostrar.';
+   const reset=document.createElement('button');reset.type='button';reset.textContent='Ver todos';
+   reset.onclick=()=>{localStorage.setItem(filterKey,'all');applyFilter('all')};
+   empty.append(reset);
+  }else empty?.remove();
+ };
+ $('.v973-game-filter-row button',card).forEach(btn=>btn.onclick=()=>{
+  const mode=btn.dataset.v973Filter;localStorage.setItem(filterKey,mode);applyFilter(mode);
+ });
  const round=$('.v618-q-round',root);
  const title=$('.v618-q-section-title',root);
  if(round)round.insertAdjacentElement('afterend',card);
@@ -148,6 +207,7 @@ function addProgress(root,cat,visibleMatches,data){
    preview.scrollIntoView({behavior:'smooth',block:'center'});
  });
   card.querySelector('[data-v970-jump]')?.addEventListener('click',()=>{
+   localStorage.setItem(filterKey,'pending');applyFilter('pending');
    const picksNow=safeRead('v561-quiniela');
    const match=visibleMatches.find(m=>!isClosed(m)&&!savedPrediction(m,data,picksNow));
    if(!match)return;
@@ -156,6 +216,7 @@ function addProgress(root,cat,visibleMatches,data){
    row.scrollIntoView({behavior:'smooth',block:'center'});
    row.querySelector('[data-q-home]')?.focus({preventScroll:true});
  });
+ applyFilter(localStorage.getItem(filterKey)||'all');
 }
 async function mount(){
  if(currentRoute()!=='quiniela')return;
@@ -193,11 +254,34 @@ async function mount(){
          if(!pair)return;
          const homeInput=$('[data-q-home]',card),awayInput=$('[data-q-away]',card);
          if(!homeInput||!awayInput||homeInput.disabled||awayInput.disabled)return;
+         if(homeInput.value!==''||awayInput.value!==''){
+           const note=$('.v970-shortcuts>small',content);
+           if(note)note.textContent='Borra ambos marcadores antes de usar otro atajo.';
+           return;
+         }
          homeInput.value=pair[0];awayInput.value=pair[1];
          homeInput.dispatchEvent(new Event('input',{bubbles:true}));
          awayInput.dispatchEvent(new Event('input',{bubbles:true}));
          $$('[data-v970-score]',content).forEach(b=>b.classList.toggle('selected',b===draft));
          const note=$('.v970-shortcuts>small',content);if(note)note.textContent='Borrador listo; pulsa Guardar pronóstico para confirmarlo.';
+         return;
+       }
+       const suggest=event.target.closest('[data-v973-suggest]');
+       if(suggest&&!isClosed(m)){
+         const forecast=suggestScore(formFor(m.home,cat,m),formFor(m.away,cat,m));
+         if(!forecast)return;
+         const h=$('[data-q-home]',card),a=$('[data-q-away]',card);
+         if(!h||!a||h.disabled||a.disabled)return;
+         const note=$('[data-v973-suggest-note]',content);
+         if(h.value!==''||a.value!==''){
+           if(note)note.textContent='Ya tienes un marcador. Borra ambos campos para usar la sugerencia.';
+           return;
+         }
+         h.value=String(forecast.home);a.value=String(forecast.away);
+         h.dispatchEvent(new Event('input',{bubbles:true}));
+         a.dispatchEvent(new Event('input',{bubbles:true}));
+         if(note)note.textContent='Borrador aplicado. Confirma con Guardar pronóstico.';
+         suggest.textContent='Aplicado · sin guardar';
          return;
        }
        const confidence=event.target.closest('[data-v970-confidence]');
