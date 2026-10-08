@@ -5,8 +5,8 @@
 /* V625 — respeta al renderizador que ya tomó #/players; V66 conserva tienda y APIs auxiliares. */
 if(!window.__LJR_PLAYER_DIRECTORY_OWNER__)window.__LJR_PLAYER_DIRECTORY_OWNER__='v66';
 function ownsPlayers(){return window.__LJR_PLAYER_DIRECTORY_OWNER__==='v66'}
-const LOCAL='./data/official-live.json?v=20261008-v967-segunda-finales';
-const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261008-v967-segunda-finales';
+const LOCAL='./data/official-live.json?v=20261008-v968-global-official-coherence';
+const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261008-v968-global-official-coherence';
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_LABEL={'1':'Veteranos 50+','2':'Veteranos 35+','3':'Primera Fuerza','4':'Segunda Fuerza','5':'Intermedia'};
@@ -58,7 +58,15 @@ function same(a,b){
   const pairs=[['atletico galeana','galeana'],['toros de cuenda','cuenda'],['deportivo maravillas','dep maravillas'],['deportivo zapata','dep zapata'],['deportivo nopalero','dep nopalero'],['deportivo la luz','dep la luz']];
   return pairs.some(p=>(x===norm(p[0])&&y===norm(p[1]))||(x===norm(p[1])&&y===norm(p[0])));
 }
+function sharedData(){
+  try{
+    const shared=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA;
+    return shared?.categories?shared:null;
+  }catch(_){return window.LJR_OFFICIAL_DATA?.categories?window.LJR_OFFICIAL_DATA:null}
+}
 async function load(){
+  const current=sharedData();
+  if(current){db=current;return db}
   if(db)return db;
   if(loading)return loading;
   loading=(async()=>{
@@ -590,7 +598,15 @@ const extraScreen=document.querySelector('#screen');
 if(extraScreen)new MutationObserver(()=>{if(['scorers','teamDetail','cedulas'].includes(route()))extraSchedule()}).observe(extraScreen,{childList:true,subtree:false});
 extraSchedule();
 
-window.V66_OFFICIAL_DIRECTORY={load,teamList,playerList,rosterFor,logoFor,officialScorers,fixtureRows,data:()=>db};
+// El directorio acompaña la fuente global; no mantiene una copia vieja tras refrescar resultados.
+window.addEventListener('ljr:official-data',()=>{
+  const current=sharedData();
+  if(current&&current!==db){
+    db=current;
+    if(['scorers','teamDetail','cedulas'].includes(route()))extraSchedule();
+  }
+});
+window.V66_OFFICIAL_DIRECTORY={load,teamList,playerList,rosterFor,logoFor,officialScorers,fixtureRows,data:()=>sharedData()||db};
 })();
 
 
