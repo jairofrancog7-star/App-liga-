@@ -1,0 +1,185 @@
+/* V923 · Panorámicas de Google Street View, no fotografías deportivas.
+   Google conserva su propio logotipo/atribuciones en las imágenes oficiales.
+   Sin clave habilitada, se muestra enlace real a Google Maps, nunca otra cancha. */
+html body .v921-field-page .v60-field-preview-card.v923-google-preview{
+  display:block!important;
+  position:relative!important;
+  box-sizing:border-box!important;
+  width:100%!important;
+  aspect-ratio:16 / 9!important;
+  height:auto!important;
+  min-height:168px!important;
+  max-height:none!important;
+  margin:0 0 15px!important;
+  border:1px solid rgba(73,161,242,.4)!important;
+  border-radius:17px!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(ellipse at 48% 30%,rgba(29,122,205,.26),transparent 61%),
+    linear-gradient(135deg,#12367b 0%,#0a1552 100%)!important;
+}
+html body .v921-field-page .v923-google-preview .v923-google-photo-empty{
+  position:absolute!important;
+  z-index:1!important;
+  inset:0!important;
+  display:flex!important;
+  box-sizing:border-box!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  padding:24px 20px 25px!important;
+  text-align:center!important;
+  color:#c5dcf6!important;
+  pointer-events:none!important;
+}
+html body .v921-field-page .v923-google-preview .v923-google-photo-empty svg{
+  display:block!important;
+  width:36px!important;
+  height:36px!important;
+  stroke:#54e0ef!important;
+  flex:0 0 36px!important;
+}
+html body .v921-field-page .v923-google-preview .v923-google-photo-empty b{
+  display:block!important;
+  color:#f1f7ff!important;
+  font-size:15px!important;
+  font-weight:850!important;
+  letter-spacing:-.01em!important;
+}
+html body .v921-field-page .v923-google-preview .v923-google-photo-empty span{
+  display:block!important;
+  color:#b1c6ea!important;
+  font-size:11px!important;
+  line-height:1.35!important;
+}
+html body .v921-field-page .v923-google-preview.v923-photo-loaded .v923-google-photo-empty{
+  opacity:0!important;
+}
+html body .v921-field-page .v923-google-preview .v923-google-photo{
+  position:absolute!important;
+  inset:0!important;
+  z-index:2!important;
+  display:block!important;
+  box-sizing:border-box!important;
+  width:100%!important;
+  height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  border:0!important;
+  opacity:1!important;
+  filter:none!important;
+  pointer-events:none!important;
+}
+html body .v921-field-page .v923-google-preview .v923-google-photo[hidden]{
+  display:none!important;
+}
+html body .v921-field-page .v923-google-preview .v923-photo-label{
+  position:absolute!important;
+  z-index:3!important;
+  top:9px!important;
+  left:9px!important;
+  display:none!important;
+  max-width:52%!important;
+  margin:0!important;
+  padding:6px 9px!important;
+  border:1px solid rgba(215,234,255,.2)!important;
+  border-radius:9px!important;
+  background:rgba(4,19,65,.82)!important;
+  color:#f4f9ff!important;
+  font:750 10px/1.2 Inter,Roboto,Arial,sans-serif!important;
+  pointer-events:none!important;
+}
+html body .v921-field-page .v923-google-preview.v923-photo-loaded .v923-photo-label{
+  display:block!important;
+}
+html body .v921-field-page .v923-google-preview .v923-google-open{
+  position:absolute!important;
+  z-index:4!important;
+  top:9px!important;
+  right:9px!important;
+  bottom:auto!important;
+  left:auto!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:5px!important;
+  max-width:55%!important;
+  padding:7px 9px!important;
+  min-height:32px!important;
+  border:1px solid rgba(130,214,255,.55)!important;
+  border-radius:999px!important;
+  background:rgba(3,20,80,.94)!important;
+  color:#f2faff!important;
+  font:800 10px/1.1 Inter,Roboto,Arial,sans-serif!important;
+  text-align:center!important;
+  text-decoration:none!important;
+  box-shadow:0 3px 13px rgba(0,0,0,.21)!important;
+  pointer-events:auto!important;
+}
+html body .v921-field-page .v923-google-preview .v923-google-open svg{
+  display:block!important;
+  width:15px!important;
+  height:15px!important;
+  stroke:#42e2ec!important;
+  flex:0 0 15px!important;
+}
+html body .v921-field-page .v923-google-preview .v923-google-open:focus-visible{
+  outline:2px solid #9ceaff!important;
+  outline-offset:3px!important;
+}
+html body .v921-field-page .v923-google-preview.v923-no-photo .v923-google-photo-empty,
+html body .v921-field-page .v923-google-preview.v923-photo-error .v923-google-photo-empty{
+  padding-top:40px!important;
+}
+body[data-app-route="home"] .v65-field-map.v923-google-preview{
+  display:block!important;
+  position:relative!important;
+  width:100%!important;
+  height:100%!important;
+  overflow:hidden!important;
+  background:linear-gradient(135deg,#123c7d,#0c1557)!important;
+}
+body[data-app-route="home"] .v65-field-map.v923-google-preview .v923-google-photo-empty{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:3px!important;
+  width:100%!important;
+  height:100%!important;
+  color:#d0e6f7!important;
+}
+body[data-app-route="home"] .v65-field-map.v923-google-preview .v923-google-photo-empty svg{
+  height:24px!important;
+  width:24px!important;
+  stroke:#53ddeb!important;
+}
+body[data-app-route="home"] .v65-field-map.v923-google-preview .v923-google-photo-empty b{
+  font-size:9px!important;
+  color:#fff!important;
+}
+body[data-app-route="home"] .v65-field-map.v923-google-preview .v923-google-photo-empty span{
+  display:none!important;
+}
+body[data-app-route="home"] .v65-field-map.v923-google-preview .v923-google-photo{
+  position:absolute!important;
+  inset:0!important;
+  z-index:1!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  background:#0c1f59!important;
+  filter:none!important;
+  pointer-events:none!important;
+}
+body[data-app-route="home"] .v65-field-map.v923-google-preview .v923-google-photo[hidden]{display:none!important}
+body[data-app-route="home"] .v65-field-map.v923-google-preview .v923-photo-label{display:none!important}
+@media(max-width:370px){
+  html body .v921-field-page .v923-google-preview .v923-google-open{font-size:9px!important;max-width:52%!important}
+  html body .v921-field-page .v923-google-preview .v923-photo-label{font-size:9px!important;max-width:49%!important}
+}
