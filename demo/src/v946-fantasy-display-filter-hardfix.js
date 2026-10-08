@@ -121,15 +121,15 @@ function forceFantasyLayout(){
  if(!active())return;
  document.querySelectorAll('.v587-filter-pill').forEach(btn=>{
   imp(btn,{
-   left:'20px',bottom:'98px',width:'96px','min-width':'96px','max-width':'96px',
-   height:'48px','min-height':'48px','max-height':'48px',padding:'0 11px',
-   'border-radius':'26px',display:'grid','grid-template-columns':'24px 1px 28px',
-   'column-gap':'9px','align-items':'center','justify-content':'center',
-   background:'#0b667a','box-shadow':'0 7px 16px rgba(0,36,70,.15)',zIndex:'25'
+   left:'7px',bottom:'98px',width:'80px','min-width':'80px','max-width':'80px',
+   height:'42px','min-height':'42px','max-height':'42px',padding:'0 9px',
+   'border-radius':'23px',display:'grid','grid-template-columns':'20px 1px 23px',
+   'column-gap':'7px','align-items':'center','justify-content':'center',
+   background:'#0b667a','box-shadow':'0 6px 14px rgba(0,36,70,.13)',zIndex:'25'
   });
-  imp(btn.querySelector('.v590-filter-icon'),{width:'22px',height:'22px',transform:'none'});
-  const div=btn.querySelector('i');imp(div,{width:'1px',height:'27px',background:'rgba(255,255,255,.34)'});
-  const badge=btn.querySelector('b');imp(badge,{width:'28px','min-width':'28px',height:'28px',display:'grid','place-items':'center','font-size':'17px',margin:'0'});
+  imp(btn.querySelector('.v590-filter-icon'),{width:'18px',height:'18px',transform:'none'});
+  const div=btn.querySelector('i');imp(div,{width:'1px',height:'23px',background:'rgba(255,255,255,.30)'});
+  const badge=btn.querySelector('b');imp(badge,{width:'23px','min-width':'23px',height:'23px',display:'grid','place-items':'center','font-size':'14px',margin:'0'});
  });
  const field=document.querySelector('.v576-field');
  imp(field,{'padding-bottom':'132px'});
@@ -181,7 +181,7 @@ function forceFantasyLayout(){
 
  // Put the floating metric control beside the goalkeeper row, like the reference.
  if(por){
-  const pillTop=Math.max(0,por.offsetTop+42);
+  const pillTop=Math.max(0,por.offsetTop+48);
   document.querySelectorAll('.v587-filter-pill').forEach(btn=>{
    imp(btn,{top:pillTop+'px',bottom:'auto'});
   });
