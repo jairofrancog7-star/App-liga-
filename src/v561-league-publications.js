@@ -229,11 +229,11 @@ async function mountQuiniela(root){
  }
  root.innerHTML='<section class="v561-league v618-quiniela v619-quiniela-modern">'+
    '<header class="v618-q-head v619-q-hero">'+
-     '<div class="v619-q-hero-top"><span class="v619-q-kicker"><i>✓</i> QUINIELA LJR</span><span class="v619-q-live">JORNADA ACTIVA</span></div>'+
+     '<div class="v619-q-hero-top"><span class="v619-q-kicker"><i>✓</i> QUINIELA LJR</span><span class="v619-q-live">'+(view==='history'?'HISTÓRICO':view==='ranking'?'MI RANKING':view==='tables'?'DATOS OFICIALES':'JORNADA ACTIVA')+'</span></div>'+
      '<div class="v619-q-title-row"><span class="v619-q-mark v953-q-league-mark"><img src="'+LEAGUE_LOGO+'" alt="Liga Juventino Rosas"></span><div><h2>Quiniela</h2><p>Pronostica · suma puntos · sube en el ranking</p></div></div>'+
      '<div class="v619-q-mini-stats"><span><b>'+savedCount+'</b><small>Guardados</small></span><span><b>'+total+'</b><small>Puntos</small></span><span><b>'+exact+'</b><small>Exactos</small></span></div>'+
    '</header>'+
-   nav+rules+
+   nav+(view==='play'?rules:'')+
    '<div class="v618-q-cats">'+cats+'</div>'+
    '<select data-q-cat hidden>'+optionsHtml()+'</select>'+
    body+
