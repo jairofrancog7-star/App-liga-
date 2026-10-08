@@ -126,7 +126,7 @@ function initials(name){
   return String(name||'JR').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'JR';
 }
 
-async function makePngBlob(){
+async function makePngCanvas(){
   const text=document.querySelector('[data-v60-share-text]')?.textContent?.trim()||
     'Liga Municipal de Fútbol Juventino Rosas';
   const teams=teamsInText(text);
@@ -207,6 +207,11 @@ async function makePngBlob(){
   x.fillStyle='rgba(255,255,255,.68)';x.font='600 18px Arial';
   x.fillText('Información generada desde la app oficial de la Liga',90,1282);
 
+  return canvas;
+}
+
+async function makePngBlob(){
+  const canvas=await makePngCanvas();
   return new Promise(resolve=>canvas.toBlob(resolve,'image/png',1));
 }
 
@@ -269,4 +274,103 @@ async function onClick(e){
 }
 
 document.addEventListener('click',onClick,true);
+
+/* V951 — La vista previa usa EL MISMO canvas del PNG real con escudos.
+   No duplica lógica, no inventa partidos; se actualiza al cambiar tipo o texto. */
+let previewTimer=0,previewBusy=false,previewText='',previewRequested=false,previewScreen=null,previewObserver=null;
+const selectedText=()=>document.querySelector('body[data-app-route="publications"] [data-v60-share-text]')?.textContent?.trim()||
+  'Liga Municipal de Fútbol Juventino Rosas';
+
+function previewBox(){
+  if(!/\/publications(?:\?|$)/.test(location.hash.replace(/^#/,'')))return null;
+  const section=document.querySelector('body[data-app-route="publications"] #v100-publication-extra');
+  if(!section)return null;
+  let box=section.querySelector('[data-v328-preview-box]');
+  if(box)return box;
+  box=document.createElement('div');
+  box.className='v328-live-preview';
+  box.dataset.v328PreviewBox='';
+  box.innerHTML=
+    '<button type="button" class="v328-preview-open" aria-label="Ampliar vista previa PNG">'+
+    '<span class="v328-preview-thumb"><img alt="Vista previa de la imagen PNG de jornada" data-v328-preview-img>'+
+    '<span class="v328-preview-placeholder" aria-hidden="true"><small>LIGA JUVENTINO</small><b>JORNADA</b></span></span>'+
+    '<span class="v328-preview-copy"><b>Vista previa PNG</b><small data-v328-preview-status>Preparando imagen oficial…</small><em>Ampliar imagen ↗</em></span></button>';
+  const actions=section.querySelector('.v100-actions');
+  if(actions)actions.before(box);
+  else section.append(box);
+  box.querySelector('.v328-preview-open').onclick=()=>{
+    const src=box.querySelector('[data-v328-preview-img]')?.src;
+    if(!src)return;
+    const dialog=document.createElement('dialog');
+    dialog.className='v328-preview-modal';
+    dialog.setAttribute('aria-label','Vista previa PNG de jornada');
+    const close=document.createElement('button');
+    close.type='button';close.textContent='✕ Cerrar vista previa';close.className='v328-preview-close';
+    close.onclick=()=>dialog.close();
+    const img=document.createElement('img');
+    img.src=src;img.alt='Vista previa completa del boletín de jornada PNG';
+    dialog.append(close,img);
+    dialog.addEventListener('close',()=>dialog.remove(),{once:true});
+    dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});
+    document.body.append(dialog);
+    if(typeof dialog.showModal==='function')dialog.showModal();else dialog.setAttribute('open','');
+  };
+  return box;
+}
+async function refreshPreview(){
+  const box=previewBox();
+  if(!box)return;
+  const value=selectedText(),img=box.querySelector('[data-v328-preview-img]');
+  if(value===previewText && (previewBusy || img?.getAttribute('src')))return;
+  if(previewBusy){previewRequested=true;return;}
+  previewBusy=true;previewText=value;
+  const status=box.querySelector('[data-v328-preview-status]');
+  status.textContent='Generando vista previa…';
+  try{
+    const canvas=await makePngCanvas();
+    const current=document.querySelector('body[data-app-route="publications"] #v100-publication-extra [data-v328-preview-box]');
+    if(current===box&&selectedText()===value){
+      img.src=canvas.toDataURL('image/png');
+      box.classList.add('is-ready');
+      status.textContent='Así se verá tu PNG HD';
+    }
+  }catch(e){
+    console.error('[V951 bulletin preview]',e);
+    if(box.isConnected){
+      box.classList.remove('is-ready');
+      status.textContent='Vista previa no disponible. Prueba descargar PNG.';
+    }
+  }finally{
+    previewBusy=false;
+    if(previewRequested || selectedText()!==value){
+      previewRequested=false;queuePreview();
+    }
+  }
+}
+function queuePreview(){
+  if(previewTimer)clearTimeout(previewTimer);
+  previewTimer=setTimeout(()=>{previewTimer=0;refreshPreview()},180);
+}
+function watchPreview(){
+  const screen=document.querySelector('#screen');
+  if(!screen)return;
+  if(previewScreen!==screen){
+    previewObserver?.disconnect();
+    previewScreen=screen;
+    previewObserver=new MutationObserver(()=>{
+      if(document.body?.dataset?.appRoute==='publications')queuePreview();
+    });
+    previewObserver.observe(screen,{childList:true,subtree:true,characterData:true});
+  }
+  queuePreview();
+}
+document.addEventListener('click',e=>{
+  if(e.target?.closest?.('[data-v95-bulletin-kind]'))queuePreview();
+},true);
+window.addEventListener('hashchange',()=>setTimeout(watchPreview,100));
+window.addEventListener('pageshow',watchPreview);
+window.addEventListener('ljr:official-data',queuePreview);
+document.addEventListener('DOMContentLoaded',watchPreview,{once:true});
+if(document.readyState!=='loading')watchPreview();
+
 })();
