@@ -1,4 +1,4 @@
-/* V956 — Equipos: unión suave SIN capa encima de "Siguiendo".
+/* V957 — Equipos: degradado subido, sin cubrir "Siguiendo".
    El degradado se dibuja DENTRO de la cabecera, subiendo el inicio del
    fundido; su extremo transparente muestra exactamente el mismo fondo
    de la página. No se pinta nada sobre el título ni sobre los equipos. */
@@ -7,11 +7,12 @@
   html body.v27-teams-active #screen .v27-teams-page > .v27-teams-head {
     background:linear-gradient(180deg,
       rgba(7,6,95,1) 0%,
-      rgba(7,6,95,1) 38%,
-      rgba(7,6,95,.94) 49%,
-      rgba(7,6,95,.80) 61%,
-      rgba(7,6,95,.57) 75%,
-      rgba(7,6,95,.27) 88%,
+      rgba(7,6,95,1) 14%,
+      rgba(7,6,95,.94) 26%,
+      rgba(7,6,95,.80) 38%,
+      rgba(7,6,95,.57) 50%,
+      rgba(7,6,95,.27) 63%,
+      rgba(7,6,95,0) 76%,
       rgba(7,6,95,0) 100%) !important;
     border-bottom:0!important;
     box-shadow:none!important;
