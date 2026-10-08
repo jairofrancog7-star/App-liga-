@@ -1,0 +1,25 @@
+/* V933 — La iluminación de Historias llega a ambos bordes de la pantalla.
+   Solo Inicio móvil/APK. Mantiene la posición, tamaño y scroll de los círculos. */
+@media (max-width:1023px){
+  html body[data-app-route="home"] #screen > .stories{
+    box-sizing:border-box!important;
+    width:calc(100% + 34px)!important;
+    max-width:none!important;
+    margin-left:-17px!important;
+    margin-right:-17px!important;
+    /* Los 17px añadidos compensan el desplazamiento negativo: el contenido no se mueve. */
+    padding-left:31px!important;
+    padding-right:31px!important;
+    background-color:#000144!important;
+    background-image:linear-gradient(
+      180deg,
+      rgba(16,28,145,.28) 0%,
+      rgba(9,19,128,.14) 24px,
+      rgba(0,1,68,0) 62px
+    )!important;
+    background-repeat:no-repeat!important;
+    background-position:center top!important;
+    background-size:100% 100%!important;
+  }
+}
+/* PC: se respeta el diseño de escritorio sin desplazamientos ni cambios. */
