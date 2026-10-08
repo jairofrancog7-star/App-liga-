@@ -168,23 +168,43 @@ function forceFantasyLayout(){
   imp(remove,{width:'16px',height:'16px','min-width':'16px','min-height':'16px','font-size':'12px','line-height':'16px',right:'-5px',top:'0'});
  });
 
- // Keep rows separated so 5-player bands do not visually collide.
+ // Give every card its real vertical room. The old 68px POR row was shorter
+ // than shirt + name + metric and caused the goalkeeper cards to overlap.
  document.querySelectorAll('.v576-field-row.del,.v576-field-row.cen,.v576-field-row.def').forEach(row=>{
-  imp(row,{height:'84px','align-items':'start'});
+  imp(row,{height:'94px','align-items':'start',transform:'none'});
  });
  const por=document.querySelector('.v576-field-row.por');
- imp(por,{height:'68px','align-items':'start',transform:'translateY(-42px)'});
+ imp(por,{
+  height:'102px','min-height':'102px','align-items':'start',
+  transform:'translateY(6px)',padding:'0 24%'
+ });
 
- // Smaller action leaves a clear gap above goalkeeper cards.
+ // Put the floating metric control beside the goalkeeper row, like the reference.
+ if(por){
+  const pillTop=Math.max(0,por.offsetTop+42);
+  document.querySelectorAll('.v587-filter-pill').forEach(btn=>{
+   imp(btn,{top:pillTop+'px',bottom:'auto'});
+  });
+ }
+
+ // Continue goes back into normal flow after the goalkeeper row.
+ // This removes the large empty area and guarantees it cannot cover a keeper.
  const actions=document.querySelector('.v576-builder-actions');
  imp(actions,{
-  position:'absolute',left:'34px',right:'34px',bottom:'8px',padding:'0',margin:'0',
-  background:'transparent',zIndex:'18'
+  position:'relative',left:'auto',right:'auto',top:'auto',bottom:'auto',
+  width:'calc(100% - 52px)',padding:'0',margin:'18px 26px 10px',
+  background:'transparent',zIndex:'18','box-sizing':'border-box'
  });
  const cta=actions?.querySelector('button');
  imp(cta,{
-  height:'44px','min-height':'44px','max-height':'44px',
+  width:'100%',height:'44px','min-height':'44px','max-height':'44px',
   'border-radius':'15px','font-size':'14px','box-shadow':'none'
+ });
+
+ // The field should wrap its real contents instead of reserving a large blank tail.
+ imp(field,{
+  height:'auto','min-height':'0','max-height':'none',
+  'padding-bottom':'14px',overflow:'hidden'
  });
 }
 function decorate(){
