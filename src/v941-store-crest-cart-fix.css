@@ -1,0 +1,122 @@
+/* V941 — Tienda: escudos completos, sin disco blanco, y contador circular.
+   Se limita al encabezado de club-store; no cambia los logos fuente. */
+html body[data-app-route="club-store"] #screen .v431-store-head .v431-head-crest{
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex:0 0 43px!important;
+  width:43px!important;
+  height:46px!important;
+  min-width:43px!important;
+  min-height:46px!important;
+  max-height:46px!important;
+  padding:0!important;
+  margin:0!important;
+  background:none!important;
+  background-color:transparent!important;
+  background-image:none!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  outline:0!important;
+  overflow:visible!important;
+  isolation:isolate;
+}
+html body[data-app-route="club-store"] #screen .v431-store-head .v431-head-crest::before,
+html body[data-app-route="club-store"] #screen .v431-store-head .v431-head-crest::after{
+  content:none!important;
+  display:none!important;
+}
+html body[data-app-route="club-store"] #screen .v431-store-head .v431-head-crest>img{
+  display:block!important;
+  box-sizing:border-box!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  background:none!important;
+  background-color:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+  clip-path:none!important;
+  transform:none!important;
+  mix-blend-mode:normal!important;
+  opacity:1!important;
+}
+html body[data-app-route="club-store"] #screen .v431-store-head .v431-head-crest>b{
+  display:grid!important;
+  place-items:center!important;
+  color:#fff!important;
+  font-size:13px!important;
+}
+/* El icono del carrito se queda blanco, separado del contador 0. */
+html body[data-app-route="club-store"] #screen .v431-store-head .v431-cart-button{
+  position:relative!important;
+  overflow:visible!important;
+  flex-shrink:0!important;
+}
+html body[data-app-route="club-store"] #screen .v431-store-head .v431-cart-button>svg{
+  display:block!important;
+  width:23px!important;
+  height:23px!important;
+  fill:none!important;
+  stroke:#fff!important;
+  stroke-width:1.85!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+  transform:none!important;
+  overflow:visible!important;
+}
+html body[data-app-route="club-store"] #screen .v431-store-head .v431-cart-button>[data-v431-cart-count]{
+  box-sizing:border-box!important;
+  position:absolute!important;
+  z-index:3!important;
+  top:-5px!important;
+  right:-5px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:18px!important;
+  min-width:18px!important;
+  max-width:18px!important;
+  height:18px!important;
+  min-height:18px!important;
+  max-height:18px!important;
+  padding:0!important;
+  margin:0!important;
+  border:1px solid rgba(10,27,91,.35)!important;
+  border-radius:50%!important;
+  background:#fff!important;
+  background-image:none!important;
+  color:#0a145e!important;
+  text-align:center!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
+  font-size:10px!important;
+  font-style:normal!important;
+  font-weight:900!important;
+  line-height:1!important;
+  font-variant-numeric:tabular-nums!important;
+  letter-spacing:0!important;
+  white-space:nowrap!important;
+  box-shadow:0 1px 3px rgba(0,5,30,.24)!important;
+  transform:none!important;
+  clip-path:none!important;
+}
+@media(max-width:370px){
+ html body[data-app-route="club-store"] #screen .v431-store-head .v431-head-crest{
+   flex-basis:39px!important;
+   width:39px!important;
+   min-width:39px!important;
+   height:43px!important;
+   min-height:43px!important;
+   max-height:43px!important;
+ }
+}
