@@ -28,6 +28,35 @@ async function getDb(){
  await dataPromise;
  return db;
 }
+// Quiniela autónoma: utiliza únicamente el archivo del repositorio azul y la caché local.
+const Q_LOCAL_CACHE='ljr-blue:quiniela:fixture-snapshot:v1';
+let qDb=null,qPromise=null,qDataMode='repo';
+async function getQuinielaDb(force=false){
+  if(qDb&&!force){db=qDb;return qDb}
+  if(!qPromise||force){
+    qPromise=fetch('./data/official-live.json?quiniela=20261008-v969-standalone',{cache:'no-store'})
+      .then(async response=>{
+        if(!response.ok)throw Error('Archivo de jornadas no disponible');
+        const snapshot=await response.json();
+        if(!snapshot?.categories?.['2'])throw Error('Archivo local de liga inválido');
+        qDb=snapshot;qDataMode='repo';
+        try{localStorage.setItem(Q_LOCAL_CACHE,JSON.stringify(snapshot))}catch(_){}
+        return snapshot;
+      }).catch(error=>{
+        let cached=null;
+        try{cached=JSON.parse(localStorage.getItem(Q_LOCAL_CACHE)||'null')}catch(_){}
+        if(!cached?.categories)throw Error('No se puede cargar la quiniela propia: '+error.message);
+        qDb=cached;qDataMode='cache';return cached;
+      });
+  }
+  db=await qPromise;return db;
+}
+function quinielaLocalLogo(name){
+  const entries=Object.entries(qDb?.team_logos||{});
+  const value=entries.find(([key])=>norm(key)===norm(name))?.[1];
+  const path=typeof value==='string'?value:(value?.local||value?.app||'');
+  return typeof path==='string'&&/^\.\/assets\/[a-zA-Z0-9_./-]+$/.test(path)?path:'';
+}
 function category(id){return normalizeCompetition(db).find(c=>c.id===String(id))}
 const day=id=>['1','2'].includes(String(id))?'Veteranos · sábados por la tarde':'Dominical · categoría libre';
 function logo(team){const value=window.LJR_TEAM_LOGOS?.get?.(team)||window.LJR_OFFICIAL_API?.getLogo?.(team)||Object.entries(db?.team_logos||{}).find(([k])=>norm(k)===norm(team))?.[1];return typeof value==='string'?value:value?.local||value?.source||''}
@@ -39,7 +68,7 @@ function blob(canvas){return new Promise((resolve,reject)=>canvas.toBlob(b=>b?re
 function notice(msg){let el=$('[data-v561-status]');if(!el){el=document.createElement('div');el.className='v561-toast';document.body.append(el);setTimeout(()=>el.remove(),3500)}el.textContent=msg}
 export async function brandPng(source,id){if(source._ligaBranded)return source;await getDb();const src=URL.createObjectURL(source);try{const im=await image(src);if(!im)return source;const cv=document.createElement('canvas');cv.width=im.width;cv.height=im.height+150;const x=cv.getContext('2d');x.fillStyle='#06166c';x.fillRect(0,0,cv.width,150);const icons=await Promise.all([image('./assets/league-credential-hd.png'),image('./assets/'+categoryLogos[id])]);drawImage(x,icons[0],25,20,100);drawImage(x,icons[1],cv.width-125,20,100);x.fillStyle='#fff';textLines(x,wrap(x,labels[id]||'Liga Juventino',cv.width-300,'800 30px Arial'),155,53);x.font='600 22px Arial';x.fillStyle='#29e4ed';x.fillText(day(id),155,113);x.drawImage(im,0,150);const result=await blob(cv);result._ligaBranded=true;return result}finally{URL.revokeObjectURL(src)}}
 export async function reportCanvas(id,type,options={}){
- await getDb();const c=category(id);if(!c)throw Error('Categoría no publicada');let rows=[],heads=[],widths=[];const authoring=['notice','transfer','cedula','quiniela'].includes(type);
+ if(type==='quiniela')await getQuinielaDb();else await getDb();const c=category(id);if(!c)throw Error('Categoría no publicada');let rows=[],heads=[],widths=[];const authoring=['notice','transfer','cedula','quiniela'].includes(type);
  if(type==='standings'){heads=['#','Equipo','PJ','PG','PE','PP','GF','GC','DG','PTS'];widths=[45,450,65,65,65,65,65,65,65,70];rows=c.standings.map(t=>({team:t.name,cells:[t.pos,t.name,t.pj,t.g,t.e,t.p,t.gf,t.gc,t.dg,t.pts]}))}
  if(type==='scorers'){heads=['#','Jugador / Equipo','Goles'];widths=[50,890,100];rows=c.scorers.map(t=>({team:t.team,cells:[t.pos,t.player+'\n'+t.team,t.goals]}))}
  if(type==='calendar'||type==='results'){heads=['Partido','Fecha / Sede',type==='results'?'Marcador':'Hora'];widths=[500,400,150];rows=c.matches.filter(m=>(!options.round||m.round===String(options.round))&&(type==='calendar'?!m.complete:m.complete)).map(m=>({team:m.home,team2:m.away,cells:[m.home+'\nvs '+m.away,m.date+'\n'+(m.venue||'Sede por confirmar'),type==='results'?m.homeScore+' – '+m.awayScore:m.time||'Por confirmar']}))}
@@ -54,7 +83,7 @@ export async function reportCanvas(id,type,options={}){
  const cv=document.createElement('canvas');cv.width=1200;cv.height=340+prepared.reduce((s,r)=>s+r.height,0)+95;const x=cv.getContext('2d'),bg=x.createLinearGradient(0,0,1200,cv.height);bg.addColorStop(0,'#091b82');bg.addColorStop(1,'#030638');x.fillStyle=bg;x.fillRect(0,0,1200,cv.height);
  const icons=await Promise.all([image('./assets/league-credential-hd.png'),image('./assets/'+categoryLogos[id])]);drawImage(x,icons[0],35,25,125);drawImage(x,icons[1],1040,25,125);x.fillStyle='#29e4ed';x.font='800 21px Arial';x.fillText('LIGA MUNICIPAL DE FÚTBOL JUVENTINO ROSAS',185,53);x.fillStyle='#fff';textLines(x,wrap(x,titles[type],790,'900 38px Arial'),185,104,45);x.font='700 26px Arial';x.fillText(c.name+(options.round?' · Jornada '+options.round:''),185,188);x.fillStyle='#32deec';x.font='600 22px Arial';x.fillText(day(id),185,225);
  x.fillStyle='#142778';x.fillRect(30,260,1140,56);x.font='800 21px Arial';x.fillStyle='#c1d8ef';let left=45;heads.forEach((h,i)=>{x.fillText(h,left,296);left+=widths[i]});let y=335;
- const logos=await Promise.all(prepared.map(async r=>[await image(logo(r.team)),await image(logo(r.team2))]));
+ const ownLogo=type==='quiniela'?quinielaLocalLogo:logo;const logos=await Promise.all(prepared.map(async r=>[await image(ownLogo(r.team)),await image(ownLogo(r.team2))]));
  prepared.forEach((r,i)=>{x.fillStyle=i%2?'#0c165d':'#101d6e';x.fillRect(30,y,1140,r.height-5);x.fillStyle='#fff';x.font='600 26px Arial';let left=45;r.lines.forEach((lines,j)=>{let offset=0;if(r.team&&j===logoColumn){drawImage(x,logos[i][0],left+2,y+12,65);if(r.team2)drawImage(x,logos[i][1],left+69,y+12,65);offset=r.team2?142:82}textLines(x,lines,left+offset,y+35,34);left+=widths[j]});y+=r.height});x.fillStyle='#acbfdc';x.font='500 19px Arial';x.fillText((authoring?'Borrador generado en la app':'Datos oficiales disponibles · '+String(db.captured_at_utc||'').slice(0,10))+' · '+new Date().toLocaleDateString('es-MX'),40,cv.height-45);return cv;
 }
 export function predictionPoints(prediction,match){if(!match.complete||!prediction||!Number.isInteger(prediction.home)||!Number.isInteger(prediction.away))return null;if(prediction.home===match.homeScore&&prediction.away===match.awayScore)return 2;return Math.sign(prediction.home-prediction.away)===Math.sign(match.homeScore-match.awayScore)?1:0}
@@ -74,7 +103,8 @@ async function mountPublications(root){await getDb();const requested=localStorag
  $('[data-pub-download]',root).onclick=()=>file&&downloadFile(file);$('[data-pub-share]',root).onclick=()=>file&&shareFile(file,titles[kind]+' · '+labels[catId]+' · Presidente: 4121715599').catch(e=>{if(e.name!=='AbortError')notice(e.message)});
 }
 async function mountQuiniela(root){
- await getDb();
+ await getQuinielaDb();
+ const logo=quinielaLocalLogo;
  const c=category(catId),p=readPredictions();
  if(!c)return;
  const view=localStorage.getItem('v561-quiniela-view')||'play';
@@ -164,7 +194,7 @@ async function mountQuiniela(root){
    const scorers=c.scorers.map(t=>'<div class="v960-q-scorer"><span>'+esc(t.pos??'—')+'</span><span><b>'+esc(t.player)+'</b><small>'+esc(t.team)+'</small></span><strong>'+esc(t.goals)+'</strong></div>').join('');
    const recent=c.matches.filter(m=>m.complete).sort((a,b)=>(b.iso||'').localeCompare(a.iso||'')).slice(0,12).map(m=>'<div class="v960-q-result"><span>J'+esc(m.round)+'</span><b>'+esc(m.home)+'</b><strong>'+esc(m.homeScore)+'–'+esc(m.awayScore)+'</strong><b>'+esc(m.away)+'</b></div>').join('');
    body='<section class="v960-q-tables">'+
-     '<p class="v960-q-source">Datos publicados por AdminFut · corte: '+esc(stamp||'no disponible')+' UTC. No son el ranking de participantes de la Quiniela.</p>'+
+     '<p class="v960-q-source">Archivo de resultados de la app azul · corte: '+esc(stamp||'no disponible')+' UTC. No son el ranking de participantes de la Quiniela.</p>'+
      '<div class="v960-q-links v968-q-tabs" role="group" aria-label="Ver tablas dentro de Liga Juventino">'+paneButton('standings','Clasificación')+paneButton('scorers','Goleo')+paneButton('results','Resultados')+'</div>'+
      '<div class="v968-q-data-meta"><span>Datos oficiales · '+esc(c.name)+'</span><button type="button" data-q-refresh>↻ Actualizar</button></div>'+
      '<section class="v960-q-block" data-q-pane-panel="standings"'+(pane==='standings'?'':' hidden')+'><h3>Tabla de posiciones · '+esc(c.name)+'</h3>'+ (standings?tableHead+standings:'<p>No hay tabla de posiciones publicada para esta temporada.</p>')+'</section>'+
@@ -284,7 +314,7 @@ async function mountQuiniela(root){
    });
    root.querySelectorAll('[data-q-pane-panel]').forEach(panel=>{panel.hidden=panel.dataset.qPanePanel!==pane});
  });
- const refreshBtn=$('[data-q-refresh]',root);if(refreshBtn)refreshBtn.onclick=async()=>{refreshBtn.disabled=true;try{await window.LJR_V508_OFFICIAL?.refresh?.();db=null;dataPromise=null;await getDb();await mountQuiniela(root);notice('Se cargó el último corte oficial disponible')}catch(e){notice(e.message);refreshBtn.disabled=false}};
+ const refreshBtn=$('[data-q-refresh]',root);if(refreshBtn)refreshBtn.onclick=async()=>{refreshBtn.disabled=true;try{await getQuinielaDb(true);await mountQuiniela(root);notice(qDataMode==='cache'?'Mostrando datos locales guardados; sin conexión.':'Archivo de partidos de la app azul actualizado')}catch(e){notice(e.message);refreshBtn.disabled=false}};
  const exportBtn=$('[data-q-export]',root);
  if(exportBtn)exportBtn.onclick=async()=>{try{const cv=await reportCanvas(catId,'quiniela',{round});downloadFile(new File([await blob(cv)],filename('quiniela',catId),{type:'image/png'}))}catch(e){notice(e.message)}};
 }
@@ -302,7 +332,7 @@ function addSuspensionPng(screen){
  $('[data-v561-susp-png]',actions).onclick=async e=>{e.target.disabled=true;try{await getDb();const value=key=>$('[data-v64-susp-'+key+']',screen)?.value||'';const c=normalizeCompetition(db).find(c=>norm(c.name)===norm(value('cat'))||norm(labels[c.id])===norm(value('cat')));if(!c)throw Error('Selecciona una categoría oficial');const match=value('match'),m=c.matches.find(m=>norm(m.home+' vs '+m.away)===norm(match)||match.includes(m.home)&&match.includes(m.away));const note=['Alcance: '+value('scope'),'Sede: '+value('venue'),'Motivo: '+value('reason'),'Prioridad: '+value('priority'),value('message')].filter(Boolean).join('\n');const cv=await reportCanvas(c.id,'notice',{round:value('round'),match:m?m.home+' vs '+m.away:match,team:m?.home,team2:m?.away,noticeType:value('type'),date:value('date')+' · '+value('time'),note});file=new File([await blob(cv)],filename('notice',c.id),{type:'image/png'});$('[data-v561-susp-preview]',actions).replaceChildren(cv);actions.querySelectorAll('button:not([data-v561-susp-png])').forEach(b=>b.disabled=false);notice('Aviso listo con logos · PNG HD')}catch(e){notice(e.message)}finally{e.target.disabled=false}};
  $('[data-v561-susp-download]',actions).onclick=()=>file&&downloadFile(file);$('[data-v561-susp-share]',actions).onclick=()=>file&&shareFile(file,'Aviso de Liga Juventino Rosas · Presidente 4121715599').catch(e=>{if(e.name!=='AbortError')notice(e.message)});
 }
-async function mount(){const route=location.hash.replace(/^#\/?/,'').split('?')[0]||'home',screen=$('#screen');if(!screen)return;brandExistingExports();addSuspensionPng(screen);const pub=$('[data-v561-publications-mount]',screen),q=$('[data-v561-quiniela-mount]',screen);if(pub&&!pub.childElementCount)await mountPublications(pub);if(q){await getDb();const stamp=String(db?.captured_at_utc||'');if(!q.childElementCount||q.dataset.v960Captured!==stamp){await mountQuiniela(q);q.dataset.v960Captured=stamp}}
+async function mount(){const route=location.hash.replace(/^#\/?/,'').split('?')[0]||'home',screen=$('#screen');if(!screen)return;brandExistingExports();addSuspensionPng(screen);const pub=$('[data-v561-publications-mount]',screen),q=$('[data-v561-quiniela-mount]',screen);if(pub&&!pub.childElementCount)await mountPublications(pub);if(q){await getQuinielaDb();const stamp=String(qDb?.captured_at_utc||'');if(!q.childElementCount||q.dataset.v960Captured!==stamp){await mountQuiniela(q);q.dataset.v960Captured=stamp}}
  if(['more','leagueTools','publications','notices','suspensionTool','scheduleChanges','discipline','scorers','tableExport','cedulaBuilder','transfers','competition'].includes(route))addEntry(screen,'publicationCenter','Generar PNG por categoría · Tablas y avisos');if(['more','leagueTools'].includes(route))addEntry(screen,'quiniela','Quiniela de la liga');
 }
 window.LJR_PUBLICATIONS={reportCanvas,brandPng,shareFile};
