@@ -1,37 +1,26 @@
-/* V955 — Equipos: el fundido comienza en la unión real, ANTES de "Siguiendo".
-   La cabecera es sticky: el degradado debe sobresalir por debajo del header;
-   un fundido únicamente dentro del header no elimina esa línea.
-   Sin cambios a posición, botones, textos, escudos ni lógica de scroll. */
-@media (max-width:1023px){
+/* V956 — Equipos: unión suave SIN capa encima de "Siguiendo".
+   El degradado se dibuja DENTRO de la cabecera, subiendo el inicio del
+   fundido; su extremo transparente muestra exactamente el mismo fondo
+   de la página. No se pinta nada sobre el título ni sobre los equipos. */
+@media (max-width:1023px) {
   html body[data-app-route="teams"] #screen .v27-teams-page > .v27-teams-head,
-  html body.v27-teams-active #screen .v27-teams-page > .v27-teams-head{
-    /* Base continua sin transparencia en el último píxel. */
-    background:
-      radial-gradient(150% 110% at 82% 0%,rgba(48,92,255,.58),transparent 55%),
-      linear-gradient(180deg,#07106d 0%,#07065f 100%) !important;
+  html body.v27-teams-active #screen .v27-teams-page > .v27-teams-head {
+    background:linear-gradient(180deg,
+      rgba(7,6,95,1) 0%,
+      rgba(7,6,95,1) 38%,
+      rgba(7,6,95,.94) 49%,
+      rgba(7,6,95,.80) 61%,
+      rgba(7,6,95,.57) 75%,
+      rgba(7,6,95,.27) 88%,
+      rgba(7,6,95,0) 100%) !important;
     border-bottom:0!important;
     box-shadow:none!important;
-    overflow:visible!important;
   }
-
+  /* El parche anterior sobresalía 78 px por debajo de la cabecera:
+     esa capa oscurecía la palabra "Siguiendo". Se elimina completamente. */
   html body[data-app-route="teams"] #screen .v27-teams-page > .v27-teams-head::after,
-  html body.v27-teams-active #screen .v27-teams-page > .v27-teams-head::after{
-    content:"";
-    position:absolute;
-    left:0;
-    right:0;
-    top:calc(100% - 1px);
-    height:78px;
-    display:block;
-    background:linear-gradient(180deg,
-      #07065f 0%,
-      rgba(7,9,99,.92) 16%,
-      rgba(10,22,127,.72) 38%,
-      rgba(15,37,167,.40) 67%,
-      rgba(15,37,167,0) 100%);
-    pointer-events:none;
-    z-index:0;
-    border:0;
-    box-shadow:none;
+  html body.v27-teams-active #screen .v27-teams-page > .v27-teams-head::after {
+    content:none!important;
+    display:none!important;
   }
 }
