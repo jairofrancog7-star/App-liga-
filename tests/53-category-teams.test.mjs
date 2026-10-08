@@ -23,7 +23,7 @@ test('Tienda conserva las 53 participaciones y permite los clubes repetidos en d
  assert.ok(entries);
  const categories=vm.runInNewContext('('+entries[1]+')');
  const expected=Object.fromEntries(Object.entries(keys).map(([id,name])=>[id,season.categories[name].teams.map(normalize).sort()]));
- for(const id of Object.keys(keys))assert.deepEqual(categories[id].map(normalize).sort(),expected[id],id);
+ for(const id of Object.keys(keys))assert.deepEqual(Array.from(categories[id],normalize).sort(),expected[id],id);
  const fragment=src.match(/function v812ActiveStoreList\(\)\{[\s\S]*?\n\}\nconst CAT_LOGOS_V630=/);
  assert.ok(fragment);
  const body=fragment[0].slice(0,-'\nconst CAT_LOGOS_V630='.length);
