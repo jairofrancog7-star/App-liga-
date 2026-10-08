@@ -27,7 +27,7 @@
     background-color:#0a0a60!important;
     background-attachment:fixed!important;
     background-position:center top!important;
-    background-size:100% 100dvh!important;
+    background-size:100% calc(100dvh - var(--v774-nav-h, 69px))!important;
     background-repeat:no-repeat!important;
   }
 
