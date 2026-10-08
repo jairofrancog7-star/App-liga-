@@ -530,35 +530,56 @@ function fanzone(){
  const api=window.LJR_FAN_ZONE_ONE_VOTE;
  if(!api)return toast('Fan Zone todavía está cargando');
  const map={gol:'goal',liga:'heart',aplauso:'clap',fuego:'fire'};
- const back={goal:'gol',heart:'liga',clap:'aplauso',fire:'fuego'};
- const snap=api.snapshot(),p=snap.counts;
+ const choices=[
+  {id:'gol',title:'Gol',emoji:'⚽',subtitle:'¡Qué golazo!',icon:'<circle cx="24" cy="24" r="17"/><path d="m24 14 9 7-3.5 11h-11L15 21zM15 21l-7-2M18.5 32l-3 7m14-7 4 7m-.5-18 7-2M24 14V7"/>'},
+  {id:'liga',title:'Liga',emoji:'💙',subtitle:'Orgullo azul',icon:'<path d="M24 42 8.5 27.7C-2 18.2 12 2 24 15.3 36 2 50 18.2 39.5 27.7Z"/><path d="m17 25 5 5 10-11"/>'},
+  {id:'aplauso',title:'Aplauso',emoji:'👏',subtitle:'¡Bien jugado!',icon:'<path d="m11 23 7-13c1-2 4-1 3 2l-4 10 8-15c1-3 5-1 4 2l-7 15 8-12c2-3 5 0 3 3l-6 11 6-6c3-3 6 1 3 4L27 37c-4 6-12 7-18 1l-5-6c-3-4 2-7 5-4l5 3"/><path d="m36 11 5-5M39 18l6-2M5 13 1 9"/>'},
+  {id:'fuego',title:'Fuego',emoji:'🔥',subtitle:'¡Pura pasión!',icon:'<path d="M25 44C13 44 8 35 10 26c2-7 8-12 9-20 6 5 6 11 6 14 5-3 7-8 8-13 7 8 11 17 9 24-2 8-8 13-17 13Z"/><path d="M25 42c-5 0-8-4-7-9 1-4 5-7 6-11 4 4 3 7 3 9 2-1 4-3 5-5 4 8 1 16-7 16Z"/>'}
+ ];
+ const picture=paths=>'<svg viewBox="0 0 48 48" aria-hidden="true" focusable="false">'+paths+'</svg>';
+ const snap=api.snapshot();
  const m=modal(
-   'Fan Zone',
-   'Una reacción por visitante o perfil registrado. Puedes cambiarla sin duplicar tu voto.',
-   '<p class="v105-fan-rule" data-fan-status></p><div class="v105-grid">'+
-   [['gol','Gol ⚽'],['liga','Liga 💙'],['aplauso','Aplauso 👏'],['fuego','Fuego 🔥']].map(x=>
-     '<button class="v105-card" data-r="'+x[0]+'"><span class="v105-icon">'+icon('fire')+'</span><span class="v105-copy"><b>'+x[1]+'</b><small>'+Number(p[map[x[0]]]||0)+' reacciones</small></span><span class="v105-arrow">›</span></button>'
-   ).join('')+'</div>'
+  'Fan Zone',
+  'Tu pasión mueve la Liga. Elige tu reacción favorita y cámbiala cuando quieras.',
+  '<div class="v926-fan-status"><span class="v926-fan-status-symbol" aria-hidden="true">✓</span><p class="v105-fan-rule" data-fan-status aria-live="polite"></p></div>'+
+  '<div class="v105-grid v926-fan-grid">'+choices.map(x=>
+   '<button type="button" class="v105-card v926-fan-card" data-r="'+x.id+'" data-v926-tone="'+x.id+'" aria-pressed="false" aria-label="Reaccionar con '+x.title+'">'+
+    '<span class="v105-icon v926-fan-icon">'+picture(x.icon)+'</span>'+
+    '<span class="v105-copy v926-fan-copy"><b>'+x.title+' <span aria-hidden="true">'+x.emoji+'</span></b><small>'+Number(snap.counts[map[x.id]]||0)+' reacciones</small><em>'+x.subtitle+'</em></span>'+
+    '<span class="v926-fan-selected-mark" aria-hidden="true">✓</span>'+
+   '</button>'
+  ).join('')+'</div>'+
+  '<div class="v926-fan-bottom"><span><i class="v926-fan-dot" aria-hidden="true"></i> Participación de la afición</span><strong data-fan-total>0 reacciones</strong></div>'
  );
+ m.classList.add('v926-fanzone-modal');
+ const heading=$('.v105-dialog h3',m);
+ heading?.insertAdjacentHTML('beforebegin','<div class="v926-fan-eyebrow"><span class="v926-fan-kicker">LIGA JUVENTINO ROSAS</span><span class="v926-fan-badge">FAN ZONE <span aria-hidden="true">✦</span></span></div>');
  const render=()=>{
-   const z=api.snapshot();
-   $$('[data-r]',m).forEach(b=>{
-     const k=map[b.dataset.r],small=b.querySelector('small');
-     if(small)small.textContent=Number(z.counts[k]||0)+' reacciones';
-     b.classList.toggle('is-selected',z.choice===k);
-     b.setAttribute('aria-pressed',z.choice===k?'true':'false');
-   });
-   const status=$('[data-fan-status]',m);
-   if(status)status.textContent=z.choice
-     ?'Tu reacción ya está registrada. Puedes cambiarla sin sumar otro voto.'
-     :(z.profile?'Perfil registrado: puedes elegir una sola reacción.':'Visitante: puedes elegir una sola reacción en este dispositivo.');
+  const z=api.snapshot();
+  const total=Object.values(z.counts||{}).reduce((sum,n)=>sum+(Number(n)||0),0);
+  $$('[data-r]',m).forEach(b=>{
+   const key=map[b.dataset.r],count=Number(z.counts[key]||0),selected=z.choice===key;
+   const small=b.querySelector('.v926-fan-copy small');
+   if(small)small.textContent=count===1?'1 reacción':count+' reacciones';
+   b.classList.toggle('is-selected',selected);
+   b.setAttribute('aria-pressed',String(selected));
+   b.setAttribute('aria-label',(selected?'Tu reacción seleccionada: ':'Reaccionar con ')+b.querySelector('.v926-fan-copy b')?.firstChild?.textContent?.trim());
+   b.style.setProperty('--v926-share',(total?Math.round(count/total*100):0)+'%');
+  });
+  const status=$('[data-fan-status]',m);
+  if(status)status.textContent=z.choice
+   ?'¡Reacción registrada! Puedes cambiar tu elección sin duplicar el voto.'
+   :(z.profile?'Perfil registrado · elige una sola reacción.':'Visitante · puedes elegir una reacción por dispositivo.');
+  const totalElement=$('[data-fan-total]',m);
+  if(totalElement)totalElement.textContent=total===1?'1 reacción':total+' reacciones';
  };
  $$('[data-r]',m).forEach(b=>b.onclick=()=>{
-   const r=api.vote(map[b.dataset.r]);render();
-   toast(r.same?'Ya registraste esa reacción':(r.previous?'Reacción cambiada · sigue contando como un solo voto':'Reacción registrada · 1 por visitante/perfil'));
+  const result=api.vote(map[b.dataset.r]);render();
+  toast(result.same?'Ya elegiste esa reacción':(result.previous?'Reacción actualizada · conservas un solo voto':'¡Gracias por participar! Tu reacción quedó registrada'));
  });
  render();
 }
+
 function delegates(){
  const list=read('v105-delegates',[]);
  const m=modal('Delegados / encargados','Contactos privados sólo en este dispositivo; no se publican en GitHub.','<div class="v105-form"><label><span>Nombre</span><input data-n></label><label><span>Equipo</span><input data-t></label><label><span>Teléfono</span><input data-p inputmode="tel"></label></div><div class="v105-actions"><button class="v105-btn" data-add>Agregar</button></div><div class="v105-list" data-list></div>');
