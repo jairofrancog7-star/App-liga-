@@ -181,7 +181,8 @@ async function mountQuiniela(root){
    body='<section class="v618-q-ranking">'+
      '<div class="v618-q-rank-hero"><small>MI RANKING EN ESTA APP</small><strong>'+total+' pts</strong><span>'+savedCount+' pronósticos guardados</span></div>'+
      '<div class="v618-q-stats"><div><b>'+exact+'</b><small>Exactos · 2 pts</small></div><div><b>'+outcome+'</b><small>Ganador/empate · 1 pt</small></div><div><b>'+scored+'</b><small>Evaluados</small></div></div>'+
-     '<p class="v618-q-local-note">Tus puntos se calculan con tus pronósticos guardados en Liga Juventino Rosas.</p>'+
+     '<p class="v618-q-local-note">Tus puntos se calculan y se guardan en esta app. Para trasladarlos a otro dispositivo, descarga e importa tu respaldo.</p>'+
+     '<section class="v969-q-backup"><h3>Mis pronósticos · respaldo local</h3><p>No necesitas ninguna cuenta externa.</p><div class="v969-q-backup-actions"><button type="button" data-q-backup-export>'+qIcon('download')+' Descargar respaldo</button><button type="button" data-q-backup-import>'+qIcon('save')+' Importar respaldo</button></div><input type="file" data-q-backup-file accept="application/json,.json" hidden aria-label="Selecciona tu respaldo de quiniela"></section>'+
    '</section>';
  }else if(view==='tables'){
    const paneKey='v968-q-table-pane:'+catId;
@@ -315,6 +316,41 @@ async function mountQuiniela(root){
    root.querySelectorAll('[data-q-pane-panel]').forEach(panel=>{panel.hidden=panel.dataset.qPanePanel!==pane});
  });
  const refreshBtn=$('[data-q-refresh]',root);if(refreshBtn)refreshBtn.onclick=async()=>{refreshBtn.disabled=true;try{await getQuinielaDb(true);await mountQuiniela(root);notice(qDataMode==='cache'?'Mostrando datos locales guardados; sin conexión.':'Archivo de partidos de la app azul actualizado')}catch(e){notice(e.message);refreshBtn.disabled=false}};
+ const backupExport=$('[data-q-backup-export]',root);
+ if(backupExport)backupExport.onclick=()=>{
+   try{
+     const matchesAll=normalizeCompetition(qDb).flatMap(group=>group.matches||[]);
+     const permitted=new Set(matchesAll.map(fixtureKey));
+     const own=Object.fromEntries(Object.entries(readPredictions()).filter(([key,value])=>permitted.has(key)&&value?.fixtureKey===key&&Number.isInteger(value.home)&&Number.isInteger(value.away)));
+     const data={format:'ljr-blue-quiniela',version:1,createdAt:new Date().toISOString(),predictions:own};
+     const file=new File([JSON.stringify(data,null,2)],'mis-pronosticos-liga-juventino.json',{type:'application/json'});
+     downloadFile(file);notice('Respaldo guardado en el teléfono: '+Object.keys(own).length+' pronósticos');
+   }catch(error){notice('No se pudo descargar el respaldo: '+error.message)}
+ };
+ const backupImport=$('[data-q-backup-import]',root),backupFile=$('[data-q-backup-file]',root);
+ if(backupImport&&backupFile)backupImport.onclick=()=>backupFile.click();
+ if(backupFile)backupFile.onchange=async()=>{
+   const file=backupFile.files?.[0];
+   if(!file)return;
+   try{
+     if(file.size>2097152)throw Error('El archivo supera el tamaño permitido (2 MB)');
+     const backup=JSON.parse(await file.text());
+     if(backup?.format!=='ljr-blue-quiniela'||backup?.version!==1||!backup.predictions||typeof backup.predictions!=='object'||Array.isArray(backup.predictions))throw Error('Respaldo no compatible con la quiniela azul');
+     const permitted=new Set(normalizeCompetition(qDb).flatMap(group=>group.matches||[]).map(fixtureKey));
+     const imported={};
+     for(const [key,guess] of Object.entries(backup.predictions)){
+       if(!permitted.has(key)||guess?.fixtureKey!==key||![guess.home,guess.away].every(n=>Number.isInteger(n)&&n>=0&&n<=99))continue;
+       imported[key]={home:guess.home,away:guess.away,fixtureKey:key,savedAt:typeof guess.savedAt==='string'?guess.savedAt:new Date().toISOString()};
+     }
+     if(!Object.keys(imported).length)throw Error('No se encontraron pronósticos válidos para los partidos actuales');
+     const current=readPredictions();
+     const merged={...current,...imported};
+     localStorage.setItem('v561-quiniela',JSON.stringify(merged));
+     notice(Object.keys(imported).length+' pronósticos importados a la app azul');
+     await mountQuiniela(root);
+   }catch(error){notice('Importación cancelada: '+error.message)}
+   finally{backupFile.value=''}
+ };
  const exportBtn=$('[data-q-export]',root);
  if(exportBtn)exportBtn.onclick=async()=>{try{const cv=await reportCanvas(catId,'quiniela',{round});downloadFile(new File([await blob(cv)],filename('quiniela',catId),{type:'image/png'}))}catch(e){notice(e.message)}};
 }
