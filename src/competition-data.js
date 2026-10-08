@@ -13,9 +13,9 @@ export function leaguePoints({wins=0,draws=0,defaultLosses=0}={}) {
 }
 export function isDefaultDecision(decision) {
   if(!decision||typeof decision!=='object'||!decision.winner)return false;
-  // El rol oficial marca las victorias administrativas por DEFAULT.
+  // Exigir confirmación explícita: administrative por sí solo no significa DEFAULT.
   return decision.default===true||decision.forfeit===true||
-    /^(default|forfeit|walkover|administrative)$/i.test(String(decision.type||''))||
+    /^(default|forfeit|walkover)$/i.test(String(decision.type||''))||
     /\b(default|walkover|incomparecencia)\b/i.test(String(decision.label||''));
 }
 export function defaultDefeatedTeam(decision,home,away) {
