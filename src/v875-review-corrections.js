@@ -84,13 +84,14 @@ function meeting(root){
    attendance:get('[data-x="attendance"]'),owner:get('[data-meeting-field="owner"]'),deadline:get('[data-meeting-field="deadline"]'),
    agenda:get('[data-x="agenda"]'),agreements:get('[data-x="agreements"]'),tasks:get('[data-meeting-field="tasks"]')
   };
+  const leagueLogo='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp';
   const html='<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'+
    '<title>Minuta · Liga Juventino Rosas</title><style>'+
    '@page{size:letter;margin:13mm}*{box-sizing:border-box}html,body{margin:0;padding:0;background:#fff;color:#111827;font-family:Arial,Helvetica,sans-serif}'+
-   'body{font-size:11pt;line-height:1.42}.page{width:100%}.head{border-bottom:3px solid #0b4fb3;padding:0 0 12px;margin-bottom:16px}.kicker{font-size:9pt;font-weight:800;letter-spacing:.12em;color:#0b4fb3}.head h1{margin:4px 0 4px;font-size:22pt;line-height:1.08;color:#071b4d}.head p{margin:0;color:#475569;font-size:10pt}'+
+   'body{font-size:11pt;line-height:1.42}.page{width:100%}.head{display:grid;grid-template-columns:72px minmax(0,1fr);gap:14px;align-items:center;border-bottom:3px solid #0b4fb3;padding:0 0 12px;margin-bottom:16px}.head-logo{width:68px;height:68px;object-fit:contain;display:block;background:transparent}.head-copy{min-width:0}.kicker{font-size:9pt;font-weight:800;letter-spacing:.12em;color:#0b4fb3}.head h1{margin:4px 0 4px;font-size:22pt;line-height:1.08;color:#071b4d}.head p{margin:0;color:#475569;font-size:10pt}'+
    '.meta{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;margin-bottom:16px}.meta div{border:1px solid #cbd5e1;border-radius:8px;padding:8px 10px;min-height:48px}.meta b{display:block;font-size:8.5pt;color:#0b4fb3;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}.section{break-inside:avoid;margin:0 0 13px}.section h2{margin:0 0 6px;font-size:11pt;color:#0b4fb3;border-bottom:1px solid #dbe3f0;padding-bottom:4px}.box{border:1px solid #cbd5e1;border-radius:8px;padding:10px 12px;min-height:52px;white-space:normal}.footer{margin-top:18px;padding-top:8px;border-top:1px solid #cbd5e1;color:#64748b;font-size:8.5pt;text-align:center}'+
    '@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.page{page-break-after:auto}}</style></head><body><main class="page">'+
-   '<header class="head"><div class="kicker">LIGA MUNICIPAL DE FÚTBOL JUVENTINO ROSAS</div><h1>Minuta de junta semanal</h1><p>Documento generado desde la aplicación oficial de la Liga.</p></header>'+
+   '<header class="head"><img class="head-logo" src="'+esc(leagueLogo)+'" alt="Liga Juventino Rosas"><div class="head-copy"><div class="kicker">LIGA MUNICIPAL DE FÚTBOL JUVENTINO ROSAS</div><h1>Minuta de junta semanal</h1><p>Documento generado desde la aplicación oficial de la Liga.</p></div></header>'+
    '<section class="meta"><div><b>Fecha de junta</b>'+esc(fmtDate(data.date))+'</div><div><b>Hora</b>'+esc(data.time||'—')+'</div><div><b>Lugar</b>'+esc(data.place||'—')+'</div><div><b>Responsable</b>'+esc(data.owner||'—')+'</div><div><b>Asistencia</b>'+esc(data.attendance||'—')+'</div><div><b>Fecha límite de acuerdos</b>'+esc(fmtDate(data.deadline))+'</div></section>'+
    '<section class="section"><h2>Orden del día</h2><div class="box">'+nl(data.agenda)+'</div></section>'+
    '<section class="section"><h2>Acuerdos / minuta</h2><div class="box">'+nl(data.agreements)+'</div></section>'+
@@ -111,8 +112,16 @@ function meeting(root){
    try{frame.contentWindow?.focus();frame.contentWindow?.print();log('Imprimir minuta de junta')}
    catch(_){toast('No se pudo abrir la impresión. Vuelve a intentar.');frame.remove()}
   };
-  frame.addEventListener('load',()=>setTimeout(run,120),{once:true});
-  setTimeout(()=>{if(frame.isConnected&&doc.readyState==='complete')run()},350);
+  const waitAssets=()=>{
+   const imgs=[...doc.images];
+   if(!imgs.length||imgs.every(img=>img.complete)){setTimeout(run,80);return}
+   let pending=imgs.filter(img=>!img.complete).length;
+   const done=()=>{pending--;if(pending<=0)setTimeout(run,80)};
+   imgs.filter(img=>!img.complete).forEach(img=>{img.addEventListener('load',done,{once:true});img.addEventListener('error',done,{once:true})});
+   setTimeout(run,1400);
+  };
+  frame.addEventListener('load',waitAssets,{once:true});
+  setTimeout(()=>{if(frame.isConnected&&doc.readyState==='complete')waitAssets()},320);
   const cleanup=()=>setTimeout(()=>frame.remove(),1200);
   try{frame.contentWindow?.addEventListener('afterprint',cleanup,{once:true})}catch(_){}
   setTimeout(()=>frame.remove(),60000);
