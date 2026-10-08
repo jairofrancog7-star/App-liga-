@@ -303,7 +303,20 @@
       '<div class="v652-discipline-cats v655-discipline-cats">'+
         '<div class="v652-cat-head"><b>Ver por categoría</b><small>Selecciona una categoría</small></div>'+
         '<div class="v652-cat-rail" role="tablist" aria-label="Categoría">'+
-          V655_CATS.map(([id,label])=>'<button type="button" data-v655-cat="'+id+'" role="tab">'+label+'</button>').join('')+
+          V655_CATS.map(([id,label])=>{
+            // Usar las imágenes oficiales existentes, sin tratar la transparencia.
+            const logos={
+              'all':'./assets/liga-logo.webp',
+              '3':'./assets/branding/primera-fuerza-hd.png',
+              '5':'./assets/categories/intermedia.webp',
+              '4':'./assets/categories/segunda-fuerza.webp',
+              '2':'./assets/categories/veteranos-35-user.png',
+              '1':'./assets/categories/veteranos-50.webp'
+            };
+            return '<button type="button" data-v655-cat="'+id+'" role="tab">'+
+              '<img class="v940-discipline-cat-logo" src="'+logos[id]+'" alt="" aria-hidden="true" loading="eager" decoding="async">'+
+              '<span class="v940-discipline-cat-label">'+label+'</span></button>';
+          }).join('')+
         '</div>'+
       '</div>'+
     '</div>';
