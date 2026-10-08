@@ -1,0 +1,181 @@
+/* V922 — Nueva sanción 100% accesible + iconos contrastados de Mi equipo.
+   Cambios limitados a la pantalla de sanciones y las cuatro tarjetas rápidas del inicio. */
+html body > .v105-modal.v639-sanction-modal {
+  position:fixed!important;
+  inset:0 0 var(--v922-sanction-nav-gap,var(--v34-nav-h,69px)) 0!important;
+  top:0!important;
+  right:0!important;
+  bottom:var(--v922-sanction-nav-gap,var(--v34-nav-h,69px))!important;
+  left:0!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  display:flex!important;
+  align-items:stretch!important;
+  justify-content:center!important;
+  box-sizing:border-box!important;
+  padding:8px 8px 0!important;
+  overflow:hidden!important;
+  overscroll-behavior:contain!important;
+  background:linear-gradient(180deg,#030b45 0%,#030733 100%)!important;
+  z-index:2147482500!important;
+}
+html body > .v105-modal.v639-sanction-modal > .v105-dialog {
+  position:relative!important;
+  box-sizing:border-box!important;
+  flex:0 1 760px!important;
+  width:100%!important;
+  min-width:0!important;
+  height:100%!important;
+  min-height:0!important;
+  max-height:100%!important;
+  margin:0 auto!important;
+  padding:20px clamp(14px,4vw,27px) 42px!important;
+  border:1px solid rgba(94,174,255,.44)!important;
+  border-bottom:0!important;
+  border-radius:20px 20px 0 0!important;
+  background:linear-gradient(170deg,#102382 0%,#081766 45%,#06124e 100%)!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior-y:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+  scroll-padding-top:16px!important;
+  scroll-padding-bottom:70px!important;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(106,227,249,.7) transparent;
+}
+html body > .v105-modal.v639-sanction-modal > .v105-dialog > h3 {
+  margin:0 56px 8px 0!important;
+  padding-top:0!important;
+  color:#fff!important;
+  font-size:clamp(23px,5.8vw,34px)!important;
+  font-weight:850!important;
+  line-height:1.13!important;
+  letter-spacing:-.035em!important;
+}
+html body > .v105-modal.v639-sanction-modal > .v105-dialog > p {
+  margin:0 46px 18px 0!important;
+  color:#c4d4f1!important;
+  font-size:clamp(11px,3vw,13px)!important;
+  line-height:1.5!important;
+}
+html body > .v105-modal.v639-sanction-modal .v105-close {
+  position:sticky!important;
+  top:4px!important;
+  float:right!important;
+  right:auto!important;
+  margin:0 0 -44px 8px!important;
+  display:grid!important;
+  place-items:center!important;
+  width:42px!important;
+  height:42px!important;
+  min-width:42px!important;
+  min-height:42px!important;
+  padding:0!important;
+  border:1px solid rgba(173,225,255,.45)!important;
+  border-radius:14px!important;
+  background:#173987!important;
+  color:#fff!important;
+  z-index:22!important;
+  cursor:pointer!important;
+}
+html body > .v105-modal.v639-sanction-modal .v105-form {
+  width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+  border-radius:18px!important;
+  padding:clamp(11px,3.5vw,17px)!important;
+  background:linear-gradient(155deg,rgba(32,67,169,.5),rgba(13,34,118,.64))!important;
+}
+html body > .v105-modal.v639-sanction-modal .v105-form :is(input,select) {
+  box-sizing:border-box!important;
+  max-width:100%!important;
+  min-width:0!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  color:#fff!important;
+  background:#0b1d65!important;
+  border-color:rgba(126,168,246,.53)!important;
+  font-size:clamp(13px,3.6vw,16px)!important;
+}
+html body > .v105-modal.v639-sanction-modal .v105-form input::placeholder {
+  color:#c0ceea!important;
+}
+html body > .v105-modal.v639-sanction-modal .v105-form label[hidden] {
+  display:none!important;
+}
+html body > .v105-modal.v639-sanction-modal .v105-actions {
+  width:100%!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+  padding-bottom:14px!important;
+}
+html body > .v105-modal.v639-sanction-modal .v105-actions button {
+  min-height:48px!important;
+  white-space:normal!important;
+}
+@media(max-width:600px) {
+  html body > .v105-modal.v639-sanction-modal > .v105-dialog {
+    padding:17px 13px 38px!important;
+  }
+  html body > .v105-modal.v639-sanction-modal .v105-actions {
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:8px!important;
+  }
+  html body > .v105-modal.v639-sanction-modal .v105-actions [data-x-discipline] {
+    grid-column:1/-1!important;
+  }
+}
+@media(max-width:360px) {
+  html body > .v105-modal.v639-sanction-modal .v105-actions {
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  html body > .v105-modal.v639-sanction-modal .v105-actions [data-x-discipline] {
+    grid-column:auto!important;
+  }
+}
+/* V922 — Iconos blancos nítidos con fondo contrastante; cuatro acciones originales intactas. */
+@media(max-width:1023px) {
+  html body[data-app-route="home"] #v100-home-extra .v100-quick-grid > button::before {
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    left:12px!important;
+    top:11px!important;
+    width:39px!important;
+    height:39px!important;
+    border:1px solid #75e5fb!important;
+    border-radius:12px!important;
+    background-color:#2254bd!important;
+    background-image:var(--v922-icon)!important;
+    background-position:center!important;
+    background-size:26px 26px!important;
+    background-repeat:no-repeat!important;
+    opacity:1!important;
+    filter:drop-shadow(0 1px 2px rgba(0,0,60,.22))!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.21),0 3px 13px rgba(0,0,40,.22)!important;
+  }
+  html body[data-app-route="home"] #v100-home-extra .v100-quick-grid > button::after {
+    color:#fff!important;
+    font-size:24px!important;
+    background:#2555ad!important;
+    border:1px solid rgba(142,199,255,.43)!important;
+  }
+  html body[data-app-route="home"] #v100-home-extra .v100-quick-grid > button {
+    padding-top:61px!important;
+    border-color:rgba(120,180,255,.58)!important;
+  }
+  html body[data-app-route="home"] #v100-home-extra .v100-quick-grid > button:nth-child(1) {
+    --v922-icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M20%208.3c0%204.5-8%2010-8%2010S4%2012.8%204%208.3a4.4%204.4%200%200%201%208-2.6%204.4%204.4%200%200%201%208%202.6Z%22%2F%3E%3Cpath%20d%3D%22m9.3%2010.9%201.8%201.8%203.6-3.9%22%2F%3E%3C%2Fsvg%3E");
+  }
+  html body[data-app-route="home"] #v100-home-extra .v100-quick-grid > button:nth-child(2) {
+    --v922-icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%225%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.2%22%20fill%3D%22%23FFFFFF%22%20stroke%3D%22none%22%2F%3E%3C%2Fsvg%3E");
+  }
+  html body[data-app-route="home"] #v100-home-extra .v100-quick-grid > button:nth-child(3) {
+    --v922-icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M14.9%205.2a5.4%205.4%200%200%200-6.7%206.7L3.7%2016.4a2.2%202.2%200%200%200%203.1%203.1l4.5-4.5a5.4%205.4%200%200%200%206.7-6.7l-3.4%203.4-2.3-2.3%202.6-4.2Z%22%2F%3E%3C%2Fsvg%3E");
+  }
+  html body[data-app-route="home"] #v100-home-extra .v100-quick-grid > button:nth-child(4) {
+    --v922-icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%229%22%20cy%3D%228%22%20r%3D%223%22%2F%3E%3Cpath%20d%3D%22M3.5%2020v-1.5A5.5%205.5%200%200%201%209%2013a5.5%205.5%200%200%201%205.5%205.5V20%22%2F%3E%3Cpath%20d%3D%22M16%205.3a3%203%200%200%201%200%205.6M17%2013.4a5%205%200%200%201%203.5%204.8V20%22%2F%3E%3C%2Fsvg%3E");
+  }
+}
