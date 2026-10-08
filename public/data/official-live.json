@@ -10175,9 +10175,9 @@
               "31",
               "6",
               "SAN JULIAN",
-              "-",
+              "1",
               "vs",
-              "-",
+              "1",
               "SAN JUAN FC",
               "San Juan de la Cruz",
               "27/09/2026 08:00",
@@ -10199,9 +10199,9 @@
               "33",
               "6",
               "DEP. LA LUZ",
-              "-",
+              "2",
               "vs",
-              "-",
+              "5",
               "SAN JOSE JRS",
               "San Jose  de la Montaña",
               "27/09/2026 10:00",
@@ -10223,9 +10223,9 @@
               "35",
               "6",
               "CELTICOS",
-              "-",
+              "4",
               "vs",
-              "-",
+              "1",
               "BARZA",
               "Campo 3",
               "27/09/2026 12:00",
@@ -21688,13 +21688,47 @@
   },
   "latest_user_verified_results": {
     "date": "2026-10-08",
-    "source": "Captura de notificaciones AdminFut de resultados finalizados aportada por el usuario",
+    "applied_at_utc": "2026-10-08T18:56:00Z",
+    "source": "Captura de notificaciones de resultados finalizados proporcionada por el usuario el 08/10/2026",
     "category_id": "4",
     "fixture_ids": [
-      "32",
-      "34"
+      "31",
+      "33",
+      "35"
     ],
-    "scope": "Solo marcadores; clasificación, goleo y conteos oficiales pendientes de nueva validación"
+    "fixtures": [
+      {
+        "fixture_id": "31",
+        "round": "6",
+        "date": "27/09/2026",
+        "home": "SAN JULIAN",
+        "away": "SAN JUAN FC",
+        "home_goals": 1,
+        "away_goals": 1,
+        "status": "FINAL"
+      },
+      {
+        "fixture_id": "33",
+        "round": "6",
+        "date": "27/09/2026",
+        "home": "DEP. LA LUZ",
+        "away": "SAN JOSE JRS",
+        "home_goals": 2,
+        "away_goals": 5,
+        "status": "FINAL"
+      },
+      {
+        "fixture_id": "35",
+        "round": "6",
+        "date": "27/09/2026",
+        "home": "CELTICOS",
+        "away": "BARZA",
+        "home_goals": 4,
+        "away_goals": 1,
+        "status": "FINAL"
+      }
+    ],
+    "scope": "Solo marcadores de 3 partidos; clasificación, goleo, tarjetas y estadísticas individuales no se recalculan sin fuente oficial."
   },
   "cedula_result_corrections_2026_10_08": [
     {
