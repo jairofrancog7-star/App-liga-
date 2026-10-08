@@ -33,6 +33,50 @@ function goProfile(){
   location.hash='#/profile';
 }
 
+function currentAccount(){
+  let account=null;
+  try{account=window.LJR_V569_AUTH?.currentAccount?.()||window.LJR_MAIN_ROUTE?.state?.user||null}catch(_){}
+  if(account)return account;
+  try{
+    const auth=JSON.parse(localStorage.getItem('ljr-auth-v569')||'{}');
+    account=Array.isArray(auth.accounts)?auth.accounts.find(x=>x&&x.id===auth.currentId)||null:null;
+  }catch(_){}
+  if(account)return account;
+  try{
+    const store=JSON.parse(localStorage.getItem('lj-store-v3')||'{}');
+    account=store&&store.user?store.user:null;
+  }catch(_){}
+  return account;
+}
+
+function syncProfile(head){
+  const button=head?.querySelector('.v950-scorers-profile');
+  if(!button)return;
+  const account=currentAccount();
+  const photo=String(account&&(account.avatar||account.photoURL||account.picture)||'').trim();
+  const gamer=!!(account&&/^gamer:[0-8]$/.test(String(account.avatarPreset||'')));
+  if(photo){
+    const html='<img class="v950-profile-photo" src="'+photo.replace(/"/g,'&quot;')+'" alt="Mi perfil">';
+    if(button.innerHTML!==html)button.innerHTML=html;
+    button.classList.add('has-account-avatar');
+    button.setAttribute('aria-label','Mi perfil');
+    return;
+  }
+  if(gamer&&window.LJR_CHROME?.avatar){
+    let html='';
+    try{html=window.LJR_CHROME.avatar(account)||''}catch(_){}
+    if(html){
+      if(button.innerHTML!==html)button.innerHTML=html;
+      button.classList.add('has-account-avatar');
+      button.setAttribute('aria-label','Mi perfil');
+      return;
+    }
+  }
+  if(button.innerHTML!==profileSvg)button.innerHTML=profileSvg;
+  button.classList.remove('has-account-avatar');
+  button.setAttribute('aria-label',account?'Mi perfil':'Perfil');
+}
+
 function build(){
   const head=document.createElement('header');
   head.className='v950-scorers-head';
@@ -43,6 +87,7 @@ function build(){
     '<button type="button" class="v950-scorers-profile" aria-label="Perfil">'+profileSvg+'</button>';
   head.querySelector('.v950-scorers-back').addEventListener('click',goBack);
   head.querySelector('.v950-scorers-profile').addEventListener('click',goProfile);
+  syncProfile(head);
   return head;
 }
 
@@ -63,6 +108,7 @@ function sync(){
   }else if(screen.firstElementChild!==head){
     screen.prepend(head);
   }
+  syncProfile(head);
 }
 
 function queue(){
@@ -74,6 +120,7 @@ function queue(){
 window.addEventListener('hashchange',queue);
 window.addEventListener('popstate',queue);
 window.addEventListener('load',queue);
+for(const ev of ['storage','ljr:profile-updated','pageshow'])window.addEventListener(ev,queue);
 document.addEventListener('DOMContentLoaded',queue,{once:true});
 const screen=document.getElementById('screen');
 if(screen)new MutationObserver(queue).observe(screen,{childList:true,subtree:false});
