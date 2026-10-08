@@ -101,7 +101,33 @@
     return route()==='competition' && !!tabs?.querySelector('.tab.active') && /Clasificaci/i.test(tabs.querySelector('.tab.active').textContent||'');
   }
   function img(src,alt,cls=''){if(!src)return '';return '<img class="'+cls+'" src="'+src+'" alt="'+alt+'" loading="eager" decoding="async">'}
-  function isVet35(){return String(localStorage.getItem('v12-fixture-cat')||localStorage.getItem('v62-category')||'3')==='2'}
+  /* V952: tablas oficiales sincronizadas por categoría. */
+  const CAT_NAMES={'1':'Veteranos 50+','2':'Veteranos 35+','3':'Primera Fuerza','4':'Segunda Fuerza','5':'Intermedia'};
+  function selectedCategory(){return String(localStorage.getItem('v12-fixture-cat')||localStorage.getItem('v62-category')||'3')}
+  function isVet35(){return selectedCategory()==='2'}
+  function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+  function officialTeams(){
+    let db=null;try{db=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||null}catch(_){db=window.LJR_OFFICIAL_DATA||null}
+    const id=selectedCategory(),cat=db?.categories?.[id];
+    const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'');
+    const number=v=>{const n=Number(v);return Number.isFinite(n)?n:0};
+    const rows=[],seen=new Set();
+    for(const r of (cat?.standings||[]).flatMap(b=>Array.isArray(b.rows)?b.rows:[])){
+      if(!Array.isArray(r)||!String(r[1]||'').trim())continue;
+      const name=String(r[1]).trim(),key=norm(name);if(seen.has(key))continue;seen.add(key);
+      let logo='';try{logo=window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||''}catch(_){}
+      if(!logo){
+        const e=Object.entries(db?.team_logos||{}).find(([n])=>norm(n)===key)?.[1];
+        const raw=typeof e==='string'?e:(e?.local||e?.source||e?.app||'');
+        if(raw)logo=/^https?:/i.test(raw)?raw:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/'+String(raw).replace(/^\.\//,'');
+      }
+      if(!/^(https?:\/\/|\.\/|\/)/i.test(String(logo||'')))logo='';
+      rows.push({name,logo,p:number(r[2]),w:number(r[3]),d:number(r[4]),l:number(r[5]),gf:number(r[6]),ga:number(r[7]),gd:number(r[8]),pts:number(r[9]),last:'—'});
+    }
+    return {id,name:cat?.name||CAT_NAMES[id]||'Categoría',rows};
+  }
+  function emptyStandings(){return '<div class="v952-standings-empty">Todavía no hay clasificación oficial publicada para '+esc(officialTeams().name)+'.</div>'}
+  function categoryLabel(){return '<div class="v952-standings-category" aria-live="polite">Clasificación · '+esc(officialTeams().name)+'</div>'}
   function header(){
     const activeHeader=isVet35()?v35HeaderTeams:headerTeams;
     const activeTime=isVet35()?'00:00':'10:00';
@@ -125,25 +151,27 @@
     '</section>';
   }
   function form(last){
-    return '<span class="v40-form"><i></i><i></i><b class="'+(last==='V'?'win':last==='E'?'draw':'loss')+'">'+last+'</b></span>';
+    return '<span class="v40-form"><i></i><i></i><b class="'+(last==='V'?'win':last==='D'?'loss':'unknown')+'">'+esc(last||'—')+'</b></span>';
   }
   function compact(){
-    const list=isVet35()?v35CompactTeams:compactTeams;
+    const list=officialTeams().rows;
+    if(!list.length)return '<section class="v578-table-section">'+emptyStandings()+'</section>';
     return '<section class="v578-table-section">'+
       '<div class="v578-scroll" data-v580-scroll="compact">'+
         '<table class="v578-table v579-compact-table"><colgroup><col style="width:24px"><col style="width:40px"><col style="width:140px"><col style="width:34px"><col style="width:40px"><col style="width:44px"><col style="width:90px"></colgroup>'+
           '<thead><tr><th class="rank"></th><th class="logo"></th><th class="teamname"></th><th>P</th><th>+/-</th><th>PTOS</th><th>FORMA</th></tr></thead>'+
           '<tbody>'+
             '<tr class="v580-section-row"><td colspan="7"><div class="v578-direct">DIRECTOS A OCTAVOS</div><div class="v578-rule"></div></td></tr>'+
-            list.map((t,i)=>'<tr><td class="rank">'+(i+1)+'</td><td class="logo">'+img(t.logo,t.name,'v578-logo')+'</td><td class="teamname"><strong>'+t.name+'</strong></td><td>'+t.p+'</td><td>'+t.gd+'</td><td class="pts">'+t.pts+'</td><td class="formcell">'+form(t.last)+'</td></tr>').join('')+
+            list.map((t,i)=>'<tr><td class="rank">'+(i+1)+'</td><td class="logo">'+img(esc(t.logo),esc(t.name),'v578-logo')+'</td><td class="teamname"><strong>'+esc(t.name)+'</strong></td><td>'+t.p+'</td><td>'+t.gd+'</td><td class="pts">'+t.pts+'</td><td class="formcell">'+form(t.last)+'</td></tr>').join('')+
           '</tbody>'+
         '</table>'+
       '</div>'+
     '</section>';
   }
   function complete(){
-    const list=isVet35()?v35CompleteTeams:completeTeams;
-    const compactList=isVet35()?v35CompactTeams:compactTeams;
+    const list=officialTeams().rows;
+    if(!list.length)return '<section class="v578-table-section">'+emptyStandings()+'</section>';
+    const compactList=list;
     const lastFor=name=>compactList.find(x=>x.name===name)?.last||'—';
     return '<section class="v578-table-section">'+
       '<div class="v578-scroll" data-v580-scroll="complete">'+
@@ -151,21 +179,22 @@
           '<thead><tr><th class="rank"></th><th class="logo"></th><th class="teamname"></th><th>P</th><th>V</th><th>E</th><th>D</th><th>+/-</th><th>GF</th><th>GC</th><th>FORMA</th><th>PTOS</th></tr></thead>'+
           '<tbody>'+
             '<tr class="v580-section-row"><td colspan="12"><div class="v578-direct">DIRECTOS A OCTAVOS</div><div class="v578-rule"></div></td></tr>'+
-            list.map((t,i)=>'<tr><td class="rank">'+(i+1)+'</td><td class="logo">'+img(t.logo,t.name,'v578-logo')+'</td><td class="teamname"><strong>'+t.name+'</strong></td><td>'+t.p+'</td><td>'+t.w+'</td><td>'+t.d+'</td><td>'+t.l+'</td><td>'+(t.gf-t.ga)+'</td><td>'+t.gf+'</td><td>'+t.ga+'</td><td class="formcell"><span class="v40-form"><i></i><i></i><i></i><i></i><b class="'+(lastFor(t.name)==='V'?'win':lastFor(t.name)==='E'?'draw':lastFor(t.name)==='D'?'loss':'draw')+'">'+lastFor(t.name)+'</b></span></td><td class="pts">'+t.pts+'</td></tr>').join('')+
+            list.map((t,i)=>'<tr><td class="rank">'+(i+1)+'</td><td class="logo">'+img(esc(t.logo),esc(t.name),'v578-logo')+'</td><td class="teamname"><strong>'+esc(t.name)+'</strong></td><td>'+t.p+'</td><td>'+t.w+'</td><td>'+t.d+'</td><td>'+t.l+'</td><td>'+(t.gf-t.ga)+'</td><td>'+t.gf+'</td><td>'+t.ga+'</td><td class="formcell"><span class="v40-form"><i></i><i></i><i></i><i></i><b class="'+(lastFor(t.name)==='V'?'win':lastFor(t.name)==='E'?'draw':lastFor(t.name)==='D'?'loss':'draw')+'">'+lastFor(t.name)+'</b></span></td><td class="pts">'+t.pts+'</td></tr>').join('')+
           '</tbody>'+
         '</table>'+
       '</div>'+
     '</section>';
   }
   function criteria(){
-    const list=isVet35()?v35CriteriaTeams:criteriaTeams;
+    const list=officialTeams().rows;
+    if(!list.length)return '<section class="v578-table-section">'+emptyStandings()+'</section>';
     return '<section class="v578-table-section">'+
       '<div class="v578-scroll" data-v580-scroll="criteria">'+
         '<table class="v578-table v578-criteria-table"><colgroup><col style="width:24px"><col style="width:40px"><col style="width:140px"><col style="width:44px"><col style="width:40px"><col style="width:34px"><col style="width:34px"><col style="width:34px"><col style="width:34px"><col style="width:34px"></colgroup>'+
           '<thead><tr><th class="rank"></th><th class="logo"></th><th class="teamname"></th><th>PTOS</th><th>+/-</th><th>GF</th><th>GC</th><th>V</th><th>E</th><th>P</th></tr></thead>'+
           '<tbody>'+
             '<tr class="v580-section-row"><td colspan="10"><div class="v578-direct">DIRECTOS A OCTAVOS</div><div class="v578-rule"></div></td></tr>'+
-            list.map((t,i)=>'<tr><td class="rank">'+(i+1)+'</td><td class="logo">'+img(t.logo,t.name,'v578-logo')+'</td><td class="teamname"><strong>'+t.name+'</strong></td><td class="pts">'+t.pts+'</td><td>'+t.gd+'</td><td>'+t.gf+'</td><td>'+t.ga+'</td><td>'+t.w+'</td><td>'+t.d+'</td><td>'+t.l+'</td></tr>').join('')+
+            list.map((t,i)=>'<tr><td class="rank">'+(i+1)+'</td><td class="logo">'+img(esc(t.logo),esc(t.name),'v578-logo')+'</td><td class="teamname"><strong>'+esc(t.name)+'</strong></td><td class="pts">'+t.pts+'</td><td>'+t.gd+'</td><td>'+t.gf+'</td><td>'+t.ga+'</td><td>'+t.w+'</td><td>'+t.d+'</td><td>'+t.l+'</td></tr>').join('')+
           '</tbody>'+
         '</table>'+
       '</div>'+
@@ -177,7 +206,7 @@
   function modeContent(mode){return mode==='complete'?complete():mode==='criteria'?criteria():compact()}
   function standings(){
     const mode=activeStandingsMode;
-    return '<section class="v40-standings" data-v40-standings data-v40-current-mode="'+mode+'">'+
+    return '<section class="v40-standings" data-v40-standings data-v40-category="'+esc(selectedCategory())+'" data-v40-current-mode="'+mode+'">'+categoryLabel()+
       '<div class="v40-segmented" role="tablist" aria-label="Vista de clasificación">'+
         '<button type="button" class="'+(mode==='compact'?'active':'')+'" data-v40-mode="compact">Compacta</button>'+
         '<button type="button" class="'+(mode==='complete'?'active':'')+'" data-v40-mode="complete">Completa</button>'+
@@ -199,6 +228,7 @@
     activeStandingsMode=['compact','complete','criteria'].includes(mode)?mode:'compact';
     try{sessionStorage.setItem('v40-standings-mode',activeStandingsMode)}catch(_){}
     box.dataset.v40CurrentMode=activeStandingsMode;
+    box.dataset.v40Category=selectedCategory();
     box.querySelectorAll('[data-v40-mode]').forEach(b=>b.classList.toggle('active',b.dataset.v40Mode===activeStandingsMode));
     const content=box.querySelector('[data-v40-content]');
     if(content){
@@ -280,6 +310,8 @@
     }else if(!screen.querySelector('[data-v40-host]')){
       tabs.insertAdjacentHTML('afterend','<div class="v40-standings-host" data-v40-host>'+standings()+'</div>');
     }
+    const box=screen.querySelector('[data-v40-standings]');
+    if(box&&box.dataset.v40Category!==selectedCategory())renderMode(box,activeStandingsMode);
     v588RestoreScroll(screen,activeStandingsMode);
   }
   /* V575 hardfix: intercepta el toque desde window antes que cualquier parche
@@ -324,6 +356,8 @@
     if(e.target.closest('[data-v40-mute]')) e.target.closest('[data-v40-mute]').classList.toggle('active');
   },true);
   window.addEventListener('hashchange',()=>requestAnimationFrame(patch));
+   window.addEventListener('ljr:competition-category',()=>requestAnimationFrame(patch));
+   window.addEventListener('ljr:official-data',()=>{const b=document.querySelector('[data-v40-standings]');if(b)renderMode(b,activeStandingsMode)});
   const observer=new MutationObserver(()=>requestAnimationFrame(patch));
   if(document.querySelector('#screen')) observer.observe(document.querySelector('#screen'),{childList:true,subtree:false});
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>requestAnimationFrame(patch),{once:true}); else requestAnimationFrame(patch);
