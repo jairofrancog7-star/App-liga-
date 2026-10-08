@@ -8,6 +8,7 @@
   const LEAGUE = './assets/liga-logo.webp';
   const CRESTS = [
     [/lobos\s*(?:cdg|c\.?d\.?g\.?)/i, './assets/season-2026/lobos-cdg.webp'],
+    [/lobos\s*(?:jrs?\.?|junior)/i, './assets/season-2026/lobos-jr-cerrito-gasca.webp'],
     [/boavista/i, './assets/history/team-logos/legacy-2015-boavista.webp'],
     [/gal[aá]cticos/i, './assets/season-2026/galacticos.webp']
   ];
