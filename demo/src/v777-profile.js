@@ -80,8 +80,22 @@ function categoryLogo(name){
  // Las rutas ya apuntan a los assets transparentes locales exactos.
  return SHIRT_CATEGORY_LOGOS[norm(name)]||'';
 }
+function categoriesForTeam(name){
+ const key=norm(name);if(!key)return [];
+ try{
+  const current=window.LJR_V812_TEAM_CATEGORIES?.(name);
+  if(Array.isArray(current)&&current.length)return [...new Set(current)];
+ }catch(_){}
+ const matches=[];
+ for(const [category,names] of Object.entries(SHIRT_TEAM_CATEGORY_FALLBACK)){
+  if(names.some(team=>norm(team)===key))matches.push(category);
+ }
+ return matches;
+}
 function categoryForTeam(name){
  const target=norm(name);if(!target)return '';
+ const memberships=categoriesForTeam(name);
+ if(memberships.length)return memberships[0];
  // Prefer the app's official normalized team registry when available.
  try{
    const hit=(window.LJR_V100?.officialTeams?.()||[]).find(x=>norm(x?.name)===target&&x?.category);
@@ -208,7 +222,10 @@ function open(){
  const teams=leagueTeams();
  const selectedTeam=String(a.shirtTeam||a.team||'').trim();
  const selectedColor=cleanColor(a.shirtColor||'#0b4bd8');
- const selectedCategory=String(categoryForTeam(selectedTeam)||a.shirtCategory||a.category||'').trim();
+ const savedCategory=String(a.shirtCategory||a.category||'').trim();
+ const memberships=categoriesForTeam(selectedTeam);
+ const selectedCategory=memberships.some(c=>norm(c)===norm(savedCategory))
+  ?savedCategory:String(categoryForTeam(selectedTeam)||savedCategory).trim();
  const teamOptions='<option value="">Sin escudo</option>'+teams.map(team=>'<option value="'+esc(team)+'" '+(norm(team)===norm(selectedTeam)?'selected':'')+'>'+esc(team)+'</option>').join('');
  const categoryOptions='<option value="">Selecciona categoría</option>'+SHIRT_CATEGORIES.map(cat=>'<option value="'+esc(cat)+'" '+(norm(cat)===norm(selectedCategory)?'selected':'')+'>'+esc(cat)+'</option>').join('');
  const n=media().modal('Mi avatar y mi camiseta',
@@ -226,7 +243,7 @@ function open(){
      '<div class="v893-shirt-customize">'+
        '<label class="v893-shirt-color">Color de la camiseta<span class="v893-color-control"><input name="shirtColor" type="color" value="'+esc(selectedColor)+'" aria-label="Color de la camiseta"><b data-shirt-color-text>'+esc(selectedColor.toUpperCase())+'</b></span></label>'+
        '<label class="v893-shirt-team">Equipo · '+teams.length+' clubes (53 participaciones)<select name="shirtTeam">'+teamOptions+'</select><span class="v893-team-preview" data-shirt-team-preview aria-live="polite"></span></label>'+
-       '<label class="v902-shirt-category">Categoría automática según el equipo<select name="shirtCategory">'+categoryOptions+'</select><small>Al cambiar de equipo se asigna su categoría y el escudo grande de la espalda.</small><span class="v906-category-preview" data-shirt-category-preview aria-live="polite"></span></label>'+
+       '<label class="v902-shirt-category">Categoría del equipo<select name="shirtCategory">'+categoryOptions+'</select><small>Si el club participa en dos categorías, elige la correcta para mostrar su escudo.</small><span class="v906-category-preview" data-shirt-category-preview aria-live="polite"></span></label>'+
      '</div>'+
      shirtViewer()+
      '<button type="submit" class="ljr-save-profile">Guardar mi perfil</button>'+
@@ -246,15 +263,24 @@ function open(){
    window.LJR_FOOTBALL_SHIRT_3D?.update?.(shirtHost,{name:shirtName,number:shirtNumber,color:shirtColor,team:shirtTeam,logo,category:shirtCategory,categoryLogo:categoryCrest});
    const colorText=n.querySelector('[data-shirt-color-text]');if(colorText)colorText.textContent=shirtColor.toUpperCase();
    const badge=n.querySelector('[data-shirt-team-preview]');
-   if(badge)badge.innerHTML=shirtTeam?(logo?'<img src="'+esc(logo)+'" alt=""><span><b>'+esc(shirtTeam)+'</b><small>Escudo del equipo · frente</small></span>':'<span><b>'+esc(shirtTeam)+'</b><small>Escudo del equipo pendiente</small></span>'):'<span><b>Sin equipo</b><small>Selecciona uno de los 50 equipos</small></span>';
+   if(badge)badge.innerHTML=shirtTeam?(logo?'<img src="'+esc(logo)+'" alt=""><span><b>'+esc(shirtTeam)+'</b><small>Escudo del equipo · frente</small></span>':'<span><b>'+esc(shirtTeam)+'</b><small>Escudo del equipo pendiente</small></span>'):'<span><b>Sin equipo</b><small>Selecciona uno de los 51 clubes</small></span>';
    const catBadge=n.querySelector('[data-shirt-category-preview]');
    if(catBadge)catBadge.innerHTML=shirtCategory?(categoryCrest?'<img src="'+esc(categoryCrest)+'" alt=""><span><b>'+esc(shirtCategory)+'</b><small>Escudo de categoría · espalda</small></span>':'<span><b>'+esc(shirtCategory)+'</b><small>Escudo de categoría pendiente</small></span>'):'<span><b>Sin categoría</b><small>Se asigna al elegir equipo</small></span>';
    n.querySelectorAll('[data-preset]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.preset===preset&&!photo)));
  };
  form.oninput=preview;
  const syncCategoryFromTeam=()=>{
-   const auto=categoryForTeam(form.elements.shirtTeam.value);
-   if(auto&&norm(form.elements.shirtCategory.value)!==norm(auto))form.elements.shirtCategory.value=auto;
+   const picker=form.elements.shirtCategory;
+   const team=String(form.elements.shirtTeam.value||'').trim();
+   const eligible=categoriesForTeam(team);
+   for(const option of picker.options){
+    if(option.value)option.disabled=eligible.length>0&&!eligible.some(cat=>norm(cat)===norm(option.value));
+   }
+   if(eligible.length&&!eligible.some(cat=>norm(cat)===norm(picker.value)))picker.value=eligible[0];
+   if(!eligible.length){
+    const auto=categoryForTeam(team);
+    if(auto&&norm(picker.value)!==norm(auto))picker.value=auto;
+   }
  };
  form.elements.shirtTeam?.addEventListener('change',()=>{syncCategoryFromTeam();preview()});
  syncCategoryFromTeam();preview();bindShirtViewer(n);
@@ -269,6 +295,11 @@ function open(){
    e.preventDefault();
    const number=Number(form.elements.shirtNumber.value);if(!Number.isInteger(number)||number<0||number>99)return;
    const update={...a,avatar:photo,avatarPreset:preset,shirtName:form.elements.shirtName.value.trim(),shirtNumber:String(number),shirtColor:cleanColor(form.elements.shirtColor.value),shirtTeam:String(form.elements.shirtTeam.value||'').trim(),shirtCategory:String(form.elements.shirtCategory.value||'').trim()};
+   const allowed=categoriesForTeam(update.shirtTeam);
+   if(allowed.length&&!allowed.some(c=>norm(c)===norm(update.shirtCategory))){
+     n.querySelector('[data-status]').textContent='Selecciona una categoría en la que participe ese equipo.';
+     return;
+   }
    try{
      const auth=JSON.parse(localStorage.getItem('ljr-auth-v569')||'{}');const i=auth.accounts?.findIndex(x=>x.id===a.id);
      if(i>=0){auth.accounts[i]=update;localStorage.setItem('ljr-auth-v569',JSON.stringify(auth))}
@@ -336,5 +367,5 @@ document.addEventListener('DOMContentLoaded',scheduleProfileEntry,{once:true});
 if(document.readyState!=='loading')scheduleProfileEntry();
 new MutationObserver(()=>{if(profileRoute()==='profile')mountProfileEntry()}).observe(document.documentElement,{childList:true,subtree:true});
 
-window.LJR_PROFILE={open};
+window.LJR_PROFILE={open,categoriesForTeam,categoryForTeam};
 })();
