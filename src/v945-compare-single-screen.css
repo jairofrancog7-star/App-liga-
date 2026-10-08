@@ -11,9 +11,9 @@
   box-sizing:border-box!important;
   display:grid!important;
   grid-template-columns:minmax(0,1fr)!important;
-  grid-template-rows:min-content min-content minmax(96px,1fr) min-content!important;
+  grid-template-rows:min-content min-content minmax(0,clamp(100px,18dvh,139px)) min-content!important;
   gap:clamp(5px,1.05dvh,9px)!important;
-  align-content:stretch!important;
+  align-content:start!important;
   width:100%!important;
   max-width:560px!important;
   min-width:0!important;
