@@ -204,7 +204,7 @@ function renderStandings(catId='3'){
  if(!wrap)return;
  const rows=standingsRows(catId);
  const thead='<tr><th>#</th><th>Equipo</th><th>PJ</th><th>PTS</th><th>DG</th></tr>';
- const cells=rows.map((r,i)=>'<tr><td class="ljpc-rank">'+esc(r[0]||i+1)+'</td><td><span class="ljpc-team">'+crest(r[1])+'<span>'+esc(pretty(r[1]))+'</span></span></td><td>'+esc(r[2]??'—')+'</td><td><b>'+esc(r[3]??'—')+'</b></td><td>'+esc(r[4]??'—')+'</td></tr>').join('');
+ const cells=rows.map((r,i)=>'<tr><td class="ljpc-rank">'+esc(r[0]||i+1)+'</td><td><span class="ljpc-team">'+crest(r[1])+'<span>'+esc(pretty(r[1]))+'</span></span></td><td>'+esc(r[2]??'—')+'</td><td><b>'+esc(r[9]??'—')+'</b></td><td>'+esc(r[8]??'—')+'</td></tr>').join('');
  wrap.innerHTML='<div class="ljpc-function-root" data-ljpc-function-route="pc-standings"><div class="ljpc-toolbar"><div class="ljpc-cat-tabs">'+CAT_ORDER.map(id=>'<button class="ljpc-chip '+(id===catId?'active':'')+'" data-ljpc-standing-cat="'+id+'">'+esc(categoryName(id))+'</button>').join('')+'</div><button class="ljpc-btn" data-ljpc-fixtures>Partidos oficiales</button></div><section class="ljpc-panel" style="padding:0;overflow:auto">'+(rows.length?'<table class="ljpc-table"><thead>'+thead+'</thead><tbody>'+cells+'</tbody></table>':'<p class="ljpc-muted" style="padding:18px">Clasificación oficial no disponible para esta categoría.</p>')+'</section></div>';
  wrap.querySelectorAll('[data-ljpc-standing-cat]').forEach(b=>b.addEventListener('click',()=>renderStandings(b.dataset.ljpcStandingCat)));
  wrap.querySelector('[data-ljpc-fixtures]')?.addEventListener('click',()=>go('pc-fixtures'));
