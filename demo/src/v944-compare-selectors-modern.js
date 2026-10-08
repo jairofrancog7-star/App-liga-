@@ -15,12 +15,49 @@ const read=k=>{try{return localStorage.getItem(k)||''}catch(_){return ''}};
 const store=(k,v)=>{try{localStorage.setItem(k,v)}catch(_){}};
 let players=[],scorers=new Map(),selected=['',''],activeSide=0,loading=false,loaded=false,overlay=null;
 let bootVersion=0;
-function officialLogo(team,api){
- try{return api?.logoFor?.(team)||window.LJR_TEAM_LOGOS?.get?.(team)||window.LJR_SEASON_LOGOS?.get?.(team)||''}catch(_){return ''}
+/* V946: prefer original crests from the existing Liga_Futbol asset registry.
+   Do not replace missing crests with a football emoji or modify image pixels. */
+const V946_ASSET_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+const V946_VERIFIED={
+ 'la canchita deportes':'assets/official-logos/la-canchita-deportes.png',
+ 'la canchita':'assets/official-logos/la-canchita-deportes.png',
+ 'juventus':'assets/official-logos/juventus.png'
+};
+function logoCandidates(team,api){
+ const found=[];
+ const add=value=>{
+  if(!value)return;
+  let raw=typeof value==='string'?value:(value?.app||value?.local||value?.source||'');
+  if(!raw||typeof raw!=='string')return;
+  raw=raw.trim();
+  if(!raw||/^data:text\//i.test(raw))return;
+  if(/^(?:\.\/)?assets\/official-logos\//i.test(raw))raw=V946_ASSET_ROOT+raw.replace(/^\.?\//,'');
+  if(!/^(?:https?:\/\/|\.\/|\/|assets\/|data:image\/)/i.test(raw))return;
+  if(!found.includes(raw))found.push(raw);
+ };
+ const canonical=norm(team);
+ add(V946_VERIFIED[canonical]?V946_ASSET_ROOT+V946_VERIFIED[canonical]:'');
+ try{add(window.LJR_TEAM_LOGOS?.get?.(team))}catch(_){}
+ try{add(window.LJR_SEASON_LOGOS?.get?.(team))}catch(_){}
+ try{add(api?.logoFor?.(team))}catch(_){}
+ try{add(window.LJR_OFFICIAL_API?.getLogo?.(team))}catch(_){}
+ try{
+  const registry=window.LJR_TEAM_LOGOS?.map||{};
+  const key=Object.keys(registry).find(k=>norm(k)===canonical);
+  const asset=registry[key];if(asset)add(/^(?:https?:\/\/|data:)/i.test(asset)?asset:V946_ASSET_ROOT+String(asset).replace(/^\.?\//,''));
+ }catch(_){}
+ return found;
+}
+function officialLogo(team,api){return logoCandidates(team,api)}
+function initials(team){
+ return String(team||'?').trim().split(/\s+/).filter(Boolean).slice(0,2).map(s=>s[0]).join('').toUpperCase();
 }
 function logo(p){
- const src=p?.logo;
- return '<span class="v944-crest">'+(src?'<img src="'+esc(src)+'" alt="" loading="lazy" decoding="async">':'<span aria-hidden="true">⚽</span>')+'</span>';
+ const list=p?.logos||[],src=list[0]||'';
+ return '<span class="v944-crest v946-team-crest" title="'+esc(p?.team||'Equipo')+'">'+
+  (src?'<img src="'+esc(src)+'" data-v946-crest-key="'+esc(p.key)+'" data-v946-attempt="0" alt="Escudo de '+esc(p.team)+'" loading="eager" decoding="async">':
+   '<span class="v946-crest-initials" aria-label="Escudo no disponible">'+esc(initials(p?.team))+'</span>')+
+ '</span>';
 }
 function icon(name){
  const shape={
@@ -133,7 +170,7 @@ function initializePlayers(api){
   const n=Number(s.goals);
   if(s.goals!==null&&s.goals!==''&&Number.isFinite(n))goals.set(rec.key,n);
  }
- players=[...map.values()].map(p=>({...p,logo:officialLogo(p.team,api)}));
+ players=[...map.values()].map(p=>({...p,logos:officialLogo(p.team,api)}));
  players.sort((a,b)=>(goals.get(b.key)??-1)-(goals.get(a.key)??-1)||a.name.localeCompare(b.name,'es'));
  scorers=goals;
  selected=[read(keyA),read(keyB)];
@@ -166,6 +203,22 @@ async function boot(){
   if(routes.has(route()))screen.innerHTML='<section class="v944-compare v944-loading"><h1>Comparador</h1><p>No se pudo cargar el directorio oficial. Intenta nuevamente.</p><button type="button" data-v944-retry>Reintentar</button></section>';
  }finally{loading=false}
 }
+/* One failed URL must not hide a known team crest: try the next official
+   source, then display team initials rather than an unrelated football. */
+document.addEventListener('error',event=>{
+ const img=event.target;
+ if(!(img instanceof HTMLImageElement)||!img.hasAttribute('data-v946-crest-key'))return;
+ const player=record(img.getAttribute('data-v946-crest-key'));
+ const urls=player?.logos||[];
+ const next=(Number(img.dataset.v946Attempt)||0)+1;
+ if(next<urls.length){
+  img.dataset.v946Attempt=String(next);
+  img.src=urls[next];
+  return;
+ }
+ const holder=img.closest('.v946-team-crest');
+ if(holder)holder.innerHTML='<span class="v946-crest-initials" aria-label="Escudo no disponible">'+esc(initials(player?.team))+'</span>';
+},true);
 document.addEventListener('click',e=>{
  const target=e.target instanceof Element?e.target:null;
  if(!target)return;
