@@ -183,3 +183,100 @@ html body[data-app-route] .bottom-nav .nav-item small{
   font-size:10px!important;
   line-height:12px!important;
 }
+
+
+/* V896 — votación con foto de jugador + escudo real del equipo. */
+.vote-card{
+  min-width:0;
+}
+.vote-player-photo{
+  width:82px;
+  height:82px;
+  min-width:82px;
+  min-height:82px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--cyan),var(--primary));
+  border:2px solid rgba(255,255,255,.38);
+  box-shadow:0 8px 22px rgba(0,0,40,.24);
+  color:#fff;
+  font-size:22px;
+  font-weight:950;
+}
+.vote-player-photo img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 34%;
+  border-radius:50%;
+}
+.vote-player-photo.fallback{
+  background:linear-gradient(135deg,#08cfe1,#2452d4);
+}
+.vote-team-chip{
+  display:flex!important;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  width:100%;
+  min-width:0;
+}
+.vote-team-logo{
+  width:34px;
+  height:34px;
+  min-width:34px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(115,219,255,.48);
+}
+.vote-team-logo img{
+  display:block;
+  width:29px;
+  height:29px;
+  object-fit:contain;
+}
+.vote-team-logo.fallback{
+  color:#fff;
+  font-size:9px;
+  font-weight:950;
+}
+.vote-team-name{
+  min-width:0;
+  max-width:calc(100% - 44px);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#d7e8ff!important;
+  font-size:8px!important;
+  font-weight:850;
+}
+.vote-card>b{
+  width:100%;
+  min-width:0;
+  font-size:11px;
+  line-height:1.08;
+  overflow-wrap:anywhere;
+}
+@media (max-width:390px){
+  .vote-player-photo{
+    width:76px;
+    height:76px;
+    min-width:76px;
+    min-height:76px;
+  }
+  .vote-team-logo{
+    width:32px;
+    height:32px;
+    min-width:32px;
+  }
+  .vote-team-logo img{
+    width:27px;
+    height:27px;
+  }
+}
