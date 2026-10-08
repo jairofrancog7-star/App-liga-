@@ -57,8 +57,10 @@ function directLocal(name,team){
   return typeof a==='string'?a:'';
 }
 function photo(name,team='',cat=''){
-  const local=directLocal(name,team);if(local)return local;
-  return String(profile(name,team,cat)?.photo||'');
+  // La foto del jugador/categoria oficial tiene prioridad sobre caches antiguos.
+  const verified=String(profile(name,team,cat)?.photo||'').trim();
+  if(verified)return verified;
+  return directLocal(name,team);
 }
 function initials(name){
   return String(name||'J').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'J';
@@ -110,10 +112,12 @@ function enhance(root=document){
 const store=(window.LJR_PLAYER_PHOTOS&&typeof window.LJR_PLAYER_PHOTOS==='object')?window.LJR_PLAYER_PHOTOS:{};
 const previousGet=typeof store.get==='function'?store.get.bind(store):null;
 store.get=function(name,team,cat){
+  const verified=photo(name,team,cat);
+  if(verified)return verified;
   if(previousGet){
     try{const x=previousGet(name,team,cat);if(x)return x}catch(_){}
   }
-  return photo(name,team,cat);
+  return '';
 };
 window.LJR_PLAYER_PHOTOS=store;
 window.LJR_PLAYER_MEDIA={data,rebuild,profile,photo,avatar,setAvatar,enhance,norm,same};
