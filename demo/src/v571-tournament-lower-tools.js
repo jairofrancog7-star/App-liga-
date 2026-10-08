@@ -175,10 +175,10 @@ function panel(){
     '</div>'+
     rankingBlock()+
     '<div class="v571-tools">'+
-      '<button type="button" data-v573-standings><span>▦</span><b>Posiciones</b></button>'+
-      '<button type="button" data-v571-route="scorers"><span>◎</span><b>Goleadores</b></button>'+
-      '<button type="button" data-v571-bracket><span>⌘</span><b>Cuadro / Liguilla</b></button>'+
-      '<button type="button" data-v571-route="news"><span>◫</span><b>Noticias</b></button>'+
+      '<button type="button" data-v573-standings><span class="v571-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M4 9h16M4 14h16M9 4v16M15 4v16"/></svg></span><b>Posiciones</b><small>Tabla oficial</small></button>'+
+      '<button type="button" data-v571-route="scorers"><span class="v571-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="m12 7 2.2 1.6-.8 2.6h-2.8l-.8-2.6L12 7Zm-5.3 4.2 2.7.1.9 2.6-2.2 1.7-2.1-1.5.7-2.9Zm10.6 0-.7 2.9-2.1 1.5-2.2-1.7.9-2.6 2.7-.1 1.4 0Z"/></svg></span><b>Goleadores</b><small>Ranking</small></button>'+
+      '<button type="button" data-v571-bracket><span class="v571-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4h4v4H7zM13 16h4v4h-4zM13 4h4v4h-4zM7 16h4v4H7z"/><path d="M11 6h2M9 8v8M15 8v8M11 18h2"/></svg></span><b>Cuadro / Liguilla</b><small>Fase final</small></button>'+
+      '<button type="button" data-v571-route="news"><span class="v571-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 5h11v14H5z"/><path d="M16 8h3v11h-3M8 9h5M8 13h5M8 17h3"/></svg></span><b>Noticias</b><small>Avisos</small></button>'+
     '</div>'+
   '</section>';
 }
