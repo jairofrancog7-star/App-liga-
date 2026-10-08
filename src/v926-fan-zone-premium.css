@@ -1,0 +1,195 @@
+/* V926 · Fan Zone: reacciones únicas, legibles y compactas. Sólo afecta este modal. */
+html body .v105-modal.v926-fanzone-modal{
+  z-index:2147483610!important;
+  box-sizing:border-box!important;
+  padding:max(14px,env(safe-area-inset-top)) 14px max(14px,env(safe-area-inset-bottom))!important;
+  background:rgba(0,3,25,.78)!important;
+  backdrop-filter:blur(11px)!important;
+  -webkit-backdrop-filter:blur(11px)!important;
+  display:grid!important;
+  place-items:center!important;
+}
+html body .v926-fanzone-modal .v105-dialog{
+  box-sizing:border-box!important;
+  width:min(540px,100%)!important;
+  max-height:min(88dvh,720px)!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+  position:relative!important;
+  margin:0!important;
+  padding:20px 18px 16px!important;
+  border:1px solid rgba(95,169,255,.38)!important;
+  border-radius:26px!important;
+  color:#fff!important;
+  background:
+    radial-gradient(ellipse at 15% 0%,rgba(37,178,255,.20),transparent 55%),
+    radial-gradient(ellipse at 100% 80%,rgba(40,82,234,.13),transparent 56%),
+    linear-gradient(155deg,#092263 0%,#071643 54%,#071039 100%)!important;
+  box-shadow:0 18px 55px rgba(0,3,24,.66),inset 0 1px 0 rgba(255,255,255,.12)!important;
+  font-family:Inter,Roboto,system-ui,-apple-system,sans-serif!important;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(142,194,252,.42) transparent;
+}
+html body .v926-fanzone-modal .v105-dialog::before{
+  content:"";position:absolute;top:0;left:20px;right:20px;height:2px;
+  background:linear-gradient(90deg,transparent,#4de5ff 34%,#8ca6ff 68%,transparent);
+  box-shadow:0 0 15px rgba(67,221,251,.55);pointer-events:none;
+}
+html body .v926-fanzone-modal .v926-fan-eyebrow{
+  display:flex;align-items:center;flex-wrap:wrap;gap:8px;justify-content:space-between;
+  margin:1px 46px 12px 0;
+}
+html body .v926-fanzone-modal .v926-fan-kicker{
+  color:#74e8fa;letter-spacing:.15em;font-size:9px;font-weight:900;line-height:1.3;
+}
+html body .v926-fanzone-modal .v926-fan-badge{
+  display:inline-flex;align-items:center;gap:5px;min-height:23px;
+  padding:3px 8px;border:1px solid rgba(94,205,255,.34);border-radius:30px;
+  background:rgba(27,130,240,.13);color:#d6f7ff;font-size:9px;font-weight:850;letter-spacing:.05em;
+}
+html body .v926-fanzone-modal .v926-fan-badge span{color:#ffdb6a}
+html body .v926-fanzone-modal .v105-dialog>h3{
+  margin:0 42px 7px 0!important;
+  color:#fff!important;
+  font-size:clamp(27px,7vw,34px)!important;
+  font-weight:900!important;
+  letter-spacing:-.045em!important;line-height:1.06!important;
+  text-shadow:0 2px 18px rgba(17,125,255,.30);
+}
+html body .v926-fanzone-modal .v105-dialog>p{
+  margin:0 12px 13px 0!important;
+  color:#c0d4f4!important;
+  font-size:11.5px!important;line-height:1.45!important;
+  font-weight:500!important;
+}
+html body .v926-fanzone-modal .v105-close{
+  position:absolute!important;top:15px!important;right:14px!important;
+  display:grid!important;place-items:center!important;
+  width:39px!important;height:39px!important;min-width:39px!important;min-height:39px!important;
+  margin:0!important;padding:0!important;border-radius:14px!important;
+  border:1px solid rgba(184,218,255,.28)!important;
+  background:rgba(20,52,113,.45)!important;
+  color:#fff!important;font:400 26px/1 system-ui!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.05)!important;
+}
+html body .v926-fanzone-modal .v105-close:focus-visible,
+html body .v926-fanzone-modal .v926-fan-card:focus-visible{outline:2px solid #70e8fa!important;outline-offset:3px!important}
+html body .v926-fanzone-modal .v926-fan-status{
+  display:flex;align-items:center;gap:9px;
+  min-height:41px;margin:0 0 14px;padding:9px 10px;
+  border:1px solid rgba(98,198,255,.18);border-radius:12px;
+  background:rgba(15,76,139,.25);
+}
+html body .v926-fanzone-modal .v926-fan-status-symbol{
+  display:grid;place-items:center;flex:none;width:23px;height:23px;
+  border-radius:50%;background:rgba(68,230,187,.17);color:#61f4d9;font-size:12px;font-weight:900;
+}
+html body .v926-fanzone-modal .v105-fan-rule{
+  margin:0!important;padding:0!important;
+  color:#d1e6ff!important;font-size:10.5px!important;line-height:1.4!important;
+}
+html body .v926-fanzone-modal .v105-grid.v926-fan-grid{
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:11px!important;width:100%!important;
+}
+html body .v926-fanzone-modal .v105-card.v926-fan-card{
+  --v926-accent:#66eaff;--v926-rgb:75,220,255;
+  display:flex!important;flex-direction:column!important;
+  align-items:flex-start!important;justify-content:flex-start!important;
+  gap:0!important;position:relative!important;
+  min-width:0!important;width:100%!important;min-height:135px!important;
+  padding:13px!important;margin:0!important;
+  text-align:left!important;
+  border:1px solid rgba(var(--v926-rgb),.30)!important;
+  border-radius:19px!important;
+  color:#fff!important;
+  background:radial-gradient(circle at 95% 0%,rgba(var(--v926-rgb),.15),transparent 58%),linear-gradient(145deg,rgba(15,41,110,.84),rgba(8,23,70,.92))!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.06),0 6px 15px rgba(0,5,27,.13)!important;
+  cursor:pointer;
+  overflow:hidden!important;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease!important;
+  -webkit-tap-highlight-color:transparent;
+}
+html body .v926-fanzone-modal .v926-fan-card[data-v926-tone="liga"]{--v926-accent:#7cacf8;--v926-rgb:107,166,255}
+html body .v926-fanzone-modal .v926-fan-card[data-v926-tone="aplauso"]{--v926-accent:#ffdd80;--v926-rgb:255,206,97}
+html body .v926-fanzone-modal .v926-fan-card[data-v926-tone="fuego"]{--v926-accent:#ffaf77;--v926-rgb:255,148,88}
+html body .v926-fanzone-modal .v926-fan-card::after{
+  content:"";position:absolute;bottom:0;left:0;height:3px;width:var(--v926-share,0%);
+  background:var(--v926-accent);opacity:.73;transition:width .25s ease;
+}
+html body .v926-fanzone-modal .v926-fan-card:hover,
+html body .v926-fanzone-modal .v926-fan-card:active{
+  transform:translateY(-2px)!important;
+  border-color:rgba(var(--v926-rgb),.65)!important;
+}
+html body .v926-fanzone-modal .v926-fan-card.is-selected,
+html body .v926-fanzone-modal .v926-fan-card[aria-pressed="true"]{
+  border:1.5px solid var(--v926-accent)!important;
+  background:radial-gradient(circle at 90% 6%,rgba(var(--v926-rgb),.24),transparent 65%),linear-gradient(145deg,#143e90,#0b245c)!important;
+  box-shadow:0 0 0 1px rgba(var(--v926-rgb),.14),inset 0 1px rgba(255,255,255,.09),0 6px 19px rgba(0,8,46,.23)!important;
+}
+html body .v926-fanzone-modal .v926-fan-card .v105-icon.v926-fan-icon{
+  display:grid!important;place-items:center!important;flex:none!important;
+  width:46px!important;height:46px!important;margin:0 0 9px!important;
+  border:1px solid rgba(var(--v926-rgb),.30)!important;border-radius:15px!important;
+  background:linear-gradient(145deg,rgba(var(--v926-rgb),.21),rgba(var(--v926-rgb),.06))!important;
+  color:var(--v926-accent)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.09)!important;
+}
+html body .v926-fanzone-modal .v926-fan-icon svg{
+  display:block!important;width:31px!important;height:31px!important;
+  fill:none!important;stroke:currentColor!important;stroke-width:2.5!important;
+  stroke-linejoin:round!important;stroke-linecap:round!important;
+}
+html body .v926-fanzone-modal .v926-fan-copy{
+  display:block!important;min-width:0!important;
+  width:100%!important;padding-right:16px;
+}
+html body .v926-fanzone-modal .v926-fan-copy b{
+  display:block!important;margin:0!important;
+  font-size:15.5px!important;line-height:1.2!important;font-weight:850!important;
+  color:#fff!important;letter-spacing:-.025em!important;
+}
+html body .v926-fanzone-modal .v926-fan-copy b>span{font-size:14px;vertical-align:0}
+html body .v926-fanzone-modal .v926-fan-copy small{
+  display:block!important;margin:3px 0 0!important;
+  font-size:10.5px!important;line-height:1.25!important;color:#aec9e9!important;font-weight:650!important;
+}
+html body .v926-fanzone-modal .v926-fan-copy em{
+  display:none!important;
+}
+html body .v926-fanzone-modal .v926-fan-selected-mark{
+  position:absolute;right:11px;top:12px;display:grid;place-items:center;
+  width:24px;height:24px;border-radius:50%;border:1px solid rgba(255,255,255,.15);
+  color:rgba(210,229,255,.36);font:900 13px/1 system-ui;
+  opacity:.65;
+}
+html body .v926-fanzone-modal .v926-fan-card.is-selected .v926-fan-selected-mark{
+  background:var(--v926-accent);color:#061439;border-color:var(--v926-accent);
+  box-shadow:0 0 15px rgba(var(--v926-rgb),.35);opacity:1;
+}
+html body .v926-fanzone-modal .v926-fan-bottom{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  margin-top:13px;padding-top:11px;border-top:1px solid rgba(151,190,254,.16);
+  color:#aac4e4;font-size:10px;font-weight:650;
+}
+html body .v926-fanzone-modal .v926-fan-bottom>span{display:flex;align-items:center;gap:7px;min-width:0}
+html body .v926-fanzone-modal .v926-fan-bottom strong{color:#fff;font-size:11px;font-weight:850;white-space:nowrap}
+html body .v926-fanzone-modal .v926-fan-dot{display:inline-block;width:6px;height:6px;flex:none;border-radius:50%;background:#54f1db;box-shadow:0 0 10px rgba(80,235,214,.66)}
+@media(max-width:370px){
+ html body .v926-fanzone-modal .v105-dialog{padding:17px 13px 14px!important}
+ html body .v926-fanzone-modal .v105-grid.v926-fan-grid{gap:9px!important}
+ html body .v926-fanzone-modal .v105-card.v926-fan-card{min-height:127px!important;padding:11px!important;border-radius:16px!important}
+ html body .v926-fanzone-modal .v926-fan-copy b{font-size:14px!important}
+ html body .v926-fanzone-modal .v926-fan-icon{width:41px!important;height:41px!important}
+ html body .v926-fanzone-modal .v926-fan-kicker{font-size:8px}
+}
+@media(max-width:290px){
+ html body .v926-fanzone-modal .v105-grid.v926-fan-grid{grid-template-columns:1fr!important}
+ html body .v926-fanzone-modal .v105-card.v926-fan-card{min-height:100px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ html body .v926-fanzone-modal .v926-fan-card{transition:none!important}
+ html body .v926-fanzone-modal .v926-fan-card::after{transition:none!important}
+}
