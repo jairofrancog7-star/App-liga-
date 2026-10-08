@@ -250,9 +250,9 @@ function homeCalendarCard(x){
   const venue=String(r[7]||'Campo por confirmar').trim()||'Campo por confirmar';
   return '<article class="v78-calendar-card '+(played?'is-result':'is-upcoming')+'">'+
     '<div class="v78-calendar-date"><b>'+esc(d.day)+'</b><span>'+esc(d.month)+'</span></div>'+
-    '<div class="v78-calendar-teams">'+
+    '<div class="v78-calendar-teams'+(decision?' v78-has-decision':'')+'">'+
       '<button type="button" data-v62-team="'+esc(home)+'">'+homeOfficialLogo(home)+'<span>'+esc(home)+'</span></button>'+
-      '<strong class="v78-calendar-score">'+esc(score)+'</strong>'+
+      '<strong class="v78-calendar-score'+(decision?' v78-score-decision':'')+'">'+esc(score)+'</strong>'+
       '<button type="button" data-v62-team="'+esc(away)+'">'+homeOfficialLogo(away)+'<span>'+esc(away)+'</span></button>'+
     '</div>'+
     '<div class="v78-calendar-meta"><b>'+status+'</b><span>Jornada '+esc(r[1]||'')+' · '+esc(venue)+'</span></div>'+
