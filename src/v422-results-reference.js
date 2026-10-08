@@ -1,3 +1,4 @@
+import {defaultDefeatedTeam} from './competition-data.js';
 /* V422 — Resultados lower reference.
    Añade SOLO la experiencia inferior de Resultados dentro de Competición.
    No modifica la cabecera, tabs ni contenido existente de la página. */
@@ -75,7 +76,10 @@ function icon(name){
 function statusText(m){
  if(m.status==='LIVE')return '<span class="v422-live-status"><i></i>'+(Number.isFinite(m.minute)?esc(m.minute)+"'":'EN VIVO')+'</span>';
  if(m.status==='FINAL')return '<span class="v422-final">Final</span>';
- if(m.status==='AWARDED')return m.decision?.default===true?'<span class="v422-final" title="Derrota por default: -3 puntos para el equipo perdedor. La tabla oficial ya contempla la sanción.">DEFAULT · −3 pts al perdedor</span>':'<span class="v422-final">Decisión administrativa oficial</span>';
+ if(m.status==='AWARDED'){
+  const loser=defaultDefeatedTeam(m.decision,m.home,m.away);
+  return loser?'<span class="v422-final" title="El perdedor por DEFAULT recibe −3 puntos; la tabla oficial ya incluye la sanción.">DEFAULT · −3 pts ('+esc(loser)+')</span>':'<span class="v422-final">Decisión administrativa oficial</span>';
+ }
  if(m.status==='SUSPENDED')return '<span class="v422-special">Suspendido</span>';
  if(m.status==='POSTPONED')return '<span class="v422-special">Aplazado</span>';
  return '<span class="v422-time">'+esc(timeFrom(m.date))+'</span>';
