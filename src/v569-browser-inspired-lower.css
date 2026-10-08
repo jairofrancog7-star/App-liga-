@@ -97,7 +97,7 @@ body[data-app-route="match"] .v569-lower>header{
 }
 
 /* Detalle inferior del partido */
-body[data-app-route="match"] .v569-match-lower{margin:14px 12px 95px!important;width:calc(100% - 24px)!important}
+body[data-app-route="match"] .v569-match-lower{margin:12px 12px 10px!important;width:calc(100% - 24px)!important}
 .v569-detail-grid{
   display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important;
 }
