@@ -54,6 +54,10 @@ function visibleContent(screen){
 }
 let nudged=false;
 function recoverIfBlank(){
+  // V929: hidden transition frames are deliberate, not a blank-screen crash.
+  // Do not re-dispatch hashchange or click Inicio while the new screen mounts.
+  if(document.documentElement.classList.contains('ljr-route-staging')||
+     document.documentElement.classList.contains('ljr-preboot'))return;
   cleanTransient();
   const r=route(),screen=document.querySelector('#screen');
   if(!ROOT.has(r)||!screen||visibleContent(screen))return;
