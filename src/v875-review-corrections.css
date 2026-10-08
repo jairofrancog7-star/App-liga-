@@ -931,3 +931,41 @@ html body > .v105-modal.v875-meeting-modal .v105-actions{
 html body > .v105-modal.v875-meeting-modal .v919-action:disabled{
   opacity:.65!important;cursor:wait!important;
 }
+
+
+/* V901 — Datos/Estadísticas: flecha de volver grande, hard lock. */
+@media(max-width:1023px){
+  html body.v33-data-active #screen .v33-head-actions [data-v33-back]{
+    width:62px!important;
+    height:62px!important;
+    min-width:62px!important;
+    min-height:62px!important;
+    padding:0!important;
+    display:grid!important;
+    place-items:center!important;
+    background:transparent!important;
+    border:0!important;
+  }
+  html body.v33-data-active #screen .v33-head-actions [data-v33-back] svg{
+    width:48px!important;
+    height:48px!important;
+    max-width:none!important;
+    max-height:none!important;
+    stroke-width:2.45!important;
+  }
+
+  html body[data-app-route="v38Stats"] #screen .v520-stats-back{
+    left:14px!important;
+    width:62px!important;
+    height:62px!important;
+    min-width:62px!important;
+    min-height:62px!important;
+  }
+  html body[data-app-route="v38Stats"] #screen .v520-stats-back svg{
+    width:48px!important;
+    height:48px!important;
+    max-width:none!important;
+    max-height:none!important;
+    stroke-width:2.7!important;
+  }
+}
