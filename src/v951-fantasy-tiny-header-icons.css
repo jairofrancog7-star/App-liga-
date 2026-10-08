@@ -33,24 +33,24 @@ html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v576-bui
   pointer-events:none!important;
 }
 html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v576-builder-head > button[data-v576-back]::before {
-  width:18px!important;
-  height:18px!important;
-  min-width:18px!important;
-  min-height:18px!important;
-  max-width:18px!important;
-  max-height:18px!important;
-  background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2040%2040%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M24%209%2013%2020l11%2011M13.5%2020H33%22%20stroke%3D%22%23fff%22%20stroke-width%3D%222.1%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E")!important;
-  background-size:18px 18px!important;
+  width:32px!important;
+  height:32px!important;
+  min-width:32px!important;
+  min-height:32px!important;
+  max-width:32px!important;
+  max-height:32px!important;
+  background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2040%2040%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M24%209%2013%2020l11%2011M13.5%2020H33%22%20stroke%3D%22%23fff%22%20stroke-width%3D%222.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E")!important;
+  background-size:32px 32px!important;
 }
 html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v576-builder-head > button[data-v576-menu]::before {
-  width:12px!important;
-  height:20px!important;
-  min-width:12px!important;
-  min-height:20px!important;
-  max-width:12px!important;
-  max-height:20px!important;
-  background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2042%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%228%22%20r%3D%222.8%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2221%22%20r%3D%222.8%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2234%22%20r%3D%222.8%22%20fill%3D%22%23fff%22%2F%3E%3C%2Fsvg%3E")!important;
-  background-size:12px 20px!important;
+  width:16px!important;
+  height:28px!important;
+  min-width:16px!important;
+  min-height:28px!important;
+  max-width:16px!important;
+  max-height:28px!important;
+  background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2042%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%228%22%20r%3D%223.35%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2221%22%20r%3D%223.35%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2234%22%20r%3D%223.35%22%20fill%3D%22%23fff%22%2F%3E%3C%2Fsvg%3E")!important;
+  background-size:16px 28px!important;
 }
 html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v576-builder-head > button[data-v576-back]::after,
 html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v576-builder-head > button[data-v576-menu]::after {
