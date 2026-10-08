@@ -1,0 +1,61 @@
+/* V905 — Más herramientas: Publicaciones/Generador con el mismo tamaño que el resto.
+   Sólo normaliza la tarjeta de acceso; no cambia la pantalla ni sus funciones. */
+@media(max-width:1023px){
+  html body[data-app-route="leagueTools"] .v726-tool-card.v734-tool-card:not(.is-v734-open):has(.v734-tool-open[data-route="publications"]){
+    grid-column:auto!important;
+    width:100%!important;
+    min-width:0!important;
+    min-height:78px!important;
+    height:78px!important;
+    max-height:78px!important;
+    margin:0!important;
+    padding:5px 6px!important;
+    box-sizing:border-box!important;
+    overflow:hidden!important;
+  }
+
+  html body[data-app-route="leagueTools"] .v726-tool-card.v734-tool-card:not(.is-v734-open):has(.v734-tool-open[data-route="publications"]) .v734-tool-open{
+    width:100%!important;
+    height:51px!important;
+    min-height:51px!important;
+    margin:0!important;
+    padding:0!important;
+    grid-template-columns:30px minmax(0,1fr) 10px!important;
+    gap:5px!important;
+  }
+
+  html body[data-app-route="leagueTools"] .v726-tool-card.v734-tool-card:not(.is-v734-open):has(.v734-tool-open[data-route="publications"]) .v726-tool-icon{
+    width:30px!important;
+    height:30px!important;
+    min-width:30px!important;
+    min-height:30px!important;
+    max-width:30px!important;
+    max-height:30px!important;
+    margin:0!important;
+  }
+
+  html body[data-app-route="leagueTools"] .v726-tool-card.v734-tool-card:not(.is-v734-open):has(.v734-tool-open[data-route="publications"]) .v726-tool-copy b{
+    font-size:9.8px!important;
+    line-height:1.05!important;
+    -webkit-line-clamp:2!important;
+  }
+
+  html body[data-app-route="leagueTools"] .v726-tool-card.v734-tool-card:not(.is-v734-open):has(.v734-tool-open[data-route="publications"]) .v734-tool-details{
+    left:6px!important;
+    right:6px!important;
+    bottom:5px!important;
+    height:16px!important;
+    min-height:16px!important;
+  }
+
+  /* El acceso rápido Publicar conserva exactamente la misma caja que sus vecinos. */
+  html body[data-app-route="leagueTools"] .v726-quick-card[data-route="publications"]{
+    width:100%!important;
+    min-width:0!important;
+    min-height:78px!important;
+    height:78px!important;
+    max-height:78px!important;
+    margin:0!important;
+    box-sizing:border-box!important;
+  }
+}
