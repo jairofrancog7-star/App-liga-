@@ -5379,7 +5379,7 @@
           "Salvador Fernando Valenzuela Rangel",
           "Manuel Pantoja Hernandez",
           "Jorge Jesus Sanchez Gonzalez",
-          "Jesus  Axel Guerrero Peña",
+          "Jesus Axel Guerrero Peña",
           "Oscar Monroy Camacho",
           "Jose Guadalupe Guerrero Lopez",
           "Jorge Luis Ramirez Conejo",
@@ -6935,7 +6935,8 @@
           {
             "name": "Roberto Centeno Cañada",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-03_at_10.36.00_AM_1_lttrsh"
           },
           {
             "name": "Carlos Antonio Cruz Cañada",
@@ -7105,7 +7106,8 @@
           {
             "name": "Edgar Franco Beltran",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-08-31_at_1.03.55_PM_1_uyldi1"
           },
           {
             "name": "Edgar Franco Gonzalez",
@@ -7151,7 +7153,8 @@
           {
             "name": "Juan Pablo Mancera Garcia",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-08-31_at_12.53.02_PM_ac50pk"
           },
           {
             "name": "Luis Antonio Mancera Garcia",
@@ -7436,7 +7439,8 @@
           {
             "name": "CAMILO CAÑAS VARGAS",
             "position": "Delantero",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-09_at_12.11.14_PM_uehiri"
           },
           {
             "name": "DUVIER DIAZ BALANTA",
@@ -7465,7 +7469,8 @@
           {
             "name": "FABIAN ELIAS FLORES SANCHEZ",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-10_at_11.45.10_AM_1_d06i1x"
           },
           {
             "name": "LUIS ALONSO FLORES SANCHEZ",
@@ -7630,7 +7635,8 @@
           {
             "name": "Jesus Axel Guerrero Peña",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-08-12_at_2.10.09_PM_an35bw"
           },
           {
             "name": "Ramon Hernandez Conejo",
@@ -7652,7 +7658,8 @@
           {
             "name": "Abel Alejandro Melendez Vega",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-22_at_6.45.45_PM_abtvot"
           },
           {
             "name": "Oscar Monroy Camacho",
@@ -7798,7 +7805,8 @@
           {
             "name": "EMILIO GONZALEZ ZERON",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-19_at_6.31.24_AM_1_pfhcwi"
           },
           {
             "name": "OMAR HERNANDEZ BARRIOS",
@@ -7820,7 +7828,8 @@
           {
             "name": "FELIPE DE JESUS LEON PRESA",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-19_at_6.40.24_AM_mtilx0"
           },
           {
             "name": "GALO FLORENTINO MARTINEZ ZARATE",
@@ -7842,7 +7851,8 @@
           {
             "name": "ANGEL DE JESUS PIZANO TORRES",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-19_at_10.19.01_AM_a4imtd"
           },
           {
             "name": "MIGUEL ANGEL RAMIREZ LUNA",
@@ -7895,12 +7905,14 @@
           {
             "name": "JUAN FRANCISCO YAÑEZ RAZO",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-19_at_10.58.34_AM_pb4alq"
           },
           {
             "name": "OSCAR YAÑEZ RAZO",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-19_at_10.58.17_AM_utysbb"
           }
         ],
         "LOBOS CDG": [
@@ -7961,7 +7973,8 @@
           {
             "name": "Miguel Angel Gomez Campos",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-08-20_at_5.29.19_PM_1_gglyfb"
           },
           {
             "name": "Ernesto Juarez Olmos",
@@ -8008,7 +8021,8 @@
           {
             "name": "David Moreno Ramirez",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-08-20_at_5.29.21_PM_5_ha1jhy"
           },
           {
             "name": "Adrian Moreno Razo",
@@ -8049,7 +8063,8 @@
           {
             "name": "Jairo Ramirez Lopez",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-08-20_at_5.29.19_PM_3_exrq0u"
           },
           {
             "name": "Luis Yael Robles Perez",
@@ -8060,7 +8075,8 @@
           {
             "name": "Emiliano Rubi Campos",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-08-20_at_5.29.17_PM_acp1to"
           },
           {
             "name": "Jose Antonio Rubi Perez",
@@ -8332,7 +8348,8 @@
           {
             "name": "Santiago Lerma Tovar",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-21_at_1.16.38_PM_eexooa"
           },
           {
             "name": "Juan Arturo Lopez Campos",
@@ -8486,7 +8503,8 @@
           {
             "name": "Angel Uriel Gutierrez Espinoza",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-10-02_at_11.39.49_AM_1_i24lyv"
           },
           {
             "name": "ANTONIO LADINO ABOYTES",
@@ -8524,7 +8542,8 @@
           {
             "name": "Ivan Martinez Vasquez",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-07-27_at_9.54.30_AM_xdigqo"
           },
           {
             "name": "Jose Daniel Mejia Roman",
@@ -10156,9 +10175,9 @@
               "31",
               "6",
               "SAN JULIAN",
-              "-",
+              "1",
               "vs",
-              "-",
+              "1",
               "SAN JUAN FC",
               "San Juan de la Cruz",
               "27/09/2026 08:00",
@@ -10180,9 +10199,9 @@
               "33",
               "6",
               "DEP. LA LUZ",
-              "-",
+              "2",
               "vs",
-              "-",
+              "5",
               "SAN JOSE JRS",
               "San Jose  de la Montaña",
               "27/09/2026 10:00",
@@ -10204,9 +10223,9 @@
               "35",
               "6",
               "CELTICOS",
-              "-",
+              "4",
               "vs",
-              "-",
+              "1",
               "BARZA",
               "Campo 3",
               "27/09/2026 12:00",
@@ -10922,7 +10941,7 @@
           "Roberto Hernandez Almanza",
           "Juan Antonio Vidal Chayre",
           "EDGARDO RIVERA BELMAN",
-          "Miguel  Angel Paramo Santa Rosa",
+          "Miguel Angel Paramo Santa Rosa",
           "Israel Hernandez Almanza",
           "Jose Antonio Zarate Aguilera",
           "Israel Hernandez Ariza",
@@ -12859,7 +12878,8 @@
           {
             "name": "Josue Uriel Lopez Apaseo",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-08-31_at_6.37.01_PM_ukjq3m"
           },
           {
             "name": "Javier Lopez Armenta",
@@ -12953,29 +12973,34 @@
           {
             "name": "Angel Daniel Torres Perez",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-18_at_12.44.47_PM_yzfwui"
           }
         ],
         "DEP. LA LUZ": [
           {
             "name": "Angel Salvador Alvarez Juarez",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-03_at_11.28.09_PM_1_k5gb0w"
           },
           {
             "name": "Andy Aaron Arredondo Vazquez",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-03_at_11.28.09_PM_2_xazgl7"
           },
           {
             "name": "Emmanuel Barrientos Arredondo",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-03_at_11.28.10_PM_1_av3bpy"
           },
           {
             "name": "Juan Diego Cano Barron",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-22_at_4.04.23_PM_wvhecz"
           },
           {
             "name": "Jose Manuel Coyote Yañez",
@@ -13046,7 +13071,8 @@
           {
             "name": "Anthony Alejandro Lopez Almaraz",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-03_at_11.28.08_PM_2_ekyviy"
           },
           {
             "name": "Ivan Montoya Enriquez",
@@ -13057,12 +13083,14 @@
           {
             "name": "Edwin Eduardo Morales Ruiz",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-03_at_11.28.10_PM_gyqrqs"
           },
           {
             "name": "Jose Carmen Navarro Ramos",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-03_at_11.28.08_PM_unoxc7"
           },
           {
             "name": "SEBASTIAN OLIVARES NAVARRO",
@@ -13109,7 +13137,8 @@
           {
             "name": "Edwin Emmanuel Torres Mendiola",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-03_at_11.29.10_PM_pkv2yt"
           },
           {
             "name": "Juan Diego Tovar Delgado",
@@ -13170,12 +13199,14 @@
           {
             "name": "ANGEL DANIEL COLORADO MOLINA",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-08_at_10.37.16_PM_qtyxni"
           },
           {
             "name": "GIOVANNI DE JESUS COLORADO PRESA",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/gIOVANNI_DE_JESUS_COLORADO_PRESA_uavuuk"
           },
           {
             "name": "JUAN ALEJANDRO DELGADO VAZQUEZ",
@@ -13294,7 +13325,8 @@
           {
             "name": "DAVID VAZQUEZ GONZALEZ",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/2_i1zfsz"
           },
           {
             "name": "JOSUE ANTONIO VAZQUEZ NUÑEZ",
@@ -13355,7 +13387,8 @@
           {
             "name": "Noe Guadalupe Garcia Mejia",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/IMG_20260811_072016_hjgat8"
           },
           {
             "name": "Eber Samuel Herrera Guzman",
@@ -13396,7 +13429,8 @@
           {
             "name": "Julio Cesar Muñoz Badillo",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/IMG_20260810_135842_omsyzy"
           },
           {
             "name": "Alejandro Peralta Ariza",
@@ -13517,7 +13551,8 @@
           {
             "name": "Juan Nahum Guzman Tapia",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-08-14_at_8.42.31_PM_ikaeri"
           },
           {
             "name": "ANGEL JESUS LOPEZ CABELLO",
@@ -13671,7 +13706,8 @@
           {
             "name": "Dave Ricardo Guerrero Ramirez",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/Ricardo_Guerrero_Ramirez_mbthza"
           },
           {
             "name": "Efrain Gutierrez Lucio",
@@ -13704,7 +13740,8 @@
           {
             "name": "Christopher Alexis Merino Dompablo",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/Alexis_Merino_Dompablo_mh3oma"
           },
           {
             "name": "Humberto Palacio Aguilar",
@@ -13841,12 +13878,14 @@
           {
             "name": "Francisco Isaac Moreno Yañez",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-08-12_at_8.39.30_PM_qavzgr"
           },
           {
             "name": "Israel Andre Moreno Yañez",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-08-12_at_8.32.35_PM_vt61fn"
           },
           {
             "name": "David Gonzalo Oñates Noria",
@@ -14081,7 +14120,8 @@
           {
             "name": "Victor David Rico Martinez",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-07-10_at_6.31.56_PM_oaut7k"
           },
           {
             "name": "Francisco Javier Romero Juarez",
@@ -14190,7 +14230,8 @@
           {
             "name": "Luis Abraham Ortega Rodriguez",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-11_at_6.11.42_PM_1_zyet5k"
           },
           {
             "name": "Emmanuel Alejandro Padilla Loza",
@@ -14219,7 +14260,8 @@
           {
             "name": "Bryan Reyes Peñaloza",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-11_at_6.11.45_PM_ajynqe"
           },
           {
             "name": "Raul Salvador Pizano",
@@ -14236,7 +14278,8 @@
           {
             "name": "Angel Gabriel Valadez Olivares",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-11_at_6.11.45_PM_2_prctao"
           },
           {
             "name": "Eugenio Valadez Olivares",
@@ -14247,7 +14290,8 @@
           {
             "name": "Bryan Daniel Valadez Ramirez",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-11_at_6.11.45_PM_3_dlb8o7"
           },
           {
             "name": "Gilberto Yañez Ramirez",
@@ -14258,7 +14302,8 @@
           {
             "name": "Alan Omar Yañez Zavala",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-11_at_6.11.44_PM_3_wztffq"
           },
           {
             "name": "Giovanni Yañez Zavala",
@@ -14303,7 +14348,8 @@
           {
             "name": "Joshua Emmanuel Gutierrez Tovar",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-26_at_12.52.40_PM_2_k4gckp"
           },
           {
             "name": "Jorge Luis Guzman Moreno",
@@ -14444,7 +14490,8 @@
           {
             "name": "Jose Lara Flores",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-09_at_12.01.52_PM_pmrdkm"
           },
           {
             "name": "Miguel Angel Lara Flores",
@@ -16920,7 +16967,7 @@
           "Juan Jose Ojodeagua Granados",
           "Jesus Alexis Melendez Noria",
           "Christian Eduardo Miranda Gonzalez",
-          "Felipe De  Jesus Cerritos Garcia",
+          "Felipe De Jesus Cerritos Garcia",
           "Josue Salvador Hortelano Gonzalez",
           "Juan Gonzalez Hortelano",
           "Jorge Eduardo Martinez Moreno",
@@ -18914,7 +18961,8 @@
           {
             "name": "JOSE RAMON ARELLANO MANCERA",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-19_at_11.20.31_AM_1_akwpsb"
           },
           {
             "name": "Pedro Daniel Aguado Ortega",
@@ -18925,7 +18973,8 @@
           {
             "name": "Oscar Arellano Mancera",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/Oscar_Arellano_MAncera_gh8rxs"
           },
           {
             "name": "Juan Carlos Barron Cano",
@@ -18942,7 +18991,8 @@
           {
             "name": "ANGEL GABRIEL CERVANTES OJEDA",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-19_at_11.20.31_AM_knggru"
           },
           {
             "name": "Francisco Cabello Castillo",
@@ -19025,7 +19075,8 @@
           {
             "name": "SAMUEL Manzo Diaz De Leon",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-25_at_9.30.23_AM_ksjlnk"
           },
           {
             "name": "Juan Antonio Marquez Mendoza",
@@ -19042,12 +19093,14 @@
           {
             "name": "Alessandro Ortega Belman",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/Alessandro_Ortega_Belman_lr7b2m"
           },
           {
             "name": "Demetrio Ramirez Subias",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/Demetrio_Ramirez_Subias_tslwtn"
           },
           {
             "name": "Cecilio Ramos Rangel",
@@ -19064,7 +19117,8 @@
           {
             "name": "Jonathan Alexander Vera Rosales",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/Jonathan_Alexander_Vera_Rosales_czdhst"
           },
           {
             "name": "Daniel Yañez Rangel",
@@ -19231,7 +19285,8 @@
           {
             "name": "Diego Eduardo Arce Sanchez",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-04_at_6.20.55_PM_stoaqz"
           },
           {
             "name": "Jose Ignacio Arcia Martinez",
@@ -19510,7 +19565,8 @@
           {
             "name": "Juan Pablo Almanza Rico",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-01_at_12.59.09_PM_3_nmz1or"
           },
           {
             "name": "Luis Alvarado Garcia",
@@ -19533,7 +19589,8 @@
           {
             "name": "Jose de Jesus Arellano Garcia",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-01_at_12.59.07_PM_ktznon"
           },
           {
             "name": "Jesus Aldair Ariza Ramirez",
@@ -19568,7 +19625,8 @@
           {
             "name": "Oscar Cervantes Rodriguez",
             "position": "Portero",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-01_at_12.59.10_PM_1_yfsbnx"
           },
           {
             "name": "Andres Garcia Aguilera",
@@ -19585,12 +19643,14 @@
           {
             "name": "Jose Joel Hernandez Muñoz",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-01_at_12.59.10_PM_1_su1dv5"
           },
           {
             "name": "Josue Said Huerta Hernandez",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-11_at_2.23.02_PM_2_py8jmn"
           },
           {
             "name": "Adolfo Linares Alvarez",
@@ -19770,7 +19830,8 @@
           {
             "name": "Sahit Isaul Peña Delgado",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-08-30_at_6.14.19_PM_1_kgdphn"
           },
           {
             "name": "Juan Jose Pizano Escalante",
@@ -19825,7 +19886,8 @@
           {
             "name": "Serafin Santiago Calero Gallardo",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-10_at_4.01.24_PM_y9gs5h"
           },
           {
             "name": "Luis Fernando Cedeño Cuellar",
@@ -19890,7 +19952,8 @@
           {
             "name": "Jesus Manuel Hortelano Cerritos",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-10_at_4.03.55_PM_ufz1xe"
           },
           {
             "name": "Josue Salvador Hortelano Gonzalez",
@@ -19991,7 +20054,8 @@
           {
             "name": "Dylan Guadalupe Aguilar Zarate",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-21_at_11.09.45_AM_4_cgxlha"
           },
           {
             "name": "Gerardo Alejos Velazquez",
@@ -20014,7 +20078,8 @@
           {
             "name": "Salvador Cortes Flores",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-21_at_11.09.44_AM_zotqvn"
           },
           {
             "name": "Jose Guadalupe Delgado Lemus",
@@ -20025,7 +20090,8 @@
           {
             "name": "Usiel Guadalupe Delgano Cano",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-21_at_11.09.44_AM_5_ig69zp"
           },
           {
             "name": "Eric Fernando Dongu Guerrero",
@@ -20053,7 +20119,8 @@
           {
             "name": "Luis Emiliano Guerrero Ortega",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-07-20_at_8.00.44_PM_ama0u9"
           },
           {
             "name": "Mauricio Osvaldo Guerrero Saucillo",
@@ -20113,7 +20180,8 @@
           {
             "name": "Josue Zuñiga Lopez",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-21_at_11.09.44_AM_1_ckrczn"
           }
         ],
         "MAZACOTES FC": [
@@ -20132,7 +20200,8 @@
           {
             "name": "Iker Rodrigo Avecilla Lopez",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-21_at_4.51.56_PM_q2vwyh"
           },
           {
             "name": "Ivan Fernando Avecilla Lopez",
@@ -20161,7 +20230,8 @@
           {
             "name": "Santos Conejo Cervantes",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-07_at_8.02.52_PM_uprdnq"
           },
           {
             "name": "Luis Paulo Dacosta Cabrera",
@@ -20207,7 +20277,8 @@
           {
             "name": "CRISTIAN JESUS MONTENEGRO GASCA",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-22_at_12.52.11_PM_nhqmia"
           },
           {
             "name": "Alejandro Medel Lopez",
@@ -20236,7 +20307,8 @@
           {
             "name": "Juan Antonio Nolasco Ramirez",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-21_at_4.50.35_PM_ogcms4"
           },
           {
             "name": "Gustavo Ojeda Lopez",
@@ -20271,7 +20343,8 @@
           {
             "name": "Edgar Orlando Suaste Pantoja",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-07_at_8.46.21_PM_fwbmhn"
           },
           {
             "name": "Carlos Eduardo Tovar Calderon",
@@ -20288,7 +20361,8 @@
           {
             "name": "Juan Pablo Vasquez Pizano",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-04_at_5.52.19_PM_krjw6r"
           }
         ],
         "OSASUNA": [
@@ -20342,7 +20416,8 @@
           {
             "name": "Vladimir Hernandez Luna",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-10_at_9.06.07_PM_ouwtdf"
           },
           {
             "name": "Jose Leonardo Huichapa Rodriguez",
@@ -20386,7 +20461,8 @@
           {
             "name": "Leonel Miller Martinez Merino",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-10_at_9.25.39_PM_h0cqij"
           },
           {
             "name": "Juan Jose Obrajero Rodriguez",
@@ -20397,7 +20473,8 @@
           {
             "name": "Oscar Uriel Paramo Guerrero",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-29_at_7.54.08_PM_t3y0mc"
           },
           {
             "name": "Rodrigo Paramo Paramo",
@@ -20414,7 +20491,8 @@
           {
             "name": "Alan Jesus Ramirez Vega",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-10_at_9.04.42_PM_rt4uui"
           },
           {
             "name": "Oswaldo Gabriel Torres Solorzano",
@@ -20439,7 +20517,8 @@
           {
             "name": "Luis Angel Acosta Rodriguez",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-10_at_3.47.14_PM_yfk7ti"
           },
           {
             "name": "Missael Aguilar Calero",
@@ -20455,7 +20534,8 @@
           {
             "name": "Jose Emiliano Berdin Guerrero",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-10_at_3.46.32_PM_ztelrt"
           },
           {
             "name": "Luis Jesus Cano Aboytes",
@@ -20477,7 +20557,8 @@
           {
             "name": "Oscar Garcia Delgado",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-21_at_3.55.52_PM_tgch7m"
           },
           {
             "name": "Adrian Gonzalez Garcia",
@@ -20487,7 +20568,8 @@
           {
             "name": "Cristian Mateo Gonzalez Jimenez",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-10_at_3.45.20_PM_tinagz"
           },
           {
             "name": "Alexis Gonzalez Luna",
@@ -20554,7 +20636,8 @@
           {
             "name": "Fernando Merino Rodriguez",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-21_at_3.52.40_PM_u1nddw"
           },
           {
             "name": "Angel Moreno Escalante",
@@ -20570,22 +20653,26 @@
           {
             "name": "Adan Armando Rodriguez Vazquez",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-10_at_4.09.36_PM_zhvx31"
           },
           {
             "name": "NOE SANCHEZ HUERTA",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-21_at_3.53.43_PM_1_j7zcsd"
           },
           {
             "name": "Christian Sanchez Huerta",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-10_at_3.51.04_PM_ruj75k"
           },
           {
             "name": "Juan Ignacio Servin Linaldi",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-10_at_3.55.04_PM_ufmpk7"
           },
           {
             "name": "Martin Vazquez Tierrablanca",
@@ -20656,7 +20743,8 @@
           {
             "name": "Alexis Garcia Centeno",
             "position": "Delantero",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-04_at_6.48.32_PM_kgqeay"
           },
           {
             "name": "Jesus Alexander Garcia Centeno",
@@ -20699,7 +20787,8 @@
           {
             "name": "Diego Tadeo Ramirez Coyote",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/Diego_Tadeo_Ram%C3%ADrez_Coyote_l1sd35"
           },
           {
             "name": "Jose Manuel Ramirez Coyote",
@@ -20740,7 +20829,8 @@
           {
             "name": "URIEL JOSAFAT ARIZA PANTOJA",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/JOSAFAR_rxaxxh"
           },
           {
             "name": "Aaron Aguilar Gutierrez",
@@ -20757,7 +20847,8 @@
           {
             "name": "JUAN DIEGO CASTILLO CUEVAS",
             "position": "Portero",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/JUAN_DIEGO_coi4fi"
           },
           {
             "name": "Jesus Alfonso Calero Cerrito",
@@ -20786,7 +20877,8 @@
           {
             "name": "Samuel Godinez",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-01_at_12.06.46_PM_vedehm"
           },
           {
             "name": "Jesus Alejandro Gutierrez Castillo",
@@ -20797,7 +20889,8 @@
           {
             "name": "Jesus Alejandro Gutierrez Reyes",
             "position": "Mediocampista",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-01_at_12.47.34_PM_apdvsx"
           },
           {
             "name": "ISRAEL HORTELANO CERRITO",
@@ -20808,7 +20901,8 @@
           {
             "name": "Ismael Hortelano Cerrito",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-12_at_1.34.20_PM_1_ljhvhj"
           },
           {
             "name": "Santiago Martin Hortelano Peñaloza",
@@ -20819,7 +20913,8 @@
           {
             "name": "Carlos Daniel Laguna Vera",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-19_at_12.48.45_PM_yvssle"
           },
           {
             "name": "Luis Miguel Lera Ramirez",
@@ -20848,7 +20943,8 @@
           {
             "name": "Alexis Arturo Nolasco Garcia",
             "position": "Defensa",
-            "dorsal": "—"
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-01_at_12.47.34_PM_1_ibcd6v"
           },
           {
             "name": "Juan Carlos Obrajero Herrera",
@@ -21592,13 +21688,47 @@
   },
   "latest_user_verified_results": {
     "date": "2026-10-08",
-    "source": "Captura de notificaciones AdminFut de resultados finalizados aportada por el usuario",
+    "applied_at_utc": "2026-10-08T18:56:00Z",
+    "source": "Captura de notificaciones de resultados finalizados proporcionada por el usuario el 08/10/2026",
     "category_id": "4",
     "fixture_ids": [
-      "32",
-      "34"
+      "31",
+      "33",
+      "35"
     ],
-    "scope": "Solo marcadores; clasificación, goleo y conteos oficiales pendientes de nueva validación"
+    "fixtures": [
+      {
+        "fixture_id": "31",
+        "round": "6",
+        "date": "27/09/2026",
+        "home": "SAN JULIAN",
+        "away": "SAN JUAN FC",
+        "home_goals": 1,
+        "away_goals": 1,
+        "status": "FINAL"
+      },
+      {
+        "fixture_id": "33",
+        "round": "6",
+        "date": "27/09/2026",
+        "home": "DEP. LA LUZ",
+        "away": "SAN JOSE JRS",
+        "home_goals": 2,
+        "away_goals": 5,
+        "status": "FINAL"
+      },
+      {
+        "fixture_id": "35",
+        "round": "6",
+        "date": "27/09/2026",
+        "home": "CELTICOS",
+        "away": "BARZA",
+        "home_goals": 4,
+        "away_goals": 1,
+        "status": "FINAL"
+      }
+    ],
+    "scope": "Solo marcadores de 3 partidos; clasificación, goleo, tarjetas y estadísticas individuales no se recalculan sin fuente oficial."
   },
   "cedula_result_corrections_2026_10_08": [
     {

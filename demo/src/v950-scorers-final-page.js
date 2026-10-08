@@ -51,14 +51,36 @@ function ensureTitle(bar){
 }
 
 function syncProfile(bar){
-  const button=bar?.querySelector(':scope > .profile-button');
-  if(!button)return;
+  if(!bar)return;
+  let button=bar.querySelector(':scope > .v958-scorers-profile');
+  if(!button){
+    button=document.createElement('button');
+    button.type='button';
+    button.className='v958-scorers-profile';
+    button.setAttribute('aria-label','Mi perfil');
+    button.addEventListener('click',()=>{
+      const native=bar.querySelector(':scope > .profile-button');
+      if(native){
+        try{native.click();return}catch(_){}
+      }
+      if(typeof window.LJR_MAIN_ROUTE?.go==='function'){
+        try{window.LJR_MAIN_ROUTE.go('profile');return}catch(_){}
+      }
+      location.hash='#/profile';
+    });
+    bar.appendChild(button);
+  }
   const html=avatarMarkup();
   if(button.innerHTML!==html)button.innerHTML=html;
-  button.classList.toggle('v957-has-account',!!account());
-  button.removeAttribute('hidden');
-  button.classList.remove('is-hidden');
-  button.setAttribute('aria-label','Mi perfil');
+  button.classList.toggle('v958-has-account',!!account());
+
+  /* El botón global queda oculto solo en esta ruta para evitar duplicados.
+     El nuevo control conserva exactamente la misma acción. */
+  const native=bar.querySelector(':scope > .profile-button');
+  if(native){
+    native.setAttribute('aria-hidden','true');
+    native.tabIndex=-1;
+  }
 }
 
 function applyCompact(force){
@@ -103,6 +125,9 @@ function sync(){
     body.classList.remove('v957-scorers-compact');
     bar.classList.remove('v956-scorers-global','is-compact');
     bar.querySelector(':scope > .v956-scorers-title')?.remove();
+    bar.querySelector(':scope > .v958-scorers-profile')?.remove();
+    const native=bar.querySelector(':scope > .profile-button');
+    if(native){native.removeAttribute('aria-hidden');native.removeAttribute('tabindex');}
     return;
   }
 
