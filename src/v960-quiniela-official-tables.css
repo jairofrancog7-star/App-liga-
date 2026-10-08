@@ -27,3 +27,121 @@ body[data-app-route="quiniela"] .v960-q-result span{color:#8dd8fb}
 body[data-app-route="quiniela"] .v960-q-result b{min-width:0;overflow-wrap:anywhere}
 body[data-app-route="quiniela"] .v960-q-result strong{color:#fff;text-align:center;white-space:nowrap}
 @media(max-width:380px){body[data-app-route="quiniela"] .v960-q-cols{grid-template-columns:18px minmax(0,1fr) 20px 20px 20px 24px;gap:3px;padding:5px;font-size:9px}body[data-app-route="quiniela"] .v960-q-team img{width:19px;height:19px}body[data-app-route="quiniela"] .v960-q-team b{font-size:9px}}
+
+/* V968 — ancho real de la Quiniela y controles internos. No afecta las otras rutas. */
+html body[data-app-route="quiniela"] #screen [data-v561-quiniela-mount]{
+  display:block!important;width:100%!important;max-width:none!important;min-width:0!important;
+  box-sizing:border-box!important;padding:0 3px!important;margin:0!important;
+}
+html body[data-app-route="quiniela"] #screen .v618-quiniela.v619-quiniela-modern{
+  display:block!important;width:100%!important;max-width:none!important;min-width:0!important;
+  margin:0 auto!important;padding:7px 2px calc(77px + env(safe-area-inset-bottom))!important;
+  box-sizing:border-box!important;overflow-x:clip!important;
+}
+html body[data-app-route="quiniela"] .v619-quiniela-modern :is(.v619-q-hero,.v618-q-rules,.v618-q-nav,.v618-q-cats,.v618-q-round,.v618-q-matches,.v618-q-ranking,.v967-history-screen,.v960-q-tables,.v960-q-block){
+  box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-width:0!important;
+}
+html body[data-app-route="quiniela"] .v619-quiniela-modern .v619-q-hero{
+  margin:0 0 8px!important;padding:11px 13px!important;border-radius:16px!important;
+}
+html body[data-app-route="quiniela"] .v619-q-mini-stats>span{min-width:0!important;padding:6px 3px!important}
+html body[data-app-route="quiniela"] .v619-q-mini-stats b{font-size:20px!important}
+html body[data-app-route="quiniela"] .v619-q-mini-stats small{font-size:10px!important}
+html body[data-app-route="quiniela"] .v619-quiniela-modern .v618-q-nav{
+  margin:0 0 7px!important;gap:5px!important;padding:4px!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+}
+html body[data-app-route="quiniela"] .v619-quiniela-modern .v618-q-nav>button{
+  min-width:0!important;min-height:48px!important;padding:7px 3px!important;
+  font-size:10.5px!important;line-height:1.2!important;white-space:normal!important;
+}
+html body[data-app-route="quiniela"] .v619-quiniela-modern .v618-q-cats{
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  width:100%!important;gap:6px!important;margin:8px 0!important;
+}
+html body[data-app-route="quiniela"] .v619-quiniela-modern .v618-q-cat{
+  width:100%!important;min-width:0!important;min-height:49px!important;
+  padding:6px 8px!important;gap:7px!important;font-size:11.5px!important;
+}
+html body[data-app-route="quiniela"] .v618-q-cat:last-child:nth-child(odd){grid-column:1/-1!important}
+html body[data-app-route="quiniela"] .v618-q-rules{padding:11px!important;margin:0 0 7px!important}
+html body[data-app-route="quiniela"] .v618-q-round{margin:6px 0!important;min-height:43px!important}
+html body[data-app-route="quiniela"] .v619-quiniela-modern .v618-q-card{
+  box-sizing:border-box!important;width:100%!important;max-width:100%!important;
+  padding:0!important;min-width:0!important;margin:0!important;
+}
+html body[data-app-route="quiniela"] .v618-q-matches{gap:7px!important}
+html body[data-app-route="quiniela"] .v618-q-card-top{padding:8px 10px!important}
+html body[data-app-route="quiniela"] .v618-q-card-main{
+  grid-template-columns:minmax(0,1fr) clamp(105px,29vw,142px) minmax(0,1fr)!important;
+  gap:6px!important;min-width:0!important;padding:7px 10px!important;
+}
+html body[data-app-route="quiniela"] .v618-q-team b{font-size:clamp(10.5px,2.8vw,13px)!important}
+html body[data-app-route="quiniela"] .v618-q-team img{width:clamp(46px,13vw,60px)!important;height:clamp(46px,13vw,60px)!important}
+html body[data-app-route="quiniela"] .v618-q-actions{margin:7px 0!important;gap:7px!important}
+html body[data-app-route="quiniela"] .v618-q-actions>button{min-height:41px!important;font-size:11px!important}
+html body[data-app-route="quiniela"] .v960-q-tables{display:grid!important;gap:7px!important;padding:0 0 10px!important}
+html body[data-app-route="quiniela"] .v960-q-source{font-size:11px!important;margin:2px 3px!important;line-height:1.35!important}
+html body[data-app-route="quiniela"] .v960-q-links.v968-q-tabs{
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:6px!important;width:100%!important;margin:1px 0 3px!important;
+}
+html body[data-app-route="quiniela"] .v960-q-links.v968-q-tabs button.v968-q-pane-button{
+  display:flex!important;justify-content:center!important;align-items:center!important;
+  width:100%!important;min-width:0!important;min-height:42px!important;
+  padding:7px 5px!important;margin:0!important;
+  border:1px solid rgba(99,190,245,.43)!important;border-radius:11px!important;
+  background:linear-gradient(180deg,#16439a,#0d276b)!important;color:#d1e7ff!important;
+  font:800 clamp(10.5px,2.8vw,13px)/1.2 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:0!important;white-space:normal!important;box-shadow:none!important;
+}
+html body[data-app-route="quiniela"] .v960-q-links.v968-q-tabs button.v968-q-pane-button.active{
+  background:linear-gradient(180deg,#2374e4,#104dbd)!important;color:#fff!important;
+  border-color:#4adef4!important;box-shadow:inset 0 1px rgba(255,255,255,.15)!important;
+}
+html body[data-app-route="quiniela"] .v968-q-data-meta{
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  gap:7px!important;min-width:0!important;width:100%!important;
+  padding:4px 3px 5px!important;color:#b5d2f2!important;font-size:10.5px!important;
+}
+html body[data-app-route="quiniela"] .v968-q-data-meta span{min-width:0!important;overflow-wrap:anywhere!important}
+html body[data-app-route="quiniela"] .v968-q-data-meta [data-q-refresh]{
+  flex:none!important;min-height:32px!important;padding:5px 10px!important;
+  border:1px solid rgba(93,197,247,.5)!important;border-radius:9px!important;
+  background:#153b90!important;color:#fff!important;font-size:10.5px!important;
+}
+html body[data-app-route="quiniela"] .v960-q-block[hidden]{display:none!important}
+html body[data-app-route="quiniela"] .v960-q-block{margin:0!important}
+html body[data-app-route="quiniela"] .v960-q-block h3{font-size:14px!important;padding:10px 11px!important}
+html body[data-app-route="quiniela"] .v960-q-cols{
+  grid-template-columns:22px minmax(0,1fr) 29px 29px 29px 35px!important;
+  gap:5px!important;min-height:38px!important;padding:5px 8px!important;
+  font-size:11px!important;text-align:center!important;
+}
+html body[data-app-route="quiniela"] .v960-q-cols:first-of-type{font-size:10px!important;min-height:30px!important}
+html body[data-app-route="quiniela"] .v960-q-team{min-width:0!important;gap:6px!important}
+html body[data-app-route="quiniela"] .v960-q-team img{width:27px!important;height:27px!important}
+html body[data-app-route="quiniela"] .v960-q-team b{
+  font-size:11px!important;line-height:1.25!important;overflow-wrap:break-word!important;
+}
+html body[data-app-route="quiniela"] .v960-q-scorer-head,
+html body[data-app-route="quiniela"] .v960-q-scorer{
+  grid-template-columns:27px minmax(0,1fr) 42px!important;
+  padding:8px 11px!important;min-height:38px!important;font-size:11px!important;
+}
+html body[data-app-route="quiniela"] .v960-q-scorer b{font-size:11.5px!important}
+html body[data-app-route="quiniela"] .v960-q-scorer small{font-size:10.5px!important}
+html body[data-app-route="quiniela"] .v960-q-result{
+  grid-template-columns:30px minmax(0,1fr) 47px minmax(0,1fr)!important;
+  padding:7px 10px!important;min-height:39px!important;font-size:11px!important;
+}
+html body[data-app-route="quiniela"] .v967-history-screen{padding-bottom:7px!important}
+html body[data-app-route="quiniela"] .v967-history-round{margin-bottom:7px!important}
+html body[data-app-route="quiniela"] .v967-history-match{padding:10px 9px!important}
+html body[data-app-route="quiniela"] .v967-history-controls{padding:9px!important;gap:7px!important}
+@media(max-width:365px){
+ html body[data-app-route="quiniela"] .v960-q-cols{grid-template-columns:20px minmax(0,1fr) 26px 26px 26px 31px!important;gap:3px!important;padding:5px!important}
+ html body[data-app-route="quiniela"] .v960-q-team img{width:23px!important;height:23px!important}
+ html body[data-app-route="quiniela"] .v960-q-team b{font-size:10px!important}
+ html body[data-app-route="quiniela"] .v618-q-card-main{grid-template-columns:minmax(0,1fr) 102px minmax(0,1fr)!important;padding:7px 5px!important}
+}
