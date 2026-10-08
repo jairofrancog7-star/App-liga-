@@ -194,7 +194,7 @@ function addProgress(root,cat,visibleMatches,data){
    '<button type="button" data-v973-filter="'+key+'" aria-pressed="false">'+symbols[key]+'<span>'+label+'</span></button>').join('');
  card.append(filterBar);
  const index=new Map(visibleMatches.map(m=>[m.id,m]));
- const cards=$('[data-q-match]',root);
+ const cards=$$('[data-q-match]',root);
  const applyFilter=key=>{
   const mode=['all','pending','saved'].includes(key)?key:'all';
   const picks=safeRead('v561-quiniela');
