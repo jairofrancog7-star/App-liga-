@@ -4,7 +4,7 @@
 (function(){
 'use strict';
 
-const BUILD='20261008-v966-segunda-finales';
+const BUILD='20261008-v968-global-official-coherence';
 const LOCAL_DATA='./data/official-live.json?v='+BUILD;
 const REMOTE_DATA='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v='+BUILD;
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
@@ -297,10 +297,12 @@ function patchHomeCalendarResults(force=false){
 async function refreshOfficialData(){
   const fresh=await fetchJson(REMOTE_DATA+'&ts='+Date.now());
   if(!fresh)return;
-  const currentStamp=String(db?.captured_at_utc||''),freshStamp=String(fresh?.captured_at_utc||'');
-  const changed=!db||freshStamp>currentStamp||dataFingerprint(fresh)!==dataFingerprint(db);
+  const selected=chooseNewer(db,fresh);
+  // Evita refrescos de pantalla cada minuto cuando el espejo sigue atrasado.
+  if(selected===db)return;
+  const changed=!db||dataFingerprint(selected)!==dataFingerprint(db);
   if(changed){
-    publishData(preserveBlueRegistrations(chooseNewer(db,fresh)));
+    publishData(preserveBlueRegistrations(selected));
     patchHomeCalendarResults(true);
     patchHomeStandings(true);
     patchHomeScorers(true);
@@ -438,12 +440,13 @@ function patchHomeScorers(force=false){
 }
 function dataFingerprint(x){
   if(!x?.categories)return '';
+  const checksum=source=>{const str=JSON.stringify(source||[]);let h=2166136261;for(let i=0;i<str.length;i++)h=Math.imul(h^str.charCodeAt(i),16777619);return (h>>>0).toString(16)};
   const parts=[String(x.captured_at_utc||'')];
   for(const id of CAT_ORDER){
     const c=x.categories?.[id]||{};
     const count=k=>(c[k]||[]).reduce((n,b)=>n+(Array.isArray(b?.rows)?b.rows.length:0),0);
     const players=Object.values(c.rosters||{}).reduce((n,v)=>n+(Array.isArray(v)?v.length:(v?.players?.length||v?.rows?.length||0)),0);
-    parts.push([id,count('standings'),count('fixtures'),count('scorers'),count('cards'),count('suspensions'),Object.keys(c.rosters||{}).length,players].join(':'));
+    parts.push([id,count('standings'),count('fixtures'),count('scorers'),count('cards'),count('suspensions'),Object.keys(c.rosters||{}).length,players,checksum(c.fixtures),checksum(c.standings),checksum(c.scorers),checksum(c.cards),checksum(c.suspensions)].join(':'));
   }
   return parts.join('|');
 }
