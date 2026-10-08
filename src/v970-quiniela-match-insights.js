@@ -162,7 +162,7 @@ async function mount(){
  const root=$('#screen [data-v561-quiniela-mount] .v618-quiniela');
  if(!root||root.dataset.v970Enhanced==='true')return;
  const categoryId=String(localStorage.getItem('v561-category')||'3');
- const cards=$('[data-q-match]',root);
+ const cards=$$('[data-q-match]',root);
  if(!cards.length&&!$('.v618-q-ranking',root))return;
  // Mark this precise rendered instance to avoid observer feedback.
  root.dataset.v970Enhanced='true';
