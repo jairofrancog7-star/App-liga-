@@ -2112,14 +2112,18 @@
             "away": "Dep. Nopalero",
             "time": "08:00",
             "field": "2",
-            "status": "Jugado"
+            "status": "Finalizado",
+            "score": "4-7",
+            "date": "2026-09-27"
           },
           {
             "home": "Dep. Zapata",
             "away": "San Antonio FC",
             "time": "12:00",
             "field": "1",
-            "status": "Jugado"
+            "status": "Finalizado",
+            "score": "2-5",
+            "date": "2026-09-27"
           },
           {
             "home": "Célticos FC",
@@ -2542,5 +2546,16 @@
       "GANA LINCES",
       "GANA BOAVISTA"
     ]
+  },
+  "last_user_verified_results": {
+    "date": "2026-10-08",
+    "category": "Segunda Fuerza",
+    "source": "Notificación AdminFut",
+    "round": "J6",
+    "fixture_ids": [
+      "32",
+      "34"
+    ],
+    "standings_recalculation": "Pendiente de confirmación de la tabla oficial"
   }
 }

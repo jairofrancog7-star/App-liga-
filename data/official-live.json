@@ -10054,9 +10054,9 @@
               "32",
               "6",
               "PACHANGAS FC",
-              "-",
+              "4",
               "vs",
-              "-",
+              "7",
               "DEP. NOPALERO",
               "Campo 2",
               "27/09/2026 08:00",
@@ -10078,9 +10078,9 @@
               "34",
               "6",
               "DEP. ZAPATA",
-              "-",
+              "2",
               "vs",
-              "-",
+              "5",
               "SAN ANTONIO FC",
               "Campo 1 (Empastado)",
               "27/09/2026 12:00",
@@ -21475,5 +21475,15 @@
       "5": 42
     },
     "source_captured_at_utc": "2026-10-08T00:23:45Z"
+  },
+  "latest_user_verified_results": {
+    "date": "2026-10-08",
+    "source": "Captura de notificaciones AdminFut de resultados finalizados aportada por el usuario",
+    "category_id": "4",
+    "fixture_ids": [
+      "32",
+      "34"
+    ],
+    "scope": "Solo marcadores; clasificación, goleo y conteos oficiales pendientes de nueva validación"
   }
 }
