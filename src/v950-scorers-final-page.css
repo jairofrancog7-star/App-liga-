@@ -328,3 +328,99 @@
   html body[data-app-route="scorers"] #screen .v462-rank-copy > small{font-size:11.5px!important}
   html body[data-app-route="scorers"] #screen .v462-rank-row > strong{font-size:20px!important}
 }
+
+
+/* V951 — cabecera sin hueco/transparencia y avatar real de la cuenta. */
+@media(max-width:1023px){
+  html body[data-app-route="scorers"],
+  html body[data-app-route="scorers"] #app,
+  html body[data-app-route="scorers"] .app-shell,
+  html body[data-app-route="scorers"] #screen{
+    margin-top:0!important;
+    padding-top:0!important;
+    top:auto!important;
+  }
+
+  /* Elimina definitivamente la cabecera V28/V775 vieja que dejaba la franja azul vacía. */
+  html body[data-app-route="scorers"] #screen .v775-scorers-head{
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    width:0!important;
+    height:0!important;
+    min-height:0!important;
+    max-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    overflow:hidden!important;
+    pointer-events:none!important;
+  }
+
+  /* Barra azul sólida, pegada a ambas orillas del viewport. */
+  html body[data-app-route="scorers"] #screen > .v950-scorers-head{
+    left:50%!important;
+    width:100vw!important;
+    max-width:100vw!important;
+    margin:0!important;
+    transform:translateX(-50%)!important;
+    border-radius:0!important;
+    background:
+      radial-gradient(170px 92px at 18% -5%,rgba(116,151,255,.24),transparent 72%),
+      radial-gradient(190px 98px at 88% -8%,rgba(52,111,255,.20),transparent 72%),
+      linear-gradient(180deg,#2541ef 0%,#1b2fd5 44%,#111d9e 78%,#0a0d77 100%)!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+
+  html body[data-app-route="scorers"] #screen > .v28-scorers-page{
+    margin-top:0!important;
+    padding-top:12px!important;
+  }
+
+  /* Perfil: si hay sesión/foto/avatar, se muestra dentro del botón superior. */
+  html body[data-app-route="scorers"] .v950-scorers-profile{
+    overflow:hidden!important;
+    border:0!important;
+    background:transparent!important;
+  }
+  html body[data-app-route="scorers"] .v950-scorers-profile.has-account-avatar{
+    width:38px!important;
+    height:38px!important;
+    min-width:38px!important;
+    min-height:38px!important;
+    max-width:38px!important;
+    max-height:38px!important;
+    border-radius:50%!important;
+  }
+  html body[data-app-route="scorers"] .v950-scorers-profile > .v950-profile-photo,
+  html body[data-app-route="scorers"] .v950-scorers-profile > img.ljr-profile-image{
+    display:block!important;
+    width:34px!important;
+    height:34px!important;
+    min-width:34px!important;
+    min-height:34px!important;
+    max-width:34px!important;
+    max-height:34px!important;
+    margin:0!important;
+    padding:0!important;
+    object-fit:cover!important;
+    object-position:center!important;
+    border:1px solid rgba(255,255,255,.72)!important;
+    border-radius:50%!important;
+    background:#fff!important;
+    box-shadow:none!important;
+  }
+  html body[data-app-route="scorers"] .v950-scorers-profile .ljr-gamer-avatar,
+  html body[data-app-route="scorers"] .v950-scorers-profile .ljr-profile-initial{
+    width:34px!important;
+    height:34px!important;
+    min-width:34px!important;
+    min-height:34px!important;
+    max-width:34px!important;
+    max-height:34px!important;
+    margin:0!important;
+    border-radius:50%!important;
+    overflow:hidden!important;
+  }
+}
