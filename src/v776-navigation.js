@@ -50,7 +50,7 @@ let entries=Array.isArray(old?.entries)&&old.url===route()?old.entries:[],
 function save(){try{sessionStorage.setItem(STORE,JSON.stringify({url:active.url,entries:entries.slice(-60),future:future.slice(-30)}))}catch(_){}}
 try{history.scrollRestoration='manual'}catch(_){}
 function remember(){if(!restoring&&route()===active.url)active=capture()}
-function track(){if(queued||restoring)return;queued=true;requestAnimationFrame(()=>{queued=false;remember()})}
+function track(){if(queued||restoring)return;queued=true;setTimeout(()=>{queued=false;remember()},90)}
 function apply(entry){
  if(!entry||route()!==entry.url)return;
  const el=screen();if(el){el.scrollTop=entry.y||0;el.scrollLeft=entry.x||0}
