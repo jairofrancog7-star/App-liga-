@@ -1,13 +1,16 @@
-/* V651 — FOTO COMPLETA GLOBAL EN AVATARES CIRCULARES.
-   Conserva FaceDetector + MediaPipe + faceCrop de credenciales,
-   pero únicamente actúa cuando el contenedor de la foto YA es circular.
-   Fotos cuadradas o rectangulares se dejan completamente intactas. */
+/* Fotos de jugadores: rostro completo en avatares y tarjetas destacadas.
+   Reutiliza el detector existente y conserva la fotografía original. */
 (function(){
 'use strict';
 if(window.__LJR_V608_CIRCLE_FULL_FACE_HARDLOCK__)return;
 window.__LJR_V608_CIRCLE_FULL_FACE_HARDLOCK__=true;
 
+const HERO_IMAGES='.v576-scorer-hero-photo,.v576-hero-player-photo,.v971-hero-image';
 const FACE_IMAGES=[
+  HERO_IMAGES,
+  '.v971-official-image',
+  '.v971-menu-photo',
+  '.v971-history-person>img',
   '.v576-player-photo',
   '.v576-pitch-photo>img',
   '.v576-bench-photo>img',
@@ -347,8 +350,56 @@ function applyCrop(img,profile){
   img.dataset.ljrCredentialFaceCrop='1';img.dataset.ljrFaceDetector=profile.source||'native';return true;
 }
 
+// A virtual crop can extend beyond the source edges. This keeps the whole
+// head in frame even in a portrait selfie placed inside a landscape card.
+function heroCrop(img,destW,destH,profile){
+  const b=profile?.box;
+  if(!b||!(b.width>8&&b.height>8))return null;
+  const aspect=Math.max(1,destW)/Math.max(1,destH);
+  const sh=Math.max(b.height*1.85,b.width*1.85/aspect);
+  const sw=sh*aspect;
+  return {sx:b.x+b.width*.5-sw*.5,sy:b.y+b.height*.45-sh*.5,sw,sh};
+}
+function prepareHeroFallback(img){
+  delete img.dataset.ljrHeroFaceCrop;
+  const styles={position:'absolute',inset:'0',width:'100%',height:'100%',
+    'min-width':'0','min-height':'0','max-width':'100%','max-height':'100%',
+    margin:'0',padding:'0','object-fit':'contain','object-position':'center',
+    transform:'none','border-radius':'0'};
+  for(const [k,v]of Object.entries(styles))img.style.setProperty(k,v,'important');
+}
+function applyHeroCrop(img,profile){
+  const frame=frameSize(img),crop=heroCrop(img,frame.w,frame.h,profile);
+  if(!crop)return false;
+  const {w:iw,h:ih}=imageSize(img),{sx,sy,sw,sh}=crop;
+  const styles={position:'absolute',inset:'auto',
+    width:(iw/sw*100)+'%',height:(ih/sh*100)+'%',
+    left:(-sx/sw*100)+'%',top:(-sy/sh*100)+'%',right:'auto',bottom:'auto',
+    'min-width':'0','min-height':'0','max-width':'none','max-height':'none',
+    'object-fit':'fill','object-position':'center',transform:'none'};
+  for(const [k,v]of Object.entries(styles))img.style.setProperty(k,v,'important');
+  img.dataset.ljrHeroFaceCrop='1';
+  return true;
+}
+async function processHero(img){
+  const frame=frameSize(img),key=sourceKey(img)+'|'+frame.w+'x'+frame.h;
+  if(img.dataset.ljrHeroFaceKey===key)return;
+  prepareHeroFallback(img);
+  if(!img.complete||!img.naturalWidth||!img.naturalHeight){
+    if(img.dataset.ljrV606Load!=='1'){
+      img.dataset.ljrV606Load='1';
+      img.addEventListener('load',()=>{delete img.dataset.ljrV606Load;enqueue(img)},{once:true});
+    }
+    return;
+  }
+  img.dataset.ljrHeroFaceKey=key;
+  const original=sourceKey(img),profile=await playerFaceProfile(img);
+  if(img.isConnected&&sourceKey(img)===original&&profile)applyHeroCrop(img,profile);
+}
+
 async function process(img){
   if(!(img instanceof HTMLImageElement)||!img.matches(FACE_IMAGES))return;
+  if(img.matches(HERO_IMAGES)){await processHero(img);return}
   /* V652: las fotos rectangulares del registro público deben mostrarse completas.
      No ejecutar ningún recorte facial automático sobre ellas. */
   if(img.closest('.v562-avatar.photo,.v42-avatar.v562-team-photo')){
@@ -391,6 +442,9 @@ async function process(img){
 }
 function enqueue(img){
   if(!(img instanceof HTMLImageElement)||!img.matches(FACE_IMAGES)||queued.has(img))return;
+  // Apply the complete-photo view immediately, even while another image's
+  // detector is loading. Every card is readable from its first paint.
+  if(img.matches(HERO_IMAGES)&&!String(img.dataset.ljrHeroFaceKey||'').startsWith(sourceKey(img)+'|'))prepareHeroFallback(img);
   queued.add(img);queue.push(img);pump();
 }
 async function pump(){
@@ -432,6 +486,7 @@ function schedule(root=document){
 document.addEventListener('DOMContentLoaded',()=>scan(document),{once:true});
 window.addEventListener('load',()=>scan(document));
 window.addEventListener('hashchange',()=>schedule(document));
+window.addEventListener('resize',()=>schedule(document));
 window.addEventListener('ljr:official-data',()=>schedule(document));
 
 const host=document.querySelector('#screen')||document.documentElement;
@@ -452,7 +507,8 @@ setTimeout(()=>scan(document),500);
 setTimeout(()=>scan(document),1800);
 
 window.LJR_FACE_FRAME={
-  engine:'full-face-v652-v562',
+  engine:'full-face-cards-and-avatars',
+  heroCrop,
   scan:()=>scan(document),
   faceCrop,
   profile:playerFaceProfile,
@@ -460,6 +516,7 @@ window.LJR_FACE_FRAME={
     profileCache.clear();
     document.querySelectorAll(FACE_IMAGES).forEach(img=>{
       clearFaceCrop(img);
+      delete img.dataset.ljrHeroFaceKey;
       enqueue(img);
     });
   }
