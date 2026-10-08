@@ -1,0 +1,139 @@
+/* V939 · Ver detalles: Acciones rápidas integrada al diseño superior.
+   Ajuste visual aislado, sin modificar inputs, navegación ni acciones. */
+@media(max-width:1023px){
+  html body[data-app-route="match"] #screen > #v100-match-extra,
+  html body.v28-match-active #screen > #v100-match-extra{
+    box-sizing:border-box!important;
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+    margin:0 0 12px!important;
+    padding:17px clamp(17px,5.2vw,28px) 18px!important;
+    gap:12px!important;
+    border:0!important;
+    border-top:1px solid rgba(134,161,255,.17)!important;
+    border-radius:0!important;
+    background:#090970!important;
+    background-image:linear-gradient(180deg,#090970 0%,#080965 100%)!important;
+    box-shadow:none!important;
+    overflow:visible!important;
+  }
+  html body[data-app-route="match"] #screen > .v28-match:has(+ #v100-match-extra),
+  html body.v28-match-active #screen > .v28-match:has(+ #v100-match-extra){
+    margin-bottom:0!important;
+    padding-bottom:0!important;
+  }
+  /* Si hay otros paneles reales entre ambas piezas, no superponerlos. */
+  html body[data-app-route="match"] #screen > .v569-match-lower + #v100-match-extra{
+    margin-top:0!important;
+  }
+  html body[data-app-route="match"] #screen #v100-match-extra .v100-head,
+  html body.v28-match-active #screen #v100-match-extra .v100-head{
+    margin:0!important;
+    padding:0 0 11px!important;
+    border-bottom:1px solid rgba(174,198,255,.13)!important;
+  }
+  html body[data-app-route="match"] #screen #v100-match-extra .v100-head small{
+    padding:4px 9px!important;
+    font-size:9px!important;
+    letter-spacing:.11em!important;
+  }
+  html body[data-app-route="match"] #screen #v100-match-extra .v100-head h2{
+    font-size:clamp(21px,5.4vw,26px)!important;
+    margin:7px 0 4px!important;
+    line-height:1.12!important;
+  }
+  html body[data-app-route="match"] #screen #v100-match-extra .v100-head p{
+    font-size:11px!important;
+    line-height:1.4!important;
+    margin:0!important;
+  }
+  html body[data-app-route="match"] #screen #v100-match-extra .v100-form-grid{
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:10px!important;
+    margin:0!important;
+  }
+  html body[data-app-route="match"] #screen #v100-match-extra .v100-form-grid label{
+    gap:5px!important;
+  }
+  html body[data-app-route="match"] #screen #v100-match-extra .v100-form-grid label > span{
+    font-size:11px!important;
+    line-height:1.25!important;
+    font-weight:750!important;
+    color:#d6e4ff!important;
+  }
+  html body[data-app-route="match"] #screen #v100-match-extra .v100-form-grid input{
+    min-height:44px!important;height:44px!important;max-height:44px!important;
+    padding:0 12px!important;
+    border-radius:12px!important;
+    border:1px solid rgba(133,166,242,.26)!important;
+    background:#081451!important;
+    box-shadow:none!important;
+    color:#fff!important;
+    font-size:13px!important;
+  }
+  html body[data-app-route="match"] #screen #v100-match-extra .v100-actions{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:8px!important;
+    margin:2px 0 0!important;
+    padding:0!important;
+    align-items:stretch!important;
+  }
+  html body[data-app-route="match"] #screen #v100-match-extra .v100-actions button{
+    min-width:0!important;
+    min-height:58px!important;height:auto!important;
+    padding:9px 10px!important;
+    gap:7px!important;
+    border-radius:13px!important;
+    justify-content:flex-start!important;
+    box-shadow:none!important;
+    touch-action:manipulation;
+  }
+  html body[data-app-route="match"] #screen #v100-match-extra .v100-actions button[data-v100-ics]{
+    grid-column:1/-1!important;
+    min-height:60px!important;
+  }
+  html body[data-app-route="match"] #screen #v100-match-extra .v100-actions button[data-v100-route="weatherFields"]{
+    grid-column:auto!important;
+  }
+  html body[data-app-route="match"] #screen #v100-match-extra .v936-icon{
+    width:32px!important;height:32px!important;flex:0 0 32px!important;
+    border-radius:10px!important;
+  }
+  html body[data-app-route="match"] #screen #v100-match-extra .v936-icon svg{
+    width:19px!important;height:19px!important;
+    stroke-width:2!important;
+  }
+  html body[data-app-route="match"] #screen #v100-match-extra .v936-action-copy{
+    gap:2px!important;min-width:0!important;
+  }
+  html body[data-app-route="match"] #screen #v100-match-extra .v936-action-copy b{
+    font-size:11px!important;
+    line-height:1.23!important;
+    overflow-wrap:normal!important;
+  }
+  html body[data-app-route="match"] #screen #v100-match-extra .v936-action-copy small{
+    font-size:9px!important;
+    line-height:1.25!important;
+  }
+  html body[data-app-route="match"] #screen #v100-match-extra .v936-arrow{
+    display:none!important;
+  }
+  /* La barra fija nunca cubre el último botón, pero tampoco añade cola duplicada. */
+  html body.v28-match-active #screen{
+    padding-bottom:calc(max(var(--bottom-nav-h,60px),var(--v774-nav-h,68px)) + env(safe-area-inset-bottom,0px) + 12px)!important;
+  }
+  html body.v28-match-active #screen > #v100-match-extra:last-child,
+  html body[data-app-route="match"] #screen > #v100-match-extra:last-child{
+    margin-bottom:0!important;
+  }
+}
+@media(max-width:320px){
+  html body[data-app-route="match"] #screen #v100-match-extra .v100-actions{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  html body[data-app-route="match"] #screen #v100-match-extra .v100-actions button[data-v100-ics]{
+    grid-column:auto!important;
+  }
+}
