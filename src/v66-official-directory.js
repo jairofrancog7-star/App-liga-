@@ -5,20 +5,20 @@
 /* V625 — respeta al renderizador que ya tomó #/players; V66 conserva tienda y APIs auxiliares. */
 if(!window.__LJR_PLAYER_DIRECTORY_OWNER__)window.__LJR_PLAYER_DIRECTORY_OWNER__='v66';
 function ownsPlayers(){return window.__LJR_PLAYER_DIRECTORY_OWNER__==='v66'}
-const LOCAL='./data/official-live.json?v=20261008-v968-global-official-coherence';
+const LOCAL='./data/official-live.json?v=20261008-v970-all-53-category-memberships';
 const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261008-v968-global-official-coherence';
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_LABEL={'1':'Veteranos 50+','2':'Veteranos 35+','3':'Primera Fuerza','4':'Segunda Fuerza','5':'Intermedia'};
 
 /* V812 — Tienda: catálogo limitado a los clubes activos de la temporada 2026.
-   Fuente: public/data/temporada-actual-2026.json. Son 52 inscripciones por
-   categoría y 50 clubes únicos (Juventus y Boavista participan en dos). */
+   Fuente: public/data/temporada-actual-2026.json. Son 53 inscripciones por
+   categoría y 51 clubes únicos (Juventus y Boavista participan en dos). */
 const V812_ACTIVE_STORE_BY_CAT={
   '3':['San José FC','Juventus','Linces','Napoli','Hermanos','Franco FC','Herreras FC','Abejas','Terrícolas','Lobos CDG','Galácticos'],
   '5':['La Canchita Deportes','Galeana','Aldama FC','Malvinas','Capibaras','La Cuadrilla','Mazacotes FC','Dep. Maravillas','Osasuna','San Antonio Jrs','Populares','Promesas FC','La Huerta'],
   '4':['Tavera FC','Pachangas FC','San Juan FC','Tapatío','Dep. La Luz','San Julián','Barza','San José Jrs','San Antonio FC','Célticos FC','Dep. Nopalero','Dep. Zapata'],
-  '2':['BOAVISTA','FRANCO-TAVERA-JR','HURACAN','CUENDA','AMERICA','AGUILARES','JUVENTUS','LEYENDAS FC','PSV','LA TRINIDAD'],
+  '2':['BOAVISTA','FRANCO-TAVERA-JR','HURACAN','CUENDA','AMERICA','AGUILARES','JUVENTUS','LEYENDAS FC','PSV','LA TRINIDAD','POZOS FC'],
   '1':['La Esperanza','Dynamo','Boca Jrs','Toros de Cuenda','Boavista','Manchester']
 };
 const V812_ACTIVE_STORE_TEAMS=CAT_ORDER.flatMap(id=>V812_ACTIVE_STORE_BY_CAT[id]||[]);
@@ -28,9 +28,8 @@ function v812ActiveStoreList(){
   const out=[],seen=new Set();
   for(const id of CAT_ORDER){
     for(const raw of (V812_ACTIVE_STORE_BY_CAT[id]||[])){
-      const name=String(raw||'').trim(),key=norm(name);
-      /* Deduplicate exact club identity only. Keep CUENDA and Toros de Cuenda
-         as separate active registrations; only duplicate Juventus/Boavista collapse. */
+      const name=String(raw||'').trim(),key=id+':'+norm(name);
+      /* Un registro por equipo y categoría: Juventus y Boavista participan dos veces. */
       if(!name||seen.has(key))continue;
       seen.add(key);
       out.push({name,cat:String(id),category:CAT_LABEL[String(id)]||'Liga Municipal'});
@@ -104,8 +103,8 @@ function teamList(){
   const add=(name,id)=>{
     name=String(name||'').trim();
     if(!validTeamName(name))return;
-    if(seen.some(x=>same(x,name)))return;
-    seen.push(name);
+    if(seen.some(x=>x.id===String(id)&&same(x.name,name)))return;
+    seen.push({name,id:String(id)});
     out.push({name,cat:String(id),category:db?.categories?.[String(id)]?.name||CAT_LABEL[String(id)]||'Liga Municipal'});
   };
   for(const id of CAT_ORDER){
@@ -676,7 +675,7 @@ function storePlayerAvatar(team,cat,name){
 }
 
 /* V916 — exact team crest + club-specific shirt color/design.
-   The 50-team jersey registry is the source of truth for the store. */
+   The 51-club jersey registry is the source of truth for the store. */
 function storeKitItem(team){
  try{return window.LJR_JERSEY_ASSETS?.itemFor?.(team)||null}catch(_){return null}
 }

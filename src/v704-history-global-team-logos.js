@@ -7,6 +7,8 @@ if(window.__LJR_V704_HISTORY_LOGO_GLOBAL__)return;
 window.__LJR_V704_HISTORY_LOGO_GLOBAL__=true;
 
 const SPECIAL={
+  'pozos':'./assets/season-2026/pozos.webp',
+  'pozos fc':'./assets/season-2026/pozos.webp',
   'olimpicos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
   'olimpicos de pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
   'olimpicos pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
@@ -47,6 +49,8 @@ const SPECIAL={
 const LEGACY_BROKEN_SOURCE_FALLBACK=new Set(['la pandilla','la pandilla fc']);
 
 const LEGACY_CARD_LOGOS={
+  'pozos':'./assets/season-2026/pozos.webp',
+  'pozos fc':'./assets/season-2026/pozos.webp',
   'cerrito':'./assets/teams/deportivo-cg.webp',
   'cerrito de g':'./assets/teams/deportivo-cg.webp',
   'cerrito de gasca':'./assets/teams/deportivo-cg.webp',

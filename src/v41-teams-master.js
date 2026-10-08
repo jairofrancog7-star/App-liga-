@@ -13,7 +13,7 @@
     {id:'LOB',name:'Lobos CDG',logo:'assets/official-logos/lobos-cdg.png',abbr:'LOB'},
     {id:'JUV',name:'Juventino',logo:'assets/liga-logo.webp',abbr:'JUV'},
     {id:'CUE',name:'Cuenda',logo:'assets/teams/tc-cuenda.webp',abbr:'CUE'},
-    {id:'POZ',name:'Pozos FC',logo:'assets/teams/veteranos-pozos-fc.webp',abbr:'POZ'},
+    {id:'POZ',name:'Pozos FC',logo:'https://jairofrancog7-star.github.io/App-liga-/assets/season-2026/pozos.webp',abbr:'POZ'},
     {id:'STC',name:'Santa Cruz',logo:'assets/teams/atletico-santa-cruz.webp',abbr:'STC'},
     {id:'TAV',name:'Franco Tavera',logo:'assets/teams/franco-tavera-jr-veteranos.webp',abbr:'TAV'},
     {id:'SJO',name:'San José FC',logo:'assets/official-logos/san-jose-fc.png',abbr:'SJO'},
@@ -35,10 +35,10 @@
     if(!db?.categories)return FALLBACK_TEAMS;
     const out=[],seen=new Set();
     const add=(name,cat)=>{
-      name=String(name||'').trim();const k=norm(name);if(!name||seen.has(k))return;
-      seen.add(k);
+      name=String(name||'').trim();const k=norm(name),scope=String(cat||'3')+':'+k;if(!name||seen.has(scope))return;
+      seen.add(scope);
       let logo='';try{logo=window.LJR_TEAM_LOGOS?.get?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name)||''}catch(_){}
-      out.push({id:k.replace(/\s+/g,'-').toUpperCase(),name,logo,abbr:abbr(name),cat:String(cat||'3')});
+      out.push({id:(String(cat||'3')+'-'+k).replace(/\s+/g,'-').toUpperCase(),name,logo,abbr:abbr(name),cat:String(cat||'3')});
     };
     for(const [cid,c] of Object.entries(db.categories||{})){
       Object.keys(c?.rosters||{}).forEach(n=>add(n,cid));
