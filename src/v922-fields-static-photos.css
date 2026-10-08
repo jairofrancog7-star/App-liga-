@@ -1,0 +1,83 @@
+/* V922 — Fotos reales de archivo deportivo, sin mapas incrustados.
+   Imágenes de otras sedes: indicadas como referencia, nunca como ubicación verificada. */
+html body .v921-field-page .v921-map-preview.v922-photo-preview{
+  background:
+    linear-gradient(138deg,rgba(13,36,108,.2),rgba(5,11,50,.55)),
+    #092150!important;
+}
+html body .v921-field-page .v921-map-preview.v922-photo-preview .v922-field-photo{
+  position:absolute!important;
+  inset:0!important;
+  z-index:1!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  margin:0!important;
+  border:0!important;
+  object-fit:cover!important;
+  object-position:center 42%!important;
+  opacity:1!important;
+  filter:none!important;
+  pointer-events:none!important;
+}
+html body .v921-field-page .v921-map-preview.v922-photo-preview .v922-field-photo[hidden]{
+  display:none!important;
+}
+html body .v921-field-page .v921-map-preview.v922-photo-preview:after{
+  content:"";
+  position:absolute;
+  z-index:2;
+  inset:52% 0 0;
+  background:linear-gradient(0deg,rgba(3,9,47,.78),transparent);
+  pointer-events:none;
+}
+html body .v921-field-page .v922-photo-caption{
+  position:absolute!important;
+  z-index:3!important;
+  left:10px!important;
+  bottom:14px!important;
+  max-width:58%!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  padding:7px 10px!important;
+  border:1px solid rgba(255,255,255,.18)!important;
+  border-radius:10px!important;
+  background:rgba(2,15,61,.67)!important;
+  color:#f8fbff!important;
+  font:750 10px/1.25 Inter,Roboto,Arial,sans-serif!important;
+  backdrop-filter:blur(7px);
+  overflow-wrap:break-word!important;
+  pointer-events:none!important;
+}
+html body .v921-field-page .v922-photo-preview .v921-map-open{
+  bottom:12px!important;
+  right:10px!important;
+  z-index:4!important;
+}
+body[data-app-route="home"] .v65-field-map.v922-photo-preview{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  overflow:hidden!important;
+  background:#0a245e!important;
+}
+body[data-app-route="home"] .v65-field-map.v922-photo-preview .v922-field-photo{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  opacity:1!important;
+  filter:none!important;
+  pointer-events:none!important;
+}
+body[data-app-route="home"] .v65-field-map.v922-photo-preview .v922-field-photo[hidden]{
+  display:none!important;
+}
+@media(max-width:380px){
+  html body .v921-field-page .v922-photo-caption{
+    font-size:9px!important;
+    max-width:60%!important;
+  }
+}
