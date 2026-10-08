@@ -59,10 +59,11 @@ test('default: identifica el equipo sancionado sin asignar goles inventados',()=
   assert.equal(m.homeScore,null);
   assert.equal(m.awayScore,null);
  }
+ assert.equal(defaultDefeatedTeam({type:'administrative',winner:'B'},'A','B'),null,'un fallo administrativo sin DEFAULT explícito no resta puntos');
  assert.equal(defaultDefeatedTeam({type:'administrative',winner:'Equipo ajeno'},'A','B'),null);
  assert.equal(defaultDefeatedTeam(null,'A','B'),null);
 });
-test('resultados de la captura se conservan sin duplicación ni inventar un cero',()=>{
+test('tres resultados de la captura AdminFut coinciden con los de la app, sin duplicados',()=>{
  const veteran=categories.find(c=>c.id==='1');
  const pick=(home,away)=>veteran.matches.filter(m=>m.home===home&&m.away===away&&Number(m.round)<8);
  const dynamo=pick('DYNAMO','LA ESPERANZA')[0];
@@ -71,8 +72,8 @@ test('resultados de la captura se conservan sin duplicación ni inventar un cero
  assert.deepEqual([dynamo.homeScore,dynamo.awayScore],[1,2]);
  assert.deepEqual([boavista.homeScore,boavista.awayScore],[2,1]);
  assert.equal(manchester.homeScore,3);
- assert.equal(manchester.awayScore,null);
- assert.equal(manchester.complete,false);
+ assert.equal(manchester.awayScore,0);
+ assert.equal(manchester.complete,true);
  assert.equal(new Set([dynamo.id,boavista.id,manchester.id]).size,3);
 });
 test('puntos oficiales: negativos conservados en todas las categorías, nunca descontados dos veces',()=>{
