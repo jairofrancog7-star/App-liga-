@@ -1,4 +1,4 @@
-/* Desktop navigation bridge. Loads the PC functionality adapter before desktop shells. */
+/* Desktop navigation bridge; routes use the existing functional app modules. */
 (function(){
 'use strict';
 const mode=new URLSearchParams(location.search).get('mode');
@@ -11,9 +11,8 @@ window.addEventListener('hashchange',()=>setTimeout(bridge,0));
 window.addEventListener('resize',()=>setTimeout(bridge,0));
 if(!window.__LJR_PC_PARITY_SCRIPT__){
  window.__LJR_PC_PARITY_SCRIPT__=true;
- const script=document.createElement('script');
- script.src='./src/desktop-parity-20261008.js?v=pc-parity-20261008';
- script.defer=true;
- document.head.appendChild(script);
+ ['./src/desktop-parity-20261008.js?v=pc-parity-20261008','./src/desktop-parity-runtime-20261008.js?v=pc-runtime-20261008'].forEach(src=>{
+  const script=document.createElement('script');script.src=src;script.defer=true;document.head.appendChild(script);
+ });
 }
 })();
