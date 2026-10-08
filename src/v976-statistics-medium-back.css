@@ -1,0 +1,49 @@
+/* V976 — Datos > Estadísticas: flecha mediana sin reducir el área táctil.
+   Únicamente afecta Volver; mantiene barra, título, compartir y navegación. */
+@media (max-width:1023px) {
+  html body.v33-data-active #screen .v33-head-actions button[data-v33-back] {
+    box-sizing:border-box!important;
+    width:48px!important;
+    height:48px!important;
+    min-width:48px!important;
+    min-height:48px!important;
+    max-width:48px!important;
+    max-height:48px!important;
+    padding:0!important;
+    display:grid!important;
+    place-items:center!important;
+    background:transparent!important;
+    border:0!important;
+  }
+  html body.v33-data-active #screen .v33-head-actions button[data-v33-back] svg {
+    display:block!important;
+    box-sizing:content-box!important;
+    width:30px!important;
+    height:30px!important;
+    min-width:30px!important;
+    min-height:30px!important;
+    max-width:30px!important;
+    max-height:30px!important;
+    stroke-width:2.1!important;
+    transform:none!important;
+  }
+  /* Compatibility with the alternate Statistics heading. */
+  html body[data-app-route="v38Stats"] #screen .v520-stats-topbar .v520-stats-back {
+    width:48px!important;
+    height:48px!important;
+    min-width:48px!important;
+    min-height:48px!important;
+    max-width:48px!important;
+    max-height:48px!important;
+  }
+  html body[data-app-route="v38Stats"] #screen .v520-stats-topbar .v520-stats-back svg {
+    width:30px!important;
+    height:30px!important;
+    min-width:30px!important;
+    min-height:30px!important;
+    max-width:30px!important;
+    max-height:30px!important;
+    stroke-width:2.1!important;
+    transform:none!important;
+  }
+}
