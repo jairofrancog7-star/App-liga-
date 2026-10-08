@@ -9,7 +9,7 @@ const go=r=>{location.hash='#/'+r};
 const CAT=['3','5','4','2','1'];
 const FALLBACK={'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'};
 const TABS=[['standings','Clasificación'],['scorers','Goleadores'],['cards','Tarjetas'],['suspensions','Sanciones'],['fixtures','Partidos']];
-const names=['news','history','video','teams'];
+const names=['news','history','video','teams','profile','club-store','safe-performance'];
 names.forEach(name=>window.LJR_PC_NATIVE_ROUTES?.add(name));
 const aliases={'safe-data':'pc-data','bracket':'pc-bracket','draws':'pc-draws'};
 let db=null,loading=null,cat='3',tab='standings',search='',busy=false;

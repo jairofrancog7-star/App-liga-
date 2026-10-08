@@ -18,14 +18,14 @@ const toolGroups=[
   ['⚖️','Más o Menos','moreLess'],['⭐','Jugador de la semana','vote']]],
  ['Equipos, jugadores y fichajes',[
   ['🛡️','Mis equipos','following'],['↔️','Comparar jugadores','playerCompare'],
-  ['🛒','Fichajes','transfers'],['📋','Jugadores','players'],
-  ['📈','Estadísticas','stats'],['🔎','Buscar','search']]],
+  ['🛒','Fichajes','transfers'],['🛍️','Tienda de clubes','club-store'],['📋','Jugadores','players'],
+  ['📈','Estadísticas','stats'],['⚡','Performance Zone','safe-performance'],['🔎','Buscar','search']]],
  ['Sedes, multimedia y avisos',[
   ['🌦️','Clima y campos','weatherFields'],['🎬','Momentos','moments'],
   ['🔔','Notificaciones','pc-notifications'],['📣','Avisos','notices'],
   ['📖','Reglamento','rulebook'],['🗓️','Agenda','agendaBuilder']]],
  ['Gestión de la liga',[
-  ['📋','Centro administrativo','adminFut'],['🪪','Credenciales','credentialBuilder'],
+  ['📋','Centro administrativo','adminFut'],['👤','Mi cuenta','profile'],['🪪','Credenciales','credentialBuilder'],
   ['🧾','Cédulas','cedulaBuilder'],['🗂️','Publicaciones','publicationCenter'],
   ['🚦','Disciplina','discipline'],['🛠️','JR Control','jrControl']]]
 ];
