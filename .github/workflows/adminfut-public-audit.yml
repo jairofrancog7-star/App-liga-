@@ -12,7 +12,6 @@ on:
 
 permissions:
   contents: write
-  actions: write
 
 concurrency:
   group: adminfut-public-players-audit
@@ -66,9 +65,3 @@ jobs:
           done
           echo 'GitHub recibio otras modificaciones durante todos los intentos.'
           exit 1
-      - name: Publicar cambios en GitHub Pages
-        if: steps.publish.outputs.changed == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh api -X POST "repos/${{ github.repository }}/actions/workflows/pages.yml/dispatches" -f ref=main
