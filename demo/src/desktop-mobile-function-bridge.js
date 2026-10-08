@@ -27,6 +27,17 @@ const ALIASES={
 };
 const OWN=new Set(['pc-calendar','pc-notifications','pc-scorers','pc-standings','pc-fixtures']);
 let db=null,loading=null,monthShift=0,calendarCat='3',selectedDate='';
+const CAT_STORAGE_KEY='ljpc-selected-category';
+function savedCat(){
+  try{const value=sessionStorage.getItem(CAT_STORAGE_KEY);return CAT_ORDER.includes(value)?value:'3'}catch(_){return '3'}
+}
+let activeCat=savedCat();calendarCat=activeCat;
+function rememberCat(id){
+  if(!CAT_ORDER.includes(String(id)))return activeCat;
+  activeCat=String(id);calendarCat=activeCat;
+  try{sessionStorage.setItem(CAT_STORAGE_KEY,activeCat)}catch(_){}
+  return activeCat;
+}
 
 function injectStyle(){
   if(document.getElementById('ljpc-function-style'))return;
@@ -83,7 +94,7 @@ async function loadDb(){
     for(const url of urls){try{const r=await fetch(url,{cache:'no-store'});if(r.ok){db=await r.json();break}}catch(_){}}
     return db||{categories:{}};
   })();
-  return loading;
+  return loading.finally(()=>{loading=null});
 }
 function parseDate(v){
   const m=String(v||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
@@ -150,7 +161,7 @@ function renderCalendar(){
   const dayMatches=list.filter(x=>iso(x.date)===selectedDate);
   const matchHtml=dayMatches.length?dayMatches.map((x,i)=>'<div class="ljpc-match" data-ljpc-match="'+i+'"><div class="ljpc-team">'+crest(x.home)+'<span>'+esc(pretty(x.home))+'</span></div><div class="ljpc-score"><b>'+(x.played?esc(x.homeScore+' – '+x.awayScore):esc(x.rawDate.match(/\s(\d{1,2}:\d{2})/)?.[1]||'Por confirmar'))+'</b><small>J'+esc(x.round||'—')+'</small></div><div class="ljpc-team">'+crest(x.away)+'<span>'+esc(pretty(x.away))+'</span></div><div class="ljpc-actions"><button class="ljpc-btn" data-ljpc-cal="'+i+'">Google Calendar</button><button class="ljpc-btn" data-ljpc-share="'+i+'">Compartir</button></div></div>').join(''):'<p class="ljpc-muted">No hay partidos oficiales publicados para esta fecha.</p>';
   wrap.innerHTML='<div class="ljpc-function-root" data-ljpc-function-route="pc-calendar"><div class="ljpc-toolbar"><div class="ljpc-toolbar-group"><select class="ljpc-select" data-ljpc-cat>'+CAT_ORDER.map(id=>'<option value="'+id+'" '+(id===calendarCat?'selected':'')+'>'+esc(categoryName(id))+'</option>').join('')+'</select><button class="ljpc-btn" data-ljpc-prev>‹ Mes anterior</button><button class="ljpc-btn" data-ljpc-today>Hoy</button><button class="ljpc-btn" data-ljpc-next>Mes siguiente ›</button></div><button class="ljpc-btn primary" data-ljpc-back-more>Más herramientas</button></div><section class="ljpc-panel"><h2>'+esc(new Intl.DateTimeFormat('es-MX',{month:'long',year:'numeric'}).format(base))+'</h2><div class="ljpc-grid">'+['L','M','X','J','V','S','D'].map(x=>'<div class="ljpc-week">'+x+'</div>').join('')+cells.join('')+'</div></section><section class="ljpc-panel"><h3>Partidos · '+esc(selectedDate)+'</h3>'+matchHtml+'</section></div>';
-  wrap.querySelector('[data-ljpc-cat]')?.addEventListener('change',e=>{calendarCat=e.target.value;selectedDate='';renderCalendar()});
+  wrap.querySelector('[data-ljpc-cat]')?.addEventListener('change',e=>{rememberCat(e.target.value);selectedDate='';renderCalendar()});
   wrap.querySelector('[data-ljpc-prev]')?.addEventListener('click',()=>{monthShift--;selectedDate='';renderCalendar()});
   wrap.querySelector('[data-ljpc-next]')?.addEventListener('click',()=>{monthShift++;selectedDate='';renderCalendar()});
   wrap.querySelector('[data-ljpc-today]')?.addEventListener('click',()=>{monthShift=0;selectedDate='';renderCalendar()});
@@ -184,12 +195,13 @@ function scorerRows(catId){
   const rows=(groups[0]?.rows||[]).filter(r=>Array.isArray(r)&&r[1]&&r[2]&&/^\d+$/.test(String(r[3]||'')));
   return rows.map((r,i)=>({rank:Number(r[0])||i+1,name:String(r[1]).trim(),team:String(r[2]).trim(),goals:Number(r[3])||0})).sort((a,b)=>b.goals-a.goals||a.rank-b.rank);
 }
-function renderScorers(catId='3'){
+function renderScorers(catId=activeCat){
+  rememberCat(catId);
   const wrap=ensureOwnHost('Máximos goleadores','Tabla oficial de goleadores por categoría, presentada en el diseño PC.');
   if(!wrap)return;
   const rows=scorerRows(catId);
   wrap.innerHTML='<div class="ljpc-function-root" data-ljpc-function-route="pc-scorers"><div class="ljpc-toolbar"><div class="ljpc-cat-tabs">'+CAT_ORDER.map(id=>'<button class="ljpc-chip '+(id===catId?'active':'')+'" data-ljpc-scorer-cat="'+id+'">'+esc(categoryName(id))+'</button>').join('')+'</div><button class="ljpc-btn primary" data-ljpc-data>Datos oficiales</button></div><section class="ljpc-panel" style="padding:0;overflow:hidden">'+(rows.length?'<table class="ljpc-table"><thead><tr><th>#</th><th>Jugador</th><th>Equipo</th><th>Goles</th></tr></thead><tbody>'+rows.map((x,i)=>'<tr><td class="ljpc-rank">'+(i+1)+'</td><td><b>'+esc(x.name)+'</b></td><td><span class="ljpc-team">'+crest(x.team)+'<span>'+esc(pretty(x.team))+'</span></span></td><td><b>'+x.goals+'</b></td></tr>').join('')+'</tbody></table>':'<div style="padding:18px" class="ljpc-muted">No hay tabla oficial de goleo publicada para esta categoría.</div>')+'</section></div>';
-  wrap.querySelectorAll('[data-ljpc-scorer-cat]').forEach(b=>b.addEventListener('click',()=>renderScorers(b.dataset.ljpcScorerCat)));
+  wrap.querySelectorAll('[data-ljpc-scorer-cat]').forEach(b=>b.addEventListener('click',()=>renderScorers(rememberCat(b.dataset.ljpcScorerCat))));
   wrap.querySelector('[data-ljpc-data]')?.addEventListener('click',()=>go('safe-data'));
 }
 
@@ -199,22 +211,24 @@ function standingsRows(catId){
  for(const g of groups){const rows=(Array.isArray(g[0]?.rows)?g[0].rows:g).filter(Array.isArray);if(rows.length)return rows}
  return [];
 }
-function renderStandings(catId='3'){
+function renderStandings(catId=activeCat){
+ rememberCat(catId);
  const wrap=ensureOwnHost('Clasificación','Tabla de posiciones oficiales por categoría.');
  if(!wrap)return;
  const rows=standingsRows(catId);
  const thead='<tr><th>#</th><th>Equipo</th><th>PJ</th><th>PTS</th><th>DG</th></tr>';
  const cells=rows.map((r,i)=>'<tr><td class="ljpc-rank">'+esc(r[0]||i+1)+'</td><td><span class="ljpc-team">'+crest(r[1])+'<span>'+esc(pretty(r[1]))+'</span></span></td><td>'+esc(r[2]??'—')+'</td><td><b>'+esc(r[9]??'—')+'</b></td><td>'+esc(r[8]??'—')+'</td></tr>').join('');
  wrap.innerHTML='<div class="ljpc-function-root" data-ljpc-function-route="pc-standings"><div class="ljpc-toolbar"><div class="ljpc-cat-tabs">'+CAT_ORDER.map(id=>'<button class="ljpc-chip '+(id===catId?'active':'')+'" data-ljpc-standing-cat="'+id+'">'+esc(categoryName(id))+'</button>').join('')+'</div><button class="ljpc-btn" data-ljpc-fixtures>Partidos oficiales</button></div><section class="ljpc-panel" style="padding:0;overflow:auto">'+(rows.length?'<table class="ljpc-table"><thead>'+thead+'</thead><tbody>'+cells+'</tbody></table>':'<p class="ljpc-muted" style="padding:18px">Clasificación oficial no disponible para esta categoría.</p>')+'</section></div>';
- wrap.querySelectorAll('[data-ljpc-standing-cat]').forEach(b=>b.addEventListener('click',()=>renderStandings(b.dataset.ljpcStandingCat)));
+ wrap.querySelectorAll('[data-ljpc-standing-cat]').forEach(b=>b.addEventListener('click',()=>renderStandings(rememberCat(b.dataset.ljpcStandingCat))));
  wrap.querySelector('[data-ljpc-fixtures]')?.addEventListener('click',()=>go('pc-fixtures'));
 }
-function renderFixtures(catId='3'){
+function renderFixtures(catId=activeCat){
+ rememberCat(catId);
  const wrap=ensureOwnHost('Partidos y resultados','Rol y marcadores oficiales de la Liga Juventino Rosas.');
  if(!wrap)return;
  const matches=fixtures(catId);
  wrap.innerHTML='<div class="ljpc-function-root" data-ljpc-function-route="pc-fixtures"><div class="ljpc-toolbar"><div class="ljpc-cat-tabs">'+CAT_ORDER.map(id=>'<button class="ljpc-chip '+(id===catId?'active':'')+'" data-ljpc-fixture-cat="'+id+'">'+esc(categoryName(id))+'</button>').join('')+'</div><div class="ljpc-toolbar-group"><button class="ljpc-btn" data-ljpc-to-calendar>Calendario</button><button class="ljpc-btn primary" data-ljpc-to-standings>Clasificación</button></div></div><section class="ljpc-panel">'+(matches.length?matches.slice(-100).reverse().map(x=>'<div class="ljpc-match"><div class="ljpc-team">'+crest(x.home)+'<span>'+esc(pretty(x.home))+'</span></div><div class="ljpc-score"><b>'+esc(x.played?x.homeScore+' – '+x.awayScore:x.rawDate.match(/\\s(\\d{1,2}:\\d{2})/)?.[1]||'Por confirmar')+'</b><small>'+esc(formatDate(x.date))+' · J'+esc(x.round)+'</small></div><div class="ljpc-team">'+crest(x.away)+'<span>'+esc(pretty(x.away))+'</span></div><div class="ljpc-muted">'+esc(x.venue||'Sede por confirmar')+'</div></div>').join(''):'<p class="ljpc-muted">Sin partidos oficiales publicados.</p>')+'</section></div>';
- wrap.querySelectorAll('[data-ljpc-fixture-cat]').forEach(b=>b.addEventListener('click',()=>renderFixtures(b.dataset.ljpcFixtureCat)));
+ wrap.querySelectorAll('[data-ljpc-fixture-cat]').forEach(b=>b.addEventListener('click',()=>renderFixtures(rememberCat(b.dataset.ljpcFixtureCat))));
  wrap.querySelector('[data-ljpc-to-calendar]')?.addEventListener('click',()=>go('pc-calendar'));
  wrap.querySelector('[data-ljpc-to-standings]')?.addEventListener('click',()=>go('pc-standings'));
 }
@@ -236,11 +250,12 @@ async function renderOwn(){
   if(!OWN.has(r))return;
   if(document.querySelector('[data-ljpc-function-route="'+r+'"]'))return;
   await loadDb();
+  if(!isDesktop()||route()!==r)return;
   if(r==='pc-calendar')renderCalendar();
   if(r==='pc-notifications')renderNotifications();
-  if(r==='pc-scorers')renderScorers('3');
-  if(r==='pc-standings')renderStandings('3');
-  if(r==='pc-fixtures')renderFixtures('3');
+  if(r==='pc-scorers')renderScorers(activeCat);
+  if(r==='pc-standings')renderStandings(activeCat);
+  if(r==='pc-fixtures')renderFixtures(activeCat);
 }
 
 function rerouteLegacy(){

@@ -12,7 +12,16 @@ const TABS=[['standings','Clasificación'],['scorers','Goleadores'],['cards','Ta
 const names=['news','history','video','teams','profile','club-store','safe-performance'];
 names.forEach(name=>window.LJR_PC_NATIVE_ROUTES?.add(name));
 const aliases={'safe-data':'pc-data','bracket':'pc-bracket','draws':'pc-draws'};
-let db=null,loading=null,cat='3',tab='standings',search='',busy=false;
+const CAT_STORAGE_KEY='ljpc-selected-category';
+function getCategory(){
+ try{const id=sessionStorage.getItem(CAT_STORAGE_KEY);return CAT.includes(id)?id:'3'}catch(_){return '3'}
+}
+let db=null,loading=null,cat=getCategory(),tab='standings',search='',busy=false;
+function setCategory(id){
+ if(!CAT.includes(String(id)))return;
+ cat=String(id);
+ try{sessionStorage.setItem(CAT_STORAGE_KEY,cat)}catch(_){}
+}
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function official(){return window.LJR_OFFICIAL_DATA?.categories?window.LJR_OFFICIAL_DATA:(window.LJR_OFFICIAL_API?.getData?.()?.categories?window.LJR_OFFICIAL_API.getData():db)}
 async function load(){
@@ -121,7 +130,7 @@ function renderTable(root){
  '<div class="ljpc-empty">'+(total?'No encontramos coincidencias.':'La fuente oficial no publicó registros para esta categoría y apartado.')+'</div>')+
  '<p class="ljpc-data-footer">'+rows.length+' de '+total+' registros · '+esc(category)+' · Fuente oficial de la liga. No se calculan ni inventan estadísticas.</p></div>';
  root.querySelector('[data-ljpc-csv]')?.addEventListener('click',exportCsv);
- root.querySelectorAll('[data-ljpc-cat]').forEach(b=>b.addEventListener('click',()=>{cat=b.dataset.ljpcCat;search='';renderTable(root)}));
+ root.querySelectorAll('[data-ljpc-cat]').forEach(b=>b.addEventListener('click',()=>{setCategory(b.dataset.ljpcCat);search='';renderTable(root)}));
  root.querySelectorAll('[data-ljpc-tab]').forEach(b=>b.addEventListener('click',()=>{tab=b.dataset.ljpcTab;search='';renderTable(root)}));
  const q=root.querySelector('.ljpc-data-search');
  q?.addEventListener('input',()=>{
@@ -138,7 +147,7 @@ function renderDraws(root){
  const label=isDraw?'Sorteos':'Cuadro final';
  root.innerHTML='<div class="ljpc-data" data-ljpc-v976="'+route()+'"><section class="ljpc-panel-mini"><h2>'+label+' de la Liga</h2><p>El archivo oficial disponible contiene tablas, partidos y resultados por categoría, pero no confirma un sorteo ni cruces completos del cuadro final. Aquí no mostraremos enfrentamientos ni campeones inventados.</p><button data-ljpc-go="pc-fixtures">Ver partidos oficiales</button><button data-ljpc-go="bracketBuilder">Abrir generador de cuadros</button></section><div class="ljpc-draw-group"><h3>Categorías oficiales disponibles</h3><div class="ljpc-categories">'+CAT.map(id=>'<button class="ljpc-category" data-ljpc-draw-cat="'+id+'">'+esc(d?.categories?.[id]?.name||FALLBACK[id])+'</button>').join('')+'</div><p style="font-size:11px;color:#64768f;margin:10px 0 0">El generador permite crear un cuadro independiente, sin alterar los datos oficiales.</p></div></div>';
  root.querySelectorAll('[data-ljpc-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.ljpcGo)));
- root.querySelectorAll('[data-ljpc-draw-cat]').forEach(b=>b.addEventListener('click',()=>{cat=b.dataset.ljpcDrawCat;tab='fixtures';go('pc-data')}));
+ root.querySelectorAll('[data-ljpc-draw-cat]').forEach(b=>b.addEventListener('click',()=>{setCategory(b.dataset.ljpcDrawCat);tab='fixtures';go('pc-data')}));
 }
 async function sync(){
  if(!desktop()||busy||setRoute())return;
