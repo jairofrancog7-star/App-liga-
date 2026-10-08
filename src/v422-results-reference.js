@@ -185,6 +185,8 @@ async function mount(force=false){
 function schedule(ms=80,force=false){clearTimeout(timer);timer=setTimeout(()=>mount(force),ms)}
 document.addEventListener('click',e=>{if(e.target?.closest?.('[data-comp-tab]'))setTimeout(()=>schedule(90,true),60)},true);
 window.addEventListener('hashchange',()=>schedule(90,true));window.addEventListener('load',()=>schedule(220,true));
+// Actualiza Resultados en la pantalla actual cuando llegan datos oficiales nuevos.
+window.addEventListener('ljr:official-data',()=>schedule(110,true));
 document.addEventListener('DOMContentLoaded',()=>schedule(130,true),{once:true});
 const screen=document.querySelector('#screen');if(screen)new MutationObserver(()=>schedule(110,false)).observe(screen,{childList:true,subtree:false});
 schedule(150,true);setTimeout(()=>schedule(0,true),900);setTimeout(()=>schedule(0,true),2200);
