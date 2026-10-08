@@ -259,6 +259,8 @@ function bind(){
   });
   document.querySelectorAll('[data-v66-open-team]').forEach(b=>b.onclick=e=>{
     const name=b.dataset.v66OpenTeam,cat=b.dataset.v66CatId;
+    if(!name)return;
+    e?.preventDefault?.();e?.stopPropagation?.();e?.stopImmediatePropagation?.();
     const inStore=route()==='club-store'||!!b.closest('[data-v66-directory="store"]');
     if(inStore){
       e?.preventDefault?.();e?.stopPropagation?.();e?.stopImmediatePropagation?.();
@@ -268,8 +270,11 @@ function bind(){
       return;
     }
     saveTeam(name,cat);
-    try{if(window.LJR_OFFICIAL_API?.openTeam){window.LJR_OFFICIAL_API.openTeam(name);return}}catch(e){}
-    location.hash='#/teamDetail';
+    // V963 — A directory selection opens its own team summary, never Comparar.
+    try{localStorage.setItem('v42-team-tab','summary');localStorage.removeItem('v42-open-compare')}catch(_){}
+    if(window.LJR_TEAM_DETAIL_API?.openTeam&&window.LJR_TEAM_DETAIL_API.openTeam(name,cat))return;
+    try{if(window.LJR_OFFICIAL_API?.openTeam){window.LJR_OFFICIAL_API.openTeam(name);return}}catch(_){}
+    location.hash='#/teamDetail?tab=summary';
   });
   document.querySelectorAll('[data-v66-player]').forEach(b=>b.onclick=e=>{
     e?.preventDefault?.();
