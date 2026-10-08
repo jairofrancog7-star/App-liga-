@@ -1,0 +1,95 @@
+/* V927: escenas geográficas diferentes por sede. No fotos repetidas de archivo.
+   Vista aérea de Esri con créditos, independiente de la API Street View de Google. */
+html body .v921-field-page .v923-google-preview.v927-unique-imagery{
+  position:relative!important;
+  display:block!important;
+  overflow:hidden!important;
+  background:linear-gradient(130deg,#112b75,#071341)!important;
+}
+html body .v921-field-page .v927-unique-imagery .v927-aerial-photo,
+html body .v921-field-page .v927-unique-imagery .v927-google-photo{
+  position:absolute!important;
+  display:block!important;
+  box-sizing:border-box!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  max-height:none!important;
+  border:0!important;
+  margin:0!important;
+  padding:0!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  opacity:1!important;
+  filter:none!important;
+  pointer-events:none!important;
+}
+html body .v921-field-page .v927-unique-imagery .v927-aerial-photo{z-index:2!important}
+html body .v921-field-page .v927-unique-imagery .v927-google-photo{z-index:3!important}
+html body .v921-field-page .v927-unique-imagery .v927-aerial-photo[hidden],
+html body .v921-field-page .v927-unique-imagery .v927-google-photo[hidden]{display:none!important}
+html body .v921-field-page .v927-unique-imagery.v927-aerial-loaded .v923-google-photo-empty,
+html body .v921-field-page .v927-unique-imagery.v927-street-loaded .v923-google-photo-empty{
+  opacity:0!important;
+  pointer-events:none!important;
+}
+html body .v921-field-page .v927-unique-imagery .v927-imagery-credits{
+  position:absolute!important;
+  z-index:4!important;
+  bottom:11px!important;
+  left:11px!important;
+  top:auto!important;
+  display:inline-flex!important;
+  max-width:68%!important;
+  padding:7px 10px!important;
+  border:1px solid rgba(196,222,249,.34)!important;
+  border-radius:9px!important;
+  background:rgba(5,19,66,.89)!important;
+  color:#fff!important;
+  font:750 10px/1.3 Inter,Roboto,Arial,sans-serif!important;
+  text-wrap:balance!important;
+  pointer-events:none!important;
+}
+html body .v921-field-page .v927-unique-imagery.v927-street-loaded .v927-imagery-credits{
+  display:none!important;
+}
+html body .v921-field-page .v927-unique-imagery .v923-google-open{
+  position:absolute!important;
+  top:11px!important;
+  right:11px!important;
+  bottom:auto!important;
+  left:auto!important;
+  z-index:5!important;
+}
+html body .v921-field-page .v927-unique-imagery .v923-google-photo-empty svg{
+  width:36px!important;
+  height:36px!important;
+}
+body[data-app-route="home"] .v65-field-map.v927-unique-imagery{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  overflow:hidden!important;
+}
+body[data-app-route="home"] .v65-field-map.v927-unique-imagery .v927-aerial-photo,
+body[data-app-route="home"] .v65-field-map.v927-unique-imagery .v927-google-photo{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  filter:none!important;
+  opacity:1!important;
+  pointer-events:none!important;
+}
+body[data-app-route="home"] .v65-field-map.v927-unique-imagery .v927-aerial-photo{z-index:2!important}
+body[data-app-route="home"] .v65-field-map.v927-unique-imagery .v927-google-photo{z-index:3!important}
+body[data-app-route="home"] .v65-field-map.v927-unique-imagery .v927-aerial-photo[hidden],
+body[data-app-route="home"] .v65-field-map.v927-unique-imagery .v927-google-photo[hidden]{display:none!important}
+@media(max-width:380px){
+  html body .v921-field-page .v927-unique-imagery .v927-imagery-credits{
+    max-width:65%!important;
+    font-size:9px!important;
+  }
+}
