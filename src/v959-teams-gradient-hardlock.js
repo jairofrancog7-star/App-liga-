@@ -7,8 +7,9 @@
   var PAGE='linear-gradient(to bottom,#1938b5 0px,#1938b5 440px,#122a97 760px,#080765 1460px)';
   var HEADER='linear-gradient(to bottom,#07065f 0%,#0a1075 20%,#10228e 39%,#1732a9 58%,#1938b5 77%,#1938b5 100%)';
   function active(){
-    return String(location.hash||'').replace(/^#\\?\/?/,'').split('?')[0]==='teams' ||
-           document.body && document.body.dataset.appRoute==='teams';
+    var hash=String(location.hash||'');
+    var current=(hash.indexOf('#/')===0?hash.slice(2):hash.replace(/^#/,'' )).split('?')[0];
+    return current==='teams' || (document.body && document.body.dataset.appRoute==='teams');
   }
   function set(el,name,value){
     if(el && el.style.getPropertyValue(name)!==value)el.style.setProperty(name,value,'important');
