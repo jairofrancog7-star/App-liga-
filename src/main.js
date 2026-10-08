@@ -6526,6 +6526,7 @@ function moreView(){
       v19MoreButton('medal','Máximo goleador','scorers')+
       v19MoreButton('video','Momentos','moments')+
       v19MoreButton('data','Datos','leagueData',true)+
+      v19MoreButton('performance','Estadísticas','v38Stats')+
       v19MoreButton('qr','QR de la Liga','ligaQR')+
       v19MoreButton('shield','Liga Control / Registro','ligaControl')+
     '</div>'+
