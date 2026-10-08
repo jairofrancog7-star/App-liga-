@@ -926,6 +926,31 @@
     color:#1de5ef!important;
     font-size:15px!important;
   }
+  
+  /* V916: Solo avisos del rol (GANA LINCES / GANA BOAVISTA).
+     Reservar columna central y permitir 2 líneas evita tapar los escudos. */
+  body[data-app-route="home"] .v78-calendar-teams.v78-has-decision{
+    grid-template-columns:minmax(0,1fr) minmax(66px,80px) minmax(0,1fr)!important;
+    column-gap:4px!important;
+  }
+  body[data-app-route="home"] .v78-calendar-teams .v78-calendar-score.v78-score-decision{
+    box-sizing:border-box!important;
+    display:block!important;
+    width:100%!important;
+    max-width:80px!important;
+    min-width:0!important;
+    margin:0 auto!important;
+    padding:0 2px!important;
+    font-size:clamp(9px,2.8vw,11px)!important;
+    font-weight:850!important;
+    line-height:1.2!important;
+    letter-spacing:0!important;
+    text-align:center!important;
+    white-space:normal!important;
+    overflow-wrap:break-word!important;
+    word-break:normal!important;
+    text-wrap:balance!important;
+  }
 
   body[data-app-route="home"] .v78-calendar-meta{
     margin-top:10px!important;
