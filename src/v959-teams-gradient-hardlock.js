@@ -1,11 +1,11 @@
-/* V960 — Fondo azul claro unificado, sin franja oscura bajo el buscador.
+/* V961 — Un solo azul uniforme en Equipos; elimina el degradado anterior.
    Sólo toca fondos de #/teams. No mueve/oculta letras, logos o controles. */
 (function(){
   'use strict';
   if(window.__LJR_V959_TEAMS_GRADIENT__)return;
   window.__LJR_V959_TEAMS_GRADIENT__=true;
-  var PAGE='linear-gradient(to bottom,#1938b5 0px,#1938b5 440px,#122a97 760px,#080765 1460px)';
-  var HEADER='linear-gradient(to bottom,#2144c2 0%,#1e40be 35%,#1b3cb9 66%,#1938b5 100%)';
+  var PAGE='#1938b5';
+  var HEADER='#1938b5';
   function active(){
     var hash=String(location.hash||'');
     var current=(hash.indexOf('#/')===0?hash.slice(2):hash.replace(/^#/,'' )).split('?')[0];
