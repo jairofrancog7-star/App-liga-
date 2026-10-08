@@ -1,0 +1,193 @@
+/* V984 · QR de la Liga. Rediseño aislado, sin modificar barras, datos ni rutas. */
+body[data-app-route="ligaQR"] .v64-qr-page{
+  --qr-line:rgba(123,161,255,.29);
+  --qr-cyan:#69efff;
+  --qr-muted:#b9c9ee;
+  display:flex;flex-direction:column;gap:12px;
+  width:100%;max-width:920px;margin:0 auto;
+  padding:16px 14px calc(96px + env(safe-area-inset-bottom))!important;
+  background:transparent!important;
+  color:#fff;
+}
+body[data-app-route="ligaQR"] .v64-qr-page *{box-sizing:border-box}
+body[data-app-route="ligaQR"] .v64-qr-intro{padding:4px 4px 3px}
+body[data-app-route="ligaQR"] .v64-qr-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:10px;font-weight:850;letter-spacing:.14em;color:var(--qr-cyan)
+}
+body[data-app-route="ligaQR"] .v64-qr-live-dot{
+  width:7px;height:7px;display:inline-block;border-radius:50%;
+  background:#56e8ce;box-shadow:0 0 0 4px rgba(86,232,206,.12),0 0 12px rgba(86,232,206,.5)
+}
+body[data-app-route="ligaQR"] .v64-qr-intro h1{
+  font-size:clamp(22px,5.4vw,33px);line-height:1.08;letter-spacing:-.035em;
+  font-weight:850;margin:9px 0 5px;color:#fff
+}
+body[data-app-route="ligaQR"] .v64-qr-intro h1 span{color:var(--qr-cyan)}
+body[data-app-route="ligaQR"] .v64-qr-intro p{
+  font-size:12px;line-height:1.45;color:var(--qr-muted);margin:0;max-width:600px
+}
+body[data-app-route="ligaQR"] .v64-qr-page .v60-panel{
+  min-width:0;border:1px solid var(--qr-line)!important;
+  border-radius:22px!important;
+  background:linear-gradient(145deg,rgba(25,46,151,.92) 0%,rgba(10,18,105,.96) 64%,rgba(10,13,87,.98) 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 10px 26px rgba(0,0,46,.18)!important
+}
+body[data-app-route="ligaQR"] .v64-qr-page .v64-qr-card{
+  overflow:hidden;text-align:center;padding:16px!important;
+  position:relative;margin:0!important
+}
+body[data-app-route="ligaQR"] .v64-qr-card::before{
+  content:"";position:absolute;inset:0 0 auto;height:80px;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 0%,rgba(44,139,255,.22),transparent 74%)
+}
+body[data-app-route="ligaQR"] .v64-qr-card-top{
+  position:relative;display:flex;align-items:center;gap:10px;text-align:left;margin:0 0 12px
+}
+body[data-app-route="ligaQR"] .v64-qr-symbol{
+  width:35px;height:35px;flex:0 0 35px;display:grid;place-items:center;
+  color:#89f5ff;border-radius:11px;background:rgba(22,193,241,.14);
+  border:1px solid rgba(95,234,255,.28)
+}
+body[data-app-route="ligaQR"] .v64-qr-symbol svg{width:21px;height:21px}
+body[data-app-route="ligaQR"] .v64-qr-card-title{flex:1;min-width:0}
+body[data-app-route="ligaQR"] .v64-qr-card-title b{display:block;font-size:14px;letter-spacing:-.01em}
+body[data-app-route="ligaQR"] .v64-qr-card-title small{
+  display:block;margin-top:2px;color:var(--qr-muted);font-size:10px
+}
+body[data-app-route="ligaQR"] .v64-qr-status{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:5px 8px;border-radius:100px;border:1px solid rgba(91,230,212,.25);
+  color:#7bf9dd;background:rgba(20,203,171,.1);font-weight:800;font-size:9px;letter-spacing:.07em
+}
+body[data-app-route="ligaQR"] .v64-qr-scanbox{
+  width:fit-content;max-width:100%;margin:0 auto;padding:7px;
+  position:relative;border:1px solid rgba(111,201,255,.40);
+  border-radius:24px;background:rgba(50,128,255,.10);
+  box-shadow:0 0 0 4px rgba(28,87,215,.07)
+}
+body[data-app-route="ligaQR"] .v64-qr-frame{
+  width:clamp(185px,54vw,238px);aspect-ratio:1;margin:0;
+  border-radius:17px;padding:11px;background:#fff;
+  display:grid;place-items:center;box-shadow:0 8px 22px rgba(0,0,53,.24)
+}
+body[data-app-route="ligaQR"] .v64-qr-frame img{
+  width:100%;height:100%;display:block;object-fit:contain;image-rendering:auto
+}
+body[data-app-route="ligaQR"] .v64-qr-card h2{
+  font-size:20px!important;line-height:1.15!important;margin:13px 0 0!important;
+  font-weight:850;letter-spacing:-.035em;color:#fff
+}
+body[data-app-route="ligaQR"] .v64-qr-card p{
+  max-width:330px;margin:6px auto 0!important;
+  color:var(--qr-muted)!important;font-size:12px!important;line-height:1.45!important
+}
+body[data-app-route="ligaQR"] .v64-qr-linkrow{
+  display:flex;align-items:center;gap:8px;max-width:100%;margin:13px 0 0;
+  padding:6px 6px 6px 11px;min-height:42px;border:1px solid rgba(104,161,240,.35);
+  border-radius:13px;background:rgba(3,10,66,.60)
+}
+body[data-app-route="ligaQR"] .v64-qr-linkrow>svg{width:16px;height:16px;flex:0 0 16px;color:var(--qr-cyan)}
+body[data-app-route="ligaQR"] .v64-qr-url{
+  min-width:0;flex:1;width:auto;display:block;margin:0;padding:0;border:0;
+  background:transparent;color:#c4efff;font:500 11px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left
+}
+body[data-app-route="ligaQR"] .v64-qr-mini-copy{
+  width:31px;min-width:31px;height:30px;display:grid;place-items:center;
+  border:1px solid rgba(103,222,255,.37);border-radius:9px;background:rgba(30,125,220,.22);color:var(--qr-cyan);cursor:pointer
+}
+body[data-app-route="ligaQR"] .v64-qr-mini-copy svg{width:16px;height:16px}
+body[data-app-route="ligaQR"] .v64-qr-card .v60-actions.v64-qr-actions{
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:7px!important;margin:11px 0 0!important
+}
+body[data-app-route="ligaQR"] .v64-qr-actions>.v60-btn,
+body[data-app-route="ligaQR"] .v64-qr-actions>.v60-link,
+body[data-app-route="ligaQR"] .v64-qr-shortcuts>.v60-btn{
+  min-width:0!important;min-height:43px!important;padding:8px 5px!important;
+  display:flex!important;align-items:center;justify-content:center;gap:6px!important;
+  border-radius:12px!important;font-size:11px!important;line-height:1.2!important;
+  font-weight:800!important;white-space:nowrap;box-shadow:none!important;
+  transition:transform .15s,border-color .15s,background .15s
+}
+body[data-app-route="ligaQR"] .v64-qr-actions>.v60-link{
+  color:white!important;background:linear-gradient(135deg,#196ae3,#1742b4)!important;
+  border:1px solid #398cfb!important
+}
+body[data-app-route="ligaQR"] .v64-qr-actions>.v60-btn.outline{
+  color:#93f3ff!important;background:rgba(9,49,144,.62)!important;
+  border:1px solid rgba(54,173,246,.55)!important
+}
+body[data-app-route="ligaQR"] .v64-qr-actions>.v60-btn.ghost{
+  color:#e1edff!important;background:rgba(22,36,116,.85)!important;
+  border:1px solid rgba(101,139,224,.49)!important
+}
+body[data-app-route="ligaQR"] .v64-qr-page .v64-qr-actions svg,
+body[data-app-route="ligaQR"] .v64-qr-page .v64-qr-shortcuts svg,
+body[data-app-route="ligaQR"] .v64-qr-how-title svg{
+  width:16px;height:16px;flex:0 0 16px;fill:none;stroke:currentColor;
+  stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round
+}
+body[data-app-route="ligaQR"] .v64-qr-page button:active,
+body[data-app-route="ligaQR"] .v64-qr-page a:active{transform:scale(.97)}
+body[data-app-route="ligaQR"] .v64-qr-page button:focus-visible,
+body[data-app-route="ligaQR"] .v64-qr-page a:focus-visible{
+  outline:2px solid #90eaff;outline-offset:2px
+}
+body[data-app-route="ligaQR"] .v64-qr-page .v64-qr-how{
+  margin:0!important;padding:15px!important
+}
+body[data-app-route="ligaQR"] .v64-qr-how-title{
+  display:flex;align-items:center;gap:9px;color:#fff;
+  font-size:14px;font-weight:850;letter-spacing:-.01em;margin-bottom:4px
+}
+body[data-app-route="ligaQR"] .v64-qr-how-title svg{color:var(--qr-cyan)}
+body[data-app-route="ligaQR"] .v64-qr-steps{display:grid;gap:0}
+body[data-app-route="ligaQR"] .v64-qr-step{
+  display:grid;grid-template-columns:31px minmax(0,1fr);
+  gap:10px;align-items:center;padding:10px 0;
+  border-bottom:1px solid rgba(137,169,240,.14)
+}
+body[data-app-route="ligaQR"] .v64-qr-step:last-child{border-bottom:0;padding-bottom:0}
+body[data-app-route="ligaQR"] .v64-qr-step-num{
+  width:30px;height:30px;border:1px solid rgba(96,201,255,.3);border-radius:10px;
+  display:grid;place-items:center;color:var(--qr-cyan);
+  background:rgba(35,109,216,.18);font-size:11px;font-weight:850
+}
+body[data-app-route="ligaQR"] .v64-qr-step b{display:block;color:#fff;font-size:12px!important;line-height:1.25!important}
+body[data-app-route="ligaQR"] .v64-qr-step small{
+  display:block;margin-top:2px;color:var(--qr-muted)!important;
+  font-size:10.5px!important;line-height:1.35!important
+}
+body[data-app-route="ligaQR"] .v64-qr-shortcuts{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;
+  margin:0!important
+}
+body[data-app-route="ligaQR"] .v64-qr-shortcuts>.v60-btn{
+  color:#d9ecff!important;background:rgba(18,42,131,.7)!important;
+  border:1px solid rgba(88,156,236,.42)!important
+}
+@media(min-width:760px){
+  body[data-app-route="ligaQR"] .v64-qr-page{
+    max-width:920px!important;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.9fr);
+    align-items:start;gap:16px;padding:24px 24px 110px!important
+  }
+  body[data-app-route="ligaQR"] .v64-qr-intro,
+  body[data-app-route="ligaQR"] .v64-qr-shortcuts{grid-column:1/-1}
+  body[data-app-route="ligaQR"] .v64-qr-page .v64-qr-how{margin:0!important}
+  body[data-app-route="ligaQR"] .v64-qr-card{padding:20px!important}
+  body[data-app-route="ligaQR"] .v64-qr-frame{width:245px}
+  body[data-app-route="ligaQR"] .v64-qr-steps{gap:5px}
+}
+@media(max-width:359px){
+  body[data-app-route="ligaQR"] .v64-qr-page{padding-left:10px!important;padding-right:10px!important}
+  body[data-app-route="ligaQR"] .v64-qr-card{padding:12px!important}
+  body[data-app-route="ligaQR"] .v64-qr-frame{width:178px;padding:8px}
+  body[data-app-route="ligaQR"] .v64-qr-actions>.v60-btn,
+  body[data-app-route="ligaQR"] .v64-qr-actions>.v60-link{font-size:10px!important;gap:4px!important}
+  body[data-app-route="ligaQR"] .v64-qr-actions svg{width:14px;height:14px}
+}
+@media(prefers-reduced-motion:reduce){
+  body[data-app-route="ligaQR"] .v64-qr-page *{transition:none!important}
+}
