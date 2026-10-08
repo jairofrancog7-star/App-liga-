@@ -1,0 +1,32 @@
+/* V952 — Sólo metadatos de la categoría y estado vacío. Mantiene el diseño original de ambas tablas. */
+body[data-app-route="competition"] #screen .v40-standings .v952-standings-category{
+  box-sizing:border-box!important;
+  width:100%!important;
+  padding:8px 11px 9px!important;
+  margin:0!important;
+  color:#66dcf4!important;
+  background:transparent!important;
+  font:750 12px/1.3 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:.015em!important;
+  text-align:left!important;
+  white-space:normal!important;
+}
+body[data-app-route="competition"] #screen .v40-standings .v952-standings-empty{
+  box-sizing:border-box!important;
+  display:block!important;
+  width:100%!important;
+  min-height:114px!important;
+  padding:25px 18px!important;
+  margin:12px 0 16px!important;
+  border:1px solid rgba(55,183,243,.28)!important;
+  border-radius:15px!important;
+  background:rgba(16,43,121,.33)!important;
+  color:#c2d4f6!important;
+  font:650 12px/1.5 Inter,Roboto,Arial,sans-serif!important;
+  text-align:center!important;
+}
+body[data-app-route="competition"] #screen .v40-form b.unknown{
+  background:#243475!important;
+  color:#ccd9f2!important;
+  border-color:rgba(151,184,237,.25)!important;
+}
