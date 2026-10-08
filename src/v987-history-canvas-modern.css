@@ -326,3 +326,25 @@ body[data-app-route="history"] .v35-history-page .v987-history-card.v35-history-
 body[data-app-route="history"] .v35-history-page .v987-history-card.v35-history-moment-photo .v987-history-more{
   margin-top:12px!important;
 }
+
+
+/* V991 — Tarjetas de Historia limpias: sin escudos de adorno ni botones.
+   NO ocultar fotos de fondo, datos ni descripciones de ganadores. */
+body[data-app-route="history"] .v35-history-page
+  :is(.v35-history-moment,.v35-champion-card,.v115-card,.v987-identity-card,.v987-timeline-card)
+  :is(.v987-history-crest,.v987-identity-crest,.v987-date-logo,.v987-history-more,.v674-details-button,.v731-history-details){
+  display:none!important;
+}
+body[data-app-route="history"] .v35-history-page .v987-history-card:not(.v987-open) .v987-moment-description,
+body[data-app-route="history"] .v35-history-page .v987-history-card .v987-moment-description,
+body[data-app-route="history"] .v35-history-page
+  :is(.v35-history-moment,.v35-champion-card,.v115-card,.v987-identity-card,.v987-timeline-card)
+  :is(.v674-detail-copy,.v731-history-detail-copy){
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  max-height:none!important;
+}
+body[data-app-route="history"] .v35-history-page .v987-history-card.v35-history-moment-photo .v35-history-meta{
+  margin-top:0!important;
+}
