@@ -233,7 +233,7 @@ const HOME_CARDS=[
  {icon:'calendar',title:'Programar partido',sub:'Borrador local · fecha, hora y cancha',action:'schedule-match'},
  {icon:'shield',title:'Nueva sanción',sub:'Borrador disciplinario local',action:'new-sanction'},
  {icon:'admin',title:'Herramientas de la Liga',sub:'Credenciales, jornadas, cédulas y control',route:'leagueTools'},
- {icon:'video',title:'Modo TV',sub:'Partido, tabla y datos oficiales en pantalla',action:'tv-panel'},
+ {icon:'video',title:'Modo TV',sub:'Partido, tabla y datos oficiales en pantalla',route:'televisados'},
  {icon:'match',title:'Partidos de hoy',sub:'Jornada y resultados',route:'competition'},
  {icon:'table',title:'Tabla · Primera Fuerza',sub:'Clasificación oficial',route:'leagueData'},
  {icon:'stats',title:'Top goleadores',sub:'Goleo y rendimiento',route:'scorers'},
@@ -285,7 +285,7 @@ const MORE_CARDS=[
  {icon:'bell',title:'Registrarse y recibir avisos',sub:'Categoría y equipo favorito',action:'register-alerts'},
  {icon:'calendar',title:'Programar partido',sub:'Borrador local con fecha, hora y cancha',action:'schedule-match'},
  {icon:'shield',title:'Nueva sanción',sub:'Borrador disciplinario local',action:'new-sanction'},
- {icon:'video',title:'Modo TV',sub:'Resumen oficial para pantalla',action:'tv-panel'},
+ {icon:'video',title:'Modo TV',sub:'Resumen oficial para pantalla',route:'televisados'},
  {icon:'team',title:'Equipos',sub:'Ver equipos registrados',route:'teams'},
  {icon:'users',title:'Jugadores',sub:'Ver jugadores registrados',route:'players'},
  {icon:'trophy',title:'Liguilla',sub:'Cuadro eliminatorio',route:'bracketBuilder'},
@@ -1280,12 +1280,15 @@ function tvPanelFallback(){
 }
 function openTvSafe(){
  try{
-   tvPanel();
-   if(!document.querySelector('body > .v160-tv-layer'))tvPanelFallback();
- }catch(err){
-   console.error('[LJR Modo TV]',err);
-   tvPanelFallback();
- }
+   if(window.LJR_V440_TELEVISADOS&&typeof window.LJR_V440_TELEVISADOS.open==='function'){
+     window.LJR_V440_TELEVISADOS.open();
+     return;
+   }
+ }catch(_){}
+ location.hash='#/televisados';
+ setTimeout(()=>{
+   if(route()!=='televisados')location.hash='#/video';
+ },220);
 }
 function act(a){
  if(a==='meeting')meeting();else if(a==='poll')poll();else if(a==='fanzone')fanzone();else if(a==='delegates')delegates();else if(a==='officials')officials();else if(a==='incidents')incidents();else if(a==='motm')motm();else if(a==='calendar-generator')calendarGenerator();else if(a==='csv-import')csvImport();else if(a==='backup-export')backupExport();else if(a==='audit')audit();else if(a==='sponsors')sponsors();else if(a==='shotmap')shotmap();
@@ -1389,7 +1392,7 @@ function mount(){
  }
 }
 document.addEventListener('click',e=>{
- const b=e.target?.closest?.('[data-v105-action="tv-panel"]');
+ const b=e.target?.closest?.('[data-v105-action="tv-panel"],[data-v105-route="televisados"]');
  if(!b)return;
  e.preventDefault();
  e.stopImmediatePropagation();
