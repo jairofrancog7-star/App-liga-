@@ -3,7 +3,7 @@
 'use strict';
 if(window.__LJR_PC_RUNTIME_V975__)return;
 window.__LJR_PC_RUNTIME_V975__=true;
-const route=()=>String(location.hash||'').replace(/^#\\/?/,'').split('?')[0]||'home';
+const route=()=>String(location.hash||'').replace('#/','').replace('#','').split('?')[0]||'home';
 const mode=()=>new URLSearchParams(location.search).get('mode')||'';
 const desktop=()=>!['mobile','apk'].includes(mode())&&(mode()==='desktop'||document.body.classList.contains('lj-desktop')||innerWidth>=1024);
 const go=r=>{location.hash='#/'+r};

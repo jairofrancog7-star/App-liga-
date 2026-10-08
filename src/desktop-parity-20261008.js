@@ -22,7 +22,7 @@ const nativeRoutes=[
 ];
 const routes=new Set(nativeRoutes);
 window.LJR_PC_NATIVE_ROUTES=routes;
-const current=()=>String(location.hash||'').replace(/^#\\/?/,'').split('?')[0]||'home';
+const current=()=>String(location.hash||'').replace('#/','').replace('#','').split('?')[0]||'home';
 const query=()=>new URLSearchParams(location.search).get('mode')||'';
 const desktop=()=>query()!=='mobile'&&query()!=='apk'&&
  (query()==='desktop'||document.body.classList.contains('lj-desktop')||

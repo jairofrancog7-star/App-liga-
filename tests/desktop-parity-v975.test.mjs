@@ -19,7 +19,7 @@ test('GitHub Pages includes both desktop parity scripts',()=>{
 });
 
 test('Desktop feature parity leaves mobile and APK modes untouched',()=>{
- assert.match(bridge,/mode\(\)!=='mobile'/);
+ assert.ok(bridge.includes("query()!=='mobile'"));
  assert.match(runtime,/\['mobile','apk'\]\.includes\(mode\(\)\)/);
  assert.match(runtime,/LJR_MAIN_ROUTE/);
 });
