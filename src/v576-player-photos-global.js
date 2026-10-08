@@ -8,7 +8,7 @@ window.__LJR_V576_PLAYER_PHOTOS_GLOBAL__=true;
 const LOCAL='./data/official-live.json?v=20261002-v576-player-photos-global';
 const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261003-v644-player-photos-all-rosters';
 const ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
-let db=window.LJR_OFFICIAL_DATA||null,loading=null,timer=0;
+let db=window.LJR_OFFICIAL_DATA||null,loading=null,timer=0,localRegistrations=null;
 let exact=new Map(),byName=new Map();const failedPhotos=new Set();
 
 const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');
@@ -23,12 +23,53 @@ function newer(a,b){
  if(!a)return b;if(!b)return a;
  return String(b.captured_at_utc||'')>String(a.captured_at_utc||'')?b:a;
 }
+// Los registros publicados en la app azul contienen fotos comprobadas
+// que pueden no estar todavia en el espejo verde de estadísticas.
+function withLocalRegistrations(base, local=localRegistrations){
+ if(!base?.categories||!local?.categories)return base||local;
+ const cats={...base.categories};
+ for(const [cat,source] of Object.entries(local.categories)){
+  const original=cats[cat];
+  if(!original)continue;
+  const roster={...(original.rosters||{})};
+  const profiles={...(original.player_profiles||{})};
+  for(const [club,people] of Object.entries(source.rosters||{})){
+   const match=Object.keys(roster).find(k=>norm(k)===norm(club))||club;
+   const result=Array.isArray(roster[match])?[...roster[match]]:[];
+   const exists=new Set(result.map(norm));
+   for(const person of Array.isArray(people)?people:[]){
+    if(!exists.has(norm(person))){result.push(person);exists.add(norm(person))}
+   }
+   roster[match]=result;
+  }
+  for(const [club,people] of Object.entries(source.player_profiles||{})){
+   const match=Object.keys(profiles).find(k=>norm(k)===norm(club))||club;
+   const result=Array.isArray(profiles[match])?profiles[match].map(p=>({...p})):[];
+   const found=new Map(result.map((p,i)=>[norm(p.name),i]));
+   for(const p of Array.isArray(people)?people:[]){
+    if(!p?.name)continue;
+    const k=norm(p.name),position=found.get(k);
+    if(position===undefined){result.push({...p});found.set(k,result.length-1)}
+    else{
+     const old=result[position];
+     old.name=p.name;
+     for(const field of ['photo','dorsal','position'])if(p[field])old[field]=p[field];
+    }
+   }
+   profiles[match]=result;
+  }
+  cats[cat]={...original,rosters:roster,player_profiles:profiles};
+ }
+ return {...base,categories:cats};
+}
 async function load(){
  if(loading)return loading;
  loading=(async()=>{
    db=newer(db,window.LJR_OFFICIAL_DATA||null);
-   db=newer(db,await fetchJson(LOCAL));
+   localRegistrations=await fetchJson(LOCAL)||localRegistrations;
+   db=newer(db,localRegistrations);
    db=newer(db,await fetchJson(REMOTE));
+   db=withLocalRegistrations(db);
    build();
    return db;
  })().finally(()=>{loading=null});
@@ -48,7 +89,7 @@ function build(){
        const nk=norm(name),arr=byName.get(nk)||[];arr.push(rec);byName.set(nk,arr);
        if(photo){
          const kt=norm(name)+'|'+norm(team),kn=norm(name);
-         if(!pub[kt])pub[kt]=photo;
+         pub[kt]=photo;
          if(!pub[kn])pub[kn]=photo;
        }
      }
@@ -243,7 +284,7 @@ function schedule(ms=80){clearTimeout(timer);timer=setTimeout(hydrate,ms)}
 
 window.addEventListener('hashchange',()=>schedule(90));
 window.addEventListener('load',()=>schedule(120));
-window.addEventListener('ljr:official-data',()=>{db=newer(db,window.LJR_OFFICIAL_DATA||null);build();schedule(0)});
+window.addEventListener('ljr:official-data',()=>{db=withLocalRegistrations(newer(db,window.LJR_OFFICIAL_DATA||null));build();schedule(0)});
 document.addEventListener('DOMContentLoaded',()=>schedule(20),{once:true});
 const screen=document.querySelector('#screen');
 if(screen)new MutationObserver(()=>schedule(60)).observe(screen,{childList:true,subtree:true});
