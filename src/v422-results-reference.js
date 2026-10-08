@@ -84,12 +84,41 @@ function scoreText(m){return m.decision?'<strong>'+esc(m.decision.label)+'</stro
 function provider(url){const u=String(url||'').toLowerCase();if(u.includes('youtube'))return 'YouTube';if(u.includes('facebook')||u.includes('fb.watch'))return 'Facebook';if(u.includes('tiktok'))return 'TikTok';return 'Liga TV'}
 function streamFor(key){try{const a=JSON.parse(localStorage.getItem('ljr-stream-list-v196:'+key)||'[]');const x=Array.isArray(a)?a.find(v=>v?.url):null;return x?{url:String(x.url),name:String(x.name||provider(x.url))}:null}catch(_){return null}}
 function categoryIcon(id,label){if(id==='all')return '⚽';if(/veteranos/i.test(label))return '🛡';if(id==='3')return '🏆';if(id==='5')return '⚽';if(id==='4')return '🥈';return '⚽'}
+// Icono de cancha: reemplaza el antiguo símbolo cuadrado en la sede.
+function fieldIcon(){
+ return '<svg class="v422-field-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2.5" y="4" width="19" height="16" rx="1.2"/><path d="M12 4v16"/><circle cx="12" cy="12" r="3.3"/><path d="M2.5 8h3v8h-3M21.5 8h-3v8h3"/></svg>';
+}
+function openStandings(event){
+ event?.preventDefault?.();
+ event?.stopPropagation?.();
+ // Acceso directo a la tabla de Competición, nunca a Comparar equipos.
+ try{
+  localStorage.setItem('competitionTab','standings');
+  localStorage.setItem('v40-competition-tab','standings');
+ }catch(_){}
+ const router=window.LJR_MAIN_ROUTE;
+ if(router?.state)router.state.competitionTab='standings';
+ if(typeof router?.go==='function')router.go('competition');
+ else {
+  location.hash='#/competition';
+  document.querySelector('#screen > .tabs [data-comp-tab="standings"],#screen .tabs [data-comp-tab="standings"]')?.click();
+ }
+ setTimeout(()=>{
+  if(String(location.hash||'').split('?')[0]!=='#/competition')return;
+  const tab=document.querySelector('#screen > .tabs [data-comp-tab="standings"],#screen .tabs [data-comp-tab="standings"]');
+  if(tab&&!tab.classList.contains('active'))tab.click();
+  if(tab?.classList.contains('active')){
+   const target=document.querySelector('#screen [data-v40-standings],#screen [data-v12-standings],#screen .v40-standings')||tab;
+   target.scrollIntoView?.({behavior:'smooth',block:'start'});
+  }
+ },130);
+}
 function matchRow(m){
  const fav=(favStore().matches||[]).includes(m.id),stream=streamFor(m.streamKey);
  return '<article class="v422-match" data-v422-open="'+esc(m.id)+'" data-v422-cat-open="'+esc(m.cat)+'"><button class="v422-star '+(fav?'active':'')+'" type="button" data-v422-star="'+esc(m.id)+'" aria-label="'+(fav?'Quitar de favoritos':'Guardar en favoritos')+'">'+icon('star')+'</button>'+
  '<div class="v422-match-status">'+statusText(m)+'</div><div class="v422-team home"><span>'+esc(m.home)+'</span>'+logo(m.home)+'</div>'+
  '<div class="v422-score">'+scoreText(m)+'<small>'+esc(dateOnly(m.date))+'</small></div><div class="v422-team away">'+logo(m.away)+'<span>'+esc(m.away)+'</span></div>'+
- (stream?'<button type="button" class="v422-venue v422-stream" data-v422-stream="'+esc(stream.url)+'">▣ '+esc(stream.name)+' · '+esc(m.field||'Campo por confirmar')+'</button>':'<div class="v422-venue">▣ '+esc(m.field||'Campo por confirmar')+'</div>')+'</article>';
+ (stream?'<button type="button" class="v422-venue v422-stream" data-v422-stream="'+esc(stream.url)+'">'+fieldIcon()+'<span>'+esc(stream.name)+' · '+esc(m.field||'Campo por confirmar')+'</span></button>':'<div class="v422-venue">'+fieldIcon()+'<span>'+esc(m.field||'Campo por confirmar')+'</span></div>')+'</article>';
 }
 function groupCard(cat,rows){
  const first=rows[0];
@@ -134,7 +163,7 @@ function bindDynamic(root){
  root.querySelectorAll('[data-v422-star]').forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();toggleMatch(b.dataset.v422Star);refresh(root)});
  root.querySelectorAll('[data-v422-stream]').forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();try{window.open(b.dataset.v422Stream,'_blank','noopener,noreferrer')}catch(_){}});
  root.querySelectorAll('[data-v422-open]').forEach(a=>a.onclick=e=>{if(e.target?.closest?.('button'))return;try{localStorage.setItem('v62-category',a.dataset.v422CatOpen||'3')}catch(_){};location.hash='#/matchCenter'});
- root.querySelectorAll('[data-v422-standings]').forEach(b=>b.onclick=()=>{const tab=document.querySelector('[data-comp-tab="standings"]');if(tab){tab.click();setTimeout(()=>window.scrollTo({top:0,behavior:'smooth'}),80)}else location.hash='#/leagueData'});
+ root.querySelectorAll('[data-v422-standings]').forEach(b=>b.onclick=openStandings);
 }
 function bind(root){
  root.querySelectorAll('[data-v422-mode]').forEach(b=>b.onclick=()=>{localStorage.setItem(MODE_KEY,b.dataset.v422Mode);refresh(root)});
