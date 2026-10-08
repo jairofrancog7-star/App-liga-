@@ -1,0 +1,142 @@
+/* V973: controles unificados PRO de la Quiniela azul.
+   Todos los elementos se limitan a la ruta de Quiniela, móviles y escritorio. */
+html body[data-app-route="quiniela"] .v973-game-filter-row{
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  width:100%!important;min-width:0!important;gap:7px!important;
+  box-sizing:border-box!important;margin-top:10px!important;
+}
+html body[data-app-route="quiniela"] .v973-game-filter-row>button{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  gap:6px!important;box-sizing:border-box!important;width:100%!important;min-width:0!important;
+  min-height:41px!important;margin:0!important;padding:8px 4px!important;overflow:hidden!important;
+  color:#ebf6ff!important;border:1px solid rgba(116,178,252,.5)!important;
+  border-radius:11px!important;background:linear-gradient(145deg,#1c429a,#112b78)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06)!important;
+  font:760 clamp(10px,2.8vw,12px)/1.18 Inter,Roboto,Arial,sans-serif!important;
+  text-align:center!important;white-space:nowrap!important;cursor:pointer!important;
+  touch-action:manipulation!important;
+}
+html body[data-app-route="quiniela"] .v973-game-filter-row>button svg{
+  display:block!important;flex:0 0 16px!important;width:16px!important;height:16px!important;
+  fill:none!important;stroke:currentColor!important;stroke-width:2!important;
+  stroke-linecap:round!important;stroke-linejoin:round!important;
+}
+html body[data-app-route="quiniela"] .v973-game-filter-row>button.active{
+  color:#061f5a!important;border-color:#99faff!important;
+  background:linear-gradient(115deg,#46d6eb,#78f4f8)!important;
+  box-shadow:0 3px 10px rgba(28,222,242,.15),inset 0 1px 0 rgba(255,255,255,.35)!important;
+}
+html body[data-app-route="quiniela"] .v973-game-filter-row>button:active{
+  transform:scale(.98)!important;
+}
+html body[data-app-route="quiniela"] .v618-q-card[hidden]{display:none!important;}
+html body[data-app-route="quiniela"] .v973-filter-empty{
+  display:grid!important;justify-items:center!important;gap:9px!important;
+  width:100%!important;min-width:0!important;box-sizing:border-box!important;
+  padding:17px 12px!important;border-radius:14px!important;
+  border:1px dashed rgba(117,196,252,.55)!important;
+  background:linear-gradient(145deg,#162e86,#0b1d65)!important;
+  color:#c8e3fa!important;text-align:center!important;
+  font:640 12px/1.4 Inter,Roboto,Arial,sans-serif!important;
+}
+html body[data-app-route="quiniela"] .v973-filter-empty button{
+  min-height:36px!important;padding:8px 14px!important;border:1px solid #74f0f6!important;
+  border-radius:10px!important;background:#1d64c4!important;color:#fff!important;
+  font:800 11px Inter,Roboto,Arial,sans-serif!important;cursor:pointer!important;
+}
+/* La barra de progreso existente es la única visible y se mantiene compacta. */
+html body[data-app-route="quiniela"] .v970-jornada-progress{
+  width:100%!important;min-width:0!important;box-sizing:border-box!important;
+  padding:12px!important;margin:8px 0 10px!important;
+  border:1px solid rgba(91,211,254,.53)!important;
+  border-radius:17px!important;
+  background:radial-gradient(ellipse at 95% 0%,rgba(35,147,238,.22),transparent 62%),linear-gradient(145deg,#143b98,#0b1c67)!important;
+  box-shadow:0 6px 17px rgba(1,13,56,.16),inset 0 1px rgba(255,255,255,.13)!important;
+}
+html body[data-app-route="quiniela"] .v970-jornada-progress .v970-progress-head{
+  font:760 12px/1.3 Inter,Roboto,Arial,sans-serif!important;color:#fff!important;
+}
+html body[data-app-route="quiniela"] .v970-jornada-progress .v970-progress-head b{
+  color:#70edfc!important;font-size:13px!important;
+}
+html body[data-app-route="quiniela"] .v970-jornada-progress .v970-progress-footer{
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  gap:7px!important;flex-wrap:wrap!important;
+  font-size:10px!important;line-height:1.4!important;
+}
+html body[data-app-route="quiniela"] .v970-jornada-progress .v970-progress-footer button{
+  box-sizing:border-box!important;display:inline-flex!important;justify-content:center!important;align-items:center!important;
+  flex:0 1 auto!important;min-height:35px!important;padding:7px 10px!important;
+  font:760 11px/1.18 Inter,Roboto,Arial,sans-serif!important;
+  color:#fff!important;border:1px solid rgba(112,227,253,.65)!important;
+  border-radius:10px!important;background:linear-gradient(130deg,#286cc7,#164ca6)!important;
+  box-shadow:none!important;
+}
+html body[data-app-route="quiniela"] .v970-preview-toggle{
+  min-height:39px!important;padding:9px 12px!important;
+  justify-content:center!important;gap:8px!important;
+  border:1px solid rgba(118,222,251,.55)!important;
+  border-radius:11px!important;
+  background:linear-gradient(125deg,rgba(25,83,178,.76),rgba(8,38,120,.78))!important;
+  color:#fff!important;font-size:11px!important;
+}
+html body[data-app-route="quiniela"] .v970-preview-toggle .v970-insight-icon{
+  color:#78eef8!important;font-size:17px!important;
+}
+html body[data-app-route="quiniela"] .v970-preview-panel{
+  border:1px solid rgba(98,182,252,.44)!important;
+  border-radius:12px!important;background:linear-gradient(135deg,#102e82,#091a62)!important;
+}
+html body[data-app-route="quiniela"] .v970-quick-buttons button{
+  min-height:39px!important;border-radius:10px!important;
+  background:linear-gradient(140deg,#173f98,#0e2b78)!important;
+  color:#fff!important;font-size:11px!important;
+}
+html body[data-app-route="quiniela"] .v970-confidence-choices button{
+  min-height:39px!important;border-radius:10px!important;
+  background:linear-gradient(140deg,#173f98,#0e2b78)!important;
+  color:#fff!important;font-size:11px!important;
+}
+html body[data-app-route="quiniela"] .v970-quick-buttons button.selected,
+html body[data-app-route="quiniela"] .v970-confidence-choices button[aria-pressed="true"]{
+  color:#041b52!important;background:linear-gradient(110deg,#43d7ec,#8cf4f8)!important;
+  border-color:#96fcff!important;
+}
+html body[data-app-route="quiniela"] .v973-suggestion{
+  display:flex!important;justify-content:center!important;align-items:center!important;
+  width:100%!important;min-height:40px!important;box-sizing:border-box!important;
+  margin:9px 0 0!important;padding:9px 12px!important;
+  border-radius:11px!important;border:1px solid #8cf9fc!important;
+  background:linear-gradient(110deg,#50e2ed,#8af7fb)!important;
+  color:#062058!important;font:845 12px/1.2 Inter,Roboto,Arial,sans-serif!important;
+  text-align:center!important;cursor:pointer!important;touch-action:manipulation!important;
+}
+html body[data-app-route="quiniela"] .v973-suggestion:disabled{
+  background:rgba(104,142,198,.16)!important;border-color:rgba(143,175,213,.4)!important;
+  color:#becde9!important;opacity:.76!important;cursor:not-allowed!important;
+}
+html body[data-app-route="quiniela"] [data-v973-suggest-note]{
+  display:block!important;margin-top:7px!important;color:#b9d5f4!important;
+  font-size:10px!important;line-height:1.45!important;text-align:center!important;
+}
+html body[data-app-route="quiniela"] .v970-confidence-choices button:disabled{
+  opacity:.48!important;cursor:not-allowed!important;
+}
+html body[data-app-route="quiniela"] :is(.v973-suggestion,.v973-filter-empty button,
+ .v973-game-filter-row button,.v970-preview-toggle,.v970-quick-buttons button,
+ .v970-confidence-choices button):focus-visible{
+  outline:2px solid #8cfaff!important;outline-offset:2px!important;
+}
+@media(max-width:365px){
+ html body[data-app-route="quiniela"] .v973-game-filter-row{gap:5px!important;}
+ html body[data-app-route="quiniela"] .v973-game-filter-row>button{
+  gap:4px!important;padding:7px 2px!important;font-size:10px!important;
+ }
+ html body[data-app-route="quiniela"] .v973-game-filter-row>button svg{
+  flex-basis:14px!important;width:14px!important;height:14px!important;
+ }
+ html body[data-app-route="quiniela"] .v970-jornada-progress{padding:10px!important;}
+}
+@media(prefers-reduced-motion:reduce){
+ html body[data-app-route="quiniela"] .v973-game-filter-row>button{transition:none!important;}
+}
