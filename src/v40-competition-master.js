@@ -223,12 +223,17 @@
     try{left=Number(sessionStorage.getItem(v588ScrollKey(mode)))||0}catch(_){}
     requestAnimationFrame(()=>{scroller.scrollLeft=left});
   }
+  function standingsSignature(){
+    const {id,rows}=officialTeams();
+    return id+':'+rows.map(t=>[t.name,t.p,t.w,t.d,t.l,t.gf,t.ga,t.gd,t.pts].join('|')).join(';');
+  }
   function renderMode(box,mode){
     if(!box)return;
     activeStandingsMode=['compact','complete','criteria'].includes(mode)?mode:'compact';
     try{sessionStorage.setItem('v40-standings-mode',activeStandingsMode)}catch(_){}
     box.dataset.v40CurrentMode=activeStandingsMode;
     box.dataset.v40Category=selectedCategory();
+    box.dataset.v40Signature=standingsSignature();
     box.querySelectorAll('[data-v40-mode]').forEach(b=>b.classList.toggle('active',b.dataset.v40Mode===activeStandingsMode));
     const content=box.querySelector('[data-v40-content]');
     if(content){
@@ -311,7 +316,7 @@
       tabs.insertAdjacentHTML('afterend','<div class="v40-standings-host" data-v40-host>'+standings()+'</div>');
     }
     const box=screen.querySelector('[data-v40-standings]');
-    if(box&&box.dataset.v40Category!==selectedCategory())renderMode(box,activeStandingsMode);
+    if(box&&(box.dataset.v40Category!==selectedCategory()||box.dataset.v40Signature!==standingsSignature()))renderMode(box,activeStandingsMode);
     v588RestoreScroll(screen,activeStandingsMode);
   }
   /* V575 hardfix: intercepta el toque desde window antes que cualquier parche
