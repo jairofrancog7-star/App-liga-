@@ -1,24 +1,33 @@
-/* V957 — Equipos: degradado subido, sin cubrir "Siguiendo".
-   El degradado se dibuja DENTRO de la cabecera, subiendo el inicio del
-   fundido; su extremo transparente muestra exactamente el mismo fondo
-   de la página. No se pinta nada sobre el título ni sobre los equipos. */
+/* V958 — Equipos / unión de color real.
+   Antes se desvanecía a "transparente" sobre un fondo AZUL OSCURO.
+   Resultado: la cabecera seguía oscura y aparecía una línea al comenzar
+   el azul iluminado de "Siguiendo".
+   La cabecera AHORA termina en el mismo azul iluminado de esa zona,
+   con un degradado horizontal similar al fondo del listado.
+   No hay superposición debajo del header; letras y escudos intactos. */
 @media (max-width:1023px) {
   html body[data-app-route="teams"] #screen .v27-teams-page > .v27-teams-head,
   html body.v27-teams-active #screen .v27-teams-page > .v27-teams-head {
-    background:linear-gradient(180deg,
-      rgba(7,6,95,1) 0%,
-      rgba(7,6,95,1) 14%,
-      rgba(7,6,95,.94) 26%,
-      rgba(7,6,95,.80) 38%,
-      rgba(7,6,95,.57) 50%,
-      rgba(7,6,95,.27) 63%,
-      rgba(7,6,95,0) 76%,
-      rgba(7,6,95,0) 100%) !important;
+    background:
+      /* El oscuro se retira progresivamente EN LA PARTE ALTA. */
+      linear-gradient(to bottom,
+        #06085f 0%,
+        rgba(6,8,95,.96) 12%,
+        rgba(6,8,95,.78) 27%,
+        rgba(6,8,95,.48) 43%,
+        rgba(6,8,95,.18) 59%,
+        rgba(6,8,95,0) 76%,
+        rgba(6,8,95,0) 100%),
+      /* Azul de llegada tomado de la zona de "Siguiendo" de la referencia. */
+      linear-gradient(100deg,
+        #0e2089 0%,
+        #1b37b0 51%,
+        #2141c9 100%) !important;
     border-bottom:0!important;
     box-shadow:none!important;
+    /* El sticky sigue igual; no extender overlays encima del texto. */
   }
-  /* El parche anterior sobresalía 78 px por debajo de la cabecera:
-     esa capa oscurecía la palabra "Siguiendo". Se elimina completamente. */
+
   html body[data-app-route="teams"] #screen .v27-teams-page > .v27-teams-head::after,
   html body.v27-teams-active #screen .v27-teams-page > .v27-teams-head::after {
     content:none!important;
