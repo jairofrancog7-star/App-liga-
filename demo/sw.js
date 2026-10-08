@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v915-store-3d-player-photos';
+const CACHE='liga-juventino-v919-transparent-video-controls';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
