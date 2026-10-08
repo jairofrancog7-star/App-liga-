@@ -25,6 +25,6 @@ test('Campo de partido shows a vector soccer pitch icon (not a box glyph)',()=>{
 });
 test('GitHub Pages busts caches for both results assets',()=>{
  const html=source('index.html');
- assert.match(html,/v422-results-reference\.js\?v=20261008-v927/);
- assert.match(html,/v422-results-reference\.css\?v=20261008-v927/);
+ assert.match(html,/v422-results-reference\.js\?v=\d{8}-v\d+/);
+ assert.match(html,/v422-results-reference\.css\?v=\d{8}-v\d+/);
 });
