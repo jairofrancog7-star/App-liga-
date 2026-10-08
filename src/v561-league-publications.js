@@ -17,7 +17,17 @@ const titles={standings:'Tabla de clasificación',scorers:'Tabla de goleo',calen
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=(s,r=document)=>r.querySelector(s);let dataPromise,db,catId=localStorage.getItem('v561-category')||'3',kind=localStorage.getItem('v561-publication-kind')||'standings';if(!titles[kind]||kind==='quiniela')kind='standings';
 const imageCache=new Map();
-async function getDb(){if(window.LJR_OFFICIAL_API?.getData?.())return db=window.LJR_OFFICIAL_API.getData();if(db)return db;if(!dataPromise)dataPromise=fetch('./data/official-live.json').then(r=>{if(!r.ok)throw Error('No se pudieron cargar datos oficiales');return r.json()}).then(x=>db=x).catch(e=>{dataPromise=null;throw e});return dataPromise}
+async function getDb(){
+ const live=window.LJR_V508_OFFICIAL?.getData?.()||window.LJR_OFFICIAL_API?.getData?.();
+ const newer=(a,b)=>!a?.categories?b:!b?.categories?a:Date.parse(b.captured_at_utc||0)>=Date.parse(a.captured_at_utc||0)?b:a;
+ db=newer(db,live);
+ if(!dataPromise)dataPromise=fetch('./data/official-live.json?quiniela=20261008-v960',{cache:'no-store'}).then(r=>{
+   if(!r.ok)throw Error('No se pudieron cargar los datos oficiales');
+   return r.json();
+ }).then(value=>db=newer(db,value)).catch(e=>{dataPromise=null;if(!db?.categories)throw e;return db});
+ await dataPromise;
+ return db;
+}
 function category(id){return normalizeCompetition(db).find(c=>c.id===String(id))}
 const day=id=>['1','2'].includes(String(id))?'Veteranos · sábados por la tarde':'Dominical · categoría libre';
 function logo(team){const value=window.LJR_TEAM_LOGOS?.get?.(team)||window.LJR_OFFICIAL_API?.getLogo?.(team)||Object.entries(db?.team_logos||{}).find(([k])=>norm(k)===norm(team))?.[1];return typeof value==='string'?value:value?.local||value?.source||''}
@@ -37,7 +47,7 @@ export async function reportCanvas(id,type,options={}){
  if(type==='notice'){heads=['Comunicado · borrador'];widths=[1050];if(!options.note?.trim())throw Error('Escribe el motivo y detalle del aviso');rows=[{team:options.team,team2:options.team2,cells:[(options.noticeType||'Aviso informativo')+'\n'+(options.match||'Toda la categoría')+'\n'+(options.date||'Fecha por confirmar')+'\n'+options.note]}]}
  if(type==='transfer'){heads=['Transferencia · borrador para revisión'];widths=[1050];if(!options.player?.trim()||!options.team||!options.team2)throw Error('Completa jugador, equipo de origen y destino');if(options.team===options.team2)throw Error('El origen y el destino deben ser distintos');rows=[{team:options.team,team2:options.team2,cells:[options.player+'\nOrigen: '+options.team+'\nDestino: '+options.team2+'\n'+(options.date||'Fecha por confirmar')+'\n'+(options.note||'Pendiente de autorización de la liga.')]}]}
  if(type==='cedula'){const m=c.matches.find(m=>m.id===options.match);if(!m)throw Error('Elige un partido para la cédula');heads=['Cédula de partido · borrador'];widths=[1050];rows=[{team:m.home,team2:m.away,cells:[m.home+' vs '+m.away+'\n'+m.date+' · '+(m.venue||'Sede por confirmar')+'\nJornada '+m.round+'\nMarcador: '+(m.complete?m.homeScore+' – '+m.awayScore:'Sin resultado completo publicado')+'\n'+(options.note||'Árbitro / incidencias / firmas: pendientes de completar.')]}]}
- if(type==='quiniela'){heads=['Partido','Pronóstico','Puntos'];widths=[650,250,150];const predictions=readPredictions();rows=c.matches.filter(m=>(!options.round||m.round===options.round)&&predictions[m.id]).map(m=>({team:m.home,team2:m.away,cells:[m.home+'\nvs '+m.away,predictions[m.id].home+' – '+predictions[m.id].away,m.complete?predictionPoints(predictions[m.id],m):'Pendiente']}))}
+ if(type==='quiniela'){heads=['Partido','Pronóstico','Puntos'];widths=[650,250,150];const predictions=readPredictions();rows=c.matches.filter(m=>(!options.round||m.round===options.round)&&predictionFor(predictions,m)).map(m=>{const p=predictionFor(predictions,m);return {team:m.home,team2:m.away,cells:[m.home+'\nvs '+m.away,p.home+' – '+p.away,m.complete?predictionPoints(p,m):'Pendiente']}})}
  if(!rows.length){if(['sanctions','scorers'].includes(type))rows=[{cells:['Sin '+(type==='sanctions'?'sanciones publicadas':'goleadores publicados')+' para esta categoría.']}];else throw Error('No hay datos publicados para esta selección')}
  const logoColumn=['standings','scorers'].includes(type)?1:0;
  const prepared=rows.map(r=>{const cells=r.cells.map((s,i)=>String(s??'—').split('\n').flatMap(line=>wrap(document.createElement('canvas').getContext('2d'),line,widths[i]-30-(i===logoColumn&&r.team?(r.team2?142:82):0))));return {...r,lines:cells,height:Math.max(92,Math.max(...cells.map(a=>a.length))*34+34)}});
@@ -47,7 +57,10 @@ export async function reportCanvas(id,type,options={}){
  const logos=await Promise.all(prepared.map(async r=>[await image(logo(r.team)),await image(logo(r.team2))]));
  prepared.forEach((r,i)=>{x.fillStyle=i%2?'#0c165d':'#101d6e';x.fillRect(30,y,1140,r.height-5);x.fillStyle='#fff';x.font='600 26px Arial';let left=45;r.lines.forEach((lines,j)=>{let offset=0;if(r.team&&j===logoColumn){drawImage(x,logos[i][0],left+2,y+12,65);if(r.team2)drawImage(x,logos[i][1],left+69,y+12,65);offset=r.team2?142:82}textLines(x,lines,left+offset,y+35,34);left+=widths[j]});y+=r.height});x.fillStyle='#acbfdc';x.font='500 19px Arial';x.fillText((authoring?'Borrador generado en la app':'Datos oficiales disponibles · '+String(db.captured_at_utc||'').slice(0,10))+' · '+new Date().toLocaleDateString('es-MX'),40,cv.height-45);return cv;
 }
-export function predictionPoints(prediction,match){if(!match.complete)return null;if(prediction.home===match.homeScore&&prediction.away===match.awayScore)return 2;return Math.sign(prediction.home-prediction.away)===Math.sign(match.homeScore-match.awayScore)?1:0}
+export function predictionPoints(prediction,match){if(!match.complete||!prediction||!Number.isInteger(prediction.home)||!Number.isInteger(prediction.away))return null;if(prediction.home===match.homeScore&&prediction.away===match.awayScore)return 2;return Math.sign(prediction.home-prediction.away)===Math.sign(match.homeScore-match.awayScore)?1:0}
+function fixtureKey(m){return [m.category,db?.categories?.[String(m.category)]?.season_id||'',m.round,norm(m.home),norm(m.away)].join('|')}
+function predictionFor(predictions,m){const key=fixtureKey(m),p=predictions[key]||predictions[m.id];return p&&p.fixtureKey===key?p:null}
+function matchStarted(m){if(m.complete)return true;if(!m.iso||!m.time)return false;const time=Date.parse(m.iso+'T'+m.time+':00-06:00');return Number.isFinite(time)&&Date.now()>=time}
 function readPredictions(){try{return JSON.parse(localStorage.getItem('v561-quiniela')||'{}')}catch{return {}}}
 function downloadFile(file){const a=document.createElement('a'),url=URL.createObjectURL(file);a.href=url;a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(url),10000)}
 function filename(type,id){return titles[type].replace(/\s+/g,'_')+'_'+labels[id].replace(/\s+/g,'_')+'.png'}
@@ -84,9 +97,11 @@ async function mountQuiniela(root){
  const matches=(c.matches||[]).filter(m=>String(m.round)===round);
  let total=0,exact=0,outcome=0,scored=0,savedCount=0;
  for(const m of c.matches||[]){
-   if(p[m.id])savedCount++;
-   if(p[m.id]&&m.complete){
-     const pts=predictionPoints(p[m.id],m);total+=pts;scored++;
+   const saved=predictionFor(p,m);
+   if(saved)savedCount++;
+   if(saved&&m.complete){
+     const pts=predictionPoints(saved,m);if(pts===null)continue;
+     total+=pts;scored++;
      if(pts===2)exact++;else if(pts===1)outcome++;
    }
  }
@@ -95,7 +110,7 @@ async function mountQuiniela(root){
    return '<div class="v618-q-team '+side+'">'+(src?'<img src="'+esc(src)+'" alt="'+esc(name)+'">':'<span class="v618-q-fallback">'+esc(String(name||'?').slice(0,2).toUpperCase())+'</span>')+'<b>'+esc(name)+'</b></div>';
  };
  const scoreInputs=m=>{
-   const saved=p[m.id],disabled=m.complete?'disabled':'';
+   const saved=predictionFor(p,m)||(!m.complete&&!p[fixtureKey(m)]?p[m.id]:null),disabled=matchStarted(m)?'disabled':'';
    return '<div class="v618-q-score">'+
      '<input type="number" inputmode="numeric" min="0" max="99" data-q-home aria-label="Goles de '+esc(m.home)+'" value="'+(saved?.home??'')+'" '+disabled+'>'+
      '<span>:</span>'+
@@ -103,15 +118,15 @@ async function mountQuiniela(root){
    '</div>';
  };
  const card=m=>{
-   const saved=p[m.id],pts=saved&&m.complete?predictionPoints(saved,m):null;
+   const saved=predictionFor(p,m),legacy=!saved&&p[m.id],pts=saved&&m.complete?predictionPoints(saved,m):null;
    const status=m.complete
-     ?'<span class="v618-q-status done">Final · '+esc(m.homeScore)+'–'+esc(m.awayScore)+(saved?' · '+pts+' pt'+(pts===1?'':'s'):'')+'</span>'
-     :(saved?'<span class="v618-q-status saved">✓ '+saved.home+'–'+saved.away+' guardado</span>':'<span class="v618-q-status open">Pronostica antes del inicio</span>');
+     ?'<span class="v618-q-status done">Final · '+esc(m.homeScore)+'–'+esc(m.awayScore)+(pts!==null?' · '+pts+' pt'+(pts===1?'':'s'):'')+'</span>'
+     :(matchStarted(m)?'<span class="v618-q-status done">Partido iniciado · pronóstico cerrado</span>':saved?'<span class="v618-q-status saved">✓ '+saved.home+'–'+saved.away+' guardado</span>':legacy?'<span class="v618-q-status open">Revisa y guarda nuevamente este pronóstico anterior</span>':'<span class="v618-q-status open">Pronostica antes del inicio</span>');
    return '<article class="v618-q-card" data-q-match="'+esc(m.id)+'">'+
      '<div class="v618-q-card-top"><small>Jornada '+esc(m.round)+'</small><time>'+esc(m.date||'Fecha por confirmar')+(m.time?' · '+esc(m.time):'')+'</time></div>'+
      '<div class="v618-q-card-main">'+teamCard(m,'home')+
        '<div class="v618-q-center">'+scoreInputs(m)+
-         (!m.complete?'<button type="button" class="v618-q-save-one" data-q-save-one="'+esc(m.id)+'">Guardar pronóstico</button>':'')+
+         (!matchStarted(m)?'<button type="button" class="v618-q-save-one" data-q-save-one="'+esc(m.id)+'">Guardar pronóstico</button>':'')+
          status+
        '</div>'+teamCard(m,'away')+
      '</div>'+
@@ -122,9 +137,10 @@ async function mountQuiniela(root){
  const nav='<div class="v618-q-nav">'+
    '<button type="button" class="'+(view==='play'?'active':'')+'" data-q-view="play"><span class="v953-q-nav-icon">'+qIcon('play')+'</span><b>Pronosticar</b></button>'+
    '<button type="button" class="'+(view==='history'?'active':'')+'" data-q-view="history"><span class="v953-q-nav-icon">'+qIcon('history')+'</span><b>Histórico</b></button>'+
-   '<button type="button" class="'+(view==='ranking'?'active':'')+'" data-q-view="ranking"><span class="v953-q-nav-icon">'+qIcon('ranking')+'</span><b>Ranking</b></button>'+
+   '<button type="button" class="'+(view==='ranking'?'active':'')+'" data-q-view="ranking"><span class="v953-q-nav-icon">'+qIcon('ranking')+'</span><b>Ranking</b></button>'+ 
+   '<button type="button" class="'+(view==='tables'?'active':'')+'" data-q-view="tables"><span class="v953-q-nav-icon">'+qIcon('ranking')+'</span><b>Tablas y goleo</b></button>'+
  '</div>';
- const rules='<section class="v618-q-rules"><b><span class="v953-q-rule-icon">'+qIcon('trophy')+'</span>Pronostica el marcador exacto de cada partido</b><p><span>2 pts</span> si aciertas el marcador exacto · <span>1 pt</span> si aciertas ganador o empate.</p><small><span class="v953-q-clock">'+qIcon('clock')+'</span>Solo puedes editar antes de que el partido quede registrado como finalizado.</small></section>';
+ const rules='<section class="v618-q-rules"><b><span class="v953-q-rule-icon">'+qIcon('trophy')+'</span>Pronostica el marcador exacto de cada partido</b><p><span>2 pts</span> si aciertas el marcador exacto · <span>1 pt</span> si aciertas ganador o empate.</p><small><span class="v953-q-clock">'+qIcon('clock')+'</span>Los pronósticos cierran al llegar la hora de inicio publicada. Los marcadores pendientes no suman puntos.</small></section>';
  let body='';
  if(view==='ranking'){
    body='<section class="v618-q-ranking">'+
@@ -132,12 +148,24 @@ async function mountQuiniela(root){
      '<div class="v618-q-stats"><div><b>'+exact+'</b><small>Exactos · 2 pts</small></div><div><b>'+outcome+'</b><small>Ganador/empate · 1 pt</small></div><div><b>'+scored+'</b><small>Evaluados</small></div></div>'+
      '<p class="v618-q-local-note">Tus puntos se calculan con tus pronósticos guardados en Liga Juventino Rosas.</p>'+
    '</section>';
+ }else if(view==='tables'){
+   const stamp=String(db.captured_at_utc||'').slice(0,16).replace('T',' ');
+   const tableHead='<div class="v960-q-cols"><span>#</span><span>Equipo</span><span>PJ</span><span>GF</span><span>GC</span><span>PTS</span></div>';
+   const standings=c.standings.map(t=>'<div class="v960-q-cols"><span>'+esc(t.pos??'—')+'</span><span class="v960-q-team">'+(logo(t.name)?'<img src="'+esc(logo(t.name))+'" alt="">':'')+'<b>'+esc(t.name)+'</b></span><span>'+esc(t.pj??'—')+'</span><span>'+esc(t.gf??'—')+'</span><span>'+esc(t.gc??'—')+'</span><strong>'+esc(t.pts??'—')+'</strong></div>').join('');
+   const scorers=c.scorers.map(t=>'<div class="v960-q-scorer"><span>'+esc(t.pos??'—')+'</span><span><b>'+esc(t.player)+'</b><small>'+esc(t.team)+'</small></span><strong>'+esc(t.goals)+'</strong></div>').join('');
+   const recent=c.matches.filter(m=>m.complete).sort((a,b)=>(b.iso||'').localeCompare(a.iso||'')).slice(0,12).map(m=>'<div class="v960-q-result"><span>J'+esc(m.round)+'</span><b>'+esc(m.home)+'</b><strong>'+esc(m.homeScore)+'–'+esc(m.awayScore)+'</strong><b>'+esc(m.away)+'</b></div>').join('');
+   body='<section class="v960-q-tables">'+
+     '<p class="v960-q-source">Datos publicados por AdminFut · corte: '+esc(stamp||'no disponible')+' UTC. No son el ranking de participantes de la Quiniela.</p>'+
+     '<div class="v960-q-links"><a target="_blank" rel="noopener noreferrer" href="https://www.juventinorosasliga.com/tabla-posiciones/?categoria='+catId+'">Clasificación oficial ↗</a><a target="_blank" rel="noopener noreferrer" href="https://www.juventinorosasliga.com/tabla-goleo/?categoria='+catId+'">Goleo oficial ↗</a><button type="button" data-q-refresh>Actualizar datos</button></div>'+
+     '<section class="v960-q-block"><h3>Tabla de posiciones · '+esc(c.name)+'</h3>'+ (standings?tableHead+standings:'<p>No hay tabla de posiciones publicada para esta temporada.</p>')+'</section>'+
+     '<section class="v960-q-block"><h3>Máximos goleadores</h3>'+(scorers?'<div class="v960-q-scorer-head"><span>#</span><span>Jugador / Equipo</span><span>Goles</span></div>'+scorers:'<p>No hay goles individuales publicados para esta temporada.</p>')+'</section>'+
+     '<section class="v960-q-block"><h3>Resultados con marcador completo</h3>'+(recent||'<p>Sin resultados completos publicados.</p>')+'</section></section>';
  }else if(view==='history'){
-   const finished=(c.matches||[]).filter(m=>m.complete).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+   const finished=(c.matches||[]).filter(m=>m.complete).sort((a,b)=>(b.iso||'').localeCompare(a.iso||'')||Number(b.round)-Number(a.round));
    const grouped=new Map();
    for(const m of finished){const r=String(m.round||'—');if(!grouped.has(r))grouped.set(r,[]);grouped.get(r).push(m)}
-   body='<section class="v618-q-history">'+
-     (grouped.size?[...grouped.entries()].map(([r,rows])=>'<div class="v618-q-history-round"><header><b>Jornada '+esc(r)+'</b><span>'+rows.filter(m=>p[m.id]).length+' pronosticados</span></header>'+rows.map(card).join('')+'</div>').join(''):'<div class="v618-q-empty">Todavía no hay partidos finalizados en esta categoría.</div>')+
+   body='<section class="v618-q-history"><p class="v960-q-source">Histórico de resultados y pronósticos guardados en este dispositivo. El histórico oficial de usuarios se consulta en AdminFut.</p><a class="v960-q-official" target="_blank" rel="noopener noreferrer" href="https://www.juventinorosasliga.com/quiniela/historico/?categoria='+catId+'">Abrir histórico oficial de '+esc(c.name)+' ↗</a>'+
+     (grouped.size?[...grouped.entries()].map(([r,rows])=>'<div class="v618-q-history-round"><header><b>Jornada '+esc(r)+'</b><span>'+rows.filter(m=>predictionFor(p,m)).length+' pronosticados</span></header>'+rows.map(card).join('')+'</div>').join(''):'<div class="v618-q-empty">Todavía no hay partidos finalizados en esta categoría.</div>')+
    '</section>';
  }else{
    body='<div class="v618-q-round"><span>'+esc(c.name)+'</span><label>Jornada <select data-q-round>'+rounds.map(r=>'<option value="'+esc(r)+'" '+(r===round?'selected':'')+'>'+esc(r)+'</option>').join('')+'</select></label></div>'+
@@ -165,12 +193,12 @@ async function mountQuiniela(root){
 
  const saveRow=row=>{
    const next=readPredictions(),m=(c.matches||[]).find(x=>x.id===row.dataset.qMatch);
-   if(!m||m.complete)return false;
+   if(!m||matchStarted(m))return false;
    const h=$('[data-q-home]',row),a=$('[data-q-away]',row);
-   if(h.value===''&&a.value===''){delete next[m.id];localStorage.setItem('v561-quiniela',JSON.stringify(next));return true}
+   if(h.value===''&&a.value===''){delete next[fixtureKey(m)];delete next[m.id];localStorage.setItem('v561-quiniela',JSON.stringify(next));return true}
    if(!h.checkValidity()||!a.checkValidity()||h.value===''||a.value===''){notice('Completa ambos marcadores con enteros entre 0 y 99');return false}
-   next[m.id]={home:Number(h.value),away:Number(a.value),savedAt:new Date().toISOString()};
-   localStorage.setItem('v561-quiniela',JSON.stringify(next));return true;
+   next[fixtureKey(m)]={home:Number(h.value),away:Number(a.value),fixtureKey:fixtureKey(m),savedAt:new Date().toISOString()};
+   delete next[m.id];localStorage.setItem('v561-quiniela',JSON.stringify(next));return true;
  };
  root.querySelectorAll('[data-q-save-one]').forEach(btn=>btn.onclick=()=>{
    const row=btn.closest('[data-q-match]');if(saveRow(row)){notice('Pronóstico guardado en Liga Juventino');mountQuiniela(root)}
@@ -180,6 +208,7 @@ async function mountQuiniela(root){
    let count=0;for(const row of root.querySelectorAll('[data-q-match]'))if(saveRow(row))count++;
    notice(count+' pronósticos guardados en Liga Juventino');mountQuiniela(root);
  };
+ const refreshBtn=$('[data-q-refresh]',root);if(refreshBtn)refreshBtn.onclick=async()=>{refreshBtn.disabled=true;try{await window.LJR_V508_OFFICIAL?.refresh?.();db=null;dataPromise=null;await getDb();await mountQuiniela(root);notice('Tablas, goleo y resultados recargados')}catch(e){notice(e.message);refreshBtn.disabled=false}};
  const exportBtn=$('[data-q-export]',root);
  if(exportBtn)exportBtn.onclick=async()=>{try{const cv=await reportCanvas(catId,'quiniela',{round});downloadFile(new File([await blob(cv)],filename('quiniela',catId),{type:'image/png'}))}catch(e){notice(e.message)}};
 }
