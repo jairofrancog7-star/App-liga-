@@ -1,0 +1,134 @@
+/* V947 — Fantasy / Elige tu equipo: geometría fiel a la segunda referencia.
+   Se aplica sólo al constructor fantasyTeam. No cambia eventos ni plantilla. */
+html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v587-builder {
+  /* La cabecera mantiene la fila compacta de 62px, sin empujar el terreno. */
+  grid-template-rows:62px 82px minmax(0,1fr) 60px!important;
+}
+html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v576-builder-head {
+  box-sizing:border-box!important;
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:42px minmax(0,1fr) 42px!important;
+  align-items:center!important;
+  justify-items:stretch!important;
+  gap:0!important;
+  height:62px!important;
+  min-height:62px!important;
+  max-height:62px!important;
+  width:100%!important;
+  margin:0!important;
+  padding:8px 13px 10px!important;
+  background:linear-gradient(180deg,#0a3ee9 0%,#091fc0 65%,#07148e 100%)!important;
+  border:0!important;
+  box-shadow:none!important;
+  z-index:20!important;
+  overflow:visible!important;
+}
+html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v576-builder-head h1 {
+  box-sizing:border-box!important;
+  grid-column:2!important;
+  justify-self:center!important;
+  align-self:center!important;
+  min-width:0!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  color:#fff!important;
+  background:none!important;
+  font-family:Roboto,Inter,"Segoe UI",Arial,sans-serif!important;
+  font-size:clamp(19px,5.15vw,22px)!important;
+  font-weight:450!important;
+  line-height:1.12!important;
+  letter-spacing:-.017em!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  text-overflow:clip!important;
+  overflow:visible!important;
+  text-shadow:none!important;
+  transform:none!important;
+}
+html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v576-builder-head button {
+  box-sizing:border-box!important;
+  display:grid!important;
+  place-items:center!important;
+  position:relative!important;
+  align-self:center!important;
+  margin:0!important;
+  padding:0!important;
+  width:42px!important;
+  height:42px!important;
+  min-width:42px!important;
+  min-height:42px!important;
+  max-width:42px!important;
+  max-height:42px!important;
+  border:0!important;
+  border-radius:0!important;
+  background-color:transparent!important;
+  box-shadow:none!important;
+  color:transparent!important;
+  font-size:0!important;
+  line-height:0!important;
+  text-shadow:none!important;
+  transform:none!important;
+  opacity:1!important;
+  cursor:pointer!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+  z-index:23!important;
+}
+html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v576-builder-head button[data-v576-back] {
+  grid-column:1!important;
+  justify-self:start!important;
+  background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2040%2040%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M24.5%207.5%2012%2020l12.5%2012.5M12.8%2020H35%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%223.15%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E")!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:31px 31px!important;
+}
+html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v576-builder-head button[data-v576-menu] {
+  grid-column:3!important;
+  justify-self:end!important;
+  background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2036%2042%22%3E%3Ccircle%20cx%3D%2218%22%20cy%3D%228%22%20r%3D%223.5%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Ccircle%20cx%3D%2218%22%20cy%3D%2221%22%20r%3D%223.5%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Ccircle%20cx%3D%2218%22%20cy%3D%2234%22%20r%3D%223.5%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E")!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:27px 32px!important;
+}
+html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v576-builder-head::after {
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  bottom:0!important;
+  left:18px!important;
+  right:18px!important;
+  width:auto!important;
+  height:3px!important;
+  border-radius:999px!important;
+  /* Referencia 2: tramo de avance cian, resto de la línea azul tenue. */
+  background:linear-gradient(90deg,#2decf2 0%,#2decf2 80%,rgba(116,144,241,.54) 80%,rgba(116,144,241,.54) 100%)!important;
+  box-shadow:0 0 4px rgba(0,215,241,.12)!important;
+  opacity:1!important;
+  pointer-events:none!important;
+}
+html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v576-builder-head button:active {
+  opacity:.72!important;
+}
+html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v576-builder-head button:focus-visible {
+  outline:2px solid #6af2ff!important;
+  outline-offset:1px!important;
+  border-radius:7px!important;
+}
+@media(max-height:700px){
+  html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v587-builder{
+    grid-template-rows:56px 74px minmax(0,1fr) 52px!important;
+  }
+  html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v576-builder-head{
+    height:56px!important;
+    min-height:56px!important;
+    max-height:56px!important;
+    padding:5px 13px 9px!important;
+  }
+}
+@media(max-width:340px){
+  html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v576-builder-head h1{
+    font-size:18px!important;
+  }
+}
