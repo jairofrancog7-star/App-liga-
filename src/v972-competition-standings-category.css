@@ -1,0 +1,86 @@
+/* V972 · mismas cinco tarjetas de Resultados, ahora disponibles en Clasificación. */
+@media(max-width:1023px){
+  html body[data-app-route="competition"] #screen [data-v40-standings] > .v972-category-grid{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:8px!important;
+    box-sizing:border-box!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    height:auto!important;
+    margin:6px 0 12px!important;
+    padding:0 9px!important;
+    overflow:visible!important;
+  }
+  html body[data-app-route="competition"] #screen .v972-category-grid > button{
+    appearance:none!important;
+    -webkit-appearance:none!important;
+    position:relative!important;
+    box-sizing:border-box!important;
+    display:flex!important;
+    justify-content:center!important;
+    align-items:center!important;
+    gap:7px!important;
+    min-width:0!important;
+    width:100%!important;
+    min-height:48px!important;
+    margin:0!important;
+    padding:8px 9px 8px 15px!important;
+    border:1px solid rgba(93,159,244,.48)!important;
+    border-radius:15px!important;
+    background:linear-gradient(145deg,#18358c 0%,#101d70 65%,#091359 100%)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.12)!important;
+    color:#edf6ff!important;
+    cursor:pointer!important;
+    text-align:center!important;
+    font:800 clamp(10px,3vw,13px)/1.18 Inter,Roboto,Arial,sans-serif!important;
+    white-space:normal!important;
+    touch-action:manipulation!important;
+  }
+  html body[data-app-route="competition"] #screen .v972-category-grid > button::before{
+    content:""!important;
+    position:absolute!important;
+    left:8px!important;
+    top:50%!important;
+    transform:translateY(-50%)!important;
+    width:3px!important;
+    height:21px!important;
+    border-radius:6px!important;
+    background:#39ccef!important;
+  }
+  html body[data-app-route="competition"] #screen .v972-category-grid > button img{
+    display:block!important;
+    flex:0 0 24px!important;
+    width:24px!important;
+    height:24px!important;
+    min-width:24px!important;
+    object-fit:contain!important;
+    border:0!important;
+    background:transparent!important;
+  }
+  html body[data-app-route="competition"] #screen .v972-category-grid > button > span{
+    min-width:0!important;
+    color:inherit!important;
+    text-wrap:balance!important;
+    overflow-wrap:normal!important;
+    text-align:center!important;
+  }
+  html body[data-app-route="competition"] #screen .v972-category-grid > button.active{
+    border-color:#91f4ff!important;
+    color:#062454!important;
+    background:linear-gradient(135deg,#6aeaf8 0%,#2cdded 52%,#17bce4 100%)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.48),0 5px 14px rgba(10,194,237,.19)!important;
+  }
+  html body[data-app-route="competition"] #screen .v972-category-grid > button.active::before{background:#075ba5!important}
+  html body[data-app-route="competition"] #screen .v972-category-grid > button:last-child:nth-child(odd){grid-column:1/-1!important}
+  html body[data-app-route="competition"] #screen .v972-category-grid > button:focus-visible{
+    outline:2px solid #b6f8ff!important;outline-offset:2px!important;
+  }
+  html body[data-app-route="competition"] #screen .v40-standings .v952-standings-category{
+    padding:8px 12px!important;
+    color:#7bdff8!important;
+    font-size:12px!important;
+    visibility:visible!important;
+  }
+}
