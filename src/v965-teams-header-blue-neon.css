@@ -1,0 +1,25 @@
+/* V965 — Solo cabecera de Equipos.
+   Referencias: azul luminoso con líneas curvas tipo Máximo goleador.
+   Conserva completamente intactas las secciones Siguiendo, equipos,
+   tarjetas, navegación, medidas, scroll y controles del encabezado. */
+@media (max-width:1023px) {
+  html body[data-app-route="teams"] #screen .v27-teams-page > .v27-teams-head,
+  html body.v27-teams-active #screen .v27-teams-page > .v27-teams-head {
+    /* Las líneas son parte del fondo (no una capa sobre las letras). */
+    background-image:
+      url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22420%22%20height%3D%22300%22%20viewBox%3D%220%200%20420%20300%22%20fill%3D%22none%22%3E%0A%3Cdefs%3E%3ClinearGradient%20id%3D%22line%22%20x1%3D%2230%22%20y1%3D%226%22%20x2%3D%22315%22%20y2%3D%22251%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%2382A5FF%22%20stop-opacity%3D%22.70%22%2F%3E%3Cstop%20offset%3D%22.55%22%20stop-color%3D%22%23326EFF%22%20stop-opacity%3D%22.44%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%231642FF%22%20stop-opacity%3D%22.08%22%2F%3E%3C%2FlinearGradient%3E%3Cfilter%20id%3D%22soft%22%20x%3D%22-20%25%22%20y%3D%22-60%25%22%20width%3D%22140%25%22%20height%3D%22240%25%22%3E%3CfeGaussianBlur%20stdDeviation%3D%223.4%22%2F%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%0A%3Cg%20stroke%3D%22url(%23line)%22%20stroke-width%3D%225%22%20filter%3D%22url(%23soft)%22%20opacity%3D%22.5%22%3E%3Cpath%20d%3D%22M-34%2091C42-43%20113-36%20157%2013S285%20111%20363%2014S477-74%20499-38%22%2F%3E%3Cpath%20d%3D%22M-61%20204C24%2092%2089%2092%20166%20144S302%20211%20437%2086%22%2F%3E%3C%2Fg%3E%0A%3Cg%20stroke%3D%22url(%23line)%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20opacity%3D%22.82%22%3E%3Cpath%20d%3D%22M-34%2091C42-43%20113-36%20157%2013S285%20111%20363%2014S477-74%20499-38%22%2F%3E%3Cpath%20d%3D%22M-61%20204C24%2092%2089%2092%20166%20144S302%20211%20437%2086%22%2F%3E%3Cpath%20d%3D%22M-75%20244C27%20143%20104%20143%20169%20174S316%20244%20465%20133%22%2F%3E%3C%2Fg%3E%0A%3Cg%20stroke%3D%22%233771FE%22%20stroke-opacity%3D%22.20%22%20stroke-width%3D%221%22%3E%3Cpath%20d%3D%22M-4%20265C22%20220%2033%20165%2013%20120%22%2F%3E%3Cpath%20d%3D%22M371-7C340%2066%20340%20127%20412%20169%22%2F%3E%3C%2Fg%3E%0A%3C%2Fsvg%3E"),
+      radial-gradient(ellipse 95% 64% at 86% 0%, rgba(70,116,255,.30) 0%, transparent 78%),
+      linear-gradient(180deg,
+        #2543ee 0%,
+        #233edc 25%,
+        #1f38ca 50%,
+        #1c35bb 75%,
+        #1d3bb8 100%) !important;
+    background-position:center top,center top,center top!important;
+    background-size:100% 100%,100% 100%,100% 100%!important;
+    background-repeat:no-repeat,no-repeat,no-repeat!important;
+    background-color:#1d3bb8!important;
+    border-bottom:0!important;
+    box-shadow:none!important;
+  }
+}
