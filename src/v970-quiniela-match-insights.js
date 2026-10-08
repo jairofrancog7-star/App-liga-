@@ -174,7 +174,7 @@ function addProgress(root,cat,visibleMatches,data){
    const show=mode==='all'||(mode==='saved'?isSaved:!isClosed(m)&&!isSaved);
    el.hidden=!show;if(show)count++;
   }
-  $('.v973-game-filter-row button',card).forEach(btn=>{
+  $$('.v973-game-filter-row button',card).forEach(btn=>{
    const active=btn.dataset.v973Filter===mode;
    btn.classList.toggle('active',active);
    btn.setAttribute('aria-pressed',String(active));
@@ -192,7 +192,7 @@ function addProgress(root,cat,visibleMatches,data){
    empty.append(reset);
   }else empty?.remove();
  };
- $('.v973-game-filter-row button',card).forEach(btn=>btn.onclick=()=>{
+ $$('.v973-game-filter-row button',card).forEach(btn=>btn.onclick=()=>{
   const mode=btn.dataset.v973Filter;localStorage.setItem(filterKey,mode);applyFilter(mode);
  });
  const round=$('.v618-q-round',root);
