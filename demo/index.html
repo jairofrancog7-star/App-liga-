@@ -28,7 +28,7 @@
     })();
   </script>
   <script src="./src/v776-navigation.js"></script>
-  <meta name="app-build" content="v917-transfers-single-topbar">
+  <meta name="app-build" content="v918-transfers-visible-header">
   <style data-ljr-entry-guard>
     html.ljr-preboot #app{visibility:hidden!important}
     html.ljr-preboot body{background:#000144!important}
@@ -550,8 +550,8 @@ html body.v587-fantasy-team-open .v576-field-row.por{
   <!-- V911.1_PAGES_TRIGGER -->
   <!-- V912_PAGES_TRIGGER -->  \n
   <!-- V915_STORE_3D_PLAYER_PHOTOS_TRIGGER -->
-  <script type="module" crossorigin src="./assets/index-BuSy4xcc.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-D4aCvAsl.css">
+  <script type="module" crossorigin src="./assets/index-DuvuHO6a.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-oK5sgyy2.css">
 </head>
 <body>
 <div id="ljr-boot" aria-label="Cargando Liga Juventino" role="status"><i></i></div>
@@ -560,6 +560,8 @@ html body.v587-fantasy-team-open .v576-field-row.por{
     <header class="topbar">
       <button id="backButton" class="icon-button back-button" aria-label="Volver"></button>
       <button class="wordmark" data-route="home" aria-label="Ir a Inicio">LIGA <strong>JUVENTINO</strong></button>
+      <span class="v918-transfer-title" aria-label="Centro de fichajes">Centro de fichajes</span>
+      <button id="v918TransferBell" class="v918-transfer-bell" type="button" aria-label="Notificaciones" title="Notificaciones"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M7.8 19.4h12.4c-1.5-1.8-2.1-3.5-2.1-6.7 0-3.1-1.6-5.5-4.1-6.2V5.4a1.6 1.6 0 0 0-3.2 0v1.1c-2.5.7-4.1 3.1-4.1 6.2 0 3.2-.6 4.9-2.1 6.7h3.2Z"/><path d="M10.6 21.1c.4 1.3 1.5 2.1 2.8 2.1s2.4-.8 2.8-2.1"/><circle cx="20.9" cy="7.2" r="4.3" fill="#fff" stroke="#fff" stroke-width="1"/><path d="m18.8 7.2 1.3 1.4 2.7-3" stroke="#0b51df" stroke-width="1.7"/></svg></button>
       <button class="icon-button profile-button" data-route="profile" aria-label="Perfil"></button>
     </header>
 
@@ -841,7 +843,8 @@ html body.v587-fantasy-team-open .v576-field-row.por{
   <script defer src="./src/v875-review-corrections.js?v=20261007-v916-meeting-print-pdf"></script>
   <script defer src="./src/v889-where-watch-title.js?v=20261007-v890-visible-label"></script>
   <script defer src="./src/v892-more-tools-relocation.js?v=20261007-v893-more-tools-relocation"></script>
-  <script defer src="./src/v917-transfer-single-topbar.js?v=20261007-v917-single-header"></script>\n  
+\n  
+
 
 
   <script>
@@ -1067,6 +1070,47 @@ html body.v587-fantasy-team-open .v576-field-row.por{
       setTimeout(sync,250);
       setTimeout(sync,900);
     })();
+  </script>
+
+  <script>
+  (function(){
+    if(window.__LJR_V918_TRANSFER_HEADER__)return;
+    window.__LJR_V918_TRANSFER_HEADER__=true;
+    var pending=false;
+    function inFichajes(){
+      var path=String(location.hash||''); return (path.startsWith('#/')?path.slice(2):path.replace('#','')).split('?')[0]==='transfers';
+    }
+    function align(){
+      pending=false;
+      if(!inFichajes())return;
+      var header=document.querySelector('#app > .topbar');
+      var profile=header&&header.querySelector('.profile-button');
+      if(!header||!profile)return;
+      var rect=header.getBoundingClientRect();
+      var anchor=profile.getBoundingClientRect();
+      if(rect.width>0&&anchor.width>0&&anchor.height>0){
+        var top=Math.round(anchor.top-rect.top+anchor.height/2);
+        var right=Math.round(rect.right-anchor.right);
+        header.style.setProperty('--v918-control-top',top+'px');
+        header.style.setProperty('--v918-profile-right',Math.max(0,right)+'px');
+      }
+      window.LJR_SCROLL_CHROME?.refresh?.();
+    }
+    function queue(){if(pending)return;pending=true;requestAnimationFrame(align);}
+    document.addEventListener('click',function(e){
+      if(!(e.target instanceof Element))return;
+      var bell=e.target.closest('#v918TransferBell');
+      if(!bell||!inFichajes())return;
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+      if(typeof window.LJR_MAIN_ROUTE?.go==='function')window.LJR_MAIN_ROUTE.go('notifications');
+      else location.hash='#/notifications';
+    },true);
+    window.addEventListener('hashchange',queue);
+    window.addEventListener('resize',queue);
+    window.addEventListener('load',queue);
+    document.addEventListener('DOMContentLoaded',queue,{once:true});
+    queue();setTimeout(queue,450);setTimeout(queue,1250);
+  })();
   </script>
 
 </body>
