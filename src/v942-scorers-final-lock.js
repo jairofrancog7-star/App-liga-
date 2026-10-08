@@ -6,6 +6,13 @@ if(window.__LJR_V942_SCORERS_FINAL_LOCK__)return;
 window.__LJR_V942_SCORERS_FINAL_LOCK__=true;
 
 const CATS=[['3','Primera Fuerza'],['5','Intermedia'],['4','Segunda Fuerza'],['2','Veteranos 35+'],['1','Veteranos 50+']];
+const CAT_LOGOS={
+  '3':'./assets/branding/primera-fuerza-hd.png',
+  '5':'./assets/categories/intermedia.webp',
+  '4':'./assets/categories/segunda-fuerza.webp',
+  '2':'./assets/categories/veteranos-35-user.png',
+  '1':'./assets/categories/veteranos-50.webp'
+};
 const STATS=[['goals','Goles','goals'],['shots','Remates','shots'],['passes','Pases','passes']];
 let timer=0,working=false,lastReset='';
 
@@ -27,6 +34,10 @@ function stat(){
   const v=String(localStorage.getItem('v504-scorer-ranking-stat')||'goals');
   return STATS.some(x=>x[0]===v)?v:'goals';
 }
+function categoryLogo(id,label){
+ const src=CAT_LOGOS[String(id)]||'./assets/liga-logo.webp';
+ return '<span class="v945-cat-logo"><img src="'+esc(src)+'" alt="'+esc(label)+'" loading="eager" decoding="async"></span>';
+}
 function icon(name){
  const p={
   category:'<path d="M12 3 20 6v6c0 5-3 8-8 10-5-2-8-5-8-10V6l8-3Z"/><path d="M8 10h8M8 14h5"/>',
@@ -43,7 +54,7 @@ function build(){
   wrap.innerHTML=
     '<span class="v391-category-label">CLASIFICAR POR CATEGORÍA</span>'+
     '<div class="v391-category-strip v942-category-grid">'+CATS.map(([id,label])=>
-      '<button type="button" class="v942-cat '+(id===active?'active':'')+'" data-v194-cat="'+id+'" aria-pressed="'+(id===active?'true':'false')+'">'+icon('category')+'<b>'+esc(label)+'</b></button>'
+      '<button type="button" class="v942-cat '+(id===active?'active':'')+'" data-v194-cat="'+id+'" aria-pressed="'+(id===active?'true':'false')+'">'+categoryLogo(id,label)+'<b>'+esc(label)+'</b></button>'
     ).join('')+'</div>'+
     '<div class="v391-stat-strip v942-stat-grid" aria-label="Estadística del ranking">'+STATS.map(([id,label,ico])=>
       '<button type="button" class="v942-stat '+(id===s?'active':'')+'" data-v462-stat="'+id+'" aria-pressed="'+(id===s?'true':'false')+'">'+icon(ico)+'<b>'+esc(label)+'</b></button>'
