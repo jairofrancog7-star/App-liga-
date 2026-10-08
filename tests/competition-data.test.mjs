@@ -84,3 +84,22 @@ test('puntos oficiales: negativos conservados en todas las categorías, nunca de
  const boca=categories.find(c=>c.id==='1').standings.find(r=>r.name==='BOCA JRS');
  assert.ok(boca);assert.equal(boca.pts,-21);
 });
+
+test('Segunda Fuerza: fechas de la jornada 7 y tabla verificadas en AdminFut',()=>{
+ const segunda=categories.find(c=>c.id==='4');
+ assert.ok(segunda);
+ const round7=segunda.matches.filter(m=>m.round==='7');
+ assert.equal(round7.length,6);
+ assert.ok(round7.every(m=>m.date.startsWith('11/10/2026')));
+ assert.ok(round7.every(m=>m.homeScore===null && m.awayScore===null && m.status==='UNCONFIRMED'));
+ assert.equal(segunda.standings.find(t=>t.name==='SAN JULIAN').pts,14);
+ assert.equal(segunda.standings.find(t=>t.name==='SAN JUAN FC').pts,13);
+ assert.equal(segunda.standings.find(t=>t.name==='CELTICOS').pts,12);
+ // Puntuación negativa ya publicada: no volver a descontarla.
+ assert.equal(segunda.standings.find(t=>t.name==='TAPATIO').pts,-3);
+});
+test('los archivos publicables y fuente de la liga son exactamente iguales',()=>{
+ const publicDb=JSON.parse(fs.readFileSync(new URL('../public/data/official-live.json',import.meta.url)));
+ const workingDb=JSON.parse(fs.readFileSync(new URL('../data/official-live.json',import.meta.url)));
+ assert.deepEqual(publicDb,workingDb);
+});
