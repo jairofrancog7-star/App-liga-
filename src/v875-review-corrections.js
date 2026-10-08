@@ -63,6 +63,19 @@ function poll(root){
 }
 function meeting(root){
  const form=root.querySelector('.v105-meeting-form');if(!form||form.querySelector('[data-v875-meeting]'))return;
+ const meetingModal=form.closest('.v105-modal');
+ if(meetingModal){
+  meetingModal.classList.add('v875-meeting-modal');
+  meetingModal.style.setProperty('inset','0 0 calc(var(--v34-nav-h,69px) + env(safe-area-inset-bottom,0px)) 0','important');
+  meetingModal.style.setProperty('padding','14px','important');
+  meetingModal.style.setProperty('box-sizing','border-box','important');
+  const meetingDialog=meetingModal.querySelector('.v105-dialog');
+  if(meetingDialog){
+   meetingDialog.style.setProperty('max-height','calc(100dvh - var(--v34-nav-h,69px) - env(safe-area-inset-bottom,0px) - 28px)','important');
+   meetingDialog.style.setProperty('scroll-padding-bottom','28px','important');
+   meetingDialog.style.setProperty('margin-bottom','0','important');
+  }
+ }
  const wrap=document.createElement('div');wrap.dataset.v875Meeting='';wrap.className='v875-meeting-options';
  let old={};try{old=JSON.parse(localStorage.getItem('ljr-meeting-options-v875')||'{}')}catch{}
  wrap.innerHTML='<label>Hora<input data-meeting-field="time" type="time" value="'+esc(old.time||'19:00')+'"></label><label>Lugar<input data-meeting-field="place" value="'+esc(old.place||'')+'" placeholder="Sede de la junta"></label><label>Responsable<input data-meeting-field="owner" value="'+esc(old.owner||'')+'" placeholder="Nombre del responsable"></label><label>Fecha límite de acuerdos<input data-meeting-field="deadline" type="date" value="'+esc(old.deadline||'')+'"></label><label class="wide">Pendientes y seguimiento<textarea data-meeting-field="tasks" rows="4" placeholder="Acuerdo · responsable · fecha límite">'+esc(old.tasks||'')+'</textarea></label><div class="v875-agenda-chips wide">'+['Resultados de jornada','Programación y campos','Arbitraje y disciplina','Propuestas del buzón','Equipos y registros'].map(t=>'<button type="button" data-add-topic="'+esc(t)+'">'+esc(t)+'</button>').join('')+'</div>';
