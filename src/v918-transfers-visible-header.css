@@ -1,0 +1,83 @@
+/* V918: Barra única de Centro de fichajes; título y aviso en barra principal. */
+#app > .topbar .v918-transfer-title,
+#app > .topbar .v918-transfer-bell {display:none!important;}
+@media(max-width:1023px){
+  /* El módulo antiguo sigue en DOM por compatibilidad, pero sin barra duplicada. */
+  html body[data-app-route="transfers"] #screen .v429-transfer-head.v430-transfer-head,
+  html body #app:has(#screen [data-v412-screen="transfers"]) #screen .v429-transfer-head.v430-transfer-head {
+    display:none!important;visibility:hidden!important;position:absolute!important;
+    height:0!important;min-height:0!important;max-height:0!important;
+    margin:0!important;padding:0!important;border:0!important;overflow:hidden!important;
+    pointer-events:none!important;
+  }
+  html body[data-app-route="transfers"] #app > .topbar,
+  html body #app:has(#screen [data-v412-screen="transfers"]) > .topbar{
+    display:block!important;visibility:visible!important;opacity:1!important;
+    position:fixed!important;top:0!important;left:0!important;right:0!important;
+    width:100%!important;margin:0!important;padding:0!important;
+    height:calc(clamp(84px,22vw,108px) + env(safe-area-inset-top))!important;
+    min-height:calc(clamp(84px,22vw,108px) + env(safe-area-inset-top))!important;
+    max-height:calc(clamp(84px,22vw,108px) + env(safe-area-inset-top))!important;
+    z-index:140!important;isolation:isolate!important;
+    overflow:hidden!important;pointer-events:auto!important;
+    border-bottom:1px solid rgba(85,174,255,.45)!important;
+  }
+  html body[data-app-route="transfers"] #app > .topbar .wordmark,
+  html body #app:has(#screen [data-v412-screen="transfers"]) > .topbar .wordmark {
+    color:transparent!important;font-size:0!important;
+    pointer-events:none!important;
+  }
+  html body[data-app-route="transfers"] #app > .topbar .wordmark strong,
+  html body #app:has(#screen [data-v412-screen="transfers"]) > .topbar .wordmark strong{
+    color:transparent!important;font-size:0!important;
+  }
+  html body[data-app-route="transfers"] #app > .topbar .v918-transfer-title,
+  html body #app:has(#screen [data-v412-screen="transfers"]) > .topbar .v918-transfer-title{
+    display:block!important;visibility:visible!important;opacity:1!important;
+    position:absolute!important;z-index:2147483000!important;
+    top:var(--v918-control-top,36%)!important;
+    left:clamp(52px,13vw,70px)!important;
+    right:calc(var(--v918-profile-right,16px) + 79px)!important;
+    width:auto!important;min-width:0!important;height:auto!important;
+    margin:0!important;padding:0!important;
+    transform:translateY(-50%)!important;
+    color:#fff!important;background:none!important;
+    font-family:Inter,Roboto,Arial,sans-serif!important;
+    font-size:clamp(13px,4.1vw,19px)!important;
+    font-weight:850!important;line-height:1.25!important;letter-spacing:-.025em!important;
+    text-align:left!important;text-shadow:0 1px 3px rgba(0,0,70,.24)!important;
+    white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+    pointer-events:none!important;
+  }
+  html body[data-app-route="transfers"] #app > .topbar .v918-transfer-bell,
+  html body #app:has(#screen [data-v412-screen="transfers"]) > .topbar .v918-transfer-bell{
+    display:grid!important;visibility:visible!important;opacity:1!important;
+    position:absolute!important;z-index:2147483001!important;
+    place-items:center!important;top:var(--v918-control-top,36%)!important;
+    right:calc(var(--v918-profile-right,16px) + 40px)!important;
+    transform:translateY(-50%)!important;
+    width:34px!important;height:36px!important;min-width:34px!important;min-height:36px!important;
+    max-width:34px!important;max-height:36px!important;
+    border:0!important;border-radius:0!important;
+    margin:0!important;padding:3px!important;
+    background:none!important;box-shadow:none!important;color:#fff!important;
+    pointer-events:auto!important;cursor:pointer!important;touch-action:manipulation!important;
+    -webkit-tap-highlight-color:transparent!important;
+  }
+  html body[data-app-route="transfers"] #app > .topbar .v918-transfer-bell svg,
+  html body #app:has(#screen [data-v412-screen="transfers"]) > .topbar .v918-transfer-bell svg{
+    display:block!important;width:27px!important;height:27px!important;
+    fill:none!important;stroke:#fff!important;stroke-width:2!important;
+    stroke-linecap:round!important;stroke-linejoin:round!important;
+    opacity:1!important;overflow:visible!important;
+  }
+  html body[data-app-route="transfers"] #app > .topbar .back-button,
+  html body[data-app-route="transfers"] #app > .topbar .profile-button{
+    z-index:2147483002!important;pointer-events:auto!important;
+  }
+  @media(max-width:359px){
+    html body[data-app-route="transfers"] #app > .topbar .v918-transfer-title{
+      font-size:13px!important;left:49px!important;
+    }
+  }
+}
