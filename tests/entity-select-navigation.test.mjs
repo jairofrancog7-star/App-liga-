@@ -61,3 +61,16 @@ test('global entity listeners let directory options handle their own clicks', ()
   assert.match(selectTeam, /stopImmediatePropagation/);
   assert.match(selectTeam, /openOfficialTeamProfile\(n,false\)/);
 });
+
+const categoryTeams = read('src/v27-teams-drive-reference.js');
+test('current category team directory owns clicks and opens summary only', () => {
+  const start = categoryTeams.indexOf("document.querySelectorAll('[data-v27-team]')");
+  const end = categoryTeams.indexOf("const search=document.querySelector('#v27TeamSearch')", start);
+  assert.ok(start >= 0 && end > start, 'team category binding exists');
+  const handler = categoryTeams.slice(start,end);
+  assert.match(handler, /stopImmediatePropagation/);
+  assert.match(handler, /LJR_TEAM_DETAIL_API\?\.openTeam/);
+  assert.match(handler, /removeItem\('v42-open-compare'\)/);
+  assert.match(handler, /#\/teamDetail\?tab=summary/);
+  assert.doesNotMatch(handler, /openCompare\s*\(/);
+});
