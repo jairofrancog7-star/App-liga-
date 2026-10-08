@@ -1300,3 +1300,118 @@
     right:12px!important;
   }
 }
+
+
+/* V958 — perfil independiente visible en goleadores */
+@media(max-width:1023px){
+  /* Evitar conflicto con v931 y otros estilos que esconden el botón global. */
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > .profile-button{
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    pointer-events:none!important;
+  }
+
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > .v958-scorers-profile{
+    display:grid!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:absolute!important;
+    z-index:30!important;
+    right:16px!important;
+    top:20px!important;
+    width:38px!important;
+    height:38px!important;
+    min-width:38px!important;
+    min-height:38px!important;
+    max-width:38px!important;
+    max-height:38px!important;
+    margin:0!important;
+    padding:0!important;
+    place-items:center!important;
+    overflow:hidden!important;
+    border:0!important;
+    border-radius:50%!important;
+    background:transparent!important;
+    background-image:none!important;
+    color:#fff!important;
+    box-shadow:none!important;
+    transform:none!important;
+    pointer-events:auto!important;
+    -webkit-tap-highlight-color:transparent!important;
+    transition:top .20s ease!important;
+  }
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > .v958-scorers-profile::before,
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > .v958-scorers-profile::after{
+    content:none!important;
+    display:none!important;
+  }
+  html body[data-app-route="scorers"] .v958-scorers-profile > svg.v957-profile-fallback{
+    display:block!important;
+    width:31px!important;
+    height:31px!important;
+    min-width:31px!important;
+    min-height:31px!important;
+    max-width:31px!important;
+    max-height:31px!important;
+    fill:none!important;
+    stroke:#fff!important;
+    stroke-width:1.75!important;
+    stroke-linecap:round!important;
+    stroke-linejoin:round!important;
+    opacity:1!important;
+  }
+  html body[data-app-route="scorers"] .v958-scorers-profile .v957-account-photo{
+    display:block!important;
+    width:34px!important;
+    height:34px!important;
+    min-width:34px!important;
+    min-height:34px!important;
+    max-width:34px!important;
+    max-height:34px!important;
+    object-fit:cover!important;
+    object-position:center!important;
+    border:1px solid rgba(255,255,255,.75)!important;
+    border-radius:50%!important;
+    background:transparent!important;
+    filter:none!important;
+  }
+  html body[data-app-route="scorers"] .v958-scorers-profile .v957-account-avatar,
+  html body[data-app-route="scorers"] .v958-scorers-profile .v957-account-avatar > *{
+    display:grid!important;
+    width:34px!important;
+    height:34px!important;
+    min-width:34px!important;
+    min-height:34px!important;
+    max-width:34px!important;
+    max-height:34px!important;
+    place-items:center!important;
+    overflow:hidden!important;
+    border-radius:50%!important;
+    margin:0!important;
+    padding:0!important;
+  }
+
+  /* Al compactarse, perfil, flecha y título cambian juntos. */
+  html body[data-app-route="scorers"].v957-scorers-compact .topbar.v956-scorers-global > .v958-scorers-profile{
+    top:15px!important;
+  }
+
+  /* El título reserva siempre el espacio del perfil derecho. */
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > .v956-scorers-title{
+    right:72px!important;
+  }
+  html body[data-app-route="scorers"].v957-scorers-compact .topbar.v956-scorers-global > .v956-scorers-title{
+    right:64px!important;
+  }
+}
+
+@media(max-width:390px){
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > .v958-scorers-profile{
+    right:12px!important;
+    top:20px!important;
+  }
+  html body[data-app-route="scorers"].v957-scorers-compact .topbar.v956-scorers-global > .v958-scorers-profile{
+    top:14px!important;
+  }
+}
