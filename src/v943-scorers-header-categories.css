@@ -1,55 +1,59 @@
-/* V943 · Máximo goleador — cabecera con flecha, trofeo y perfil.
-   Todas las reglas están limitadas a #/scorers y no alteran la barra inferior. */
+/* V944 · Máximo goleador — cabecera compacta, full-bleed, flecha + título + perfil. */
 @media(max-width:1023px){
   html body[data-app-route="scorers"] #app > .topbar,
   html body[data-app-route="scorers"] .app-shell > .topbar{
     position:sticky!important;
     top:0!important;
+    left:50%!important;
+    transform:translateX(-50%)!important;
     display:block!important;
     visibility:visible!important;
     opacity:1!important;
-    height:calc(163px + env(safe-area-inset-top,0px))!important;
-    min-height:calc(163px + env(safe-area-inset-top,0px))!important;
-    max-height:calc(163px + env(safe-area-inset-top,0px))!important;
+    width:100vw!important;
+    max-width:none!important;
+    height:calc(82px + env(safe-area-inset-top,0px))!important;
+    min-height:calc(82px + env(safe-area-inset-top,0px))!important;
+    max-height:calc(82px + env(safe-area-inset-top,0px))!important;
+    margin:0!important;
     padding:0!important;
+    border:0!important;
+    border-radius:0!important;
     overflow:hidden!important;
-    z-index:1200!important;
+    box-sizing:border-box!important;
+    z-index:2147482400!important;
+    background:
+      radial-gradient(170px 95px at 18% 0,rgba(95,138,255,.27),transparent 72%),
+      radial-gradient(190px 100px at 88% 0,rgba(47,105,255,.23),transparent 72%),
+      linear-gradient(180deg,#263cf1 0%,#192bd2 46%,#101a9c 78%,#0b0d78 100%)!important;
+    box-shadow:none!important;
   }
+
   html body[data-app-route="scorers"] #app > .topbar::after,
   html body[data-app-route="scorers"] .app-shell > .topbar::after{
-    content:"Máximo goleador"!important;
-    display:block!important;
-    left:20px!important;
-    right:18px!important;
-    top:calc(105px + env(safe-area-inset-top,0px))!important;
-    font:850 clamp(26px,6.6vw,34px)/1.08 Inter,Roboto,Arial,sans-serif!important;
-    white-space:nowrap!important;
-    color:#fff!important;
-    text-overflow:ellipsis!important;
-    overflow:hidden!important;
-    z-index:4!important;
-    pointer-events:none!important;
+    content:none!important;
+    display:none!important;
   }
-  /* La flecha nativa conserva su controlador; esta superficie lo acciona
-     y evita que capas heredadas puedan hacerla desaparecer. */
+
   html body[data-app-route="scorers"] #app > .topbar > #backButton,
   html body[data-app-route="scorers"] .app-shell > .topbar > #backButton{
     display:none!important;
+    visibility:hidden!important;
     pointer-events:none!important;
   }
+
   html body[data-app-route="scorers"] #app > .topbar > .v943-scorers-back,
   html body[data-app-route="scorers"] .app-shell > .topbar > .v943-scorers-back{
     display:grid!important;
     visibility:visible!important;
     opacity:1!important;
     position:absolute!important;
-    z-index:12!important;
-    top:calc(env(safe-area-inset-top,0px) + 17px)!important;
-    left:13px!important;
-    width:46px!important;
-    height:46px!important;
-    min-width:46px!important;
-    min-height:46px!important;
+    z-index:14!important;
+    top:calc(env(safe-area-inset-top,0px) + 18px)!important;
+    left:14px!important;
+    width:42px!important;
+    height:42px!important;
+    min-width:42px!important;
+    min-height:42px!important;
     margin:0!important;
     padding:0!important;
     border:0!important;
@@ -58,71 +62,88 @@
     place-items:center!important;
     color:#fff!important;
     pointer-events:auto!important;
-    cursor:pointer!important;
     box-shadow:none!important;
   }
   html body[data-app-route="scorers"] .topbar > .v943-scorers-back svg{
-    width:32px!important;height:32px!important;
+    width:29px!important;
+    height:29px!important;
     fill:none!important;
     stroke:currentColor!important;
-    stroke-width:1.85!important;
+    stroke-width:1.9!important;
     stroke-linecap:round!important;
     stroke-linejoin:round!important;
   }
-  html body[data-app-route="scorers"] #app > .topbar > .v943-scorers-trophy,
-  html body[data-app-route="scorers"] .app-shell > .topbar > .v943-scorers-trophy{
-    display:grid!important;
+
+  html body[data-app-route="scorers"] #app > .topbar > .v944-scorers-title,
+  html body[data-app-route="scorers"] .app-shell > .topbar > .v944-scorers-title{
+    display:block!important;
     visibility:visible!important;
     opacity:1!important;
     position:absolute!important;
-    z-index:11!important;
-    top:calc(env(safe-area-inset-top,0px) + 10px)!important;
-    left:50%!important;
-    transform:translateX(-50%)!important;
-    width:64px!important;
-    height:67px!important;
-    padding:0!important;
+    z-index:13!important;
+    left:64px!important;
+    right:64px!important;
+    top:calc(env(safe-area-inset-top,0px) + 24px)!important;
     margin:0!important;
-    background:transparent!important;
-    place-items:center!important;
+    padding:0!important;
+    color:#fff!important;
+    font:800 21px/1.05 Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:-.025em!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    text-align:left!important;
     pointer-events:none!important;
-    color:#b1ebff!important;
-    filter:drop-shadow(0 0 8px rgba(55,177,255,.48))!important;
   }
-  html body[data-app-route="scorers"] .topbar > .v943-scorers-trophy svg{
-    width:57px!important;
-    height:61px!important;
-    fill:none!important;
-    stroke:currentColor!important;
-    stroke-width:1.65!important;
-    stroke-linecap:round!important;
-    stroke-linejoin:round!important;
-  }
-  /* Recuperar el perfil original; conserva su foto e interacción de sesión. */
+
+  /* El perfil real queda como icono superior derecho. */
   html body[data-app-route="scorers"] #app > .topbar > .profile-button,
   html body[data-app-route="scorers"] .app-shell > .topbar > .profile-button{
     display:grid!important;
     visibility:visible!important;
     opacity:1!important;
     position:absolute!important;
-    z-index:13!important;
-    top:calc(env(safe-area-inset-top,0px) + 18px)!important;
+    z-index:15!important;
+    top:calc(env(safe-area-inset-top,0px) + 20px)!important;
     right:15px!important;
     left:auto!important;
-    width:43px!important;
-    height:43px!important;
-    min-width:43px!important;
-    min-height:43px!important;
-    max-width:43px!important;
-    max-height:43px!important;
+    width:36px!important;
+    height:36px!important;
+    min-width:36px!important;
+    min-height:36px!important;
+    max-width:36px!important;
+    max-height:36px!important;
+    margin:0!important;
+    padding:0!important;
     transform:none!important;
-    pointer-events:auto!important;
     place-items:center!important;
+    pointer-events:auto!important;
+    border-radius:50%!important;
   }
-  html body[data-app-route="scorers"] #app > .topbar > .profile-button svg,
-  html body[data-app-route="scorers"] .app-shell > .topbar > .profile-button svg{
-    width:26px!important;height:26px!important;
+  html body[data-app-route="scorers"] #app > .topbar > .profile-button :is(svg,img),
+  html body[data-app-route="scorers"] .app-shell > .topbar > .profile-button :is(svg,img){
+    width:28px!important;
+    height:28px!important;
+    max-width:28px!important;
+    max-height:28px!important;
+    object-fit:cover!important;
+    border-radius:50%!important;
   }
+
+  html body[data-app-route="scorers"] .topbar > .v943-scorers-trophy{
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+  }
+
+  /* El contenido empieza justo debajo de la cabecera y puede usar todo el ancho. */
+  html body[data-app-route="scorers"] #app #screen{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:0!important;
+  }
+}
 
   /* Cinco categorías siempre visibles: 3 arriba, 2 abajo. Las posiciones
      explícitas corrigen el botón Primera que ocupaba toda la fila. */
