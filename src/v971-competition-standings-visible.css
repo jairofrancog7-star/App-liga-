@@ -1,0 +1,148 @@
+/* V971 · Competición — clasificación móvil visible sin columnas perdidas.
+   Corrige reglas acumuladas v578/v589/v612 que imponían ancho de 390-560px
+   y desplazaban la columna Equipo fuera de la vista en teléfonos Android.
+   Afecta ÚNICAMENTE el modo Compacta; Completa y Criterios conservan scroll. */
+@media (max-width:760px){
+  html body[data-app-route="competition"].v40-standings-master #screen .v40-standings,
+  html body[data-app-route="competition"].v40-standings-master #screen .v40-standings-host,
+  html body[data-app-route="competition"].v40-standings-master #screen .v40-content,
+  html body[data-app-route="competition"].v40-standings-master #screen .v578-table-section{
+    box-sizing:border-box!important;
+    min-width:0!important;
+    max-width:100%!important;
+    width:100%!important;
+    margin-left:0!important;
+    margin-right:0!important;
+  }
+  html body[data-app-route="competition"].v40-standings-master #screen [data-v580-scroll="compact"]{
+    box-sizing:border-box!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    overflow-x:hidden!important;
+    overflow-y:visible!important;
+    margin:0!important;
+    padding:0!important;
+    touch-action:pan-y!important;
+    scroll-snap-type:none!important;
+    background:#060750!important;
+  }
+  html body[data-app-route="competition"].v40-standings-master #screen [data-v580-scroll="compact"] .v579-compact-table{
+    display:table!important;
+    position:relative!important;
+    border-collapse:collapse!important;
+    table-layout:fixed!important;
+    box-sizing:border-box!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    margin:0!important;
+    transform:none!important;
+  }
+  /* 7 columnas, suma 100%: posición, escudo, nombre, PJ, DG, PTS, forma */
+  html body[data-app-route="competition"].v40-standings-master #screen .v579-compact-table col:nth-child(1){width:6%!important}
+  html body[data-app-route="competition"].v40-standings-master #screen .v579-compact-table col:nth-child(2){width:9%!important}
+  html body[data-app-route="competition"].v40-standings-master #screen .v579-compact-table col:nth-child(3){width:36%!important}
+  html body[data-app-route="competition"].v40-standings-master #screen .v579-compact-table col:nth-child(4){width:9%!important}
+  html body[data-app-route="competition"].v40-standings-master #screen .v579-compact-table col:nth-child(5){width:10%!important}
+  html body[data-app-route="competition"].v40-standings-master #screen .v579-compact-table col:nth-child(6){width:11%!important}
+  html body[data-app-route="competition"].v40-standings-master #screen .v579-compact-table col:nth-child(7){width:19%!important}
+
+  html body[data-app-route="competition"].v40-standings-master #screen [data-v580-scroll="compact"] .v579-compact-table tr:not(.v580-section-row) > :is(th,td){
+    display:table-cell!important;
+    position:static!important;
+    left:auto!important;
+    right:auto!important;
+    float:none!important;
+    box-sizing:border-box!important;
+    width:auto!important;
+    min-width:0!important;
+    max-width:none!important;
+    padding:6px 2px!important;
+    height:50px!important;
+    visibility:visible!important;
+    opacity:1!important;
+    color:#ecf4ff!important;
+    background:transparent!important;
+    vertical-align:middle!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    transform:none!important;
+  }
+  html body[data-app-route="competition"].v40-standings-master #screen [data-v580-scroll="compact"] .v579-compact-table tr:not(.v580-section-row) > .teamname{
+    text-align:left!important;
+    padding-left:3px!important;
+    padding-right:3px!important;
+    box-shadow:none!important;
+  }
+  html body[data-app-route="competition"].v40-standings-master #screen [data-v580-scroll="compact"] .v579-compact-table .teamname strong{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    color:#fff!important;
+    font:750 clamp(10px,2.95vw,12px)/1.2 Inter,Roboto,Arial,sans-serif!important;
+    text-align:left!important;
+    white-space:normal!important;
+    overflow-wrap:normal!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+  html body[data-app-route="competition"].v40-standings-master #screen [data-v580-scroll="compact"] .v578-logo{
+    display:block!important;
+    width:27px!important;
+    height:27px!important;
+    min-width:0!important;
+    min-height:0!important;
+    max-width:100%!important;
+    max-height:29px!important;
+    margin:auto!important;
+    object-fit:contain!important;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+  html body[data-app-route="competition"].v40-standings-master #screen [data-v580-scroll="compact"] .v579-compact-table .formcell .v40-form{
+    display:flex!important;
+    gap:2px!important;
+    align-items:center!important;
+    justify-content:center!important;
+    width:100%!important;
+    min-width:0!important;
+    overflow:hidden!important;
+  }
+  html body[data-app-route="competition"].v40-standings-master #screen [data-v580-scroll="compact"] .v579-compact-table .formcell .v40-form :is(i,b){
+    flex:0 0 13px!important;
+    width:13px!important;
+    min-width:13px!important;
+    max-width:13px!important;
+    height:13px!important;
+    min-height:13px!important;
+    max-height:13px!important;
+    line-height:13px!important;
+    font-size:9px!important;
+  }
+  html body[data-app-route="competition"].v40-standings-master #screen [data-v580-scroll="compact"] .v580-section-row td{
+    position:static!important;
+    height:28px!important;
+    max-width:none!important;
+    overflow:hidden!important;
+    padding:3px 8px!important;
+    text-align:left!important;
+  }
+  html body[data-app-route="competition"].v40-standings-master #screen .v952-standings-category{
+    display:block!important;
+    width:100%!important;
+    padding:8px 11px!important;
+    color:#64ddf5!important;
+    font-size:12px!important;
+    white-space:normal!important;
+    visibility:visible!important;
+  }
+}
+@media(max-width:360px){
+  html body[data-app-route="competition"].v40-standings-master #screen .v579-compact-table col:nth-child(3){width:34%!important}
+  html body[data-app-route="competition"].v40-standings-master #screen .v579-compact-table col:nth-child(7){width:21%!important}
+  html body[data-app-route="competition"].v40-standings-master #screen [data-v580-scroll="compact"] .v579-compact-table .teamname strong{font-size:10px!important}
+  html body[data-app-route="competition"].v40-standings-master #screen [data-v580-scroll="compact"] .v579-compact-table .formcell .v40-form :is(i,b){flex-basis:11px!important;width:11px!important;min-width:11px!important;max-width:11px!important}
+}
