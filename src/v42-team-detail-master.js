@@ -348,7 +348,13 @@ function bind(){
    setTeamTab(TEAM_TABS[index]);
  },true);
  document.querySelectorAll('[data-v42-tab]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();setTeamTab(b.dataset.v42Tab)},{once:true}));
- document.querySelectorAll('[data-v42-select-name]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const n=b.dataset.v42SelectName||'';if(n&&norm(n)!==norm(selectedName()))openOfficialTeamProfile(n,false)},{once:true}));
+ document.querySelectorAll('[data-v42-select-name]').forEach(b=>b.addEventListener('click',e=>{
+   e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+   const n=b.dataset.v42SelectName||'';
+   // V963: touching a team in a selector opens its normal team page.
+   // Only the dedicated "Comparar" button can open the comparison dialog.
+   if(n&&norm(n)!==norm(selectedName()))openOfficialTeamProfile(n,false);
+ },{once:true}));
  document.querySelectorAll('[data-v42-compare-name]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();compareTarget=b.dataset.v42CompareName;render()},{once:true}));
  document.querySelector('[data-v42-compare-again]')?.addEventListener('click',()=>{compareTarget='';render()},{once:true});
  document.querySelectorAll('[data-v42-player]').forEach(b=>b.addEventListener('click',e=>{
