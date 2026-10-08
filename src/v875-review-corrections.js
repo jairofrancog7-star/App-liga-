@@ -105,7 +105,9 @@ function meeting(root){
   const doc=frame.contentDocument||frame.contentWindow?.document;
   if(!doc){frame.remove();return}
   doc.open();doc.write(html);doc.close();
+  let started=false;
   const run=()=>{
+   if(started)return;started=true;
    try{frame.contentWindow?.focus();frame.contentWindow?.print();log('Imprimir minuta de junta')}
    catch(_){toast('No se pudo abrir la impresión. Vuelve a intentar.');frame.remove()}
   };
