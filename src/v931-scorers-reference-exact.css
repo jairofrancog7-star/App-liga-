@@ -1,0 +1,500 @@
+/* V931 — Máximo goleador: referencia visual de capturas 3/4.
+   Conserva filtros de categoría/estadística y datos oficiales; sólo cambia presentación. */
+@media(max-width:1023px){
+  body[data-app-route="scorers"]{
+    --v931-bg:#09086f;
+    --v931-card:#111079;
+    --v931-line:rgba(255,255,255,.13);
+    background:var(--v931-bg)!important;
+  }
+
+  /* Cabecera compacta como la referencia: flecha + título, sin icono extra a la derecha. */
+  body[data-app-route="scorers"] .app-shell>.topbar,
+  body[data-app-route="scorers"] #app>.topbar{
+    position:sticky!important;
+    top:0!important;
+    z-index:2147482400!important;
+    height:calc(112px + env(safe-area-inset-top))!important;
+    min-height:calc(112px + env(safe-area-inset-top))!important;
+    max-height:calc(112px + env(safe-area-inset-top))!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    background:
+      radial-gradient(125px 92px at 16% 0,rgba(91,130,255,.30),transparent 72%),
+      radial-gradient(180px 105px at 90% 0,rgba(46,104,255,.26),transparent 72%),
+      linear-gradient(180deg,#2339ed 0%,#1727cf 43%,#0f18a2 76%,#0b0d79 100%)!important;
+  }
+  body[data-app-route="scorers"] .topbar::before{
+    content:""!important;
+    position:absolute!important;
+    inset:0!important;
+    display:block!important;
+    opacity:.22!important;
+    pointer-events:none!important;
+    background:
+      radial-gradient(circle at 34% -32%,transparent 0 72px,rgba(130,159,255,.36) 73px 75px,transparent 76px),
+      linear-gradient(145deg,transparent 22%,rgba(112,153,255,.24) 22.5% 23%,transparent 23.5% 68%,rgba(112,153,255,.18) 68.5% 69%,transparent 69.5%)!important;
+  }
+  body[data-app-route="scorers"] .topbar::after{
+    content:"Máximo goleador"!important;
+    position:absolute!important;
+    left:82px!important;
+    right:18px!important;
+    top:calc(env(safe-area-inset-top) + 43px)!important;
+    bottom:auto!important;
+    display:block!important;
+    color:#fff!important;
+    font:800 21px/1.05 Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:-.025em!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    z-index:5!important;
+    pointer-events:none!important;
+  }
+  body[data-app-route="scorers"] .topbar .back-button,
+  body[data-app-route="scorers"].v10-detail-route .topbar .back-button{
+    display:grid!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:absolute!important;
+    left:18px!important;
+    top:calc(env(safe-area-inset-top) + 31px)!important;
+    width:44px!important;
+    height:44px!important;
+    place-items:center!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    color:#fff!important;
+    z-index:6!important;
+  }
+  body[data-app-route="scorers"] .topbar .back-button svg{
+    width:31px!important;height:31px!important;
+    fill:none!important;stroke:#fff!important;stroke-width:1.8!important;
+    stroke-linecap:round!important;stroke-linejoin:round!important;
+  }
+  body[data-app-route="scorers"] .topbar :is(
+    .wordmark,.profile-button,.ljr-profile-control,.v403-reference-trophy,.v918-transfer-title,
+    .v918-transfer-bell,[data-route="profile"],[data-profile-control],.topbar-actions
+  ){
+    display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+  }
+  body[data-app-route="scorers"] .topbar>img{
+    display:none!important;
+  }
+
+  body[data-app-route="scorers"] #screen{
+    width:100%!important;
+    max-width:520px!important;
+    margin:0 auto!important;
+    padding:0!important;
+    background:var(--v931-bg)!important;
+  }
+  body[data-app-route="scorers"] .v28-scorers-page{
+    width:100%!important;
+    max-width:520px!important;
+    margin:0 auto!important;
+    padding:18px 18px calc(92px + env(safe-area-inset-bottom))!important;
+    background:var(--v931-bg)!important;
+    box-sizing:border-box!important;
+  }
+  body[data-app-route="scorers"] .v391-reference{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+  }
+
+  /* Controles superiores: se conservan, pero con iconos y acabado moderno. */
+  body[data-app-route="scorers"] .v391-category-wrap{
+    display:grid!important;
+    gap:10px!important;
+    margin:0 0 18px!important;
+    padding:0!important;
+  }
+  body[data-app-route="scorers"] .v391-category-label{
+    margin:0 2px!important;
+    color:#e2e6ff!important;
+    font:850 11px/1 Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:.12em!important;
+  }
+  body[data-app-route="scorers"] .v391-category-strip,
+  body[data-app-route="scorers"] .v391-stat-strip{
+    display:flex!important;
+    align-items:center!important;
+    gap:8px!important;
+    overflow-x:auto!important;
+    padding:1px 1px 3px!important;
+    scrollbar-width:none!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  body[data-app-route="scorers"] .v391-category-strip::-webkit-scrollbar,
+  body[data-app-route="scorers"] .v391-stat-strip::-webkit-scrollbar{display:none!important}
+
+  body[data-app-route="scorers"] .v391-category-strip button,
+  body[data-app-route="scorers"] .v391-stat-strip button{
+    flex:0 0 auto!important;
+    min-height:44px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:8px!important;
+    padding:0 14px!important;
+    border:1px solid rgba(92,111,211,.58)!important;
+    border-radius:14px!important;
+    background:linear-gradient(180deg,#17167e,#111172)!important;
+    color:#bfc6e8!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;
+    font:750 12px/1 Inter,Roboto,Arial,sans-serif!important;
+    white-space:nowrap!important;
+    transition:transform .14s ease,border-color .14s ease,background .14s ease!important;
+  }
+  body[data-app-route="scorers"] .v391-stat-strip button{
+    min-height:42px!important;
+    padding:0 13px!important;
+  }
+  body[data-app-route="scorers"] .v391-category-strip button:active,
+  body[data-app-route="scorers"] .v391-stat-strip button:active{transform:scale(.975)!important}
+  body[data-app-route="scorers"] .v391-category-strip button.active,
+  body[data-app-route="scorers"] .v391-stat-strip button.active{
+    color:#fff!important;
+    border-color:#22e7f2!important;
+    background:linear-gradient(180deg,#2476df 0%,#2254c6 100%)!important;
+    box-shadow:0 0 0 1px rgba(34,231,242,.26),inset 0 1px 0 rgba(255,255,255,.14)!important;
+  }
+  body[data-app-route="scorers"] .v931-filter-icon{
+    width:22px!important;height:22px!important;flex:0 0 22px!important;
+    display:grid!important;place-items:center!important;
+    border-radius:7px!important;
+    background:rgba(255,255,255,.055)!important;
+    color:#9eace0!important;
+  }
+  body[data-app-route="scorers"] button.active .v931-filter-icon{
+    background:rgba(255,255,255,.12)!important;color:#70f5fa!important;
+  }
+  body[data-app-route="scorers"] .v931-filter-icon svg{
+    width:15px!important;height:15px!important;
+    fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;
+    stroke-linecap:round!important;stroke-linejoin:round!important;
+  }
+  body[data-app-route="scorers"] .v391-category-strip button>b,
+  body[data-app-route="scorers"] .v391-stat-strip button>b{
+    font:inherit!important;color:inherit!important;
+  }
+
+  /* En la referencia no aparece la línea informativa entre controles y tarjetas. */
+  body[data-app-route="scorers"] .v391-category-title,
+  body[data-app-route="scorers"] .v194-source{
+    display:none!important;
+  }
+
+  /* Tarjetas #1 / #2 como imagen 4: foto 16:9, play circular y franja inferior amplia. */
+  body[data-app-route="scorers"] .v391-feature{
+    width:100%!important;
+    margin:0 0 26px!important;
+    overflow:hidden!important;
+    border:0!important;
+    border-radius:19px!important;
+    background:var(--v931-card)!important;
+    box-shadow:none!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-photo{
+    position:relative!important;
+    width:100%!important;
+    aspect-ratio:16/9!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:hidden!important;
+    border-radius:19px 19px 0 0!important;
+    background:#0b0a69!important;
+    filter:none!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-photo>.v576-scorer-hero-photo,
+  body[data-app-route="scorers"] .v391-feature-photo>.v576-hero-player-photo{
+    position:absolute!important;
+    inset:0!important;
+    width:100%!important;height:100%!important;
+    display:block!important;
+    object-fit:cover!important;
+    object-position:center 24%!important;
+    border:0!important;border-radius:0!important;
+    filter:none!important;
+    transform:none!important;
+    z-index:0!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-photo::after{
+    content:""!important;
+    position:absolute!important;
+    inset:0!important;
+    z-index:1!important;
+    pointer-events:none!important;
+    background:linear-gradient(180deg,rgba(3,5,46,.03) 0%,rgba(3,5,46,.03) 55%,rgba(3,5,46,.18) 100%)!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-kicker{
+    position:absolute!important;
+    left:18px!important;top:18px!important;
+    z-index:3!important;
+    color:rgba(255,255,255,.83)!important;
+    font:760 18px/1.05 Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:-.02em!important;
+    text-shadow:0 2px 6px rgba(0,0,0,.36)!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-media{
+    position:absolute!important;
+    right:18px!important;top:17px!important;
+    z-index:4!important;
+    display:flex!important;
+    align-items:center!important;
+    gap:10px!important;
+    color:rgba(255,255,255,.68)!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-media small{
+    font:500 12px/1 Inter,Roboto,Arial,sans-serif!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-media i{
+    width:48px!important;height:48px!important;min-width:48px!important;
+    display:grid!important;place-items:center!important;
+    border:2px solid rgba(255,255,255,.96)!important;
+    border-radius:50%!important;
+    background:rgba(5,8,52,.22)!important;
+    box-shadow:0 2px 10px rgba(0,0,25,.20)!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-media svg{
+    width:23px!important;height:23px!important;
+    margin-left:3px!important;
+    fill:#fff!important;stroke:none!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-info{
+    min-height:116px!important;
+    height:auto!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) 96px!important;
+    align-items:stretch!important;
+    background:var(--v931-card)!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-person{
+    min-width:0!important;
+    display:grid!important;
+    grid-template-columns:20px minmax(0,1fr)!important;
+    column-gap:9px!important;
+    align-items:start!important;
+    padding:18px 15px 17px 18px!important;
+    background:transparent!important;
+    color:#fff!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-logo{
+    width:18px!important;height:18px!important;min-width:18px!important;max-width:18px!important;
+    display:grid!important;place-items:center!important;
+    margin:1px 0 0!important;padding:0!important;
+    overflow:hidden!important;
+    border:0!important;border-radius:0!important;
+    background:transparent!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-logo img{
+    width:18px!important;height:18px!important;max-width:18px!important;object-fit:contain!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-person>span:last-child{
+    min-width:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    gap:8px!important;
+    overflow:visible!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-person b{
+    order:1!important;
+    margin:0!important;
+    color:#fff!important;
+    font:500 15px/1.1 Inter,Roboto,Arial,sans-serif!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-person strong{
+    order:2!important;
+    margin:0!important;
+    color:#fff!important;
+    font:500 25px/1.08 Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:-.025em!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    display:-webkit-box!important;
+    -webkit-box-orient:vertical!important;
+    -webkit-line-clamp:3!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-goals{
+    min-width:96px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:center!important;
+    border-left:1px solid rgba(255,255,255,.17)!important;
+    background:transparent!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-goals b{
+    margin:0!important;
+    color:#16e6f2!important;
+    font:400 36px/.92 Inter,Roboto,Arial,sans-serif!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-goals small{
+    margin-top:8px!important;
+    color:rgba(255,255,255,.72)!important;
+    font:400 15px/1 Inter,Roboto,Arial,sans-serif!important;
+  }
+
+  /* Ranking como imagen 3: sin cabecera intermedia, filas amplias y limpias. */
+  body[data-app-route="scorers"] .v462-lower-ranking{
+    width:100%!important;
+    margin:2px 0 18px!important;
+    padding:0!important;
+    background:transparent!important;
+  }
+  body[data-app-route="scorers"] .v462-ranking-title,
+  body[data-app-route="scorers"] .v462-rank-head{
+    display:none!important;
+  }
+  body[data-app-route="scorers"] .v462-rank-card,
+  body[data-app-route="scorers"] .v462-rank-list{
+    overflow:visible!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+  }
+  body[data-app-route="scorers"] .v462-rank-row{
+    width:100%!important;
+    min-height:72px!important;
+    height:72px!important;
+    display:grid!important;
+    grid-template-columns:38px 46px minmax(0,1fr) 38px!important;
+    align-items:center!important;
+    column-gap:11px!important;
+    padding:0 0!important;
+    border:0!important;
+    border-bottom:1px solid var(--v931-line)!important;
+    border-radius:0!important;
+    background:transparent!important;
+    color:#fff!important;
+    box-shadow:none!important;
+    text-align:left!important;
+  }
+  body[data-app-route="scorers"] .v462-rank-row:last-child{border-bottom:0!important}
+  body[data-app-route="scorers"] .v462-rank-pos{
+    color:#fff!important;
+    font:650 15px/1 Inter,Roboto,Arial,sans-serif!important;
+  }
+  body[data-app-route="scorers"] .v462-rank-row>.v576-player-avatar{
+    position:relative!important;
+    width:44px!important;height:44px!important;
+    min-width:44px!important;min-height:44px!important;
+    max-width:44px!important;max-height:44px!important;
+    display:grid!important;place-items:center!important;
+    overflow:hidden!important;
+    margin:0!important;padding:0!important;
+    border:0!important;border-radius:50%!important;
+    background:#183bb9!important;
+    color:#fff!important;
+    font:800 15px/1 Inter,Roboto,Arial,sans-serif!important;
+  }
+  body[data-app-route="scorers"] .v462-rank-row>.v576-player-avatar img{
+    width:100%!important;height:100%!important;
+    object-fit:cover!important;object-position:center 18%!important;
+    border:0!important;border-radius:50%!important;
+  }
+  body[data-app-route="scorers"] .v462-rank-copy{
+    min-width:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+  }
+  body[data-app-route="scorers"] .v462-rank-copy>b{
+    display:block!important;
+    margin:0 0 5px!important;
+    color:#fff!important;
+    font:700 16px/1.12 Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:-.01em!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+  body[data-app-route="scorers"] .v462-rank-copy>small{
+    display:flex!important;
+    align-items:center!important;
+    gap:6px!important;
+    min-width:0!important;
+    margin:0!important;
+    color:#aaaecb!important;
+    font:400 13px/1 Inter,Roboto,Arial,sans-serif!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+  body[data-app-route="scorers"] .v462-rank-copy>small .v462-rank-logo{
+    flex:0 0 16px!important;
+    width:16px!important;height:16px!important;
+    min-width:16px!important;min-height:16px!important;
+    max-width:16px!important;max-height:16px!important;
+    display:inline-grid!important;place-items:center!important;
+    margin:0!important;padding:0!important;
+    overflow:hidden!important;
+    border:0!important;border-radius:0!important;
+    background:transparent!important;
+  }
+  body[data-app-route="scorers"] .v462-rank-copy>small .v462-rank-logo img{
+    width:16px!important;height:16px!important;object-fit:contain!important;
+  }
+  body[data-app-route="scorers"] .v462-rank-row>strong{
+    justify-self:end!important;
+    margin:0!important;
+    color:#fff!important;
+    font:600 24px/1 Inter,Roboto,Arial,sans-serif!important;
+    text-align:right!important;
+  }
+
+  body[data-app-route="scorers"] .bottom-nav{
+    background:#0c0b70!important;
+    border-top:1px solid rgba(255,255,255,.09)!important;
+  }
+}
+
+@media(max-width:390px){
+  body[data-app-route="scorers"] .v28-scorers-page{
+    padding-left:18px!important;padding-right:18px!important;
+  }
+  body[data-app-route="scorers"] .v391-category-strip button,
+  body[data-app-route="scorers"] .v391-stat-strip button{
+    min-height:42px!important;padding:0 12px!important;font-size:11px!important;
+  }
+  body[data-app-route="scorers"] .v931-filter-icon{
+    width:20px!important;height:20px!important;flex-basis:20px!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-kicker{font-size:16px!important}
+  body[data-app-route="scorers"] .v391-feature-media i{width:46px!important;height:46px!important}
+  body[data-app-route="scorers"] .v391-feature-info{
+    grid-template-columns:minmax(0,1fr) 88px!important;min-height:108px!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-person{
+    padding:16px 12px 15px 16px!important;
+  }
+  body[data-app-route="scorers"] .v391-feature-person strong{font-size:23px!important}
+  body[data-app-route="scorers"] .v391-feature-goals{min-width:88px!important}
+  body[data-app-route="scorers"] .v391-feature-goals b{font-size:34px!important}
+  body[data-app-route="scorers"] .v462-rank-row{
+    grid-template-columns:35px 44px minmax(0,1fr) 34px!important;
+    column-gap:9px!important;
+    min-height:70px!important;height:70px!important;
+  }
+  body[data-app-route="scorers"] .v462-rank-row>.v576-player-avatar{
+    width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;
+    max-width:42px!important;max-height:42px!important;
+  }
+  body[data-app-route="scorers"] .v462-rank-copy>b{font-size:15px!important}
+  body[data-app-route="scorers"] .v462-rank-copy>small{font-size:12px!important}
+  body[data-app-route="scorers"] .v462-rank-row>strong{font-size:23px!important}
+}
