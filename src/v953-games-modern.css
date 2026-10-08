@@ -635,3 +635,186 @@ body[data-app-route="predictorSix"] .v589-card-head button[data-v589-info]{
   body[data-app-route="predictorSix"] .v958-game-actions button{font-size:8px!important}
   body[data-app-route="predictorSix"] .v871-game-category{max-width:38%!important}
 }
+
+
+/* V959 — Quiniela compacta sin hueco inferior, jornadas completas e iconografía consistente. */
+html body[data-app-route="quiniela"] .v618-quiniela.v619-quiniela-modern{
+  margin:0 auto!important;
+  padding:10px 10px calc(76px + env(safe-area-inset-bottom))!important;
+  min-height:auto!important;
+}
+body[data-app-route="quiniela"] .v618-q-cats{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:7px!important;
+  margin:10px 0 12px!important;
+}
+body[data-app-route="quiniela"] .v619-quiniela-modern .v618-q-cat{
+  min-height:54px!important;
+  grid-template-columns:38px minmax(0,1fr)!important;
+  gap:9px!important;
+  padding:7px 9px!important;
+}
+body[data-app-route="quiniela"] .v958-q-cat-logo{
+  width:38px!important;
+  height:38px!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:visible!important;
+  border-radius:12px!important;
+  background:rgba(255,255,255,.035)!important;
+}
+body[data-app-route="quiniela"] .v958-q-cat-logo img{
+  width:34px!important;
+  height:34px!important;
+  max-width:34px!important;
+  max-height:34px!important;
+  display:block!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  filter:drop-shadow(0 3px 5px rgba(0,0,0,.28))!important;
+}
+body[data-app-route="quiniela"] .v618-q-cat:last-child:nth-child(odd){
+  grid-column:1/-1!important;
+  width:100%!important;
+  justify-self:stretch!important;
+}
+body[data-app-route="quiniela"] .v618-q-round{
+  margin-top:0!important;
+  min-height:52px!important;
+}
+body[data-app-route="quiniela"] .v618-q-round label{
+  display:flex!important;
+  align-items:center!important;
+  gap:7px!important;
+}
+body[data-app-route="quiniela"] .v618-q-round select{
+  min-width:122px!important;
+  max-width:150px!important;
+  padding:0 30px 0 10px!important;
+}
+body[data-app-route="quiniela"] .v618-q-section-title{
+  margin:12px 2px 8px!important;
+  min-height:28px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:7px!important;
+}
+body[data-app-route="quiniela"] .v618-q-section-title::before{display:none!important}
+body[data-app-route="quiniela"] .v958-q-title-icon{
+  width:21px!important;
+  height:21px!important;
+  display:grid!important;
+  place-items:center!important;
+  color:#45e5ef!important;
+}
+body[data-app-route="quiniela"] .v958-q-title-icon svg,
+body[data-app-route="quiniela"] .v958-q-venue-icon svg,
+body[data-app-route="quiniela"] .v958-q-action-icon svg{
+  width:100%!important;
+  height:100%!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:1.8!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+body[data-app-route="quiniela"] .v618-q-matches{
+  gap:9px!important;
+}
+body[data-app-route="quiniela"] .v619-quiniela-modern .v618-q-card{
+  margin:0!important;
+}
+body[data-app-route="quiniela"] .v618-q-card-main{
+  grid-template-columns:minmax(0,1fr) 110px minmax(0,1fr)!important;
+  gap:6px!important;
+  padding:11px 8px 9px!important;
+}
+body[data-app-route="quiniela"] .v618-q-team{
+  min-width:0!important;
+}
+body[data-app-route="quiniela"] .v618-q-team img,
+body[data-app-route="quiniela"] .v618-q-fallback{
+  width:58px!important;
+  height:58px!important;
+  max-width:58px!important;
+  max-height:58px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  padding:2px!important;
+  box-sizing:border-box!important;
+  background:transparent!important;
+}
+body[data-app-route="quiniela"] .v618-q-team b{
+  max-width:100%!important;
+  line-height:1.14!important;
+  overflow-wrap:anywhere!important;
+}
+body[data-app-route="quiniela"] .v618-q-venue{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:5px!important;
+  min-height:26px!important;
+  padding:3px 10px 9px!important;
+}
+body[data-app-route="quiniela"] .v618-q-venue::before{display:none!important}
+body[data-app-route="quiniela"] .v958-q-venue-icon{
+  width:14px!important;
+  height:14px!important;
+  display:grid!important;
+  place-items:center!important;
+  color:#42e8f2!important;
+  flex:0 0 14px!important;
+}
+body[data-app-route="quiniela"] .v618-q-actions{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:8px!important;
+  margin:10px 0 0!important;
+  padding:0!important;
+}
+body[data-app-route="quiniela"] .v618-q-actions>button{
+  min-width:0!important;
+  min-height:44px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+  padding:8px 9px!important;
+  font-size:9px!important;
+  line-height:1.15!important;
+}
+body[data-app-route="quiniela"] .v958-q-action-icon{
+  width:18px!important;
+  height:18px!important;
+  flex:0 0 18px!important;
+  display:grid!important;
+  place-items:center!important;
+}
+body[data-app-route="quiniela"] [data-v561-status]{
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+}
+@media(max-width:390px){
+  html body[data-app-route="quiniela"] .v618-quiniela.v619-quiniela-modern{
+    width:calc(100% - 8px)!important;
+    padding-left:5px!important;
+    padding-right:5px!important;
+    padding-bottom:calc(72px + env(safe-area-inset-bottom))!important;
+  }
+  body[data-app-route="quiniela"] .v619-quiniela-modern .v618-q-cat{
+    grid-template-columns:34px minmax(0,1fr)!important;
+    min-height:50px!important;
+  }
+  body[data-app-route="quiniela"] .v958-q-cat-logo{width:34px!important;height:34px!important}
+  body[data-app-route="quiniela"] .v958-q-cat-logo img{width:31px!important;height:31px!important;max-width:31px!important;max-height:31px!important}
+  body[data-app-route="quiniela"] .v618-q-card-main{
+    grid-template-columns:minmax(0,1fr) 102px minmax(0,1fr)!important;
+  }
+  body[data-app-route="quiniela"] .v618-q-team img,
+  body[data-app-route="quiniela"] .v618-q-fallback{
+    width:52px!important;height:52px!important;max-width:52px!important;max-height:52px!important;
+  }
+  body[data-app-route="quiniela"] .v618-q-actions>button{font-size:8px!important}
+}
