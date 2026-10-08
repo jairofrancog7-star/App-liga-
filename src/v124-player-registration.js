@@ -2178,7 +2178,7 @@ function v202PreviewHtml(){
  (files.length>1?'<button type="button" data-v202-prev aria-label="Archivo anterior">'+v202Icon('left')+'</button><button type="button" data-v202-next aria-label="Archivo siguiente">'+v202Icon('right')+'</button>':'')+
  '<button type="button" data-v202-zoom aria-label="Ampliar vista previa" aria-pressed="false">'+v202Icon('expand')+'</button><button type="button" data-v202-clear aria-label="Quitar documentos">'+v202Icon('close')+'</button></span></div>'+
  '<div class="v202-preview-stage">'+media+'</div>'+
- '<div class="v202-preview-caption">'+v202Icon('file')+'<span>'+esc(name)+'</span><small>'+Math.max(1,Math.round(f.size/1024))+' KB</small></div>'+
+ '<div class="v202-preview-caption">'+v202Icon('file')+'<span>'+esc(name)+'</span><small>'+Math.max(1,Math.round(f.size/1024))+' KB</small>'+(pdf&&url?'<a class="v202-open-pdf" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">Abrir PDF</a>':'')+'</div>'+
  (files.length>1?'<div class="v202-preview-pages">'+files.map((f,n)=>'<button type="button" data-v202-page="'+n+'" aria-label="Ver documento '+(n+1)+'" aria-pressed="'+(n===i?'true':'false')+'" class="'+(n===i?'active':'')+'">'+(n+1)+'</button>').join('')+'</div>':'')+
  '</div>';
 }
@@ -2852,7 +2852,7 @@ window.addEventListener('load',schedule);schedule();setTimeout(schedule,1200);
 window.LJR_PLAYER_REGISTRY={sync:syncOfficialSeason,records:seasonRecords,officialPlayers,
   load:loadRecord,save:saveForm,
   update:(id,changes)=>{const season=selectedSeason(),list=seasonRecords(season).slice(),index=list.findIndex(r=>r.id===id);if(index<0)throw new Error('Jugador no encontrado');list[index]={...list[index],...changes,updatedAt:new Date().toISOString()};putSeason(season,list);renderManager()},
-  setRosterFiles:files=>{rosterImportFiles=files;rosterImportFile=files[0]||null;rosterImport.fileName=files.map(f=>f.name).join(' · ');renderManager()}
+  setRosterFiles:files=>{v202ChooseFiles(files)}
 };
 installCapture();
 })();
