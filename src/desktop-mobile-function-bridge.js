@@ -21,9 +21,11 @@ const ALIASES={
   'calendar':'pc-calendar',
   'safe-notifications':'pc-notifications',
   'notifications':'pc-notifications',
-  'scorers':'pc-scorers'
+  'scorers':'pc-scorers',
+  'standings':'pc-standings',
+  'competition':'pc-fixtures'
 };
-const OWN=new Set(['pc-calendar','pc-notifications','pc-scorers']);
+const OWN=new Set(['pc-calendar','pc-notifications','pc-scorers','pc-standings','pc-fixtures']);
 let db=null,loading=null,monthShift=0,calendarCat='3',selectedDate='';
 
 function injectStyle(){
@@ -191,6 +193,32 @@ function renderScorers(catId='3'){
   wrap.querySelector('[data-ljpc-data]')?.addEventListener('click',()=>go('safe-data'));
 }
 
+function standingsRows(catId){
+ const c=db?.categories?.[String(catId)]||{};
+ const groups=[c.standings,c.table,c.classification,c.positions].filter(Array.isArray);
+ for(const g of groups){const rows=(Array.isArray(g[0]?.rows)?g[0].rows:g).filter(Array.isArray);if(rows.length)return rows}
+ return [];
+}
+function renderStandings(catId='3'){
+ const wrap=ensureOwnHost('Clasificación','Tabla de posiciones oficiales por categoría.');
+ if(!wrap)return;
+ const rows=standingsRows(catId);
+ const thead='<tr><th>#</th><th>Equipo</th><th>PJ</th><th>PTS</th><th>DG</th></tr>';
+ const cells=rows.map((r,i)=>'<tr><td class="ljpc-rank">'+esc(r[0]||i+1)+'</td><td><span class="ljpc-team">'+crest(r[1])+'<span>'+esc(pretty(r[1]))+'</span></span></td><td>'+esc(r[2]??'—')+'</td><td><b>'+esc(r[3]??'—')+'</b></td><td>'+esc(r[4]??'—')+'</td></tr>').join('');
+ wrap.innerHTML='<div class="ljpc-function-root" data-ljpc-function-route="pc-standings"><div class="ljpc-toolbar"><div class="ljpc-cat-tabs">'+CAT_ORDER.map(id=>'<button class="ljpc-chip '+(id===catId?'active':'')+'" data-ljpc-standing-cat="'+id+'">'+esc(categoryName(id))+'</button>').join('')+'</div><button class="ljpc-btn" data-ljpc-fixtures>Partidos oficiales</button></div><section class="ljpc-panel" style="padding:0;overflow:auto">'+(rows.length?'<table class="ljpc-table"><thead>'+thead+'</thead><tbody>'+cells+'</tbody></table>':'<p class="ljpc-muted" style="padding:18px">Clasificación oficial no disponible para esta categoría.</p>')+'</section></div>';
+ wrap.querySelectorAll('[data-ljpc-standing-cat]').forEach(b=>b.addEventListener('click',()=>renderStandings(b.dataset.ljpcStandingCat)));
+ wrap.querySelector('[data-ljpc-fixtures]')?.addEventListener('click',()=>go('pc-fixtures'));
+}
+function renderFixtures(catId='3'){
+ const wrap=ensureOwnHost('Partidos y resultados','Rol y marcadores oficiales de la Liga Juventino Rosas.');
+ if(!wrap)return;
+ const matches=fixtures(catId);
+ wrap.innerHTML='<div class="ljpc-function-root" data-ljpc-function-route="pc-fixtures"><div class="ljpc-toolbar"><div class="ljpc-cat-tabs">'+CAT_ORDER.map(id=>'<button class="ljpc-chip '+(id===catId?'active':'')+'" data-ljpc-fixture-cat="'+id+'">'+esc(categoryName(id))+'</button>').join('')+'</div><div class="ljpc-toolbar-group"><button class="ljpc-btn" data-ljpc-to-calendar>Calendario</button><button class="ljpc-btn primary" data-ljpc-to-standings>Clasificación</button></div></div><section class="ljpc-panel">'+(matches.length?matches.slice(-100).reverse().map(x=>'<div class="ljpc-match"><div class="ljpc-team">'+crest(x.home)+'<span>'+esc(pretty(x.home))+'</span></div><div class="ljpc-score"><b>'+esc(x.played?x.homeScore+' – '+x.awayScore:x.rawDate.match(/\\s(\\d{1,2}:\\d{2})/)?.[1]||'Por confirmar')+'</b><small>'+esc(formatDate(x.date))+' · J'+esc(x.round)+'</small></div><div class="ljpc-team">'+crest(x.away)+'<span>'+esc(pretty(x.away))+'</span></div><div class="ljpc-muted">'+esc(x.venue||'Sede por confirmar')+'</div></div>').join(''):'<p class="ljpc-muted">Sin partidos oficiales publicados.</p>')+'</section></div>';
+ wrap.querySelectorAll('[data-ljpc-fixture-cat]').forEach(b=>b.addEventListener('click',()=>renderFixtures(b.dataset.ljpcFixtureCat)));
+ wrap.querySelector('[data-ljpc-to-calendar]')?.addEventListener('click',()=>go('pc-calendar'));
+ wrap.querySelector('[data-ljpc-to-standings]')?.addEventListener('click',()=>go('pc-standings'));
+}
+
 function enhanceMore(){
   const page=document.querySelector('#screen .ds-page');if(!page)return;
   const wrap=page.querySelector('.ds-content > .ds-wrap');if(!wrap||wrap.querySelector('.ljpc-home-tools'))return;
@@ -211,6 +239,8 @@ async function renderOwn(){
   if(r==='pc-calendar')renderCalendar();
   if(r==='pc-notifications')renderNotifications();
   if(r==='pc-scorers')renderScorers('3');
+  if(r==='pc-standings')renderStandings('3');
+  if(r==='pc-fixtures')renderFixtures('3');
 }
 
 function rerouteLegacy(){
