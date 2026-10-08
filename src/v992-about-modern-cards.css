@@ -348,3 +348,27 @@ body[data-app-route="safe-about"] .v33-about .v992-more:focus-visible{
     transition:none!important;
   }
 }
+/* V993 — Correccion de escudos: solo iconos que ya existian. */
+body[data-app-route="safe-about"] .v33-about .v33-about-logo{
+  width:84px!important;
+  height:84px!important;
+  max-width:84px!important;
+  max-height:84px!important;
+  margin-bottom:13px!important;
+  object-fit:contain!important;
+}
+body[data-app-route="safe-about"] .v33-about .v992-record > img.v992-original-crest{
+  width:50px!important;
+  height:50px!important;
+  max-width:50px!important;
+  max-height:50px!important;
+  flex:0 0 50px!important;
+  padding:5px!important;
+  margin-bottom:3px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+}
+body[data-app-route="safe-about"] .v33-about .v992-timeline > time{
+  min-height:46px!important;
+  padding:7px 5px!important;
+}
