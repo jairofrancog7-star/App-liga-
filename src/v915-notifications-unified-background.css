@@ -1,0 +1,33 @@
+/* V915 — Notificaciones: un solo azul continuo en toda la pantalla.
+   No cambia tarjetas ni funciones; únicamente unifica la superficie de fondo. */
+@media(max-width:1023px){
+  html body[data-app-route="notifications"],
+  html body[data-app-route="notifications"] #app,
+  html body[data-app-route="notifications"] .app-shell,
+  html body[data-app-route="notifications"] #screen,
+  html body.v46-notifications-active[data-app-route="notifications"] #screen,
+  html body[data-app-route="notifications"] .v46-notifications,
+  html body[data-app-route="notifications"] .v46-ref-notifications-main{
+    background-color:#05045f!important;
+    background-image:none!important;
+  }
+
+  /* La barra superior deja de verse como otra franja/tono. */
+  html body[data-app-route="notifications"] #app>.topbar,
+  html body[data-app-route="notifications"] .app-shell>.topbar,
+  html body[data-app-route="notifications"] header.topbar{
+    background-color:#05045f!important;
+    background-image:none!important;
+    border-bottom:0!important;
+    box-shadow:none!important;
+  }
+
+  /* El bloque inferior de participación continúa como parte de la misma página. */
+  html body[data-app-route="notifications"] #v105-bottom[data-v105-route="notifications"],
+  html body[data-app-route="notifications"] .v105-bottom[data-v105-route="notifications"]{
+    background-color:#05045f!important;
+    background-image:none!important;
+    border-color:transparent!important;
+    box-shadow:none!important;
+  }
+}
