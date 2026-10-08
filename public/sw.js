@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v919-transparent-video-controls';
+const CACHE='liga-juventino-v899-modern-cards';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
