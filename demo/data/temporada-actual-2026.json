@@ -184,6 +184,15 @@
             "field": "Campo 4",
             "date": "2026-10-10"
           }
+        ],
+        "AMISTOSO": [
+          {
+            "home": "Huracán",
+            "away": "Franco Tavera",
+            "time": "04:30",
+            "field": "Campo 3",
+            "date_confirmed": false
+          }
         ]
       },
       "source_page": "https://www.juventinorosasliga.com/?categoria=2",
@@ -191,7 +200,7 @@
     },
     "Veteranos 50+": {
       "scope": "Categoría por edad",
-      "current_phase": "Torneo de Copa J7 · resultados actualizados",
+      "current_phase": "Torneo de Copa J8 · 10/10/2026",
       "teams": [
         "La Esperanza",
         "Dynamo",
@@ -327,6 +336,33 @@
             "score": "0-2",
             "status": "Finalizado"
           }
+        ],
+        "J8": [
+          {
+            "home": "Toros de Cuenda",
+            "away": "Dynamo",
+            "time": "16:30",
+            "field": "Campo 1 (Empastado)",
+            "date": "2026-10-10"
+          },
+          {
+            "home": "Manchester",
+            "away": "La Esperanza",
+            "time": "15:00",
+            "field": "Campo 1 (Empastado)",
+            "date": "2026-10-10"
+          },
+          {
+            "home": "Boavista",
+            "away": "Boca Jrs",
+            "date": "2026-10-10",
+            "status": "GANA BOAVISTA",
+            "decision": {
+              "winner": "Boavista",
+              "type": "administrative",
+              "score": null
+            }
+          }
         ]
       },
       "standings": [
@@ -403,7 +439,7 @@
           "pts": -18
         }
       ],
-      "updated_at_utc": "2026-10-06T15:26:00Z"
+      "updated_at_utc": "2026-10-08T00:26:00Z"
     },
     "Primera Fuerza": {
       "scope": "Categoría abierta por nivel",
@@ -674,38 +710,43 @@
         ],
         "J7": [
           {
-            "home": "Hermanos",
-            "away": "Lobos CDG",
-            "date": "2026-10-04",
+            "home": "HERMANOS",
+            "away": "LOBOS CDG",
             "time": "10:00",
-            "field": "Campo 3"
+            "field": "Campo 3",
+            "date": "2026-10-04"
           },
           {
-            "home": "Herreras FC",
-            "away": "Abejas",
-            "date": "2026-10-04",
+            "home": "HERRERAS FC",
+            "away": "ABEJAS",
             "time": "10:00",
-            "field": "Pozos"
+            "field": "Pozos",
+            "date": "2026-10-04"
           },
           {
-            "home": "Linces",
-            "away": "Galácticos",
+            "home": "LINCES",
+            "away": "GALACTICOS",
             "date": "2026-10-04",
-            "status": "GANA LINCES"
+            "status": "GANA LINCES",
+            "decision": {
+              "winner": "Linces",
+              "type": "administrative",
+              "score": null
+            }
           },
           {
-            "home": "Terrícolas",
-            "away": "Napoli",
-            "date": "2026-10-04",
+            "home": "TERRICOLAS",
+            "away": "NAPOLI",
             "time": "08:00",
-            "field": "Campo 3"
+            "field": "Campo 3",
+            "date": "2026-10-04"
           },
           {
-            "home": "Franco FC",
-            "away": "San José FC",
-            "date": "2026-10-04",
+            "home": "FRANCO FC",
+            "away": "SAN JOSE FC",
             "time": "12:00",
-            "field": "San Jose de la Montaña"
+            "field": "San Jose  de la Montaña",
+            "date": "2026-10-04"
           },
           {
             "rest": "Juventus"
@@ -1241,45 +1282,45 @@
         ],
         "J7": [
           {
-            "home": "Dep. Maravillas",
-            "away": "Galeana",
+            "home": "DEP. MARAVILLAS",
+            "away": "ATL. GALEANA",
             "time": "12:00",
-            "field": "3",
+            "field": "Campo 3",
             "date": "2026-10-04"
           },
           {
-            "home": "La Canchita Deportes",
-            "away": "Malvinas",
+            "home": "LA CANCHITA DEPORTES",
+            "away": "MALVINAS",
             "time": "10:00",
-            "field": "1",
+            "field": "Campo 1 (Empastado)",
             "date": "2026-10-04"
           },
           {
-            "home": "Capibaras",
-            "away": "San Antonio JRS",
+            "home": "CAPIBARAS",
+            "away": "SAN ANTONIO JRS",
             "time": "10:00",
             "field": "Romerillo",
             "date": "2026-10-04"
           },
           {
-            "home": "La Huerta",
-            "away": "Promesas FC",
+            "home": "LA HUERTA",
+            "away": "PROMESAS FC",
             "time": "10:00",
             "field": "Fraccionamiento",
             "date": "2026-10-04"
           },
           {
-            "home": "Mazacotes FC",
-            "away": "La Cuadrilla",
+            "home": "MAZACOTES FC",
+            "away": "LA CUADRILLA",
             "time": "08:00",
             "field": "Fraccionamiento",
             "date": "2026-10-04"
           },
           {
-            "home": "Osasuna",
-            "away": "Populares",
+            "home": "OSASUNA",
+            "away": "POPULARES",
             "time": "08:00",
-            "field": "1",
+            "field": "Campo 1 (Empastado)",
             "date": "2026-10-04"
           },
           {
@@ -1503,45 +1544,45 @@
         ],
         "J7": [
           {
-            "home": "Tapatío",
-            "away": "Pachangas FC",
+            "home": "TAPATIO",
+            "away": "PACHANGAS FC",
             "time": "08:00",
-            "field": "2",
+            "field": "Campo 2",
             "date": "2026-10-04"
           },
           {
-            "home": "Tavera FC",
-            "away": "San Julián",
+            "home": "TAVERA FC",
+            "away": "SAN JULIAN",
             "time": "10:00",
-            "field": "San Julián",
+            "field": "San Julian",
             "date": "2026-10-04"
           },
           {
-            "home": "San Juan FC",
-            "away": "San José JRS",
+            "home": "SAN JUAN FC",
+            "away": "SAN JOSE JRS",
             "time": "10:00",
-            "field": "San José",
+            "field": "San Jose  de la Montaña",
             "date": "2026-10-04"
           },
           {
-            "home": "Dep. La Luz",
-            "away": "Célticos",
+            "home": "DEP. LA LUZ",
+            "away": "CELTICOS",
             "time": "12:00",
-            "field": "1",
+            "field": "Campo 1 (Empastado)",
             "date": "2026-10-04"
           },
           {
-            "home": "Barza",
-            "away": "Dep. Zapata",
+            "home": "BARZA",
+            "away": "DEP. ZAPATA",
             "time": "12:00",
-            "field": "2",
+            "field": "Campo 2",
             "date": "2026-10-04"
           },
           {
-            "home": "San Antonio FC",
-            "away": "Dep. Nopalero",
+            "home": "SAN ANTONIO FC",
+            "away": "DEP. NOPALERO",
             "time": "10:00",
-            "field": "2",
+            "field": "Campo 2",
             "date": "2026-10-04"
           }
         ]
@@ -1550,5 +1591,14 @@
         "El Alto aparece en J1 pero ya no aparece en la jornada actual J5, por eso no se incluye en la lista vigente."
       ]
     }
+  },
+  "manual_fixture_update": {
+    "source": "Imagen del rol compartida por usuario",
+    "applied_date": "2026-10-07",
+    "unscored_awards": [
+      "GANA LINCES",
+      "GANA BOAVISTA"
+    ],
+    "friendly_date": "por confirmar"
   }
 }
