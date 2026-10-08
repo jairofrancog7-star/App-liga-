@@ -158,3 +158,20 @@ body[data-app-route="quiniela"] .v970-performance-track i{
  display:block;height:100%;border-radius:inherit;
  background:linear-gradient(90deg,#29adee,#66e7d5);
 }
+
+/* V972 — herramientas PRO visibles sin reducir el ancho de la Quiniela. */
+body[data-app-route="quiniela"] .v970-progress-footer{flex-wrap:wrap!important;gap:6px!important}
+body[data-app-route="quiniela"] .v970-progress-footer [data-v970-first-preview]{
+  background:linear-gradient(125deg,#1876ce,#1251a5)!important;
+  border:1px solid #62e6f4!important;color:#fff!important;font-size:11px!important;
+  min-height:32px!important;padding:7px 10px!important
+}
+body[data-app-route="quiniela"] .v970-progress-footer [data-v970-first-preview]:focus-visible,
+body[data-app-route="quiniela"] .v970-preview-toggle:focus-visible{
+  outline:2px solid #86f7ff!important;outline-offset:2px!important
+}
+body[data-app-route="quiniela"] .v970-error{
+  padding:8px 10px!important;margin:7px 0!important;
+  background:#10286b!important;border:1px solid rgba(146,190,232,.4)!important;
+  border-radius:9px!important;color:#e0efff!important;font-size:11px!important;
+}
