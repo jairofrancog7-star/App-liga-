@@ -1,0 +1,70 @@
+/* V971 · Retratos oficiales compactos, sin alterar las dimensiones de las tarjetas. */
+#screen .v971-has-photo{position:relative;overflow:hidden!important}
+#screen .v971-has-photo>img.v971-official-image{
+ display:block;width:100%;height:100%;max-width:100%;max-height:100%;
+ object-fit:cover;object-position:center 26%;border:0;border-radius:inherit;
+}
+#screen .v971-player-meta{display:inline;max-width:100%;font-size:.9em;font-weight:500;opacity:.75}
+#screen .v971-player-meta::before{content:" · "}
+#screen .v28-rank-copy{position:relative}
+#screen .v971-inline-official-photo{
+ width:27px;height:27px;min-width:27px;min-height:27px;max-width:27px;
+ object-fit:cover;object-position:center 25%;border-radius:50%;float:left;
+ margin:0 6px 0 0;border:1px solid rgba(104,224,250,.28);
+}
+#screen .v390-scorer-photo>img.v971-hero-image{
+ position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+ object-position:center 24%;z-index:0;
+}
+#screen .v390-scorer-photo.v971-has-hero{position:relative;overflow:hidden}
+#screen .v390-scorer-photo.v971-has-hero>.v390-scorer-label,
+#screen .v390-scorer-photo.v971-has-hero>.v390-scorer-media{
+ position:relative;z-index:1
+}
+body[data-app-route="club-store"] #screen [data-v439-player]>.v971-menu-photo{
+ width:27px;height:27px;min-width:27px;max-width:27px;border-radius:50%;
+ object-fit:cover;object-position:center 25%;vertical-align:middle;
+ margin-right:8px;border:1px solid rgba(29,60,152,.15)
+}
+body[data-app-route="club-store"] #screen .v915-store-player-avatar.v971-has-photo>img{
+ width:100%;height:100%;object-fit:cover;object-position:center 24%;
+ border-radius:inherit
+}
+/* Historia: los campeones y las fotos antiguas quedan intactos.
+   La lista muestra solamente fichas vigentes, a continuación del archivo. */
+body[data-app-route="history"] #screen .v971-history-current{
+ margin:10px 10px 16px;padding:12px;border-radius:14px;
+ background:linear-gradient(145deg,#11287a,#09124e);
+ border:1px solid rgba(87,214,250,.22);color:#fff
+}
+#screen .v971-history-current header{margin:0 0 8px}
+#screen .v971-history-current header small{
+ display:block;font-size:9px;font-weight:800;letter-spacing:.09em;color:#7ae8f5
+}
+#screen .v971-history-current header h3{
+ font-size:15px;line-height:1.2;margin:3px 0;color:#fff
+}
+#screen .v971-history-current header p{
+ margin:4px 0 0;font-size:10px;line-height:1.3;color:#a8c1e6
+}
+#screen .v971-history-rail{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+#screen .v971-history-person{
+ min-width:0;display:flex;align-items:center;gap:7px;padding:7px;
+ border-radius:10px;background:rgba(10,30,105,.62);
+ border:1px solid rgba(82,154,245,.18);
+}
+#screen .v971-history-person>img{
+ width:37px;height:37px;min-width:37px;object-fit:cover;
+ object-position:center 25%;border-radius:50%;
+}
+#screen .v971-history-person>span{display:block;min-width:0;flex:1}
+#screen .v971-history-person b,#screen .v971-history-person small{
+ display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap
+}
+#screen .v971-history-person b{font-size:10px;font-weight:800}
+#screen .v971-history-person small{font-size:8px;color:#b2cdf1}
+#screen .v971-history-person strong{font-size:10px;white-space:nowrap;color:#80eaf5}
+@media(max-width:390px){
+ #screen .v971-history-person{gap:5px;padding:5px;flex-wrap:wrap}
+ #screen .v971-history-person strong{margin-left:42px;font-size:9px}
+}
