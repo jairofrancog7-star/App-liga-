@@ -9,16 +9,15 @@ const css=readFileSync(new URL('src/v972-competition-standings-category.css',roo
 const fast=readFileSync(new URL('src/v571-tournament-lower-tools.js',root),'utf8');
 const full=readFileSync(new URL('src/v40-competition-master.js',root),'utf8');
 
-test('Los cinco botones de Clasificación comparten el mismo filtro oficial que Partidos',()=>{
-  assert.match(menu,/ids=\['3','4','5','2','1'\]/);
-  assert.match(menu,/data-v972-category/);
-  assert.match(menu,/v12-fixture-cat/);
-  assert.match(menu,/v62-category/);
-  assert.match(menu,/ljr:competition-category/);
-  assert.match(menu,/aria-pressed/);
-  assert.match(css,/grid-column:1\/-1!important/);
-  assert.match(html,/v972-competition-standings-category\.js/);
-  assert.match(html,/v972-competition-standings-category\.css/);
+test('Restauración: Clasificación usa el diseño anterior y sus tres vistas originales',()=>{
+  assert.doesNotMatch(html, /<script[^>]+src="[^"]*v972-competition-standings-category\\.js/);
+  assert.doesNotMatch(html, /<link[^>]+href="[^"]*v972-competition-standings-category\\.css/);
+  assert.doesNotMatch(html, /<link[^>]+href="[^"]*v971-competition-standings-visible\\.css/);
+  assert.match(html, /src\\/v40-competition-master\\.js/);
+  assert.match(full, /data-v40-mode="compact"/);
+  assert.match(full, /data-v40-mode="complete"/);
+  assert.match(full, /data-v40-mode="criteria"/);
+  assert.match(full, /ljr:competition-category/);
 });
 
 test('Tabla rápida y clasificación consumen la misma fuente oficial; ninguna inventa puntos',()=>{
