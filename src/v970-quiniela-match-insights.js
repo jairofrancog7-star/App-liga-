@@ -86,6 +86,7 @@ function previewMarkup(m,cat,data){
          '<button type="button" data-v970-score="draw">Empate 1–1</button>'+
          '<button type="button" data-v970-score="away">Visita 0–1</button>'+
        '</div>'+
+       '<button type="button" class="v974-clear-draft" data-v974-clear>Limpiar campos</button>'+
        '<button type="button" class="v973-suggestion" data-v973-suggest '+(proposed?'':'disabled')+'>'+
          (proposed?'Sugerir '+proposed.home+' : '+proposed.away:'Sugerencia no disponible')+'</button>'+
        '<small data-v973-suggest-note>'+(proposed?'Orientación estadística local; no se guarda automáticamente.':
@@ -96,6 +97,11 @@ function previewMarkup(m,cat,data){
          '<button type="button" data-v970-confidence="'+value+'" aria-pressed="'+(confidence===value?'true':'false')+'"'+(locked?' disabled':'')+'>'+label+'</button>').join('')+
        '</div></div>'+
    '</section></div>';
+}
+function v974Points(p,m){
+ if(!p||!m.complete)return null;
+ if(p.home===m.homeScore&&p.away===m.awayScore)return 2;
+ return Math.sign(p.home-p.away)===Math.sign(m.homeScore-m.awayScore)?1:0;
 }
 function addRanking(root,cat,data){
  const host=$('.v618-q-ranking',root);
@@ -113,11 +119,24 @@ function addRanking(root,cat,data){
    if(!byRound.has(id))byRound.set(id,{round:id,evaluated:0,points:0,correct:0});
    const row=byRound.get(id);row.evaluated++;row.points+=pts;if(correct)row.correct++;
  }
+ const completed=cat.matches.filter(m=>m.complete&&savedPrediction(m,data,picks))
+  .sort((a,b)=>(String(b.iso||'')+String(b.time||'')).localeCompare(String(a.iso||'')+String(a.time||'')));
+ let exactCount=0,streak=0,streakBroken=false;
+ for(const m of completed){
+  const p=picks[matchKey(m,data)];if(!p)continue;
+  const pts=v974Points(p,m);
+  if(pts===2)exactCount++;
+  if(!streakBroken){if(pts>0)streak++;else streakBroken=true;}
+ }
  const rows=[...byRound.values()].sort((a,b)=>Number(b.round)-Number(a.round));
  const percent=checked?Math.round(hits/checked*100):0;
  const panel=document.createElement('section');
  panel.className='v970-performance';
  panel.innerHTML='<header><span>MI RENDIMIENTO POR JORNADA</span><strong>'+percent+'% <small>aciertos</small></strong></header>'+
+   '<div class="v974-ranking-metrics" aria-label="Estadísticas personales">'+
+   '<div><strong>'+exactCount+'</strong><span>Exactos</span></div>'+
+   '<div><strong>'+hits+'</strong><span>Aciertos</span></div>'+
+   '<div><strong>'+streak+'</strong><span>Racha actual</span></div></div>'+
    '<p>Estadísticas de tus pronósticos evaluados en este dispositivo · '+checked+' partido'+(checked===1?'':'s')+'.</p>'+
    (rows.length?'<div class="v970-performance-list">'+rows.map(r=>{
      const max=r.evaluated*2;
@@ -126,6 +145,19 @@ function addRanking(root,cat,data){
        '<i style="width:'+Math.round(r.points/max*100)+'%"></i></div>'+
        '<b>'+r.points+'/'+max+' pts</b></div>';
    }).join('')+'</div>':'<p class="v970-performance-empty">Cuando se publiquen marcadores completos de tus partidos pronosticados aparecerá aquí tu rendimiento.</p>');
+ const share=document.createElement('button');
+ share.type='button';share.className='v974-share-stats';
+ share.textContent='Compartir mi rendimiento';
+ share.onclick=async()=>{
+   const points=[...byRound.values()].reduce((sum,item)=>sum+item.points,0);
+   const message='Liga Juventino Rosas · Mi Quiniela: '+points+' puntos, '+hits+' aciertos, '+exactCount+' exactos y '+streak+' seguidos.';
+   try{
+     if(typeof navigator.share==='function')await navigator.share({title:'Mi Quiniela LJR',text:message});
+     else if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(message);share.textContent='¡Resumen copiado!'}
+     else share.textContent=message;
+   }catch(e){if(e?.name!=='AbortError')share.textContent='No se pudo compartir. Intenta nuevamente.'}
+ };
+ panel.append(share);
  host.append(panel);
 }
 function addProgress(root,cat,visibleMatches,data){
@@ -264,6 +296,18 @@ async function mount(){
          awayInput.dispatchEvent(new Event('input',{bubbles:true}));
          $$('[data-v970-score]',content).forEach(b=>b.classList.toggle('selected',b===draft));
          const note=$('.v970-shortcuts>small',content);if(note)note.textContent='Borrador listo; pulsa Guardar pronóstico para confirmarlo.';
+         return;
+       }
+       const clear=event.target.closest('[data-v974-clear]');
+       if(clear&&!isClosed(m)){
+         const h=$('[data-q-home]',card),a=$('[data-q-away]',card);
+         if(!h||!a||h.disabled||a.disabled)return;
+         h.value='';a.value='';
+         h.dispatchEvent(new Event('input',{bubbles:true}));
+         a.dispatchEvent(new Event('input',{bubbles:true}));
+         $('[data-v970-score]',content).forEach(b=>b.classList.remove('selected'));
+         const note=$('[data-v973-suggest-note]',content);
+         if(note)note.textContent='Campos limpios. Los datos guardados no cambian hasta pulsar Guardar pronóstico.';
          return;
        }
        const suggest=event.target.closest('[data-v973-suggest]');
