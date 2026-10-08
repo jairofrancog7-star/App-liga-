@@ -1,0 +1,44 @@
+/* V969 · Respaldo de quiniela 100% local a través de la app azul. */
+html body[data-app-route="quiniela"] .v969-q-backup {
+ box-sizing:border-box!important;display:grid!important;gap:9px!important;min-width:0!important;
+ margin:13px 0 5px!important;padding:15px 13px!important;
+ border:1px solid rgba(102,220,250,.45)!important;border-radius:17px!important;
+ background:radial-gradient(ellipse at 100% 0%,rgba(39,187,246,.16),transparent 64%),linear-gradient(130deg,#183a99,#101f6b)!important;
+ box-shadow:inset 0 1px 0 rgba(235,251,255,.11)!important;
+}
+html body[data-app-route="quiniela"] .v969-q-backup h3{
+ margin:0!important;padding:0!important;color:#fff!important;
+ font:835 clamp(14px,3.8vw,18px)/1.2 Inter,Roboto,Arial,sans-serif!important;
+ letter-spacing:-.02em!important;
+}
+html body[data-app-route="quiniela"] .v969-q-backup p{
+ margin:0!important;color:#bfd8f4!important;font-size:11px!important;line-height:1.4!important;
+}
+html body[data-app-route="quiniela"] .v969-q-backup-actions {
+ display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ gap:8px!important;min-width:0!important;
+}
+html body[data-app-route="quiniela"] .v969-q-backup-actions button{
+ box-sizing:border-box!important;display:flex!important;align-items:center!important;
+ justify-content:center!important;gap:7px!important;min-width:0!important;
+ min-height:46px!important;padding:9px 6px!important;overflow-wrap:break-word!important;
+ border:1px solid rgba(141,209,255,.56)!important;border-radius:12px!important;
+ color:#fff!important;background:linear-gradient(130deg,#245acc,#123788)!important;
+ font:760 clamp(10px,2.75vw,12px)/1.25 Inter,Roboto,Arial,sans-serif!important;
+ text-align:center!important;cursor:pointer!important;
+}
+html body[data-app-route="quiniela"] .v969-q-backup-actions button:first-child {
+ border-color:rgba(159,247,255,.71)!important;color:#061b50!important;
+ background:linear-gradient(125deg,#56e7ef,#70f7fb)!important;
+}
+html body[data-app-route="quiniela"] .v969-q-backup-actions svg{
+ flex:0 0 17px!important;display:block!important;width:17px!important;height:17px!important;
+ stroke:currentColor!important;fill:none!important;stroke-width:2!important;
+ stroke-linecap:round!important;stroke-linejoin:round!important;
+}
+html body[data-app-route="quiniela"] .v969-q-backup-actions button:focus-visible{
+ outline:2px solid #8ffaff!important;outline-offset:3px!important;
+}
+@media(max-width:345px){html body[data-app-route="quiniela"] .v969-q-backup-actions{
+ grid-template-columns:1fr!important;
+}}
