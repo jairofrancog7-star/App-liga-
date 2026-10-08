@@ -612,3 +612,148 @@ html body.ljr-v777[data-app-route="playerDetail"] #screen .v379-hero>[data-v379-
     font-size:13.5px!important;
   }
 }
+
+
+/* V919 — Junta semanal modernizada */
+.v919-meeting-shortcut{
+  width:calc(100% - 24px);margin:10px 12px 16px;padding:14px 14px;
+  display:grid;grid-template-columns:48px minmax(0,1fr) 28px;align-items:center;gap:12px;
+  border:1px solid rgba(80,226,245,.34);border-radius:20px;
+  background:linear-gradient(135deg,#173a87 0%,#0a1b5d 58%,#081044 100%);
+  color:#fff;text-align:left;box-shadow:0 12px 28px rgba(0,8,45,.24);
+}
+.v919-meeting-shortcut:active{transform:scale(.988)}
+.v919-shortcut-icon{
+  width:48px;height:48px;border-radius:15px;display:grid;place-items:center;
+  background:linear-gradient(145deg,rgba(43,226,240,.24),rgba(42,102,221,.22));
+  border:1px solid rgba(105,232,246,.28);color:#76eff7;
+}
+.v919-shortcut-icon svg,.v919-shortcut-arrow svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.v919-shortcut-copy{min-width:0;display:grid;gap:3px}
+.v919-shortcut-copy small{font-size:9px;letter-spacing:.12em;font-weight:900;color:#69e8f4}
+.v919-shortcut-copy b{font-size:14px;line-height:1.2;color:#fff}
+.v919-shortcut-copy em{font-style:normal;font-size:10px;line-height:1.35;color:#b8c7ec}
+.v919-shortcut-arrow{justify-self:end;font-size:28px;line-height:1;color:#68e7f1}
+
+.v875-meeting-modal{background:rgba(0,4,31,.88)!important;backdrop-filter:blur(12px)!important}
+.v875-meeting-modal .v105-dialog{
+  width:min(620px,100%)!important;padding:16px!important;border-radius:26px!important;
+  border:1px solid rgba(76,225,244,.3)!important;
+  background:
+    radial-gradient(circle at 90% 0,rgba(46,203,240,.14),transparent 28%),
+    linear-gradient(180deg,#0b1b68 0%,#081153 44%,#060b3f 100%)!important;
+  box-shadow:0 24px 70px rgba(0,0,35,.48)!important;
+}
+.v875-meeting-modal .v105-close{
+  width:38px!important;height:38px!important;right:12px!important;top:12px!important;
+  border:1px solid rgba(255,255,255,.16)!important;background:rgba(255,255,255,.08)!important;
+  color:#fff!important;font-size:22px!important;line-height:1!important;backdrop-filter:blur(8px);
+}
+.v919-meeting-hero{
+  display:grid;grid-template-columns:56px minmax(0,1fr) 44px;gap:12px;align-items:center;
+  padding:6px 48px 14px 2px;margin-bottom:6px;border-bottom:1px solid rgba(255,255,255,.08)
+}
+.v919-hero-logo{
+  width:54px;height:54px;border-radius:17px;display:grid;place-items:center;
+  background:linear-gradient(145deg,rgba(44,224,240,.2),rgba(35,83,190,.24));
+  border:1px solid rgba(92,226,243,.3);overflow:hidden
+}
+.v919-hero-logo img{width:42px;height:42px;object-fit:contain!important;background:transparent!important;filter:none!important}
+.v919-hero-copy{display:grid;gap:2px;min-width:0}
+.v919-hero-copy small{font-size:8px;font-weight:900;letter-spacing:.15em;color:#69eaf4}
+.v919-hero-copy b{font-size:21px;line-height:1.05;color:#fff}
+.v919-hero-copy em{font-style:normal;font-size:10px;color:#aebde5}
+.v919-hero-day{
+  justify-self:end;display:grid;place-items:center;width:42px;height:32px;border-radius:10px;
+  background:#21dce9;color:#061354;font-size:10px;font-weight:950;letter-spacing:.08em
+}
+.v875-meeting-modal .v919-meeting-intro{margin:8px 2px 12px!important;color:#b8c5e6!important}
+.v875-meeting-modal .v105-meeting-notice{
+  display:grid!important;gap:5px!important;padding:13px 14px!important;margin:0 0 12px!important;
+  border-radius:16px!important;border:1px solid rgba(72,226,240,.28)!important;
+  background:linear-gradient(145deg,rgba(20,74,157,.78),rgba(10,24,84,.92))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important
+}
+.v875-meeting-modal .v105-meeting-notice b{font-size:11px!important;color:#fff!important}
+.v875-meeting-modal .v105-meeting-notice span{font-size:9px!important;color:#b7c9ee!important}
+
+.v875-meeting-modal .v105-meeting-form{gap:11px!important}
+.v875-meeting-modal .v105-meeting-form label{
+  gap:6px!important;padding:10px;border-radius:15px;background:rgba(8,23,83,.72);
+  border:1px solid rgba(79,107,191,.28);box-sizing:border-box
+}
+.v875-meeting-modal .v105-meeting-form label>span,
+.v875-meeting-modal .v919-field-label{
+  display:flex!important;align-items:center!important;gap:7px!important;
+  color:#d9e6ff!important;font-size:10px!important;font-weight:800!important
+}
+.v875-meeting-modal .v919-field-label svg{
+  width:17px;height:17px;flex:0 0 17px;fill:none;stroke:#61e6f2;stroke-width:1.8;
+  stroke-linecap:round;stroke-linejoin:round
+}
+.v875-meeting-modal .v105-meeting-form :is(input,textarea){
+  min-height:44px!important;border:1px solid rgba(86,129,222,.44)!important;border-radius:12px!important;
+  background:#08145a!important;color:#fff!important;padding:10px 11px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important
+}
+.v875-meeting-modal .v105-meeting-form textarea{min-height:104px!important;line-height:1.45!important}
+.v875-meeting-modal .v105-meeting-form :is(input,textarea):focus{
+  outline:none!important;border-color:#41dfea!important;box-shadow:0 0 0 3px rgba(65,223,234,.12)!important
+}
+.v919-topic-head{display:grid;gap:2px;margin-top:2px}
+.v919-topic-head span{font-size:9px;font-weight:900;letter-spacing:.11em;color:#66e5ef}
+.v919-topic-head small{font-size:9px;color:#9eb0d7}
+.v875-meeting-modal .v875-agenda-chips{
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important
+}
+.v875-meeting-modal .v875-agenda-chips button{
+  min-height:48px!important;padding:8px 10px!important;display:grid!important;
+  grid-template-columns:28px minmax(0,1fr)!important;gap:8px!important;align-items:center!important;
+  border:1px solid rgba(75,121,214,.38)!important;border-radius:14px!important;
+  background:linear-gradient(145deg,#133176,#0c205d)!important;color:#eef7ff!important;text-align:left!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important
+}
+.v875-meeting-modal .v875-agenda-chips button:active{transform:scale(.985)}
+.v875-meeting-modal .v875-agenda-chips button>span{
+  width:28px;height:28px;border-radius:9px;display:grid;place-items:center;
+  background:rgba(44,224,240,.12);color:#62e8f2
+}
+.v875-meeting-modal .v875-agenda-chips svg{
+  width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round
+}
+.v875-meeting-modal .v875-agenda-chips b{font-size:9.5px;line-height:1.2;color:#fff}
+
+.v875-meeting-modal .v105-actions{
+  position:sticky!important;bottom:0!important;z-index:5!important;
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;
+  margin:14px -2px -2px!important;padding:12px 2px 2px!important;
+  background:linear-gradient(180deg,rgba(6,11,63,0),#060b3f 22%,#060b3f 100%)!important
+}
+.v875-meeting-modal .v919-action{
+  min-height:48px!important;border-radius:14px!important;padding:0 13px!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;
+  font-size:10px!important;font-weight:900!important;letter-spacing:.01em!important
+}
+.v875-meeting-modal .v919-action svg{
+  width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round
+}
+.v875-meeting-modal .v919-action.is-save{
+  background:linear-gradient(135deg,#2fe2ee,#43cfff)!important;color:#05104e!important;
+  border:0!important;box-shadow:0 8px 20px rgba(44,218,239,.18)!important
+}
+.v875-meeting-modal .v919-action.is-print,
+.v875-meeting-modal .v919-action.is-share{
+  background:linear-gradient(145deg,#15337b,#0c1e5a)!important;color:#fff!important;
+  border:1px solid rgba(91,136,225,.42)!important
+}
+.v875-meeting-modal .v919-action.is-share{grid-column:1/-1!important}
+
+@media(max-width:420px){
+ .v919-meeting-shortcut{grid-template-columns:44px minmax(0,1fr) 22px;padding:12px}
+ .v919-shortcut-icon{width:44px;height:44px}
+ .v919-meeting-hero{grid-template-columns:50px minmax(0,1fr) 38px;padding-right:42px}
+ .v919-hero-logo{width:48px;height:48px}.v919-hero-logo img{width:38px;height:38px}
+ .v919-hero-copy b{font-size:19px}.v919-hero-day{width:38px;height:30px}
+ .v875-meeting-modal .v875-agenda-chips{grid-template-columns:1fr!important}
+ .v875-meeting-modal .v105-actions{grid-template-columns:1fr 1fr!important}
+}
