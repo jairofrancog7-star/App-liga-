@@ -1019,3 +1019,284 @@
     right:12px!important;
   }
 }
+
+
+/* V957 — cabecera expandida/compacta final de goleadores */
+@media(max-width:1023px){
+  html body[data-app-route="scorers"]{
+    --v956-scorers-head-h:148px!important;
+  }
+  html body[data-app-route="scorers"].v957-scorers-compact{
+    --v956-scorers-head-h:68px!important;
+  }
+
+  /* Una sola cabecera: esconder cualquier resto de versiones anteriores. */
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > :is(.v944-scorers-title,.v943-scorers-back,.v943-scorers-trophy){
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    pointer-events:none!important;
+  }
+  html body[data-app-route="scorers"] #screen .v775-scorers-head,
+  html body[data-app-route="scorers"] #screen > .v950-scorers-head{
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    height:0!important;
+    min-height:0!important;
+    max-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    pointer-events:none!important;
+  }
+
+  html body[data-app-route="scorers"] #app > .topbar.v956-scorers-global,
+  html body[data-app-route="scorers"] .app-shell > .topbar.v956-scorers-global{
+    position:fixed!important;
+    inset:0 0 auto 0!important;
+    z-index:2147483000!important;
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    width:100%!important;
+    max-width:none!important;
+    height:var(--v956-scorers-head-h)!important;
+    min-height:var(--v956-scorers-head-h)!important;
+    max-height:var(--v956-scorers-head-h)!important;
+    margin:0!important;
+    padding:0!important;
+    transform:none!important;
+    overflow:hidden!important;
+    border:0!important;
+    border-radius:0!important;
+    box-sizing:border-box!important;
+    isolation:isolate!important;
+    background:
+      radial-gradient(220px 125px at 22% -2%,rgba(90,143,255,.31),transparent 72%),
+      radial-gradient(230px 135px at 88% -6%,rgba(39,95,255,.27),transparent 72%),
+      linear-gradient(180deg,#263ff0 0%,#1d35df 32%,#1426bb 60%,#0b0e79 100%)!important;
+    box-shadow:0 1px 0 rgba(255,255,255,.07)!important;
+    transition:height .20s ease,min-height .20s ease,max-height .20s ease!important;
+  }
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global::before{
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    inset:-35px -20px 0!important;
+    z-index:0!important;
+    pointer-events:none!important;
+    opacity:.26!important;
+    background:
+      radial-gradient(circle at 29% 5%,transparent 0 58px,rgba(117,164,255,.52) 59px 61px,transparent 62px),
+      radial-gradient(circle at 84% 24%,transparent 0 78px,rgba(103,153,255,.36) 79px 81px,transparent 82px),
+      linear-gradient(145deg,transparent 33%,rgba(100,154,255,.26) 33.5% 34.2%,transparent 34.7% 57%,rgba(100,154,255,.20) 57.5% 58.2%,transparent 58.7%)!important;
+  }
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global::after{
+    content:none!important;
+    display:none!important;
+  }
+
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > .wordmark,
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > .v918-transfer-title,
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > .v918-transfer-bell{
+    display:none!important;
+  }
+
+  /* Flecha arriba a la izquierda cuando está grande; centrada al compactarse. */
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > #backButton{
+    display:grid!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:absolute!important;
+    z-index:4!important;
+    left:16px!important;
+    top:20px!important;
+    width:42px!important;
+    height:42px!important;
+    min-width:42px!important;
+    min-height:42px!important;
+    max-width:42px!important;
+    max-height:42px!important;
+    margin:0!important;
+    padding:0!important;
+    place-items:center!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    background-image:none!important;
+    color:#fff!important;
+    transform:none!important;
+    pointer-events:auto!important;
+    transition:top .20s ease!important;
+  }
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > #backButton::before,
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > #backButton::after{
+    content:none!important;
+    display:none!important;
+  }
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > #backButton svg{
+    display:block!important;
+    width:30px!important;
+    height:30px!important;
+    fill:none!important;
+    stroke:#fff!important;
+    stroke-width:1.95!important;
+    stroke-linecap:round!important;
+    stroke-linejoin:round!important;
+    opacity:1!important;
+  }
+
+  /* Título solo una vez y más abajo cuando la barra está expandida. */
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > .v956-scorers-title{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:absolute!important;
+    z-index:3!important;
+    left:22px!important;
+    right:68px!important;
+    top:91px!important;
+    margin:0!important;
+    padding:0!important;
+    color:#fff!important;
+    font:800 clamp(27px,7.1vw,31px)/1.04 Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:-.035em!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    text-align:left!important;
+    pointer-events:none!important;
+    transition:top .20s ease,left .20s ease,font-size .20s ease!important;
+  }
+
+  /* Perfil real a la derecha. */
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > .profile-button{
+    display:grid!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:absolute!important;
+    z-index:4!important;
+    right:16px!important;
+    left:auto!important;
+    top:20px!important;
+    width:38px!important;
+    height:38px!important;
+    min-width:38px!important;
+    min-height:38px!important;
+    max-width:38px!important;
+    max-height:38px!important;
+    margin:0!important;
+    padding:0!important;
+    place-items:center!important;
+    overflow:hidden!important;
+    border:0!important;
+    border-radius:50%!important;
+    background-color:transparent!important;
+    background-image:none!important;
+    color:#fff!important;
+    transform:none!important;
+    pointer-events:auto!important;
+    transition:top .20s ease!important;
+  }
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > .profile-button::before,
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > .profile-button::after{
+    content:none!important;
+    display:none!important;
+  }
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > .profile-button > svg.v957-profile-fallback{
+    display:block!important;
+    width:31px!important;
+    height:31px!important;
+    max-width:31px!important;
+    max-height:31px!important;
+    fill:none!important;
+    stroke:#fff!important;
+    stroke-width:1.75!important;
+    stroke-linecap:round!important;
+    stroke-linejoin:round!important;
+    opacity:1!important;
+  }
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > .profile-button .v957-account-photo{
+    display:block!important;
+    width:34px!important;
+    height:34px!important;
+    min-width:34px!important;
+    min-height:34px!important;
+    max-width:34px!important;
+    max-height:34px!important;
+    object-fit:cover!important;
+    object-position:center!important;
+    border:1px solid rgba(255,255,255,.72)!important;
+    border-radius:50%!important;
+    background:transparent!important;
+  }
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > .profile-button .v957-account-avatar,
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > .profile-button .v957-account-avatar > *{
+    display:grid!important;
+    width:34px!important;
+    height:34px!important;
+    min-width:34px!important;
+    min-height:34px!important;
+    max-width:34px!important;
+    max-height:34px!important;
+    place-items:center!important;
+    overflow:hidden!important;
+    border-radius:50%!important;
+  }
+
+  /* Estado compacto al hacer scroll: misma barra, no una segunda cabecera. */
+  html body[data-app-route="scorers"].v957-scorers-compact .topbar.v956-scorers-global > #backButton{
+    top:13px!important;
+  }
+  html body[data-app-route="scorers"].v957-scorers-compact .topbar.v956-scorers-global > .profile-button{
+    top:15px!important;
+  }
+  html body[data-app-route="scorers"].v957-scorers-compact .topbar.v956-scorers-global > .v956-scorers-title{
+    left:62px!important;
+    right:60px!important;
+    top:21px!important;
+    font-size:19px!important;
+    line-height:1.05!important;
+    letter-spacing:-.025em!important;
+  }
+
+  /* El contenido siempre empieza debajo de la altura REAL de la barra. */
+  html body.v768-scroll-root[data-app-route="scorers"] #screen,
+  html body[data-app-route="scorers"] #screen{
+    top:var(--v956-scorers-head-h)!important;
+    margin-top:0!important;
+    padding-top:0!important;
+    scroll-padding-top:0!important;
+    transition:top .20s ease!important;
+  }
+  html body[data-app-route="scorers"] #screen > .v28-scorers-page{
+    margin-top:0!important;
+    padding-top:14px!important;
+  }
+}
+
+@media(max-width:390px){
+  html body[data-app-route="scorers"]{
+    --v956-scorers-head-h:142px!important;
+  }
+  html body[data-app-route="scorers"].v957-scorers-compact{
+    --v956-scorers-head-h:66px!important;
+  }
+  html body[data-app-route="scorers"] .topbar.v956-scorers-global > .v956-scorers-title{
+    top:88px!important;
+    font-size:27px!important;
+  }
+  html body[data-app-route="scorers"].v957-scorers-compact .topbar.v956-scorers-global > .v956-scorers-title{
+    top:20px!important;
+    left:60px!important;
+    font-size:18px!important;
+  }
+  html body[data-app-route="scorers"].v957-scorers-compact .topbar.v956-scorers-global > #backButton{
+    top:12px!important;
+  }
+  html body[data-app-route="scorers"].v957-scorers-compact .topbar.v956-scorers-global > .profile-button{
+    top:14px!important;
+    right:12px!important;
+  }
+}
