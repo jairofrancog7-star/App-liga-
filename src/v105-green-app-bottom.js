@@ -904,6 +904,7 @@ function scheduleMatch(){
    '<label><span>Hora</span><input type="time" data-s-time value="'+esc(old.time)+'"></label>'+
    '<label><span>Cancha</span><select data-s-field>'+v160FieldOptions(old.field)+'</select></label>'+
   '</div><div class="v105-actions"><button class="v105-btn" data-s-save>Programar borrador</button><button class="v105-btn alt" data-s-agenda>Abrir agenda</button></div>');
+ m.classList.add('v105-schedule-modal');
  const cat=$('[data-s-cat]',m),home=$('[data-s-home]',m),away=$('[data-s-away]',m);
 
  const teamList=()=>{
