@@ -2,6 +2,30 @@
 export const norm = v => String(v ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 export const number = v => /^[+-]?\d+$/.test(String(v ?? '').trim()) ? Number(v) : null;
 const blocks = v => Array.isArray(v) ? v : [];
+// Regla oficial de puntuación: victoria 3, empate 1, derrota normal 0.
+// Una derrota por DEFAULT resta 3 puntos, incluso desde cero (0 - 3 = -3).
+// Nunca se descuentan puntos otra vez sobre una tabla ya publicada por AdminFut.
+export const DEFAULT_LOSS_PENALTY = -3;
+export function leaguePoints({wins=0,draws=0,defaultLosses=0}={}) {
+  const valid=n=>Number.isSafeInteger(Number(n))&&Number(n)>=0;
+  if(![wins,draws,defaultLosses].every(valid))return null;
+  return Number(wins)*3+Number(draws)+Number(defaultLosses)*DEFAULT_LOSS_PENALTY;
+}
+export function isDefaultDecision(decision) {
+  if(!decision||typeof decision!=='object'||!decision.winner)return false;
+  // El rol oficial marca las victorias administrativas por DEFAULT.
+  return decision.default===true||decision.forfeit===true||
+    /^(default|forfeit|walkover|administrative)$/i.test(String(decision.type||''))||
+    /\b(default|walkover|incomparecencia)\b/i.test(String(decision.label||''));
+}
+export function defaultDefeatedTeam(decision,home,away) {
+  if(!isDefaultDecision(decision))return null;
+  const winner=norm(decision.winner);
+  if(winner===norm(home))return String(away);
+  if(winner===norm(away))return String(home);
+  return null;
+}
+
 export function normalizeCompetition(db) {
   return Object.entries(db?.categories || {}).map(([id,c]) => {
     const standings = blocks(c.standings).flatMap(b => blocks(b.rows)).filter(r => Array.isArray(r) && r.length >= 10 && r[1]).map(r => ({
@@ -15,8 +39,9 @@ export function normalizeCompetition(db) {
       const complete=homeScore!==null&&awayScore!==null;
       const decision=c?.fixture_decisions?.[String(r[0]??i)]||null;
       const publishedStatus=String(r.status||'').toUpperCase();
+      const defaultLoser=defaultDefeatedTeam(decision,r[2],r[6]);
       const status=decision?'AWARDED':['LIVE','FINAL','POSTPONED','SUSPENDED','VENUE CHANGED'].includes(publishedStatus)?publishedStatus:complete?'FINAL':'UNCONFIRMED';
-      return {id:`${id}:${r[0]??i}`,category:id,round:String(r[1]??''),home:String(r[2]),away:String(r[6]),homeScore,awayScore,complete,status,decision,venue:String(r[7]||''),date,iso,time:date.match(/\s(\d{1,2}:\d{2})/)?.[1]||'',raw:r};
+      return {id:`${id}:${r[0]??i}`,category:id,round:String(r[1]??''),home:String(r[2]),away:String(r[6]),homeScore,awayScore,complete,status,decision,defaultLoser,defaultPointAdjustment:defaultLoser?DEFAULT_LOSS_PENALTY:0,venue:String(r[7]||''),date,iso,time:date.match(/\s(\d{1,2}:\d{2})/)?.[1]||'',raw:r};
     }).filter(m=>{if(seen.has(m.id))return false;seen.add(m.id);return true});
     // Form is shown only when every played match needed by the standings is available.
     for(const t of standings){
