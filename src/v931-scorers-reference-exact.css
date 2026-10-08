@@ -648,3 +648,167 @@
     font-size:10.5px!important;
   }
 }
+
+
+/* V933 — evitar solapado de filtros y mantener cada etiqueta dentro de su botón */
+@media(max-width:1023px){
+  html body[data-app-route="scorers"] .v391-category-wrap,
+  html body[data-app-route="scorers"] .v397-enhanced-category-wrap{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    grid-auto-rows:auto!important;
+    gap:10px!important;
+    width:100%!important;
+    margin:0 0 20px!important;
+    padding:0!important;
+    overflow:visible!important;
+  }
+
+  html body[data-app-route="scorers"] .v391-category-strip,
+  html body[data-app-route="scorers"] .v397-enhanced-category-wrap .v391-category-strip{
+    display:grid!important;
+    grid-template-columns:repeat(6,minmax(0,1fr))!important;
+    grid-template-rows:52px 52px!important;
+    grid-auto-flow:row!important;
+    align-items:stretch!important;
+    gap:8px!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:112px!important;
+    overflow:visible!important;
+    padding:0!important;
+    touch-action:manipulation!important;
+  }
+
+  html body[data-app-route="scorers"] .v391-category-strip [data-v194-cat],
+  html body[data-app-route="scorers"] .v397-enhanced-category-wrap [data-v194-cat]{
+    position:relative!important;
+    inset:auto!important;
+    transform:none!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    height:52px!important;
+    min-height:52px!important;
+    max-height:52px!important;
+    margin:0!important;
+    padding:0 8px!important;
+    display:flex!important;
+    flex-direction:row!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:6px!important;
+    overflow:hidden!important;
+    white-space:normal!important;
+    text-align:center!important;
+    line-height:1!important;
+    border-radius:14px!important;
+    box-sizing:border-box!important;
+  }
+
+  html body[data-app-route="scorers"] .v391-category-strip [data-v194-cat]:nth-child(1),
+  html body[data-app-route="scorers"] .v391-category-strip [data-v194-cat]:nth-child(2),
+  html body[data-app-route="scorers"] .v391-category-strip [data-v194-cat]:nth-child(3){
+    grid-column:span 2!important;
+  }
+  html body[data-app-route="scorers"] .v391-category-strip [data-v194-cat]:nth-child(4),
+  html body[data-app-route="scorers"] .v391-category-strip [data-v194-cat]:nth-child(5){
+    grid-column:span 3!important;
+  }
+
+  html body[data-app-route="scorers"] .v391-category-strip [data-v194-cat] .v931-filter-icon,
+  html body[data-app-route="scorers"] .v397-enhanced-category-wrap [data-v194-cat] .v931-filter-icon{
+    position:static!important;
+    inset:auto!important;
+    transform:none!important;
+    flex:0 0 20px!important;
+    width:20px!important;
+    height:20px!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+  }
+
+  html body[data-app-route="scorers"] .v391-category-strip [data-v194-cat] > b,
+  html body[data-app-route="scorers"] .v397-enhanced-category-wrap [data-v194-cat] > b{
+    position:static!important;
+    inset:auto!important;
+    transform:none!important;
+    display:block!important;
+    flex:0 1 auto!important;
+    min-width:0!important;
+    max-width:100%!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    color:inherit!important;
+    font:800 10px/1.08 Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:0!important;
+    text-align:center!important;
+    white-space:normal!important;
+    text-overflow:clip!important;
+  }
+
+  html body[data-app-route="scorers"] .v391-stat-strip{
+    position:relative!important;
+    z-index:2!important;
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:8px!important;
+    width:100%!important;
+    height:46px!important;
+    min-height:46px!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:visible!important;
+  }
+  html body[data-app-route="scorers"] .v391-stat-strip [data-v462-stat]{
+    position:relative!important;
+    inset:auto!important;
+    transform:none!important;
+    width:100%!important;
+    min-width:0!important;
+    height:46px!important;
+    min-height:46px!important;
+    max-height:46px!important;
+    margin:0!important;
+    padding:0 8px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:6px!important;
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+  }
+  html body[data-app-route="scorers"] .v391-stat-strip [data-v462-stat] > b{
+    position:static!important;
+    inset:auto!important;
+    transform:none!important;
+    display:block!important;
+    margin:0!important;
+    padding:0!important;
+    color:inherit!important;
+    font:800 11px/1 Inter,Roboto,Arial,sans-serif!important;
+    white-space:nowrap!important;
+  }
+}
+
+@media(max-width:390px){
+  html body[data-app-route="scorers"] .v391-category-strip,
+  html body[data-app-route="scorers"] .v397-enhanced-category-wrap .v391-category-strip{
+    grid-template-rows:50px 50px!important;
+    min-height:108px!important;
+    gap:8px!important;
+  }
+  html body[data-app-route="scorers"] .v391-category-strip [data-v194-cat],
+  html body[data-app-route="scorers"] .v397-enhanced-category-wrap [data-v194-cat]{
+    height:50px!important;
+    min-height:50px!important;
+    max-height:50px!important;
+    padding:0 6px!important;
+  }
+  html body[data-app-route="scorers"] .v391-category-strip [data-v194-cat] > b,
+  html body[data-app-route="scorers"] .v397-enhanced-category-wrap [data-v194-cat] > b{
+    font-size:9.5px!important;
+  }
+}
