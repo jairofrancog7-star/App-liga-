@@ -49,6 +49,11 @@
     if (!content || card.dataset.v987Decorated) return;
     card.dataset.v987Decorated = '1';
     card.classList.add('v987-history-card');
+    // Eliminar el control generico anterior en estos cuadros: un unico Ver mas.
+    card.querySelectorAll('[data-v674-details]').forEach(btn => btn.remove());
+    card.classList.remove('v674-detail-card', 'v674-expanded');
+    card.dataset.v674Enhanced = '1';
+    card.querySelectorAll('.v674-detail-copy').forEach(el => el.classList.remove('v674-detail-copy'));
     const heading = content.querySelector('h3');
     const title = heading ? heading.textContent.trim() : '';
     const logoSource = findTeamLogo(card, title);
