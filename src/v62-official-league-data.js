@@ -300,7 +300,7 @@ async function refreshOfficialData(){
   const currentStamp=String(db?.captured_at_utc||''),freshStamp=String(fresh?.captured_at_utc||'');
   const changed=!db||freshStamp>currentStamp||dataFingerprint(fresh)!==dataFingerprint(db);
   if(changed){
-    publishData(chooseNewer(db,fresh));
+    publishData(preserveBlueRegistrations(chooseNewer(db,fresh)));
     patchHomeCalendarResults(true);
     patchHomeStandings(true);
     patchHomeScorers(true);
@@ -471,6 +471,46 @@ function chooseNewer(a,b){
   if(dataFingerprint(a)===dataFingerprint(b))return a;
   return dataRichness(b)>=dataRichness(a)?b:a;
 }
+/* Mantiene los registros y retratos oficiales sincronizados en la app azul,
+   incluso si Liga_Futbol publica un snapshot deportivo mas reciente. */
+let localRegistrationSnapshot=null;
+function preserveBlueRegistrations(base){
+  const local=localRegistrationSnapshot;
+  if(!base?.categories||!local?.categories||base===local)return base;
+  const categories={...base.categories};
+  for(const id of CAT_ORDER){
+    const own=local.categories[id],older=base.categories[id];
+    if(!own||!older)continue;
+    const rosters={...(older.rosters||{})},profiles={...(older.player_profiles||{})};
+    for(const [team,entries] of Object.entries(own.rosters||{})){
+      const key=Object.keys(rosters).find(t=>same(t,team))||team;
+      const list=Array.isArray(rosters[key])?[...rosters[key]]:[];
+      const known=new Set(list.map(norm));
+      for(const name of Array.isArray(entries)?entries:[]){
+        if(!known.has(norm(name))){list.push(name);known.add(norm(name))}
+      }
+      rosters[key]=list;
+    }
+    for(const [team,entries] of Object.entries(own.player_profiles||{})){
+      const key=Object.keys(profiles).find(t=>same(t,team))||team;
+      const list=Array.isArray(profiles[key])?profiles[key].map(x=>({...x})):[];
+      const known=new Map(list.map((p,i)=>[norm(p.name),i]));
+      for(const p of Array.isArray(entries)?entries:[]){
+        if(!p?.name)continue;
+        const n=norm(p.name),index=known.get(n);
+        if(index===undefined){list.push({...p});known.set(n,list.length-1)}
+        else{
+          const current=list[index];
+          current.name=p.name;
+          for(const field of ['photo','position','dorsal'])if(p[field])current[field]=p[field];
+        }
+      }
+      profiles[key]=list;
+    }
+    categories[id]={...older,rosters,player_profiles:profiles};
+  }
+  return {...base,categories};
+}
 async function fetchJson(url){
   try{const r=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(8000)});if(!r.ok)throw new Error(String(r.status));return await r.json()}catch{return null}
 }
@@ -487,10 +527,11 @@ function publishData(next){
 async function load(){
   // Use the bundled snapshot immediately, then reconcile with the live mirror.
   const local=await fetchJson(LOCAL_DATA);
+  localRegistrationSnapshot=local;
   publishData(local);
   startOfficialRefreshTimer();
   const remote=await fetchJson(REMOTE_DATA+'&ts='+Date.now());
-  publishData(chooseNewer(db,remote));
+  publishData(preserveBlueRegistrations(chooseNewer(db,remote)));
 }
 
 function categoryRail(){
