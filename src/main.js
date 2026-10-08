@@ -5990,6 +5990,7 @@ function v64InferCurpFromIne(text,name){
   return '';
 }
 function v64FindCurp(text,name=''){
+  if(window.LJR_REGISTRATION_CAPTURE)return window.LJR_REGISTRATION_CAPTURE.extractCurp(text);
   const raw=String(text||'').toUpperCase(),lines=raw.split(/\r?\n/),candidates=[];
   const push=(value,score,near=false)=>{
     const fixed=v64RepairCurpCandidate(value,name,near);
@@ -6420,6 +6421,8 @@ async function v64TesseractRead(T,image,psm='6',whitelist=''){
   }catch(_){return {text:'',confidence:0}}
 }
 async function v64RecognizeDocument(file,onStatus){
+  const connected=await window.LJR_REGISTRATION_CAPTURE?.read?.(file,onStatus);
+  if(connected)return {text:connected.text,allText:'',parsed:window.LJR_REGISTRATION_CAPTURE.parseIdentity(connected.text)};
   const T=await v64LoadTesseract(),seen=[],push=t=>{if(t&&String(t).trim())seen.push(String(t))};
 
   onStatus?.('OCR inteligente · lectura inicial…');
@@ -6808,23 +6811,25 @@ document.querySelector('[data-v64-ocr]')?.addEventListener('click',async e=>{
   }
   if(!docFile&&photoFile)toast('No hay documento en el primer campo; intentaré leer la imagen disponible');
   const btn=e.currentTarget,original=btn.textContent;btn.disabled=true;btn.textContent='Buscando datos…';
-  /* Cada lectura empieza limpia para no conservar basura de una prueba anterior. */
-  for(const sel of ['[data-v64-cred-name]','[data-v64-cred-curp]','[data-v100-dob]','[data-v100-age]']){
-    const el=document.querySelector(sel);if(el)el.value='';
-  }
-  v64CredentialSync();
+  const scanPlayer=localStorage.getItem('v124-player-edit-id'),scanName=document.querySelector('[data-v64-cred-name]')?.value||'',scanCurp=document.querySelector('[data-v64-cred-curp]')?.value||'';
   try{
     const best=await v64RecognizeDocument(file,msg=>btn.textContent=msg);
+    if(scanPlayer!==localStorage.getItem('v124-player-edit-id')||file!==document.querySelector('[data-v64-doc]')?.files?.[0]&&docFile)return;
     const txt=best.text||'',all=best.allText||'';out.value=[txt,all].filter(Boolean).join('\n');
     const combined=[txt,all].filter(Boolean).join('\n');
     const strong=best.parsed||v64ResolveIdentity([combined]);
+    const evidence=window.LJR_REGISTRATION_CAPTURE?.parseIdentity?.(combined);
     const p={
       name:v64NameStrength(strong.name)>=76?strong.name:'',
-      curp:(strong.curp&&v64CurpChecksumValid(strong.curp))?strong.curp:'',
-      dob:strong.dob||'',
+      curp:evidence?evidence.curp:((strong.curp&&v64CurpChecksumValid(strong.curp))?strong.curp:''),
+      dob:evidence?(evidence.dob||(/NACIMIENTO/i.test(combined)?v64OcrDate(combined):'')):(strong.dob||''),
       city:''
     };
+    if(scanPlayer&&scanCurp&&p.curp&&p.curp!==scanCurp){toast('La CURP no coincide con este jugador. Revisa el documento.');return}
+    if(scanPlayer&&scanName)p.name=scanName;
+    if(!p.curp&&scanPlayer)p.curp=scanCurp;
     v64ApplyOcrIdentity(p);
+    window.LJR_REGISTRATION_CAPTURE?.update?.();
     const found=[p.name&&'nombre',p.curp&&'CURP',p.dob&&'fecha'].filter(Boolean);
     toast(found.length?'Datos detectados: '+found.join(', ') : 'No encontré datos seguros todavía; conservé la lectura para intentar de nuevo o corregirla');
   }catch(err){

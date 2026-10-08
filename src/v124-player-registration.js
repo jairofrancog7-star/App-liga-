@@ -1,3 +1,5 @@
+import {validateCurp,extractCurp,completion,rosterNames} from './registration-core.js';
+import {saveAssets,restoreAssets,resetAssets,installCapture} from './registration-capture.js';
 /* V124 — Registro de jugadores por temporada.
    Complementa credentialBuilder sin publicar CURP/fecha/domicilio en GitHub.
    Los datos capturados se guardan solo en localStorage del dispositivo. */
@@ -28,6 +30,8 @@ let rosterImportTeam='';
 let rosterTeamPickerOpen=false;
 let rosterTeamQuery='';
 let rosterImportFile=null;
+let rosterImportFiles=[];
+let saveInProgress=false;
 let rosterHandwritingMode=false;
 let rosterDetectedKind='auto';
 let rosterExpectedRows=0;
@@ -400,6 +404,7 @@ function applyRecruitmentPrefill(){
 }
 function loadRecord(rec){
   localStorage.setItem(EDIT_KEY,rec.id);
+  restoreAssets(rec);
   setValue('[data-v64-cred-name]',rec.name);
   setValue('[data-v64-cred-curp]',rec.curp||'');
   setValue('[data-v64-cred-team]',rec.team);
@@ -415,6 +420,7 @@ function loadRecord(rec){
 }
 function clearForm(){
   localStorage.removeItem(EDIT_KEY);
+  resetAssets();
   for(const sel of ['[data-v64-cred-name]','[data-v64-cred-curp]','[data-v100-dob]','[data-v100-age]','[data-v100-city]'])setValue(sel,'');
   setValue('[data-v64-cred-team]','');
   setValue('[data-v100-position]','Sin definir');
@@ -428,11 +434,14 @@ function clearForm(){
   document.querySelector('.v64-page')?.scrollIntoView({behavior:'smooth',block:'start'});
   schedule();
 }
-function saveForm(silent=false){
+async function saveForm(silent=false){
+  if(saveInProgress)return false;
   const data=captureForm();
   if(!data.name)return toast('Falta el nombre del jugador');
   if(!data.team)return toast('Selecciona el equipo; la categoría se asigna sola');
   if(!data.category)return toast('No se encontró la categoría oficial de ese equipo');
+  if(data.curp&&!validateCurp(data.curp).ok)return toast(validateCurp(data.curp).message);
+  if(data.curp&&data.dob!==validateCurp(data.curp).dob)return toast('La fecha de nacimiento debe coincidir con la CURP');
   const eligibility=v124Eligibility(data);
   if(!eligibility.ok){renderEligibility();return toast(eligibility.message)}
   const season=data.season,list=seasonRecords(season).slice(),editId=localStorage.getItem(EDIT_KEY);
@@ -458,10 +467,17 @@ function saveForm(silent=false){
     if(source==='official')rec.status='Oficial en la Liga';
     else if(rec.status==='Pendiente de validación')rec.status='Registrado · coincide con padrón';
   }
-  if(idx>=0)list[idx]=rec;else list.unshift(rec);
-  putSeason(season,list);localStorage.setItem(EDIT_KEY,rec.id);
+  saveInProgress=true;
+  try{
+    Object.assign(rec,await saveAssets(rec));
+    if(idx>=0)list[idx]=rec;else list.unshift(rec);
+    putSeason(season,list);if(localStorage.getItem(EDIT_KEY)===editId)localStorage.setItem(EDIT_KEY,rec.id);
+  }catch(error){toast(error.message||'No se pudo guardar el registro');return false}
+  finally{saveInProgress=false}
   if(!silent)toast(idx>=0?'Registro actualizado':'Jugador guardado en la temporada '+season);
   renderManager();
+  window.LJR_REGISTRATION_CAPTURE?.update?.();
+  return rec;
 }
 function deleteRecord(id){
   const season=selectedSeason(),list=seasonRecords(season),rec=list.find(r=>r.id===id);if(!rec)return;
@@ -805,19 +821,27 @@ async function v157Recognize(source,label,pass,mode,psm,totalPasses){
      indefinidamente en 53% durante una segunda lectura. Ya no dejamos que
      una pasada bloquee el flujo: a los 18 s se cancela el intento lógico,
      se devuelve vacío y el lector continúa/finaliza con lo ya detectado. */
-  let timer=0,timedOut=false;
+  let timer=0,timedOut=false,worker=null;
+  const task=(async()=>{
+    worker=await T.createWorker('spa',1,{logger:options.logger});
+    if(timedOut){await worker.terminate();return {__v188Timeout:true}}
+    const params={...options};delete params.logger;await worker.setParameters(params);
+    return worker.recognize(canvas);
+  })().catch(error=>({__v188Error:error}));
   const timeout=new Promise(resolve=>{
     timer=setTimeout(()=>{
       timedOut=true;
+      if(worker)worker.terminate().catch(()=>{});
       v126SetImportStatus('OCR tardó demasiado en esta pasada · omitiéndola para evitar congelamiento…');
       resolve({__v188Timeout:true});
     },V188_OCR_TIMEOUT_MS);
   });
   const result=await Promise.race([
-    T.recognize(canvas,'spa',options).catch(error=>({__v188Error:error})),
+    task,
     timeout
   ]);
   clearTimeout(timer);
+  if(worker&&!timedOut)await worker.terminate().catch(()=>{});
 
   if(result?.__v188Timeout){
     return {text:'',mode,confidence:0,timedOut:true};
@@ -1651,6 +1675,11 @@ async function v126ReadPdf(file){
 }
 async function v126ReadRosterFile(file){
   if(!file)throw new Error('Selecciona un archivo');
+  if(file.size>25*1024*1024)throw new Error('El archivo supera 25 MB; usa una imagen de la hoja');
+  if(file.type.startsWith('image/')){
+    const connected=await window.LJR_REGISTRATION_CAPTURE?.read?.(file,v126SetImportStatus);
+    if(connected){rosterDetectedKind='handwriting';return connected.text}
+  }
   const name=String(file.name||'').toLowerCase(),type=String(file.type||'').toLowerCase();
   if(type.startsWith('image/')||/\.(png|jpe?g|webp|bmp)$/i.test(name))return v126OcrImage(file,'imagen');
   if(type==='application/pdf'||/\.pdf$/i.test(name))return v126ReadPdf(file);
@@ -1924,57 +1953,9 @@ function v172NumberedTableCandidates(raw,known){
   return out;
 }
 function v126ExtractCandidates(text){
-  const raw=String(text||'');
-  if(rosterDetectedKind==='printed-table'){
-    const direct=v180NameColumnLines(raw);
-    if(direct.length){
-      const limit=rosterExpectedRows>0?Math.min(80,rosterExpectedRows):80;
-      return direct.slice(0,limit);
-    }
-  }
-  const known=v126KnownPeople(),found=new Map(),order=[],flat=norm(raw);
-  const add=(name,score=0)=>{
-    if(v126LooksLikeNonPlayerName(name))return;
-    const n=norm(name);if(!n||n.length<5)return;
-    const prev=found.get(n);
-    if(!prev){found.set(n,{name,score});order.push(n)}
-    else if(score>prev.score)found.set(n,{name,score});
-  };
-  /* Prioridad a la lectura real de arriba hacia abajo. No ordenamos por
-     "confianza" porque eso desacomodaba la lista y podía esconder filas. */
-  for(const row of v178OrderedLineCandidates(raw,known))add(row.name,row.score);
-  for(const row of v172NumberedTableCandidates(raw,known))add(row.name,row.score);
-  for(const p of known){
-    const n=norm(p.name);if(n.length>=5&&flat.includes(n))add(p.name,1);
-  }
-  for(const line of raw.split(/\r?\n/)){
-    const pieces=line.split(/\t| {2,}|;|,/).map(x=>x.trim()).filter(Boolean);
-    for(const piece0 of (pieces.length?pieces:[line])){
-      const piece=v172StripTableColumns(piece0);
-      const knownHit=v172BestKnownFromRow(piece,known);
-      if(knownHit)add(knownHit.name,knownHit.score);
-      const best=v157BestNameWindow(piece);
-      if(best.name&&best.score>=.34)add(best.name,best.score);
-      const np=norm(piece);
-      if(np.length>=5){
-        let hit=null,score=0;
-        for(const p of known){
-          const pn=norm(p.name),sim=v124TokenSim(np,pn);
-          const tokenHits=pn.split(' ').filter(w=>w.length>=3&&np.includes(w)).length;
-          const boosted=Math.min(1,sim+(tokenHits>=2?.18:tokenHits===1?.06:0));
-          if(boosted>score){score=boosted;hit=p}
-        }
-        if(hit&&score>=.60)add(hit.name,score);
-      }
-    }
-  }
-  const candidates=order.map(k=>found.get(k)).filter(Boolean),out=[];
-  for(const cand of candidates){
-    if(out.length>=80)break;
-    if(!out.some(o=>v124TokenSim(o.name,cand.name)>.96))out.push(cand);
-  }
-  return out.map(x=>x.name);
+  return rosterNames(text);
 }
+
 function v126BestKnown(name,team=''){
   const known=v126KnownPeople(),clean=v184SafeNameRepair(name),n=norm(clean),target=norm(team);
 
@@ -2023,12 +2004,14 @@ function v126AnalyzeText(text){
   if(!rosterImportTeam)throw new Error('Primero elige el equipo de esta lista');
   const team=rosterImportTeam,season=selectedSeason(),current=seasonRecords(season),names=v126ExtractCandidates(text),entries=[];
   for(const rawName0 of names){
-    let rawName=v184SafeNameRepair(rawName0);
+    let rawName=rawName0;
     const completion=rosterDetectedKind==='printed-table'?null:v186CompleteFromKnown(rawName,v126KnownPeople(),team);
-    if(completion)rawName=completion.name;
+    // Do not fill missing surnames from a similar person in the padrón.
     const rawStructure=v185NameStructure(rawName);
-    const hit=v126BestKnown(rawName,team),known=hit?.record||completion?.record||null;
-    const canonical=known?.name||rawName;
+    const hit=v126BestKnown(rawName,team),candidate=hit?.record||completion?.record||null;
+    const known=candidate&&norm(candidate.name)===norm(rawName)?candidate:null;
+    // OCR preserves the sheet. Padrón matches are suggestions, not replacements.
+    const canonical=rawName;
     const canonicalStructure=v185NameStructure(canonical);
     const currentSame=current.find(r=>norm(r.name)===norm(canonical)&&norm(r.team)===norm(team));
     const currentOther=current.find(r=>norm(r.name)===norm(canonical)&&norm(r.team)!==norm(team));
@@ -2155,14 +2138,15 @@ function rosterImportHtml(){
   let opts='<option value="">Selecciona el equipo de la lista</option>';
   for(const [cat,items] of groups)opts+='<optgroup label="'+esc(cat)+'">'+items.map(t=>'<option value="'+esc(t.name)+'" '+(rosterImportTeam===t.name?'selected':'')+'>'+esc(t.name)+'</option>').join('')+'</optgroup>';
   return '<section class="v126-import">'+
-    '<header><small>LISTA DEL DELEGADO</small><h3>Importar jugadores desde foto, PDF o Word</h3><p>Lee la lista en este teléfono, compara quién sigue, quién ya existe, quién cambió de equipo y quién es nuevo. El archivo no se sube a GitHub.</p></header>'+
+    '<header><small>LISTA DEL DELEGADO</small><h3>Importar la lista completa desde imágenes</h3><p>Lee la lista en este teléfono, compara quién sigue, quién ya existe, quién cambió de equipo y quién es nuevo. El archivo no se sube a GitHub.</p></header>'+
     v126RosterTeamPickerHtml()+
-    '<button type="button" class="v126-file" data-v126-file-pick><span><b>Elegir lista del delegado</b><small>Foto · texto impreso · pluma · lápiz · PDF · Word · TXT · CSV</small></span></button>'+
-    '<input class="v126-file-input" type="file" data-v126-file accept="image/*,.pdf,.docx,.txt,.csv,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" tabindex="-1" aria-hidden="true">'+
+    '<button type="button" class="v126-file" data-v126-file-pick><span><b>Elegir lista del delegado</b><small>Una o varias fotos · PNG / JPG · PDF / DOCX / TXT / CSV opcionales</small></span></button>'+
+    '<input class="v126-file-input" type="file" multiple data-v126-file accept="image/*,.pdf,.docx,.txt,.csv,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" tabindex="-1" aria-hidden="true">'+
     '<div class="v126-file-name">'+esc(rosterImport.fileName||'Ningún archivo seleccionado')+'</div>'+
-    '<div class="v162-handwriting v179-auto-detect"><span class="v162-handwriting-check">AI</span><span><b>Detección automática del documento</b><small>Reconoce si parece texto impreso/Word/Arial, pluma/lápiz o mixto y usa sólo las pasadas necesarias. Máximo 5 para evitar bloqueos en Android.</small></span></div>'+
+    '<div class="v162-handwriting v179-auto-detect"><span class="v162-handwriting-check">AI</span><span><b>Detección automática del documento</b><small>Texto impreso: lectura local. Pluma/lápiz: elige el servicio conectado arriba. Revisa los nombres dudosos y la cantidad de jugadores antes de aplicar.</small></span></div>'+
     '<button type="button" class="v126-analyse" data-v126-analyse '+(rosterImport.busy?'disabled':'')+'>'+(rosterImport.busy?'Leyendo lista…':'Detectar y comparar jugadores')+'</button>'+
     '<p class="v126-status" data-v126-import-status>'+esc(rosterImport.status||'Autodetector V188: lee la tabla por bloques de 5 filas con 2–3 verificaciones, aísla Jugador y no mezcla Equipo/G.Total. Busca 1 nombre + 2 apellidos, pero si la hoja trae sólo uno lo conserva para revisión; nunca inventa otro apellido. Nada se registra automáticamente.')+'</p>'+
+    '<details class="v126-raw"><summary>Pegar o escribir la lista del delegado</summary><p>Un jugador por línea. Úsalo también para corregir una hoja manuscrita.</p><textarea data-capture-roster-text placeholder="Nombre completo, un jugador por línea"></textarea><button type="button" data-capture-roster-analyse>Comparar esta lista</button></details>'+
     v126RosterResultHtml()+
   '</section>';
 }
@@ -2203,11 +2187,12 @@ function v126ApplyRoster(){
   const removeIds=new Set(removals.map(r=>r.id));
   const finalList=list.filter(r=>{if(removeIds.has(r.id)){removed++;return false}return true});
   putSeason(season,finalList);
-  rosterImport={fileName:'',rawText:'',entries:[],missing:[],status:'',busy:false};rosterImportFile=null;
+  rosterImport={fileName:'',rawText:'',entries:[],missing:[],status:'',busy:false};rosterImportFile=null;rosterImportFiles=[];
   toast('Lista aplicada: '+kept+' ya estaban · '+moved+' cambios · '+renewed+' renovados · '+added+' nuevos · '+removed+' bajas');
   renderManager();
 }
 function bindRosterImport(root){
+  $('[data-capture-roster-analyse]',root)?.addEventListener('click',()=>{try{const text=$('[data-capture-roster-text]',root)?.value||'';if(!text.trim())return toast('Pega la lista primero');v126AnalyzeText(text);renderManager()}catch(error){toast(error.message)}});
   $('[data-v126-team-open]',root)?.addEventListener('click',()=>{rosterTeamPickerOpen=!rosterTeamPickerOpen;renderManager()});
   $('[data-v126-team-close]',root)?.addEventListener('click',()=>{rosterTeamPickerOpen=false;rosterTeamQuery='';renderManager()});
   $('[data-v126-team-search]',root)?.addEventListener('input',e=>{
@@ -2223,7 +2208,7 @@ function bindRosterImport(root){
     rosterImportTeam=b.dataset.v126TeamChoice||'';
     rosterTeamPickerOpen=false;rosterTeamQuery='';
     rosterImport={fileName:'',rawText:'',entries:[],missing:[],status:'',busy:false};
-    rosterImportFile=null;
+    rosterImportFile=null;rosterImportFiles=[];
     renderManager(true);
     toast('Equipo seleccionado: '+rosterImportTeam);
   }));
@@ -2234,8 +2219,9 @@ function bindRosterImport(root){
     if(input)input.click();
   });
   $('[data-v126-file]',root)?.addEventListener('change',e=>{
-    rosterImportFile=e.target.files?.[0]||null;
-    rosterImport.fileName=rosterImportFile?.name||'';
+    rosterImportFiles=Array.from(e.target.files||[]);
+    rosterImportFile=rosterImportFiles[0]||null;
+    rosterImport.fileName=rosterImportFiles.map(f=>f.name).join(' · ');
     const n=$('.v126-file-name',root);if(n)n.textContent=rosterImport.fileName||'Ningún archivo seleccionado';
   });
   $('[data-v126-analyse]',root)?.addEventListener('click',async()=>{
@@ -2244,9 +2230,11 @@ function bindRosterImport(root){
     rosterImport.busy=true;v126SetImportStatus('Preparando lectura…');
     const btn=$('[data-v126-analyse]',root);if(btn){btn.disabled=true;btn.textContent='Leyendo lista…'}
     try{
-      const text=await v126ReadRosterFile(rosterImportFile);
+      const parts=[],files=rosterImportFiles.length?rosterImportFiles:[rosterImportFile];
+      for(let i=0;i<files.length;i++){v126SetImportStatus('Hoja '+(i+1)+' de '+files.length+' · '+files[i].name);parts.push(await v126ReadRosterFile(files[i]))}
+      const text=parts.join('\n');
       if(!String(text||'').trim())throw new Error('No encontré texto en el archivo');
-      const analysis=v126AnalyzeText(text);rosterImport.fileName=rosterImportFile.name;
+      const analysis=v126AnalyzeText(text);rosterImport.fileName=(rosterImportFiles.length?rosterImportFiles:[rosterImportFile]).map(f=>f.name).join(' · ');
       toast('Lista detectada · '+analysis.detected+' nombre(s) · revisa ✓ aprobar / ✕ rechazar');
       renderManager();
     }catch(err){
@@ -2471,6 +2459,7 @@ function listHtml(list){
   return list.map(r=>'<article class="v124-player-card" data-v124-id="'+esc(r.id)+'">'+
     '<div class="v124-card-main"><label class="v124-pick" aria-label="Seleccionar '+esc(r.name)+'"><input type="checkbox" data-v124-select="'+esc(r.id)+'" '+(selectedIds.has(r.id)?'checked':'')+'><span></span></label><span class="v124-avatar">'+esc(String(r.name).split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase())+'</span>'+
     '<span><b>'+esc(r.name)+'</b><small>'+esc(r.team)+' · '+esc(r.category||'Categoría por confirmar')+'</small>'+
+    '<small class="capture-missing">'+esc(completion(r,r.hasPlayerPhoto).ready?'✓ Datos y foto completos':'Falta: '+completion(r,r.hasPlayerPhoto).missing.join(' · '))+'</small>'+
     '<em class="'+statusClass(r)+'">'+esc(r.source==='official'?'Oficial en la Liga':(r.officialPresent?'Coincide con padrón':r.status||'Pendiente'))+'</em></span></div>'+
     v190TeamTraceHtml(r)+
     '<div class="v161-record-meta"><span><b>Origen</b>'+esc(recordOrigin(r))+'</span><span><b>Registró</b>'+esc(recordRegistrar(r))+'</span><span><b>Fecha de registro</b>'+esc(fmtRecordDate(r.createdAt||r.updatedAt))+'</span></div>'+
@@ -2542,7 +2531,7 @@ function bindManager(root){
   $('[data-v124-move-selected]',root)?.addEventListener('click',moveSelectedTeam);
   $('[data-v124-copy-season]',root)?.addEventListener('click',copySelectedToSeason);
   $('[data-v124-remove-selected]',root)?.addEventListener('click',removeSelectedRecords);
-  $('[data-v124-save]',root)?.addEventListener('click',saveForm);
+  $('[data-v124-save]',root)?.addEventListener('click',()=>saveForm());
   $('[data-v124-new]',root)?.addEventListener('click',clearForm);
   $('[data-v124-sync]',root)?.addEventListener('click',e=>{
     e.preventDefault();
@@ -2704,37 +2693,9 @@ function v124CurpDateValid(curp){
   return d.getUTCFullYear()===year&&d.getUTCMonth()===mm-1&&d.getUTCDate()===dd;
 }
 function v124RecoverCurp(text,name,current=''){
-  const parts=v124NameParts(name);
-  const candidates=[String(current||'').toUpperCase().replace(/[^A-Z0-9]/g,''),...v124RawCurpCandidate(text)];
-  const digitMap={O:'0',Q:'0',D:'0',I:'1',L:'1',Z:'2',S:'5',G:'6',B:'8'};
-  const letterMap={'0':'O','1':'I','2':'Z','5':'S','6':'G','8':'B'};
-  let fallback='';
-  for(let raw of candidates){
-    raw=String(raw||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
-    if(raw.length!==18)continue;
-    let a=raw.split('');
-    for(let i=0;i<18;i++){
-      if((i>=4&&i<=9)||i===17)a[i]=/\d/.test(a[i])?a[i]:(digitMap[a[i]]||a[i]);
-      else if((i<=3)||(i>=11&&i<=15))a[i]=/[A-Z]/.test(a[i])?a[i]:(letterMap[a[i]]||a[i]);
-      else if(i===10&&a[i]!=='H'&&a[i]!=='M'&&a[i]==='N')a[i]='M';
-    }
-    let fixed=a.join('');
-    if(parts)fixed=parts.prefix+fixed.slice(4);
-    if(!/^[A-Z]{4}\d{6}[HM][A-Z]{5}[A-Z0-9]\d$/.test(fixed))continue;
-    if(!v124CurpEntityValid(fixed)||!v124CurpDateValid(fixed))continue;
-    if(v124CurpValid(fixed))return fixed;
-
-    // Si todo salvo el último dígito es coherente, corrige sólo el verificador.
-    const expected=v124CurpCheckDigit(fixed);
-    if(expected!==null){
-      const repaired=fixed.slice(0,17)+String(expected);
-      if(v124CurpValid(repaired))fallback=repaired;
-    }
-  }
-  if(fallback)return fallback;
-  const cleanCurrent=String(current||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
-  return v124CurpValid(cleanCurrent)?cleanCurrent:'';
+  return extractCurp(text)||(validateCurp(current).ok?current:'');
 }
+
 function v124IneNameGuess(text){
   const lines=String(text||'').split(/\r?\n/).map(x=>x.replace(/[|]/g,'I').replace(/\s+/g,' ').trim()).filter(Boolean);
   const i=lines.findIndex(x=>/\bNOMBRE(?:S)?\b/i.test(x));if(i<0)return '';
@@ -2771,46 +2732,11 @@ function v124RawNameGuess(text){
 function bindOcrAssist(){
   const btn=$('[data-v64-ocr]');if(!btn||btn.dataset.v124Bound)return;btn.dataset.v124Bound='1';
   btn.addEventListener('click',()=>{
-    const timer=setInterval(()=>{
-      if(btn.disabled)return;
-      clearInterval(timer);
-      const raw=$('[data-v64-ocr-text]')?.value||'',name=$('[data-v64-cred-name]')?.value||'',curp=$('[data-v64-cred-curp]')?.value||'',team=$('[data-v64-cred-team]')?.value||'';
-      const exact=!v124BadOcrName(name)?officialPlayers().find(p=>norm(p.name)===norm(name)):null;
-      const guess=exact||bestOfficialFromOcr(raw,curp,team);
-      if(guess){
-        if(v124BadOcrName(name)||guess.matchScore>=.72||v124Dice(name,guess.name)>=.45)setValue('[data-v64-cred-name]',guess.name);
-        const fixedCurp=v124RecoverCurp(raw,guess.name,curp);
-        if(fixedCurp)setValue('[data-v64-cred-curp]',fixedCurp);
-        if(!team){
-          setValue('[data-v64-cred-team]',guess.team);
-          setValue('[data-v64-cred-cat]',guess.category);
-        }
-        toast('Nombre completo reconocido: '+guess.name);
-      }else if(v124BadOcrName(name)){
-        if(name)setValue('[data-v64-cred-name]','');
-        const fallback=v124RawNameGuess(raw);
-        if(fallback&&!v124BadOcrName(fallback)){
-          setValue('[data-v64-cred-name]',fallback);
-          const fixedCurp=v124RecoverCurp(raw,fallback,curp);
-          if(fixedCurp)setValue('[data-v64-cred-curp]',fixedCurp);
-          toast('Lectura recuperada. Revisa nombre y CURP antes de guardar');
-        }else{
-          const recovered=v124RecoverCurp(raw,'',curp);
-          if(recovered)setValue('[data-v64-cred-curp]',recovered);
-          else if(curp&&!v124CurpValid(curp))setValue('[data-v64-cred-curp]','');
-          toast(recovered?'CURP recuperada; falta confirmar el nombre':'No encontré un nombre confiable todavía; intenta detectar de nuevo');
-        }
-      }else{
-        const fixedCurp=v124RecoverCurp(raw,name,curp);
-        if(fixedCurp&&fixedCurp!==curp)setValue('[data-v64-cred-curp]',fixedCurp);
-        else if(curp&&!v124CurpValid(curp))setValue('[data-v64-cred-curp]','');
-      }
-      renderEligibility();
-      renderManager();
-    },300);
+    const timer=setInterval(()=>{if(btn.disabled)return;clearInterval(timer);renderEligibility();window.LJR_REGISTRATION_CAPTURE?.update?.()},300);
     setTimeout(()=>clearInterval(timer),45000);
   });
 }
+
 function autoOfficialSync(){
   const season=selectedSeason(),x=store(),official=officialPlayers();
   if(!official.length)return;
@@ -2828,6 +2754,8 @@ function bindCredentialAutoSave(){
   ['[data-v100-credential-png]','[data-v100-credential-pdf]','[data-v100-credential-share]','[data-v64-download-credential-png]','[data-v64-print-credential]'].forEach(sel=>{
     const b=$(sel);if(!b||b.dataset.v124AutoSave)return;b.dataset.v124AutoSave='1';
     b.addEventListener('click',e=>{
+      const ready=completion(captureForm(),!!$('[data-v64-photo]')?.files?.length);
+      if(!ready.ready){e.preventDefault();e.stopImmediatePropagation();toast('Completa: '+ready.missing.join(', '));return}
       const eligibility=v124Eligibility();
       if(!eligibility.ok){
         e.preventDefault();e.stopImmediatePropagation();renderEligibility();toast(eligibility.message);return;
@@ -2842,5 +2770,10 @@ window.addEventListener('hashchange',schedule);
 window.addEventListener('ljr:official-data',schedule);
 const screen=$('#screen');if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:false});
 window.addEventListener('load',schedule);schedule();setTimeout(schedule,1200);
-window.LJR_PLAYER_REGISTRY={sync:syncOfficialSeason,records:seasonRecords,officialPlayers};
+window.LJR_PLAYER_REGISTRY={sync:syncOfficialSeason,records:seasonRecords,officialPlayers,
+  load:loadRecord,save:saveForm,
+  update:(id,changes)=>{const season=selectedSeason(),list=seasonRecords(season).slice(),index=list.findIndex(r=>r.id===id);if(index<0)throw new Error('Jugador no encontrado');list[index]={...list[index],...changes,updatedAt:new Date().toISOString()};putSeason(season,list);renderManager()},
+  setRosterFiles:files=>{rosterImportFiles=files;rosterImportFile=files[0]||null;rosterImport.fileName=files.map(f=>f.name).join(' · ');renderManager()}
+};
+installCapture();
 })();
