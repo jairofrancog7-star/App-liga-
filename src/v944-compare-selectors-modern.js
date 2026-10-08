@@ -48,15 +48,24 @@ function logoCandidates(team,api){
  }catch(_){}
  return found;
 }
+/* Some official goal tables include club summary records, where the
+   "team" field is actually "26 goles en temporada". In that case the
+   CLUB NAME is stored in "name". Preserve the existing comparison card
+   and figures; resolve only the crest from the real club name. */
+function crestTeam(p){
+ const field=String(p?.team||'').trim();
+ const summary=/^\d+\s+goles?\s+en\s+temporada$/i.test(field);
+ return summary?String(p?.name||'').trim():field;
+}
 function officialLogo(team,api){return logoCandidates(team,api)}
 function initials(team){
  return String(team||'?').trim().split(/\s+/).filter(Boolean).slice(0,2).map(s=>s[0]).join('').toUpperCase();
 }
 function logo(p){
  const list=p?.logos||[],src=list[0]||'';
- return '<span class="v944-crest v946-team-crest" title="'+esc(p?.team||'Equipo')+'">'+
-  (src?'<img src="'+esc(src)+'" data-v946-crest-key="'+esc(p.key)+'" data-v946-attempt="0" alt="Escudo de '+esc(p.team)+'" loading="eager" decoding="async">':
-   '<span class="v946-crest-initials" aria-label="Escudo no disponible">'+esc(initials(p?.team))+'</span>')+
+ return '<span class="v944-crest v946-team-crest" title="'+esc(p?.logoTeam||p?.team||'Equipo')+'">'+
+  (src?'<img src="'+esc(src)+'" data-v946-crest-key="'+esc(p.key)+'" data-v946-attempt="0" alt="Escudo de '+esc(p.logoTeam||p.team)+'" loading="eager" decoding="async">':
+   '<span class="v946-crest-initials" aria-label="Escudo no disponible">'+esc(initials(p?.logoTeam||p?.team))+'</span>')+
  '</span>';
 }
 function icon(name){
@@ -170,7 +179,7 @@ function initializePlayers(api){
   const n=Number(s.goals);
   if(s.goals!==null&&s.goals!==''&&Number.isFinite(n))goals.set(rec.key,n);
  }
- players=[...map.values()].map(p=>({...p,logos:officialLogo(p.team,api)}));
+ players=[...map.values()].map(p=>({...p,logoTeam:crestTeam(p),logos:officialLogo(crestTeam(p),api)}));
  players.sort((a,b)=>(goals.get(b.key)??-1)-(goals.get(a.key)??-1)||a.name.localeCompare(b.name,'es'));
  scorers=goals;
  selected=[read(keyA),read(keyB)];
@@ -217,7 +226,7 @@ document.addEventListener('error',event=>{
   return;
  }
  const holder=img.closest('.v946-team-crest');
- if(holder)holder.innerHTML='<span class="v946-crest-initials" aria-label="Escudo no disponible">'+esc(initials(player?.team))+'</span>';
+ if(holder)holder.innerHTML='<span class="v946-crest-initials" aria-label="Escudo no disponible">'+esc(initials(player?.logoTeam||player?.team))+'</span>';
 },true);
 document.addEventListener('click',e=>{
  const target=e.target instanceof Element?e.target:null;
