@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Vista previa neutra de camiseta; uniforme oficial de Pozos FC no confirmado">
+<defs>
+<linearGradient id="fabric" x1="0" y1="0" x2="1" y2=".35"><stop stop-color="#1a294d"/><stop offset=".22" stop-color="#36496c"/><stop offset=".48" stop-color="#152849"/><stop offset=".7" stop-color="#1f355b"/><stop offset="1" stop-color="#071b3b"/></linearGradient>
+<linearGradient id="sleeve" x1="0" y1="0" x2="1" y2=".3"><stop stop-color="#102441"/><stop offset=".55" stop-color="#30456c"/><stop offset="1" stop-color="#0d203d"/></linearGradient>
+<linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#fff" stop-opacity=".18"/><stop offset=".27" stop-color="#fff" stop-opacity="0"/><stop offset=".74" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="collar" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#52627e"/><stop offset=".5" stop-color="#1b2944"/><stop offset="1" stop-color="#09162d"/></linearGradient>
+</defs>
+<!-- Neutral illustration used only until the club supplies its official jersey. Transparent background. -->
+<path d="M169 57 215 40 Q256 73 296 40 L343 57 412 93 493 200 416 265 353 193 360 491 151 491 158 193 96 265 19 200 101 93Z" fill="url(#fabric)" stroke="#091b39" stroke-width="6" stroke-linejoin="round"/>
+<path d="M169 57 101 93 19 200 96 265 158 193 173 115Z" fill="url(#sleeve)"/>
+<path d="M343 57 412 93 493 200 416 265 353 193 340 115Z" fill="url(#sleeve)"/>
+<path d="M169 57 101 93 96 104 167 71Z M343 57 412 93 416 104 346 71Z" fill="#8aa3c7" opacity=".5"/>
+<path d="M23 196 100 258 92 270 14 205Z M489 196 412 258 420 270 498 205Z" fill="#c6d3e7" opacity=".42"/>
+<path d="M158 193 151 491 360 491 353 193" fill="url(#sheen)"/>
+<path d="M157 214 166 240 161 482 M353 214 345 244 350 482" stroke="#051b37" stroke-width="7" fill="none" opacity=".3"/>
+<path d="M202 48 Q256 106 310 48 L330 63 Q304 131 256 137 Q208 131 181 63Z" fill="url(#collar)" stroke="#101b33" stroke-width="5"/>
+<path d="M213 54 Q256 100 299 54 Q286 86 256 92 Q227 86 213 54Z" fill="#06172f"/>
+<path d="M152 483 H361 V497 H152Z" fill="#6b84a7" opacity=".6"/>
+<path d="M191 116 Q205 216 196 464 M317 116 Q306 231 317 464" stroke="#e6efff" stroke-width="11" opacity=".035" fill="none"/>
+</svg>
