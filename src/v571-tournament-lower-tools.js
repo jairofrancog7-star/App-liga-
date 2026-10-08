@@ -113,7 +113,8 @@ function standingsRows(cid){
   return out;
 }
 function rankingCategory(){
-  return filter!=='all'&&catObj(filter)?filter:currentCompetitionCat();
+  /* Tabla rápida siempre comparte la categoría seleccionada arriba. */
+  return currentCompetitionCat();
 }
 function activeCompetitionLabel(){
   const active=[...document.querySelectorAll('#screen>.tabs .tab.active,#screen .tabs .tab.active')][0];
@@ -263,6 +264,7 @@ function render(){
   if(!anchor)return;
   const old=document.querySelector('[data-v571-lower]');
   const w=document.createElement('div');w.innerHTML=panel();const fresh=w.firstElementChild;
+  if(old&&old.outerHTML===fresh.outerHTML)return;
   if(old)old.replaceWith(fresh);else anchor.insertAdjacentElement('afterend',fresh);
 }
 function schedule(){cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>requestAnimationFrame(render))}
@@ -273,7 +275,13 @@ document.addEventListener('click',e=>{
   if(e.target.closest('[data-v571-open-cats]')){e.preventDefault();openCategories();return}
   if(e.target.closest('[data-v571-close]')){e.preventDefault();closeSheet();return}
   const cat=e.target.closest('[data-v571-cat]');
-  if(cat){e.preventDefault();filter=cat.dataset.v571Cat||'all';localStorage.setItem('v571-agenda-cat',filter);closeSheet();render();return}
+  if(cat){e.preventDefault();filter=cat.dataset.v571Cat||'all';localStorage.setItem('v571-agenda-cat',filter);
+    if(filter!=='all'&&catObj(filter)){
+      localStorage.setItem('v12-fixture-cat',filter);
+      localStorage.setItem('v62-category',filter);
+      window.dispatchEvent(new CustomEvent('ljr:competition-category',{detail:{category:filter}}));
+    }
+    closeSheet();render();return}
   const match=e.target.closest('[data-v571-match]');
   if(match){e.preventDefault();const m=allMatches().find(x=>x.key===match.dataset.v571Match);if(m){saveMatch(m);location.hash='#/match'}return}
   const open=e.target.closest('[data-v573-open]');
@@ -316,6 +324,11 @@ document.addEventListener('click',e=>{
 
 window.addEventListener('hashchange',()=>{closeSheet();schedule()});
 window.addEventListener('ljr:official-data',schedule);
+window.addEventListener('ljr:competition-category',e=>{
+  const id=String(e.detail?.category||'');
+  if(catObj(id)){filter=id;localStorage.setItem('v571-agenda-cat',filter)}
+  schedule();
+});
 const screen=document.querySelector('#screen');
 if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
