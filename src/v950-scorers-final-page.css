@@ -1,0 +1,330 @@
+/* V950 — Máximo goleador final: cabecera propia + ranking inferior full-bleed. */
+@media(max-width:1023px){
+  /* Oculta por completo la barra global solo en goleadores para evitar capas viejas. */
+  html body[data-app-route="scorers"] #app > .topbar,
+  html body[data-app-route="scorers"] .app-shell > .topbar{
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    width:0!important;
+    height:0!important;
+    min-height:0!important;
+    max-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    pointer-events:none!important;
+  }
+
+  html body[data-app-route="scorers"] #app #screen{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:0!important;
+    overflow-x:hidden!important;
+    background:#09086f!important;
+  }
+
+  /* Cabecera restaurada: flecha + Máximo goleador + perfil. Está en flujo,
+     por lo que ningún contenido puede quedar escondido debajo. */
+  html body[data-app-route="scorers"] #screen > .v950-scorers-head{
+    position:sticky!important;
+    top:0!important;
+    z-index:2147483000!important;
+    width:100%!important;
+    height:74px!important;
+    min-height:74px!important;
+    max-height:74px!important;
+    display:grid!important;
+    grid-template-columns:48px minmax(0,1fr) 48px!important;
+    align-items:center!important;
+    gap:8px!important;
+    margin:0!important;
+    padding:0 14px!important;
+    box-sizing:border-box!important;
+    border:0!important;
+    border-radius:0!important;
+    overflow:hidden!important;
+    background:
+      radial-gradient(170px 92px at 18% -5%,rgba(116,151,255,.28),transparent 72%),
+      radial-gradient(190px 98px at 88% -8%,rgba(52,111,255,.22),transparent 72%),
+      linear-gradient(180deg,#2541ef 0%,#1b2fd5 44%,#111d9e 78%,#0a0d77 100%)!important;
+    box-shadow:none!important;
+  }
+  html body[data-app-route="scorers"] #screen > .v950-scorers-head::after{
+    content:""!important;
+    position:absolute!important;
+    inset:0!important;
+    pointer-events:none!important;
+    opacity:.18!important;
+    background:
+      radial-gradient(circle at 31% -52%,transparent 0 78px,rgba(143,170,255,.48) 79px 81px,transparent 82px),
+      radial-gradient(circle at 84% -60%,transparent 0 86px,rgba(143,170,255,.34) 87px 89px,transparent 90px)!important;
+  }
+  html body[data-app-route="scorers"] .v950-scorers-head > *{
+    position:relative!important;
+    z-index:2!important;
+  }
+  html body[data-app-route="scorers"] .v950-scorers-back,
+  html body[data-app-route="scorers"] .v950-scorers-profile{
+    width:42px!important;
+    height:42px!important;
+    min-width:42px!important;
+    min-height:42px!important;
+    max-width:42px!important;
+    max-height:42px!important;
+    display:grid!important;
+    place-items:center!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:50%!important;
+    background:transparent!important;
+    color:#fff!important;
+    box-shadow:none!important;
+    -webkit-tap-highlight-color:transparent!important;
+  }
+  html body[data-app-route="scorers"] .v950-scorers-back{
+    justify-self:start!important;
+  }
+  html body[data-app-route="scorers"] .v950-scorers-profile{
+    justify-self:end!important;
+  }
+  html body[data-app-route="scorers"] .v950-scorers-back svg{
+    width:31px!important;
+    height:31px!important;
+    fill:none!important;
+    stroke:currentColor!important;
+    stroke-width:1.8!important;
+    stroke-linecap:round!important;
+    stroke-linejoin:round!important;
+  }
+  html body[data-app-route="scorers"] .v950-scorers-profile svg{
+    width:30px!important;
+    height:30px!important;
+    fill:none!important;
+    stroke:currentColor!important;
+    stroke-width:1.7!important;
+    stroke-linecap:round!important;
+    stroke-linejoin:round!important;
+  }
+  html body[data-app-route="scorers"] .v950-scorers-title{
+    min-width:0!important;
+    margin:0!important;
+    padding:0!important;
+    color:#fff!important;
+    font:800 22px/1 Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:-.025em!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    text-align:left!important;
+  }
+
+  /* El contenido empieza inmediatamente debajo de la cabecera. */
+  html body[data-app-route="scorers"] #screen > .v28-scorers-page{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    padding-top:14px!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Desde el ranking posterior a los destacados (#4 en categorías donde aplica),
+     el bloque ocupa todo el ancho del teléfono, en todas las categorías. */
+  html body[data-app-route="scorers"] #screen .v462-lower-ranking{
+    position:relative!important;
+    left:50%!important;
+    right:auto!important;
+    width:100vw!important;
+    max-width:none!important;
+    margin:8px 0 18px!important;
+    padding:0!important;
+    transform:translateX(-50%)!important;
+    border:0!important;
+    border-radius:0!important;
+    background:#09086f!important;
+    box-shadow:none!important;
+    overflow:visible!important;
+    box-sizing:border-box!important;
+  }
+  html body[data-app-route="scorers"] #screen .v462-rank-card,
+  html body[data-app-route="scorers"] #screen .v462-rank-list{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    overflow:visible!important;
+  }
+  html body[data-app-route="scorers"] #screen .v462-ranking-title,
+  html body[data-app-route="scorers"] #screen .v462-rank-head{
+    display:none!important;
+  }
+
+  html body.ljr-v777[data-app-route="scorers"] #screen .v462-rank-row,
+  html body[data-app-route="scorers"] #screen .v462-rank-row{
+    width:100%!important;
+    max-width:none!important;
+    height:64px!important;
+    min-height:64px!important;
+    max-height:64px!important;
+    display:grid!important;
+    grid-template-columns:32px 40px minmax(0,1fr) 32px!important;
+    align-items:center!important;
+    column-gap:10px!important;
+    margin:0!important;
+    padding:0 16px!important;
+    border:0!important;
+    border-bottom:1px solid rgba(255,255,255,.14)!important;
+    border-radius:0!important;
+    background:#09086f!important;
+    box-shadow:none!important;
+    box-sizing:border-box!important;
+    color:#fff!important;
+  }
+  html body[data-app-route="scorers"] #screen .v462-rank-row:last-child{
+    border-bottom:0!important;
+  }
+  html body[data-app-route="scorers"] #screen .v462-rank-pos{
+    width:32px!important;
+    min-width:32px!important;
+    max-width:32px!important;
+    margin:0!important;
+    padding:0!important;
+    color:#fff!important;
+    font:700 13px/1 Inter,Roboto,Arial,sans-serif!important;
+    text-align:left!important;
+    white-space:nowrap!important;
+  }
+  html body[data-app-route="scorers"] #screen .v462-rank-row > .v576-player-avatar{
+    width:38px!important;
+    height:38px!important;
+    min-width:38px!important;
+    min-height:38px!important;
+    max-width:38px!important;
+    max-height:38px!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    border:0!important;
+    border-radius:50%!important;
+    background:#fff!important;
+    box-shadow:none!important;
+    box-sizing:border-box!important;
+  }
+  html body[data-app-route="scorers"] #screen .v462-rank-row > .v576-player-avatar img{
+    width:100%!important;
+    height:100%!important;
+    min-width:100%!important;
+    min-height:100%!important;
+    max-width:none!important;
+    max-height:none!important;
+    display:block!important;
+    object-fit:cover!important;
+    object-position:center 18%!important;
+    border-radius:50%!important;
+  }
+  html body[data-app-route="scorers"] #screen .v462-rank-copy{
+    min-width:0!important;
+    width:100%!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:flex-start!important;
+    justify-content:center!important;
+    gap:3px!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    text-align:left!important;
+  }
+  html body[data-app-route="scorers"] #screen .v462-rank-copy > b{
+    width:100%!important;
+    min-width:0!important;
+    margin:0!important;
+    padding:0!important;
+    color:#fff!important;
+    font:700 14px/1.08 Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:-.012em!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    text-align:left!important;
+  }
+  html body[data-app-route="scorers"] #screen .v462-rank-copy > small{
+    width:100%!important;
+    min-width:0!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    gap:5px!important;
+    margin:0!important;
+    padding:0!important;
+    color:#adb3d0!important;
+    font:400 12px/1 Inter,Roboto,Arial,sans-serif!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    text-align:left!important;
+  }
+  html body[data-app-route="scorers"] #screen .v462-rank-copy .v462-rank-logo{
+    flex:0 0 14px!important;
+    width:14px!important;
+    height:14px!important;
+    min-width:14px!important;
+    min-height:14px!important;
+    max-width:14px!important;
+    max-height:14px!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+  }
+  html body[data-app-route="scorers"] #screen .v462-rank-copy .v462-rank-logo img{
+    width:14px!important;
+    height:14px!important;
+    object-fit:contain!important;
+  }
+  html body[data-app-route="scorers"] #screen .v462-rank-row > strong{
+    justify-self:end!important;
+    min-width:32px!important;
+    margin:0!important;
+    padding:0!important;
+    color:#fff!important;
+    font:600 21px/1 Inter,Roboto,Arial,sans-serif!important;
+    text-align:right!important;
+  }
+}
+
+@media(max-width:390px){
+  html body[data-app-route="scorers"] #screen > .v950-scorers-head{
+    height:70px!important;
+    min-height:70px!important;
+    max-height:70px!important;
+    grid-template-columns:44px minmax(0,1fr) 44px!important;
+    padding:0 10px!important;
+  }
+  html body[data-app-route="scorers"] .v950-scorers-title{
+    font-size:20px!important;
+  }
+  html body[data-app-route="scorers"] .v950-scorers-back,
+  html body[data-app-route="scorers"] .v950-scorers-profile{
+    width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;max-width:40px!important;max-height:40px!important;
+  }
+  html body[data-app-route="scorers"] #screen .v462-rank-row{
+    height:62px!important;
+    min-height:62px!important;
+    max-height:62px!important;
+    grid-template-columns:30px 38px minmax(0,1fr) 30px!important;
+    column-gap:8px!important;
+    padding:0 12px!important;
+  }
+  html body[data-app-route="scorers"] #screen .v462-rank-copy > b{font-size:13.5px!important}
+  html body[data-app-route="scorers"] #screen .v462-rank-copy > small{font-size:11.5px!important}
+  html body[data-app-route="scorers"] #screen .v462-rank-row > strong{font-size:20px!important}
+}
