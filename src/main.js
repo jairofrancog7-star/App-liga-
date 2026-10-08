@@ -6496,27 +6496,61 @@ function v64LoadTesseract(){
 
 const V64_APP_URL='https://jairofrancog7-star.github.io/App-liga-/?mode=apk#/home';
 const V64_QR_SRC='https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=12&data='+encodeURIComponent(V64_APP_URL);
+function v64QrIcon(name){
+  const icons={
+    qr:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M15 14h2v3h-3v4m7-7v3h-3m1 4h2"/>',
+    link:'<path d="M10 13a5 5 0 0 0 7.1 0l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1"/><path d="M14 11a5 5 0 0 0-7.1 0l-2 2A5 5 0 1 0 12 20.1l1-1"/>',
+    copy:'<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>',
+    open:'<path d="M13 4h7v7m0-7-9 9"/><path d="M20 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5"/>',
+    share:'<circle cx="18" cy="5" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="19" r="2"/><path d="m8 11 8-5M8 13l8 5"/>',
+    help:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 4.2 1.8c-1.1.9-1.7 1.4-1.7 2.7M12 17h.01"/>',
+    search:'<circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/>',
+    tools:'<path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="11" cy="17" r="2" fill="currentColor" stroke="none"/>'
+  };
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(icons[name]||icons.qr)+'</svg>';
+}
 function ligaQRView(){
-  return '<section class="v60-tool-page v64-qr-page">'+
-    v60Header('ACCESO A LA LIGA','QR de la Liga','Comparte la aplicación oficial de la Liga Municipal de Fútbol Juventino Rosas sin añadir contenido de entrenamientos.')+
-    '<article class="v60-panel v64-qr-card">'+
-      '<div class="v64-qr-frame"><img src="'+V64_QR_SRC+'" alt="Código QR para abrir la app de la Liga Municipal de Fútbol Juventino Rosas" loading="eager" decoding="async"></div>'+
-      '<h2>Abre la app oficial</h2>'+
-      '<p>Escanea este código con la cámara de otro teléfono. El QR abre directamente la aplicación de la Liga.</p>'+
-      '<code class="v64-qr-url">'+V64_APP_URL+'</code>'+
-      '<div class="v60-actions">'+
-        '<a class="v60-link" href="'+V64_APP_URL+'" target="_blank" rel="noopener noreferrer">Abrir app</a>'+
-        '<button class="v60-btn outline" data-v64-share>Compartir</button>'+
-        '<button class="v60-btn ghost" data-v64-copy>Copiar enlace</button>'+
-      '</div>'+
-    '</article>'+
-    '<div class="v60-panel v64-qr-how">'+
-      '<div class="v60-row"><span class="v60-row-copy"><b>1 · Mostrar el QR</b><small>Abre esta pantalla desde Más → QR de la Liga.</small></span></div>'+
-      '<div class="v60-row"><span class="v60-row-copy"><b>2 · Escanear</b><small>La otra persona apunta su cámara al código.</small></span></div>'+
-      '<div class="v60-row"><span class="v60-row-copy"><b>3 · Abrir la Liga</b><small>El enlace lleva a la app, no a contenidos de entrenamientos.</small></span></div>'+
-    '</div>'+
-    '<div class="v60-actions"><button class="v60-btn outline" data-route="search">Buscar en la Liga</button><button class="v60-btn ghost" data-route="leagueTools">Todas las herramientas</button></div>'+
-  '</section>';
+  return `<section class="v60-tool-page v64-qr-page">
+    <div class="v64-qr-intro">
+      <span class="v64-qr-eyebrow"><span class="v64-qr-live-dot" aria-hidden="true"></span> LIGA JUVENTINO ROSAS</span>
+      <h1>Comparte la Liga <span>en segundos</span></h1>
+      <p>Invita a jugadores, equipos y aficionados con un solo código.</p>
+    </div>
+    <article class="v60-panel v64-qr-card">
+      <div class="v64-qr-card-top">
+        <span class="v64-qr-symbol">${v64QrIcon('qr')}</span>
+        <div class="v64-qr-card-title"><b>Acceso a la app</b><small>Código para compartir</small></div>
+        <span class="v64-qr-status">● LISTO</span>
+      </div>
+      <div class="v64-qr-scanbox">
+        <div class="v64-qr-frame"><img src="${V64_QR_SRC}" alt="Código QR para abrir la aplicación oficial de la Liga Municipal de Fútbol Juventino Rosas" loading="eager" decoding="async"></div>
+      </div>
+      <h2>Escanea y entra</h2>
+      <p>Apunta la cámara de otro teléfono al QR para abrir la aplicación de la Liga.</p>
+      <div class="v64-qr-linkrow">
+        ${v64QrIcon('link')}
+        <code class="v64-qr-url" title="${V64_APP_URL}">${V64_APP_URL}</code>
+        <button type="button" class="v64-qr-mini-copy" data-v64-copy aria-label="Copiar enlace de la Liga" title="Copiar enlace">${v64QrIcon('copy')}</button>
+      </div>
+      <div class="v60-actions v64-qr-actions">
+        <a class="v60-link" href="${V64_APP_URL}" target="_blank" rel="noopener noreferrer">${v64QrIcon('open')}<span>Abrir app</span></a>
+        <button type="button" class="v60-btn outline" data-v64-share>${v64QrIcon('share')}<span>Compartir</span></button>
+        <button type="button" class="v60-btn ghost" data-v64-copy>${v64QrIcon('copy')}<span>Copiar enlace</span></button>
+      </div>
+    </article>
+    <section class="v60-panel v64-qr-how" aria-label="Cómo compartir la aplicación">
+      <div class="v64-qr-how-title">${v64QrIcon('help')}<span>¿Cómo funciona?</span></div>
+      <div class="v64-qr-steps">
+        <div class="v64-qr-step"><span class="v64-qr-step-num">01</span><span><b>Muestra el QR</b><small>Entra desde Más → QR de la Liga.</small></span></div>
+        <div class="v64-qr-step"><span class="v64-qr-step-num">02</span><span><b>Escanea el código</b><small>Usa la cámara de otro teléfono.</small></span></div>
+        <div class="v64-qr-step"><span class="v64-qr-step-num">03</span><span><b>Abre la aplicación</b><small>Ingresa directamente a la Liga.</small></span></div>
+      </div>
+    </section>
+    <div class="v64-qr-shortcuts">
+      <button type="button" class="v60-btn outline" data-route="search">${v64QrIcon('search')}<span>Buscar en la Liga</span></button>
+      <button type="button" class="v60-btn ghost" data-route="leagueTools">${v64QrIcon('tools')}<span>Más herramientas</span></button>
+    </div>
+  </section>`;
 }
 
 function moreView(){
