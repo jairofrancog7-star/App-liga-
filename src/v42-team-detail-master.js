@@ -398,8 +398,20 @@ document.addEventListener('click',async e=>{
     También dejamos que las filas de jugador conserven su acción propia. */
  if(route()==='players'&&e.target.closest('[data-v66-directory="players"]'))return;
 
+ /* V950 — Favorites and entity/compare pickers manage their own selection.
+    Never interpret their options as clicks to navigate to Comparar/Team Detail. */
+ if(e.defaultPrevented || e.target.closest(
+  '[data-v414-player],[data-v414-team],[data-v414-tab],[data-v414-cat],'+
+  '[data-v414-star-player],[data-v414-star-team],[data-v414-search],'+
+  '.v123-picker-overlay,.v206-picker,.v208-picker,.v944-overlay,'+
+  '#v369-team-compare,#v369-team-notify,.v42-overlay,'+
+  '[data-v369-team-choice],[data-v369-pick-team]'
+ ))return;
  if(e.target.closest('.bottom-nav,[data-v42-reference],[data-v42-close-overlay],input,select,textarea,[data-v66-player-team-filter],[data-v66-player-cat]'))return;
- await load();if(!db)return;
+ const initialRoute=route();
+ await load();
+ // A previous handler may have already navigated while official data loaded.
+ if(!db||e.defaultPrevented||route()!==initialRoute||!e.target.isConnected)return;
 
  const target=e.target;
  let found=null;
