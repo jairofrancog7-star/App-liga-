@@ -912,7 +912,10 @@ document.addEventListener('click',e=>{
   }
   const catBtn=e.target.closest('[data-v12-cat]');
   if(catBtn){
-    localStorage.setItem('v12-fixture-cat',catBtn.dataset.v12Cat||'3');
+    const category=String(catBtn.dataset.v12Cat||'3');
+    localStorage.setItem('v12-fixture-cat',category);
+    localStorage.setItem('v62-category',category);
+    window.dispatchEvent(new CustomEvent('ljr:competition-category',{detail:{category}}));
     requestAnimationFrame(v12RefreshFixtures);
     return;
   }
@@ -975,6 +978,7 @@ document.addEventListener('click',e=>{
   }
 },true);
 window.addEventListener('ljr:official-data',()=>{V12_FIXTURE_DB=v12LatestDb(V12_FIXTURE_DB,window.LJR_OFFICIAL_DATA||null);requestAnimationFrame(v12RefreshFixtures)});
+window.addEventListener('ljr:competition-category',()=>requestAnimationFrame(v12RefreshFixtures));
 v12LoadFixtureDb().then(()=>requestAnimationFrame(v12RefreshFixtures));
 window.addEventListener('hashchange',()=>requestAnimationFrame(patch));
 const obs=new MutationObserver(()=>requestAnimationFrame(patch));
