@@ -4214,19 +4214,34 @@ function searchResultsHtml(q){
   if(us.length)parts.push(sectionHead('Herramientas')+us.map(x=>'<button class="search-result" data-route="'+x[1]+'"><span class="mini-news"></span><span><b>'+x[0]+'</b><small>Liga Municipal de Fútbol</small></span></button>').join(''));
   return '<section class="section">'+(parts.length?parts.join(''):'<div class="empty-mini">No encontramos resultados en la Liga.</div>')+'</section>';
 }
+function officialVoteNorm(value){
+  return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+}
 function officialVoteCandidates(){
   const selected=String(localStorage.getItem('v62-category')||'');
   const db=window.LJR_OFFICIAL_DATA;
   const rowsFor=(id)=>{
     const cat=db?.categories?.[String(id)];
     const block=cat?.scorers?.[0];
-    return (block?.rows||[]).filter(r=>r.length>=4&&/^\d+$/.test(String(r[3]||''))).map(r=>({
-      id:'official:'+String(id)+':'+String(r[1]||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''),
-      name:String(r[1]||'').trim(),
-      team:String(r[2]||'').trim(),
-      goals:Number(r[3]||0),
-      category:String(cat?.name||'Liga Juventino Rosas')
-    }));
+    return (block?.rows||[])
+      .filter(r=>{
+        if(!Array.isArray(r)||r.length<4||!/^\d+$/.test(String(r[3]||'')))return false;
+        const name=String(r[1]||'').trim();
+        const team=String(r[2]||'').trim();
+        if(!name||!team)return false;
+        /* No convertir los resúmenes por equipo ("24 goles en temporada") en jugadores. */
+        if(/^\d+\s+goles?\s+en\s+temporada$/i.test(team))return false;
+        if(/no\s+hay\s+goles?\s+registrados?/i.test(name+' '+team))return false;
+        return true;
+      })
+      .map(r=>({
+        id:'official:'+String(id)+':'+String(r[1]||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''),
+        name:String(r[1]||'').trim(),
+        team:String(r[2]||'').trim(),
+        goals:Number(r[3]||0),
+        category:String(cat?.name||'Liga Juventino Rosas'),
+        cat:String(id)
+      }));
   };
   let list=[];
   if(db&&selected){
@@ -4237,13 +4252,11 @@ function officialVoteCandidates(){
     list=Object.keys(db.categories||{}).flatMap(rowsFor);
   }
   if(!list.length){
-    /* Respaldo verificado contra data/official-live.json del 19-09-2026.
-       Evita volver a mostrar nombres o equipos ficticios mientras carga la fuente oficial. */
     list=[
-      {id:'official:1:hugo-armenta-buenavista',name:'Hugo Armenta Buenavista',team:'DYNAMO',goals:5,category:'Veteranos 50+'},
-      {id:'official:4:telesforo-freyre-valadez',name:'TELESFORO FREYRE VALADEZ',team:'DEP. NOPALERO',goals:4,category:'Segunda Fuerza'},
-      {id:'official:1:j-carmen-subias-miranda',name:'J. Carmen Subias Miranda',team:'MANCHESTER',goals:4,category:'Veteranos 50+'},
-      {id:'official:1:jose-mendoza-pescador',name:'Jose Mendoza Pescador',team:'LA ESPERANZA',goals:3,category:'Veteranos 50+'}
+      {id:'official:1:hugo-armenta-buenavista',name:'Hugo Armenta Buenavista',team:'DYNAMO',goals:5,category:'Veteranos 50+',cat:'1'},
+      {id:'official:4:telesforo-freyre-valadez',name:'TELESFORO FREYRE VALADEZ',team:'DEP. NOPALERO',goals:4,category:'Segunda Fuerza',cat:'4'},
+      {id:'official:1:j-carmen-subias-miranda',name:'J. Carmen Subias Miranda',team:'MANCHESTER',goals:4,category:'Veteranos 50+',cat:'1'},
+      {id:'official:1:jose-mendoza-pescador',name:'Jose Mendoza Pescador',team:'LA ESPERANZA',goals:3,category:'Veteranos 50+',cat:'1'}
     ];
   }
   const seen=new Set();
@@ -4253,22 +4266,47 @@ function officialVoteCandidates(){
     .slice(0,4);
 }
 function officialVoteTeamLogo(name){
-  const fromRegistry=window.LJR_TEAM_LOGOS?.get?.(name);
-  if(fromRegistry)return fromRegistry;
   const base='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
-  const key=String(name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+  const resolveLogo=(value)=>{
+    const src=String(value||'').trim();
+    if(!src)return '';
+    if(/^(https?:|data:|blob:)/i.test(src)||src.startsWith('./')||src.startsWith('../'))return src;
+    if(src.startsWith('assets/'))return base+src;
+    return src;
+  };
+  try{
+    const live=window.LJR_OFFICIAL_API?.getLogo?.(name)
+      ||window.V66_OFFICIAL_DIRECTORY?.logoFor?.(name)
+      ||window.LJR_TEAM_LOGOS?.get?.(name);
+    if(live)return resolveLogo(live);
+  }catch(_){}
+  const key=officialVoteNorm(name);
+  try{
+    const hit=Object.entries(window.LJR_OFFICIAL_DATA?.team_logos||{}).find(([n])=>officialVoteNorm(n)===key)?.[1];
+    if(hit)return resolveLogo(hit);
+  }catch(_){}
   const map={
+    'san jose fc':'assets/official-logos/san-jose-fc.png',
+    'juventus':'assets/official-logos/juventus.png',
+    'linces':'assets/official-logos/linces.png',
+    'napoli':'assets/official-logos/napoli.png',
+    'hermanos':'assets/official-logos/hermanos.png',
+    'abejas':'assets/official-logos/abejas.png',
+    'terricolas':'assets/official-logos/terricolas.png',
     'dynamo':'assets/official-logos/dynamo.png',
     'dep nopalero':'assets/official-logos/dep-nopalero.png',
     'deportivo nopalero':'assets/official-logos/dep-nopalero.png',
     'manchester':'assets/official-logos/manchester.png',
     'la esperanza':'assets/official-logos/la-esperanza.png',
+    'boavista':'assets/official-logos/boavista.png',
+    'toros de cuenda':'assets/official-logos/toros-de-cuenda.png',
     'atl galeana':'assets/official-logos/galeana.png',
     'atletico galeana':'assets/official-logos/galeana.png',
     'promesas fc':'assets/official-logos/promesas-fc.png',
     'aldama fc':'assets/official-logos/aldama-fc.png',
     'celticos':'assets/official-logos/celticos.png',
-    'dep zapata':'assets/official-logos/dep-zapata.png'
+    'dep zapata':'assets/official-logos/dep-zapata.png',
+    'tavera fc':'assets/official-logos/tavera-fc.png'
   };
   return map[key]?base+map[key]:'';
 }
@@ -4276,16 +4314,37 @@ function officialVoteInitials(name){
   const parts=String(name||'').trim().split(/\s+/).filter(Boolean);
   return ((parts[0]?.[0]||'')+(parts.length>1?parts[parts.length-1][0]:'')).toUpperCase();
 }
+function officialVotePlayerPhoto(p){
+  let src='';
+  try{src=String(window.LJR_PLAYER_MEDIA?.photo?.(p?.name,p?.team,p?.cat)||'').trim()}catch(_){}
+  if(!src){
+    try{src=String(window.LJR_PLAYER_PHOTOS?.get?.(p?.name,p?.team,p?.cat)||'').trim()}catch(_){}
+  }
+  if(src)return src;
+  try{
+    const db=window.LJR_OFFICIAL_DATA;
+    const cat=db?.categories?.[String(p?.cat||'')];
+    const teams=cat?.player_profiles||{};
+    const teamKey=Object.keys(teams).find(n=>officialVoteNorm(n)===officialVoteNorm(p?.team));
+    const rows=teamKey?(teams[teamKey]||[]):[];
+    const player=rows.find(x=>officialVoteNorm(x?.name)===officialVoteNorm(p?.name));
+    return String(player?.photo||'').trim();
+  }catch(_){return ''}
+}
 function voteView(){
   const candidates=officialVoteCandidates();
   const validVote=candidates.some(p=>p.id===state.vote)?state.vote:null;
   if(state.vote&&!validVote){state.vote=null;save()}
   return `<div class="eyebrow">VOTACIÓN</div><h1 class="screen-title">Jugador de la Jornada</h1><p class="muted">Candidatos tomados de jugadores y equipos registrados en la Liga. Elige una sola vez; tu voto queda guardado en este dispositivo.</p><div class="vote-grid">${candidates.map(p=>{
+    const photo=officialVotePlayerPhoto(p);
     const logo=officialVoteTeamLogo(p.team);
+    const playerMark=photo
+      ?`<span class="vote-player-photo v576-has-photo"><img src="${photo}" alt="${p.name}" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>`
+      :`<span class="vote-player-photo fallback">${officialVoteInitials(p.name)}</span>`;
     const teamMark=logo
       ?`<span class="vote-team-logo"><img src="${logo}" alt="${p.team}" loading="lazy" decoding="async"></span>`
-      :`<span class="vote-team-logo fallback">${p.team.slice(0,3)}</span>`;
-    return `<button class="vote-card ${state.vote===p.id?'selected':''}" data-vote="${p.id}" data-vote-name="${p.name.replace(/"/g,'&quot;')}" ${state.vote&&state.vote!==p.id?'disabled':''}><div class="avatar-ball vote-player-initials">${officialVoteInitials(p.name)}</div>${teamMark}<b>${p.name}</b><small class="vote-team-name">${p.team}</small><small>${p.goals} goles · ${p.category}</small><span>${state.vote===p.id?'VOTADO':'VOTAR'}</span></button>`;
+      :`<span class="vote-team-logo fallback">${officialVoteInitials(p.team)}</span>`;
+    return `<button class="vote-card ${state.vote===p.id?'selected':''}" data-vote="${p.id}" data-vote-name="${p.name.replace(/"/g,'&quot;')}" ${state.vote&&state.vote!==p.id?'disabled':''}>${playerMark}<span class="vote-team-chip">${teamMark}<small class="vote-team-name">${p.team}</small></span><b>${p.name}</b><small>${p.goals} goles · ${p.category}</small><span>${state.vote===p.id?'VOTADO':'VOTAR'}</span></button>`;
   }).join('')}</div>`;
 }
 function notificationsView(){return `<div class="eyebrow">PREFERENCIAS</div><h1 class="screen-title">Notificaciones</h1>${sectionHead('Partidos')}<div class="settings-card">${switchRow('goal','Goles','Alertas cuando cambie el marcador')}${switchRow('kickoff','Inicio de partido')}${switchRow('halftime','Medio tiempo')}${switchRow('final','Final del partido')}</div>${sectionHead('Contenido')}<div class="settings-card">${switchRow('news','Noticias')}${switchRow('video','Nuevos videos')}${switchRow('transfers','Fichajes')}</div>${sectionHead('Juegos')}<div class="settings-card">${switchRow('fantasy','Fantasy')}${switchRow('predictor','Quiniela')}</div>`}function privacyView(){return `<div class="eyebrow">TU PRIVACIDAD</div><h1 class="screen-title">Privacidad</h1><div class="profile-card"><h2>Controla tus datos</h2><p>Estas preferencias se guardan localmente. Cuando conectemos Firebase, podrán sincronizarse con tu cuenta.</p></div><div class="settings-card section"><label class="setting-row"><span><b>Analítica opcional</b><small>Ayuda a mejorar la app</small></span><input type="checkbox" data-privacy="analytics" ${state.privacy.analytics?'checked':''}><i></i></label><label class="setting-row"><span><b>Personalización</b><small>Ordenar contenido según tus equipos</small></span><input type="checkbox" data-privacy="personalization" ${state.privacy.personalization?'checked':''}><i></i></label></div><button class="btn primary full section" data-action="accept-privacy">${state.privacy.accepted?'Preferencias guardadas':'Aceptar y guardar'}</button>`}
