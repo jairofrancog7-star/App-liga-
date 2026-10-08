@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v901-data-back-hardlock';
+const CACHE='liga-juventino-v902-stats-entry';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
