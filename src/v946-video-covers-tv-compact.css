@@ -1,0 +1,177 @@
+/* V946 — Restauración de carátulas y compactación horizontal de Liga TV.
+   Exclusivo de #/video y la ruta dedicada #/televisados. */
+@media (max-width:1023px) {
+ /* Restituye la carátula cinematográfica del reproductor anterior: encuadre completo,
+    proporción 16:9 y sin adornos encima de la imagen. */
+ html body[data-app-route="video"] #screen #v105-bottom[data-v105-route="video"] .v105-video-card::before {
+   content:none!important;display:none!important;
+ }
+ html body[data-app-route="video"] #screen #v105-bottom[data-v105-route="video"] .v105-video-card {
+   padding:0 0 10px!important;
+   border-radius:16px!important;
+   border-color:rgba(38,221,235,.22)!important;
+   background:#07105f!important;
+   box-shadow:none!important;
+ }
+ html body[data-app-route="video"] #screen #v105-bottom[data-v105-route="video"] .v105-video-card>video,
+ html body[data-app-route="video"] #screen #v105-bottom[data-v105-route="video"] .v105-video-card>.ljr-video-player {
+   display:block!important;
+   width:100%!important;
+   height:auto!important;
+   min-height:0!important;
+   max-height:none!important;
+   aspect-ratio:16/9!important;
+   margin:0!important;
+   padding:0!important;
+   border:0!important;
+   border-radius:0!important;
+   background:#030846!important;
+ }
+ html body[data-app-route="video"] #screen #v105-bottom[data-v105-route="video"] .v105-video-card>video,
+ html body[data-app-route="video"] #screen #v105-bottom[data-v105-route="video"] .v105-video-card>.ljr-video-player>video {
+   display:block!important;
+   width:100%!important;
+   height:100%!important;
+   max-height:100%!important;
+   aspect-ratio:16/9!important;
+   object-fit:contain!important;
+   background:#030846!important;
+ }
+ /* El botón queda únicamente en la zona de texto, sin cubrir la carátula. */
+ html body[data-app-route="video"] #screen #v105-bottom[data-v105-route="video"] .v941-tv-play {
+   bottom:9px!important;right:10px!important;
+   height:34px!important;min-height:34px!important;
+   border-radius:9px!important;
+ }
+ html body[data-app-route="video"] #screen #v105-bottom[data-v105-route="video"] .v105-video-card>b {
+   padding:9px 73px 2px 11px!important;
+ }
+ html body[data-app-route="video"] #screen #v105-bottom[data-v105-route="video"] .v105-video-card>small {
+   padding:3px 73px 2px 11px!important;
+ }
+ /* Alineación horizontal de "Ver en TV" conservando el disparador de Cast. */
+ html body[data-app-route="video"] #screen .v428-tv-title {
+   box-sizing:border-box!important;
+   width:100%!important;
+   min-height:65px!important;
+   margin:0!important;
+   padding:9px 11px!important;
+   display:grid!important;
+   grid-template-columns:minmax(0,1fr) auto!important;
+   align-items:center!important;
+   gap:8px!important;
+ }
+ html body[data-app-route="video"] #screen .v428-tv-title>div {
+   min-width:0!important;
+   max-width:none!important;
+   width:auto!important;
+ }
+ html body[data-app-route="video"] #screen .v428-tv-title small {
+   font-size:9px!important;line-height:1.05!important;letter-spacing:.1em!important;
+ }
+ html body[data-app-route="video"] #screen .v428-tv-title h2 {
+   margin:3px 0 0!important;
+   font-size:clamp(18px,4.8vw,22px)!important;
+   line-height:1.06!important;
+   letter-spacing:-.02em!important;
+ }
+ html body[data-app-route="video"] #screen .v428-tv-title p {
+   margin:3px 0 0!important;
+   font-size:10px!important;line-height:1.2!important;
+   overflow-wrap:normal!important;
+ }
+ html body[data-app-route="video"] #screen .v428-tv-title>.v439-connect-trigger {
+   display:inline-flex!important;align-items:center!important;justify-content:center!important;
+   box-sizing:border-box!important;
+   flex:none!important;
+   min-width:0!important;width:clamp(105px,32vw,140px)!important;
+   max-width:140px!important;
+   min-height:36px!important;height:auto!important;
+   margin:0!important;padding:7px 7px!important;
+   border-radius:10px!important;
+   font-size:10.5px!important;line-height:1.16!important;
+   font-weight:850!important;
+   white-space:normal!important;text-align:center!important;
+   overflow-wrap:normal!important;
+ }
+ /* Televisados: cabecera a todo lo ancho, flecha próxima al texto, sin grandes alturas. */
+ html body[data-app-route="video"] #screen .v440-tv-pagehead,
+ html body.v440-televisados-open #screen .v440-tv-pagehead {
+   box-sizing:border-box!important;
+   width:100%!important;
+   min-height:54px!important;
+   margin:0!important;
+   padding:8px 11px!important;
+   display:flex!important;align-items:center!important;
+   gap:9px!important;
+   border-bottom:1px solid rgba(183,209,250,.12)!important;
+   box-shadow:none!important;
+ }
+ html body[data-app-route="video"] #screen .v440-tv-backmark,
+ html body.v440-televisados-open #screen .v440-tv-backmark {
+   width:30px!important;height:36px!important;
+   min-width:30px!important;flex:0 0 30px!important;
+   font-size:27px!important;
+   margin:0!important;padding:0!important;
+ }
+ html body[data-app-route="video"] #screen .v440-tv-pagehead>div,
+ html body.v440-televisados-open #screen .v440-tv-pagehead>div {
+   flex:1!important;min-width:0!important;
+ }
+ html body[data-app-route="video"] #screen .v440-tv-pagehead h2,
+ html body.v440-televisados-open #screen .v440-tv-pagehead h2 {
+   margin:0!important;
+   font-size:18px!important;line-height:1.12!important;font-weight:900!important;
+ }
+ html body[data-app-route="video"] #screen .v440-tv-pagehead p,
+ html body.v440-televisados-open #screen .v440-tv-pagehead p {
+   margin:3px 0 0!important;
+   font-size:10px!important;line-height:1.2!important;
+   color:#b8c8e7!important;
+ }
+ /* Seis pestañas en una fila compacta: con scroll sólo si el ancho real lo exige. */
+ html body[data-app-route="video"] #screen .v440-tv-tabs,
+ html body.v440-televisados-open #screen .v440-tv-tabs {
+   box-sizing:border-box!important;
+   display:flex!important;
+   width:100%!important;
+   min-height:38px!important;height:38px!important;
+   padding:0 4px!important;margin:0!important;
+   gap:1px!important;
+   align-items:stretch!important;
+   overflow-x:auto!important;overflow-y:hidden!important;
+   scrollbar-width:none!important;
+   -webkit-overflow-scrolling:touch;
+ }
+ html body[data-app-route="video"] #screen .v440-tv-tabs::-webkit-scrollbar,
+ html body.v440-televisados-open #screen .v440-tv-tabs::-webkit-scrollbar {display:none!important}
+ html body[data-app-route="video"] #screen .v440-tv-tabs button,
+ html body.v440-televisados-open #screen .v440-tv-tabs button {
+   box-sizing:border-box!important;
+   flex:1 0 auto!important;
+   min-width:max-content!important;
+   min-height:38px!important;height:38px!important;
+   padding:0 6px!important;margin:0!important;
+   font-size:clamp(9px,2.45vw,11px)!important;
+   line-height:1.1!important;
+   font-weight:800!important;letter-spacing:0!important;
+   white-space:nowrap!important;
+   text-align:center!important;
+ }
+ html body[data-app-route="video"] #screen .v440-tv-tabs button.is-active::after,
+ html body.v440-televisados-open #screen .v440-tv-tabs button.is-active::after {
+   bottom:0!important;height:3px!important;left:5px!important;right:5px!important;
+ }
+}
+@media (max-width:370px) {
+ html body[data-app-route="video"] #screen .v428-tv-title {
+   padding-left:9px!important;padding-right:9px!important;gap:6px!important;
+ }
+ html body[data-app-route="video"] #screen .v428-tv-title>.v439-connect-trigger {
+   width:105px!important;font-size:10px!important;
+ }
+ html body[data-app-route="video"] #screen .v440-tv-tabs button,
+ html body.v440-televisados-open #screen .v440-tv-tabs button {
+   padding-inline:5px!important;font-size:9px!important;
+ }
+}
