@@ -166,31 +166,40 @@ async function mountQuiniela(root){
      '<section class="v960-q-block"><h3>Máximos goleadores</h3>'+(scorers?'<div class="v960-q-scorer-head"><span>#</span><span>Jugador / Equipo</span><span>Goles</span></div>'+scorers:'<p>No hay goles individuales publicados para esta temporada.</p>')+'</section>'+
      '<section class="v960-q-block"><h3>Resultados con marcador completo</h3>'+(recent||'<p>Sin resultados completos publicados.</p>')+'</section></section>';
  }else if(view==='history'){
-   // El histórico de la cuenta de AdminFut exige autenticación.
-   // Los partidos provienen del corte oficial y el pronóstico es sólo del dispositivo.
-   const focus=catId==='4'||catId==='5';
-   const played=(c.matches||[]).filter(m=>m.complete||matchStarted(m))
-     .sort((a,b)=>(b.iso||'').localeCompare(a.iso||'')||Number(b.round)-Number(a.round)||String(b.time||'').localeCompare(String(a.time||'')));
-   const grouped=new Map();
-   for(const m of played){const r=String(m.round||'—');if(!grouped.has(r))grouped.set(r,[]);grouped.get(r).push(m)}
-   const historyCard=m=>{
-     const saved=predictionFor(p,m);
-     const pts=saved&&m.complete?predictionPoints(saved,m):null;
-     const badge=name=>{const src=logo(name);return '<span class="v964-q-history-team">'+(src?'<img src="'+esc(src)+'" alt="" loading="lazy">':'')+'<b>'+esc(name)+'</b></span>'};
-     const score=m.complete?esc(m.homeScore)+' : '+esc(m.awayScore):'— : —';
-     const status=m.complete?(m.decision?'Decisión administrativa registrada':'Resultado publicado'):'Resultado pendiente de confirmar';
-     const local=saved?'Tu pronóstico local: '+esc(saved.home)+'–'+esc(saved.away)+(pts!==null?' · '+pts+' '+(pts===1?'punto':'puntos'):''):(p[m.id]?'Pronóstico anterior: requiere revisión':'No guardaste un pronóstico en este dispositivo');
-     return '<article class="v964-q-history-card">'+
-       '<div class="v964-q-history-match">'+badge(m.home)+
-       '<div class="v964-q-history-middle"><strong>'+score+'</strong><small>'+status+'</small></div>'+badge(m.away)+'</div>'+
-       '<div class="v964-q-history-detail"><span>'+local+'</span><small>'+esc(m.date||'Fecha no publicada')+' · '+esc(m.venue||'Sede sin publicar')+'</small></div></article>';
-   };
-   const stamp=String(db.captured_at_utc||'sin fecha').replace('T',' ').slice(0,16);
-   const summary='<div class="v964-q-history-summary"><b>'+played.filter(m=>m.complete).length+' resultados publicados</b><span>'+played.filter(m=>!m.complete).length+' sin marcador confirmado</span></div>';
-   const items=grouped.size?[...grouped.entries()].map(([r,rows])=>'<div class="v618-q-history-round v964-q-history-round"><header><b>Jornada '+esc(r)+'</b><span>'+rows.filter(m=>predictionFor(p,m)).length+' guardados aquí</span></header>'+rows.map(focus?historyCard:card).join('')+'</div>').join(''):'<div class="v618-q-empty">Sin partidos iniciados registrados para esta categoría.</div>';
-   body='<section class="v618-q-history v964-q-history"><p class="v960-q-source">Resultados publicados en el corte '+esc(stamp)+' UTC. Sólo se muestran pronósticos de este dispositivo: el historial de tu cuenta se consulta iniciando sesión en AdminFut.</p>'+
-     '<div class="v964-q-history-links"><a class="v960-q-official" target="_blank" rel="noopener noreferrer" href="https://www.juventinorosasliga.com/quiniela/historico/?categoria='+catId+'">Ver histórico de AdminFut ↗</a><button type="button" data-q-refresh>Actualizar resultados</button></div>'+
-     (focus?summary:'')+items+'</section>';
+  // Pantalla local independiente: copiar sólo marcadores registrados en la fuente oficial.
+  const finished=(c.matches||[]).filter(m=>m.complete)
+    .sort((a,b)=>(b.iso||'').localeCompare(a.iso||'')||String(b.time||'').localeCompare(String(a.time||''))||Number(b.round)-Number(a.round));
+  const completedRounds=[...new Set(finished.map(m=>String(m.round||'—')))].sort((a,b)=>Number(b)-Number(a));
+  const savedRound=localStorage.getItem('v965-q-history-round:'+catId)||'all';
+  const chosenRound=savedRound==='all'||completedRounds.includes(savedRound)?savedRound:'all';
+  const matchesShown=chosenRound==='all'?finished:finished.filter(m=>String(m.round||'—')===chosenRound);
+  const groups=new Map();
+  for(const m of matchesShown){const r=String(m.round||'—');if(!groups.has(r))groups.set(r,[]);groups.get(r).push(m)}
+  const teamMarkup=name=>{const src=logo(name);return '<div class="v965-history-team">'+
+    (src?'<img src="'+esc(src)+'" alt="" loading="lazy" decoding="async">':'<span class="v965-history-fallback">'+esc(String(name||'?').slice(0,2).toUpperCase())+'</span>')+
+    '<b>'+esc(name)+'</b></div>'};
+  const resultCard=m=>'<article class="v965-history-match">'+
+    '<div class="v965-history-match-head"><span>Jornada '+esc(m.round||'—')+'</span><time>'+esc(m.date||'Fecha no publicada')+'</time></div>'+
+    '<div class="v965-history-match-body">'+teamMarkup(m.home)+
+      '<div class="v965-history-score"><strong>'+esc(m.homeScore)+' : '+esc(m.awayScore)+'</strong><span>'+(m.decision?'Resolución administrativa':'Final')+'</span></div>'+
+      teamMarkup(m.away)+'</div>'+
+    '<div class="v965-history-venue"><span aria-hidden="true">⌖</span>'+esc(m.venue||'Campo no especificado')+'</div></article>';
+  const options='<option value="all">Todas las jornadas</option>'+completedRounds.map(r=>
+    '<option value="'+esc(r)+'" '+(r===chosenRound?'selected':'')+'>Jornada '+esc(r)+'</option>').join('');
+  const items=groups.size?[...groups.entries()].map(([r,rows])=>
+    '<section class="v965-history-round"><header><span class="v965-history-round-title"><i aria-hidden="true">▦</i> Jornada '+esc(r)+'</span><span class="v965-history-round-count">'+rows.length+' partido'+(rows.length===1?'':'s')+'</span></header>'+
+    '<div class="v965-history-list">'+rows.map(resultCard).join('')+'</div></section>').join(''):
+    '<div class="v965-history-empty">Todavía no hay resultados completos publicados en esta selección.</div>';
+  const stamp=String(db.captured_at_utc||'').replace('T',' ').replace('Z','').slice(0,16);
+  body='<section class="v965-history-screen" aria-label="Histórico de resultados de Liga Juventino Rosas">'+
+    '<header class="v965-history-hero"><div class="v965-history-eyebrow">'+qIcon('history')+' ARCHIVO DE RESULTADOS</div>'+
+    '<h2>Ver histórico</h2><p>'+esc(c.name)+' · Resultados publicados</p>'+
+    '<div class="v965-history-metrics"><span><b>'+finished.length+'</b><small>Resultados</small></span>'+
+    '<span><b>'+completedRounds.length+'</b><small>Jornadas con resultados</small></span></div></header>'+
+    '<div class="v965-history-tools"><label for="v965-q-round">Ver jornada</label><select id="v965-q-round" data-q-history-round>'+options+'</select>'+
+    '<button type="button" data-q-refresh aria-label="Actualizar resultados">'+qIcon('history')+'<span>Actualizar</span></button></div>'+
+    '<p class="v965-history-source">Fuente: datos publicados por la Liga · Corte '+esc(stamp||'no disponible')+' UTC. Sólo se muestran marcadores completos.</p>'+
+    items+'</section>';
  }else{
    body='<div class="v618-q-round"><span>'+esc(c.name)+'</span><label>Jornada <select data-q-round>'+rounds.map(r=>'<option value="'+esc(r)+'" '+(r===round?'selected':'')+'>'+esc(r)+'</option>').join('')+'</select></label></div>'+
      '<h3 class="v618-q-section-title">En juego — pronostica ahora</h3>'+
@@ -213,6 +222,8 @@ async function mountQuiniela(root){
  root.querySelectorAll('[data-q-view]').forEach(btn=>btn.onclick=()=>{localStorage.setItem('v561-quiniela-view',btn.dataset.qView);mountQuiniela(root)});
  root.querySelectorAll('[data-q-cat-button]').forEach(btn=>btn.onclick=()=>{catId=btn.dataset.qCatButton;localStorage.setItem('v561-category',catId);mountQuiniela(root)});
  const hiddenCat=$('[data-q-cat]',root);if(hiddenCat)hiddenCat.onchange=e=>{catId=e.target.value;localStorage.setItem('v561-category',catId);mountQuiniela(root)};
+ const historySelect=$('[data-q-history-round]',root);
+ if(historySelect)historySelect.onchange=e=>{localStorage.setItem('v965-q-history-round:'+catId,e.target.value);mountQuiniela(root)};
  const roundSelect=$('[data-q-round]',root);if(roundSelect)roundSelect.onchange=e=>{localStorage.setItem('v561-quiniela-round:'+catId,e.target.value);localStorage.setItem('v964-q-round-manual:'+catId,'1');mountQuiniela(root)};
 
  const saveRow=row=>{
