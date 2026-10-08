@@ -14,15 +14,16 @@ let dataPromise,scheduled=0;
 const currentRoute=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0];
 const safeRead=(key)=>{try{return JSON.parse(localStorage.getItem(key)||'{}')||{}}catch{return {}}};
 const safeWrite=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value));return true}catch{return false}};
-const snapshot=()=>dataPromise||(dataPromise=fetch(DATA,{cache:'no-store'}).then(r=>{
- if(!r.ok)throw Error('No se pudo cargar el archivo local');
- return r.json();
-}).catch(error=>{
-  dataPromise=null;
-  const cached=(()=>{try{return JSON.parse(localStorage.getItem('ljr-blue:quiniela:fixture-snapshot:v1')||'null')}catch{return null}})();
-  if(cached?.categories?.['3'])return cached;
-  throw error;
-}));
+const snapshot=()=>{
+ if(dataPromise)return dataPromise;
+ // El modulo original ya actualiza este archivo y su caché antes de pintar las tarjetas.
+ const cached=(()=>{try{return JSON.parse(localStorage.getItem('ljr-blue:quiniela:fixture-snapshot:v1')||'null')}catch{return null}})();
+ if(cached?.categories?.['3'])return dataPromise=Promise.resolve(cached);
+ return dataPromise=fetch(DATA,{cache:'no-store'}).then(r=>{
+   if(!r.ok)throw Error('No se pudo cargar el archivo local');
+   return r.json();
+ }).catch(error=>{dataPromise=null;throw error});
+};
 function matchKey(m,data){
  return [m.category,data.categories?.[String(m.category)]?.season_id||'',m.round,norm(m.home),norm(m.away)].join('|');
 }
@@ -131,7 +132,9 @@ function addProgress(root,cat,visibleMatches,data){
  card.innerHTML='<div class="v970-progress-head"><span>MI JORNADA · AVANCE</span><b>'+saved+' / '+count+' guardados</b></div>'+
    '<div class="v970-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="'+count+'" aria-valuenow="'+saved+'"><i style="width:'+percent+'%"></i></div>'+
    '<div class="v970-progress-footer"><span>'+missing.length+' pendientes para pronosticar'+(when?' · Próximo: '+escapeHtml(when):'')+'</span>'+
-   (missing.length?'<button type="button" data-v970-jump>Pendientes →</button>':'<span class="v970-progress-complete">✓ Revisado</span>')+'</div>';
+   (missing.length?'<button type="button" data-v970-jump>Pendientes →</button>':
+     saved===count?'<span class="v970-progress-complete">✓ Jornada completa</span>':
+     '<span class="v970-progress-complete">Partidos ya cerrados</span>')+'</div>';
  const round=$('.v618-q-round',root);
  const title=$('.v618-q-section-title',root);
  if(round)round.insertAdjacentElement('afterend',card);
