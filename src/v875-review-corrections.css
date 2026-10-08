@@ -724,10 +724,10 @@ html body.ljr-v777[data-app-route="playerDetail"] #screen .v379-hero>[data-v379-
 .v875-meeting-modal .v875-agenda-chips b{font-size:9.5px;line-height:1.2;color:#fff}
 
 .v875-meeting-modal .v105-actions{
-  position:sticky!important;bottom:0!important;z-index:5!important;
+  position:static!important;bottom:auto!important;z-index:auto!important;
   display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;
-  margin:14px -2px -2px!important;padding:12px 2px 2px!important;
-  background:linear-gradient(180deg,rgba(6,11,63,0),#060b3f 22%,#060b3f 100%)!important
+  margin:14px 0 0!important;padding:9px 0 18px!important;
+  background:transparent!important
 }
 .v875-meeting-modal .v919-action{
   min-height:48px!important;border-radius:14px!important;padding:0 13px!important;
@@ -742,11 +742,13 @@ html body.ljr-v777[data-app-route="playerDetail"] #screen .v379-hero>[data-v379-
   border:0!important;box-shadow:0 8px 20px rgba(44,218,239,.18)!important
 }
 .v875-meeting-modal .v919-action.is-print,
-.v875-meeting-modal .v919-action.is-share{
+.v875-meeting-modal .v919-action.is-share,
+.v875-meeting-modal .v919-action.is-png{
   background:linear-gradient(145deg,#15337b,#0c1e5a)!important;color:#fff!important;
   border:1px solid rgba(91,136,225,.42)!important
 }
-.v875-meeting-modal .v919-action.is-share{grid-column:1/-1!important}
+.v875-meeting-modal .v919-action.is-share,
+.v875-meeting-modal .v919-action.is-png{grid-column:auto!important}
 
 @media(max-width:420px){
  .v919-meeting-shortcut{grid-template-columns:44px minmax(0,1fr) 22px;padding:12px}
@@ -910,4 +912,22 @@ html body.ljr-v777[data-app-route="playerDetail"] #screen .v379-hero>[data-v379-
     height:46px!important;
     font-size:9.2px!important;
   }
+}
+
+
+/* V926 · Junta: acciones en flujo normal; TODA la ficha baja junta al scroll.
+   Afecta sólo este modal, no la barra inferior global ni otras herramientas. */
+html body > .v105-modal.v875-meeting-modal .v105-dialog{
+  overflow-y:auto!important;overscroll-behavior-y:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+  padding-bottom:28px!important;
+}
+html body > .v105-modal.v875-meeting-modal .v105-actions{
+  position:static!important;bottom:auto!important;inset:auto!important;
+  transform:none!important;z-index:auto!important;
+  background:none!important;
+  margin-top:16px!important;padding:10px 0 18px!important;
+}
+html body > .v105-modal.v875-meeting-modal .v919-action:disabled{
+  opacity:.65!important;cursor:wait!important;
 }
