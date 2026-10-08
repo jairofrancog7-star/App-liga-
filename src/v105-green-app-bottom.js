@@ -854,15 +854,31 @@ function v160FieldOptions(selected=''){
 function registerAlerts(){
  const cats=v160Categories(),old=read('v160-alert-profile',{name:'',email:'',cat:cats[0]?.id||'',team:''});
  const catOptions=cats.map(x=>'<option value="'+esc(x.id)+'" '+(String(old.cat)===String(x.id)?'selected':'')+'>'+esc(x.name)+'</option>').join('');
- const m=modal('Registrarse y recibir notificaciones','Perfil local para personalizar avisos en la app azul. No sustituye una cuenta segura cuando se conecte backend.',
-   '<div class="v105-form">'+
-    '<label><span>Nombre</span><input data-r-name value="'+esc(old.name)+'" placeholder="Tu nombre"></label>'+
-    '<label><span>Correo (opcional)</span><input type="email" data-r-email value="'+esc(old.email)+'" placeholder="correo@ejemplo.com"></label>'+
-    '<label><span>Categoría favorita</span><select data-r-cat>'+catOptions+'</select></label>'+
-    '<label><span>Equipo favorito</span><select data-r-team></select></label>'+
-   '</div><div class="v105-actions"><button class="v105-btn" data-r-save>Guardar y activar avisos</button><button class="v105-btn alt" data-r-notif>Preferencias de notificación</button></div>'+
+ const glyph=(name)=>{
+   const paths={
+     user:'<path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/>',
+     mail:'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3 8 9 6 9-6"/>',
+     shield:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/>',
+     users:'<path d="M16 20a4 4 0 0 0-8 0"/><circle cx="12" cy="8" r="4"/><path d="M19 20h2a4 4 0 0 0-3-3.87M5 16.13A4 4 0 0 0 2 20h2"/>',
+     bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/>',
+     chevron:'<path d="m6 9 6 6 6-6"/>'
+   };
+   return '<svg class="v920-glyph v920-glyph-'+name+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(paths[name]||'')+'</svg>';
+ };
+ const m=modal('Registrarse y recibir notificaciones',
+   'Personaliza los avisos por categoría y equipo. Tus preferencias se guardan en este dispositivo.',
+   '<div class="v105-form v920-register-form">'+
+     '<label class="v920-field"><span class="v920-label">Nombre</span>'+glyph('user')+'<input data-r-name type="text" autocomplete="name" value="'+esc(old.name)+'" placeholder="Escribe tu nombre"></label>'+
+     '<label class="v920-field"><span class="v920-label">Correo <small>(opcional)</small></span>'+glyph('mail')+'<input type="email" autocomplete="email" data-r-email value="'+esc(old.email)+'" placeholder="correo@ejemplo.com"></label>'+
+     '<label class="v920-field"><span class="v920-label">Categoría favorita</span>'+glyph('shield')+'<select data-r-cat>'+catOptions+'</select>'+glyph('chevron')+'</label>'+
+     '<label class="v920-field"><span class="v920-label">Equipo favorito</span>'+glyph('users')+'<select data-r-team></select>'+glyph('chevron')+'</label>'+
+   '</div>'+
+   '<div class="v105-actions v920-register-actions">'+
+     '<button type="button" class="v105-btn v920-btn-primary" data-r-save>'+glyph('shield')+'<span>Guardar y activar avisos</span></button>'+
+     '<button type="button" class="v105-btn alt v920-btn-secondary" data-r-notif>'+glyph('bell')+'<span data-r-notif-label>Preferencias de notificación</span></button>'+
+   '</div>'+
    '<div class="v168-inline-notifications" data-r-inline-notif hidden></div>');
- m.classList.add('v168-account-modal');
+ m.classList.add('v168-account-modal','v920-registration-modal');
  const cat=$('[data-r-cat]',m),team=$('[data-r-team]',m);
  const fill=()=>{const list=v160Teams(cat.value);team.innerHTML=list.map(n=>'<option '+(norm(n)===norm(old.team)?'selected':'')+'>'+esc(n)+'</option>').join('')||'<option>Sin equipos publicados</option>'};fill();
  cat.onchange=()=>{old.team='';fill()};
@@ -888,8 +904,8 @@ function registerAlerts(){
    $$('[data-r-pref]',notifBox).forEach(x=>x.onchange=()=>{saveNotif({[x.dataset.rPref]:x.checked});toast('Preferencia guardada')});
  };
  $('[data-r-notif]',m).onclick=()=>{
-   if(notifBox.hidden){renderNotif();notifBox.hidden=false;$('[data-r-notif]',m).textContent='Ocultar preferencias';notifBox.scrollIntoView({behavior:'smooth',block:'nearest'})}
-   else{notifBox.hidden=true;$('[data-r-notif]',m).textContent='Preferencias de notificación'}
+   if(notifBox.hidden){renderNotif();notifBox.hidden=false;$('[data-r-notif-label]',m).textContent='Ocultar preferencias';notifBox.scrollIntoView({behavior:'smooth',block:'nearest'})}
+   else{notifBox.hidden=true;$('[data-r-notif-label]',m).textContent='Preferencias de notificación'}
  };
 }
 function scheduleMatch(){
