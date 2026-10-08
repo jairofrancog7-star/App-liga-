@@ -41,24 +41,17 @@
   }
 }
 
-/* V968 — Eliminar EXCLUSIVAMENTE la franja azul oscuro entre
-   el borde del buscador/cabecera y "Siguiendo".
-   Era el margen superior de 26px del primer bloque .v27-section,
-   que dejaba ver el fondo marino de .v27-teams-page.
-   El parche pertenece al primer bloque (se desplaza con él) para que
-   NO tape el texto ni la cabecera sticky al hacer scroll. */
+/* V969 — Arreglo definitivo comprobado en el navegador móvil.
+   El hueco visible (26px) entre la cabecera fija y el listado NO es parte
+   del primer bloque .v27-section. Es el fondo del #screen fijo de V768.
+   Se iguala su fondo al azul de llegada del degradado de la cabecera.
+   El contenido y el texto "Siguiendo" quedan intactos.
+   Se retira el antiguo ::before de V968 porque el overflow:clip de la
+   página lo recortaba y nunca podía pintar fuera de su contenedor. */
 @media (max-width:1023px) {
-  html body[data-app-route="teams"] #screen .v27-teams-page > .v27-section:first-of-type::before,
-  html body.v27-teams-active #screen .v27-teams-page > .v27-section:first-of-type::before {
-    content:""!important;
-    position:absolute!important;
-    left:-16px!important;
-    right:-16px!important;
-    top:-42px!important;
-    height:43px!important;
-    background:#1d3bb8!important;
+  html body[data-app-route="teams"].v768-scroll-root #app #screen,
+  html body.v27-teams-active.v768-scroll-root #app #screen {
+    background-color:#1d3bb8!important;
     background-image:none!important;
-    pointer-events:none!important;
-    z-index:0!important;
   }
 }
