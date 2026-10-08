@@ -462,6 +462,8 @@ function meeting(){
  $('[data-pdf]',m).onclick=()=>window.print();
 }
 
+window.LJR_OPEN_MEETING=meeting;
+
 function poll(){
  const choices=[
   ['organizacion','shield','Organización y avisos','Juntas, comunicados y cambios de última hora'],
