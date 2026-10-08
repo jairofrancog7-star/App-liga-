@@ -405,8 +405,38 @@
     if(gate?.routes?.has?.(r) && typeof gate.open==='function'){gate.open(r);return}
     location.hash='#/'+r;
   }
+  /* V953: la cuadrícula nativa de Publicaciones se renderiza desde main.js.
+     Decora esos botones originales SIN sustituirlos ni cambiar sus data-v668-route. */
+  function decorateNativeIcons(panel){
+    const byPrep={
+      'pub:scorers':'ball','pub:calendar':'calendar','pub:results':'flag',
+      'pub:sanctions':'card-alert','pub:cedula':'image',
+      'bracket:round':'trophy','bracket:full':'trophy','bracket:quarters':'trophy',
+      'discipline:suspensions':'shield-alert'
+    };
+    const byRoute={
+      tableExport:'chart',bracketBuilder:'trophy',agendaBuilder:'calendar',
+      discipline:'shield-alert',suspensionTool:'ban',cedulaBuilder:'file',
+      cedulas:'files',credentialBuilder:'id',permissionBuilder:'check',
+      scheduleChanges:'arrows',publicationCenter:'news',v38Stats:'chart',
+      tactics:'strategy',simulator:'settings',publications:'megaphone'
+    };
+    panel.querySelectorAll('.v161-generator-card').forEach(b=>{
+      const icon=b.querySelector('.v161-generator-icon');
+      if(!icon || icon.querySelector('.v161-generator-svg'))return;
+      const title=b.querySelector('b')?.textContent?.trim()||'';
+      const existing=GENERATORS.find(g=>g.title===title);
+      const kind=existing?.icon ||
+        byPrep[b.dataset.v668Prep||''] ||
+        byRoute[b.dataset.v668Route||''] ||
+        'file';
+      icon.innerHTML=generatorIcon(kind);
+    });
+  }
   function bindPanel(panel){
-    if(!panel||panel.dataset.v161Bound==='1')return;
+    if(!panel)return;
+    decorateNativeIcons(panel);
+    if(panel.dataset.v161Bound==='1')return;
     panel.dataset.v161Bound='1';
 
     panel.querySelector('[data-v161-files]')?.addEventListener('change',e=>{
