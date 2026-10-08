@@ -13,9 +13,10 @@ export function normalizeCompetition(db) {
       const iso=d?`${d[3]}-${d[2]}-${d[1]}`:'';
       const homeScore=number(r[3]),awayScore=number(r[5]);
       const complete=homeScore!==null&&awayScore!==null;
+      const decision=c?.fixture_decisions?.[String(r[0]??i)]||null;
       const publishedStatus=String(r.status||'').toUpperCase();
-      const status=['LIVE','FINAL','POSTPONED','SUSPENDED','VENUE CHANGED'].includes(publishedStatus)?publishedStatus:complete?'FINAL':'UNCONFIRMED';
-      return {id:`${id}:${r[0]??i}`,category:id,round:String(r[1]??''),home:String(r[2]),away:String(r[6]),homeScore,awayScore,complete,status,venue:String(r[7]||''),date,iso,time:date.match(/\s(\d{1,2}:\d{2})/)?.[1]||'',raw:r};
+      const status=decision?'AWARDED':['LIVE','FINAL','POSTPONED','SUSPENDED','VENUE CHANGED'].includes(publishedStatus)?publishedStatus:complete?'FINAL':'UNCONFIRMED';
+      return {id:`${id}:${r[0]??i}`,category:id,round:String(r[1]??''),home:String(r[2]),away:String(r[6]),homeScore,awayScore,complete,status,decision,venue:String(r[7]||''),date,iso,time:date.match(/\s(\d{1,2}:\d{2})/)?.[1]||'',raw:r};
     }).filter(m=>{if(seen.has(m.id))return false;seen.add(m.id);return true});
     // Form is shown only when every played match needed by the standings is available.
     for(const t of standings){
