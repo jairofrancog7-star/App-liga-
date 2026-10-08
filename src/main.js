@@ -6825,6 +6825,8 @@ document.querySelector('[data-v64-ocr]')?.addEventListener('click',async e=>{
       dob:evidence?(evidence.dob||(/NACIMIENTO/i.test(combined)?v64OcrDate(combined):'')):(strong.dob||''),
       city:''
     };
+    const normalize=window.LJR_REGISTRATION_CAPTURE?.normalizeName;
+    if(scanPlayer&&scanName&&evidence?.name&&normalize&&normalize(scanName)!==normalize(evidence.name)){toast('El nombre detectado no coincide. Revisa el texto y el jugador elegido.');return}
     if(scanPlayer&&scanCurp&&p.curp&&p.curp!==scanCurp){toast('La CURP no coincide con este jugador. Revisa el documento.');return}
     if(scanPlayer&&scanName)p.name=scanName;
     if(!p.curp&&scanPlayer)p.curp=scanCurp;

@@ -1,4 +1,4 @@
-import {validateCurp,parseIdentity,completion,matchAttachment} from './registration-core.js';
+import {validateCurp,parseIdentity,completion,matchAttachment,normalizeName} from './registration-core.js';
 const q=s=>document.querySelector(s);
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let dbPromise,restoreVersion=0,pendingPhotos=[],busy=false,installed=false;
@@ -31,6 +31,10 @@ function fillFile(selector,file){
   const input=q(selector);if(!input)return;
   const transfer=new DataTransfer();if(file)transfer.items.add(file);input.files=transfer.files;
   input.dispatchEvent(new Event('change',{bubbles:true}));
+
+}
+function refreshFilePreview(input){
+  const file=input.files?.[0],selector=input.matches('[data-v64-photo]')?'[data-v64-photo]':'[data-v64-doc]';
   const host=q(selector==='[data-v64-photo]'?'[data-v64-player-mini-preview]':'[data-v64-doc-preview]');
   if(host){host.replaceChildren();if(file){const img=document.createElement('img'),url=URL.createObjectURL(file);img.alt=selector.includes('photo')?'Foto del jugador':'Documento del jugador';img.onload=img.onerror=()=>URL.revokeObjectURL(url);img.src=url;host.append(img)}else host.textContent='Sin imagen seleccionada'}
 }
@@ -87,6 +91,7 @@ function update(){
 function applyText(){
   const text=q('[data-v64-ocr-text]')?.value||'',identity=parseIdentity(text);
   const current=formData(),editing=localStorage.getItem('v124-player-edit-id');
+  if(editing&&current.name&&identity.name&&normalizeName(current.name)!==normalizeName(identity.name)){status('El nombre del documento no coincide. Corrige el texto o el jugador elegido antes de vincularlo.');return}
   if(editing&&current.curp&&identity.curp&&current.curp!==identity.curp){status('Esta CURP pertenece a otro registro. Revisa el documento antes de cambiar de jugador.');return}
   for(const [selector,value] of [['[data-v64-cred-name]',identity.name],['[data-v64-cred-curp]',identity.curp],['[data-v100-dob]',identity.dob]]){
     const el=q(selector);if(!el||!value)continue;el.value=value;el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));
@@ -157,9 +162,9 @@ function mount(){
 }
 export function installCapture(){
   if(installed)return;installed=true;
-  window.LJR_REGISTRATION_CAPTURE={read:readConnected,parseIdentity,extractCurp:text=>parseIdentity(text).curp,update};
+  window.LJR_REGISTRATION_CAPTURE={read:readConnected,parseIdentity,normalizeName,extractCurp:text=>parseIdentity(text).curp,update};
   document.addEventListener('input',e=>{if(e.target.matches('[data-v64-cred-name],[data-v64-cred-curp],[data-v64-cred-team],[data-v100-dob]'))update()});
-  document.addEventListener('change',e=>{if(e.target.matches('[data-v64-photo],[data-v64-doc],[data-v64-cred-team]'))update()});
+  document.addEventListener('change',e=>{if(e.target.matches('[data-v64-photo],[data-v64-doc]'))refreshFilePreview(e.target);if(e.target.matches('[data-v64-photo],[data-v64-doc],[data-v64-cred-team]'))update()});
   window.addEventListener('hashchange',()=>{resetAssetsVersion();setTimeout(mount,80)});
   function resetAssetsVersion(){restoreVersion++}
   new MutationObserver(()=>{if(!q('[data-capture-panel]'))mount()}).observe(document.body,{childList:true,subtree:true});mount();

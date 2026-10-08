@@ -394,6 +394,7 @@ function applyRecruitmentPrefill(){
   const p=read('v190-recruit-prefill',null);if(!p)return false;
   localStorage.removeItem('v190-recruit-prefill');
   localStorage.removeItem(EDIT_KEY);
+  resetAssets();
   setValue('[data-v64-cred-name]',p.name||'');
   if(p.targetTeam)setValue('[data-v64-cred-team]',p.targetTeam);
   if(p.category)setValue('[data-v64-cred-cat]',p.category);

@@ -23,6 +23,11 @@ try{
   await page.evaluate(()=>window.LJR_PLAYER_REGISTRY.load(window.LJR_PLAYER_REGISTRY.records()[0]));
   await page.waitForFunction(()=>document.querySelector('[data-v64-photo]').files.length===1);
   assert.equal(await page.locator('[data-v64-photo]').evaluate(el=>el.files[0].name),'juan.png');
+  await page.locator('[data-v64-photo]').setInputFiles({name:'updated.png',mimeType:'image/png',buffer:png});
+  assert.equal(await page.locator('[data-v64-player-mini-preview] img').count(),1);
+  await page.locator('[data-v64-ocr-text]').fill('NOMBRES: CARLOS\nPRIMER APELLIDO: MENDOZA\nSEGUNDO APELLIDO: LOPEZ');
+  await page.locator('[data-capture-apply-text]').click();
+  assert.equal(await page.locator('[data-v64-cred-name]').inputValue(),'Juan Franco Rosas');
   await page.locator('[data-v124-new]').click();assert.equal(await page.locator('[data-v64-photo]').evaluate(el=>el.files.length),0);
   // Hand-entered delegate list exercises actual roster parser and comparison.
   await page.locator('[data-v126-team-open]').click();await page.locator('[data-v126-team-choice="Equipo Prueba"]').click();
