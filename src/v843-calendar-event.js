@@ -1,11 +1,9 @@
 export const CALENDAR_ZONE = 'America/Mexico_City';
-export function googleCalendarDestination(event, android = false) {
-  if (!android) return event.googleURL;
-  const encode = value => encodeURIComponent(String(value));
-  return 'intent://com.android.calendar/events#Intent;scheme=content;action=android.intent.action.INSERT;type=vnd.android.cursor.item/event;'
-    + 'S.title=' + encode(event.title) + ';S.description=' + encode(event.description) + ';S.eventLocation=' + encode(event.location)
-    + ';S.eventTimezone=' + encode(event.timeZone) + ';l.beginTime=' + event.startMs + ';l.endTime=' + event.endMs
-    + ';B.allDay=' + event.allDay + ';S.browser_fallback_url=' + encode(event.googleURL) + ';end';
+// En navegadores Android usar la plantilla web, NO un intent:// de Android.
+ // Chrome puede abrir la agenda sin conservar los datos de un ACTION_INSERT.
+ // La APK Capacitor usa LigaCalendar.openEvent por separado.
+export function googleCalendarDestination(event) {
+  return event.googleURL;
 }
 const stamp = value => new Date(value).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
 const escapeICS = value => String(value || '').replace(/\\/g, '\\\\').replace(/\r?\n/g, '\\n').replace(/;/g, '\\;').replace(/,/g, '\\,');
@@ -38,8 +36,8 @@ export function calendarEvent(game, now = Date.now()) {
   const event = { title, description, location: game.venue || '', startMs, endMs, allDay: !timed, timeZone: CALENDAR_ZONE };
   const start = timed ? stamp(startMs) : game.iso.replace(/-/g, '');
   const end = timed ? stamp(endMs) : new Date(Date.UTC(y, m - 1, d + 1)).toISOString().slice(0, 10).replace(/-/g, '');
-  const google = new URL('https://calendar.google.com/calendar/r/eventedit');
-  google.search = new URLSearchParams({ action: 'TEMPLATE', text: title, dates: `${start}/${end}`, stz: CALENDAR_ZONE, etz: CALENDAR_ZONE, details: description, location: event.location }).toString();
+  const google = new URL('https://calendar.google.com/calendar/render');
+  google.search = new URLSearchParams({ action: 'TEMPLATE', text: title, dates: `${start}/${end}`, stz: CALENDAR_ZONE, etz: CALENDAR_ZONE, ctz: CALENDAR_ZONE, details: description, location: event.location }).toString();
   const outlook = new URL('https://outlook.live.com/calendar/0/deeplink/compose');
   outlook.search = new URLSearchParams({ path: '/calendar/action/compose', rru: 'addevent', subject: title, body: description, location: event.location, startdt: timed ? new Date(startMs).toISOString() : game.iso, enddt: timed ? new Date(endMs).toISOString() : new Date(Date.UTC(y, m - 1, d + 1)).toISOString().slice(0, 10), allday: String(!timed) }).toString();
   const body = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Liga Juventino Rosas//Calendario//ES', 'CALSCALE:GREGORIAN', 'BEGIN:VEVENT', `UID:${escapeICS(game.id)}@juventinorosasliga.com`, `DTSTAMP:${stamp(now)}`, `${timed ? 'DTSTART:' : 'DTSTART;VALUE=DATE:'}${start}`, `${timed ? 'DTEND:' : 'DTEND;VALUE=DATE:'}${end}`, `SUMMARY:${escapeICS(title)}`, `LOCATION:${escapeICS(event.location)}`, `DESCRIPTION:${escapeICS(description)}`, 'END:VEVENT', 'END:VCALENDAR', ''].join('\r\n');
