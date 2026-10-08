@@ -1,0 +1,271 @@
+/* V936 · Partido > Ver detalles > Acciones rápidas.
+   Isolated visual redesign: keep native fields and existing click handlers. */
+html body #screen #v100-match-extra{
+  box-sizing:border-box;
+  width:100%;
+  min-width:0;
+  margin:14px 0 16px;
+  padding:clamp(14px,3.8vw,22px)!important;
+  display:grid;
+  gap:16px;
+  border:1px solid rgba(77,211,242,.34)!important;
+  border-radius:22px!important;
+  background:
+    radial-gradient(ellipse at 100% 0%,rgba(48,221,244,.11),transparent 49%),
+    linear-gradient(157deg,#112a77 0%,#0b1d61 48%,#081549 100%)!important;
+  color:#f3f8ff;
+  box-shadow:0 12px 30px rgba(1,8,47,.20),inset 0 1px 0 rgba(255,255,255,.07)!important;
+  overflow:visible;
+}
+html body #screen #v100-match-extra .v100-head{
+  min-width:0;
+  margin:0!important;
+  padding:0 0 14px!important;
+  border-bottom:1px solid rgba(161,216,250,.13);
+}
+html body #screen #v100-match-extra .v100-head small{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:5px 10px;
+  border:1px solid rgba(77,222,239,.23);
+  border-radius:999px;
+  background:rgba(68,218,240,.10);
+  color:#69edf8;
+  font-size:10px!important;
+  line-height:1.1;
+  font-weight:900;
+  letter-spacing:.14em;
+}
+html body #screen #v100-match-extra .v100-head small::before{
+  content:"";
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#56e6f1;
+  box-shadow:0 0 0 3px rgba(86,230,241,.16);
+}
+html body #screen #v100-match-extra .v100-head h2{
+  margin:10px 0 5px!important;
+  font-size:clamp(20px,5.2vw,27px)!important;
+  font-weight:850;
+  line-height:1.16;
+  letter-spacing:-.035em;
+  color:#fff;
+}
+html body #screen #v100-match-extra .v100-head p{
+  margin:0!important;
+  color:#b3c8e8!important;
+  font-size:12px!important;
+  line-height:1.5;
+}
+html body #screen #v100-match-extra .v100-form-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+  width:100%;
+  margin:0!important;
+}
+html body #screen #v100-match-extra .v100-form-grid label{
+  box-sizing:border-box;
+  display:grid!important;
+  align-content:start;
+  gap:8px!important;
+  min-width:0;
+  margin:0!important;
+}
+html body #screen #v100-match-extra .v100-form-grid label>span{
+  display:block;
+  font-size:11px!important;
+  font-weight:800!important;
+  line-height:1.3;
+  color:#d9e8ff!important;
+}
+html body #screen #v100-match-extra .v100-form-grid input{
+  display:block;
+  box-sizing:border-box;
+  appearance:auto;
+  -webkit-appearance:auto;
+  min-width:0;
+  width:100%;
+  height:48px!important;
+  min-height:48px!important;
+  max-height:48px;
+  padding:0 12px!important;
+  margin:0!important;
+  font-family:inherit!important;
+  font-size:13px!important;
+  font-weight:550;
+  letter-spacing:0;
+  line-height:normal;
+  border:1px solid rgba(113,170,238,.31)!important;
+  border-radius:13px!important;
+  background:rgba(4,14,55,.64)!important;
+  color:#f5fbff!important;
+  color-scheme:dark;
+  box-shadow:inset 0 2px 8px rgba(0,5,38,.12);
+  outline-offset:2px;
+}
+html body #screen #v100-match-extra .v100-form-grid input:focus-visible{
+  border-color:#52e8f4!important;
+  outline:2px solid rgba(82,232,244,.43)!important;
+}
+html body #screen #v100-match-extra .v100-form-grid input[type="datetime-local"]::-webkit-calendar-picker-indicator{
+  opacity:.95;
+  cursor:pointer;
+  filter:brightness(1.2);
+}
+html body #screen #v100-match-extra .v100-actions{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:10px!important;
+  align-items:stretch;
+  width:100%;
+  min-width:0;
+  margin:0!important;
+}
+html body #screen #v100-match-extra .v100-actions button{
+  appearance:none;
+  box-sizing:border-box;
+  display:flex!important;
+  align-items:center;
+  justify-content:flex-start;
+  gap:11px!important;
+  min-width:0;
+  width:100%;
+  min-height:66px!important;
+  margin:0!important;
+  padding:10px 12px!important;
+  border:1px solid rgba(111,173,245,.26)!important;
+  border-radius:15px!important;
+  background:linear-gradient(148deg,#183a89,#101e62)!important;
+  color:#f5faff!important;
+  text-align:left!important;
+  font-family:inherit!important;
+  font-size:12px!important;
+  font-weight:750!important;
+  letter-spacing:0;
+  line-height:1.25;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07);
+  cursor:pointer;
+  transition:background .18s ease,border-color .18s ease,transform .18s ease;
+}
+html body #screen #v100-match-extra .v100-actions button[data-v100-ics]{
+  background:linear-gradient(125deg,#55ebf3,#21c8e7)!important;
+  border-color:rgba(159,252,255,.45)!important;
+  color:#06244d!important;
+}
+html body #screen #v100-match-extra .v100-actions button[data-v100-route="weatherFields"]{
+  grid-column:1/-1;
+  min-height:58px!important;
+}
+html body #screen #v100-match-extra .v936-icon{
+  flex:0 0 auto;
+  display:grid;
+  place-items:center;
+  width:39px;
+  height:39px;
+  border:1px solid rgba(91,223,252,.23);
+  border-radius:12px;
+  background:rgba(44,172,230,.15);
+  color:#77edf7;
+}
+html body #screen #v100-match-extra button[data-v100-ics] .v936-icon{
+  color:#083966;
+  background:rgba(3,87,126,.12);
+  border-color:rgba(4,99,137,.14);
+}
+html body #screen #v100-match-extra .v936-icon svg{
+  display:block;
+  width:22px;
+  height:22px;
+  fill:none;
+  stroke:currentColor;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-width:1.8;
+}
+html body #screen #v100-match-extra .v936-action-copy{
+  display:grid;
+  align-content:center;
+  gap:3px;
+  min-width:0;
+  flex:1;
+}
+html body #screen #v100-match-extra .v936-action-copy b{
+  display:block;
+  color:inherit;
+  font-size:12px!important;
+  line-height:1.2;
+  font-weight:850;
+  overflow-wrap:break-word;
+}
+html body #screen #v100-match-extra .v936-action-copy small{
+  display:block;
+  color:#b3c5e9;
+  font-size:10px!important;
+  line-height:1.25;
+  font-weight:500;
+  overflow-wrap:break-word;
+}
+html body #screen #v100-match-extra button[data-v100-ics] .v936-action-copy small{
+  color:#165071;
+}
+html body #screen #v100-match-extra .v936-arrow{
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  width:21px;
+  height:21px;
+  border-radius:50%;
+  background:rgba(79,221,244,.10);
+  color:#80eaf7;
+  font-size:18px;
+  font-weight:500;
+  line-height:1;
+}
+html body #screen #v100-match-extra button[data-v100-ics] .v936-arrow{
+  color:#07537c;
+  background:rgba(0,98,141,.12);
+}
+html body #screen #v100-match-extra .v100-actions button:hover{
+  border-color:rgba(86,228,244,.63)!important;
+  background:linear-gradient(148deg,#1b449e,#10266d)!important;
+}
+html body #screen #v100-match-extra .v100-actions button[data-v100-ics]:hover{
+  background:linear-gradient(125deg,#83f7fc,#37d6e9)!important;
+}
+html body #screen #v100-match-extra .v100-actions button:active{transform:scale(.985)}
+html body #screen #v100-match-extra .v100-actions button:focus-visible{
+  outline:2px solid #66eff7;
+  outline-offset:3px;
+}
+@media(max-width:630px){
+ html body #screen #v100-match-extra .v100-form-grid{
+  grid-template-columns:minmax(0,1fr)!important;
+ }
+ html body #screen #v100-match-extra .v100-actions button{
+  gap:8px!important;
+  padding:10px!important;
+ }
+ html body #screen #v100-match-extra .v936-icon{width:35px;height:35px;border-radius:11px}
+ html body #screen #v100-match-extra .v936-icon svg{width:21px;height:21px}
+ html body #screen #v100-match-extra .v936-arrow{display:none}
+ html body #screen #v100-match-extra .v100-actions button{
+  min-height:64px!important;
+ }
+ html body[data-app-route="match"] #screen > #v100-match-extra:last-child{
+  margin-bottom:calc(max(var(--v774-nav-h,68px),68px) + env(safe-area-inset-bottom,0px) + 12px)!important;
+ }
+}
+@media(max-width:350px){
+ html body #screen #v100-match-extra .v100-actions{
+  grid-template-columns:minmax(0,1fr)!important;
+ }
+ html body #screen #v100-match-extra .v100-actions button[data-v100-route="weatherFields"]{
+  grid-column:auto;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ html body #screen #v100-match-extra .v100-actions button{transition:none!important}
+}
