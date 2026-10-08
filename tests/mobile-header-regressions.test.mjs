@@ -18,10 +18,11 @@ function fixture(){
 }
 test('every page bar sets the scroll boundary and disappears cleanly on another route',()=>{
  const f=fixture();assert.equal(f.body.style.getPropertyValue('--v768-head-h'),'88px');
- for(const [route,selector,height] of [['scorers','.v775-scorers-head',100],['favorites','.v414-ref-head',92],['v4-calendar','.v415-reference-topbar',90],['teams','.v41-head',126],['following','.v28-head',82],['club-store','.v510-store-head',90]]){
+ for(const [route,selector,height] of [['favorites','.v414-ref-head',92],['v4-calendar','.v415-reference-topbar',90],['teams','.v41-head',126],['following','.v28-head',82],['club-store','.v510-store-head',90]]){
    f.go(route,selector,height);assert.equal(f.body.dataset.mobileHeader,'custom',route);assert.equal(f.body.style.getPropertyValue('--v768-head-h'),height+'px',route);assert.ok(f.headers.get(selector).classList.contains('ljr-scroll-header'));
  }
  for(const route of ['stats','safe-data','leagueData']){f.go(route,'.v33-data-head',184);assert.equal(f.body.dataset.mobileHeader,undefined,route+' keeps the restored V33 header system');assert.equal(f.body.style.getPropertyValue('--v768-head-h'),'',route+' must not reserve a second V768 header spacer');}
+ f.go('scorers');assert.equal(f.body.dataset.mobileHeader,'global','Scorers now uses the single global topbar');assert.equal(f.body.style.getPropertyValue('--v768-head-h'),'88px','Scorers must not reserve the removed V775 header');
  f.go('home');
  f.go('video','.v408-tv-topbar',80);assert.equal(f.body.dataset.mobileHeader,'global','A dialog bar must not replace the page bar');assert.equal(f.body.style.getPropertyValue('--v768-head-h'),'88px');
  f.global.visibility='hidden';f.resize();assert.equal(f.body.style.getPropertyValue('--v768-head-h'),'0px','Hidden global bars reserve no space');
@@ -46,4 +47,11 @@ test('statistics collapse follows the page scroll and adds no second header spac
  const document={body,documentElement:{scrollTop:0},querySelector:selector=>({'[data-v33-head]':head,'[data-v33-data]':page,'#screen':screen}[selector])};
  vm.runInNewContext(fn+';applyHeaderScroll();',{document,window:{innerWidth:412,scrollY:0},isDataRoute:()=>true});
  assert.equal(head.style.getPropertyValue('--v33-collapse'),'1.0000');assert.equal(head.classList.contains('is-collapsed'),true);assert.equal(page.style.getPropertyValue('padding-top'),'','V33 no debe agregar un segundo espaciador superior');
+});
+
+
+test('scorers no longer renders the removed V775 header',()=>{
+ const text=fs.readFileSync(new URL('../src/v28-scorers-drive-reference.js',import.meta.url),'utf8');
+ assert.equal(text.includes('<header class="v775-scorers-head">'),false);
+ assert.match(text,/const shell='<section class="v28-scorers-page"/);
 });
