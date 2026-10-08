@@ -1,0 +1,167 @@
+/* V915 — Tienda: camiseta 3D real + fotografías de plantilla. */
+
+body[data-app-route="club-store"] .v915-store-3d-section{
+  padding-top:18px!important;
+  padding-bottom:10px!important;
+  background:#070a67!important;
+}
+body[data-app-route="club-store"] .v915-store-3d-section .v431-section-title{
+  color:#fff!important;
+}
+body[data-app-route="club-store"] .v915-store-3d-section .v431-section-title small{
+  color:#68eaff!important;
+}
+body[data-app-route="club-store"] .v915-store-3d-section .v431-section-title h2{
+  color:#fff!important;
+}
+body[data-app-route="club-store"] .v915-store-3d-card{
+  position:relative;
+  overflow:hidden;
+  padding:13px 12px 14px;
+  border:1px solid rgba(73,221,255,.30);
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 50% 26%,rgba(32,104,255,.30),transparent 43%),
+    linear-gradient(180deg,#09246f 0%,#071656 62%,#06113f 100%);
+  box-shadow:0 16px 34px rgba(1,8,56,.28),inset 0 1px 0 rgba(255,255,255,.05);
+}
+body[data-app-route="club-store"] .v915-store-3d-badge{
+  position:absolute;
+  z-index:4;
+  left:14px;
+  top:14px;
+  min-height:31px;
+  display:inline-flex;
+  align-items:center;
+  padding:0 13px;
+  border:1px solid rgba(71,223,255,.44);
+  border-radius:999px;
+  background:rgba(3,20,68,.74);
+  color:#6befff;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.12em;
+}
+body[data-app-route="club-store"] .v915-store-3d-stage{
+  width:100%;
+  height:360px;
+  min-height:360px;
+  margin-top:13px;
+  overflow:hidden;
+  border-radius:16px;
+  touch-action:none;
+}
+body[data-app-route="club-store"] .v915-store-3d-stage canvas{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+}
+body[data-app-route="club-store"] .v915-store-3d-controls{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin-top:8px;
+}
+body[data-app-route="club-store"] .v915-store-3d-controls button{
+  min-width:0;
+  height:42px;
+  border:1px solid rgba(90,225,255,.44);
+  border-radius:13px;
+  background:linear-gradient(180deg,#1643a4,#102d7a);
+  color:#fff;
+  font-size:11px;
+  font-weight:850;
+}
+body[data-app-route="club-store"] .v915-store-3d-controls button.active{
+  background:linear-gradient(180deg,#24dcea,#14b8d3);
+  color:#06164c;
+}
+body[data-app-route="club-store"] .v915-store-3d-card>p{
+  margin:10px 3px 0;
+  color:#9fb7e9;
+  font-size:9px;
+  line-height:1.35;
+  text-align:center;
+}
+
+/* Plantilla: usar la fotografía oficial del jugador cuando existe. */
+body[data-app-route="club-store"] .v915-store-player-rail{
+  gap:12px!important;
+  padding:2px 1px 10px!important;
+}
+body[data-app-route="club-store"] .v915-store-player-card{
+  flex:0 0 126px!important;
+  min-height:178px!important;
+  padding:10px 8px 11px!important;
+  overflow:hidden!important;
+  border:1px solid rgba(83,137,255,.30)!important;
+  border-radius:16px!important;
+  background:linear-gradient(180deg,#15248f,#0d176f)!important;
+  color:#fff!important;
+  box-shadow:0 9px 20px rgba(4,12,70,.16)!important;
+}
+body[data-app-route="club-store"] .v915-store-player-card>.v915-store-player-avatar{
+  position:relative!important;
+  width:88px!important;
+  height:88px!important;
+  margin:0 auto 10px!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  border:2px solid rgba(72,220,255,.38)!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle at 50% 30%,#3550ff,#1b25b9 72%)!important;
+  color:#fff!important;
+  font-size:20px!important;
+  font-weight:900!important;
+  box-shadow:0 7px 16px rgba(0,6,62,.22)!important;
+}
+body[data-app-route="club-store"] .v915-store-player-avatar img{
+  width:100%!important;
+  height:100%!important;
+  display:block!important;
+  object-fit:cover!important;
+  object-position:center 18%!important;
+  border:0!important;
+  border-radius:50%!important;
+  background:#101b72!important;
+}
+body[data-app-route="club-store"] .v915-store-player-avatar b{
+  color:#fff!important;
+  font-size:20px!important;
+  line-height:1!important;
+}
+body[data-app-route="club-store"] .v915-store-player-card>b{
+  min-height:32px!important;
+  display:-webkit-box!important;
+  overflow:hidden!important;
+  -webkit-line-clamp:2!important;
+  -webkit-box-orient:vertical!important;
+  color:#fff!important;
+  font-size:9.5px!important;
+  line-height:1.15!important;
+  text-align:center!important;
+}
+body[data-app-route="club-store"] .v915-store-player-card>small{
+  min-height:20px!important;
+  display:block!important;
+  margin-top:5px!important;
+  color:#9ca9df!important;
+  font-size:7.5px!important;
+  line-height:1.2!important;
+  text-align:center!important;
+}
+
+@media(max-width:390px){
+  body[data-app-route="club-store"] .v915-store-3d-stage{
+    height:330px;
+    min-height:330px;
+  }
+  body[data-app-route="club-store"] .v915-store-player-card{
+    flex-basis:118px!important;
+  }
+  body[data-app-route="club-store"] .v915-store-player-card>.v915-store-player-avatar{
+    width:82px!important;
+    height:82px!important;
+  }
+}
