@@ -1,0 +1,476 @@
+{
+  "source": "https://www.juventinorosasliga.com",
+  "categories": {
+    "1": {
+      "teams": 6,
+      "players": 119
+    },
+    "2": {
+      "teams": 11,
+      "players": 45
+    },
+    "3": {
+      "teams": 11,
+      "players": 292
+    },
+    "4": {
+      "teams": 12,
+      "players": 330
+    },
+    "5": {
+      "teams": 13,
+      "players": 340
+    }
+  },
+  "cedulasChecked": 110,
+  "cedulaScoreDifferences": [
+    {
+      "category": "1",
+      "id": 49,
+      "home": "MANCHESTER",
+      "away": "BOCA JRS",
+      "score": [
+        "1",
+        "0"
+      ],
+      "previous": [
+        "1",
+        "-"
+      ]
+    },
+    {
+      "category": "3",
+      "id": 76,
+      "home": "FRANCO FC",
+      "away": "HERMANOS",
+      "score": [
+        "0",
+        "2"
+      ],
+      "previous": [
+        "-",
+        "2"
+      ]
+    },
+    {
+      "category": "3",
+      "id": 77,
+      "home": "NAPOLI",
+      "away": "HERRERAS FC",
+      "score": [
+        "3",
+        "0"
+      ],
+      "previous": [
+        "3",
+        "-"
+      ]
+    },
+    {
+      "category": "3",
+      "id": 80,
+      "home": "GALACTICOS",
+      "away": "SAN JOSE FC",
+      "score": [
+        "0",
+        "1"
+      ],
+      "previous": [
+        "-",
+        "1"
+      ]
+    },
+    {
+      "category": "3",
+      "id": 81,
+      "home": "LOBOS CDG",
+      "away": "SAN JOSE FC",
+      "score": [
+        "0",
+        "4"
+      ],
+      "previous": [
+        "-",
+        "4"
+      ]
+    },
+    {
+      "category": "3",
+      "id": 85,
+      "home": "ABEJAS",
+      "away": "GALACTICOS",
+      "score": [
+        "1",
+        "0"
+      ],
+      "previous": [
+        "1",
+        "-"
+      ]
+    },
+    {
+      "category": "3",
+      "id": 88,
+      "home": "ABEJAS",
+      "away": "FRANCO FC",
+      "score": [
+        "0",
+        "1"
+      ],
+      "previous": [
+        "-",
+        "1"
+      ]
+    },
+    {
+      "category": "3",
+      "id": 89,
+      "home": "TERRICOLAS",
+      "away": "JUVENTUS",
+      "score": [
+        "0",
+        "4"
+      ],
+      "previous": [
+        "-",
+        "4"
+      ]
+    },
+    {
+      "category": "3",
+      "id": 90,
+      "home": "LOBOS CDG",
+      "away": "GALACTICOS",
+      "score": [
+        "1",
+        "0"
+      ],
+      "previous": [
+        "1",
+        "-"
+      ]
+    },
+    {
+      "category": "3",
+      "id": 91,
+      "home": "ABEJAS",
+      "away": "LOBOS CDG",
+      "score": [
+        "2",
+        "0"
+      ],
+      "previous": [
+        "2",
+        "-"
+      ]
+    },
+    {
+      "category": "3",
+      "id": 92,
+      "home": "GALACTICOS",
+      "away": "NAPOLI",
+      "score": [
+        "0",
+        "1"
+      ],
+      "previous": [
+        "-",
+        "1"
+      ]
+    },
+    {
+      "category": "4",
+      "id": 366,
+      "home": "BARZA",
+      "away": "SAN JUAN FC",
+      "score": [
+        "0",
+        "2"
+      ],
+      "previous": [
+        "-",
+        "2"
+      ]
+    },
+    {
+      "category": "4",
+      "id": 370,
+      "home": "DEP. LA LUZ",
+      "away": "PACHANGAS FC",
+      "score": [
+        "0",
+        "1"
+      ],
+      "previous": [
+        "-",
+        "1"
+      ]
+    },
+    {
+      "category": "4",
+      "id": 371,
+      "home": "PACHANGAS FC",
+      "away": "CELTICOS",
+      "score": [
+        "0",
+        "5"
+      ],
+      "previous": [
+        "-",
+        "5"
+      ]
+    },
+    {
+      "category": "4",
+      "id": 376,
+      "home": "DEP. LA LUZ",
+      "away": "SAN JUAN FC",
+      "score": [
+        "0",
+        "10"
+      ],
+      "previous": [
+        "-",
+        "10"
+      ]
+    },
+    {
+      "category": "4",
+      "id": 378,
+      "home": "DEP. LA LUZ",
+      "away": "TAVERA FC",
+      "score": [
+        "0",
+        "1"
+      ],
+      "previous": [
+        "-",
+        "1"
+      ]
+    },
+    {
+      "category": "4",
+      "id": 381,
+      "home": "DEP. NOPALERO",
+      "away": "SAN JOSE JRS",
+      "score": [
+        "0",
+        "2"
+      ],
+      "previous": [
+        "-",
+        "2"
+      ]
+    },
+    {
+      "category": "4",
+      "id": 385,
+      "home": "SAN JOSE JRS",
+      "away": "SAN ANTONIO FC",
+      "score": [
+        "3",
+        "0"
+      ],
+      "previous": [
+        "3",
+        "-"
+      ]
+    },
+    {
+      "category": "4",
+      "id": 387,
+      "home": "TAPATIO",
+      "away": "DEP. LA LUZ",
+      "score": [
+        "0",
+        "6"
+      ],
+      "previous": [
+        "-",
+        "6"
+      ]
+    },
+    {
+      "category": "4",
+      "id": 388,
+      "home": "TAVERA FC",
+      "away": "SAN JUAN FC",
+      "score": [
+        "1",
+        "0"
+      ],
+      "previous": [
+        "1",
+        "-"
+      ]
+    },
+    {
+      "category": "4",
+      "id": 390,
+      "home": "SAN JUAN FC",
+      "away": "TAPATIO",
+      "score": [
+        "1",
+        "0"
+      ],
+      "previous": [
+        "1",
+        "-"
+      ]
+    },
+    {
+      "category": "4",
+      "id": 392,
+      "home": "SAN JOSE JRS",
+      "away": "BARZA",
+      "score": [
+        "3",
+        "0"
+      ],
+      "previous": [
+        "3",
+        "-"
+      ]
+    },
+    {
+      "category": "4",
+      "id": 394,
+      "home": "DEP. NOPALERO",
+      "away": "DEP. ZAPATA",
+      "score": [
+        "0",
+        "1"
+      ],
+      "previous": [
+        "-",
+        "1"
+      ]
+    },
+    {
+      "category": "5",
+      "id": 193,
+      "home": "LA HUERTA",
+      "away": "LA CANCHITA DEPORTES",
+      "score": [
+        "0",
+        "1"
+      ],
+      "previous": [
+        "-",
+        "1"
+      ]
+    },
+    {
+      "category": "5",
+      "id": 195,
+      "home": "PROMESAS FC",
+      "away": "LA CUADRILLA",
+      "score": [
+        "0",
+        "7"
+      ],
+      "previous": [
+        "-",
+        "7"
+      ]
+    },
+    {
+      "category": "5",
+      "id": 199,
+      "home": "LA CANCHITA DEPORTES",
+      "away": "CAPIBARAS",
+      "score": [
+        "5",
+        "0"
+      ],
+      "previous": [
+        "5",
+        "-"
+      ]
+    },
+    {
+      "category": "5",
+      "id": 202,
+      "home": "MAZACOTES FC",
+      "away": "ALDAMA FC",
+      "score": [
+        "0",
+        "1"
+      ],
+      "previous": [
+        "-",
+        "1"
+      ]
+    },
+    {
+      "category": "5",
+      "id": 204,
+      "home": "CAPIBARAS",
+      "away": "DEP. MARAVILLAS",
+      "score": [
+        "3",
+        "0"
+      ],
+      "previous": [
+        "3",
+        "-"
+      ]
+    },
+    {
+      "category": "5",
+      "id": 207,
+      "home": "OSASUNA",
+      "away": "LA CUADRILLA",
+      "score": [
+        "0",
+        "1"
+      ],
+      "previous": [
+        "-",
+        "1"
+      ]
+    },
+    {
+      "category": "5",
+      "id": 210,
+      "home": "DEP. MARAVILLAS",
+      "away": "ALDAMA FC",
+      "score": [
+        "0",
+        "2"
+      ],
+      "previous": [
+        "-",
+        "2"
+      ]
+    },
+    {
+      "category": "5",
+      "id": 215,
+      "home": "LA CANCHITA DEPORTES",
+      "away": "ATL. GALEANA",
+      "score": [
+        "3",
+        "0"
+      ],
+      "previous": [
+        "3",
+        "-"
+      ]
+    },
+    {
+      "category": "5",
+      "id": 218,
+      "home": "MAZACOTES FC",
+      "away": "DEP. MARAVILLAS",
+      "score": [
+        "4",
+        "0"
+      ],
+      "previous": [
+        "4",
+        "-"
+      ]
+    }
+  ]
+}
