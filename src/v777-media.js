@@ -7,16 +7,98 @@ function controls(video){
  if(video.dataset.v777Controls||video.matches('[data-ljr-decorative],video[aria-hidden="true"]')||video.closest('.v196-frame,.liga-stories,.v105-motion,.v15-decor,[data-v73-motion-banner],.v73-home-motion,.v73-gallery'))return;
  if(video.muted&&video.autoplay&&!video.controls)return;
  video.dataset.v777Controls='1';trackNativePiP(video);video.controls=false;video.playsInline=true;
- const box=document.createElement('div');box.className='ljr-video-player';video.before(box);box.append(video);
- const bar=document.createElement('div');bar.className='ljr-video-controls';bar.innerHTML='<div class="ljr-video-timeline"><span data-time>0:00</span><input type="range" data-seek min="0" max="1000" value="0" aria-label="Posición del video"><span data-duration>0:00</span></div><div class="ljr-video-actions"><button type="button" data-v777-action="back" aria-label="Retroceder 10 segundos">−10</button><button type="button" data-v777-action="play" aria-label="Reproducir">▶</button><button type="button" data-v777-action="next" aria-label="Avanzar 10 segundos">+10</button><button type="button" data-v777-action="mute" aria-label="Silenciar">♫</button><input data-volume type="range" min="0" max="1" step=".05" value="1" aria-label="Volumen"><button type="button" data-v777-action="pip" aria-label="Ventana flotante">PiP</button><button type="button" data-v777-action="full" aria-label="Pantalla completa">⛶</button></div><small role="status"></small>';box.append(bar);
- const status=bar.querySelector('small'),seek=bar.querySelector('[data-seek]'),play=bar.querySelector('[data-v777-action=play]');
+ const box=document.createElement('div');box.className='ljr-video-player v918-overlay-player ljr-controls-visible ljr-video-paused';video.before(box);box.append(video);
+ const icons={
+  play:'<path class="v918-icon-filled" d="M8 5.5v13l11-6.5z"/>',
+  pause:'<path class="v918-icon-filled" d="M7 5h4v14H7zm7 0h4v14h-4z"/>',
+  back:'<path d="M8 5H4v4"/><path d="M4.5 9A8 8 0 1 1 5 17.5"/><text x="12" y="15" text-anchor="middle" fill="currentColor" stroke="none" font-size="8" font-weight="700">10</text>',
+  next:'<path d="M16 5h4v4"/><path d="M19.5 9A8 8 0 1 0 19 17.5"/><text x="12" y="15" text-anchor="middle" fill="currentColor" stroke="none" font-size="8" font-weight="700">10</text>',
+  mute:'<path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="m17 9 4 6m0-6-4 6"/>',
+  volume:'<path d="M11 5 6 9H3v6h3l5 4V5zM15.5 8.5a5 5 0 0 1 0 7M18 6a9 9 0 0 1 0 12"/>',
+  full:'<path d="M8 3H4a1 1 0 0 0-1 1v4m13-5h4a1 1 0 0 1 1 1v4M8 21H4a1 1 0 0 1-1-1v-4m13 5h4a1 1 0 0 0 1-1v-4"/>',
+  pip:'<rect x="3" y="4" width="18" height="16" rx="2"/><rect x="12" y="11" width="8" height="6" rx="1" fill="currentColor" stroke="none"/>',
+  camera:'<path d="M14 4H9l-2 3H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-4l-2-3z"/><circle cx="12" cy="13" r="3"/>',
+  rotate:'<rect x="6" y="3" width="12" height="18" rx="2" transform="rotate(45 12 12)"/><path d="m4 4 2 1-2 2M20 20l-2-1 2-2"/>'
+ };
+ const svg=name=>'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">'+icons[name]+'</svg>';
+ const button=(action,label,inner)=>'<button type="button" data-v777-action="'+action+'" aria-label="'+label+'" title="'+label+'">'+inner+'</button>';
+ const bar=document.createElement('div');bar.className='ljr-video-controls';
+ bar.innerHTML='<div class="ljr-video-quick">'+
+  button('speed','Cambiar velocidad de reproducción','<span data-speed-label>1×</span>')+
+  button('shot','Guardar captura del video',svg('camera'))+
+  button('pip','Ventana flotante PiP',svg('pip'))+
+  button('rotate','Girar pantalla',svg('rotate'))+
+  button('full','Pantalla completa',svg('full'))+
+  '</div><div class="ljr-video-center">'+
+  button('back','Retroceder 10 segundos',svg('back'))+
+  button('play','Reproducir o pausar',svg('play'))+
+  button('next','Avanzar 10 segundos',svg('next'))+
+  '</div><div class="ljr-video-footer"><div class="ljr-video-timeline"><span data-time>0:00</span><input type="range" data-seek min="0" max="1000" value="0" aria-label="Posición del video"><span data-duration>0:00</span></div><div class="ljr-video-actions">'+
+  button('mute','Silenciar o activar audio',svg('volume'))+
+  '<input data-volume type="range" min="0" max="1" step=".05" value="1" aria-label="Volumen"></div><small role="status" aria-live="polite"></small></div>';
+ box.append(bar);
+ const status=bar.querySelector('small'),seek=bar.querySelector('[data-seek]'),play=bar.querySelector('[data-v777-action=play]'),mute=bar.querySelector('[data-v777-action=mute]');
  const time=t=>Math.floor((t||0)/60)+':'+String(Math.floor((t||0)%60)).padStart(2,'0');
- const update=()=>{const finite=Number.isFinite(video.duration)&&video.duration>0;bar.querySelector('[data-time]').textContent=time(video.currentTime);bar.querySelector('[data-duration]').textContent=finite?time(video.duration):'En vivo';seek.disabled=!finite;seek.value=finite?video.currentTime/video.duration*1000:0;play.textContent=video.paused?'▶':'Ⅱ';play.setAttribute('aria-label',video.paused?'Reproducir':'Pausar')};
- for(const type of ['timeupdate','durationchange','loadedmetadata','pause','play'])video.addEventListener(type,update);
- seek.oninput=()=>{if(Number.isFinite(video.duration))video.currentTime=+seek.value/1000*video.duration};
- bar.querySelector('[data-volume]').oninput=e=>{video.volume=+e.target.value;video.muted=false};
- bar.addEventListener('click',async e=>{const b=e.target.closest('[data-v777-action]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();try{switch(b.dataset.v777Action){case 'play':if(video.paused)await video.play();else video.pause();break;case 'back':case 'next':if(Number.isFinite(video.duration))video.currentTime=Math.max(0,Math.min(video.duration,video.currentTime+(b.dataset.v777Action==='back'?-10:10)));break;case 'mute':video.muted=!video.muted;b.textContent=video.muted?'♪':'♫';break;case 'full':if(document.fullscreenElement)await document.exitFullscreen();else if(video.webkitEnterFullscreen)video.webkitEnterFullscreen();else await box.requestFullscreen();break;case 'pip':if(video.paused)video.play().catch(()=>{});if(Capacitor.isNativePlatform()&&Capacitor.getPlatform()==='android')await nativePiP.enter();else if(video.requestPictureInPicture)await video.requestPictureInPicture();else if(video.webkitSetPresentationMode)video.webkitSetPresentationMode('picture-in-picture');else{await video.requestFullscreen();status.textContent='Para abrir la ventana flotante, usa Inicio del teléfono mientras se reproduce.'}break}}catch(err){status.textContent=err.message||'No se pudo activar esta opción.'}update()});
- video.addEventListener('error',()=>{status.textContent='No se pudo cargar este video. El administrador puede actualizarlo.';video.controls=true});update();
+ let hideTimer=0,speedIndex=0;const speeds=[1,1.25,1.5,2,.75];
+ function reveal(){
+  box.classList.add('ljr-controls-visible');clearTimeout(hideTimer);
+  if(!video.paused)hideTimer=setTimeout(()=>{if(!bar.matches(':focus-within')&&!box.matches(':hover'))box.classList.remove('ljr-controls-visible')},3400);
+ }
+ function update(){
+  const finite=Number.isFinite(video.duration)&&video.duration>0;
+  bar.querySelector('[data-time]').textContent=time(video.currentTime);
+  bar.querySelector('[data-duration]').textContent=finite?time(video.duration):'En vivo';
+  seek.disabled=!finite;seek.value=finite?video.currentTime/video.duration*1000:0;
+  play.innerHTML=svg(video.paused?'play':'pause');play.setAttribute('aria-label',video.paused?'Reproducir':'Pausar');play.title=play.getAttribute('aria-label');
+  const silent=video.muted||video.volume===0;mute.innerHTML=svg(silent?'mute':'volume');mute.setAttribute('aria-label',silent?'Activar audio':'Silenciar');mute.title=mute.getAttribute('aria-label');
+  bar.querySelector('[data-volume]').value=video.muted?0:video.volume;
+  box.classList.toggle('ljr-video-paused',video.paused);
+ }
+ for(const type of ['timeupdate','durationchange','loadedmetadata','volumechange','ratechange'])video.addEventListener(type,update);
+ for(const type of ['pause','play','ended'])video.addEventListener(type,()=>{update();reveal()});
+ video.addEventListener('click',reveal);
+ box.addEventListener('pointermove',event=>{if(event.pointerType==='mouse'&&event.movementX+event.movementY!==0)reveal()});
+ seek.oninput=()=>{if(Number.isFinite(video.duration)&&video.duration>0)video.currentTime=+seek.value/1000*video.duration;reveal()};
+ bar.querySelector('[data-volume]').oninput=event=>{video.volume=+event.target.value;video.muted=video.volume===0;reveal()};
+ bar.addEventListener('click',async event=>{
+  const b=event.target.closest('[data-v777-action]');if(!b)return;event.preventDefault();event.stopImmediatePropagation();reveal();
+  try{
+   switch(b.dataset.v777Action){
+    case 'play':if(video.paused)await video.play();else video.pause();break;
+    case 'back':case 'next':if(Number.isFinite(video.duration)&&video.duration>0)video.currentTime=Math.max(0,Math.min(video.duration,video.currentTime+(b.dataset.v777Action==='back'?-10:10)));break;
+    case 'mute':video.muted=!video.muted;break;
+    case 'speed':speedIndex=(speedIndex+1)%speeds.length;video.playbackRate=speeds[speedIndex];b.querySelector('[data-speed-label]').textContent=speeds[speedIndex]+'×';break;
+    case 'full':
+     if(document.fullscreenElement)await document.exitFullscreen();
+     else if(box.requestFullscreen)await box.requestFullscreen();
+     else if(video.webkitEnterFullscreen)video.webkitEnterFullscreen();
+     else throw Error('Pantalla completa no disponible en este dispositivo.');
+     break;
+    case 'pip':
+     if(video.paused)await video.play();
+     if(Capacitor.isNativePlatform()&&Capacitor.getPlatform()==='android')await nativePiP.enter();
+     else if(video.requestPictureInPicture)await video.requestPictureInPicture();
+     else if(video.webkitSetPresentationMode)video.webkitSetPresentationMode('picture-in-picture');
+     else throw Error('Para usar PiP, reproduce el video y sal al inicio del teléfono.');
+     break;
+    case 'shot':{
+     if(!video.videoWidth||!video.videoHeight)throw Error('Espera a que cargue la imagen del video.');
+     const canvas=document.createElement('canvas');canvas.width=video.videoWidth;canvas.height=video.videoHeight;
+     canvas.getContext('2d').drawImage(video,0,0,canvas.width,canvas.height);
+     const url=canvas.toDataURL('image/png'),link=document.createElement('a');link.href=url;link.download='liga-juventino-video-'+Date.now()+'.png';document.body.append(link);link.click();link.remove();
+     break;
+    }
+    case 'rotate':
+     if(!screen.orientation?.lock)throw Error('Tu teléfono no permite rotación desde el reproductor.');
+     if(!document.fullscreenElement&&box.requestFullscreen)await box.requestFullscreen();
+     await screen.orientation.lock('landscape');break;
+   }
+   status.textContent='';
+  }catch(err){status.textContent=err?.message||'No se pudo activar esta opción.';reveal()}
+  update();
+ });
+ video.addEventListener('error',()=>{status.textContent='No se pudo cargar este video. El administrador puede actualizarlo.';video.controls=true;reveal()});
+ update();
 }
 function patch(){document.querySelectorAll('video').forEach(controls);
  const root=document.querySelector('#screen');if(!root)return;
