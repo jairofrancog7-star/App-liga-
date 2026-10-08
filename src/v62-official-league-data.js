@@ -662,7 +662,7 @@ function fixtureCard(r){
     '<div class="v62-match-head"><span>'+esc(friendly?'Amistoso':'Jornada '+(r[1]||''))+'</span><b>'+esc(decision?decision.label:(pending?'PENDIENTE':'PARTIDO'))+'</b></div>'+
     '<div class="v62-match-team"><button type="button" data-v62-team="'+esc(home)+'">'+teamLogoHtml(home)+'<span>'+esc(home)+'</span></button><strong>'+esc(decision?'—':hs)+'</strong></div>'+
     '<div class="v62-match-team"><button type="button" data-v62-team="'+esc(away)+'">'+teamLogoHtml(away)+'<span>'+esc(away)+'</span></button><strong>'+esc(decision?'—':as)+'</strong></div>'+
-    '<div class="v62-match-meta"><span>'+esc(when)+'</span><span>'+esc(decision?'Por DEFAULT · −3 puntos al perdedor · sin marcador confirmado':place)+'</span></div>'+
+    '<div class="v62-match-meta"><span>'+esc(when)+'</span><span>'+esc(decision?(decision.default===true?'Por DEFAULT · −3 puntos al perdedor · sin marcador confirmado':'Resultado administrativo · sin marcador confirmado'):place)+'</span></div>'+
   '</article>';
 }
 function fixturesView(){
