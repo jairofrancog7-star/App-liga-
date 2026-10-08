@@ -640,7 +640,10 @@
       b.onclick=function(){location.hash=route()==='teamDetail'?'#/teams':'#/more'};
     });
     document.querySelectorAll('[data-v27-team]').forEach(function(b){
-      b.onclick=function(){
+      b.onclick=function(e){
+        // V975 — This card owns its click. Do not trigger global
+        // player/team comparators through a delegated duplicate handler.
+        e?.preventDefault?.();e?.stopPropagation?.();e?.stopImmediatePropagation?.();
         const t=team(b.dataset.v27Team);if(!t)return;
         saveSelected(t.id);localStorage.setItem('v62-team-name',t.name);if(t.catId)localStorage.setItem('v62-category',String(t.catId));detailTab='summary';
         localStorage.setItem('v42-team-tab','summary');localStorage.removeItem('v42-open-compare');
