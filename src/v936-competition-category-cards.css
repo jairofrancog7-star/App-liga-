@@ -81,6 +81,30 @@
     pointer-events:none!important;
   }
 
+  html body[data-app-route="competition"] #screen .v12-category-grid > button .v12-category-logo {
+    width:24px!important;
+    height:24px!important;
+    min-width:24px!important;
+    flex:0 0 24px!important;
+    margin:0 7px 0 0!important;
+    object-fit:contain!important;
+    object-position:center!important;
+    display:block!important;
+    background:transparent!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    filter:none!important;
+  }
+
+  html body[data-app-route="competition"] #screen .v12-category-grid > button .v12-category-name {
+    min-width:0!important;
+    display:block!important;
+    color:inherit!important;
+    line-height:1.15!important;
+    text-align:center!important;
+  }
+
   html body[data-app-route="competition"] #screen .v12-category-grid > button.active {
     border-color:#8ef9ff!important;
     background:
@@ -129,6 +153,13 @@
   }
   html body[data-app-route="competition"] #screen .v12-category-grid > button::before {
     left:6px!important;
+  }
+  html body[data-app-route="competition"] #screen .v12-category-grid > button .v12-category-logo {
+    width:21px!important;
+    height:21px!important;
+    min-width:21px!important;
+    flex-basis:21px!important;
+    margin-right:5px!important;
   }
 }
 @media (hover:hover) and (pointer:fine) and (max-width:1023px) {
