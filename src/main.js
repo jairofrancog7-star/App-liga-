@@ -4569,61 +4569,68 @@ function v60StreetViewUrl(f){
   }
   return v60MapUrl(f);
 }
-function v60AerialPreviewUrl(f){
-  // Imagen aérea geográfica, NO foto de partido ni panorámica falsa de Google.
-  // Las coordenadas son las disponibles en el directorio; sedes sin pin exacto
-  // se centran en su comunidad. UDS 1/2/3 son recortes distintos del complejo.
-  const hasCoord=(v)=>v!==null&&v!==undefined&&Number.isFinite(Number(v));
-  const latitude=hasCoord(f?.lat)?Number(f.lat):(hasCoord(f?.weatherLat)?Number(f.weatherLat):null);
-  const longitude=hasCoord(f?.lon)?Number(f.lon):(hasCoord(f?.weatherLon)?Number(f.weatherLon):null);
-  if(latitude===null||longitude===null||Math.abs(latitude)>90||Math.abs(longitude)>180)return '';
-  const offsets={
-    'sur-1':[-.00026,.00021],
-    'sur-2':[.00025,-.00017],
-    'sur-3':[-.00012,-.00026],
-    'fraccionamiento':[.00042,-.00038]
-  };
-  const shift=offsets[f?.id]||[0,0];
-  const y=latitude+shift[0],x=longitude+shift[1];
-  const dx=.00165,dy=.00093;
-  const bbox=[x-dx,y-dy,x+dx,y+dy].map(n=>n.toFixed(6)).join(',');
-  // ArcGIS World Imagery export; cada BBOX genera una imagen aérea diferente.
-  return 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?'+
-    'bbox='+encodeURIComponent(bbox)+'&bboxSR=4326&imageSR=4326'+
-    '&size=720%2C406&format=jpg&f=image';
+function v60FieldTilePlan(f){
+  // El endpoint ArcGIS .../export?f=image devuelve error HTTP 500.
+  // World Imagery ofrece mosaicos JPEG (tile/z/y/x), verificados HTTP 200.
+  // Los campos UDS comparten coordenada de complejo: estos pequeños desplazamientos
+  // sólo cambian el encuadre aéreo; NO son pines exactos por cancha.
+  const num=v=>v===null||v===undefined?null:(Number.isFinite(Number(v))?Number(v):null);
+  let lat=num(f?.lat),lon=num(f?.lon),exact=lat!==null&&lon!==null;
+  if(!exact){lat=num(f?.weatherLat);lon=num(f?.weatherLon)}
+  if(lat===null||lon===null||Math.abs(lat)>85||Math.abs(lon)>180)return null;
+  const shift={
+    'sur-1':[-.00037,-.00024],
+    'sur-2':[.00003,.00008],
+    'sur-3':[.00038,.00029],
+    'fraccionamiento':[.00028,-.00031]
+  }[String(f?.id||'')]||[0,0];
+  lat+=shift[0];lon+=shift[1];
+  const z=18,n=2**z,rad=lat*Math.PI/180;
+  const worldX=(lon+180)/360*n*256;
+  const worldY=(1-Math.asinh(Math.tan(rad))/Math.PI)/2*n*256;
+  const startX=Math.floor(worldX/256)-2,startY=Math.floor(worldY/256)-1;
+  const tiles=[];
+  for(let row=0;row<3;row++)for(let col=0;col<4;col++){
+    const x=startX+col,y=startY+row;
+    tiles.push({
+      url:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/'+z+'/'+y+'/'+x,
+      x:col*256,y:row*256
+    });
+  }
+  return {tiles,left:Math.round(worldX-startX*256),top:Math.round(worldY-startY*256),exact};
 }
 function v60FieldPreview(f,cls=''){
   const large=String(cls).includes('v60-field-preview-card');
   const name=v64Esc(String(f?.name||'campo'));
-  const hasExact=f?.lat!==null&&f?.lat!==undefined&&Number.isFinite(Number(f.lat))&&
-    f?.lon!==null&&f?.lon!==undefined&&Number.isFinite(Number(f.lon));
-  const latitude=hasExact?Number(f.lat):Number(f?.weatherLat);
-  const longitude=hasExact?Number(f.lon):Number(f?.weatherLon);
+  const plan=v60FieldTilePlan(f);
+  const lat=f?.lat,lon=f?.lon;
+  const hasExact=lat!==null&&lat!==undefined&&lon!==null&&lon!==undefined&&
+    Number.isFinite(Number(lat))&&Number.isFinite(Number(lon));
   const key=String(import.meta.env.VITE_GOOGLE_STREETVIEW_API_KEY||'').trim();
   const googleSrc=key&&hasExact?'https://maps.googleapis.com/maps/api/streetview?'+
-    'size=640x360&location='+encodeURIComponent(latitude.toFixed(6)+','+longitude.toFixed(6))+
+    'size=640x360&location='+encodeURIComponent(Number(lat).toFixed(6)+','+Number(lon).toFixed(6))+
     '&radius=75&fov=80&pitch=0&source=outdoor&return_error_code=true&key='+encodeURIComponent(key):'';
-  const aerialSrc=v60AerialPreviewUrl(f);
-  const link=v64Esc(v60MapUrl(f));
-  const fallback='<a class="v923-google-photo-empty v923-google-photo-link" href="'+link+
-    '" target="_blank" rel="noopener noreferrer" aria-label="Consultar '+name+' en Google Maps">'+
+  const mapsLink=v64Esc(v60MapUrl(f));
+  const fallback='<a class="v923-google-photo-empty v923-google-photo-link" href="'+mapsLink+
+    '" target="_blank" rel="noopener noreferrer" aria-label="Consultar la ubicación de '+name+' en Google Maps">'+
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="3"/><circle cx="12" cy="13" r="3.5"/><path d="m8 6 1.2-2h5.6L16 6"/></svg>'+
-    '<b>Vista aérea del campo</b><span>'+(aerialSrc?'Cargando imagen de la zona…':'Ver ubicación en Maps')+'</span></a>';
-  const aerial=aerialSrc?'<img class="v927-aerial-photo" src="'+v64Esc(aerialSrc)+
-    '" alt="Vista aérea aproximada de la zona de '+name+'; imagen satelital Esri"'+
-    ' loading="lazy" decoding="async" onload="this.parentElement.classList.add(&quot;v927-aerial-loaded&quot;)"'+
-    ' onerror="this.hidden=true;this.parentElement.classList.add(&quot;v927-aerial-error&quot;)">':'';
+    '<b>Vista aérea de la zona</b><span>'+(plan?'Si la imagen tarda, consulta Google Maps.':'Ubicación sin coordenadas verificadas')+'</span></a>';
+  const aerial=plan?'<span class="v928-tile-grid" aria-hidden="true" style="left:calc(50% - '+plan.left+'px);top:calc(50% - '+plan.top+'px)">'+
+    plan.tiles.map(tile=>'<img class="v928-imagery-tile" src="'+v64Esc(tile.url)+
+    '" alt="" loading="lazy" decoding="async" style="left:'+tile.x+'px;top:'+tile.y+'px"'+
+    ' onload="this.closest(&quot;.v927-unique-imagery&quot;).classList.add(&quot;v928-tile-loaded&quot;)"'+
+    ' onerror="this.hidden=true;this.closest(&quot;.v927-unique-imagery&quot;).classList.add(&quot;v928-tile-error&quot;)">').join('')+
+    '</span>':'';
   const street=googleSrc?'<img class="v927-google-photo" src="'+v64Esc(googleSrc)+
-    '" alt="Street View de los alrededores de '+name+'; ubicación no verificada"'+
-    ' loading="lazy" decoding="async" onload="this.parentElement.classList.add(&quot;v927-street-loaded&quot;)"'+
-    ' onerror="this.hidden=true;this.parentElement.classList.add(&quot;v927-street-error&quot;)">':'';
-  const areaText=hasExact?'Zona de la sede':'Ubicación aproximada de la comunidad';
-  const open=large?'<a class="v923-google-open" href="'+link+'" target="_blank" rel="noopener noreferrer" aria-label="Abrir ubicación de '+name+' en Google Maps">'+
+    '" alt="Vista de Street View próxima a '+name+'" loading="lazy" decoding="async"'+
+    ' onload="this.parentElement.classList.add(&quot;v927-street-loaded&quot;)"'+
+    ' onerror="this.hidden=true">':'';
+  const open=large?'<a class="v923-google-open" href="'+mapsLink+'" target="_blank" rel="noopener noreferrer" aria-label="Abrir '+name+' en Google Maps">'+
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.5 7-13a7 7 0 0 0-14 0c0 6.5 7 13 7 13Z"/><circle cx="12" cy="9" r="2.6"/></svg>'+
     '<span>Abrir Google Maps</span></a>':'';
-  const credits=large?'<span class="v927-imagery-credits">Vista aérea · '+areaText+' · © Esri</span>':'';
-  return '<span class="v60-field-preview v921-map-preview v923-google-preview v927-unique-imagery '+v64Esc(cls)+'"'+
-    ' title="Vista de la zona, no fotografía individual verificada de la cancha">'+
+  const credits=large?'<span class="v927-imagery-credits">Vista aérea '+(plan?.exact?'del sector':'aproximada')+' · © Esri y proveedores</span>':'';
+  return '<span class="v60-field-preview v921-map-preview v923-google-preview v927-unique-imagery v928-tile-preview '+v64Esc(cls)+'"'+
+    ' title="Vista aérea de referencia del sector; no es una fotografía verificada del campo">'+
     fallback+aerial+street+credits+open+'</span>';
 }
 
