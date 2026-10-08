@@ -1,0 +1,29 @@
+/* v960: tablas y goleo verificados, solo #/quiniela */
+body[data-app-route="quiniela"] .v619-quiniela-modern .v618-q-nav{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:4px!important;width:100%!important}
+body[data-app-route="quiniela"] .v619-quiniela-modern .v618-q-nav>button{min-width:0!important;min-height:47px!important;padding:6px 2px!important;flex-direction:column!important;gap:3px!important;text-align:center!important;white-space:normal!important;overflow-wrap:anywhere!important;font-size:9px!important;line-height:1.2!important}
+body[data-app-route="quiniela"] .v619-quiniela-modern .v618-q-nav>button .v953-q-nav-icon{width:17px!important;height:17px!important}
+body[data-app-route="quiniela"] .v960-q-tables{width:100%;min-width:0;display:grid;gap:9px;padding:0 0 14px;box-sizing:border-box}
+body[data-app-route="quiniela"] .v960-q-source{margin:2px 0 7px;color:#bdd2f9;font-size:10px;line-height:1.45}
+body[data-app-route="quiniela"] .v960-q-links{display:flex;flex-wrap:wrap;gap:6px}
+body[data-app-route="quiniela"] .v960-q-links a,body[data-app-route="quiniela"] .v960-q-links button,body[data-app-route="quiniela"] a.v960-q-official{display:inline-flex;align-items:center;justify-content:center;min-height:32px;box-sizing:border-box;padding:7px 9px;border:1px solid rgba(89,210,245,.37);border-radius:10px;background:linear-gradient(135deg,#174ca2,#09246d);color:#fff;font:700 10px/1.25 Inter,Roboto,Arial,sans-serif;text-decoration:none;cursor:pointer}
+body[data-app-route="quiniela"] a.v960-q-official{margin-bottom:9px}
+body[data-app-route="quiniela"] .v960-q-block{width:100%;min-width:0;box-sizing:border-box;overflow:hidden;border:1px solid rgba(99,165,231,.3);border-radius:13px;background:linear-gradient(155deg,#101f63,#091448)}
+body[data-app-route="quiniela"] .v960-q-block h3{margin:0;padding:11px 9px;border-bottom:1px solid rgba(112,173,243,.23);color:white;font:800 13px/1.3 Inter,Roboto,Arial,sans-serif}
+body[data-app-route="quiniela"] .v960-q-block>p{margin:0;padding:15px 12px;color:#c8d7ef;font-size:11px}
+body[data-app-route="quiniela"] .v960-q-cols{display:grid;grid-template-columns:22px minmax(0,1fr) 24px 24px 24px 28px;gap:4px;align-items:center;min-height:36px;padding:5px 6px;border-top:1px solid rgba(169,203,245,.1);color:#dce9fc;font:600 10px/1.25 Inter,Roboto,Arial,sans-serif;text-align:center}
+body[data-app-route="quiniela"] .v960-q-cols:first-of-type{min-height:28px;color:#8dd8fb;background:rgba(29,90,165,.29);font-size:9px;font-weight:800}
+body[data-app-route="quiniela"] .v960-q-cols>:nth-child(2){text-align:left;min-width:0}
+body[data-app-route="quiniela"] .v960-q-cols strong{color:#75eeff}
+body[data-app-route="quiniela"] .v960-q-team{display:flex;align-items:center;gap:4px;min-width:0}
+body[data-app-route="quiniela"] .v960-q-team img{width:22px;height:22px;flex:none;object-fit:contain}
+body[data-app-route="quiniela"] .v960-q-team b{display:block;min-width:0;overflow-wrap:anywhere;font-size:9.5px;line-height:1.25}
+body[data-app-route="quiniela"] .v960-q-scorer-head,body[data-app-route="quiniela"] .v960-q-scorer{display:grid;grid-template-columns:23px minmax(0,1fr) 36px;align-items:center;gap:7px;padding:7px 9px;border-top:1px solid rgba(169,203,245,.11);color:#e1ecff;font-size:10px}
+body[data-app-route="quiniela"] .v960-q-scorer-head{color:#8dd8fb;background:rgba(29,90,165,.29);font-size:9px;font-weight:800}
+body[data-app-route="quiniela"] .v960-q-scorer b,body[data-app-route="quiniela"] .v960-q-scorer small{display:block;overflow-wrap:anywhere}
+body[data-app-route="quiniela"] .v960-q-scorer small{margin-top:2px;color:#a4bee4;font-size:9px}
+body[data-app-route="quiniela"] .v960-q-scorer strong{color:#78e9ff;text-align:center}
+body[data-app-route="quiniela"] .v960-q-result{display:grid;grid-template-columns:25px minmax(0,1fr) 40px minmax(0,1fr);align-items:center;gap:4px;min-height:35px;padding:5px 7px;border-top:1px solid rgba(169,203,245,.11);color:#dce7fb;font-size:9.5px}
+body[data-app-route="quiniela"] .v960-q-result span{color:#8dd8fb}
+body[data-app-route="quiniela"] .v960-q-result b{min-width:0;overflow-wrap:anywhere}
+body[data-app-route="quiniela"] .v960-q-result strong{color:#fff;text-align:center;white-space:nowrap}
+@media(max-width:380px){body[data-app-route="quiniela"] .v960-q-cols{grid-template-columns:18px minmax(0,1fr) 20px 20px 20px 24px;gap:3px;padding:5px;font-size:9px}body[data-app-route="quiniela"] .v960-q-team img{width:19px;height:19px}body[data-app-route="quiniela"] .v960-q-team b{font-size:9px}}
