@@ -18,5 +18,6 @@ test('diseño moderno mantiene la tarjeta activa, el quinto cuadro y la accesibi
   assert.match(css,/:focus-visible/);
   assert.match(css,/min-width:0!important/);
   assert.doesNotMatch(css,/bottom-nav|position:fixed|display:none/);
-  assert.match(html,/v936-competition-category-cards\.css\?v=20261007-v936-modern-cats/);
+  // La versión de caché cambia cuando se actualizan los logos de categorías.
+  assert.match(html,/v936-competition-category-cards\.css\?v=202610\d+-v\d+-[a-z0-9-]+/);
 });
