@@ -34,3 +34,71 @@ html body .v946-crest-initials{
   font-weight:900!important;
   letter-spacing:-.04em!important;
 }
+
+/* V949: mantener el escudo COMPLETO dentro de su propia fila.
+   Corrige el logo de La Canchita tapando el nombre. No cambia alto de tarjetas,
+   tabla, jugadores ni buscadores. */
+html body #screen .v944-cards .v944-player{
+  gap:4px!important;
+}
+html body #screen .v944-cards .v944-player .v944-player-top{
+  position:relative!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex:0 0 40px!important;
+  width:100%!important;
+  height:40px!important;
+  min-height:40px!important;
+  max-height:40px!important;
+  overflow:hidden!important;
+}
+html body #screen .v944-cards .v944-player .v944-crest.v946-team-crest{
+  box-sizing:border-box!important;
+  position:relative!important;
+  display:grid!important;
+  place-items:center!important;
+  flex:0 0 38px!important;
+  width:38px!important;
+  height:38px!important;
+  min-width:38px!important;
+  min-height:38px!important;
+  max-width:38px!important;
+  max-height:38px!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border-radius:8px!important;
+  background:transparent!important;
+}
+html body #screen .v944-cards .v944-player .v944-crest.v946-team-crest img{
+  box-sizing:border-box!important;
+  position:static!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  transform:none!important;
+  translate:none!important;
+  scale:none!important;
+  filter:none!important;
+}
+html body #screen .v944-cards .v944-player .v944-player-name{
+  box-sizing:border-box!important;
+  position:relative!important;
+  z-index:1!important;
+  flex:0 0 auto!important;
+  margin:4px 0 0!important;
+  padding:0!important;
+  max-width:100%!important;
+  line-height:1.15!important;
+  overflow-wrap:anywhere!important;
+  white-space:normal!important;
+}
