@@ -461,6 +461,10 @@ function dataRichness(x){
 }
 function chooseNewer(a,b){
   if(!a)return b;if(!b)return a;
+  // El rol manual es más reciente que el último espejo verde: no dejar que un
+  // snapshot antiguo revierta sedes, horas o decisiones administrativas.
+  const manualStamp=String(a.manual_fixture_update?.applied_at_utc||'');
+  if(manualStamp&&String(b.captured_at_utc||'')<manualStamp)return a;
   const ta=String(a.captured_at_utc||''),tb=String(b.captured_at_utc||'');
   if(tb>ta)return b;
   if(ta>tb)return a;
