@@ -5,8 +5,8 @@
 /* V625 — respeta al renderizador que ya tomó #/players; V66 conserva tienda y APIs auxiliares. */
 if(!window.__LJR_PLAYER_DIRECTORY_OWNER__)window.__LJR_PLAYER_DIRECTORY_OWNER__='v66';
 function ownsPlayers(){return window.__LJR_PLAYER_DIRECTORY_OWNER__==='v66'}
-const LOCAL='./data/official-live.json?v=20261001-v493-official-all-categories';
-const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v493-official-all-categories';
+const LOCAL='./data/official-live.json?v=20261008-v967-segunda-finales';
+const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261008-v967-segunda-finales';
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_LABEL={'1':'Veteranos 50+','2':'Veteranos 35+','3':'Primera Fuerza','4':'Segunda Fuerza','5':'Intermedia'};
