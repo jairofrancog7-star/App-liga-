@@ -257,9 +257,11 @@ function teamTable(){
 function heroScorerCard(r,slot){
   if(!r)return '';
   const shownRank=String(r.rank||slot);
+  const clipTime=slot===1?'00:38':'00:36';
   return '<article class="v391-feature rank-'+slot+'">'+
     '<div class="v391-feature-photo">'+heroPlayerPhoto(r.player,r.team,catId())+
       '<span class="v391-feature-kicker">#'+esc(shownRank)+' Máximo goleador</span>'+
+      '<span class="v391-feature-media" aria-hidden="true"><small>'+clipTime+'</small><i><svg viewBox="0 0 24 24"><path d="M9 6.5 18 12l-9 5.5z"/></svg></i></span>'+
     '</div>'+
     '<div class="v391-feature-info">'+
       '<div class="v391-feature-person" data-v194-player="'+esc(r.player)+'" data-v194-team="'+esc(r.team)+'">'+
@@ -318,17 +320,27 @@ function chooseLowerStat(mode){
   return false;
 }
 
+function v931ScorerIcon(name){
+ const p={
+  category:'<path d="M12 3 20 6v6c0 5-3 8-8 10-5-2-8-5-8-10V6l8-3Z"/><path d="M8 10h8M8 14h5"/>',
+  goals:'<circle cx="12" cy="12" r="8"/><path d="m12 4 2.1 4.1 4.5.7-3.3 3.2.8 4.5L12 14.4 7.9 16.5l.8-4.5-3.3-3.2 4.5-.7L12 4Z"/>',
+  shots:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 1v4m0 14v4M1 12h4m14 0h4"/>',
+  passes:'<path d="M4 8h12"/><path d="m13 5 3 3-3 3"/><path d="M20 16H8"/><path d="m11 13-3 3 3 3"/>'
+ };
+ return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(p[name]||p.category)+'</svg>';
+}
+
 function categoryStrip(){
   const active=catId(),stat=lowerStat();
   return '<section class="v391-category-wrap v472-unified-controls" aria-label="Filtros del ranking">'+
     '<span class="v391-category-label">CLASIFICAR POR CATEGORÍA</span>'+
     '<div class="v391-category-strip">'+CAT_ORDER.map(id=>
-      '<button type="button" class="'+(id===active?'active':'')+'" data-v194-cat="'+id+'" aria-pressed="'+(id===active?'true':'false')+'">'+esc(catName(id))+'</button>'
+      '<button type="button" class="'+(id===active?'active':'')+'" data-v194-cat="'+id+'" aria-pressed="'+(id===active?'true':'false')+'"><span class="v931-filter-icon">'+v931ScorerIcon('category')+'</span><b>'+esc(catName(id))+'</b></button>'
     ).join('')+'</div>'+
     '<div class="v391-stat-strip" aria-label="Estadística del ranking">'+
-      '<button type="button" class="'+(stat==='goals'?'active':'')+'" data-v462-stat="goals" aria-pressed="'+(stat==='goals'?'true':'false')+'">Goles</button>'+
-      '<button type="button" class="'+(stat==='shots'?'active':'')+'" data-v462-stat="shots" aria-pressed="'+(stat==='shots'?'true':'false')+'">Remates</button>'+
-      '<button type="button" class="'+(stat==='passes'?'active':'')+'" data-v462-stat="passes" aria-pressed="'+(stat==='passes'?'true':'false')+'">Pases</button>'+
+      '<button type="button" class="'+(stat==='goals'?'active':'')+'" data-v462-stat="goals" aria-pressed="'+(stat==='goals'?'true':'false')+'"><span class="v931-filter-icon">'+v931ScorerIcon('goals')+'</span><b>Goles</b></button>'+
+      '<button type="button" class="'+(stat==='shots'?'active':'')+'" data-v462-stat="shots" aria-pressed="'+(stat==='shots'?'true':'false')+'"><span class="v931-filter-icon">'+v931ScorerIcon('shots')+'</span><b>Remates</b></button>'+
+      '<button type="button" class="'+(stat==='passes'?'active':'')+'" data-v462-stat="passes" aria-pressed="'+(stat==='passes'?'true':'false')+'"><span class="v931-filter-icon">'+v931ScorerIcon('passes')+'</span><b>Pases</b></button>'+
     '</div>'+
   '</section>';
 }
