@@ -4,7 +4,7 @@
 (function(){
 'use strict';
 
-const BUILD='20261007-v908-rol-j7-j8';
+const BUILD='20261007-v930-official-stats-five-cats';
 const LOCAL_DATA='./data/official-live.json?v='+BUILD;
 const REMOTE_DATA='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v='+BUILD;
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';

@@ -22,7 +22,8 @@
         "JUVENTUS",
         "LEYENDAS FC",
         "PSV",
-        "LA TRINIDAD"
+        "LA TRINIDAD",
+        "POZOS FC"
       ],
       "standings": [
         {
@@ -196,7 +197,7 @@
         ]
       },
       "source_page": "https://www.juventinorosasliga.com/?categoria=2",
-      "updated_at_utc": "2026-10-01T15:25:00Z"
+      "updated_at_utc": "2026-10-08T00:23:45Z"
     },
     "Veteranos 50+": {
       "scope": "Categoría por edad",
@@ -368,82 +369,82 @@
       "standings": [
         {
           "pos": 1,
-          "team": "Manchester",
-          "jj": 6,
+          "team": "MANCHESTER",
+          "jj": 7,
           "g": 4,
-          "e": 2,
+          "e": 3,
           "p": 0,
-          "gf": 15,
-          "gc": 3,
+          "gf": 17,
+          "gc": 5,
           "dg": 12,
-          "pts": 14
+          "pts": 15
         },
         {
           "pos": 2,
-          "team": "Dynamo",
-          "jj": 6,
-          "g": 4,
-          "e": 1,
-          "p": 1,
-          "gf": 11,
-          "gc": 5,
-          "dg": 6,
-          "pts": 13
+          "team": "LA ESPERANZA",
+          "jj": 7,
+          "g": 5,
+          "e": 0,
+          "p": 2,
+          "gf": 10,
+          "gc": 6,
+          "dg": 4,
+          "pts": 15
         },
         {
           "pos": 3,
-          "team": "La Esperanza",
-          "jj": 6,
+          "team": "DYNAMO",
+          "jj": 7,
           "g": 4,
-          "e": 0,
+          "e": 1,
           "p": 2,
-          "gf": 8,
-          "gc": 6,
-          "dg": 2,
-          "pts": 12
+          "gf": 11,
+          "gc": 7,
+          "dg": 4,
+          "pts": 13
         },
         {
           "pos": 4,
-          "team": "Boavista",
-          "jj": 6,
+          "team": "TOROS DE CUENDA",
+          "jj": 7,
           "g": 2,
-          "e": 1,
+          "e": 2,
           "p": 3,
-          "gf": 6,
-          "gc": 14,
-          "dg": -8,
-          "pts": 7
+          "gf": 7,
+          "gc": 12,
+          "dg": -5,
+          "pts": 8
         },
         {
           "pos": 5,
-          "team": "Toros de Cuenda",
-          "jj": 6,
-          "g": 1,
+          "team": "BOAVISTA",
+          "jj": 7,
+          "g": 2,
           "e": 2,
           "p": 3,
-          "gf": 6,
-          "gc": 12,
-          "dg": -6,
-          "pts": 5
+          "gf": 8,
+          "gc": 16,
+          "dg": -8,
+          "pts": 8
         },
         {
           "pos": 6,
-          "team": "Boca Jrs",
-          "jj": 6,
+          "team": "BOCA JRS",
+          "jj": 7,
           "g": 0,
           "e": 0,
-          "p": 6,
+          "p": 7,
           "gf": 0,
-          "gc": 6,
-          "dg": -6,
-          "pts": -18
+          "gc": 7,
+          "dg": -7,
+          "pts": -21
         }
       ],
-      "updated_at_utc": "2026-10-08T00:26:00Z"
+      "updated_at_utc": "2026-10-08T00:23:45Z"
     },
     "Primera Fuerza": {
       "scope": "Categoría abierta por nivel",
-      "current_phase": "Torneo de Copa · Jornada 7 · 04/10/2026",
+      "current_phase": "Torneo de Copa · Jornada 8 · 11/10/2026",
       "teams": [
         "San José FC",
         "Juventus",
@@ -916,143 +917,143 @@
       "standings": [
         {
           "pos": 1,
-          "team": "San José FC",
-          "jj": 5,
+          "team": "SAN JOSE FC",
+          "jj": 6,
           "g": 5,
           "e": 0,
-          "p": 0,
-          "gf": 16,
-          "gc": 4,
-          "dg": 12,
+          "p": 1,
+          "gf": 17,
+          "gc": 6,
+          "dg": 11,
           "pts": 15
         },
         {
           "pos": 2,
-          "team": "Juventus",
-          "jj": 5,
-          "g": 3,
+          "team": "JUVENTUS",
+          "jj": 6,
+          "g": 4,
           "e": 0,
           "p": 2,
-          "gf": 22,
-          "gc": 11,
-          "dg": 11,
-          "pts": 9
+          "gf": 24,
+          "gc": 12,
+          "dg": 12,
+          "pts": 12
         },
         {
           "pos": 3,
-          "team": "Linces",
-          "jj": 4,
-          "g": 3,
+          "team": "LINCES",
+          "jj": 5,
+          "g": 4,
           "e": 0,
           "p": 1,
-          "gf": 15,
-          "gc": 9,
-          "dg": 6,
-          "pts": 9
+          "gf": 17,
+          "gc": 10,
+          "dg": 7,
+          "pts": 12
         },
         {
           "pos": 4,
-          "team": "Napoli",
+          "team": "NAPOLI",
+          "jj": 6,
+          "g": 3,
+          "e": 1,
+          "p": 2,
+          "gf": 14,
+          "gc": 11,
+          "dg": 3,
+          "pts": 10
+        },
+        {
+          "pos": 5,
+          "team": "HERMANOS",
+          "jj": 5,
+          "g": 3,
+          "e": 1,
+          "p": 1,
+          "gf": 10,
+          "gc": 7,
+          "dg": 3,
+          "pts": 10
+        },
+        {
+          "pos": 6,
+          "team": "FRANCO FC",
           "jj": 5,
           "g": 3,
           "e": 0,
           "p": 2,
-          "gf": 11,
-          "gc": 8,
-          "dg": 3,
+          "gf": 5,
+          "gc": 5,
+          "dg": 0,
           "pts": 9
         },
         {
-          "pos": 5,
-          "team": "Hermanos",
-          "jj": 4,
-          "g": 2,
-          "e": 1,
-          "p": 1,
-          "gf": 9,
-          "gc": 7,
-          "dg": 2,
-          "pts": 7
-        },
-        {
-          "pos": 6,
-          "team": "Franco FC",
-          "jj": 3,
+          "pos": 7,
+          "team": "TERRICOLAS",
+          "jj": 5,
           "g": 2,
           "e": 0,
-          "p": 1,
-          "gf": 3,
-          "gc": 3,
-          "dg": 0,
+          "p": 3,
+          "gf": 8,
+          "gc": 14,
+          "dg": -6,
           "pts": 6
         },
         {
-          "pos": 7,
-          "team": "Herreras FC",
-          "jj": 4,
-          "g": 1,
+          "pos": 8,
+          "team": "ABEJAS",
+          "jj": 5,
+          "g": 2,
           "e": 1,
           "p": 2,
-          "gf": 9,
-          "gc": 12,
-          "dg": -3,
+          "gf": 10,
+          "gc": 10,
+          "dg": 0,
           "pts": 4
         },
         {
-          "pos": 8,
-          "team": "Abejas",
-          "jj": 4,
-          "g": 2,
-          "e": 0,
-          "p": 2,
-          "gf": 7,
-          "gc": 7,
-          "dg": 0,
-          "pts": 3
-        },
-        {
           "pos": 9,
-          "team": "Terrícolas",
-          "jj": 4,
+          "team": "HERRERAS FC",
+          "jj": 5,
           "g": 1,
-          "e": 0,
+          "e": 1,
           "p": 3,
-          "gf": 5,
-          "gc": 14,
-          "dg": -9,
-          "pts": 3
+          "gf": 9,
+          "gc": 13,
+          "dg": -4,
+          "pts": 4
         },
         {
           "pos": 10,
-          "team": "Lobos CDG",
-          "jj": 5,
+          "team": "LOBOS CDG",
+          "jj": 6,
           "g": 1,
           "e": 0,
-          "p": 4,
+          "p": 5,
           "gf": 3,
-          "gc": 20,
-          "dg": -17,
+          "gc": 23,
+          "dg": -20,
           "pts": 3
         },
         {
           "pos": 11,
-          "team": "Galácticos",
-          "jj": 5,
+          "team": "GALACTICOS",
+          "jj": 6,
           "g": 0,
           "e": 0,
-          "p": 5,
+          "p": 6,
           "gf": 0,
-          "gc": 5,
-          "dg": -5,
-          "pts": -15
+          "gc": 6,
+          "dg": -6,
+          "pts": -18
         }
       ],
       "source_page": "https://www.juventinorosasliga.com/?categoria=3",
-      "updated_at_utc": "2026-10-01T15:25:00Z"
+      "updated_at_utc": "2026-10-08T00:23:45Z"
     },
     "Intermedia": {
       "scope": "Categoría abierta por nivel",
-      "current_phase": "Torneo de Copa J7",
+      "current_phase": "Torneo de Copa · Jornada 8 · 11/10/2026",
       "teams": [
         "La Canchita Deportes",
         "Galeana",
@@ -1326,12 +1327,215 @@
           {
             "rest": "Aldama FC"
           }
+        ],
+        "J8": [
+          {
+            "home": "ALDAMA FC",
+            "away": "SAN ANTONIO JRS",
+            "time": "08:00",
+            "field": "Campo 1 (Empastado)",
+            "date": "2026-10-11"
+          },
+          {
+            "home": "OSASUNA",
+            "away": "ATL. GALEANA",
+            "time": "08:00",
+            "field": "Campo 4",
+            "date": "2026-10-11"
+          },
+          {
+            "home": "DEP. MARAVILLAS",
+            "away": "PROMESAS FC",
+            "time": "10:00",
+            "field": "Maravillas",
+            "date": "2026-10-11"
+          },
+          {
+            "home": "LA CUADRILLA",
+            "away": "LA CANCHITA DEPORTES",
+            "time": "10:00",
+            "field": "Rincón de Centeno",
+            "date": "2026-10-11"
+          },
+          {
+            "home": "POPULARES",
+            "away": "CAPIBARAS",
+            "time": "12:00",
+            "field": "Fraccionamiento",
+            "date": "2026-10-11"
+          },
+          {
+            "home": "MAZACOTES FC",
+            "away": "LA HUERTA",
+            "time": "12:00",
+            "field": "Campo 4",
+            "date": "2026-10-11"
+          }
         ]
-      }
+      },
+      "standings": [
+        {
+          "pos": 1,
+          "team": "LA CANCHITA DEPORTES",
+          "jj": 6,
+          "g": 6,
+          "e": 0,
+          "p": 0,
+          "gf": 26,
+          "gc": 7,
+          "dg": 19,
+          "pts": 18
+        },
+        {
+          "pos": 2,
+          "team": "LA CUADRILLA",
+          "jj": 6,
+          "g": 4,
+          "e": 0,
+          "p": 2,
+          "gf": 18,
+          "gc": 9,
+          "dg": 9,
+          "pts": 12
+        },
+        {
+          "pos": 3,
+          "team": "CAPIBARAS",
+          "jj": 5,
+          "g": 4,
+          "e": 0,
+          "p": 1,
+          "gf": 18,
+          "gc": 10,
+          "dg": 8,
+          "pts": 12
+        },
+        {
+          "pos": 4,
+          "team": "ATL. GALEANA",
+          "jj": 5,
+          "g": 3,
+          "e": 1,
+          "p": 1,
+          "gf": 15,
+          "gc": 14,
+          "dg": 1,
+          "pts": 10
+        },
+        {
+          "pos": 5,
+          "team": "ALDAMA FC",
+          "jj": 5,
+          "g": 3,
+          "e": 0,
+          "p": 2,
+          "gf": 13,
+          "gc": 10,
+          "dg": 3,
+          "pts": 9
+        },
+        {
+          "pos": 6,
+          "team": "POPULARES",
+          "jj": 5,
+          "g": 2,
+          "e": 1,
+          "p": 2,
+          "gf": 10,
+          "gc": 11,
+          "dg": -1,
+          "pts": 7
+        },
+        {
+          "pos": 7,
+          "team": "MAZACOTES FC",
+          "jj": 6,
+          "g": 2,
+          "e": 0,
+          "p": 4,
+          "gf": 14,
+          "gc": 16,
+          "dg": -2,
+          "pts": 6
+        },
+        {
+          "pos": 8,
+          "team": "SAN ANTONIO JRS",
+          "jj": 5,
+          "g": 2,
+          "e": 0,
+          "p": 3,
+          "gf": 12,
+          "gc": 14,
+          "dg": -2,
+          "pts": 6
+        },
+        {
+          "pos": 9,
+          "team": "LA HUERTA",
+          "jj": 5,
+          "g": 2,
+          "e": 2,
+          "p": 1,
+          "gf": 8,
+          "gc": 6,
+          "dg": 2,
+          "pts": 5
+        },
+        {
+          "pos": 10,
+          "team": "PROMESAS FC",
+          "jj": 5,
+          "g": 1,
+          "e": 1,
+          "p": 3,
+          "gf": 15,
+          "gc": 24,
+          "dg": -9,
+          "pts": 4
+        },
+        {
+          "pos": 11,
+          "team": "MALVINAS",
+          "jj": 6,
+          "g": 1,
+          "e": 1,
+          "p": 4,
+          "gf": 12,
+          "gc": 25,
+          "dg": -13,
+          "pts": 4
+        },
+        {
+          "pos": 12,
+          "team": "DEP. MARAVILLAS",
+          "jj": 5,
+          "g": 0,
+          "e": 1,
+          "p": 4,
+          "gf": 4,
+          "gc": 14,
+          "dg": -10,
+          "pts": 1
+        },
+        {
+          "pos": 13,
+          "team": "OSASUNA",
+          "jj": 4,
+          "g": 0,
+          "e": 1,
+          "p": 3,
+          "gf": 10,
+          "gc": 15,
+          "dg": -5,
+          "pts": -2
+        }
+      ],
+      "updated_at_utc": "2026-10-08T00:23:45Z"
     },
     "Segunda Fuerza": {
       "scope": "Categoría abierta por nivel",
-      "current_phase": "Torneo de Copa J7",
+      "current_phase": "Torneo de Copa · Jornada 8 · 11/10/2026",
       "teams": [
         "Tavera FC",
         "Pachangas FC",
@@ -1585,11 +1789,202 @@
             "field": "Campo 2",
             "date": "2026-10-04"
           }
+        ],
+        "J8": [
+          {
+            "home": "DEP. LA LUZ",
+            "away": "SAN ANTONIO FC",
+            "time": "08:00",
+            "field": "Campo 2",
+            "date": "2026-10-11"
+          },
+          {
+            "home": "SAN JULIAN",
+            "away": "TAVERA FC",
+            "time": "08:00",
+            "field": "San Julian",
+            "date": "2026-10-11"
+          },
+          {
+            "home": "BARZA",
+            "away": "DEP. ZAPATA",
+            "time": "10:00",
+            "field": "Campo 2",
+            "date": "2026-10-11"
+          },
+          {
+            "home": "DEP. NOPALERO",
+            "away": "SAN JUAN FC",
+            "time": "10:00",
+            "field": "Campo 4",
+            "date": "2026-10-11"
+          },
+          {
+            "home": "CELTICOS",
+            "away": "TAPATIO",
+            "time": "12:00",
+            "field": "Campo 1 (Empastado)",
+            "date": "2026-10-11"
+          },
+          {
+            "home": "SAN JOSE JRS",
+            "away": "PACHANGAS FC",
+            "time": "12:00",
+            "field": "San Jose  de la Montaña",
+            "date": "2026-10-11"
+          }
         ]
       },
       "notes": [
         "El Alto aparece en J1 pero ya no aparece en la jornada actual J5, por eso no se incluye en la lista vigente."
-      ]
+      ],
+      "standings": [
+        {
+          "pos": 1,
+          "team": "SAN JULIAN",
+          "jj": 5,
+          "g": 4,
+          "e": 1,
+          "p": 0,
+          "gf": 16,
+          "gc": 7,
+          "dg": 9,
+          "pts": 13
+        },
+        {
+          "pos": 2,
+          "team": "SAN JUAN FC",
+          "jj": 5,
+          "g": 4,
+          "e": 0,
+          "p": 1,
+          "gf": 18,
+          "gc": 2,
+          "dg": 16,
+          "pts": 12
+        },
+        {
+          "pos": 3,
+          "team": "SAN JOSE JRS",
+          "jj": 5,
+          "g": 3,
+          "e": 1,
+          "p": 1,
+          "gf": 12,
+          "gc": 5,
+          "dg": 7,
+          "pts": 10
+        },
+        {
+          "pos": 4,
+          "team": "TAVERA FC",
+          "jj": 4,
+          "g": 3,
+          "e": 1,
+          "p": 0,
+          "gf": 10,
+          "gc": 3,
+          "dg": 7,
+          "pts": 10
+        },
+        {
+          "pos": 5,
+          "team": "CELTICOS",
+          "jj": 5,
+          "g": 3,
+          "e": 0,
+          "p": 2,
+          "gf": 14,
+          "gc": 8,
+          "dg": 6,
+          "pts": 9
+        },
+        {
+          "pos": 6,
+          "team": "DEP. ZAPATA",
+          "jj": 5,
+          "g": 2,
+          "e": 2,
+          "p": 1,
+          "gf": 7,
+          "gc": 6,
+          "dg": 1,
+          "pts": 8
+        },
+        {
+          "pos": 7,
+          "team": "PACHANGAS FC",
+          "jj": 5,
+          "g": 2,
+          "e": 0,
+          "p": 3,
+          "gf": 6,
+          "gc": 18,
+          "dg": -12,
+          "pts": 6
+        },
+        {
+          "pos": 8,
+          "team": "BARZA",
+          "jj": 5,
+          "g": 1,
+          "e": 1,
+          "p": 3,
+          "gf": 11,
+          "gc": 12,
+          "dg": -1,
+          "pts": 4
+        },
+        {
+          "pos": 9,
+          "team": "SAN ANTONIO FC",
+          "jj": 4,
+          "g": 1,
+          "e": 0,
+          "p": 3,
+          "gf": 13,
+          "gc": 11,
+          "dg": 2,
+          "pts": 3
+        },
+        {
+          "pos": 10,
+          "team": "DEP. NOPALERO",
+          "jj": 5,
+          "g": 2,
+          "e": 0,
+          "p": 3,
+          "gf": 9,
+          "gc": 10,
+          "dg": -1,
+          "pts": 3
+        },
+        {
+          "pos": 11,
+          "team": "DEP. LA LUZ",
+          "jj": 5,
+          "g": 1,
+          "e": 0,
+          "p": 4,
+          "gf": 7,
+          "gc": 16,
+          "dg": -9,
+          "pts": 0
+        },
+        {
+          "pos": 12,
+          "team": "TAPATIO",
+          "jj": 5,
+          "g": 0,
+          "e": 0,
+          "p": 5,
+          "gf": 5,
+          "gc": 30,
+          "dg": -25,
+          "pts": -3
+        }
+      ],
+      "updated_at_utc": "2026-10-08T00:23:45Z"
     }
   },
   "manual_fixture_update": {
