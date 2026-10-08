@@ -1,6 +1,14 @@
 import {normalizeCompetition,norm} from './competition-data.js';
 const labels={'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'},order=['3','5','4','2','1'];
 const categoryLogos={'3':'branding/primera-fuerza-hd.png','5':'categories/intermedia.webp','4':'categories/segunda-fuerza.webp','2':'categories/veteranos-35-user.png','1':'categories/veteranos-50.webp'};
+const LEAGUE_LOGO='./assets/liga-logo.webp';
+const qIcon=type=>({
+ play:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v16H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>',
+ history:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v5l3 2"/><path d="M4.8 6.4A8 8 0 1 1 4 12"/><path d="M4 5v4h4"/></svg>',
+ ranking:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19V11h4v8M10 19V6h4v13M15 19V9h4v10"/></svg>',
+ trophy:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/><path d="M8 6H4v2a4 4 0 0 0 4 4M16 6h4v2a4 4 0 0 1-4 4M12 13v4M8 20h8M9 17h6"/></svg>',
+ clock:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg>'
+}[type]||'');
 const titles={standings:'Tabla de clasificación',scorers:'Tabla de goleo',calendar:'Calendario de jornada',results:'Resultados de jornada',sanctions:'Jugadores sancionados',notice:'Aviso de la liga',transfer:'Transferencia de jugador',cedula:'Cédula de partido',quiniela:'Mi quiniela'};
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=(s,r=document)=>r.querySelector(s);let dataPromise,db,catId=localStorage.getItem('v561-category')||'3',kind=localStorage.getItem('v561-publication-kind')||'standings';if(!titles[kind]||kind==='quiniela')kind='standings';
@@ -100,9 +108,13 @@ async function mountQuiniela(root){
      '<div class="v618-q-venue">'+esc(m.venue||'Sede por confirmar')+'</div>'+
    '</article>';
  };
- const cats=order.filter(id=>db.categories[id]).map(id=>'<button type="button" class="v618-q-cat '+(catId===id?'active':'')+'" data-q-cat-button="'+id+'">'+esc(labels[id])+'</button>').join('');
- const nav='<div class="v618-q-nav"><button type="button" class="'+(view==='play'?'active':'')+'" data-q-view="play">Pronosticar</button><button type="button" class="'+(view==='history'?'active':'')+'" data-q-view="history">Histórico</button><button type="button" class="'+(view==='ranking'?'active':'')+'" data-q-view="ranking">Ranking</button></div>';
- const rules='<section class="v618-q-rules"><b>🏆 Pronostica el marcador exacto de cada partido</b><p><span>2 pts</span> si aciertas el marcador exacto · <span>1 pt</span> si aciertas ganador o empate.</p><small>⌛ Solo puedes editar antes de que el partido quede registrado como finalizado.</small></section>';
+ const cats=order.filter(id=>db.categories[id]).map(id=>'<button type="button" class="v618-q-cat '+(catId===id?'active':'')+'" data-q-cat-button="'+id+'"><img src="'+esc(categoryLogos[id])+'" alt="" aria-hidden="true"><span>'+esc(labels[id])+'</span></button>').join('');
+ const nav='<div class="v618-q-nav">'+
+   '<button type="button" class="'+(view==='play'?'active':'')+'" data-q-view="play"><span class="v953-q-nav-icon">'+qIcon('play')+'</span><b>Pronosticar</b></button>'+
+   '<button type="button" class="'+(view==='history'?'active':'')+'" data-q-view="history"><span class="v953-q-nav-icon">'+qIcon('history')+'</span><b>Histórico</b></button>'+
+   '<button type="button" class="'+(view==='ranking'?'active':'')+'" data-q-view="ranking"><span class="v953-q-nav-icon">'+qIcon('ranking')+'</span><b>Ranking</b></button>'+
+ '</div>';
+ const rules='<section class="v618-q-rules"><b><span class="v953-q-rule-icon">'+qIcon('trophy')+'</span>Pronostica el marcador exacto de cada partido</b><p><span>2 pts</span> si aciertas el marcador exacto · <span>1 pt</span> si aciertas ganador o empate.</p><small><span class="v953-q-clock">'+qIcon('clock')+'</span>Solo puedes editar antes de que el partido quede registrado como finalizado.</small></section>';
  let body='';
  if(view==='ranking'){
    body='<section class="v618-q-ranking">'+
@@ -126,7 +138,7 @@ async function mountQuiniela(root){
  root.innerHTML='<section class="v561-league v618-quiniela v619-quiniela-modern">'+
    '<header class="v618-q-head v619-q-hero">'+
      '<div class="v619-q-hero-top"><span class="v619-q-kicker"><i>✓</i> QUINIELA LJR</span><span class="v619-q-live">JORNADA ACTIVA</span></div>'+
-     '<div class="v619-q-title-row"><span class="v619-q-mark" aria-hidden="true">Q</span><div><h2>Quiniela</h2><p>Pronostica · suma puntos · sube en el ranking</p></div></div>'+
+     '<div class="v619-q-title-row"><span class="v619-q-mark v953-q-league-mark"><img src="'+LEAGUE_LOGO+'" alt="Liga Juventino Rosas"></span><div><h2>Quiniela</h2><p>Pronostica · suma puntos · sube en el ranking</p></div></div>'+
      '<div class="v619-q-mini-stats"><span><b>'+savedCount+'</b><small>Guardados</small></span><span><b>'+total+'</b><small>Puntos</small></span><span><b>'+exact+'</b><small>Exactos</small></span></div>'+
    '</header>'+
    nav+rules+
