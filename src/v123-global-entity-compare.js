@@ -450,7 +450,7 @@ document.addEventListener('click',e=>{
  /* V898 — Pronostica Seis es dueño completo de sus toques de equipos.
     Ningún nombre, escudo o pestaña puede abrir Team Detail/Comparar. */
  if(currentRoute==='predictorSix')return;
- if(currentRoute==='playerCompare'||currentRoute==='club-store')return;
+ if(['playerCompare','club-store','compare','comparar','v4-compare'].includes(currentRoute))return;
  /* V679 — Permisos administra internamente sus selectores de equipo/jugador.
     El comparador global corre en captura y antes podía secuestrar el toque,
     enviando a Team Detail/Comparar o Player Detail/Comparar. En esta ruta
