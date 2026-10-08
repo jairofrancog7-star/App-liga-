@@ -154,6 +154,10 @@ async function mountQuiniela(root){
      '<p class="v618-q-local-note">Tus puntos se calculan con tus pronósticos guardados en Liga Juventino Rosas.</p>'+
    '</section>';
  }else if(view==='tables'){
+   const paneKey='v968-q-table-pane:'+catId;
+   const requestedPane=localStorage.getItem(paneKey)||'standings';
+   const pane=['standings','scorers','results'].includes(requestedPane)?requestedPane:'standings';
+   const paneButton=(key,label)=>'<button type="button" class="v968-q-pane-button'+(pane===key?' active':'')+'" data-q-table-pane="'+key+'" aria-pressed="'+(pane===key?'true':'false')+'">'+label+'</button>';
    const stamp=String(db.captured_at_utc||'').slice(0,16).replace('T',' ');
    const tableHead='<div class="v960-q-cols"><span>#</span><span>Equipo</span><span>PJ</span><span>GF</span><span>GC</span><span>PTS</span></div>';
    const standings=c.standings.map(t=>'<div class="v960-q-cols"><span>'+esc(t.pos??'—')+'</span><span class="v960-q-team">'+(logo(t.name)?'<img src="'+esc(logo(t.name))+'" alt="">':'')+'<b>'+esc(t.name)+'</b></span><span>'+esc(t.pj??'—')+'</span><span>'+esc(t.gf??'—')+'</span><span>'+esc(t.gc??'—')+'</span><strong>'+esc(t.pts??'—')+'</strong></div>').join('');
@@ -161,10 +165,11 @@ async function mountQuiniela(root){
    const recent=c.matches.filter(m=>m.complete).sort((a,b)=>(b.iso||'').localeCompare(a.iso||'')).slice(0,12).map(m=>'<div class="v960-q-result"><span>J'+esc(m.round)+'</span><b>'+esc(m.home)+'</b><strong>'+esc(m.homeScore)+'–'+esc(m.awayScore)+'</strong><b>'+esc(m.away)+'</b></div>').join('');
    body='<section class="v960-q-tables">'+
      '<p class="v960-q-source">Datos publicados por AdminFut · corte: '+esc(stamp||'no disponible')+' UTC. No son el ranking de participantes de la Quiniela.</p>'+
-     '<div class="v960-q-links"><a target="_blank" rel="noopener noreferrer" href="https://www.juventinorosasliga.com/tabla-posiciones/?categoria='+catId+'">Clasificación oficial ↗</a><a target="_blank" rel="noopener noreferrer" href="https://www.juventinorosasliga.com/tabla-goleo/?categoria='+catId+'">Goleo oficial ↗</a><button type="button" data-q-refresh>Actualizar datos</button></div>'+
-     '<section class="v960-q-block"><h3>Tabla de posiciones · '+esc(c.name)+'</h3>'+ (standings?tableHead+standings:'<p>No hay tabla de posiciones publicada para esta temporada.</p>')+'</section>'+
-     '<section class="v960-q-block"><h3>Máximos goleadores</h3>'+(scorers?'<div class="v960-q-scorer-head"><span>#</span><span>Jugador / Equipo</span><span>Goles</span></div>'+scorers:'<p>No hay goles individuales publicados para esta temporada.</p>')+'</section>'+
-     '<section class="v960-q-block"><h3>Resultados con marcador completo</h3>'+(recent||'<p>Sin resultados completos publicados.</p>')+'</section></section>';
+     '<div class="v960-q-links v968-q-tabs" role="group" aria-label="Ver tablas dentro de Liga Juventino">'+paneButton('standings','Clasificación')+paneButton('scorers','Goleo')+paneButton('results','Resultados')+'</div>'+
+     '<div class="v968-q-data-meta"><span>Datos oficiales · '+esc(c.name)+'</span><button type="button" data-q-refresh>↻ Actualizar</button></div>'+
+     '<section class="v960-q-block" data-q-pane-panel="standings"'+(pane==='standings'?'':' hidden')+'><h3>Tabla de posiciones · '+esc(c.name)+'</h3>'+ (standings?tableHead+standings:'<p>No hay tabla de posiciones publicada para esta temporada.</p>')+'</section>'+
+     '<section class="v960-q-block" data-q-pane-panel="scorers"'+(pane==='scorers'?'':' hidden')+'><h3>Máximos goleadores</h3>'+(scorers?'<div class="v960-q-scorer-head"><span>#</span><span>Jugador / Equipo</span><span>Goles</span></div>'+scorers:'<p>No hay goles individuales publicados para esta temporada.</p>')+'</section>'+
+     '<section class="v960-q-block" data-q-pane-panel="results"'+(pane==='results'?'':' hidden')+'><h3>Resultados con marcador completo</h3>'+(recent||'<p>Sin resultados completos publicados.</p>')+'</section></section>';
  }else if(view==='history'){
   // Histórico integrado con diseño azul; los resultados se obtienen del corte oficial.
   // Los pronósticos de AdminFut son privados: sólo se muestran los guardados en este dispositivo.
@@ -269,6 +274,16 @@ async function mountQuiniela(root){
    let count=0;for(const row of root.querySelectorAll('[data-q-match]'))if(saveRow(row))count++;
    notice(count+' pronósticos guardados en Liga Juventino');mountQuiniela(root);
  };
+ root.querySelectorAll('[data-q-table-pane]').forEach(btn=>btn.onclick=()=>{
+   const pane=btn.dataset.qTablePane;
+   localStorage.setItem('v968-q-table-pane:'+catId,pane);
+   root.querySelectorAll('[data-q-table-pane]').forEach(tab=>{
+     const active=tab.dataset.qTablePane===pane;
+     tab.classList.toggle('active',active);
+     tab.setAttribute('aria-pressed',String(active));
+   });
+   root.querySelectorAll('[data-q-pane-panel]').forEach(panel=>{panel.hidden=panel.dataset.qPanePanel!==pane});
+ });
  const refreshBtn=$('[data-q-refresh]',root);if(refreshBtn)refreshBtn.onclick=async()=>{refreshBtn.disabled=true;try{await window.LJR_V508_OFFICIAL?.refresh?.();db=null;dataPromise=null;await getDb();await mountQuiniela(root);notice('Se cargó el último corte oficial disponible')}catch(e){notice(e.message);refreshBtn.disabled=false}};
  const exportBtn=$('[data-q-export]',root);
  if(exportBtn)exportBtn.onclick=async()=>{try{const cv=await reportCanvas(catId,'quiniela',{round});downloadFile(new File([await blob(cv)],filename('quiniela',catId),{type:'image/png'}))}catch(e){notice(e.message)}};
