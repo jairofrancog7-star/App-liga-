@@ -1,16 +1,27 @@
-/* V944 · Máximo goleador — cabecera compacta, full-bleed, flecha + título + perfil. */
+/* V946 · Máximo goleador — evitar desplazamiento lateral de la cabecera en Android. */
 @media(max-width:1023px){
+  html body[data-app-route="scorers"],
+  html body[data-app-route="scorers"] #app,
+  html body[data-app-route="scorers"] .app-shell{
+    min-width:0!important;
+    max-width:100%!important;
+    overflow-x:clip!important;
+  }
   html body[data-app-route="scorers"] #app > .topbar,
   html body[data-app-route="scorers"] .app-shell > .topbar{
     position:sticky!important;
     top:0!important;
-    left:50%!important;
-    transform:translateX(-50%)!important;
+    /* V946: no centrar con transform: desplaza la cabecera fuera del viewport Android. */
+    left:0!important;
+    right:0!important;
+    transform:none!important;
     display:block!important;
     visibility:visible!important;
     opacity:1!important;
-    width:100vw!important;
-    max-width:none!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    inset-inline:0!important;
     height:calc(82px + env(safe-area-inset-top,0px))!important;
     min-height:calc(82px + env(safe-area-inset-top,0px))!important;
     max-height:calc(82px + env(safe-area-inset-top,0px))!important;
@@ -83,6 +94,8 @@
     z-index:13!important;
     left:64px!important;
     right:64px!important;
+    max-width:calc(100% - 128px)!important;
+    min-width:0!important;
     top:calc(env(safe-area-inset-top,0px) + 24px)!important;
     margin:0!important;
     padding:0!important;
