@@ -912,6 +912,26 @@
       "sha256": "0d793eb55f3da55dfc6e1838f3f39fe0373a3b707e74a2303395ee8ab27e5095",
       "badgeWidth": 90,
       "badgeHeight": 112
+    },
+    {
+      "id": "v837-kit-51",
+      "url": "./assets/jerseys/v837/kit-51.svg",
+      "source": "Vista previa neutra local; uniforme oficial pendiente",
+      "original": "Pozos FC - representación genérica, no uniforme oficial",
+      "bounds": [
+        19,
+        40,
+        493,
+        497
+      ],
+      "width": 512,
+      "height": 512,
+      "badgeX": 0.6,
+      "badgeY": 0.345,
+      "badgeWidth": 88,
+      "badgeHeight": 102,
+      "badgeSize": 74,
+      "placeholder": true
     }
   ],
   "teams": [
@@ -1164,6 +1184,11 @@
       "name": "Dep. Zapata",
       "kitId": "v837-kit-50",
       "logo": "./assets/season-2026/zapata.webp"
+    },
+    {
+      "name": "Pozos FC",
+      "kitId": "v837-kit-51",
+      "logo": "./assets/season-2026/pozos.webp"
     }
   ],
   "sourceFeed": "https://gaming.uefa.com/en/uclfantasy/services/feeds/teams/teams_90_en.json"
