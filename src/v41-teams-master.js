@@ -93,11 +93,18 @@
   function bind(){
     document.querySelector('[data-v41-close]')?.addEventListener('click',()=>{location.hash='#/more'},{once:true});
     document.querySelector('[data-v41-average]')?.addEventListener('click',()=>{location.hash='#/safe-data'},{once:true});
-    document.querySelectorAll('[data-v41-team]').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('[data-v41-team]').forEach(b=>b.addEventListener('click',e=>{
+      // V963: team selection is a profile action, never a comparison action.
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+      const name=b.dataset.v41Name||'',cat=b.dataset.v41Cat||'';
+      if(!name)return;
       localStorage.setItem('v27-selected-team',b.dataset.v41Team);
-      localStorage.setItem('v62-team-name',b.dataset.v41Name||'');
-      if(b.dataset.v41Cat){localStorage.setItem('v62-category',b.dataset.v41Cat);localStorage.setItem('v12-fixture-cat',b.dataset.v41Cat)}
-      location.hash='#/teamDetail';
+      localStorage.setItem('v62-team-name',name);
+      localStorage.setItem('v42-team-tab','summary');
+      localStorage.removeItem('v42-open-compare');
+      if(cat){localStorage.setItem('v62-category',cat);localStorage.setItem('v12-fixture-cat',cat)}
+      if(window.LJR_TEAM_DETAIL_API?.openTeam&&window.LJR_TEAM_DETAIL_API.openTeam(name,cat))return;
+      location.hash='#/teamDetail?tab=summary';
     },{once:true}));
     const input=document.querySelector('#v41TeamSearch');
     if(input){
