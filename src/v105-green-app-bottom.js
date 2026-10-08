@@ -79,6 +79,36 @@ function openCompetitionFixtures(){
    target?.scrollIntoView({behavior:'smooth',block:'start'});
  },140);
 }
+function openCompetitionStandings(){
+ try{
+   localStorage.setItem('competitionTab','standings');
+   localStorage.setItem('v40-competition-tab','standings');
+ }catch(_){}
+ if(window.LJR_MAIN_ROUTE?.state)window.LJR_MAIN_ROUTE.state.competitionTab='standings';
+ const fire=()=>{
+   const tabs=document.querySelector('#screen > .tabs')||document.querySelector('#screen .tabs');
+   const btn=tabs?[...tabs.querySelectorAll('.tab,[data-comp-tab]')].find(x=>
+     x.dataset?.compTab==='standings'||/Clasificaci|Posiciones/i.test(x.textContent||'')
+   ):null;
+   if(btn){
+     btn.click();
+     setTimeout(()=>{
+       const target=document.querySelector('#screen [data-v40-standings],#screen [data-v12-standings],#screen .v40-standings')||tabs;
+       target?.scrollIntoView({behavior:'smooth',block:'start'});
+     },120);
+     return true;
+   }
+   return false;
+ };
+ if(route()!=='competition'){
+   location.hash='#/competition';
+   [120,320,700].forEach(ms=>setTimeout(fire,ms));
+   return;
+ }
+ if(!fire()){
+   [120,320,700].forEach(ms=>setTimeout(fire,ms));
+ }
+}
 function openBracketBuilder(){
  const screen=document.querySelector('#screen');
  if(!screen)return;
@@ -221,7 +251,7 @@ const HOME_CARDS=[
 const COMP_CARDS=[
  {icon:'match',title:'Partidos y jornadas',sub:'Todos, próximos y resultados',route:'competition'},
  {icon:'calendar',title:'Calendario mensual',sub:'Jornadas por fecha',route:'v4-calendar'},
- {icon:'table',title:'Tabla de posiciones',sub:'Datos oficiales',route:'leagueData'},
+ {icon:'table',title:'Tabla de posiciones',sub:'Datos oficiales',action:'open-standings'},
  {icon:'stats',title:'Goleo y rendimiento',sub:'Estadísticas de Liga',route:'stats'},
  {icon:'stats',title:'Goleadores',sub:'Ranking oficial',route:'scorers'},
  {icon:'trophy',title:'Bracket eliminatorio',sub:'Cuartos, semifinal y final',route:'bracketBuilder'},
@@ -1199,7 +1229,7 @@ function tvPanel(){
 
 function act(a){
  if(a==='meeting')meeting();else if(a==='poll')poll();else if(a==='fanzone')fanzone();else if(a==='delegates')delegates();else if(a==='officials')officials();else if(a==='incidents')incidents();else if(a==='motm')motm();else if(a==='calendar-generator')calendarGenerator();else if(a==='csv-import')csvImport();else if(a==='backup-export')backupExport();else if(a==='audit')audit();else if(a==='sponsors')sponsors();else if(a==='shotmap')shotmap();
- else if(a==='register-alerts')registerAlerts();else if(a==='schedule-match')scheduleMatch();else if(a==='new-sanction')newSanction();else if(a==='tv-panel')tvPanel();
+ else if(a==='register-alerts')registerAlerts();else if(a==='schedule-match')scheduleMatch();else if(a==='new-sanction')newSanction();else if(a==='tv-panel')tvPanel();else if(a==='open-standings')openCompetitionStandings();
 }
 function bind(root){
  $$('[data-v105-route]',root).forEach(b=>b.onclick=e=>{
