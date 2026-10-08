@@ -2,7 +2,7 @@
 (function(){
 'use strict';
 if(window.__LJR_V508_OFFICIAL_GLOBAL__)return;window.__LJR_V508_OFFICIAL_GLOBAL__=true;
-const BUILD='20261006-v850-v50-j7-global',DATA='./data/official-live.json?v='+BUILD;let source=null,originalSource=null,loading=null;
+const BUILD='20261007-v908-rol-j7-j8-global',DATA='./data/official-live.json?v='+BUILD;let source=null,originalSource=null,loading=null;
 const nativeFetch=window.fetch.bind(window),norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,' ').trim(),clone=v=>v==null?v:JSON.parse(JSON.stringify(v));
 window.fetch=function(input,init){try{const u=typeof input==='string'?input:(input?.url||'');if(/data\/official-live\.json/i.test(u))return nativeFetch(DATA,{...(init||{}),cache:'no-store'})}catch(_){}return nativeFetch(input,init)};
 function cat(){return source?.categories?.['3']||null}
