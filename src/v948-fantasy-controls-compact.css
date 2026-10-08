@@ -1,0 +1,249 @@
+/* V948 — Fantasy controls compact + safe bottom spacing.
+   Scoped only to #/fantasyTeam. Keeps the current lineup logic intact. */
+
+html body[data-app-route="fantasyTeam"] .v587-filter-pill,
+html body.v587-fantasy-team-open .v587-filter-pill{
+  left:20px!important;
+  bottom:98px!important;
+  width:100px!important;
+  min-width:100px!important;
+  max-width:100px!important;
+  height:50px!important;
+  min-height:50px!important;
+  max-height:50px!important;
+  padding:0 12px!important;
+  border:0!important;
+  border-radius:28px!important;
+  background:#0b667a!important;
+  display:grid!important;
+  grid-template-columns:26px 1px 30px!important;
+  align-items:center!important;
+  justify-content:center!important;
+  column-gap:10px!important;
+  box-shadow:0 8px 18px rgba(0,36,70,.16)!important;
+}
+
+html body[data-app-route="fantasyTeam"] .v590-filter-icon,
+html body.v587-fantasy-team-open .v590-filter-icon{
+  width:24px!important;
+  height:24px!important;
+  display:grid!important;
+  place-items:center!important;
+  transform:none!important;
+  color:#fff!important;
+}
+
+html body[data-app-route="fantasyTeam"] .v590-filter-icon svg,
+html body.v587-fantasy-team-open .v590-filter-icon svg{
+  width:24px!important;
+  height:24px!important;
+  transform:none!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:2.2!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+
+html body[data-app-route="fantasyTeam"] .v587-filter-pill>i,
+html body.v587-fantasy-team-open .v587-filter-pill>i{
+  display:block!important;
+  width:1px!important;
+  height:28px!important;
+  background:rgba(255,255,255,.34)!important;
+}
+
+html body[data-app-route="fantasyTeam"] .v587-filter-pill>b,
+html body.v587-fantasy-team-open .v587-filter-pill>b{
+  width:30px!important;
+  min-width:30px!important;
+  height:30px!important;
+  margin:0!important;
+  display:grid!important;
+  place-items:center!important;
+  color:#fff!important;
+  font-size:18px!important;
+  font-weight:700!important;
+  line-height:1!important;
+  text-align:center!important;
+}
+
+html body .v948-metric-icon{
+  width:23px!important;
+  height:23px!important;
+  display:block!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:1.8!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+
+html body .v948-text-icon{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-width:26px!important;
+  min-height:26px!important;
+  font:700 18px/1 Roboto,Inter,"Segoe UI",Arial,sans-serif!important;
+  color:currentColor!important;
+}
+
+html body .v948-money-icon{
+  font-size:22px!important;
+  font-weight:500!important;
+}
+
+/* Compact selector sheet: no longer covers most of the pitch. */
+html body .v576-layer.display-filter{
+  align-items:flex-end!important;
+  justify-content:flex-start!important;
+  padding:0 0 156px 18px!important;
+  box-sizing:border-box!important;
+}
+
+html body .v576-layer.display-filter .v576-backdrop{
+  background:rgba(2,15,47,.08)!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+
+html body .v945-fantasy-display-sheet{
+  position:relative!important;
+  z-index:2!important;
+  width:286px!important;
+  max-width:calc(100vw - 36px)!important;
+  margin:0!important;
+  border:1px solid rgba(22,47,62,.12)!important;
+  border-radius:16px!important;
+  overflow:hidden!important;
+  background:#fff!important;
+  box-shadow:0 12px 28px rgba(0,20,56,.24)!important;
+}
+
+html body .v945-fantasy-display-sheet button{
+  width:100%!important;
+  min-height:52px!important;
+  height:52px!important;
+  margin:0!important;
+  padding:0 16px 0 18px!important;
+  border:0!important;
+  border-bottom:1px solid #d7dde1!important;
+  border-radius:0!important;
+  background:#fff!important;
+  color:#1f333e!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 34px!important;
+  align-items:center!important;
+  gap:12px!important;
+  font-family:Roboto,Inter,"Segoe UI",Arial,sans-serif!important;
+  text-align:left!important;
+}
+
+html body .v945-fantasy-display-sheet button:last-child{
+  border-bottom:0!important;
+}
+
+html body .v945-fantasy-display-sheet button.active{
+  background:#f4f8fa!important;
+  font-weight:800!important;
+}
+
+html body .v945-fantasy-display-sheet button span{
+  min-width:0!important;
+  font-size:17px!important;
+  line-height:1!important;
+  font-weight:inherit!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+
+html body .v945-fantasy-display-sheet button b{
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  display:grid!important;
+  place-items:center!important;
+  color:#203640!important;
+  font-size:20px!important;
+  line-height:1!important;
+  font-weight:650!important;
+  text-align:center!important;
+}
+
+/* Keep goalkeeper cards clear of the Continue action. */
+html body[data-app-route="fantasyTeam"] #screen .v576-field-row.por,
+html body.v587-fantasy-team-open #screen .v576-field-row.por{
+  transform:translateY(-20px)!important;
+}
+
+html body[data-app-route="fantasyTeam"] #screen .v576-builder-actions,
+html body.v587-fantasy-team-open #screen .v576-builder-actions{
+  left:24px!important;
+  right:24px!important;
+  bottom:12px!important;
+  z-index:18!important;
+}
+
+html body[data-app-route="fantasyTeam"] #screen .v576-builder-actions button,
+html body.v587-fantasy-team-open #screen .v576-builder-actions button{
+  height:52px!important;
+  min-height:52px!important;
+  border-radius:17px!important;
+  font-size:15px!important;
+  box-shadow:none!important;
+}
+
+/* Extra breathing room between last player cards and the action button. */
+html body[data-app-route="fantasyTeam"] #screen .v576-field,
+html body.v587-fantasy-team-open #screen .v576-field{
+  padding-bottom:104px!important;
+}
+
+@media(max-width:390px){
+  html body .v945-fantasy-display-sheet{
+    width:258px!important;
+  }
+  html body .v945-fantasy-display-sheet button{
+    min-height:49px!important;
+    height:49px!important;
+    padding-left:16px!important;
+    padding-right:13px!important;
+  }
+  html body .v945-fantasy-display-sheet button span{
+    font-size:16px!important;
+  }
+  html body[data-app-route="fantasyTeam"] .v587-filter-pill,
+  html body.v587-fantasy-team-open .v587-filter-pill{
+    width:96px!important;
+    min-width:96px!important;
+    max-width:96px!important;
+    height:48px!important;
+    min-height:48px!important;
+    max-height:48px!important;
+  }
+}
+
+@media(max-height:700px){
+  html body[data-app-route="fantasyTeam"] #screen .v576-field-row.por,
+  html body.v587-fantasy-team-open #screen .v576-field-row.por{
+    transform:translateY(-14px)!important;
+  }
+  html body[data-app-route="fantasyTeam"] #screen .v576-field,
+  html body.v587-fantasy-team-open #screen .v576-field{
+    padding-bottom:92px!important;
+  }
+  html body[data-app-route="fantasyTeam"] .v587-filter-pill,
+  html body.v587-fantasy-team-open .v587-filter-pill{
+    bottom:78px!important;
+  }
+  html body .v576-layer.display-filter{
+    padding-bottom:132px!important;
+  }
+  html body[data-app-route="fantasyTeam"] #screen .v576-builder-actions button,
+  html body.v587-fantasy-team-open #screen .v576-builder-actions button{
+    height:48px!important;
+    min-height:48px!important;
+  }
+}
