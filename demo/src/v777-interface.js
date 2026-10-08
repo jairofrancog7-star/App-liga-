@@ -22,6 +22,24 @@ const BACK='.back-button,.ljr-back-control,.v35-back,.v46-back,.v41-back,.v27-ba
 let syncing=false,timer;
 function sync(header,custom=false){
  if(!header||syncing)return;
+ // Rankings includes its own back/share controls, title and category tabs.
+ // Do not inject the 88px universal chrome or reparent its buttons.
+ if(route()==='rankings'&&matchMedia('(max-width:1023px)').matches){
+  document.body.dataset.headerOwner='custom';
+  document.querySelectorAll('#screen .v32-head').forEach(node=>{
+   node.classList.remove('ljr-scroll-header','ljr-header-v777');
+   node.querySelector('.ljr-chrome-actions')?.remove();
+  });
+  const globalTop=document.querySelector('#app>.topbar');
+  if(globalTop){
+   globalTop.querySelector('.ljr-chrome-actions')?.remove();
+   globalTop.classList.remove('ljr-header-v777');
+   globalTop.style.setProperty('display','none','important');
+   globalTop.style.setProperty('visibility','hidden','important');
+   globalTop.style.setProperty('opacity','0','important');
+  }
+  return;
+ }
  // Scorers owns its direct controls and avatar. Do not move/remove them
  // as duplicate global controls; its scroll controller measures this bar.
  if(route()==='scorers'&&!custom&&window.__LJR_V959_SCORERS_HEADER__&&matchMedia('(max-width:1023px)').matches){
