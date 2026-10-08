@@ -7,7 +7,7 @@
   window.__LJR_V987_HISTORY_CANVAS__ = true;
 
   let pending = false;
-  const isHistory = () => (location.hash || '').replace(/^#\\/?/, '').split('?')[0] === 'history';
+  const isHistory = () => (location.hash || '').replace('#/', '').replace('#', '').split('?')[0] === 'history';
 
   // Quitar sólo adornos y controles de las tarjetas, nunca la foto de fondo.
   function cleanCard(card) {
