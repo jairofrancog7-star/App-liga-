@@ -1,160 +1,66 @@
-/* V951 — cabecera estable de Máximo goleador, con avatar real de la cuenta. */
+/* V956 — Máximo goleador usa la topbar global fija.
+   Así V768 reserva su altura y nunca se tapa al hacer scroll. */
 (function(){
 'use strict';
-if(window.__LJR_V951_SCORERS_FINAL_PAGE__)return;
-window.__LJR_V951_SCORERS_FINAL_PAGE__=true;
+if(window.__LJR_V956_SCORERS_GLOBAL_HEADER__)return;
+window.__LJR_V956_SCORERS_GLOBAL_HEADER__=true;
 
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||String(document.body?.dataset?.appRoute||'home');
-let queued=false;
-let scrollScreen=null;
-let scrollFrame=0;
-let compact=false;
+let raf=0;
 
-const backSvg='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>';
-const profileSvg='<svg class="v951-profile-fallback" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c1.5-3.7 4-5.5 7.5-5.5s6 1.8 7.5 5.5"/></svg>';
-
-function esc(v){
-  return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-function account(){
-  try{
-    return window.LJR_V569_AUTH?.currentAccount?.()||window.LJR_MAIN_ROUTE?.state?.user||null;
-  }catch(_){return null}
-}
-
-function initials(a){
-  const value=String(a?.name||a?.alias||'').trim();
-  if(!value)return '';
-  return value.split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase();
-}
-
-function profileMarkup(){
-  const a=account();
-  if(!a)return profileSvg;
-  const photo=String(a.avatar||a.photoURL||a.picture||'').trim();
-  if(photo)return '<img class="v951-account-photo" src="'+esc(photo)+'" alt="Mi perfil">';
-  if(/^gamer:[0-8]$/.test(String(a.avatarPreset||''))&&window.LJR_CHROME?.avatar){
-    try{
-      const html=window.LJR_CHROME.avatar(a);
-      if(html)return '<span class="v951-account-avatar">'+html+'</span>';
-    }catch(_){}
+function ensureTitle(bar){
+  let title=bar.querySelector(':scope > .v956-scorers-title');
+  if(!title){
+    title=document.createElement('span');
+    title.className='v956-scorers-title';
+    title.textContent='Máximo goleador';
+    bar.appendChild(title);
   }
-  const ini=initials(a);
-  if(ini)return '<span class="v951-account-initial">'+esc(ini)+'</span>';
-  return profileSvg;
-}
-
-function goBack(){
-  const native=document.querySelector('#app > .topbar #backButton');
-  if(native){
-    try{native.click();return}catch(_){}
-  }
-  if(typeof window.LJR_MAIN_ROUTE?.back==='function'){
-    try{window.LJR_MAIN_ROUTE.back();return}catch(_){}
-  }
-  if(history.length>1)history.back();
-  else location.hash='#/more';
-}
-
-function goProfile(){
-  const native=document.querySelector('#app > .topbar .profile-button');
-  if(native){
-    try{native.click();return}catch(_){}
-  }
-  if(typeof window.LJR_MAIN_ROUTE?.go==='function'){
-    try{window.LJR_MAIN_ROUTE.go('profile');return}catch(_){}
-  }
-  location.hash='#/profile';
-}
-
-function build(){
-  const head=document.createElement('header');
-  head.className='v950-scorers-head v951-scorers-head';
-  head.setAttribute('aria-label','Cabecera de Máximo goleador');
-  head.innerHTML=
-    '<button type="button" class="v950-scorers-back" aria-label="Regresar">'+backSvg+'</button>'+
-    '<div class="v950-scorers-title">Máximo goleador</div>'+
-    '<button type="button" class="v950-scorers-profile" aria-label="Mi perfil"><span class="v951-profile-slot">'+profileMarkup()+'</span></button>';
-  head.querySelector('.v950-scorers-back').addEventListener('click',goBack);
-  head.querySelector('.v950-scorers-profile').addEventListener('click',goProfile);
-  return head;
-}
-
-function syncProfile(head){
-  const slot=head?.querySelector('.v951-profile-slot');
-  if(!slot)return;
-  const html=profileMarkup();
-  if(slot.innerHTML!==html)slot.innerHTML=html;
+  return title;
 }
 
 function sync(){
-  queued=false;
+  raf=0;
+  const body=document.body;
+  const bar=document.querySelector('#app > .topbar, .app-shell > .topbar');
   const screen=document.getElementById('screen');
-  if(!screen)return;
+  if(!body||!bar)return;
 
   if(route()!=='scorers'){
-    screen.querySelector(':scope > .v950-scorers-head')?.remove();
+    bar.classList.remove('v956-scorers-global');
+    bar.querySelector(':scope > .v956-scorers-title')?.remove();
+    screen?.querySelector(':scope > .v950-scorers-head')?.remove();
     return;
   }
 
-  /* V768 debe tratar esta pantalla como sin cabecera global reservada. */
-  document.body.style.setProperty('--v768-head-h','0px');
+  /* El header viejo dentro del scroller causaba que se perdiera al bajar. */
+  screen?.querySelector(':scope > .v950-scorers-head')?.remove();
 
-  let head=screen.querySelector(':scope > .v950-scorers-head');
-  if(!head){
-    head=build();
-    screen.prepend(head);
-  }else if(screen.firstElementChild!==head){
-    screen.prepend(head);
-  }
-  syncProfile(head);
-  watchScorerScroll();
-}
+  bar.classList.add('v956-scorers-global');
+  ensureTitle(bar);
 
+  /* Deja que V768 mida la topbar real; nunca forzar 0px aquí. */
+  body.style.removeProperty('--v768-head-h');
 
-/* V955 — #screen es el scroller del móvil. Colapsar sólo al bajar y
-   expandir al volver arriba evita cubrir fotos y controles al desplazarse. */
-function applyScorerScroll(){
-  scrollFrame=0;
-  const screen=document.getElementById('screen');
-  const head=screen?.querySelector(':scope > .v950-scorers-head');
-  if(route()!=='scorers'||!head){compact=false;return;}
-  const top=Math.max(0,screen.scrollTop||0,window.scrollY||0);
-  const next=compact?top>20:top>90;
-  compact=next;
-  head.classList.toggle('is-compact',compact);
+  /* Refresca el límite superior de #screen después del layout. */
+  requestAnimationFrame(()=>{
+    window.LJR_SCROLL_CHROME?.refresh?.();
+    setTimeout(()=>window.LJR_SCROLL_CHROME?.refresh?.(),60);
+  });
 }
-function queueScorerScroll(){
-  if(scrollFrame)return;
-  scrollFrame=requestAnimationFrame(applyScorerScroll);
-}
-function watchScorerScroll(){
-  const screen=document.getElementById('screen');
-  if(screen!==scrollScreen){
-    scrollScreen?.removeEventListener('scroll',queueScorerScroll);
-    scrollScreen=screen;
-    scrollScreen?.addEventListener('scroll',queueScorerScroll,{passive:true});
-  }
-  queueScorerScroll();
-}
-window.addEventListener('scroll',queueScorerScroll,{passive:true});
-window.addEventListener('resize',queueScorerScroll,{passive:true});
 
 function queue(){
-  if(queued)return;
-  queued=true;
-  requestAnimationFrame(sync);
+  if(raf)return;
+  raf=requestAnimationFrame(sync);
 }
 
-for(const ev of ['hashchange','popstate','load','storage','pageshow','ljr:profile-updated']){
-  window.addEventListener(ev,queue);
+for(const ev of ['hashchange','popstate','load','pageshow','resize','ljr:profile-updated']){
+  window.addEventListener(ev,queue,{passive:true});
 }
 document.addEventListener('DOMContentLoaded',queue,{once:true});
-const screen=document.getElementById('screen');
-if(screen)new MutationObserver(queue).observe(screen,{childList:true,subtree:false});
+new MutationObserver(queue).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['data-app-route','class']});
 queue();
 setTimeout(sync,120);
-setTimeout(sync,450);
+setTimeout(sync,500);
 setTimeout(sync,1200);
 })();
