@@ -1,0 +1,130 @@
+/* V917 — Centro de fichajes: una sola barra superior en móvil.
+   Utiliza la barra global (volver + perfil) sin modificar las demás rutas. */
+#app > .topbar .v917-transfer-title,
+#app > .topbar .v917-transfer-bell {
+  display:none!important;
+}
+@media (max-width:1023px) {
+  html body[data-app-route="transfers"] #app > .topbar,
+  html body[data-app-route="transfers"] .app-shell > .topbar {
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+    position:fixed!important;
+    top:0!important;
+    left:0!important;
+    right:0!important;
+    width:100%!important;
+    height:calc(clamp(84px,22vw,108px) + env(safe-area-inset-top))!important;
+    min-height:calc(clamp(84px,22vw,108px) + env(safe-area-inset-top))!important;
+    max-height:calc(clamp(84px,22vw,108px) + env(safe-area-inset-top))!important;
+    padding:0!important;
+    margin:0!important;
+    overflow:hidden!important;
+    z-index:120!important;
+    border-bottom:1px solid rgba(85,174,255,.5)!important;
+  }
+  /* La segunda cabecera de Fichajes ya no ocupa espacio ni recibe toques. */
+  html body[data-app-route="transfers"] #screen .v429-transfer-head.v430-transfer-head {
+    display:none!important;
+    visibility:hidden!important;
+    height:0!important;
+    min-height:0!important;
+    max-height:0!important;
+    padding:0!important;
+    margin:0!important;
+    border:0!important;
+    box-shadow:none!important;
+    pointer-events:none!important;
+  }
+  /* Conservar el dibujo de la barra original pero sustituir su texto. */
+  html body[data-app-route="transfers"] #app > .topbar .wordmark {
+    color:transparent!important;
+    font-size:0!important;
+    line-height:0!important;
+    pointer-events:none!important;
+  }
+  html body[data-app-route="transfers"] #app > .topbar .wordmark strong {
+    color:transparent!important;
+    font-size:0!important;
+  }
+  html body[data-app-route="transfers"] #app > .topbar .v917-transfer-title {
+    display:block!important;
+    position:absolute!important;
+    z-index:130!important;
+    top:var(--v917-transfer-control-y,48%)!important;
+    left:clamp(60px,15vw,76px)!important;
+    right:calc(var(--v917-transfer-bell-right,63px) + 43px)!important;
+    transform:translateY(-50%)!important;
+    width:auto!important;
+    height:auto!important;
+    margin:0!important;
+    color:#fff!important;
+    background:none!important;
+    font:850 clamp(15px,4.3vw,20px)/1.12 Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:-.025em!important;
+    text-align:left!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    pointer-events:none!important;
+  }
+  html body[data-app-route="transfers"] #app > .topbar .v917-transfer-bell {
+    display:grid!important;
+    place-items:center!important;
+    position:absolute!important;
+    z-index:131!important;
+    top:var(--v917-transfer-control-y,48%)!important;
+    right:var(--v917-transfer-bell-right,63px)!important;
+    transform:translateY(-50%)!important;
+    width:34px!important;
+    height:36px!important;
+    min-width:34px!important;
+    min-height:36px!important;
+    max-width:34px!important;
+    max-height:36px!important;
+    padding:3px!important;
+    margin:0!important;
+    color:#fff!important;
+    background:transparent!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    opacity:1!important;
+    cursor:pointer!important;
+    pointer-events:auto!important;
+    -webkit-tap-highlight-color:transparent!important;
+    touch-action:manipulation!important;
+  }
+  html body[data-app-route="transfers"] #app > .topbar .v917-transfer-bell svg {
+    display:block!important;
+    width:27px!important;
+    height:27px!important;
+    overflow:visible!important;
+  }
+  html body[data-app-route="transfers"] #app > .topbar .v917-transfer-bell .v917-bell-body {
+    fill:none!important;
+    stroke:#fff!important;
+    stroke-width:2!important;
+    stroke-linecap:round!important;
+    stroke-linejoin:round!important;
+  }
+  html body[data-app-route="transfers"] #app > .topbar .v917-transfer-bell .v917-bell-check-circle {
+    fill:#fff!important;
+    stroke:#fff!important;
+    stroke-width:1!important;
+  }
+  html body[data-app-route="transfers"] #app > .topbar .v917-transfer-bell .v917-bell-check {
+    fill:none!important;
+    stroke:#0b51df!important;
+    stroke-width:1.7!important;
+    stroke-linecap:round!important;
+    stroke-linejoin:round!important;
+  }
+  html body[data-app-route="transfers"] #app > .topbar .back-button,
+  html body[data-app-route="transfers"] #app > .topbar .profile-button {
+    z-index:132!important;
+    pointer-events:auto!important;
+  }
+}
