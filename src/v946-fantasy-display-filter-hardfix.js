@@ -132,18 +132,59 @@ function forceFantasyLayout(){
   const badge=btn.querySelector('b');imp(badge,{width:'28px','min-width':'28px',height:'28px',display:'grid','place-items':'center','font-size':'17px',margin:'0'});
  });
  const field=document.querySelector('.v576-field');
- imp(field,{'padding-bottom':'124px'});
+ imp(field,{'padding-bottom':'132px'});
+
+ // Compact player cards like the supplied reference: same formation, less visual crowding.
+ document.querySelectorAll('.v576-slot').forEach(slot=>{
+  imp(slot,{width:'54px','min-width':'54px','max-width':'54px'});
+ });
+ document.querySelectorAll('.v576-field-row.del .v576-slot,.v576-field-row.por .v576-slot').forEach(slot=>{
+  imp(slot,{width:'58px','min-width':'58px','max-width':'58px'});
+ });
+ document.querySelectorAll('.v576-slot.filled').forEach(slot=>{
+  slot.style.setProperty('--shirt-width','44px','important');
+  slot.style.setProperty('--shirt-height','52px','important');
+  imp(slot,{'grid-template-rows':'52px 21px 18px'});
+  const kit=slot.querySelector('.v590-kit-wrap');
+  imp(kit,{
+   width:'44px','min-width':'44px','max-width':'44px',
+   height:'52px','min-height':'52px','max-height':'52px'
+  });
+  const name=slot.querySelector(':scope > b');
+  imp(name,{
+   width:'62px','min-width':'62px','max-width':'62px',
+   height:'21px','min-height':'21px',padding:'3px 2px',
+   'font-size':'8.4px','line-height':'15px','white-space':'nowrap',
+   overflow:'hidden','text-overflow':'ellipsis'
+  });
+  const data=slot.querySelector(':scope > small');
+  imp(data,{
+   width:'62px','min-width':'62px','max-width':'62px',
+   height:'18px','min-height':'18px',padding:'1px 2px',
+   'font-size':'7.8px','line-height':'16px','white-space':'nowrap',
+   overflow:'hidden','text-overflow':'ellipsis'
+  });
+  const remove=slot.querySelector('.remove');
+  imp(remove,{width:'16px',height:'16px','min-width':'16px','min-height':'16px','font-size':'12px','line-height':'16px',right:'-5px',top:'0'});
+ });
+
+ // Keep rows separated so 5-player bands do not visually collide.
+ document.querySelectorAll('.v576-field-row.del,.v576-field-row.cen,.v576-field-row.def').forEach(row=>{
+  imp(row,{height:'84px','align-items':'start'});
+ });
  const por=document.querySelector('.v576-field-row.por');
- imp(por,{transform:'translateY(-30px)'});
+ imp(por,{height:'68px','align-items':'start',transform:'translateY(-42px)'});
+
+ // Smaller action leaves a clear gap above goalkeeper cards.
  const actions=document.querySelector('.v576-builder-actions');
  imp(actions,{
-  position:'absolute',left:'24px',right:'24px',bottom:'10px',padding:'0',margin:'0',
+  position:'absolute',left:'34px',right:'34px',bottom:'8px',padding:'0',margin:'0',
   background:'transparent',zIndex:'18'
  });
  const cta=actions?.querySelector('button');
  imp(cta,{
-  height:'50px','min-height':'50px','max-height':'50px',
-  'border-radius':'16px','font-size':'15px','box-shadow':'none'
+  height:'44px','min-height':'44px','max-height':'44px',
+  'border-radius':'15px','font-size':'14px','box-shadow':'none'
  });
 }
 function decorate(){
