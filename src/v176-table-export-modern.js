@@ -94,7 +94,7 @@ function markup(){
     '<div class="v176-card-head"><div><small>LIGA MUNICIPAL DE FÚTBOL · JUVENTINO ROSAS</small><h2>'+esc(name)+'</h2></div><div class="v176-round">TABLA<br><b>OFICIAL</b></div></div>'+
     '<div class="v176-columns"><span>#</span><span>EQUIPO</span><span>PJ</span><span>G</span><span>E</span><span>P</span><span>DG</span><span>PTS</span></div>'+
     '<div class="v176-body">'+previewRows(category)+'</div>'+
-    '<footer><span>Datos oficiales disponibles</span><small>Actualizada con los datos disponibles de la Liga.</small></footer>'+
+    '<footer><span>Datos oficiales disponibles</span><small>Incluye sanciones: derrota por DEFAULT −3 pts. Los puntos oficiales no se descuentan dos veces.</small></footer>'+
   '</section>'+
  '</section>';
 }
