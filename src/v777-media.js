@@ -18,16 +18,21 @@ function controls(video){
   full:'<path d="M8 3H4a1 1 0 0 0-1 1v4m13-5h4a1 1 0 0 1 1 1v4M8 21H4a1 1 0 0 1-1-1v-4m13 5h4a1 1 0 0 0 1-1v-4"/>',
   pip:'<rect x="3" y="4" width="18" height="16" rx="2"/><rect x="12" y="11" width="8" height="6" rx="1" fill="currentColor" stroke="none"/>',
   camera:'<path d="M14 4H9l-2 3H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-4l-2-3z"/><circle cx="12" cy="13" r="3"/>',
-  rotate:'<rect x="6" y="3" width="12" height="18" rx="2" transform="rotate(45 12 12)"/><path d="m4 4 2 1-2 2M20 20l-2-1 2-2"/>'
+  rotate:'<rect x="6" y="3" width="12" height="18" rx="2" transform="rotate(45 12 12)"/><path d="m4 4 2 1-2 2M20 20l-2-1 2-2"/>',
+  settings:'<circle cx="12" cy="12" r="3"/><path d="M10 2h4l1 2.8 2.3 1 2.8-1 2 3.4-2.2 2a9 9 0 0 1 0 3.6l2.2 2-2 3.4-2.8-1-2.3 1L14 22h-4l-1-2.8-2.3-1-2.8 1-2-3.4 2.2-2a9 9 0 0 1 0-3.6l-2.2-2 2-3.4 2.8 1 2.3-1L10 2z"/>',
+  repeat:'<path d="m17 2 4 4-4 4M3 11V8a2 2 0 0 1 2-2h16M7 22l-4-4 4-4m14-1v3a2 2 0 0 1-2 2H3"/>',
+  timer:'<circle cx="12" cy="13" r="9"/><path d="M12 8v5l3 2M9 2h6"/>',
+  menu:'<path d="M4 7h16M4 12h16M4 17h16"/>'
  };
  const svg=name=>'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">'+icons[name]+'</svg>';
  const button=(action,label,inner)=>'<button type="button" data-v777-action="'+action+'" aria-label="'+label+'" title="'+label+'">'+inner+'</button>';
  const bar=document.createElement('div');bar.className='ljr-video-controls';
  bar.innerHTML='<div class="ljr-video-quick">'+
   button('speed','Cambiar velocidad de reproducción','<span data-speed-label>1×</span>')+
+  button('repeat','Repetir video',svg('repeat'))+
   button('shot','Guardar captura del video',svg('camera'))+
   button('pip','Ventana flotante PiP',svg('pip'))+
-  button('rotate','Girar pantalla',svg('rotate'))+
+  button('settings','Más opciones de reproducción',svg('menu'))+
   button('full','Pantalla completa',svg('full'))+
   '</div><div class="ljr-video-center">'+
   button('back','Retroceder 10 segundos',svg('back'))+
@@ -35,15 +40,29 @@ function controls(video){
   button('next','Avanzar 10 segundos',svg('next'))+
   '</div><div class="ljr-video-footer"><div class="ljr-video-timeline"><span data-time>0:00</span><input type="range" data-seek min="0" max="1000" value="0" aria-label="Posición del video"><span data-duration>0:00</span></div><div class="ljr-video-actions">'+
   button('mute','Silenciar o activar audio',svg('volume'))+
-  '<input data-volume type="range" min="0" max="1" step=".05" value="1" aria-label="Volumen"></div><small role="status" aria-live="polite"></small></div>';
+  '<input data-volume type="range" min="0" max="1" step=".05" value="1" aria-label="Volumen"></div><small role="status" aria-live="polite"></small></div>'+
+  '<div class="v919-video-menu" hidden role="group" aria-label="Opciones adicionales">'+
+  button('timer','Temporizador de apagado',svg('timer')+'<span data-v919-timer>Temporizador</span>')+
+  button('segment','Repetir segmento A y B',svg('repeat')+'<span data-v919-segment>A-B</span>')+
+  button('fit','Cambiar ajuste de imagen',svg('full')+'<span data-v919-fit>Encajar</span>')+
+  button('mirror','Reflejar horizontalmente el video',svg('rotate')+'<span data-v919-mirror>Espejo</span>')+
+  button('rotate','Girar pantalla',svg('rotate')+'<span>Rotación</span>')+
+  '</div>';
  box.append(bar);
  const status=bar.querySelector('small'),seek=bar.querySelector('[data-seek]'),play=bar.querySelector('[data-v777-action=play]'),mute=bar.querySelector('[data-v777-action=mute]');
  const time=t=>Math.floor((t||0)/60)+':'+String(Math.floor((t||0)%60)).padStart(2,'0');
- let hideTimer=0,speedIndex=0;const speeds=[1,1.25,1.5,2,.75];
+ let hideTimer=0,sleepTimer=0,speedIndex=0,segmentA=null,segmentB=null,fitCover=false,mirrored=false,timerMinutes=0;
+ const speeds=[1,1.25,1.5,2,.75],timers=[0,5,15,30,60],menu=bar.querySelector('.v919-video-menu');
  function reveal(){
+  if(!box.isConnected)return;
   box.classList.add('ljr-controls-visible');clearTimeout(hideTimer);
-  if(!video.paused)hideTimer=setTimeout(()=>{if(!bar.matches(':focus-within')&&!box.matches(':hover'))box.classList.remove('ljr-controls-visible')},3400);
+  if(menu.hidden)hideTimer=setTimeout(()=>{if(!box.isConnected)return;box.classList.remove('ljr-controls-visible')},1500);
  }
+ function closeMenu(){menu.hidden=true;box.classList.remove('v919-menu-open');reveal()}
+ function segmentText(){return segmentA===null?'A-B':segmentB===null?'Punto B':'Quitar A-B'}
+ video.addEventListener('timeupdate',()=>{
+  if(segmentB!==null&&segmentA!==null&&video.currentTime>=segmentB)video.currentTime=segmentA;
+ });
  function update(){
   const finite=Number.isFinite(video.duration)&&video.duration>0;
   bar.querySelector('[data-time]').textContent=time(video.currentTime);
@@ -56,9 +75,12 @@ function controls(video){
  }
  for(const type of ['timeupdate','durationchange','loadedmetadata','volumechange','ratechange'])video.addEventListener(type,update);
  for(const type of ['pause','play','ended'])video.addEventListener(type,()=>{update();reveal()});
- video.addEventListener('click',reveal);
+ video.addEventListener('click',()=>{if(!menu.hidden)closeMenu();else reveal()});
+ box.addEventListener('focusin',()=>reveal());
  box.addEventListener('pointermove',event=>{if(event.pointerType==='mouse'&&event.movementX+event.movementY!==0)reveal()});
  seek.oninput=()=>{if(Number.isFinite(video.duration)&&video.duration>0)video.currentTime=+seek.value/1000*video.duration;reveal()};
+ seek.addEventListener('pointerdown',()=>clearTimeout(hideTimer));
+ seek.addEventListener('pointerup',reveal);
  bar.querySelector('[data-volume]').oninput=event=>{video.volume=+event.target.value;video.muted=video.volume===0;reveal()};
  bar.addEventListener('click',async event=>{
   const b=event.target.closest('[data-v777-action]');if(!b)return;event.preventDefault();event.stopImmediatePropagation();reveal();
@@ -68,6 +90,25 @@ function controls(video){
     case 'back':case 'next':if(Number.isFinite(video.duration)&&video.duration>0)video.currentTime=Math.max(0,Math.min(video.duration,video.currentTime+(b.dataset.v777Action==='back'?-10:10)));break;
     case 'mute':video.muted=!video.muted;break;
     case 'speed':speedIndex=(speedIndex+1)%speeds.length;video.playbackRate=speeds[speedIndex];b.querySelector('[data-speed-label]').textContent=speeds[speedIndex]+'×';break;
+    case 'repeat':video.loop=!video.loop;b.setAttribute('aria-pressed',String(video.loop));break;
+    case 'settings':{
+     const show=menu.hidden;menu.hidden=!show;box.classList.toggle('v919-menu-open',show);
+     clearTimeout(hideTimer);if(!show)reveal();break;
+    }
+    case 'fit':fitCover=!fitCover;video.classList.toggle('v919-video-cover',fitCover);b.querySelector('[data-v919-fit]').textContent=fitCover?'Recortar':'Encajar';break;
+    case 'mirror':mirrored=!mirrored;video.classList.toggle('v919-video-mirror',mirrored);b.querySelector('[data-v919-mirror]').textContent=mirrored?'Normal':'Espejo';break;
+    case 'segment':{
+     if(segmentA===null){segmentA=video.currentTime;segmentB=null;}
+     else if(segmentB===null){const point=video.currentTime;if(point<=segmentA+0.3){status.textContent='Avanza el video para marcar el punto B.';break}segmentB=point;video.currentTime=segmentA;}
+     else{segmentA=null;segmentB=null}
+     b.querySelector('[data-v919-segment]').textContent=segmentText();break;
+    }
+    case 'timer':{
+     const index=timers.indexOf(timerMinutes);timerMinutes=timers[(index+1)%timers.length];
+     clearTimeout(sleepTimer);
+     if(timerMinutes)sleepTimer=setTimeout(()=>{video.pause();timerMinutes=0;b.querySelector('[data-v919-timer]').textContent='Temporizador';reveal()},timerMinutes*60*1000);
+     b.querySelector('[data-v919-timer]').textContent=timerMinutes?timerMinutes+' min':'Temporizador';break;
+    }
     case 'full':
      if(document.fullscreenElement)await document.exitFullscreen();
      else if(box.requestFullscreen)await box.requestFullscreen();
@@ -93,12 +134,13 @@ function controls(video){
      if(!document.fullscreenElement&&box.requestFullscreen)await box.requestFullscreen();
      await screen.orientation.lock('landscape');break;
    }
-   status.textContent='';
+   if(!['segment','timer'].includes(b.dataset.v777Action))status.textContent='';
   }catch(err){status.textContent=err?.message||'No se pudo activar esta opción.';reveal()}
   update();
  });
  video.addEventListener('error',()=>{status.textContent='No se pudo cargar este video. El administrador puede actualizarlo.';video.controls=true;reveal()});
- update();
+ new MutationObserver(()=>{if(box.isConnected)return;clearTimeout(hideTimer);clearTimeout(sleepTimer)}).observe(box.parentNode,{childList:true});
+ update();reveal();
 }
 function patch(){document.querySelectorAll('video').forEach(controls);
  const root=document.querySelector('#screen');if(!root)return;
