@@ -240,7 +240,7 @@ function feature(r,cls){
 }
 function pageMarkup(){
   const id=currentCat(),rows=rowsForCat(id);
-  const shell='<section class="v28-scorers-page" data-v28-scorers data-v28-fallback="1" data-v28-cat-current="'+id+'">'+'<header class="v775-scorers-head"><button type="button" data-route="more" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button><h1>Máximo goleador</h1><button type="button" data-route="profile" aria-label="Mi cuenta"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="8" r="3"/><path d="M5.5 18.5c1-3 3.3-4.5 6.5-4.5s5.5 1.5 6.5 4.5"/></svg></button></header>'+categoryMarkup();
+  const shell='<section class="v28-scorers-page" data-v28-scorers data-v28-fallback="1" data-v28-cat-current="'+id+'">'+categoryMarkup();
   if(!rows.length)return shell+'<div class="v28-category-empty"><b>'+catName(id)+'</b><span>Sin goleadores publicados para esta categoría.</span></div></section>';
   return shell+feature(rows[0],'one')+feature(rows[1],'two')+
     (rows.length>2?'<div class="v28-ranking">'+rows.slice(2).map(rowMarkup).join('')+'</div>':'')+
