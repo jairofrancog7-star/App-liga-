@@ -477,6 +477,7 @@ document.addEventListener('click',e=>{
  /* V963: directories and team-profile selectors own their navigation.
     These clicks must never be recast as comparison requests. */
  if(target.closest(
+  '[data-team-directory-owner="v27-categories"] [data-v27-team],'+
   '.v41-teams-page [data-v41-team],'+
   '[data-v66-directory="teams"] [data-v66-open-team],'+
   '[data-v66-directory="players"] [data-v66-player],'+

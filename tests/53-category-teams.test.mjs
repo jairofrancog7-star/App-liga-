@@ -71,3 +71,22 @@ test('la pantalla visible de Equipos muestra los 53 registros con escudos y cate
  assert.match(src,/FIRST_GRID=V27_TEAMS\.slice\(0,17\)/);
  assert.match(src,/localStorage\.setItem\('v62-category',String\(t\.catId\)\)/);
 });
+
+test('las fichas conservan categoria para Juventus y Boavista y resuelven los 53 participantes',()=>{
+ const src=read('src/v42-team-detail-master.js');
+ const fn=src.slice(src.indexOf('function allTeams(){'),src.indexOf('function selectedName(){'));
+ const clubs=vm.runInNewContext(fn+';allTeams();',{db:official,norm:normalize});
+ assert.equal(clubs.length,53);
+ assert.deepEqual(Array.from(clubs.filter(x=>normalize(x.name)==='juventus'),x=>x.catId).sort(),['2','3']);
+ assert.deepEqual(Array.from(clubs.filter(x=>normalize(x.name)==='boavista'),x=>x.catId).sort(),['1','2']);
+});
+
+test('el refresco oficial deja intactos los grupos y las 53 fichas que pertenecen a Equipos',()=>{
+ const src=read('src/v62-official-league-data.js');
+ const fn=src.slice(src.indexOf('function patchTeams(){'),src.indexOf('function intercept(){'));
+ const page={dataset:{teamDirectoryOwner:'v27-categories'}};
+ const document={querySelector:()=>page};
+ // No directory rebuilding dependencies are provided: refresh must leave its owner alone.
+ assert.doesNotThrow(()=>vm.runInNewContext(fn+';patchTeams();',{db:official,document,route:()=> 'teams'}));
+ assert.equal(page.dataset.v62TeamsSig,undefined);
+});

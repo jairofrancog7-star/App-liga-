@@ -964,6 +964,9 @@ function patchTeamSummary(page,ctx){
 function patchTeams(){
   if(route()!=='teams'||!db)return;
   const page=document.querySelector('[data-v27-reference="teams"]');if(!page)return;
+  // V27 owns the 53 category entries, their groups, search and category-aware links.
+  // Do not flatten repeated clubs or remove the Libre section after data refresh.
+  if(page.dataset.teamDirectoryOwner==='v27-categories')return;
 
   /* TEAMS_CURRENT_ONLY1
      La pantalla Equipos se reconstruye desde el snapshot oficial actual.

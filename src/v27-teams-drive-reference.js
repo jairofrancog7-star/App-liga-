@@ -487,13 +487,13 @@
 
 
   const FIRST_GRID=V27_TEAMS.slice(0,17);
-  const ELIMINATED=V27_TEAMS.slice(17);
+  const LIBRE_TEAMS=V27_TEAMS.slice(17);
   const playerNames=[];
 
   let query='';
   let detailTab='summary';
 
-  function route(){return location.hash.replace('#/','')||'home'}
+  function route(){return location.hash.replace('#/','').split('?')[0]||'home'}
   function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
   function team(id){return V27_TEAMS.find(function(t){return t.id===id})||V27_TEAMS[0]}
   function selected(){return team(localStorage.getItem('v27-selected-team')||V27_TEAMS[0]?.id)}
@@ -537,11 +537,13 @@
   function navReferenceMode(){/* Global nav state/labels are owned by V34. */}
   function teamsMarkup(){
     const q=query.trim().toLocaleLowerCase('es');
-    const list=FIRST_GRID.filter(function(t){return !q||t.name.toLocaleLowerCase('es').includes(q)||t.short.toLocaleLowerCase('es').includes(q)});
+    const matches=function(t){return !q||t.name.toLocaleLowerCase('es').includes(q)||t.short.toLocaleLowerCase('es').includes(q)};
+    const list=FIRST_GRID.filter(matches);
+    const libre=LIBRE_TEAMS.filter(matches);
     const followed=followedIds();
     let followedTeams=V27_TEAMS.filter(function(t){return followed.indexOf(t.id)!==-1});
     if(!followedTeams.length)followedTeams=[team('PRO')];
-    return '<section class="v27-teams-page" data-v27-reference="teams">'+
+    return '<section class="v27-teams-page" data-v27-reference="teams" data-team-directory-owner="v27-categories">'+
       '<header class="v27-teams-head">'+
         '<button class="v27-back" type="button" data-v27-back aria-label="Volver">'+backIcon()+'</button>'+
         '<h1>Equipos</h1>'+
@@ -549,7 +551,7 @@
       '</header>'+
       '<section class="v27-section"><h2>Siguiendo</h2><div class="v27-followed-row">'+followedTeams.slice(0,4).map(function(t){return tile(t,true)}).join('')+'</div></section>'+
       '<section class="v27-section"><h2>Veteranos 35+ y 50+ <img src="./assets/season-2026/veteranos-35.webp" alt="Veteranos 35+" width="17" height="17" style="object-fit:contain;vertical-align:middle"> <img src="./assets/season-2026/veteranos-50.webp" alt="Veteranos 50+" width="17" height="17" style="object-fit:contain;vertical-align:middle"></h2><div class="v27-grid">'+(list.length?list.map(function(t){return tile(t,false)}).join(''):'<div class="v27-empty-grid">No se encontraron equipos.</div>')+'</div></section>'+
-      '<section class="v27-section v27-eliminated"><h2>Primera, Segunda e Intermedia <img src="./assets/season-2026/primera.webp" alt="Primera" width="17" height="17" style="object-fit:contain;vertical-align:middle"> <img src="./assets/season-2026/segunda.webp" alt="Segunda" width="17" height="17" style="object-fit:contain;vertical-align:middle"> <img src="./assets/season-2026/intermedia.webp" alt="Intermedia" width="17" height="17" style="object-fit:contain;vertical-align:middle"></h2><div class="v27-grid">'+ELIMINATED.map(function(t){return tile(t,false)}).join('')+'</div></section>'+
+      '<section class="v27-section v27-libre"><h2>Primera, Segunda e Intermedia <img src="./assets/season-2026/primera.webp" alt="Primera" width="17" height="17" style="object-fit:contain;vertical-align:middle"> <img src="./assets/season-2026/segunda.webp" alt="Segunda" width="17" height="17" style="object-fit:contain;vertical-align:middle"> <img src="./assets/season-2026/intermedia.webp" alt="Intermedia" width="17" height="17" style="object-fit:contain;vertical-align:middle"></h2><div class="v27-grid">'+(libre.length?libre.map(function(t){return tile(t,false)}).join(''):'<div class="v27-empty-grid">No se encontraron equipos.</div>')+'</div></section>'+
     '</section>';
   }
 
@@ -641,7 +643,9 @@
       b.onclick=function(){
         const t=team(b.dataset.v27Team);if(!t)return;
         saveSelected(t.id);localStorage.setItem('v62-team-name',t.name);if(t.catId)localStorage.setItem('v62-category',String(t.catId));detailTab='summary';
-        if(window.LJR_OFFICIAL_API?.openTeam){window.LJR_OFFICIAL_API.openTeam(t.name)}else location.hash='#/teamDetail';
+        localStorage.setItem('v42-team-tab','summary');localStorage.removeItem('v42-open-compare');
+        if(window.LJR_TEAM_DETAIL_API?.openTeam?.(t.name,t.catId))return;
+        location.hash='#/teamDetail?tab=summary';
       };
     });
     const search=document.querySelector('#v27TeamSearch');

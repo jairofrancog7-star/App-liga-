@@ -34,8 +34,9 @@ function allTeams(){
  for(const [catId,c] of Object.entries(db?.categories||{})){
    const standingNames=(c.standings?.[0]?.rows||[]).map(r=>r[1]);
    const rosterNames=Object.keys(c.rosters||{});
-   for(const name of [...standingNames,...rosterNames]){
-     if(!name||out.some(x=>norm(x.name)===norm(name)))continue;
+   const fixtureNames=(c.fixtures||[]).flatMap(g=>(g.rows||[]).flatMap(r=>[r[2],r[6]]));
+   for(const name of [...standingNames,...rosterNames,...fixtureNames]){
+     if(!name||out.some(x=>String(x.catId)===String(catId)&&norm(x.name)===norm(name)))continue;
      out.push({name,catId,category:c.name});
    }
  }

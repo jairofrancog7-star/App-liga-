@@ -10,11 +10,12 @@ function node(height=0,selector=''){return {matches:selectors=>selectors.split('
 function fixture(){
  const body=node(),global=node(88),nav=node(69),headers=new Map(),events=new Map(),frames=[];
  body.dataset={appRoute:'home'};let mobile=true;let resize;
- const screen={querySelector:selector=>headers.get(selector)||null};
- const document={readyState:'complete',body,querySelector(selector){return selector==='#screen'?screen:selector==='.bottom-nav'?nav:selector==='#app>.topbar'?global:null},querySelectorAll(){return [...headers.values()].filter(h=>h.classList.contains('ljr-scroll-header'))}};
+ const scrollEvents=new Map();
+ const screen={scrollTop:0,addEventListener:(type,fn)=>scrollEvents.set(type,fn),querySelector:selector=>headers.get(selector)||null};
+ const document={readyState:'complete',body,getElementById:id=>id==='screen'?screen:null,querySelector(selector){return selector==='#screen'?screen:selector==='.bottom-nav'?nav:selector==='#app>.topbar'?global:null},querySelectorAll(){return [...headers.values()].filter(h=>h.classList.contains('ljr-scroll-header'))}};
  vm.runInNewContext(source,{document,window:{addEventListener:(type,fn)=>events.set(type,fn)},matchMedia:()=>({matches:mobile}),getComputedStyle:n=>n,requestAnimationFrame:fn=>{frames.push(fn);return frames.length},MutationObserver:class{observe(){}},ResizeObserver:class{constructor(fn){resize=fn}observe(){}disconnect(){}}});
  const flush=()=>{while(frames.length)frames.shift()()};flush();
- return {body,global,nav,headers,flush,resize:()=>{resize();flush()},go(route,selector,height=92){body.dataset.appRoute=route;headers.clear();if(selector)headers.set(selector,node(height,selector));events.get('hashchange')();flush()},desktop(){mobile=false;events.get('resize')();flush()}};
+ return {body,global,nav,headers,flush,scroll(top){screen.scrollTop=top;scrollEvents.get('scroll')();flush()},resize:()=>{resize();flush()},go(route,selector,height=92){body.dataset.appRoute=route;headers.clear();if(selector)headers.set(selector,node(height,selector));events.get('hashchange')();flush()},desktop(){mobile=false;events.get('resize')();flush()}};
 }
 test('every page bar sets the scroll boundary and disappears cleanly on another route',()=>{
  const f=fixture();assert.equal(f.body.style.getPropertyValue('--v768-head-h'),'88px');
@@ -54,4 +55,14 @@ test('scorers no longer renders the removed V775 header',()=>{
  const text=fs.readFileSync(new URL('../src/v28-scorers-drive-reference.js',import.meta.url),'utf8');
  assert.equal(text.includes('<header class="v775-scorers-head">'),false);
  assert.match(text,/const shell='<section class="v28-scorers-page"/);
+});
+
+
+test('Teams hides its controls on the real scroll surface and restores them at the top',()=>{
+ const f=fixture();f.go('teams','.v27-teams-head',128);
+ f.scroll(90);assert.equal(f.body.classList.contains('v974-teams-compact'),true);
+ f.scroll(40);assert.equal(f.body.classList.contains('v974-teams-compact'),true);
+ f.scroll(20);assert.equal(f.body.classList.contains('v974-teams-compact'),false);
+ f.scroll(90);f.go('following','.v28-head',82);
+ assert.equal(f.body.classList.contains('v974-teams-compact'),false,'other routes restore their own header');
 });

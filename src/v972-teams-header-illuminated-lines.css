@@ -1,8 +1,6 @@
-/* V973 — Cabecera Equipos: oscuro arriba y azul iluminado abajo.
-   Recupera la iluminación azul y las líneas curvas neón claras.
-   No altera el fondo del listado, Siguiendo, scroll, tamaños ni escudos.
-   V777 puede imponer background: #06075f, por eso la regla final
-   apunta a su cabecera real .ljr-scroll-header con más especificidad. */
+/* Equipos: curva neón original y degradado unido al fondo existente.
+   El margen de Siguiendo pinta el arte de la página; al bajar se ocultan
+   los controles superiores y se conserva el buscador en una barra de 54px. */
 @media (max-width:1023px) {
   html body[data-app-route="teams"] #screen .v27-teams-page > .v27-teams-head,
   html body.v27-teams-active #screen .v27-teams-page > .v27-teams-head,
@@ -10,10 +8,33 @@
   html body.ljr-v777[data-mobile-layout="v775"].v27-teams-active #app #screen .v27-teams-page > .v27-teams-head.ljr-scroll-header {
     background:
       url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22430%22%20height%3D%22300%22%20viewBox%3D%220%200%20430%20300%22%20fill%3D%22none%22%3E%3Cg%20stroke-linecap%3D%22round%22%3E%3Cg%20stroke%3D%22%234486FF%22%20stroke-width%3D%225%22%20opacity%3D%22.22%22%3E%3Cpath%20d%3D%22M-53%2078C24-46%20110-43%20166%2018S295%20112%20466-11%22%2F%3E%3Cpath%20d%3D%22M-62%20196C27%2095%20102%2096%20166%20145S301%20232%20464%20101%22%2F%3E%3Cpath%20d%3D%22M-70%20262C28%20169%20117%20177%20183%20211S345%20269%20471%20169%22%2F%3E%3C%2Fg%3E%3Cg%20stroke%3D%22%2379AEFF%22%20stroke-width%3D%221.7%22%20opacity%3D%22.45%22%3E%3Cpath%20d%3D%22M-53%2078C24-46%20110-43%20166%2018S295%20112%20466-11%22%2F%3E%3Cpath%20d%3D%22M-62%20196C27%2095%20102%2096%20166%20145S301%20232%20464%20101%22%2F%3E%3Cpath%20d%3D%22M-70%20262C28%20169%20117%20177%20183%20211S345%20269%20471%20169%22%2F%3E%3C%2Fg%3E%3Cg%20stroke%3D%22%23326FFF%22%20stroke-width%3D%221%22%20opacity%3D%22.22%22%3E%3Cpath%20d%3D%22M-40%20120C48%2045%20117%2038%20181%2094S325%20157%20453%2047%22%2F%3E%3Cpath%20d%3D%22M-31%20298C47%20239%20124%20233%20193%20261S340%20314%20475%20230%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E") center top / 100% 100% no-repeat,
-      radial-gradient(ellipse 100% 65% at 83% 88%,rgba(55,111,255,.28) 0%,rgba(39,81,235,.10) 55%,transparent 90%) center top / 100% 100% no-repeat,
-      linear-gradient(180deg,#07065f 0%,#0b147e 22%,#12269e 47%,#1934af 69%,#1d3bb8 100%) center top / 100% 100% no-repeat!important;
-    background-color:#1d3bb8!important;
+      radial-gradient(circle at 82% 100%,rgba(48,92,255,.68),transparent 24rem) center top / 100% 100% no-repeat,
+      linear-gradient(180deg,#07065f 0%,#0b147e 35%,#07106d 100%) center top / 100% 100% no-repeat!important;
+    background-color:#07106d!important;
     border-bottom:0!important;
     box-shadow:none!important;
+  }
+}
+
+/* The first section's margin must paint the existing page artwork rather than
+   collapse outside it and expose the dark #screen background. */
+html body[data-app-route="teams"] #screen .v27-teams-page {
+  display:flow-root;
+}
+.v27-libre { margin-top:31px; padding-bottom:14px; }
+.v27-libre > h2 { font-size:clamp(14px,4vw,18px)!important; white-space:nowrap; }
+
+@media (max-width:1023px) {
+  html body.ljr-v777[data-mobile-layout="v775"][data-app-route="teams"] #app #screen .v27-teams-page > .v27-teams-head.ljr-scroll-header {
+    overflow:hidden!important;
+  }
+  html body.ljr-v777[data-mobile-layout="v775"][data-app-route="teams"].v974-teams-compact #app #screen .v27-teams-page > .v27-teams-head.ljr-scroll-header {
+    height:54px!important;
+    min-height:54px!important;
+    max-height:54px!important;
+    padding:10px 14px!important;
+  }
+  html body.ljr-v777[data-mobile-layout="v775"][data-app-route="teams"].v974-teams-compact #app #screen .v27-teams-head :is(h1,.ljr-chrome-actions) {
+    display:none!important;
   }
 }
