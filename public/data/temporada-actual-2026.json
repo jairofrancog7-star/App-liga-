@@ -200,7 +200,7 @@
     },
     "Veteranos 50+": {
       "scope": "Categoría por edad",
-      "current_phase": "Torneo de Copa J8 · 10/10/2026",
+      "current_phase": "Torneo de Copa · J8 · 10/10/2026",
       "teams": [
         "La Esperanza",
         "Dynamo",
@@ -339,29 +339,192 @@
         ],
         "J8": [
           {
-            "home": "Toros de Cuenda",
-            "away": "Dynamo",
-            "time": "16:30",
-            "field": "Campo 1 (Empastado)",
-            "date": "2026-10-10"
-          },
-          {
-            "home": "Manchester",
-            "away": "La Esperanza",
-            "time": "15:00",
-            "field": "Campo 1 (Empastado)",
-            "date": "2026-10-10"
-          },
-          {
-            "home": "Boavista",
-            "away": "Boca Jrs",
+            "home": "BOAVISTA",
+            "away": "BOCA JRS",
             "date": "2026-10-10",
+            "time": "15:30",
+            "field": "Campo 3",
             "status": "GANA BOAVISTA",
             "decision": {
-              "winner": "Boavista",
+              "winner": "BOAVISTA",
               "type": "administrative",
               "score": null
             }
+          },
+          {
+            "home": "LA ESPERANZA",
+            "away": "MANCHESTER",
+            "date": "2026-10-10",
+            "time": "15:30",
+            "field": "Campo 1 (Empastado)"
+          },
+          {
+            "home": "TOROS DE CUENDA",
+            "away": "DYNAMO",
+            "date": "2026-10-10",
+            "time": "17:00",
+            "field": "Campo 1 (Empastado)"
+          }
+        ],
+        "J9": [
+          {
+            "home": "BOCA JRS",
+            "away": "DYNAMO",
+            "date": "2026-10-17",
+            "time": "15:30",
+            "field": "Campo 4"
+          },
+          {
+            "home": "LA ESPERANZA",
+            "away": "BOAVISTA",
+            "date": "2026-10-17",
+            "time": "15:30",
+            "field": "Tavera"
+          },
+          {
+            "home": "MANCHESTER",
+            "away": "TOROS DE CUENDA",
+            "date": "2026-10-17",
+            "time": "17:00",
+            "field": "Campo 3"
+          }
+        ],
+        "J10": [
+          {
+            "home": "LA ESPERANZA",
+            "away": "BOCA JRS",
+            "date": "2026-10-24",
+            "time": "15:30",
+            "field": "Tavera"
+          },
+          {
+            "home": "BOAVISTA",
+            "away": "TOROS DE CUENDA",
+            "date": "2026-10-24",
+            "time": "15:30",
+            "field": "Campo 4"
+          },
+          {
+            "home": "DYNAMO",
+            "away": "MANCHESTER",
+            "date": "2026-10-24",
+            "time": "17:00",
+            "field": "Fraccionamiento"
+          }
+        ],
+        "J11": [
+          {
+            "home": "TOROS DE CUENDA",
+            "away": "BOCA JRS",
+            "date": "2026-10-31",
+            "time": "15:30",
+            "field": "Cuenda"
+          },
+          {
+            "home": "DYNAMO",
+            "away": "LA ESPERANZA",
+            "date": "2026-10-31",
+            "time": "15:30",
+            "field": "Campo 1 (Empastado)"
+          },
+          {
+            "home": "MANCHESTER",
+            "away": "BOAVISTA",
+            "date": "2026-10-31",
+            "time": "17:00",
+            "field": "Campo 1 (Empastado)"
+          }
+        ],
+        "J12": [
+          {
+            "home": "LA ESPERANZA",
+            "away": "TOROS DE CUENDA",
+            "date": "2026-11-07",
+            "time": "15:30",
+            "field": "Tavera"
+          },
+          {
+            "home": "BOCA JRS",
+            "away": "MANCHESTER",
+            "date": "2026-11-07",
+            "time": "15:30",
+            "field": "Campo 2"
+          },
+          {
+            "home": "BOAVISTA",
+            "away": "DYNAMO",
+            "date": "2026-11-07",
+            "time": "17:00",
+            "field": "Campo 2"
+          }
+        ],
+        "J13": [
+          {
+            "home": "BOCA JRS",
+            "away": "BOAVISTA",
+            "date": "2026-11-14",
+            "time": "15:30",
+            "field": "Fraccionamiento"
+          },
+          {
+            "home": "DYNAMO",
+            "away": "TOROS DE CUENDA",
+            "date": "2026-11-14",
+            "time": "15:30",
+            "field": "Campo 1 (Empastado)"
+          },
+          {
+            "home": "MANCHESTER",
+            "away": "LA ESPERANZA",
+            "date": "2026-11-14",
+            "time": "17:00",
+            "field": "Campo 4"
+          }
+        ],
+        "J14": [
+          {
+            "home": "BOAVISTA",
+            "away": "LA ESPERANZA",
+            "date": "2026-11-21",
+            "time": "15:30",
+            "field": "Campo 3"
+          },
+          {
+            "home": "DYNAMO",
+            "away": "BOCA JRS",
+            "date": "2026-11-21",
+            "time": "15:30",
+            "field": "Campo 4"
+          },
+          {
+            "home": "TOROS DE CUENDA",
+            "away": "MANCHESTER",
+            "date": "2026-11-21",
+            "time": "17:00",
+            "field": "Cuenda"
+          }
+        ],
+        "J15": [
+          {
+            "home": "BOCA JRS",
+            "away": "LA ESPERANZA",
+            "date": "2026-11-28",
+            "time": "15:30",
+            "field": "Campo 1 (Empastado)"
+          },
+          {
+            "home": "TOROS DE CUENDA",
+            "away": "BOAVISTA",
+            "date": "2026-11-28",
+            "time": "15:30",
+            "field": "Cuenda"
+          },
+          {
+            "home": "MANCHESTER",
+            "away": "DYNAMO",
+            "date": "2026-11-28",
+            "time": "17:00",
+            "field": "Campo 3"
           }
         ]
       },
@@ -439,11 +602,12 @@
           "pts": -21
         }
       ],
-      "updated_at_utc": "2026-10-08T00:23:45Z"
+      "updated_at_utc": "2026-10-08T00:23:45Z",
+      "source_page": "https://www.juventinorosasliga.com/reporte-semanal/"
     },
     "Primera Fuerza": {
       "scope": "Categoría abierta por nivel",
-      "current_phase": "Torneo de Copa · Jornada 8 · 11/10/2026",
+      "current_phase": "Torneo de Copa · J7 · 11/10/2026",
       "teams": [
         "San José FC",
         "Juventus",
@@ -710,43 +874,45 @@
         ],
         "J7": [
           {
-            "home": "HERMANOS",
-            "away": "LOBOS CDG",
-            "time": "10:00",
-            "field": "Campo 3",
-            "date": "2026-10-04"
+            "home": "TERRICOLAS",
+            "away": "NAPOLI",
+            "date": "2026-10-11",
+            "time": "08:00",
+            "field": "Campo 3"
           },
           {
-            "home": "HERRERAS FC",
-            "away": "ABEJAS",
-            "time": "10:00",
+            "home": "GALACTICOS",
+            "away": "LINCES",
+            "date": "2026-10-11",
+            "time": "09:00",
             "field": "Pozos",
-            "date": "2026-10-04"
-          },
-          {
-            "home": "LINCES",
-            "away": "GALACTICOS",
-            "date": "2026-10-04",
             "status": "GANA LINCES",
             "decision": {
-              "winner": "Linces",
+              "winner": "LINCES",
               "type": "administrative",
               "score": null
             }
           },
           {
-            "home": "TERRICOLAS",
-            "away": "NAPOLI",
-            "time": "08:00",
-            "field": "Campo 3",
-            "date": "2026-10-04"
+            "home": "HERMANOS",
+            "away": "LOBOS CDG",
+            "date": "2026-10-11",
+            "time": "10:00",
+            "field": "Campo 3"
           },
           {
-            "home": "FRANCO FC",
-            "away": "SAN JOSE FC",
+            "home": "ABEJAS",
+            "away": "HERRERAS FC",
+            "date": "2026-10-11",
+            "time": "10:00",
+            "field": "Pozos"
+          },
+          {
+            "home": "SAN JOSE FC",
+            "away": "FRANCO FC",
+            "date": "2026-10-11",
             "time": "12:00",
-            "field": "San Jose  de la Montaña",
-            "date": "2026-10-04"
+            "field": "San Jose  de la Montaña"
           },
           {
             "rest": "Juventus"
@@ -754,37 +920,37 @@
         ],
         "J8": [
           {
-            "home": "Terrícolas",
-            "away": "Linces",
-            "date": "2026-10-11",
+            "home": "TERRICOLAS",
+            "away": "LINCES",
+            "date": "2026-10-18",
             "time": "08:00",
             "field": "Campo 3"
           },
           {
-            "home": "Galácticos",
-            "away": "Franco FC",
-            "date": "2026-10-11",
+            "home": "GALACTICOS",
+            "away": "FRANCO FC",
+            "date": "2026-10-18",
             "time": "08:00",
             "field": "Pozos"
           },
           {
-            "home": "Hermanos",
-            "away": "Lobos CDG",
-            "date": "2026-10-11",
+            "home": "HERMANOS",
+            "away": "LOBOS CDG",
+            "date": "2026-10-18",
             "time": "10:00",
             "field": "Campo 3"
           },
           {
-            "home": "Juventus",
-            "away": "Herreras FC",
-            "date": "2026-10-11",
+            "home": "JUVENTUS",
+            "away": "HERRERAS FC",
+            "date": "2026-10-18",
             "time": "10:00",
             "field": "Campo 1 (Empastado)"
           },
           {
-            "home": "Napoli",
-            "away": "Abejas",
-            "date": "2026-10-11",
+            "home": "NAPOLI",
+            "away": "ABEJAS",
+            "date": "2026-10-18",
             "time": "12:00",
             "field": "Campo 3"
           },
@@ -794,37 +960,37 @@
         ],
         "J9": [
           {
-            "home": "Lobos CDG",
-            "away": "Franco FC",
-            "date": "2026-10-18",
+            "home": "LOBOS CDG",
+            "away": "FRANCO FC",
+            "date": "2026-10-25",
             "time": "08:00",
             "field": "Cerrito de Gasca"
           },
           {
-            "home": "Hermanos",
-            "away": "Terrícolas",
-            "date": "2026-10-18",
+            "home": "HERMANOS",
+            "away": "TERRICOLAS",
+            "date": "2026-10-25",
             "time": "08:00",
             "field": "Campo 4"
           },
           {
-            "home": "Abejas",
-            "away": "Juventus",
-            "date": "2026-10-18",
+            "home": "ABEJAS",
+            "away": "JUVENTUS",
+            "date": "2026-10-25",
             "time": "10:00",
             "field": "Pozos"
           },
           {
-            "home": "San José FC",
-            "away": "Herreras FC",
-            "date": "2026-10-18",
+            "home": "SAN JOSE FC",
+            "away": "HERRERAS FC",
+            "date": "2026-10-25",
             "time": "10:00",
             "field": "San Jose  de la Montaña"
           },
           {
-            "home": "Napoli",
-            "away": "Linces",
-            "date": "2026-10-18",
+            "home": "NAPOLI",
+            "away": "LINCES",
+            "date": "2026-10-25",
             "time": "12:00",
             "field": "Campo 4"
           },
@@ -834,37 +1000,37 @@
         ],
         "J10": [
           {
-            "home": "Galácticos",
-            "away": "Linces",
-            "date": "2026-10-25",
-            "time": "08:00",
-            "field": "Pozos"
-          },
-          {
-            "home": "Abejas",
-            "away": "San José FC",
-            "date": "2026-10-25",
+            "home": "ABEJAS",
+            "away": "SAN JOSE FC",
+            "date": "2026-11-01",
             "time": "08:00",
             "field": "Campo 4"
           },
           {
-            "home": "Franco FC",
-            "away": "Juventus",
-            "date": "2026-10-25",
-            "time": "10:00",
-            "field": "Tavera"
+            "home": "GALACTICOS",
+            "away": "LINCES",
+            "date": "2026-11-01",
+            "time": "08:00",
+            "field": "Pozos"
           },
           {
-            "home": "Hermanos",
-            "away": "Napoli",
-            "date": "2026-10-25",
+            "home": "HERMANOS",
+            "away": "NAPOLI",
+            "date": "2026-11-01",
             "time": "10:00",
             "field": "Fraccionamiento"
           },
           {
-            "home": "Lobos CDG",
-            "away": "Terrícolas",
-            "date": "2026-10-25",
+            "home": "FRANCO FC",
+            "away": "JUVENTUS",
+            "date": "2026-11-01",
+            "time": "10:00",
+            "field": "Tavera"
+          },
+          {
+            "home": "LOBOS CDG",
+            "away": "TERRICOLAS",
+            "date": "2026-11-01",
             "time": "12:00",
             "field": "Cerrito de Gasca"
           },
@@ -874,37 +1040,37 @@
         ],
         "J11": [
           {
-            "home": "Napoli",
-            "away": "Terrícolas",
-            "date": "2026-11-01",
+            "home": "NAPOLI",
+            "away": "TERRICOLAS",
+            "date": "2026-11-08",
             "time": "08:00",
             "field": "Campo 1 (Empastado)"
           },
           {
-            "home": "Franco FC",
-            "away": "San José FC",
-            "date": "2026-11-01",
+            "home": "FRANCO FC",
+            "away": "SAN JOSE FC",
+            "date": "2026-11-08",
             "time": "08:00",
             "field": "Tavera"
           },
           {
-            "home": "Lobos CDG",
-            "away": "Linces",
-            "date": "2026-11-01",
-            "time": "10:00",
-            "field": "Cerrito de Gasca"
-          },
-          {
-            "home": "Galácticos",
-            "away": "Hermanos",
-            "date": "2026-11-01",
+            "home": "GALACTICOS",
+            "away": "HERMANOS",
+            "date": "2026-11-08",
             "time": "10:00",
             "field": "Pozos"
           },
           {
-            "home": "Abejas",
-            "away": "Herreras FC",
-            "date": "2026-11-01",
+            "home": "LOBOS CDG",
+            "away": "LINCES",
+            "date": "2026-11-08",
+            "time": "10:00",
+            "field": "Cerrito de Gasca"
+          },
+          {
+            "home": "ABEJAS",
+            "away": "HERRERAS FC",
+            "date": "2026-11-08",
             "time": "12:00",
             "field": "Pozos"
           },
@@ -1047,12 +1213,12 @@
           "pts": -18
         }
       ],
-      "source_page": "https://www.juventinorosasliga.com/?categoria=3",
+      "source_page": "https://www.juventinorosasliga.com/reporte-semanal/",
       "updated_at_utc": "2026-10-08T00:23:45Z"
     },
     "Intermedia": {
       "scope": "Categoría abierta por nivel",
-      "current_phase": "Torneo de Copa · Jornada 8 · 11/10/2026",
+      "current_phase": "Torneo de Copa · J7 · 11/10/2026",
       "teams": [
         "La Canchita Deportes",
         "Galeana",
@@ -1282,46 +1448,46 @@
         ],
         "J7": [
           {
-            "home": "DEP. MARAVILLAS",
-            "away": "ATL. GALEANA",
-            "time": "12:00",
-            "field": "Campo 3",
-            "date": "2026-10-04"
-          },
-          {
-            "home": "LA CANCHITA DEPORTES",
-            "away": "MALVINAS",
-            "time": "10:00",
-            "field": "Campo 1 (Empastado)",
-            "date": "2026-10-04"
-          },
-          {
-            "home": "CAPIBARAS",
-            "away": "SAN ANTONIO JRS",
-            "time": "10:00",
-            "field": "Romerillo",
-            "date": "2026-10-04"
-          },
-          {
-            "home": "LA HUERTA",
-            "away": "PROMESAS FC",
-            "time": "10:00",
-            "field": "Fraccionamiento",
-            "date": "2026-10-04"
-          },
-          {
-            "home": "MAZACOTES FC",
-            "away": "LA CUADRILLA",
-            "time": "08:00",
-            "field": "Fraccionamiento",
-            "date": "2026-10-04"
-          },
-          {
             "home": "OSASUNA",
             "away": "POPULARES",
+            "date": "2026-10-11",
             "time": "08:00",
-            "field": "Campo 1 (Empastado)",
-            "date": "2026-10-04"
+            "field": "Campo 1 (Empastado)"
+          },
+          {
+            "home": "LA CUADRILLA",
+            "away": "MAZACOTES FC",
+            "date": "2026-10-11",
+            "time": "08:00",
+            "field": "Fraccionamiento"
+          },
+          {
+            "home": "MALVINAS",
+            "away": "LA CANCHITA DEPORTES",
+            "date": "2026-10-11",
+            "time": "10:00",
+            "field": "Campo 1 (Empastado)"
+          },
+          {
+            "home": "SAN ANTONIO JRS",
+            "away": "CAPIBARAS",
+            "date": "2026-10-11",
+            "time": "10:00",
+            "field": "Romerillo"
+          },
+          {
+            "home": "PROMESAS FC",
+            "away": "LA HUERTA",
+            "date": "2026-10-11",
+            "time": "10:00",
+            "field": "Fraccionamiento"
+          },
+          {
+            "home": "DEP. MARAVILLAS",
+            "away": "ATL. GALEANA",
+            "date": "2026-10-11",
+            "time": "12:00",
+            "field": "Campo 3"
           },
           {
             "rest": "Aldama FC"
@@ -1329,46 +1495,284 @@
         ],
         "J8": [
           {
-            "home": "ALDAMA FC",
-            "away": "SAN ANTONIO JRS",
-            "time": "08:00",
-            "field": "Campo 1 (Empastado)",
-            "date": "2026-10-11"
-          },
-          {
             "home": "OSASUNA",
             "away": "ATL. GALEANA",
+            "date": "2026-10-18",
             "time": "08:00",
-            "field": "Campo 4",
-            "date": "2026-10-11"
+            "field": "Campo 4"
           },
           {
-            "home": "DEP. MARAVILLAS",
-            "away": "PROMESAS FC",
-            "time": "10:00",
-            "field": "Maravillas",
-            "date": "2026-10-11"
+            "home": "ALDAMA FC",
+            "away": "SAN ANTONIO JRS",
+            "date": "2026-10-18",
+            "time": "08:00",
+            "field": "Campo 1 (Empastado)"
           },
           {
             "home": "LA CUADRILLA",
             "away": "LA CANCHITA DEPORTES",
+            "date": "2026-10-18",
             "time": "10:00",
-            "field": "Rincón de Centeno",
-            "date": "2026-10-11"
+            "field": "Rincón de Centeno"
+          },
+          {
+            "home": "DEP. MARAVILLAS",
+            "away": "PROMESAS FC",
+            "date": "2026-10-18",
+            "time": "10:00",
+            "field": "Maravillas"
           },
           {
             "home": "POPULARES",
             "away": "CAPIBARAS",
+            "date": "2026-10-18",
             "time": "12:00",
-            "field": "Fraccionamiento",
-            "date": "2026-10-11"
+            "field": "Fraccionamiento"
           },
           {
             "home": "MAZACOTES FC",
             "away": "LA HUERTA",
+            "date": "2026-10-18",
             "time": "12:00",
-            "field": "Campo 4",
-            "date": "2026-10-11"
+            "field": "Campo 4"
+          },
+          {
+            "rest": "Malvinas"
+          }
+        ],
+        "J9": [
+          {
+            "home": "MAZACOTES FC",
+            "away": "POPULARES",
+            "date": "2026-10-25",
+            "time": "08:00",
+            "field": "Campo 2"
+          },
+          {
+            "home": "LA HUERTA",
+            "away": "ALDAMA FC",
+            "date": "2026-10-25",
+            "time": "08:00",
+            "field": "Campo 3"
+          },
+          {
+            "home": "OSASUNA",
+            "away": "PROMESAS FC",
+            "date": "2026-10-25",
+            "time": "10:00",
+            "field": "Fraccionamiento"
+          },
+          {
+            "home": "LA CUADRILLA",
+            "away": "DEP. MARAVILLAS",
+            "date": "2026-10-25",
+            "time": "10:00",
+            "field": "Rincón de Centeno"
+          },
+          {
+            "home": "SAN ANTONIO JRS",
+            "away": "CAPIBARAS",
+            "date": "2026-10-25",
+            "time": "12:00",
+            "field": "Romerillo"
+          },
+          {
+            "home": "LA CANCHITA DEPORTES",
+            "away": "MALVINAS",
+            "date": "2026-10-25",
+            "time": "12:00",
+            "field": "Campo 2"
+          },
+          {
+            "rest": "Galeana"
+          }
+        ],
+        "J10": [
+          {
+            "home": "POPULARES",
+            "away": "ALDAMA FC",
+            "date": "2026-11-01",
+            "time": "08:00",
+            "field": "Campo 1 (Empastado)"
+          },
+          {
+            "home": "MALVINAS",
+            "away": "SAN ANTONIO JRS",
+            "date": "2026-11-01",
+            "time": "08:00",
+            "field": "Campo 3"
+          },
+          {
+            "home": "OSASUNA",
+            "away": "LA HUERTA",
+            "date": "2026-11-01",
+            "time": "10:00",
+            "field": "Campo 1 (Empastado)"
+          },
+          {
+            "home": "PROMESAS FC",
+            "away": "MAZACOTES FC",
+            "date": "2026-11-01",
+            "time": "10:00",
+            "field": "Campo 3"
+          },
+          {
+            "home": "LA CUADRILLA",
+            "away": "ATL. GALEANA",
+            "date": "2026-11-01",
+            "time": "12:00",
+            "field": "Rincón de Centeno"
+          },
+          {
+            "home": "LA CANCHITA DEPORTES",
+            "away": "DEP. MARAVILLAS",
+            "date": "2026-11-01",
+            "time": "12:00",
+            "field": "Campo 1 (Empastado)"
+          },
+          {
+            "rest": "Capibaras"
+          }
+        ],
+        "J11": [
+          {
+            "home": "LA HUERTA",
+            "away": "POPULARES",
+            "date": "2026-11-08",
+            "time": "08:00",
+            "field": "Campo 2"
+          },
+          {
+            "home": "DEP. MARAVILLAS",
+            "away": "ATL. GALEANA",
+            "date": "2026-11-08",
+            "time": "08:00",
+            "field": "Maravillas"
+          },
+          {
+            "home": "CAPIBARAS",
+            "away": "OSASUNA",
+            "date": "2026-11-08",
+            "time": "10:00",
+            "field": "Campo 1 (Empastado)"
+          },
+          {
+            "home": "MAZACOTES FC",
+            "away": "MALVINAS",
+            "date": "2026-11-08",
+            "time": "10:00",
+            "field": "Fraccionamiento"
+          },
+          {
+            "home": "ALDAMA FC",
+            "away": "PROMESAS FC",
+            "date": "2026-11-08",
+            "time": "12:00",
+            "field": "Campo 4"
+          },
+          {
+            "home": "LA CANCHITA DEPORTES",
+            "away": "SAN ANTONIO JRS",
+            "date": "2026-11-08",
+            "time": "12:00",
+            "field": "Fraccionamiento"
+          },
+          {
+            "rest": "La Cuadrilla"
+          }
+        ],
+        "J12": [
+          {
+            "home": "ALDAMA FC",
+            "away": "CAPIBARAS",
+            "date": "2026-11-15",
+            "time": "08:00",
+            "field": "Campo 2"
+          },
+          {
+            "home": "OSASUNA",
+            "away": "POPULARES",
+            "date": "2026-11-15",
+            "time": "08:00",
+            "field": "Campo 3"
+          },
+          {
+            "home": "ATL. GALEANA",
+            "away": "MALVINAS",
+            "date": "2026-11-15",
+            "time": "10:00",
+            "field": "Campo 1 (Empastado)"
+          },
+          {
+            "home": "LA CUADRILLA",
+            "away": "MAZACOTES FC",
+            "date": "2026-11-15",
+            "time": "10:00",
+            "field": "Rincón de Centeno"
+          },
+          {
+            "home": "PROMESAS FC",
+            "away": "LA CANCHITA DEPORTES",
+            "date": "2026-11-15",
+            "time": "12:00",
+            "field": "Campo 1 (Empastado)"
+          },
+          {
+            "home": "LA HUERTA",
+            "away": "SAN ANTONIO JRS",
+            "date": "2026-11-15",
+            "time": "12:00",
+            "field": "Campo 3"
+          },
+          {
+            "rest": "Dep. Maravillas"
+          }
+        ],
+        "J13": [
+          {
+            "home": "POPULARES",
+            "away": "LA CANCHITA DEPORTES",
+            "date": "2026-11-22",
+            "time": "08:00",
+            "field": "Campo 4"
+          },
+          {
+            "home": "OSASUNA",
+            "away": "MAZACOTES FC",
+            "date": "2026-11-22",
+            "time": "08:00",
+            "field": "Campo 2"
+          },
+          {
+            "home": "PROMESAS FC",
+            "away": "LA HUERTA",
+            "date": "2026-11-22",
+            "time": "10:00",
+            "field": "Campo 4"
+          },
+          {
+            "home": "LA CUADRILLA",
+            "away": "SAN ANTONIO JRS",
+            "date": "2026-11-22",
+            "time": "10:00",
+            "field": "Rincón de Centeno"
+          },
+          {
+            "home": "CAPIBARAS",
+            "away": "ATL. GALEANA",
+            "date": "2026-11-22",
+            "time": "12:00",
+            "field": "Campo 3"
+          },
+          {
+            "home": "MALVINAS",
+            "away": "DEP. MARAVILLAS",
+            "date": "2026-11-22",
+            "time": "12:00",
+            "field": "Campo 4"
+          },
+          {
+            "rest": "Aldama FC"
           }
         ]
       },
@@ -1530,11 +1934,12 @@
           "pts": -2
         }
       ],
-      "updated_at_utc": "2026-10-08T00:23:45Z"
+      "updated_at_utc": "2026-10-08T00:23:45Z",
+      "source_page": "https://www.juventinorosasliga.com/reporte-semanal/"
     },
     "Segunda Fuerza": {
       "scope": "Categoría abierta por nivel",
-      "current_phase": "Torneo de Copa · Jornada 8 · 11/10/2026",
+      "current_phase": "Torneo de Copa · J8 · 11/10/2026",
       "teams": [
         "Tavera FC",
         "Pachangas FC",
@@ -1793,44 +2198,176 @@
           {
             "home": "DEP. LA LUZ",
             "away": "SAN ANTONIO FC",
+            "date": "2026-10-11",
             "time": "08:00",
-            "field": "Campo 2",
-            "date": "2026-10-11"
+            "field": "Campo 2"
           },
           {
             "home": "SAN JULIAN",
             "away": "TAVERA FC",
+            "date": "2026-10-11",
             "time": "08:00",
-            "field": "San Julian",
-            "date": "2026-10-11"
+            "field": "San Julian"
           },
           {
             "home": "BARZA",
             "away": "DEP. ZAPATA",
+            "date": "2026-10-11",
             "time": "10:00",
-            "field": "Campo 2",
-            "date": "2026-10-11"
+            "field": "Campo 2"
           },
           {
             "home": "DEP. NOPALERO",
             "away": "SAN JUAN FC",
+            "date": "2026-10-11",
             "time": "10:00",
-            "field": "Campo 4",
-            "date": "2026-10-11"
+            "field": "Campo 4"
           },
           {
             "home": "CELTICOS",
             "away": "TAPATIO",
+            "date": "2026-10-11",
             "time": "12:00",
-            "field": "Campo 1 (Empastado)",
-            "date": "2026-10-11"
+            "field": "Campo 1 (Empastado)"
           },
           {
             "home": "SAN JOSE JRS",
             "away": "PACHANGAS FC",
+            "date": "2026-10-11",
             "time": "12:00",
-            "field": "San Jose  de la Montaña",
-            "date": "2026-10-11"
+            "field": "San Jose  de la Montaña"
+          }
+        ],
+        "J9": [
+          {
+            "home": "CELTICOS",
+            "away": "SAN JUAN FC",
+            "date": "2026-10-18",
+            "time": "08:00",
+            "field": "Fraccionamiento"
+          },
+          {
+            "home": "BARZA",
+            "away": "DEP. LA LUZ",
+            "date": "2026-10-18",
+            "time": "08:00",
+            "field": "Campo 1 (Empastado)"
+          },
+          {
+            "home": "TAVERA FC",
+            "away": "DEP. ZAPATA",
+            "date": "2026-10-18",
+            "time": "10:00",
+            "field": "Tavera"
+          },
+          {
+            "home": "SAN JULIAN",
+            "away": "SAN JOSE JRS",
+            "date": "2026-10-18",
+            "time": "10:00",
+            "field": "San Julian"
+          },
+          {
+            "home": "DEP. NOPALERO",
+            "away": "SAN ANTONIO FC",
+            "date": "2026-10-18",
+            "time": "12:00",
+            "field": "Campo 1 (Empastado)"
+          },
+          {
+            "home": "PACHANGAS FC",
+            "away": "TAPATIO",
+            "date": "2026-10-18",
+            "time": "12:00",
+            "field": "Campo 3"
+          }
+        ],
+        "J10": [
+          {
+            "home": "TAVERA FC",
+            "away": "DEP. NOPALERO",
+            "date": "2026-10-25",
+            "time": "08:00",
+            "field": "Tavera"
+          },
+          {
+            "home": "CELTICOS",
+            "away": "SAN JULIAN",
+            "date": "2026-10-25",
+            "time": "08:00",
+            "field": "Campo 2"
+          },
+          {
+            "home": "SAN JUAN FC",
+            "away": "SAN ANTONIO FC",
+            "date": "2026-10-25",
+            "time": "10:00",
+            "field": "San Juan de la Cruz"
+          },
+          {
+            "home": "BARZA",
+            "away": "PACHANGAS FC",
+            "date": "2026-10-25",
+            "time": "10:00",
+            "field": "Campo 2"
+          },
+          {
+            "home": "DEP. ZAPATA",
+            "away": "DEP. LA LUZ",
+            "date": "2026-10-25",
+            "time": "12:00",
+            "field": "Fraccionamiento"
+          },
+          {
+            "home": "TAPATIO",
+            "away": "SAN JOSE JRS",
+            "date": "2026-10-25",
+            "time": "12:00",
+            "field": "Campo 2"
+          }
+        ],
+        "J11": [
+          {
+            "home": "TAPATIO",
+            "away": "SAN JULIAN",
+            "date": "2026-11-01",
+            "time": "08:00",
+            "field": "Fraccionamiento"
+          },
+          {
+            "home": "SAN ANTONIO FC",
+            "away": "BARZA",
+            "date": "2026-11-01",
+            "time": "08:00",
+            "field": "Romerillo"
+          },
+          {
+            "home": "PACHANGAS FC",
+            "away": "DEP. NOPALERO",
+            "date": "2026-11-01",
+            "time": "10:00",
+            "field": "Campo 2"
+          },
+          {
+            "home": "DEP. LA LUZ",
+            "away": "SAN JOSE JRS",
+            "date": "2026-11-01",
+            "time": "10:00",
+            "field": "Campo 3"
+          },
+          {
+            "home": "CELTICOS",
+            "away": "TAVERA FC",
+            "date": "2026-11-01",
+            "time": "12:00",
+            "field": "Campo 3"
+          },
+          {
+            "home": "DEP. ZAPATA",
+            "away": "SAN JUAN FC",
+            "date": "2026-11-01",
+            "time": "12:00",
+            "field": "Campo 1 (Empastado)"
           }
         ]
       },
@@ -1983,7 +2520,8 @@
           "pts": -3
         }
       ],
-      "updated_at_utc": "2026-10-08T00:23:45Z"
+      "updated_at_utc": "2026-10-08T00:23:45Z",
+      "source_page": "https://www.juventinorosasliga.com/reporte-semanal/"
     }
   },
   "manual_fixture_update": {
@@ -1994,5 +2532,15 @@
       "GANA BOAVISTA"
     ],
     "friendly_date": "por confirmar"
+  },
+  "official_weekly_sync": {
+    "source": "https://www.juventinorosasliga.com/reporte-semanal/",
+    "source_snapshot": "2026-10-08T00:23:45Z",
+    "week": "2026-10-05/2026-10-11",
+    "scope": "J7 Primera e Intermedia; J8 Segunda y Veteranos 50+; rondas futuras desde la copia oficial local; Veteranos 35+ sin fecha confirmada para el amistoso.",
+    "decisions_without_score": [
+      "GANA LINCES",
+      "GANA BOAVISTA"
+    ]
   }
 }
