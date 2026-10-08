@@ -743,3 +743,260 @@ html body > .v105-modal.v105-schedule-modal .v105-actions .v105-btn{
     grid-template-columns:1fr!important;
   }
 }
+
+
+/* V920 — Nueva sanción: pantalla moderna completa, sin invadir la barra inferior. */
+html body:has(> .v105-modal.v639-sanction-modal){
+  overflow:hidden!important;
+}
+html body > .v105-modal.v639-sanction-modal{
+  position:fixed!important;
+  top:0!important;
+  left:0!important;
+  right:0!important;
+  bottom:calc(var(--v34-nav-h,69px) + env(safe-area-inset-bottom,0px))!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  padding:0!important;
+  display:block!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(circle at 78% 0%,rgba(31,105,237,.20),transparent 31%),
+    linear-gradient(180deg,#050b42 0%,#03072f 100%)!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  z-index:2147482500!important;
+}
+
+html body > .v105-modal.v639-sanction-modal > .v105-dialog{
+  width:min(100%,760px)!important;
+  height:100%!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0 auto!important;
+  padding:
+    max(22px,env(safe-area-inset-top,0px))
+    clamp(18px,4vw,34px)
+    30px!important;
+  box-sizing:border-box!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior-y:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+  scroll-padding-top:24px!important;
+  scroll-padding-bottom:34px!important;
+  border:0!important;
+  border-left:1px solid rgba(66,151,246,.18)!important;
+  border-right:1px solid rgba(66,151,246,.18)!important;
+  border-radius:0!important;
+  background:
+    linear-gradient(180deg,rgba(11,28,104,.98) 0%,rgba(7,18,76,.99) 100%)!important;
+  box-shadow:0 0 46px rgba(0,0,35,.20)!important;
+  color:#fff!important;
+}
+
+/* Encabezado más limpio y moderno. */
+html body > .v105-modal.v639-sanction-modal > .v105-dialog > h3{
+  margin:0 66px 7px 0!important;
+  color:#fff!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
+  font-size:clamp(28px,6vw,38px)!important;
+  line-height:1.02!important;
+  font-weight:850!important;
+  letter-spacing:-.035em!important;
+}
+html body > .v105-modal.v639-sanction-modal > .v105-dialog > p{
+  max-width:620px!important;
+  margin:0 64px 20px 0!important;
+  color:#aebce1!important;
+  font-size:13px!important;
+  line-height:1.42!important;
+}
+html body > .v105-modal.v639-sanction-modal .v105-close{
+  position:absolute!important;
+  top:max(18px,env(safe-area-inset-top,0px))!important;
+  right:clamp(18px,4vw,32px)!important;
+  width:48px!important;
+  height:48px!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+  border:1px solid rgba(101,153,235,.46)!important;
+  border-radius:16px!important;
+  background:linear-gradient(180deg,rgba(22,52,130,.94),rgba(12,31,91,.98))!important;
+  color:#ecf7ff!important;
+  font:400 31px/1 system-ui,sans-serif!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 10px 24px rgba(0,0,40,.18)!important;
+  z-index:8!important;
+}
+html body > .v105-modal.v639-sanction-modal .v105-close:active{
+  transform:scale(.96)!important;
+  filter:brightness(1.1)!important;
+}
+
+/* Formulario: una sola tarjeta continua, con campos más compactos y claros. */
+html body > .v105-modal.v639-sanction-modal .v105-form{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+  margin:0!important;
+  padding:16px!important;
+  border:1px solid rgba(76,142,232,.33)!important;
+  border-radius:24px!important;
+  background:
+    linear-gradient(180deg,rgba(25,57,149,.50),rgba(9,29,96,.46))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045)!important;
+}
+html body > .v105-modal.v639-sanction-modal .v105-form label{
+  min-width:0!important;
+  display:grid!important;
+  gap:7px!important;
+  margin:0!important;
+}
+html body > .v105-modal.v639-sanction-modal .v105-form label[style*="grid-column"]{
+  grid-column:1/-1!important;
+}
+html body > .v105-modal.v639-sanction-modal .v105-form label > span{
+  color:#c5d2ee!important;
+  font-size:10px!important;
+  line-height:1!important;
+  font-weight:850!important;
+  letter-spacing:.01em!important;
+}
+html body > .v105-modal.v639-sanction-modal .v105-form input,
+html body > .v105-modal.v639-sanction-modal .v105-form select{
+  width:100%!important;
+  min-width:0!important;
+  height:52px!important;
+  min-height:52px!important;
+  padding:0 14px!important;
+  box-sizing:border-box!important;
+  border:1px solid rgba(93,128,206,.52)!important;
+  border-radius:15px!important;
+  outline:0!important;
+  background:#071758!important;
+  color:#fff!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
+  font-size:15px!important;
+  font-weight:500!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025)!important;
+}
+html body > .v105-modal.v639-sanction-modal .v105-form input::placeholder{
+  color:#7884a8!important;
+  opacity:1!important;
+}
+html body > .v105-modal.v639-sanction-modal .v105-form input:focus,
+html body > .v105-modal.v639-sanction-modal .v105-form select:focus{
+  border-color:#36d9e7!important;
+  box-shadow:0 0 0 3px rgba(54,217,231,.11)!important;
+}
+html body > .v105-modal.v639-sanction-modal [data-x-count]{
+  display:inline-flex!important;
+  width:max-content!important;
+  max-width:100%!important;
+  min-height:27px!important;
+  align-items:center!important;
+  margin:1px 0 0!important;
+  padding:0 9px!important;
+  border:1px solid rgba(72,202,226,.22)!important;
+  border-radius:999px!important;
+  background:rgba(33,100,173,.18)!important;
+  color:#95dce8!important;
+  font-size:9px!important;
+  font-weight:800!important;
+  opacity:1!important;
+}
+
+/* Acciones completas al final del scroll, nunca debajo de la navegación. */
+html body > .v105-modal.v639-sanction-modal .v105-actions{
+  width:100%!important;
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:9px!important;
+  margin:14px 0 0!important;
+  padding:0 0 4px!important;
+  box-sizing:border-box!important;
+}
+html body > .v105-modal.v639-sanction-modal .v105-actions .v105-btn{
+  width:100%!important;
+  min-width:0!important;
+  min-height:48px!important;
+  margin:0!important;
+  padding:9px 11px!important;
+  border-radius:14px!important;
+  font-size:10px!important;
+  line-height:1.15!important;
+  font-weight:900!important;
+  white-space:normal!important;
+}
+html body > .v105-modal.v639-sanction-modal .v105-actions .v105-btn:not(.alt){
+  background:linear-gradient(180deg,#42e5ef,#24cbd9)!important;
+  color:#06184f!important;
+  box-shadow:0 10px 22px rgba(28,199,216,.16)!important;
+}
+html body > .v105-modal.v639-sanction-modal .v105-actions .v105-btn.alt{
+  border:1px solid rgba(88,132,216,.50)!important;
+  background:linear-gradient(180deg,#122d79,#0a205e)!important;
+  color:#f1f6ff!important;
+}
+
+@media(max-width:600px){
+  html body > .v105-modal.v639-sanction-modal > .v105-dialog{
+    width:100%!important;
+    padding:
+      max(18px,env(safe-area-inset-top,0px))
+      14px
+      24px!important;
+    border-left:0!important;
+    border-right:0!important;
+  }
+  html body > .v105-modal.v639-sanction-modal > .v105-dialog > h3{
+    margin-right:58px!important;
+    font-size:30px!important;
+  }
+  html body > .v105-modal.v639-sanction-modal > .v105-dialog > p{
+    margin-right:50px!important;
+    margin-bottom:16px!important;
+    font-size:12px!important;
+  }
+  html body > .v105-modal.v639-sanction-modal .v105-close{
+    top:max(14px,env(safe-area-inset-top,0px))!important;
+    right:14px!important;
+    width:44px!important;
+    height:44px!important;
+    border-radius:14px!important;
+    font-size:28px!important;
+  }
+  html body > .v105-modal.v639-sanction-modal .v105-form{
+    grid-template-columns:1fr!important;
+    gap:11px!important;
+    padding:13px!important;
+    border-radius:20px!important;
+  }
+  html body > .v105-modal.v639-sanction-modal .v105-form label,
+  html body > .v105-modal.v639-sanction-modal .v105-form label[style*="grid-column"]{
+    grid-column:1!important;
+  }
+  html body > .v105-modal.v639-sanction-modal .v105-form input,
+  html body > .v105-modal.v639-sanction-modal .v105-form select{
+    height:50px!important;
+    min-height:50px!important;
+    border-radius:14px!important;
+    font-size:14px!important;
+  }
+  html body > .v105-modal.v639-sanction-modal .v105-actions{
+    grid-template-columns:1fr 1fr!important;
+  }
+  html body > .v105-modal.v639-sanction-modal .v105-actions [data-x-discipline]{
+    grid-column:1/-1!important;
+  }
+}
+@media(max-width:360px){
+  html body > .v105-modal.v639-sanction-modal .v105-actions{
+    grid-template-columns:1fr!important;
+  }
+  html body > .v105-modal.v639-sanction-modal .v105-actions [data-x-discipline]{
+    grid-column:1!important;
+  }
+}
