@@ -56,3 +56,18 @@ test('escudos de perfiles, tablas e Historia resuelven el archivo local de Pozos
  assert.match(shirt,/Equipo · '\+teams\.length\+' clubes \(53 participaciones\)/);
  for(const path of ['src/v67-team-logo-registry.js','src/v672-history-old-team-logos.js','src/v704-history-global-team-logos.js'])assert.ok(read(path).includes('season-2026/pozos.webp'));
 });
+
+
+test('la pantalla visible de Equipos muestra los 53 registros con escudos y categoría correcta',()=>{
+ const src=read('src/v27-teams-drive-reference.js');
+ const m=src.match(/const V27_TEAMS=(\[[\s\S]*?\n\]);/);assert.ok(m);
+ const entries=JSON.parse(m[1]);
+ assert.equal(entries.length,53);
+ assert.equal(new Set(entries.map(x=>x.catId+':'+normalize(x.name))).size,53);
+ assert.equal(entries.filter(x=>normalize(x.name)==='pozos fc'&&x.catId==='2').length,1);
+ assert.equal(entries.filter(x=>normalize(x.name)==='boavista').length,2);
+ assert.equal(entries.filter(x=>normalize(x.name)==='juventus').length,2);
+ assert.ok(entries.every(x=>x.logo&&fs.existsSync(new URL('public/'+x.logo.replace(/^\.\//,''),root))), 'escudos locales');
+ assert.match(src,/FIRST_GRID=V27_TEAMS\.slice\(0,17\)/);
+ assert.match(src,/localStorage\.setItem\('v62-category',String\(t\.catId\)\)/);
+});
