@@ -662,7 +662,7 @@
               "MANCHESTER",
               "3",
               "vs",
-              "-",
+              "0",
               "LA ESPERANZA",
               "Campo 3",
               "22/08/2026 17:00",
@@ -2706,6 +2706,7 @@
           "winner": "BOAVISTA",
           "label": "GANA BOAVISTA",
           "type": "administrative",
+          "default": true,
           "score": null,
           "source": "Rol de partidos compartido por la Liga",
           "round": "8"
@@ -8934,6 +8935,7 @@
           "winner": "LINCES",
           "label": "GANA LINCES",
           "type": "administrative",
+          "default": true,
           "score": null,
           "source": "Rol de partidos compartido por la Liga",
           "round": "7"
