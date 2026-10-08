@@ -111,13 +111,29 @@ function catOptions(){
 function store(){const s=read(KEY,{teams:[],players:[],competitions:[],matches:[]});return Object.assign({teams:[],players:[],competitions:[],matches:[]},s)}
 function isFav(type,key){return (store()[type]||[]).includes(String(key))}
 function toggle(type,key){const s=store(),a=new Set(s[type]||[]),k=String(key);a.has(k)?a.delete(k):a.add(k);s[type]=Array.from(a);write(KEY,s)}
+/* V950 — Elegir un favorito abre su FICHA, no el comparador.
+   Comparar sigue disponible únicamente en el botón explícito de la ficha. */
 function openTeam(name,cat){
- try{localStorage.setItem('v62-team-name',name);if(cat)localStorage.setItem('v62-category',String(cat));localStorage.setItem('v42-team-tab','summary')}catch(_){}
- location.hash='#/teamDetail';
+ if(!name)return;
+ try{
+  localStorage.setItem('v62-team-name',name);
+  if(cat)localStorage.setItem('v62-category',String(cat));
+  localStorage.setItem('v42-team-tab','summary');
+  localStorage.removeItem('v42-open-compare');
+ }catch(_){}
+ if(window.LJR_TEAM_DETAIL_API?.openTeam&&window.LJR_TEAM_DETAIL_API.openTeam(name,cat))return;
+ location.hash='#/teamDetail?tab=summary';
 }
 function openPlayer(p){
- try{localStorage.setItem('v123-compare-player',JSON.stringify({name:p.name,team:p.team,cat:p.cat}));localStorage.removeItem('v123-compare-player-2')}catch(_){}
- if(window.LJR_PLAYER_COMPARE_API?.open)window.LJR_PLAYER_COMPARE_API.open({name:p.name,team:p.team,cat:p.cat});else location.hash='#/playerCompare';
+ if(!p?.name)return;
+ const player={name:p.name,team:p.team,cat:String(p.cat||''),category:p.category||''};
+ try{
+  localStorage.setItem('v379-player-profile',JSON.stringify(player));
+  localStorage.setItem('v379-player-profile-tab','Resumen');
+  localStorage.removeItem('v123-compare-player-2');
+ }catch(_){}
+ if(window.LJR_PLAYER_PROFILE_API?.open){window.LJR_PLAYER_PROFILE_API.open(player);return}
+ location.hash='#/playerDetail';
 }
 function openCompetition(cat){try{localStorage.setItem('v62-category',String(cat));localStorage.setItem('v12-fixture-cat',String(cat))}catch(_){};location.hash='#/competition'}
 function openMatch(){location.hash='#/matchCenter'}
