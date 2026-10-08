@@ -1,0 +1,183 @@
+/* V970 — Funciones extra de pronostico; no altera fixtures, puntos ni pronosticos guardados. */
+import {normalizeCompetition,norm} from './competition-data.js';
+(function(){
+'use strict';
+if(window.__LJR_V970_QUINIELA_INSIGHTS__)return;
+window.__LJR_V970_QUINIELA_INSIGHTS__=true;
+const DATA='./data/official-live.json?quiniela=20261008-v970-insights';
+const CONFIDENCE_KEY='ljr-blue:quiniela:confianza:v1';
+const LABELS={baja:'Baja',media:'Media',alta:'Alta'};
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const escapeHtml=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let dataPromise,scheduled=0;
+const currentRoute=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0];
+const safeRead=(key)=>{try{return JSON.parse(localStorage.getItem(key)||'{}')||{}}catch{return {}}};
+const safeWrite=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value));return true}catch{return false}};
+const snapshot=()=>dataPromise||(dataPromise=fetch(DATA,{cache:'no-store'}).then(r=>{
+ if(!r.ok)throw Error('No se pudo cargar el archivo local');
+ return r.json();
+}).catch(error=>{dataPromise=null;throw error}));
+function matchKey(m,data){
+ return [m.category,data.categories?.[String(m.category)]?.season_id||'',m.round,norm(m.home),norm(m.away)].join('|');
+}
+function isClosed(m){
+ if(m.complete)return true;
+ if(!m.iso||!m.time)return false;
+ const ms=Date.parse(m.iso+'T'+m.time+':00-06:00');
+ return Number.isFinite(ms)&&ms<=Date.now();
+}
+function savedPrediction(m,data,picks){
+ const key=matchKey(m,data);
+ const item=picks[key];
+ return item?.fixtureKey===key&&Number.isInteger(item.home)&&Number.isInteger(item.away);
+}
+function formFor(team,cat){
+ const key=norm(team);
+ const games=cat.matches.filter(m=>m.complete&&m.iso&&m.iso<=new Date().toISOString().slice(0,10)&&
+   (norm(m.home)===key||norm(m.away)===key))
+  .sort((a,b)=>b.iso.localeCompare(a.iso)||b.time.localeCompare(a.time)).slice(0,5);
+ const history=games.map(m=>{
+   const home=norm(m.home)===key;
+   const goals=home?m.homeScore:m.awayScore,conceded=home?m.awayScore:m.homeScore;
+   return {mark:goals>conceded?'G':goals===conceded?'E':'P',gf:goals,gc:conceded,
+      opponent:home?m.away:m.home,score:String(m.homeScore)+'–'+String(m.awayScore)};
+ });
+ return {played:history.length,wins:history.filter(x=>x.mark==='G').length,
+  draws:history.filter(x=>x.mark==='E').length,losses:history.filter(x=>x.mark==='P').length,
+  gf:history.reduce((s,x)=>s+x.gf,0),gc:history.reduce((s,x)=>s+x.gc,0),history};
+}
+function formMarkup(team,cat){
+ const s=formFor(team,cat);
+ return '<div class="v970-form-team"><b>'+escapeHtml(team)+'</b>'+
+  (s.played?'<div class="v970-form-summary"><strong>'+s.wins+'G · '+s.draws+'E · '+s.losses+'P</strong><span>'+s.gf+' GF · '+s.gc+' GC</span></div>'+
+   '<div class="v970-form-marks" aria-label="Resultados recientes">'+s.history.map(x=>
+    '<span class="v970-mark '+(x.mark==='G'?'won':x.mark==='P'?'lost':'draw')+'" title="'+escapeHtml(x.opponent+' '+x.score)+'">'+x.mark+'</span>').join('')+'</div>'
+   :'<p class="v970-no-record">Aún sin marcadores completos suficientes.</p>')+
+  '</div>';
+}
+function previewMarkup(m,cat,data){
+ const key=matchKey(m,data);
+ const confidence=safeRead(CONFIDENCE_KEY)[key]||'';
+ const locked=isClosed(m);
+ return '<div class="v970-pre-match" data-v970-match="'+escapeHtml(m.id)+'">'+
+   '<button type="button" class="v970-preview-toggle" aria-expanded="false">'+
+     '<span class="v970-insight-icon" aria-hidden="true">◷</span>Previa y forma de los equipos<span aria-hidden="true">⌄</span></button>'+
+   '<section class="v970-preview-panel" hidden>'+
+     '<p class="v970-preview-disclaimer">Últimos 5 resultados completos publicados · Solo referencia estadística, no garantía de resultado.</p>'+
+     '<div class="v970-form-grid">'+formMarkup(m.home,cat)+formMarkup(m.away,cat)+'</div>'+
+     (!locked?'<div class="v970-shortcuts"><b>Marcador rápido <small>(solo borrador)</small></b>'+
+       '<div class="v970-quick-buttons">'+
+         '<button type="button" data-v970-score="home">Local 1–0</button>'+
+         '<button type="button" data-v970-score="draw">Empate 1–1</button>'+
+         '<button type="button" data-v970-score="away">Visita 0–1</button>'+
+       '</div><small>Se guarda únicamente al pulsar “Guardar pronóstico” o “Guardar todos”.</small></div>'
+       :'<p class="v970-closed-note">El partido ya inició o terminó. Pronóstico cerrado.</p>')+
+     '<div class="v970-confidence"><b>Mi confianza <small>(no modifica puntos)</small></b>'+
+       '<div class="v970-confidence-choices">'+Object.entries(LABELS).map(([value,label])=>
+         '<button type="button" data-v970-confidence="'+value+'" aria-pressed="'+(confidence===value?'true':'false')+'"'+(locked?' disabled':'')+'>'+label+'</button>').join('')+
+       '</div></div>'+
+   '</section></div>';
+}
+function addProgress(root,cat,visibleMatches,data){
+ if(!visibleMatches.length)return;
+ const picks=safeRead('v561-quiniela');
+ const saved=visibleMatches.filter(m=>savedPrediction(m,data,picks)).length;
+ const open=visibleMatches.filter(m=>!isClosed(m));
+ const missing=open.filter(m=>!savedPrediction(m,data,picks));
+ const count=visibleMatches.length;
+ const percent=Math.round(saved/count*100);
+ const next=open.filter(m=>m.iso&&m.time).sort((a,b)=>(a.iso+a.time).localeCompare(b.iso+b.time))[0];
+ const when=next?next.date:'';
+ const card=document.createElement('section');
+ card.className='v970-jornada-progress';
+ card.setAttribute('aria-label','Avance de pronósticos de la jornada');
+ card.innerHTML='<div class="v970-progress-head"><span>MI JORNADA · AVANCE</span><b>'+saved+' / '+count+' guardados</b></div>'+
+   '<div class="v970-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="'+count+'" aria-valuenow="'+saved+'"><i style="width:'+percent+'%"></i></div>'+
+   '<div class="v970-progress-footer"><span>'+missing.length+' pendientes para pronosticar'+(when?' · Próximo: '+escapeHtml(when):'')+'</span>'+
+   (missing.length?'<button type="button" data-v970-jump>Pendientes →</button>':'<span class="v970-progress-complete">✓ Revisado</span>')+'</div>';
+ const round=$('.v618-q-round',root);
+ const title=$('.v618-q-section-title',root);
+ if(round)round.insertAdjacentElement('afterend',card);
+ else if(title)title.insertAdjacentElement('beforebegin',card);
+ card.querySelector('[data-v970-jump]')?.addEventListener('click',()=>{
+   const picksNow=safeRead('v561-quiniela');
+   const match=visibleMatches.find(m=>!isClosed(m)&&!savedPrediction(m,data,picksNow));
+   if(!match)return;
+   const row=$$('[data-q-match]',root).find(el=>el.dataset.qMatch===match.id);
+   if(!row)return;
+   row.scrollIntoView({behavior:'smooth',block:'center'});
+   row.querySelector('[data-q-home]')?.focus({preventScroll:true});
+ });
+}
+async function mount(){
+ if(currentRoute()!=='quiniela')return;
+ const root=$('#screen [data-v561-quiniela-mount] .v618-quiniela');
+ if(!root||root.dataset.v970Enhanced==='true')return;
+ const categoryId=String(localStorage.getItem('v561-category')||'3');
+ const cards=$$('[data-q-match]',root);
+ if(!cards.length)return;
+ // Mark this precise rendered instance to avoid observer feedback.
+ root.dataset.v970Enhanced='true';
+ try{
+   const data=await snapshot();
+   if(!root.isConnected||currentRoute()!=='quiniela')return;
+   const cat=normalizeCompetition(data).find(c=>c.id===categoryId);
+   if(!cat)return;
+   const visible=cards.map(el=>cat.matches.find(m=>m.id===el.dataset.qMatch)).filter(Boolean);
+   addProgress(root,cat,visible,data);
+   for(const card of cards){
+     const m=cat.matches.find(item=>item.id===card.dataset.qMatch);
+     if(!m||card.querySelector('.v970-pre-match'))continue;
+     const el=document.createElement('div');
+     el.innerHTML=previewMarkup(m,cat,data);
+     const content=el.firstElementChild;
+     card.append(content);
+     const toggle=$('.v970-preview-toggle',content),panel=$('.v970-preview-panel',content);
+     toggle?.addEventListener('click',()=>{
+       const next=panel.hidden;panel.hidden=!next;toggle.setAttribute('aria-expanded',String(next));
+     });
+     content.addEventListener('click',event=>{
+       const draft=event.target.closest('[data-v970-score]');
+       if(draft){
+         if(isClosed(m))return;
+         const pair={home:[1,0],draw:[1,1],away:[0,1]}[draft.dataset.v970Score];
+         if(!pair)return;
+         const homeInput=$('[data-q-home]',card),awayInput=$('[data-q-away]',card);
+         if(!homeInput||!awayInput||homeInput.disabled||awayInput.disabled)return;
+         homeInput.value=pair[0];awayInput.value=pair[1];
+         homeInput.dispatchEvent(new Event('input',{bubbles:true}));
+         awayInput.dispatchEvent(new Event('input',{bubbles:true}));
+         $$('[data-v970-score]',content).forEach(b=>b.classList.toggle('selected',b===draft));
+         const note=$('.v970-shortcuts>small',content);if(note)note.textContent='Borrador listo; pulsa Guardar pronóstico para confirmarlo.';
+         return;
+       }
+       const confidence=event.target.closest('[data-v970-confidence]');
+       if(confidence&&!isClosed(m)){
+         const value=confidence.dataset.v970Confidence;
+         if(!LABELS[value])return;
+         const existing=safeRead(CONFIDENCE_KEY);
+         const key=matchKey(m,data);
+         if(existing[key]===value)delete existing[key];
+         else existing[key]=value;
+         if(safeWrite(CONFIDENCE_KEY,existing)){
+           $$('[data-v970-confidence]',content).forEach(b=>b.setAttribute('aria-pressed',String(existing[key]===b.dataset.v970Confidence)));
+         }
+       }
+     });
+   }
+ }catch(error){
+   // Fail independently; no impact on existing Quiniela controls or saved selections.
+   root.dataset.v970Enhanced='error';
+ }
+}
+function schedule(){clearTimeout(scheduled);scheduled=setTimeout(mount,95)}
+function start(){
+ const screen=$('#screen');
+ if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:true});
+ window.addEventListener('hashchange',schedule);
+ schedule();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});
+else start();
+})();
