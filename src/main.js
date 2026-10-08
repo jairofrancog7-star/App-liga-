@@ -4559,28 +4559,41 @@ function v60Field(id){return V60_FIELDS.find(f=>f.id===id)||V60_FIELDS[0]}
 function v60MapUrl(f){const m=f.maps||f.address||f.name;return /^https?:\/\//i.test(m)?m:'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(m)}
 function v60HasExactMap(f){return /^https?:\/\//i.test(String(f?.maps||''))}
 function v60FieldPreview(f,cls=''){
-  // Street View svembed muestra paneles grises/negros en algunos navegadores
-  // móviles. Usar el mapa normal, con ubicación de referencia y salida a Maps.
-  const lat=f?.lat,lon=f?.lon;
-  const validCoords=lat!==null&&lat!==undefined&&lon!==null&&lon!==undefined&&
-    Number.isFinite(Number(lat))&&Number.isFinite(Number(lon))&&
-    Math.abs(Number(lat))<=90&&Math.abs(Number(lon))<=180;
-  const query=validCoords?Number(lat).toFixed(6)+','+Number(lon).toFixed(6):
-    String(f?.streetViewQuery||f?.address||f?.name||'Juventino Rosas, Guanajuato');
-  const src='https://maps.google.com/maps?q='+encodeURIComponent(query)+'&z=16&hl=es&output=embed';
+  /* V922 — Imagen fija de archivo en lugar del mapa incrustado.
+     Solo Unidad Deportiva Sur cuenta con una foto etiquetada con su sede;
+     para el resto se identifica explícitamente la fotografía como referencia
+     deportiva, NO como toma verificada del campo indicado. */
+  const archive='./assets/history/enhanced-v326/';
+  const photos={
+    'sur-1':{url:'./deportiva-sur-partido.jpg',caption:'Archivo · Deportiva Sur',verified:true},
+    'sur-2':{url:'./deportiva-sur-partido.jpg',caption:'Archivo · Deportiva Sur',verified:true},
+    'sur-3':{url:'./deportiva-sur-partido.jpg',caption:'Archivo · Deportiva Sur',verified:true},
+    'romerillo':{url:archive+'archive-v293/romerillo-tercer-lugar-intermedia-23-nov-2013.jpg'},
+    'san-julian':{url:archive+'archive-v218/san-julian-campeon-copa-segunda-18-feb-2024.jpg'},
+    'cuenda':{url:archive+'archive-v203/la-huerta-cuenda-campeon-segunda-29-jun-2025.jpg'},
+    'fraccionamiento':{url:archive+'archive-v203/la-huerta-cuenda-campeon-segunda-29-jun-2025.jpg'},
+    'tavera':{url:archive+'archive-v119/tavera-finalista-2025.jpg'},
+    'pozos':{url:archive+'archive-v239/pozos-fc-campeon-liga-veteranos35-15-sep-2024.webp'},
+    'cerrito':{url:archive+'archive-v293/romerillo-tercer-lugar-intermedia-23-nov-2013.jpg'},
+    'zapata-4':{url:'./deportiva-sur-partido.jpg'},
+    'san-juan':{url:archive+'archive-v218/san-julian-campeon-copa-segunda-18-feb-2024.jpg'},
+    'rincon':{url:archive+'archive-v293/romerillo-tercer-lugar-intermedia-23-nov-2013.jpg'},
+    'san-jose':{url:'./deportiva-sur-partido.jpg'}
+  };
+  const photo=photos[f?.id]||{url:'./deportiva-sur-partido.jpg'};
   const large=String(cls).includes('v60-field-preview-card');
   const name=v64Esc(String(f?.name||'campo'));
   const open=large?'<a class="v921-map-open" href="'+v64Esc(v60MapUrl(f))+
-    '" target="_blank" rel="noopener noreferrer" aria-label="Abrir '+name+' en Google Maps">'+
+    '" target="_blank" rel="noopener noreferrer" aria-label="Ver ubicación de '+name+' en Maps">'+
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.5 7-13a7 7 0 0 0-14 0c0 6.5 7 13 7 13Z"/><circle cx="12" cy="9" r="2.6"/></svg>'+
-    '<span>Abrir Maps</span></a>':'';
-  return '<span class="v60-field-preview v921-map-preview '+v64Esc(cls)+'">'+
-    '<span class="v921-map-fallback" aria-hidden="true">'+
-      '<span class="v921-map-fallback-pin">⌖</span>'+
-      '<span>Mapa de referencia</span>'+
-    '</span>'+
-    '<iframe src="'+v64Esc(src)+'" title="Mapa de referencia de '+name+
-      '" loading="lazy" referrerpolicy="no-referrer-when-downgrade" tabindex="-1" aria-hidden="true"></iframe>'+
+    '<span>Ubicación</span></a>':'';
+  const caption=photo.verified?'Archivo · Unidad Deportiva Sur':'Foto de archivo · referencia';
+  return '<span class="v60-field-preview v921-map-preview v922-photo-preview '+v64Esc(cls)+'">'+
+    '<span class="v921-map-fallback" aria-hidden="true"><span class="v921-map-fallback-pin">◈</span><span>Fotografía no disponible</span></span>'+
+    '<img class="v922-field-photo" src="'+v64Esc(photo.url)+'" alt="Fotografía de archivo deportivo: '+name+
+      (photo.verified?' (Unidad Deportiva Sur)':' (imagen referencial, no verificada en esta cancha)')+
+      '" loading="lazy" decoding="async" onerror="this.hidden=true">'+
+    (large?'<span class="v922-photo-caption">'+v64Esc(caption)+'</span>':'')+
     open+'</span>';
 }
 function v60Icon(name){
