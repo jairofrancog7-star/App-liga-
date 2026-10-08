@@ -6,6 +6,9 @@ window.__LJR_V951_SCORERS_FINAL_PAGE__=true;
 
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||String(document.body?.dataset?.appRoute||'home');
 let queued=false;
+let scrollScreen=null;
+let scrollFrame=0;
+let compact=false;
 
 const backSvg='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>';
 const profileSvg='<svg class="v951-profile-fallback" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c1.5-3.7 4-5.5 7.5-5.5s6 1.8 7.5 5.5"/></svg>';
@@ -106,7 +109,37 @@ function sync(){
     screen.prepend(head);
   }
   syncProfile(head);
+  watchScorerScroll();
 }
+
+
+/* V955 — #screen es el scroller del móvil. Colapsar sólo al bajar y
+   expandir al volver arriba evita cubrir fotos y controles al desplazarse. */
+function applyScorerScroll(){
+  scrollFrame=0;
+  const screen=document.getElementById('screen');
+  const head=screen?.querySelector(':scope > .v950-scorers-head');
+  if(route()!=='scorers'||!head){compact=false;return;}
+  const top=Math.max(0,screen.scrollTop||0,window.scrollY||0);
+  const next=compact?top>20:top>90;
+  compact=next;
+  head.classList.toggle('is-compact',compact);
+}
+function queueScorerScroll(){
+  if(scrollFrame)return;
+  scrollFrame=requestAnimationFrame(applyScorerScroll);
+}
+function watchScorerScroll(){
+  const screen=document.getElementById('screen');
+  if(screen!==scrollScreen){
+    scrollScreen?.removeEventListener('scroll',queueScorerScroll);
+    scrollScreen=screen;
+    scrollScreen?.addEventListener('scroll',queueScorerScroll,{passive:true});
+  }
+  queueScorerScroll();
+}
+window.addEventListener('scroll',queueScorerScroll,{passive:true});
+window.addEventListener('resize',queueScorerScroll,{passive:true});
 
 function queue(){
   if(queued)return;
