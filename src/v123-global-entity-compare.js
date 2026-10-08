@@ -474,6 +474,15 @@ document.addEventListener('click',e=>{
   '#v369-team-compare,#v369-team-notify,.v42-overlay,'+
   '[data-v369-team-choice],[data-v369-pick-team],[data-v42-compare-name]'
  ))return;
+ /* V963: directories and team-profile selectors own their navigation.
+    These clicks must never be recast as comparison requests. */
+ if(target.closest(
+  '.v41-teams-page [data-v41-team],'+
+  '[data-v66-directory="teams"] [data-v66-open-team],'+
+  '[data-v66-directory="players"] [data-v66-player],'+
+  '[data-v42-reference="teamDetail"] [data-v42-player],'+
+  '[data-v42-reference="teamDetail"] [data-v42-select-name]'
+ ))return;
 
  /* V144 — REGISTRO DE JUGADOR:
     elegir un equipo dentro de credentialBuilder pertenece únicamente al formulario
