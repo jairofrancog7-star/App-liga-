@@ -306,6 +306,13 @@ const V12_FIXTURE_LOGOS={
 const V12_FIXTURE_BUILD='20261001-v493-official-all-categories';
 const V12_FIXTURE_ORDER=['3','4','5','2','1'];
 const V12_FIXTURE_LABELS={'1':'Veteranos 50+','2':'Veteranos 35+','3':'Primera Fuerza','4':'Segunda Fuerza','5':'Intermedia'};
+const V12_FIXTURE_CATEGORY_LOGOS={
+  '3':'./assets/branding/primera-fuerza-hd.png',
+  '5':'./assets/categories/intermedia.webp',
+  '4':'./assets/categories/segunda-fuerza.webp',
+  '2':'./assets/categories/veteranos-35-user.png',
+  '1':'./assets/categories/veteranos-50.webp'
+};
 const V12_MONTHS=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 const V12_MONTHS_SHORT=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 const V12_DAYS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
@@ -371,6 +378,9 @@ function v12DateShort(info){
 function v12FixtureCategories(){
   const db=v12FixtureDb(),cats=db?.categories||{};
   return V12_FIXTURE_ORDER.map(id=>({id,name:cats[id]?.name||V12_FIXTURE_LABELS[id]||('Categoría '+id)}));
+}
+function v12FixtureCategoryLogo(id){
+  return V12_FIXTURE_CATEGORY_LOGOS[String(id)]||'./assets/liga-logo.webp';
 }
 function v12LegacyCategory(catId){
   const name=V12_FIXTURE_LABELS[String(catId)]||'';
@@ -517,7 +527,7 @@ function v12FixturesMarkup(){
     return '<section class="v12-fixtures-reference" data-v12-fixtures data-v12-version="'+V12_FIXTURE_BUILD+'"><div class="v12-fixture-loading">Cargando jornadas oficiales…</div></section>';
   }
   const catId=v12StoredCat(),cat=cats.find(c=>c.id===catId)||cats[0],groups=v12FixtureGroups(cat.id),selected=v12PickGroup(cat.id,groups);
-  const catStrip='<div class="v12-category-grid">'+cats.map(c=>'<button class="'+(c.id===cat.id?'active':'')+'" data-v12-cat="'+v12Esc(c.id)+'">'+v12Esc(c.name)+'</button>').join('')+'</div>';
+  const catStrip='<div class="v12-category-grid">'+cats.map(c=>'<button class="'+(c.id===cat.id?'active':'')+'" data-v12-cat="'+v12Esc(c.id)+'"><img class="v12-category-logo" src="'+v12Esc(v12FixtureCategoryLogo(c.id))+'" alt="" aria-hidden="true"><span class="v12-category-name">'+v12Esc(c.name)+'</span></button>').join('')+'</div>';
   if(!selected){
     return '<section class="v12-fixtures-reference" data-v12-fixtures data-v12-version="'+V12_FIXTURE_BUILD+'">'+
       '<h2>'+v12Esc(cat.name)+'</h2><section class="v12-schedule-card"><h3>Calendario oficial</h3><div class="v12-fixture-empty">Todavía no hay partidos publicados para esta categoría en la fuente actual.</div></section>'+
