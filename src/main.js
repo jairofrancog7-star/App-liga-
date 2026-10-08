@@ -4587,17 +4587,21 @@ function v60FieldPreview(f,cls=''){
   const info=hasCoords?
     'Vista de Street View cercana a la ubicación. Puede no corresponder al interior de la cancha.':
     'Ubicación para consultar fotografías en Google Maps.';
-  const placeholder='<span class="v923-google-photo-empty" aria-hidden="true">'+
-    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="3"/><circle cx="12" cy="13" r="3.5"/><path d="m8 6 1.2-2h5.6L16 6"/></svg>'+
-    '<b>Google Street View</b><span>'+(hasCoords?'Ver fotografías de los alrededores':'Ver fotos de la ubicación')+'</span>'+
-    '</span>';
+  // Sin clave no existe imagen estática que descargar de Google.
+  // El cuadro completo actúa como acceso al Street View real en Google Maps.
+  const placeholder='<a class="v923-google-photo-empty v923-google-photo-link" href="'+link+
+    '" target="_blank" rel="noopener noreferrer" aria-label="Ver las fotografías de Google Maps de '+name+'">'+
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="3"/><circle cx="12" cy="13" r="3.5"/><path d="m8 6 1.2-2h5.6L16 6"/></svg>'+
+    '<b>'+(photoSrc?'Google Street View':'Ver fotografía en Google Maps')+'</b>'+
+    '<span>'+(photoSrc?'Cargando panorama de Google…':'Para mostrar la foto aquí, falta activar Street View Static API')+'</span>'+
+    '</a>';
   const image=photoSrc?'<img class="v923-google-photo" src="'+v64Esc(photoSrc)+
     '" alt="Vista cercana de Google Street View de '+name+'; no se garantiza que sea la cancha exacta"'+
-    ' loading="lazy" decoding="async" onload="this.parentElement.classList.add(&quot;v923-photo-loaded&quot;)" onerror="this.hidden=true;this.parentElement.classList.add(&quot;v923-photo-error&quot;)">':'';
+    ' loading="lazy" decoding="async" onload="this.parentElement.classList.add(&quot;v923-photo-loaded&quot;)" onerror="this.hidden=true;this.parentElement.classList.add(&quot;v923-photo-error&quot;);this.parentElement.querySelector(&quot;.v923-google-photo-empty span&quot;).textContent=&quot;No hay imagen disponible aquí. Abre Google Maps para comprobarla.&quot;">':'';
   const button=large?'<a class="v923-google-open" href="'+link+'" target="_blank" rel="noopener noreferrer"'+
     ' aria-label="Abrir Google Street View de '+name+'">'+
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.5 7-13a7 7 0 0 0-14 0c0 6.5 7 13 7 13Z"/><circle cx="12" cy="9" r="2.6"/></svg>'+
-    '<span>'+(hasCoords?'Abrir Street View':'Ver en Maps')+'</span></a>':'';
+    '<span>'+(hasCoords?'Abrir Google Maps':'Ver en Maps')+'</span></a>':'';
   return '<span class="v60-field-preview v921-map-preview v923-google-preview'+
     (photoSrc?' v923-has-photo':' v923-no-photo')+' '+v64Esc(cls)+'"'+
     ' title="'+v64Esc(info)+'">'+placeholder+image+
