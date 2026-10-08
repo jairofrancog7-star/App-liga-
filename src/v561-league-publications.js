@@ -166,40 +166,61 @@ async function mountQuiniela(root){
      '<section class="v960-q-block"><h3>Máximos goleadores</h3>'+(scorers?'<div class="v960-q-scorer-head"><span>#</span><span>Jugador / Equipo</span><span>Goles</span></div>'+scorers:'<p>No hay goles individuales publicados para esta temporada.</p>')+'</section>'+
      '<section class="v960-q-block"><h3>Resultados con marcador completo</h3>'+(recent||'<p>Sin resultados completos publicados.</p>')+'</section></section>';
  }else if(view==='history'){
-  // Pantalla local independiente: copiar sólo marcadores registrados en la fuente oficial.
-  const finished=(c.matches||[]).filter(m=>m.complete)
+  // Histórico integrado con diseño azul; los resultados se obtienen del corte oficial.
+  // Los pronósticos de AdminFut son privados: sólo se muestran los guardados en este dispositivo.
+  const completed=(c.matches||[]).filter(m=>m.complete)
     .sort((a,b)=>(b.iso||'').localeCompare(a.iso||'')||String(b.time||'').localeCompare(String(a.time||''))||Number(b.round)-Number(a.round));
-  const completedRounds=[...new Set(finished.map(m=>String(m.round||'—')))].sort((a,b)=>Number(b)-Number(a));
-  const savedRound=localStorage.getItem('v965-q-history-round:'+catId)||'all';
-  const chosenRound=savedRound==='all'||completedRounds.includes(savedRound)?savedRound:'all';
-  const matchesShown=chosenRound==='all'?finished:finished.filter(m=>String(m.round||'—')===chosenRound);
-  const groups=new Map();
-  for(const m of matchesShown){const r=String(m.round||'—');if(!groups.has(r))groups.set(r,[]);groups.get(r).push(m)}
-  const teamMarkup=name=>{const src=logo(name);return '<div class="v965-history-team">'+
-    (src?'<img src="'+esc(src)+'" alt="" loading="lazy" decoding="async">':'<span class="v965-history-fallback">'+esc(String(name||'?').slice(0,2).toUpperCase())+'</span>')+
-    '<b>'+esc(name)+'</b></div>'};
-  const resultCard=m=>'<article class="v965-history-match">'+
-    '<div class="v965-history-match-head"><span>Jornada '+esc(m.round||'—')+'</span><time>'+esc(m.date||'Fecha no publicada')+'</time></div>'+
-    '<div class="v965-history-match-body">'+teamMarkup(m.home)+
-      '<div class="v965-history-score"><strong>'+esc(m.homeScore)+' : '+esc(m.awayScore)+'</strong><span>'+(m.decision?'Resolución administrativa':'Final')+'</span></div>'+
-      teamMarkup(m.away)+'</div>'+
-    '<div class="v965-history-venue"><span aria-hidden="true">⌖</span>'+esc(m.venue||'Campo no especificado')+'</div></article>';
-  const options='<option value="all">Todas las jornadas</option>'+completedRounds.map(r=>
-    '<option value="'+esc(r)+'" '+(r===chosenRound?'selected':'')+'>Jornada '+esc(r)+'</option>').join('');
-  const items=groups.size?[...groups.entries()].map(([r,rows])=>
-    '<section class="v965-history-round"><header><span class="v965-history-round-title"><i aria-hidden="true">▦</i> Jornada '+esc(r)+'</span><span class="v965-history-round-count">'+rows.length+' partido'+(rows.length===1?'':'s')+'</span></header>'+
-    '<div class="v965-history-list">'+rows.map(resultCard).join('')+'</div></section>').join(''):
-    '<div class="v965-history-empty">Todavía no hay resultados completos publicados en esta selección.</div>';
+  const allRounds=[...new Set(completed.map(m=>String(m.round||'—')))]
+    .sort((a,b)=>Number(b)-Number(a));
+  const storedRound=localStorage.getItem('v965-q-history-round:'+catId)||'all';
+  const chosenRound=storedRound==='all'||allRounds.includes(storedRound)?storedRound:'all';
+  const onlyMine=localStorage.getItem('v967-q-history-mine:'+catId)==='1';
+  const mine=completed.filter(m=>predictionFor(p,m));
+  const exactMine=mine.filter(m=>predictionPoints(predictionFor(p,m),m)===2).length;
+  const minePoints=mine.reduce((sum,m)=>sum+(predictionPoints(predictionFor(p,m),m)||0),0);
+  const shown=completed.filter(m=>(chosenRound==='all'||String(m.round||'—')===chosenRound)&&(!onlyMine||!!predictionFor(p,m)));
+  const grouped=new Map();
+  for(const m of shown){const key=String(m.round||'—');if(!grouped.has(key))grouped.set(key,[]);grouped.get(key).push(m)}
+  const historyTeam=name=>{
+    const src=logo(name);
+    return '<div class="v967-history-team">'+(src?'<img src="'+esc(src)+'" alt="" loading="lazy" decoding="async">':'<span class="v967-history-fallback">'+esc(String(name||'?').slice(0,2).toUpperCase())+'</span>')+
+      '<b>'+esc(name)+'</b></div>';
+  };
+  const historyCard=m=>{
+    const saved=predictionFor(p,m);
+    const points=saved?predictionPoints(saved,m):null;
+    const mineStatus=saved?
+      '<div class="v967-history-pick yes"><span class="v967-pick-icon" aria-hidden="true">✓</span><span>Tu pronóstico <strong>'+esc(saved.home)+' : '+esc(saved.away)+'</strong></span><b class="v967-pick-pts">'+(points===null?'Pendiente':points+' '+(points===1?'punto':'puntos'))+'</b></div>':
+      '<div class="v967-history-pick no"><span class="v967-pick-icon" aria-hidden="true">×</span><span>No pronosticaste en este dispositivo</span></div>';
+    return '<article class="v967-history-match">'+
+      '<div class="v967-match-body">'+historyTeam(m.home)+
+      '<div class="v967-history-center"><strong class="v967-match-score">'+esc(m.homeScore)+' : '+esc(m.awayScore)+'</strong><span class="v967-final-label">'+(m.decision?'Decisión oficial':'Finalizado')+'</span></div>'+
+      historyTeam(m.away)+'</div>'+
+      mineStatus+
+      '<div class="v967-match-meta"><span>'+qIcon('calendar')+' '+esc(m.date||'Fecha no publicada')+'</span><span>'+qIcon('pin')+' '+esc(m.venue||'Sede pendiente')+'</span></div>'+
+    '</article>';
+  };
+  const options='<option value="all">Todas las jornadas</option>'+allRounds.map(r=>
+     '<option value="'+esc(r)+'" '+(r===chosenRound?'selected':'')+'>Jornada '+esc(r)+'</option>').join('');
+  const cards=grouped.size?[...grouped.entries()].map(([r,rows])=>
+     '<section class="v967-history-round"><header><span>'+qIcon('calendar')+' Jornada '+esc(r)+'</span><small>'+rows.length+' partido'+(rows.length===1?'':'s')+'</small></header>'+
+       '<div class="v967-history-games">'+rows.map(historyCard).join('')+'</div></section>').join(''):
+     '<div class="v967-history-empty"><span class="v967-empty-icon">'+qIcon('history')+'</span><b>'+
+      (onlyMine?'Todavía no tienes pronósticos guardados en esta selección':'Todavía no hay resultados completos publicados')+'</b><p>'+
+      (onlyMine?'Desactiva el filtro para ver todos los marcadores registrados.':'Puedes revisar la próxima jornada y pronosticar antes de que comience.')+'</p>'+
+      '<button type="button" data-q-jump-play>'+qIcon('play')+' Ir a Pronosticar</button></div>';
   const stamp=String(db.captured_at_utc||'').replace('T',' ').replace('Z','').slice(0,16);
-  body='<section class="v965-history-screen" aria-label="Histórico de resultados de Liga Juventino Rosas">'+
-    '<header class="v965-history-hero"><div class="v965-history-eyebrow">'+qIcon('history')+' ARCHIVO DE RESULTADOS</div>'+
-    '<h2>Ver histórico</h2><p>'+esc(c.name)+' · Resultados publicados</p>'+
-    '<div class="v965-history-metrics"><span><b>'+finished.length+'</b><small>Resultados</small></span>'+
-    '<span><b>'+completedRounds.length+'</b><small>Jornadas con resultados</small></span></div></header>'+
-    '<div class="v965-history-tools"><label for="v965-q-round">Ver jornada</label><select id="v965-q-round" data-q-history-round>'+options+'</select>'+
-    '<button type="button" data-q-refresh aria-label="Actualizar resultados">'+qIcon('history')+'<span>Actualizar</span></button></div>'+
-    '<p class="v965-history-source">Fuente: datos publicados por la Liga · Corte '+esc(stamp||'no disponible')+' UTC. Sólo se muestran marcadores completos.</p>'+
-    items+'</section>';
+  body='<section class="v967-history-screen" aria-label="Histórico de quiniela en la app azul">'+
+    '<header class="v967-history-hero"><span class="v967-history-eyebrow">'+qIcon('history')+' HISTÓRICO · LIGA JUVENTINO</span>'+
+      '<h2>Mis jornadas y resultados</h2><p>'+esc(c.name)+' · Archivo de marcadores</p>'+
+      '<div class="v967-history-stats"><span><b>'+completed.length+'</b><small>Resultados oficiales</small></span><span><b>'+mine.length+'</b><small>Pronosticados aquí</small></span><span><b>'+minePoints+'</b><small>Mis puntos</small></span></div></header>'+
+    '<div class="v967-history-controls">'+
+      '<label for="v967-history-round">'+qIcon('calendar')+' Jornada</label><select id="v967-history-round" data-q-history-round>'+options+'</select>'+
+      '<button type="button" class="v967-history-mine '+(onlyMine?'active':'')+'" data-q-history-mine aria-pressed="'+(onlyMine?'true':'false')+'">'+qIcon('ranking')+' '+(onlyMine?'Mostrando mis pronósticos':'Ver solo mis pronósticos')+'</button>'+
+      '<div class="v967-history-actions"><button type="button" data-q-refresh>'+qIcon('history')+' Actualizar</button><button type="button" data-q-view-shortcut="play">'+qIcon('play')+' Pronosticar</button><button type="button" data-q-view-shortcut="ranking">'+qIcon('ranking')+' Mi ranking</button></div>'+
+    '</div>'+
+    '<p class="v967-history-source">Resultados publicados por la Liga · Corte: '+esc(stamp||'no disponible')+' UTC. Los pronósticos corresponden únicamente a este dispositivo.</p>'+
+    cards+'</section>';
  }else{
    body='<div class="v618-q-round"><span>'+esc(c.name)+'</span><label>Jornada <select data-q-round>'+rounds.map(r=>'<option value="'+esc(r)+'" '+(r===round?'selected':'')+'>'+esc(r)+'</option>').join('')+'</select></label></div>'+
      '<h3 class="v618-q-section-title">En juego — pronostica ahora</h3>'+
@@ -222,6 +243,11 @@ async function mountQuiniela(root){
  root.querySelectorAll('[data-q-view]').forEach(btn=>btn.onclick=()=>{localStorage.setItem('v561-quiniela-view',btn.dataset.qView);mountQuiniela(root)});
  root.querySelectorAll('[data-q-cat-button]').forEach(btn=>btn.onclick=()=>{catId=btn.dataset.qCatButton;localStorage.setItem('v561-category',catId);mountQuiniela(root)});
  const hiddenCat=$('[data-q-cat]',root);if(hiddenCat)hiddenCat.onchange=e=>{catId=e.target.value;localStorage.setItem('v561-category',catId);mountQuiniela(root)};
+ const mineBtn=$('[data-q-history-mine]',root);
+ if(mineBtn)mineBtn.onclick=()=>{const k='v967-q-history-mine:'+catId;localStorage.setItem(k,localStorage.getItem(k)==='1'?'0':'1');mountQuiniela(root)};
+ root.querySelectorAll('[data-q-view-shortcut]').forEach(btn=>btn.onclick=()=>{localStorage.setItem('v561-quiniela-view',btn.dataset.qViewShortcut);mountQuiniela(root)});
+ const jumpPlay=$('[data-q-jump-play]',root);
+ if(jumpPlay)jumpPlay.onclick=()=>{localStorage.setItem('v561-quiniela-view','play');mountQuiniela(root)};
  const historySelect=$('[data-q-history-round]',root);
  if(historySelect)historySelect.onchange=e=>{localStorage.setItem('v965-q-history-round:'+catId,e.target.value);mountQuiniela(root)};
  const roundSelect=$('[data-q-round]',root);if(roundSelect)roundSelect.onchange=e=>{localStorage.setItem('v561-quiniela-round:'+catId,e.target.value);localStorage.setItem('v964-q-round-manual:'+catId,'1');mountQuiniela(root)};
