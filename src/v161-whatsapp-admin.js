@@ -211,17 +211,24 @@
     if(!panel)return;
     const box=panel.querySelector('[data-v161-file-list]');
     if(box){
-      if(!selectedFiles.length)box.innerHTML='<span>Ningún archivo seleccionado</span>';
-      else box.innerHTML=selectedFiles.map(f=>
-        '<div><span><b>'+esc(f.name)+'</b><em>'+esc((f.type||'archivo').replace('image/','').toUpperCase())+'</em></span><small>'+Math.max(1,Math.round(f.size/1024))+' KB</small></div>'
-      ).join('');
+      const signature=selectedFiles.map(f=>[f.name,f.size,f.type,f.lastModified].join('|')).join('||');
+      if(box.dataset.v161Signature!==signature){
+        box.dataset.v161Signature=signature;
+        if(!selectedFiles.length)box.innerHTML='<span>Ningún archivo seleccionado</span>';
+        else box.innerHTML=selectedFiles.map(f=>
+          '<div><span><b>'+esc(f.name)+'</b><em>'+esc((f.type||'archivo').replace('image/','').toUpperCase())+'</em></span><small>'+Math.max(1,Math.round(f.size/1024))+' KB</small></div>'
+        ).join('');
+      }
     }
     const last=panel.querySelector('[data-v161-last-file]');
     if(last){
-      if(capturedName){
-        last.hidden=false;
-        last.innerHTML='<span>Último generado en la app</span><b>'+esc(capturedName)+'</b>';
-      }else last.hidden=true;
+      if(last.dataset.v161LastName!==capturedName){
+        last.dataset.v161LastName=capturedName;
+        if(capturedName){
+          last.hidden=false;
+          last.innerHTML='<span>Último generado en la app</span><b>'+esc(capturedName)+'</b>';
+        }else last.hidden=true;
+      }
     }
     updatePreview(panel);
   }
