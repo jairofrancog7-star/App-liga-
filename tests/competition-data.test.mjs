@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {normalizeCompetition,statistics,number} from '../src/competition-data.js';
+import {normalizeCompetition,statistics,number,leaguePoints,DEFAULT_LOSS_PENALTY,defaultDefeatedTeam} from '../src/competition-data.js';
 const db=JSON.parse(fs.readFileSync(new URL('../public/data/official-live.json',import.meta.url)));
 const categories=normalizeCompetition(db);
 test('all published categories and standings values survive normalization',()=>{
@@ -36,4 +36,50 @@ test('J7/J8 rol: las victorias administrativas no inventan marcadores',()=>{
  assert.equal(j8.find(m=>m.home==='TOROS DE CUENDA').time,'17:00');
  const friendly=categories.find(c=>c.id==='2').matches.find(m=>m.round==='AMISTOSO');
  assert.ok(friendly);assert.equal(friendly.complete,false);assert.equal(friendly.iso,'');
+});
+
+test('regla de toda la liga: derrota normal 0; derrota por default -3, nunca se limita a cero',()=>{
+ assert.equal(DEFAULT_LOSS_PENALTY,-3);
+ assert.equal(leaguePoints(),0);
+ assert.equal(leaguePoints({defaultLosses:1}),-3);
+ assert.equal(leaguePoints({defaultLosses:2}),-6);
+ assert.equal(leaguePoints({wins:1,draws:1,defaultLosses:1}),1);
+ assert.equal(leaguePoints({wins:2,draws:0,defaultLosses:2}),0);
+ assert.equal(leaguePoints({defaultLosses:-1}),null);
+});
+test('default: identifica el equipo sancionado sin asignar goles inventados',()=>{
+ const first=categories.find(c=>c.id==='3').matches.find(m=>m.home==='GALACTICOS'&&m.away==='LINCES'&&m.decision);
+ const veterans=categories.find(c=>c.id==='1').matches.find(m=>m.home==='BOAVISTA'&&m.away==='BOCA JRS'&&m.decision);
+ assert.ok(first);assert.ok(veterans);
+ assert.equal(first.defaultLoser,'GALACTICOS');
+ assert.equal(veterans.defaultLoser,'BOCA JRS');
+ for(const m of [first,veterans]){
+  assert.equal(m.defaultPointAdjustment,-3);
+  assert.equal(m.complete,false);
+  assert.equal(m.homeScore,null);
+  assert.equal(m.awayScore,null);
+ }
+ assert.equal(defaultDefeatedTeam({type:'administrative',winner:'Equipo ajeno'},'A','B'),null);
+ assert.equal(defaultDefeatedTeam(null,'A','B'),null);
+});
+test('resultados de la captura se conservan sin duplicación ni inventar un cero',()=>{
+ const veteran=categories.find(c=>c.id==='1');
+ const pick=(home,away)=>veteran.matches.filter(m=>m.home===home&&m.away===away&&Number(m.round)<8);
+ const dynamo=pick('DYNAMO','LA ESPERANZA')[0];
+ const boavista=pick('BOAVISTA','LA ESPERANZA')[0];
+ const manchester=pick('MANCHESTER','LA ESPERANZA')[0];
+ assert.deepEqual([dynamo.homeScore,dynamo.awayScore],[1,2]);
+ assert.deepEqual([boavista.homeScore,boavista.awayScore],[2,1]);
+ assert.equal(manchester.homeScore,3);
+ assert.equal(manchester.awayScore,null);
+ assert.equal(manchester.complete,false);
+ assert.equal(new Set([dynamo.id,boavista.id,manchester.id]).size,3);
+});
+test('puntos oficiales: negativos conservados en todas las categorías, nunca descontados dos veces',()=>{
+ for(const c of categories){
+  const source=db.categories[c.id].standings.flatMap(b=>b.rows);
+  c.standings.forEach((row,i)=>assert.equal(row.pts,number(source[i][9])));
+ }
+ const boca=categories.find(c=>c.id==='1').standings.find(r=>r.name==='BOCA JRS');
+ assert.ok(boca);assert.equal(boca.pts,-21);
 });
