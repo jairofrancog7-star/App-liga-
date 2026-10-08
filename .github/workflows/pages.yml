@@ -17,9 +17,9 @@ permissions:
 
 concurrency:
   group: github-pages-v8-fast
-  # Publicar siempre la versión más reciente. Con muchos commits seguidos,
-  # cancelar el build anterior evita que Pages se quede mostrando cambios viejos.
-  cancel-in-progress: true
+  # Mantener el despliegue actual hasta que termine. Si llegan otros commits,
+  # GitHub encola la version mas reciente sin cancelar continuamente Pages.
+  cancel-in-progress: false
 
 jobs:
   build:
