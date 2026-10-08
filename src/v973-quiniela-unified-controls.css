@@ -224,3 +224,60 @@ html body[data-app-route="quiniela"] .v619-quiniela-modern :is(.v618-q-save-one,
   padding:8px 4px!important;font-size:10px!important;
  }
 }
+
+/* V974 - Extras de la Quiniela local, únicamente botones nuevos y estadísticas. */
+html body[data-app-route="quiniela"] .v974-clear-draft {
+  box-sizing:border-box!important;display:flex!important;align-items:center!important;
+  justify-content:center!important;gap:7px!important;width:100%!important;
+  min-height:39px!important;margin-top:9px!important;padding:8px 10px!important;
+  border:1px solid rgba(140,190,251,.48)!important;border-radius:11px!important;
+  background:linear-gradient(130deg,#183c8d,#102b71)!important;color:#e5f4ff!important;
+  font:785 11px/1.25 Inter,Roboto,Arial,sans-serif!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.06)!important;cursor:pointer!important;
+}
+html body[data-app-route="quiniela"] .v974-clear-draft::before{
+  content:""!important;flex:0 0 16px!important;display:block!important;
+  width:16px!important;height:16px!important;background:currentColor!important;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 4 20 20M8 4h9l3 3v13H4V8M9 12h6M12 9v6' stroke='black' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat!important;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 4 20 20M8 4h9l3 3v13H4V8M9 12h6M12 9v6' stroke='black' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat!important;
+}
+html body[data-app-route="quiniela"] .v974-ranking-metrics {
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:7px!important;min-width:0!important;margin:10px 0 12px!important;
+}
+html body[data-app-route="quiniela"] .v974-ranking-metrics>div{
+  display:flex!important;flex-direction:column!important;align-items:center!important;
+  justify-content:center!important;gap:5px!important;box-sizing:border-box!important;
+  min-width:0!important;min-height:65px!important;padding:10px 4px!important;
+  border-radius:12px!important;border:1px solid rgba(105,187,255,.40)!important;
+  background:linear-gradient(145deg,#143a90,#0d216e)!important;
+  text-align:center!important;
+}
+html body[data-app-route="quiniela"] .v974-ranking-metrics strong {
+  color:#5ff0f7!important;font:850 clamp(18px,5vw,25px)/1.1 Inter,Roboto,Arial,sans-serif!important;
+  font-variant-numeric:tabular-nums!important;
+}
+html body[data-app-route="quiniela"] .v974-ranking-metrics span {
+  color:#d1e3f7!important;font:680 clamp(9px,2.35vw,11px)/1.25 Inter,Roboto,Arial,sans-serif!important;
+  overflow-wrap:break-word!important;
+}
+html body[data-app-route="quiniela"] .v974-share-stats{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  width:100%!important;min-height:44px!important;box-sizing:border-box!important;
+  margin-top:12px!important;padding:10px!important;border-radius:12px!important;
+  border:1px solid #95f8ff!important;background:linear-gradient(120deg,#43d7e9,#8af4fb)!important;
+  color:#07265f!important;font:830 12px/1.2 Inter,Roboto,Arial,sans-serif!important;
+  cursor:pointer!important;touch-action:manipulation!important;
+}
+html body[data-app-route="quiniela"] .v974-share-stats::before{
+  content:"↗"!important;display:block!important;color:inherit!important;
+  font:850 19px/1 Arial,sans-serif!important;
+}
+html body[data-app-route="quiniela"] .v974-share-stats:focus-visible,
+html body[data-app-route="quiniela"] .v974-clear-draft:focus-visible{
+  outline:2px solid #9afbff!important;outline-offset:3px!important;
+}
+@media(max-width:360px){
+  html body[data-app-route="quiniela"] .v974-ranking-metrics{gap:5px!important;}
+  html body[data-app-route="quiniela"] .v974-ranking-metrics>div{padding:9px 3px!important;}
+}
