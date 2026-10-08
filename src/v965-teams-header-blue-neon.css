@@ -8,7 +8,7 @@
     /* Las líneas son parte del fondo (no una capa sobre las letras). */
     background-image:
       url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22420%22%20height%3D%22300%22%20viewBox%3D%220%200%20420%20300%22%20fill%3D%22none%22%3E%0A%3Cdefs%3E%3ClinearGradient%20id%3D%22line%22%20x1%3D%2230%22%20y1%3D%226%22%20x2%3D%22315%22%20y2%3D%22251%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%2382A5FF%22%20stop-opacity%3D%22.70%22%2F%3E%3Cstop%20offset%3D%22.55%22%20stop-color%3D%22%23326EFF%22%20stop-opacity%3D%22.44%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%231642FF%22%20stop-opacity%3D%22.08%22%2F%3E%3C%2FlinearGradient%3E%3Cfilter%20id%3D%22soft%22%20x%3D%22-20%25%22%20y%3D%22-60%25%22%20width%3D%22140%25%22%20height%3D%22240%25%22%3E%3CfeGaussianBlur%20stdDeviation%3D%223.4%22%2F%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%0A%3Cg%20stroke%3D%22url(%23line)%22%20stroke-width%3D%225%22%20filter%3D%22url(%23soft)%22%20opacity%3D%22.5%22%3E%3Cpath%20d%3D%22M-34%2091C42-43%20113-36%20157%2013S285%20111%20363%2014S477-74%20499-38%22%2F%3E%3Cpath%20d%3D%22M-61%20204C24%2092%2089%2092%20166%20144S302%20211%20437%2086%22%2F%3E%3C%2Fg%3E%0A%3Cg%20stroke%3D%22url(%23line)%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20opacity%3D%22.82%22%3E%3Cpath%20d%3D%22M-34%2091C42-43%20113-36%20157%2013S285%20111%20363%2014S477-74%20499-38%22%2F%3E%3Cpath%20d%3D%22M-61%20204C24%2092%2089%2092%20166%20144S302%20211%20437%2086%22%2F%3E%3Cpath%20d%3D%22M-75%20244C27%20143%20104%20143%20169%20174S316%20244%20465%20133%22%2F%3E%3C%2Fg%3E%0A%3Cg%20stroke%3D%22%233771FE%22%20stroke-opacity%3D%22.20%22%20stroke-width%3D%221%22%3E%3Cpath%20d%3D%22M-4%20265C22%20220%2033%20165%2013%20120%22%2F%3E%3Cpath%20d%3D%22M371-7C340%2066%20340%20127%20412%20169%22%2F%3E%3C%2Fg%3E%0A%3C%2Fsvg%3E"),
-      radial-gradient(ellipse 95% 64% at 86% 100%, rgba(70,116,255,.24) 0%, transparent 78%),
+      radial-gradient(ellipse 105% 55% at 84% 0%, rgba(70,116,255,.20) 0%, transparent 60%),
       linear-gradient(180deg,
         #07065f 0%,
         #0b127a 20%,
@@ -33,7 +33,7 @@
   html body.ljr-v777[data-mobile-layout="v775"].v27-teams-active #app #screen .v27-teams-page > .v27-teams-head.ljr-scroll-header {
     background:
       url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22420%22%20height%3D%22300%22%20viewBox%3D%220%200%20420%20300%22%20fill%3D%22none%22%3E%0A%3Cdefs%3E%3ClinearGradient%20id%3D%22line%22%20x1%3D%2230%22%20y1%3D%226%22%20x2%3D%22315%22%20y2%3D%22251%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%2382A5FF%22%20stop-opacity%3D%22.70%22%2F%3E%3Cstop%20offset%3D%22.55%22%20stop-color%3D%22%23326EFF%22%20stop-opacity%3D%22.44%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%231642FF%22%20stop-opacity%3D%22.08%22%2F%3E%3C%2FlinearGradient%3E%3Cfilter%20id%3D%22soft%22%20x%3D%22-20%25%22%20y%3D%22-60%25%22%20width%3D%22140%25%22%20height%3D%22240%25%22%3E%3CfeGaussianBlur%20stdDeviation%3D%223.4%22%2F%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%0A%3Cg%20stroke%3D%22url(%23line)%22%20stroke-width%3D%225%22%20filter%3D%22url(%23soft)%22%20opacity%3D%22.5%22%3E%3Cpath%20d%3D%22M-34%2091C42-43%20113-36%20157%2013S285%20111%20363%2014S477-74%20499-38%22%2F%3E%3Cpath%20d%3D%22M-61%20204C24%2092%2089%2092%20166%20144S302%20211%20437%2086%22%2F%3E%3C%2Fg%3E%0A%3Cg%20stroke%3D%22url(%23line)%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20opacity%3D%22.82%22%3E%3Cpath%20d%3D%22M-34%2091C42-43%20113-36%20157%2013S285%20111%20363%2014S477-74%20499-38%22%2F%3E%3Cpath%20d%3D%22M-61%20204C24%2092%2089%2092%20166%20144S302%20211%20437%2086%22%2F%3E%3Cpath%20d%3D%22M-75%20244C27%20143%20104%20143%20169%20174S316%20244%20465%20133%22%2F%3E%3C%2Fg%3E%0A%3Cg%20stroke%3D%22%233771FE%22%20stroke-opacity%3D%22.20%22%20stroke-width%3D%221%22%3E%3Cpath%20d%3D%22M-4%20265C22%20220%2033%20165%2013%20120%22%2F%3E%3Cpath%20d%3D%22M371-7C340%2066%20340%20127%20412%20169%22%2F%3E%3C%2Fg%3E%0A%3C%2Fsvg%3E") center top / 100% 100% no-repeat,
-      radial-gradient(ellipse 100% 65% at 82% 100%,rgba(65,115,255,.24),transparent 76%) center top / 100% 100% no-repeat,
+      radial-gradient(ellipse 105% 55% at 82% 0%,rgba(65,115,255,.20),transparent 60%) center top / 100% 100% no-repeat,
       linear-gradient(180deg,#07065f 0%,#0b127a 20%,#12249a 43%,#192fac 65%,#1b35b5 83%,#1d3bb8 100%) center top / 100% 100% no-repeat !important;
     background-color:#1d3bb8!important;
     border-bottom:0!important;
@@ -41,17 +41,29 @@
   }
 }
 
-/* V969 — Arreglo definitivo comprobado en el navegador móvil.
-   El hueco visible (26px) entre la cabecera fija y el listado NO es parte
-   del primer bloque .v27-section. Es el fondo del #screen fijo de V768.
-   Se iguala su fondo al azul de llegada del degradado de la cabecera.
-   El contenido y el texto "Siguiendo" quedan intactos.
-   Se retira el antiguo ::before de V968 porque el overflow:clip de la
-   página lo recortaba y nunca podía pintar fuera de su contenedor. */
-@media (max-width:1023px) {
+/* V970 — Degradado continuo para toda la unión de Equipos.
+   El color final de la cabecera fija es exactamente #1d3bb8; el área
+   de scroll inicia en #1d3bb8 y se oscurece SUAVEMENTE, sin franjas.
+   La página original ya no pinta otro gradiente encima de ese fondo.
+   Su dibujo de líneas (::before) sigue intacto y no hay capas sobre texto.
+   Sólo #/teams móvil; ninguna otra vista cambia. */
+@media (max-width:1023px){
   html body[data-app-route="teams"].v768-scroll-root #app #screen,
-  html body.v27-teams-active.v768-scroll-root #app #screen {
-    background-color:#1d3bb8!important;
+  html body.v27-teams-active.v768-scroll-root #app #screen{
+    background:linear-gradient(180deg,
+      #1d3bb8 0px,
+      #1c39b6 46px,
+      #1b37b3 110px,
+      #1933ad 210px,
+      #172da5 330px,
+      #121d8d 570px,
+      #0a0a60 900px)!important;
+    background-color:#0a0a60!important;
+    background-repeat:no-repeat!important;
+  }
+  html body[data-app-route="teams"] #app #screen .v27-teams-page,
+  html body.v27-teams-active #app #screen .v27-teams-page{
+    background:transparent!important;
     background-image:none!important;
   }
 }
