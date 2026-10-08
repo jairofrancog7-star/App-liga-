@@ -277,3 +277,63 @@
     height:17px!important;
   }
 }
+
+
+/* V945 · logos reales de categoría en los botones de goleadores */
+@media(max-width:1023px){
+  html body[data-app-route="scorers"] #app #screen .v945-cat-logo{
+    position:static!important;
+    display:grid!important;
+    place-items:center!important;
+    flex:0 0 30px!important;
+    width:30px!important;
+    height:30px!important;
+    min-width:30px!important;
+    min-height:30px!important;
+    max-width:30px!important;
+    max-height:30px!important;
+    margin:0!important;
+    padding:3px!important;
+    overflow:hidden!important;
+    border:1px solid rgba(255,255,255,.10)!important;
+    border-radius:9px!important;
+    background:rgba(255,255,255,.055)!important;
+    box-sizing:border-box!important;
+  }
+  html body[data-app-route="scorers"] #app #screen .v945-cat-logo img{
+    display:block!important;
+    width:100%!important;
+    height:100%!important;
+    max-width:100%!important;
+    max-height:100%!important;
+    object-fit:contain!important;
+    object-position:center!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    filter:none!important;
+    transform:none!important;
+  }
+  html body[data-app-route="scorers"] #app #screen button.active .v945-cat-logo{
+    border-color:rgba(111,242,249,.45)!important;
+    background:rgba(255,255,255,.10)!important;
+    box-shadow:0 0 12px rgba(36,228,241,.14)!important;
+  }
+  html body[data-app-route="scorers"] #app #screen .v942-category-grid > button[data-v194-cat]{
+    gap:8px!important;
+  }
+}
+@media(max-width:375px){
+  html body[data-app-route="scorers"] #app #screen .v945-cat-logo{
+    flex-basis:27px!important;
+    width:27px!important;
+    height:27px!important;
+    min-width:27px!important;
+    min-height:27px!important;
+    max-width:27px!important;
+    max-height:27px!important;
+    padding:2px!important;
+  }
+}
