@@ -1,66 +1,86 @@
-/* V962 — EQUIPOS: un único degradado vertical, sin cortes.
-   Azul brillante en la parte superior -> #0a0a60, tono de la barra inferior.
-   El degradado está ANCLADO A LA PANTALLA: no se reinicia en tarjetas,
-   bloques añadidos o al deslizar. El header fijo pinta el mismo fondo.
-   No se modifican tamaños, textos, logos, buscador ni navegación. */
-@media (max-width:1023px) {
-  html body:is([data-app-route="teams"], .v27-teams-active) {
-    --v962-teams-bg: linear-gradient(
-      180deg,
-      #2450c8 0%,
-      #2149c1 19%,
-      #1b3bb3 37%,
-      #152c9e 56%,
-      #0f1b7f 77%,
-      #0a0a60 100%
-    );
+/* V963 — EQUIPOS: restaurar líneas originales tipo estadio neón.
+   Azul claro a azul marino vertical y continuo hasta la barra inferior.
+   Fondo separado del contenido: las curvas NO tapan letras, escudos ni controles.
+   Este archivo sólo afecta la ruta Equipos y no toca navegación ni scroll. */
+@media (max-width:1023px){
+  html body:is([data-app-route="teams"], .v27-teams-active){
+    --v963-teams-gradient:linear-gradient(180deg,
+      #2452cf 0%,
+      #214ac3 20%,
+      #1b3ab2 39%,
+      #152c9c 57%,
+      #101c81 75%,
+      #0c116d 89%,
+      #0a0a60 100%);
+    --v963-teams-lines:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22390%22%20height%3D%22960%22%20viewBox%3D%220%200%20390%20960%22%20fill%3D%22none%22%3E%0A%3Cg%20stroke%3D%22%2377A7FF%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20opacity%3D%22.29%22%3E%0A%3Cpath%20d%3D%22M-90%2038%20C-5%20-55%2090%20-27%20162%2046%20S318%20128%20451%20-12%22%2F%3E%0A%3Cpath%20d%3D%22M-104%2077%20C-18%2012%2082%2018%20146%2079%20S300%20149%20461%2029%22%2F%3E%0A%3Cpath%20d%3D%22M-147%20331%20C-60%20244%2012%20234%20100%20310%20S285%20457%20451%20335%22%2F%3E%0A%3Cpath%20d%3D%22M-135%20365%20C-49%20279%2031%20269%20117%20350%20S314%20468%20468%20365%22%2F%3E%0A%3Cpath%20d%3D%22M-105%20655%20C24%20537%20127%20631%20216%20656%20S364%20626%20450%20555%22%2F%3E%0A%3Cpath%20d%3D%22M-110%20696%20C30%20577%20112%20660%20227%20697%20S351%20669%20462%20607%22%2F%3E%0A%3Cpath%20d%3D%22M-91%20936%20C9%20825%20113%20830%20188%20901%20S363%201009%20444%20904%22%2F%3E%0A%3C%2Fg%3E%0A%3Cg%20stroke%3D%22%23305EFF%22%20stroke-width%3D%221.2%22%20stroke-linecap%3D%22round%22%20opacity%3D%22.34%22%3E%0A%3Cpath%20d%3D%22M-65%20185%20C19%20119%20106%20155%20190%20190%20S344%20217%20459%20117%22%2F%3E%0A%3Cpath%20d%3D%22M-81%20493%20C51%20434%20145%20479%20206%20523%20S354%20563%20445%20488%22%2F%3E%0A%3Cpath%20d%3D%22M-84%20832%20C27%20758%20122%20772%20194%20822%20S358%20916%20448%20793%22%2F%3E%0A%3C%2Fg%3E%3C%2Fsvg%3E");
+    --v963-screen-height:calc(100dvh - var(--v774-nav-h, var(--v34-nav-h, 69px)));
   }
 
-  /* El scroll y la cabecera deben compartir la MISMA imagen fija.
-     Así ni arriba de "Siguiendo" ni antes de los módulos hay franjas. */
+  /* Misma pintura en pantalla y cabecera fija; no se reinicia por bloques. */
   html body:is([data-app-route="teams"], .v27-teams-active),
   html body:is([data-app-route="teams"], .v27-teams-active) #app,
   html body:is([data-app-route="teams"], .v27-teams-active) .app-shell,
   html body:is([data-app-route="teams"], .v27-teams-active) #screen,
-  html body:is([data-app-route="teams"], .v27-teams-active) #screen .v27-teams-page > .v27-teams-head {
-    background-image:var(--v962-teams-bg)!important;
+  html body:is([data-app-route="teams"], .v27-teams-active) #screen .v27-teams-page > .v27-teams-head{
+    background-image:var(--v963-teams-lines),var(--v963-teams-gradient)!important;
     background-color:#0a0a60!important;
-    background-attachment:fixed!important;
-    background-position:center top!important;
-    background-size:100% calc(100dvh - var(--v774-nav-h, 69px))!important;
-    background-repeat:no-repeat!important;
+    background-position:center top,center top!important;
+    background-size:100% var(--v963-screen-height),100% var(--v963-screen-height)!important;
+    background-attachment:fixed,fixed!important;
+    background-repeat:no-repeat,no-repeat!important;
   }
 
-  /* Los contenedores se mantienen transparentes para mostrar un solo fondo.
-     No volver a pintar el azul plano #1938b5 de V961. */
+  /* Transparencia entre cabecera, Siguiendo, competidores y módulos inferiores. */
   html body:is([data-app-route="teams"], .v27-teams-active) #screen > .v27-teams-page,
   html body:is([data-app-route="teams"], .v27-teams-active) #screen .v27-teams-page > .v27-section,
   html body:is([data-app-route="teams"], .v27-teams-active) #screen .v27-teams-page > .v73-below-native,
   html body:is([data-app-route="teams"], .v27-teams-active) #screen .v27-teams-page > .v73-below-native .v73-motion-shade,
   html body:is([data-app-route="teams"], .v27-teams-active) #screen #v105-bottom[data-v105-route="teams"],
   html body:is([data-app-route="teams"], .v27-teams-active) #screen #v105-bottom[data-v105-route="teams"] .v105-motion,
-  html body:is([data-app-route="teams"], .v27-teams-active) #screen #v105-bottom[data-v105-route="teams"] .v105-motion::after {
+  html body:is([data-app-route="teams"], .v27-teams-active) #screen #v105-bottom[data-v105-route="teams"] .v105-motion::after{
     background:transparent!important;
     background-image:none!important;
     box-shadow:none!important;
   }
 
-  /* Las tarjetas conservan su distinción sin crear grandes bloques opacos. */
-  html body:is([data-app-route="teams"], .v27-teams-active) #screen #v105-bottom[data-v105-route="teams"] .v105-card {
-    background:rgba(9,18,108,.16)!important;
-    background-image:none!important;
+  /* Las líneas continúan a lo largo de toda la lista, también al desplazar.
+     Quedan debajo de los textos y no capturan los toques. */
+  html body:is([data-app-route="teams"], .v27-teams-active) #screen > .v27-teams-page{
+    isolation:isolate!important;
+  }
+  html body:is([data-app-route="teams"], .v27-teams-active) #screen > .v27-teams-page::after{
+    content:""!important;
+    position:absolute!important;
+    inset:0!important;
+    z-index:0!important;
+    pointer-events:none!important;
+    background-image:var(--v963-teams-lines)!important;
+    background-size:100% 960px!important;
+    background-position:center 0!important;
+    background-repeat:repeat-y!important;
+    opacity:.44!important;
   }
 
-  /* Conserva la zona del movimiento sin un panel oscuro intermedio. */
-  html body:is([data-app-route="teams"], .v27-teams-active) #screen .v27-teams-page > .v73-below-native .v73-motion-video {
+  /* El arte siempre debajo de las secciones, sin cambiar su geometría. */
+  html body:is([data-app-route="teams"], .v27-teams-active) #screen .v27-teams-page > .v27-section,
+  html body:is([data-app-route="teams"], .v27-teams-active) #screen .v27-teams-page > .v73-below-native{
+    position:relative!important;
+    z-index:1!important;
+  }
+
+  html body:is([data-app-route="teams"], .v27-teams-active) #screen #v105-bottom[data-v105-route="teams"] .v105-card{
+    background:rgba(10,18,108,.13)!important;
+    background-image:none!important;
+  }
+  html body:is([data-app-route="teams"], .v27-teams-active) #screen .v27-teams-page > .v73-below-native .v73-motion-video{
     opacity:0!important;
   }
 
-  html body:is([data-app-route="teams"], .v27-teams-active) #screen .v27-teams-page > .v27-teams-head {
+  html body:is([data-app-route="teams"], .v27-teams-active) #screen .v27-teams-page > .v27-teams-head{
     border-bottom:0!important;
     box-shadow:none!important;
   }
-  html body:is([data-app-route="teams"], .v27-teams-active) #screen .v27-teams-page > .v27-teams-head::after {
+  html body:is([data-app-route="teams"], .v27-teams-active) #screen .v27-teams-page > .v27-teams-head::after{
     content:none!important;
     display:none!important;
   }
