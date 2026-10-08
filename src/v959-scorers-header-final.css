@@ -301,3 +301,99 @@
     top:11px!important;
   }
 }
+
+
+/* V960 — quitar cuadro superpuesto y fijar altura de cabecera */
+@media(max-width:1023px){
+  /* La barra ya NO se expande ni cambia de color/tamaño al hacer scroll. */
+  html body[data-app-route="scorers"],
+  html body[data-app-route="scorers"].v959-compact{
+    --v959-head-h:72px!important;
+  }
+
+  html body[data-app-route="scorers"] #app > .topbar,
+  html body[data-app-route="scorers"] .app-shell > .topbar,
+  html body[data-app-route="scorers"].v959-compact #app > .topbar,
+  html body[data-app-route="scorers"].v959-compact .app-shell > .topbar{
+    height:72px!important;
+    min-height:72px!important;
+    max-height:72px!important;
+    background:linear-gradient(180deg,#263ff0 0%,#182dce 55%,#0d167f 100%)!important;
+    transition:none!important;
+    box-shadow:0 1px 0 rgba(255,255,255,.07)!important;
+  }
+
+  /* Este era el cuadro/capa de color que quedaba encima del texto. */
+  html body[data-app-route="scorers"] #app > .topbar::before,
+  html body[data-app-route="scorers"] .app-shell > .topbar::before{
+    content:none!important;
+    display:none!important;
+    opacity:0!important;
+    background:none!important;
+  }
+
+  html body[data-app-route="scorers"] .topbar > .v959-back,
+  html body[data-app-route="scorers"].v959-compact .topbar > .v959-back{
+    top:15px!important;
+    transition:none!important;
+  }
+
+  html body[data-app-route="scorers"] .topbar > .v959-profile,
+  html body[data-app-route="scorers"].v959-compact .topbar > .v959-profile{
+    top:16px!important;
+    transition:none!important;
+  }
+
+  html body[data-app-route="scorers"] .topbar > .v959-title,
+  html body[data-app-route="scorers"].v959-compact .topbar > .v959-title{
+    left:62px!important;
+    right:62px!important;
+    top:23px!important;
+    font-size:20px!important;
+    line-height:1.05!important;
+    letter-spacing:-.025em!important;
+    transition:none!important;
+  }
+
+  html body[data-app-route="scorers"] #screen,
+  html body.v768-scroll-root[data-app-route="scorers"] #screen,
+  html body[data-app-route="scorers"].v959-compact #screen{
+    top:72px!important;
+    transition:none!important;
+  }
+}
+
+@media(max-width:390px){
+  html body[data-app-route="scorers"],
+  html body[data-app-route="scorers"].v959-compact{
+    --v959-head-h:68px!important;
+  }
+  html body[data-app-route="scorers"] #app > .topbar,
+  html body[data-app-route="scorers"] .app-shell > .topbar,
+  html body[data-app-route="scorers"].v959-compact #app > .topbar,
+  html body[data-app-route="scorers"].v959-compact .app-shell > .topbar{
+    height:68px!important;
+    min-height:68px!important;
+    max-height:68px!important;
+  }
+  html body[data-app-route="scorers"] .topbar > .v959-back,
+  html body[data-app-route="scorers"].v959-compact .topbar > .v959-back{
+    top:13px!important;
+  }
+  html body[data-app-route="scorers"] .topbar > .v959-profile,
+  html body[data-app-route="scorers"].v959-compact .topbar > .v959-profile{
+    top:14px!important;
+  }
+  html body[data-app-route="scorers"] .topbar > .v959-title,
+  html body[data-app-route="scorers"].v959-compact .topbar > .v959-title{
+    top:21px!important;
+    left:58px!important;
+    right:58px!important;
+    font-size:18px!important;
+  }
+  html body[data-app-route="scorers"] #screen,
+  html body.v768-scroll-root[data-app-route="scorers"] #screen,
+  html body[data-app-route="scorers"].v959-compact #screen{
+    top:68px!important;
+  }
+}
