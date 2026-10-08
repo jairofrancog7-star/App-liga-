@@ -4,7 +4,7 @@
 (function(){
 'use strict';
 
-const BUILD='20261001-v493-official-all-categories';
+const BUILD='20261007-v908-rol-j7-j8';
 const LOCAL_DATA='./data/official-live.json?v='+BUILD;
 const REMOTE_DATA='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v='+BUILD;
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
@@ -103,6 +103,9 @@ function officialScoreCell(v){
   return x==='-'?'0':(/^\d+$/.test(x)?x:'—');
 }
 function isPlayedFixture(r){return hasPublishedScore(r)}
+// Un triunfo por decisión del rol no equivale a goles ni marcador definitivo.
+function fixtureDecision(r,id=categoryId){return cat(id)?.fixture_decisions?.[String(r?.[0]??'')]||null}
+function isDecidedFixture(r,id=categoryId){return isPlayedFixture(r)||!!fixtureDecision(r,id)}
 function categoryTeams(c){
   if(!c)return [];
   const out=[];
@@ -226,8 +229,8 @@ function officialFixtureEntries(id='3'){
 function officialHomeCalendarItems(){
   const now=mexicoWallClockStamp();
   const primary=officialFixtureEntries('3');
-  const results=primary.filter(x=>isPlayedFixture(x.r)&&x.start<=now).sort((a,b)=>b.start-a.start);
-  const upcoming=primary.filter(x=>!isPlayedFixture(x.r)&&x.start>=now-2*60*60*1000).sort((a,b)=>a.start-b.start);
+  const results=primary.filter(x=>isDecidedFixture(x.r,'3')&&x.start<=now).sort((a,b)=>b.start-a.start);
+  const upcoming=primary.filter(x=>!isDecidedFixture(x.r,'3')&&x.start>=now-2*60*60*1000).sort((a,b)=>a.start-b.start);
   const chosen=[];
   if(results.length)chosen.push(results[0]);
   upcoming.slice(0,Math.max(0,3-chosen.length)).forEach(x=>chosen.push(x));
@@ -241,9 +244,9 @@ function homeOfficialLogo(name,cls='v78-calendar-logo'){
 }
 function homeCalendarCard(x){
   const r=x.r,home=String(r[2]||'').trim(),away=String(r[6]||'').trim();
-  const d=fixtureDateParts(r[8]),played=isPlayedFixture(r);
-  const score=played?officialScoreCell(r[3])+'–'+officialScoreCell(r[5]):fixtureClock(r[8]);
-  const status=played?'RESULTADO OFICIAL':'HORARIO OFICIAL';
+  const d=fixtureDateParts(r[8]),decision=fixtureDecision(r,'3'),played=isDecidedFixture(r,'3');
+  const score=decision?decision.label:(played?officialScoreCell(r[3])+'–'+officialScoreCell(r[5]):fixtureClock(r[8]));
+  const status=decision?'DECISIÓN DEL ROL':(played?'RESULTADO OFICIAL':'HORARIO OFICIAL');
   const venue=String(r[7]||'Campo por confirmar').trim()||'Campo por confirmar';
   return '<article class="v78-calendar-card '+(played?'is-result':'is-upcoming')+'">'+
     '<div class="v78-calendar-date"><b>'+esc(d.day)+'</b><span>'+esc(d.month)+'</span></div>'+
@@ -600,24 +603,25 @@ function applyPlayerFilters(){
 }
 
 function fixtureCard(r){
-  const pending=!isPlayedFixture(r);
+  const decision=fixtureDecision(r),pending=!isDecidedFixture(r);
   const home=r[2]||'',away=r[6]||'',hs=r[3]??'',as=r[5]??'';
   const place=r[7]||'Campo por confirmar',when=r[8]||'Fecha por confirmar';
+  const friendly=/amistoso/i.test(String(r[1]||''));
   return '<article class="v62-match-card '+(pending?'pending':'played')+'">'+
-    '<div class="v62-match-head"><span>Jornada '+esc(r[1]||'')+'</span><b>'+esc(pending?'PENDIENTE':'PARTIDO')+'</b></div>'+
-    '<div class="v62-match-team"><button type="button" data-v62-team="'+esc(home)+'">'+teamLogoHtml(home)+'<span>'+esc(home)+'</span></button><strong>'+esc(hs)+'</strong></div>'+
-    '<div class="v62-match-team"><button type="button" data-v62-team="'+esc(away)+'">'+teamLogoHtml(away)+'<span>'+esc(away)+'</span></button><strong>'+esc(as)+'</strong></div>'+
-    '<div class="v62-match-meta"><span>'+esc(when)+'</span><span>'+esc(place)+'</span></div>'+
+    '<div class="v62-match-head"><span>'+esc(friendly?'Amistoso':'Jornada '+(r[1]||''))+'</span><b>'+esc(decision?decision.label:(pending?'PENDIENTE':'PARTIDO'))+'</b></div>'+
+    '<div class="v62-match-team"><button type="button" data-v62-team="'+esc(home)+'">'+teamLogoHtml(home)+'<span>'+esc(home)+'</span></button><strong>'+esc(decision?'—':hs)+'</strong></div>'+
+    '<div class="v62-match-team"><button type="button" data-v62-team="'+esc(away)+'">'+teamLogoHtml(away)+'<span>'+esc(away)+'</span></button><strong>'+esc(decision?'—':as)+'</strong></div>'+
+    '<div class="v62-match-meta"><span>'+esc(when)+'</span><span>'+esc(decision?'Resultado administrativo · sin marcador':place)+'</span></div>'+
   '</article>';
 }
 function fixturesView(){
   const b=block('fixtures');
   if(!b||!b.rows?.length)return empty('No hay jornadas publicadas para esta categoría.');
   const all=b.rows.slice();
-  const shown=fixtureFilter==='upcoming'?all.filter(r=>!isPlayedFixture(r)):fixtureFilter==='played'?all.filter(isPlayedFixture):all;
+  const shown=fixtureFilter==='upcoming'?all.filter(r=>!isDecidedFixture(r)):fixtureFilter==='played'?all.filter(isDecidedFixture):all;
   const groups={};
   shown.forEach(r=>(groups[r[1]||'?']||(groups[r[1]||'?']=[])).push(r));
-  const pending=all.filter(r=>!isPlayedFixture(r)).length;
+  const pending=all.filter(r=>!isDecidedFixture(r)&&!!parseDate(r[8])).length;
   return '<div class="v62-fixture-toolbar">'+
       '<div class="v62-fixture-filter">'+
         '<button type="button" class="'+(fixtureFilter==='all'?'active':'')+'" data-v62-fixture-filter="all">Todos</button>'+
@@ -627,7 +631,7 @@ function fixturesView(){
       '<div class="v62-fixture-actions"><button type="button" data-v62-calendar>Calendario</button><button type="button" data-v62-simulator>Simular jornada</button></div>'+
     '</div>'+
     '<div class="v62-kpis"><span><b>'+all.length+'</b><small>partidos publicados</small></span><span><b>'+pending+'</b><small>próximos con fecha</small></span></div>'+
-    (shown.length?Object.entries(groups).map(([j,rs])=>'<section class="v62-round"><h2>Jornada '+esc(j)+'</h2><div class="v62-match-grid">'+rs.map(fixtureCard).join('')+'</div></section>').join(''):empty('No hay partidos para este filtro.'));
+    (shown.length?Object.entries(groups).map(([j,rs])=>'<section class="v62-round"><h2>'+esc(/amistoso/i.test(j)?'Amistoso':'Jornada '+j)+'</h2><div class="v62-match-grid">'+rs.map(fixtureCard).join('')+'</div></section>').join(''):empty('No hay partidos para este filtro.'));
 }
 function teamsView(){
   const list=categoryTeams(cat());
