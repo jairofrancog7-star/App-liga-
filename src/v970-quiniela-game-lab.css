@@ -168,3 +168,7 @@ html body[data-app-route="quiniela"] .v970-insight-footer button:focus-visible{
 @media(prefers-reduced-motion:reduce) {
  html body[data-app-route="quiniela"] .v970-progress-track span {transition:none!important;}
 }
+
+/* Hidden es obligatorio incluso ante las reglas display!important de versiones anteriores. */
+html body[data-app-route="quiniela"] .v618-q-card[hidden]{display:none!important;}
+html body[data-app-route="quiniela"] .v970-insight-panel[hidden]{display:none!important;}
