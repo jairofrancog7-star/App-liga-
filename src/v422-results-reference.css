@@ -28,3 +28,17 @@
 .v422-match[data-v422-open]{cursor:pointer}.v422-venue{grid-area:venue;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;color:#7685ad;font-size:8px}.v422-stream{justify-self:center;max-width:100%;padding:3px 8px;border:0;border-radius:999px;background:rgba(23,40,112,.55);color:#8fa0d1;font:700 8px/1.2 Inter,Roboto,Arial,sans-serif}.v422-stream:active{transform:scale(.98)}.v422-standings{width:100%;min-height:42px;border:0;background:#0b145a;color:#27dce9;font-size:11px;font-weight:800}
 .v422-empty{min-height:120px;display:grid;place-items:center;padding:22px;border:1px solid rgba(91,121,210,.24);border-radius:16px;background:#09104f;color:#98a5c8;text-align:center;font-size:12px;line-height:1.45}
 @media(max-width:420px){#v422-results-reference{width:calc(100% - 18px);margin-top:20px}.v422-tabs{min-height:54px}.v422-tabs button{font-size:15px}.v422-sports button{flex-basis:70px;min-width:70px}.v422-match{grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr);padding-left:10px;padding-right:10px}.v422-team>span:not(.v422-logo){font-size:10px}.v422-logo{flex-basis:29px;width:29px;height:29px}.v422-score>b{font-size:18px}.v422-score>strong{font-size:15px}}
+/* V927: icono de cancha en sede, sin modificar alturas ni tarjetas. */
+#v422-results-reference .v422-venue{
+ display:flex;align-items:center;justify-content:center;gap:6px;
+ min-width:0;max-width:100%;
+}
+#v422-results-reference .v422-venue>span{
+ min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+#v422-results-reference .v422-field-icon{
+ display:block;width:14px;height:14px;min-width:14px;flex:none;
+ fill:none;stroke:currentColor;stroke-width:1.55;
+ stroke-linecap:round;stroke-linejoin:round;
+}
+#v422-results-reference .v422-standings{cursor:pointer}
