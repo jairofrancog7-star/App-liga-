@@ -1,36 +1,54 @@
-/* V960 — Equipos: eliminar la franja oscura que aparece ENTRE el buscador
-   y "Siguiendo" (referencia capturada en Google Drive 2026-10-08).
-   La franja no se arregla sólo pintando el header: el #screen original
-   conservaba #07065f debajo de sus márgenes. Ahora los tres fondos
-   coinciden, con el azul claro real de la página (#1938b5).
-   Sin cambios en alturas, márgenes, iconos, letras o scroll. */
-@media (max-width:1023px){
+/* V961 — Equipos: superficie azul uniforme (#1938b5) de arriba abajo.
+   Sólo la ruta #/teams. No modifica textos, tamaños, logos, botones,
+   navegación, scroll ni fichas de otras pantallas. */
+@media (max-width:1023px) {
+  html body[data-app-route="teams"],
+  html body[data-app-route="teams"] #app,
+  html body[data-app-route="teams"] .app-shell,
   html body[data-app-route="teams"] #screen,
-  html body.v27-teams-active #screen{
-    background:#1938b5!important;
-    background-color:#1938b5!important;
-  }
-  html body[data-app-route="teams"] #screen .v27-teams-page,
-  html body.v27-teams-active #screen .v27-teams-page{
-    background:linear-gradient(to bottom,
-      #1938b5 0px,
-      #1938b5 440px,
-      #122a97 760px,
-      #080765 1460px)!important;
-  }
+  html body[data-app-route="teams"] #screen > .v27-teams-page,
   html body[data-app-route="teams"] #screen .v27-teams-page > .v27-teams-head,
-  html body.v27-teams-active #screen .v27-teams-page > .v27-teams-head{
-    background:linear-gradient(to bottom,
-      #2144c2 0%,
-      #1e40be 35%,
-      #1b3cb9 66%,
-      #1938b5 100%)!important;
+  html body[data-app-route="teams"] #screen .v27-teams-page > .v27-section,
+  html body.v27-teams-active #screen,
+  html body.v27-teams-active #screen > .v27-teams-page,
+  html body.v27-teams-active #screen .v27-teams-page > .v27-teams-head {
+    background:#1938b5!important;
+    background-image:none!important;
     background-color:#1938b5!important;
+  }
+
+  /* Banner de movimiento: conservar botones y títulos, quitar el fondo
+     marino y las sombras que parecen una franja entre secciones. */
+  html body[data-app-route="teams"] #screen .v27-teams-page > .v73-below-native,
+  html body[data-app-route="teams"] #screen .v27-teams-page > .v73-below-native .v73-motion-shade {
+    background:#1938b5!important;
+    background-image:none!important;
+    box-shadow:none!important;
+  }
+  html body[data-app-route="teams"] #screen .v27-teams-page > .v73-below-native .v73-motion-video {
+    opacity:0!important;
+  }
+
+  /* Bloques añadidos debajo de Equipos: misma superficie azul,
+     manteniendo bordes, esquinas y separación de las tarjetas. */
+  html body[data-app-route="teams"] #screen #v105-bottom[data-v105-route="teams"],
+  html body[data-app-route="teams"] #screen #v105-bottom[data-v105-route="teams"] .v105-motion,
+  html body[data-app-route="teams"] #screen #v105-bottom[data-v105-route="teams"] .v105-motion::after,
+  html body[data-app-route="teams"] #screen #v105-bottom[data-v105-route="teams"] .v105-card {
+    background:#1938b5!important;
+    background-image:none!important;
+  }
+  html body[data-app-route="teams"] #screen #v105-bottom[data-v105-route="teams"] {
+    box-shadow:none!important;
+  }
+
+  /* No oscurecer "Siguiendo": fuera la capa antigua debajo del header. */
+  html body[data-app-route="teams"] #screen .v27-teams-page > .v27-teams-head {
     border-bottom:0!important;
     box-shadow:none!important;
   }
   html body[data-app-route="teams"] #screen .v27-teams-page > .v27-teams-head::after,
-  html body.v27-teams-active #screen .v27-teams-page > .v27-teams-head::after{
+  html body.v27-teams-active #screen .v27-teams-page > .v27-teams-head::after {
     content:none!important;
     display:none!important;
   }
