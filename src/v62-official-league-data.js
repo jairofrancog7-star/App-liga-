@@ -1,3 +1,4 @@
+import {defaultDefeatedTeam} from './competition-data.js';
 /* V62 — Datos oficiales públicos de Liga Juventino Rosas.
    Integra el snapshot de Liga_Futbol sin sustituir el diseño azul existente.
    Fuente deportiva pública: juventinorosasliga.com sincronizada en Liga_Futbol/data/official-live.json. */
@@ -655,6 +656,7 @@ function applyPlayerFilters(){
 
 function fixtureCard(r){
   const decision=fixtureDecision(r),pending=!isDecidedFixture(r);
+  const defaultLoser=decision?defaultDefeatedTeam(decision,r[2],r[6]):null;
   const home=r[2]||'',away=r[6]||'',hs=r[3]??'',as=r[5]??'';
   const place=r[7]||'Campo por confirmar',when=r[8]||'Fecha por confirmar';
   const friendly=/amistoso/i.test(String(r[1]||''));
@@ -662,7 +664,7 @@ function fixtureCard(r){
     '<div class="v62-match-head"><span>'+esc(friendly?'Amistoso':'Jornada '+(r[1]||''))+'</span><b>'+esc(decision?decision.label:(pending?'PENDIENTE':'PARTIDO'))+'</b></div>'+
     '<div class="v62-match-team"><button type="button" data-v62-team="'+esc(home)+'">'+teamLogoHtml(home)+'<span>'+esc(home)+'</span></button><strong>'+esc(decision?'—':hs)+'</strong></div>'+
     '<div class="v62-match-team"><button type="button" data-v62-team="'+esc(away)+'">'+teamLogoHtml(away)+'<span>'+esc(away)+'</span></button><strong>'+esc(decision?'—':as)+'</strong></div>'+
-    '<div class="v62-match-meta"><span>'+esc(when)+'</span><span>'+esc(decision?(decision.default===true?'Por DEFAULT · −3 puntos al perdedor · sin marcador confirmado':'Resultado administrativo · sin marcador confirmado'):place)+'</span></div>'+
+    '<div class="v62-match-meta"><span>'+esc(when)+'</span><span>'+esc(decision?(defaultLoser?'DEFAULT · −3 pts a '+defaultLoser+' · sin marcador confirmado':'Resultado administrativo · sin marcador confirmado'):place)+'</span></div>'+
   '</article>';
 }
 function fixturesView(){
