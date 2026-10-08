@@ -7,7 +7,11 @@ const qIcon=type=>({
  history:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v5l3 2"/><path d="M4.8 6.4A8 8 0 1 1 4 12"/><path d="M4 5v4h4"/></svg>',
  ranking:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19V11h4v8M10 19V6h4v13M15 19V9h4v10"/></svg>',
  trophy:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/><path d="M8 6H4v2a4 4 0 0 0 4 4M16 6h4v2a4 4 0 0 1-4 4M12 13v4M8 20h8M9 17h6"/></svg>',
- clock:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg>'
+ clock:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg>',
+ calendar:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 9h16"/></svg>',
+ pin:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s6-5.1 6-11a6 6 0 1 0-12 0c0 5.9 6 11 6 11Z"/><circle cx="12" cy="10" r="2"/></svg>',
+ save:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h12l2 2v14H5z"/><path d="M8 4v6h8V4M8 20v-6h8v6"/></svg>',
+ download:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M8 11l4 4 4-4M5 20h14"/></svg>'
 }[type]||'');
 const titles={standings:'Tabla de clasificación',scorers:'Tabla de goleo',calendar:'Calendario de jornada',results:'Resultados de jornada',sanctions:'Jugadores sancionados',notice:'Aviso de la liga',transfer:'Transferencia de jugador',cedula:'Cédula de partido',quiniela:'Mi quiniela'};
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -61,7 +65,13 @@ async function mountQuiniela(root){
  const c=category(catId),p=readPredictions();
  if(!c)return;
  const view=localStorage.getItem('v561-quiniela-view')||'play';
- const rounds=(c.rounds||[]).map(r=>String(r.id));
+ const rawRounds=[...(c.rounds||[]).map(r=>String(r.id)),...(c.matches||[]).map(m=>String(m.round||'')).filter(Boolean)];
+ const uniqueRounds=[...new Set(rawRounds)];
+ const numericRounds=uniqueRounds.map(Number).filter(Number.isFinite);
+ const maxRound=numericRounds.length?Math.max(...numericRounds):0;
+ const rounds=maxRound
+   ?Array.from({length:maxRound},(_,i)=>String(i+1))
+   :uniqueRounds.sort((a,b)=>String(a).localeCompare(String(b),undefined,{numeric:true}));
  const upcomingByRound=new Map();
  for(const m of c.matches||[]){
    if(!upcomingByRound.has(String(m.round)))upcomingByRound.set(String(m.round),[]);
@@ -108,7 +118,7 @@ async function mountQuiniela(root){
      '<div class="v618-q-venue">'+esc(m.venue||'Sede por confirmar')+'</div>'+
    '</article>';
  };
- const cats=order.filter(id=>db.categories[id]).map(id=>'<button type="button" class="v618-q-cat '+(catId===id?'active':'')+'" data-q-cat-button="'+id+'"><img src="'+esc(categoryLogos[id])+'" alt="" aria-hidden="true"><span>'+esc(labels[id])+'</span></button>').join('');
+ const cats=order.filter(id=>db.categories[id]).map(id=>'<button type="button" class="v618-q-cat '+(catId===id?'active':'')+'" data-q-cat-button="'+id+'"><span class="v958-q-cat-logo"><img src="./assets/'+esc(categoryLogos[id])+'" alt="'+esc(labels[id])+'"></span><span>'+esc(labels[id])+'</span></button>').join('');
  const nav='<div class="v618-q-nav">'+
    '<button type="button" class="'+(view==='play'?'active':'')+'" data-q-view="play"><span class="v953-q-nav-icon">'+qIcon('play')+'</span><b>Pronosticar</b></button>'+
    '<button type="button" class="'+(view==='history'?'active':'')+'" data-q-view="history"><span class="v953-q-nav-icon">'+qIcon('history')+'</span><b>Histórico</b></button>'+
