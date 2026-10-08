@@ -3,12 +3,58 @@ const esc=s=>window.LJR_CMS?.esc(s)||String(s||''),media=()=>window.LJR_MEDIA;
 const names=['Perro','Gato','Lobo','Zorro','León','Águila','Astronauta','Portero','Robot'];
 const current=()=>window.LJR_V569_AUTH?.currentAccount ? window.LJR_V569_AUTH.currentAccount() : window.LJR_MAIN_ROUTE?.state?.user;
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
-const TEAM_50=[
- 'TOROS DE CUENDA','MANCHESTER','BOAVISTA','DYNAMO','LA ESPERANZA','AMERICA','HURACAN','PSV','FRANCO FC','HERMANOS',
- 'NAPOLI','HERRERAS FC','LINCES','ABEJAS','LOBOS CDG','JUVENTUS','SAN JOSE FC','TERRICOLAS','DEP. ZAPATA','SAN JULIAN',
- 'BARZA','SAN JUAN FC','CELTICOS','SAN JOSE JRS','DEP. NOPALERO','TAPATIO','DEP. LA LUZ','PACHANGAS FC','SAN ANTONIO FC','TAVERA FC',
- 'CAPIBARAS','MAZACOTES FC','LA HUERTA','LA CANCHITA DEPORTES','POPULARES','MALVINAS','PROMESAS FC','LA CUADRILLA','DEP. MARAVILLAS','ATL. GALEANA',
- 'SAN ANTONIO JRS','OSASUNA','ALDAMA FC','AGUILARES','CUENDA','FRANCO-TAVERA-JR','GALEANA','LA TRINIDAD','LEYENDAS FC','GALÁCTICOS DE POZOS'
+const TEAM_51=[
+ "San José FC",
+ "Juventus",
+ "Linces",
+ "Napoli",
+ "Hermanos",
+ "Franco FC",
+ "Herreras FC",
+ "Abejas",
+ "Terrícolas",
+ "Lobos CDG",
+ "Galácticos",
+ "La Canchita Deportes",
+ "Galeana",
+ "Aldama FC",
+ "Malvinas",
+ "Capibaras",
+ "La Cuadrilla",
+ "Mazacotes FC",
+ "Dep. Maravillas",
+ "Osasuna",
+ "San Antonio Jrs",
+ "Populares",
+ "Promesas FC",
+ "La Huerta",
+ "Tavera FC",
+ "Pachangas FC",
+ "San Juan FC",
+ "Tapatío",
+ "Dep. La Luz",
+ "San Julián",
+ "Barza",
+ "San José Jrs",
+ "San Antonio FC",
+ "Célticos FC",
+ "Dep. Nopalero",
+ "Dep. Zapata",
+ "BOAVISTA",
+ "FRANCO-TAVERA-JR",
+ "HURACAN",
+ "CUENDA",
+ "AMERICA",
+ "AGUILARES",
+ "LEYENDAS FC",
+ "PSV",
+ "LA TRINIDAD",
+ "POZOS FC",
+ "La Esperanza",
+ "Dynamo",
+ "Boca Jrs",
+ "Toros de Cuenda",
+ "Manchester"
 ];
 const SHIRT_CATEGORIES=['Primera Fuerza','Intermedia','Segunda Fuerza','Veteranos 35+','Veteranos 50+'];
 const CAT_BY_ID={'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'};
@@ -27,8 +73,8 @@ const SHIRT_TEAM_CATEGORY_FALLBACK={
  'Primera Fuerza':['Hermanos','San José FC','Linces','Juventus','Napoli','Lobos CDG','Terrícolas','Galácticos de Pozos','Galácticos','Franco FC','Herreras FC','Abejas'],
  'Intermedia':['La Canchita Deportes','Galeana','Atl. Galeana','Aldama FC','Malvinas','Capibaras','La Cuadrilla','Mazacotes FC','Dep. Maravillas','Osasuna','San Antonio JRS','Populares','Promesas FC','La Huerta'],
  'Segunda Fuerza':['Tavera FC','Pachangas FC','San Juan FC','Tapatío','Dep. La Luz','San Julián','Barza','San José JRS','San Antonio FC','Célticos FC','Celticos','Dep. Nopalero','Dep. Zapata'],
- 'Veteranos 35+':['Franco-Tavera-JR','Huracán','Cuenda','América','America','Aguilares','Leyendas FC','PSV','La Trinidad'],
- 'Veteranos 50+':['La Esperanza','Dynamo','Boca JRS','Toros de Cuenda','Manchester']
+ 'Veteranos 35+':['Boavista','Franco-Tavera-JR','Huracán','Cuenda','América','Aguilares','Juventus','Leyendas FC','PSV','La Trinidad','Pozos FC'],
+ 'Veteranos 50+':['La Esperanza','Dynamo','Boca JRS','Toros de Cuenda','Boavista','Manchester']
 };
 function categoryLogo(name){
  // Las rutas ya apuntan a los assets transparentes locales exactos.
@@ -57,15 +103,15 @@ function categoryForTeam(name){
 }
 function leagueTeams(){
  const seen=new Set(),out=[];
- const add=name=>{name=String(name||'').trim();const k=norm(name);if(!name||seen.has(k)||out.length>=50)return;seen.add(k);out.push(name)};
- TEAM_50.forEach(add);
+ const add=name=>{name=String(name||'').trim();const k=norm(name);if(!name||seen.has(k))return;seen.add(k);out.push(name)};
+ TEAM_51.forEach(add);
  const db=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{};
  Object.keys(db.team_logos||{}).forEach(add);
  for(const cat of Object.values(db.categories||{})){
    (cat?.teams||[]).forEach(t=>add(typeof t==='string'?t:t?.name));
    Object.keys(cat?.rosters||{}).forEach(add);
  }
- return out.slice(0,50);
+ return out;
 }
 function teamLogo(name){
  if(!name)return '';
@@ -179,7 +225,7 @@ function open(){
      '</div>'+
      '<div class="v893-shirt-customize">'+
        '<label class="v893-shirt-color">Color de la camiseta<span class="v893-color-control"><input name="shirtColor" type="color" value="'+esc(selectedColor)+'" aria-label="Color de la camiseta"><b data-shirt-color-text>'+esc(selectedColor.toUpperCase())+'</b></span></label>'+
-       '<label class="v893-shirt-team">Equipo · 50 equipos<select name="shirtTeam">'+teamOptions+'</select><span class="v893-team-preview" data-shirt-team-preview aria-live="polite"></span></label>'+
+       '<label class="v893-shirt-team">Equipo · '+teams.length+' clubes (53 participaciones)<select name="shirtTeam">'+teamOptions+'</select><span class="v893-team-preview" data-shirt-team-preview aria-live="polite"></span></label>'+
        '<label class="v902-shirt-category">Categoría automática según el equipo<select name="shirtCategory">'+categoryOptions+'</select><small>Al cambiar de equipo se asigna su categoría y el escudo grande de la espalda.</small><span class="v906-category-preview" data-shirt-category-preview aria-live="polite"></span></label>'+
      '</div>'+
      shirtViewer()+

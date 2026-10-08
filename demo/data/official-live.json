@@ -21596,6 +21596,26 @@
       "local": "./assets/season-2026/santiago-cuenda.webp",
       "source": "./assets/season-2026/santiago-cuenda.webp",
       "app": "./assets/season-2026/santiago-cuenda.webp"
+    },
+    "POZOS FC": {
+      "local": "./assets/season-2026/pozos.webp",
+      "source": "./assets/season-2026/pozos.webp",
+      "app": "./assets/season-2026/pozos.webp"
+    },
+    "BOCA JRS": {
+      "local": "./assets/season-2026/boca-juniors.webp",
+      "source": "./assets/season-2026/boca-juniors.webp",
+      "app": "./assets/season-2026/boca-juniors.webp"
+    },
+    "GALACTICOS": {
+      "local": "./assets/season-2026/galacticos.webp",
+      "source": "./assets/season-2026/galacticos.webp",
+      "app": "./assets/season-2026/galacticos.webp"
+    },
+    "CELTICOS FC": {
+      "local": "./assets/season-2026/celticos.webp",
+      "source": "./assets/season-2026/celticos.webp",
+      "app": "./assets/season-2026/celticos.webp"
     }
   },
   "cedula_audit": {
