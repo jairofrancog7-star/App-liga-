@@ -1,67 +1,162 @@
-/* Route history retains each scroll surface and current filters across async renders. */
+/* V924: Restore the exact previous section, tab and scroll position on every back action. */
 (()=>{
- const key='ljr-navigation-v776',screen=()=>document.querySelector('#screen'),route=()=>location.hash||'#/home';
- const keys=['v62-category','v62-data-tab','v35-history-tab','v194-scorers-category','v40-category'];
- let entries=[];try{entries=JSON.parse(sessionStorage.getItem(key)||'[]')}catch{}
- const surfaces=()=>[...document.querySelectorAll('#screen,#screen [id],#screen [data-scroll-key],#screen .v35-history-body,#screen .v726-tools-body')].filter(el=>el.scrollHeight>el.clientHeight+1||el.scrollWidth>el.clientWidth+1);
- const selector=el=>el.id?'#'+CSS.escape(el.id):el.dataset.scrollKey?'[data-scroll-key="'+CSS.escape(el.dataset.scrollKey)+'"]':'.'+[...el.classList].map(CSS.escape).join('.');
- const capture=()=>({url:route(),y:screen()?.scrollTop??0,x:screen()?.scrollLeft??0,windowY:window.scrollY,windowX:window.scrollX,surfaces:surfaces().map(el=>({selector:selector(el),y:el.scrollTop,x:el.scrollLeft})),settings:Object.fromEntries(keys.map(k=>[k,localStorage.getItem(k)])),main:window.LJR_MAIN_ROUTE?{competitionTab:window.LJR_MAIN_ROUTE.state.competitionTab,historyTab:window.LJR_MAIN_ROUTE.state.historyTab,selectedTeam:window.LJR_MAIN_ROUTE.state.selectedTeam,selectedPlayer:window.LJR_MAIN_ROUTE.state.selectedPlayer}:null});
- let current=capture(),restoring=null,pending=null,lastRoute='',direction=1,restoreUntil=0;
- const persist=()=>{try{sessionStorage.setItem(key,JSON.stringify(entries.slice(-60)))}catch{}};
- const remember=()=>{if(!restoring&&route()===current.url)current=capture()};
- function leaving(page,push=true){
-  const destination='#/'+page;
-  if(restoring){if(destination===restoring.url.split('?')[0])return;current=capture();restoring=null}
-  if(destination===current.url.split('?')[0])return;
-  if(push){entries.push(route()===current.url?capture():current);persist()}
-  pending=destination;current={url:destination,y:0,x:0,windowY:0};direction=1;
+'use strict';
+if(window.__LJR_NAV_V924__)return;
+window.__LJR_NAV_V924__=true;
+const STORE='ljr-navigation-v924';
+const screen=()=>document.getElementById('screen');
+const route=()=>location.hash||'#/home';
+const keys=['v62-category','v62-data-tab','v35-history-tab','v194-scorers-category','v40-category'];
+const read=()=>{try{return JSON.parse(sessionStorage.getItem(STORE)||'null')}catch{return null}};
+const esc=s=>window.CSS&&CSS.escape?CSS.escape(s):String(s).replace(/[^a-zA-Z0-9_-]/g,'\\$&');
+function pathFor(el){
+ if(el.id)return '#'+esc(el.id);
+ if(el.dataset.scrollKey)return '[data-scroll-key="'+esc(el.dataset.scrollKey)+'"]';
+ const parts=[];let node=el;
+ while(node&&node.nodeType===1&&node!==document.body&&parts.length<11){
+  if(node.id){parts.unshift('#'+esc(node.id));break}
+  let nth=1,s=node;while((s=s.previousElementSibling))if(s.tagName===node.tagName)nth++;
+  parts.unshift(node.tagName.toLowerCase()+':nth-of-type('+nth+')');
+  node=node.parentElement;
  }
- function apply(entry){
-  const el=screen();if(el){el.scrollTop=entry.y||0;el.scrollLeft=entry.x||0}
-  for(const p of entry.surfaces||[]){const target=document.querySelector(p.selector);if(target){target.scrollTop=p.y;target.scrollLeft=p.x}}
-  window.scrollTo(entry.windowX||0,entry.windowY??entry.y??0);
+ return parts.join(' > ');
+}
+function surfaces(){
+ const root=screen();if(!root)return [];
+ return [root,...root.querySelectorAll('*')].filter(el=>{
+  if(el.scrollHeight<=el.clientHeight+3&&el.scrollWidth<=el.clientWidth+3)return false;
+  if(el===root)return true;
+  const s=getComputedStyle(el);
+  return /(auto|scroll|overlay)/.test(s.overflowY+' '+s.overflowX)||el.scrollTop>0||el.scrollLeft>0;
+ }).slice(0,50);
+}
+function capture(){
+ const root=screen(),state=window.LJR_MAIN_ROUTE?.state;
+ return {
+  url:route(),y:root?.scrollTop||0,x:root?.scrollLeft||0,
+  windowY:Math.max(0,window.scrollY||document.scrollingElement?.scrollTop||0),
+  windowX:window.scrollX||0,
+  surfaces:surfaces().map(el=>({selector:pathFor(el),y:el.scrollTop,x:el.scrollLeft})).filter(p=>p.selector),
+  settings:Object.fromEntries(keys.map(k=>[k,localStorage.getItem(k)])),
+  main:state?{competitionTab:state.competitionTab,historyTab:state.historyTab,statsTab:state.statsTab,
+   newsFilter:state.newsFilter,selectedTeam:state.selectedTeam,selectedPlayer:state.selectedPlayer}:null
+ };
+}
+const blank=url=>({url,y:0,x:0,windowY:0,windowX:0,surfaces:[]});
+const old=read();
+let entries=Array.isArray(old?.entries)&&old.url===route()?old.entries:[],
+    future=Array.isArray(old?.future)&&old.url===route()?old.future:[],
+    active=blank(route()),restoring=null,pending=null,restoreToken=0,queued=false;
+function save(){try{sessionStorage.setItem(STORE,JSON.stringify({url:active.url,entries:entries.slice(-60),future:future.slice(-30)}))}catch(_){}}
+try{history.scrollRestoration='manual'}catch(_){}
+function remember(){if(!restoring&&route()===active.url)active=capture()}
+function track(){if(queued||restoring)return;queued=true;requestAnimationFrame(()=>{queued=false;remember()})}
+function apply(entry){
+ if(!entry||route()!==entry.url)return;
+ const el=screen();if(el){el.scrollTop=entry.y||0;el.scrollLeft=entry.x||0}
+ for(const item of entry.surfaces||[]){
+  let target;try{target=document.querySelector(item.selector)}catch(_){continue}
+  if(target){target.scrollTop=item.y||0;target.scrollLeft=item.x||0}
  }
- function back(){
-  remember();document.querySelectorAll('.liga-media-modal video').forEach(v=>v.pause());
-  const entry=entries.pop();persist();direction=-1;
-  if(!entry){window.LJR_MAIN_ROUTE?.go('home',false);return}
-  restoring=entry;restoreUntil=performance.now()+2500;pending=null;current=entry;
-  for(const [k,v]of Object.entries(entry.settings||{}))if(v!==null)localStorage.setItem(k,v);
-  if(entry.main&&window.LJR_MAIN_ROUTE)Object.assign(window.LJR_MAIN_ROUTE.state,entry.main);
-  window.LJR_MAIN_ROUTE?.go(entry.url.replace(/^#\//,''),false);
-  if(!window.LJR_MAIN_ROUTE)location.hash=entry.url;
-  rendered();
+ window.scrollTo({top:Math.max(0,entry.windowY??entry.y??0),left:entry.windowX||0,behavior:'instant'});
+}
+function cancelRestore(){if(restoring){restoring=null;++restoreToken;remember()}}
+function restore(entry){
+ restoring={entry,until:Date.now()+3000};pending=null;
+ ++restoreToken;const token=restoreToken;
+ for(const [key,value] of Object.entries(entry.settings||{})){
+  if(value===null||value===undefined)localStorage.removeItem(key);
+  else localStorage.setItem(key,value);
  }
- function rendered(){
-  const el=screen();if(!el)return;const destination=route();
-  if(restoring&&destination===restoring.url){apply(restoring);return}
-  if(destination!==lastRoute){
-   if(pending||destination!==current.url){apply({y:0,x:0,windowY:0});pending=null}
-   if(!matchMedia('(prefers-reduced-motion:reduce)').matches){el.getAnimations?.().forEach(a=>a.cancel());el.animate?.([{translate:(direction*18)+'px 0'},{translate:'0 0'}],{duration:180})}
-   lastRoute=destination;
-  }
-  if(destination===lastRoute&&!restoring&&current.url===destination)apply(current);
-  if(!restoring)current=capture();
+ if(entry.main&&window.LJR_MAIN_ROUTE?.state)Object.assign(window.LJR_MAIN_ROUTE.state,entry.main);
+ const attempt=()=>{
+  if(!restoring||token!==restoreToken||route()!==entry.url)return;
+  apply(entry);
+  if(Date.now()>=restoring.until){restoring=null;active=capture();save()}
+ };
+ requestAnimationFrame(attempt);
+ [80,180,350,600,950,1450,2050,2650,3100].forEach(ms=>setTimeout(attempt,ms));
+}
+function leaving(page,push=true){
+ const destination='#/'+String(page).replace(/^#?\//,'');
+ if(destination===route()||destination===active.url)return;
+ if(restoring)cancelRestore();
+ remember();
+ if(push){entries.push(active);entries=entries.slice(-60);future=[]}
+ active=blank(destination);pending=destination;save();
+}
+function changed(url){
+ if(url===active.url){if(restoring)apply(restoring.entry);return}
+ if(restoring)cancelRestore();
+ if(pending===url){active=blank(url);return}
+ if(entries.length&&entries[entries.length-1].url===url){
+  future.push(active);active=entries.pop();restore(active);
+ }else if(future.length&&future[future.length-1].url===url){
+  entries.push(active);active=future.pop();restore(active);
+ }else{
+  entries.push(active);entries=entries.slice(-60);future=[];
+  active=blank(url);pending=url;
  }
- document.addEventListener('click',e=>{
-  if(!(e.target instanceof Element))return;const b=e.target.closest('button,a');if(!b)return;
-  if(b.matches('[data-v589-back]'))return; // This arrow also navigates inside the predictor.
-  const label=(b.getAttribute('aria-label')||b.textContent||'').trim();
-  if(b.id==='backButton'||b.matches('.v35-back,.v46-back,.v27-back,.v41-back,.v26-moments-sticky-back,.v569-back,.v31-back,[data-v446-notices-back]')||/^(Volver|Regresar|Atrás)(\s|$)/i.test(label)){
-   if(b.closest('[role="dialog"],.liga-media-modal,.v431-drawer'))return;
-   e.preventDefault();e.stopImmediatePropagation();back();
-  }else remember();
- },true);
- addEventListener('hashchange',()=>{
-  if(restoring&&route()===restoring.url)return;
-  if(route()!==current.url&&route().split('?')[0]!==pending){entries.push(current);persist();current={url:route(),y:0,x:0,windowY:0};pending=route();direction=1}
-  requestAnimationFrame(rendered);
+ save();
+}
+function rendered(){
+ const url=route();
+ if(url!==active.url&&!pending)changed(url);
+ if(restoring&&restoring.entry.url===url){apply(restoring.entry);return}
+ if(pending===url){
+  pending=null;
+  const el=screen();if(el){el.scrollTop=0;el.scrollLeft=0}
+  window.scrollTo(0,0);
+  active=capture();save();
+ }
+}
+function back(){
+ remember();
+ if(restoring)cancelRestore();
+ const entry=entries.pop();
+ if(!entry){
+  if(route()!=='#/home')window.LJR_MAIN_ROUTE?.go?.('home',false);
+  return;
+ }
+ future.push(active);active=entry;
+ const oldUrl=location.href;
+ // Never add a new browser history entry when pressing the app's back arrow.
+ history.replaceState(history.state,'',location.pathname+location.search+entry.url);
+ restore(entry);
+ if(window.LJR_MAIN_ROUTE?.go)window.LJR_MAIN_ROUTE.go(entry.url.replace(/^#\//,''),false);
+ else if(window.LJR_MAIN_ROUTE?.render){
+  window.LJR_MAIN_ROUTE.state.route=entry.url.replace(/^#\//,'').split('?')[0];
+  window.LJR_MAIN_ROUTE.render();
+ }
+ try{window.dispatchEvent(new HashChangeEvent('hashchange',{oldURL:oldUrl,newURL:location.href}))}
+ catch(_){window.dispatchEvent(new Event('hashchange'))}
+ save();
+}
+document.addEventListener('click',e=>{
+ if(!(e.target instanceof Element))return;
+ const b=e.target.closest('button,a');if(!b)return;
+ if(b.matches('[data-v589-back]')||b.closest('[role="dialog"],.liga-media-modal,.v431-drawer,.modal,.v105-modal,.v28-sheet-layer'))return;
+ const label=(b.getAttribute('aria-label')||b.textContent||'').trim();
+ if(b.id==='backButton'||b.matches('.v35-back,.v46-back,.v27-back,.v41-back,.v26-moments-sticky-back,.v569-back,.v31-back,[data-v446-notices-back]')||/^(Volver|Regresar|Atrás)(\s|$)/i.test(label)){
+  e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();back();
+ }else remember();
+},true);
+window.addEventListener('hashchange',()=>{changed(route());requestAnimationFrame(rendered)});
+window.addEventListener('popstate',()=>requestAnimationFrame(()=>{changed(route());rendered()}));
+window.addEventListener('pageshow',()=>requestAnimationFrame(()=>{changed(route());rendered()}));
+window.addEventListener('scroll',track,{passive:true,capture:true});
+document.addEventListener('scroll',track,{passive:true,capture:true});
+for(const kind of ['wheel','touchstart','pointerdown','keydown']){
+ document.addEventListener(kind,()=>{if(restoring)cancelRestore()},{passive:true,capture:true});
+}
+let observerFrame=0;
+const observer=new MutationObserver(()=>{
+ if(restoring&&!observerFrame)observerFrame=requestAnimationFrame(()=>{
+  observerFrame=0;if(restoring)apply(restoring.entry);
  });
- document.addEventListener('scroll',remember,true);
- for(const event of ['wheel','touchstart','keydown'])document.addEventListener(event,()=>{if(restoring){restoring=null;current=capture()}},{passive:true,capture:true});
- const observer=new MutationObserver(()=>{if(restoring){if(performance.now()<restoreUntil)requestAnimationFrame(()=>restoring&&apply(restoring));else{restoring=null;current=capture()}}});
- const watch=()=>{const root=screen();if(root)observer.observe(root,{childList:true,subtree:true})};
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',watch,{once:true});else watch();
- setInterval(()=>{if(restoring){if(performance.now()<restoreUntil&&route()===restoring.url)apply(restoring);else{restoring=null;current=capture()}}},100);
- window.LJR_NAVIGATION={leaving,rendered,back,remember};
+});
+const watch=()=>{if(screen())observer.observe(screen(),{childList:true,subtree:true})};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',watch,{once:true});else watch();
+window.addEventListener('beforeunload',()=>{remember();save()});
+window.LJR_NAVIGATION={leaving,rendered,back,remember};
 })();
