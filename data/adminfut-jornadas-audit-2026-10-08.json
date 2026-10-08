@@ -3617,5 +3617,414 @@
         ]
       ]
     }
+  },
+  "category4_official": {
+    "source_pages": {
+      "standings": "https://www.juventinorosasliga.com/tabla-posiciones/?categoria=4",
+      "scorers": "https://www.juventinorosasliga.com/tabla-goleo/?categoria=4",
+      "cards": "https://www.juventinorosasliga.com/tabla-tarjetas/?categoria=4"
+    },
+    "standings": [
+      {
+        "pos": 1,
+        "team": "TAVERA FC",
+        "pj": 5,
+        "pg": 4,
+        "pe": 1,
+        "pp": 0,
+        "gf": 22,
+        "gc": 3,
+        "dif": 19,
+        "pts": 13
+      },
+      {
+        "pos": 2,
+        "team": "SAN JULIAN",
+        "pj": 5,
+        "pg": 4,
+        "pe": 1,
+        "pp": 0,
+        "gf": 16,
+        "gc": 7,
+        "dif": 9,
+        "pts": 13
+      },
+      {
+        "pos": 3,
+        "team": "SAN JUAN FC",
+        "pj": 5,
+        "pg": 4,
+        "pe": 0,
+        "pp": 1,
+        "gf": 18,
+        "gc": 2,
+        "dif": 16,
+        "pts": 12
+      },
+      {
+        "pos": 4,
+        "team": "SAN JOSE JRS",
+        "pj": 5,
+        "pg": 3,
+        "pe": 1,
+        "pp": 1,
+        "gf": 12,
+        "gc": 5,
+        "dif": 7,
+        "pts": 10
+      },
+      {
+        "pos": 5,
+        "team": "CELTICOS",
+        "pj": 5,
+        "pg": 3,
+        "pe": 0,
+        "pp": 2,
+        "gf": 14,
+        "gc": 8,
+        "dif": 6,
+        "pts": 9
+      },
+      {
+        "pos": 6,
+        "team": "DEP. ZAPATA",
+        "pj": 6,
+        "pg": 2,
+        "pe": 2,
+        "pp": 2,
+        "gf": 9,
+        "gc": 11,
+        "dif": -2,
+        "pts": 8
+      },
+      {
+        "pos": 7,
+        "team": "SAN ANTONIO FC",
+        "pj": 5,
+        "pg": 2,
+        "pe": 0,
+        "pp": 3,
+        "gf": 18,
+        "gc": 13,
+        "dif": 5,
+        "pts": 6
+      },
+      {
+        "pos": 8,
+        "team": "DEP. NOPALERO",
+        "pj": 6,
+        "pg": 3,
+        "pe": 0,
+        "pp": 3,
+        "gf": 16,
+        "gc": 14,
+        "dif": 2,
+        "pts": 6
+      },
+      {
+        "pos": 9,
+        "team": "PACHANGAS FC",
+        "pj": 6,
+        "pg": 2,
+        "pe": 0,
+        "pp": 4,
+        "gf": 10,
+        "gc": 25,
+        "dif": -15,
+        "pts": 6
+      },
+      {
+        "pos": 10,
+        "team": "BARZA",
+        "pj": 5,
+        "pg": 1,
+        "pe": 1,
+        "pp": 3,
+        "gf": 11,
+        "gc": 12,
+        "dif": -1,
+        "pts": 4
+      },
+      {
+        "pos": 11,
+        "team": "DEP. LA LUZ",
+        "pj": 5,
+        "pg": 1,
+        "pe": 0,
+        "pp": 4,
+        "gf": 7,
+        "gc": 16,
+        "dif": -9,
+        "pts": 0
+      },
+      {
+        "pos": 12,
+        "team": "TAPATIO",
+        "pj": 6,
+        "pg": 0,
+        "pe": 0,
+        "pp": 6,
+        "gf": 5,
+        "gc": 42,
+        "dif": -37,
+        "pts": -3
+      }
+    ],
+    "scorers": [
+      {
+        "rank": 1,
+        "player": "TELESFORO FREYRE VALADEZ",
+        "team": "DEP. NOPALERO",
+        "goals": 4
+      },
+      {
+        "rank": 2,
+        "player": "Juan Diego Mendoza Gamez",
+        "team": "TAVERA FC",
+        "goals": 4
+      },
+      {
+        "rank": 3,
+        "player": "Alan Manuel Noria Tovar",
+        "team": "DEP. NOPALERO",
+        "goals": 3
+      },
+      {
+        "rank": 4,
+        "player": "Omar Olivares Paz",
+        "team": "TAVERA FC",
+        "goals": 3
+      },
+      {
+        "rank": 5,
+        "player": "FRANCISCO GUERRERO GUERRERO",
+        "team": "DEP. NOPALERO",
+        "goals": 2
+      },
+      {
+        "rank": 6,
+        "player": "Francisco Javier Avila Huerta",
+        "team": "TAVERA FC",
+        "goals": 2
+      },
+      {
+        "rank": 7,
+        "player": "Edgar Mendoza Mora",
+        "team": "TAVERA FC",
+        "goals": 2
+      },
+      {
+        "rank": 8,
+        "player": "Javier Peralta Romero",
+        "team": "PACHANGAS FC",
+        "goals": 2
+      },
+      {
+        "rank": 9,
+        "player": "Miguel Antonio Llanos Aguirre",
+        "team": "DEP. ZAPATA",
+        "goals": 2
+      },
+      {
+        "rank": 10,
+        "player": "JOSE EMMANUEL MARTINEZ MENDOZA",
+        "team": "TAVERA FC",
+        "goals": 2
+      },
+      {
+        "rank": 11,
+        "player": "Giovanni Sanchez Delgado",
+        "team": "CELTICOS",
+        "goals": 2
+      },
+      {
+        "rank": 12,
+        "player": "Juan Guzman Lopez",
+        "team": "PACHANGAS FC",
+        "goals": 2
+      },
+      {
+        "rank": 13,
+        "player": "Moises Gudalupe Arce Gutierrez",
+        "team": "TAVERA FC",
+        "goals": 2
+      },
+      {
+        "rank": 14,
+        "player": "Rafael Hernandez Almanza",
+        "team": "TAVERA FC",
+        "goals": 2
+      },
+      {
+        "rank": 15,
+        "player": "Efrain Gutierrez Lucio",
+        "team": "SAN ANTONIO FC",
+        "goals": 1
+      },
+      {
+        "rank": 16,
+        "player": "Alejandro Tellez Campos",
+        "team": "SAN JOSE JRS",
+        "goals": 1
+      },
+      {
+        "rank": 17,
+        "player": "Jose de Jesus Garcia Villafuerte",
+        "team": "SAN JULIAN",
+        "goals": 1
+      },
+      {
+        "rank": 18,
+        "player": "Bryan Doñates Zavala",
+        "team": "SAN JOSE JRS",
+        "goals": 1
+      },
+      {
+        "rank": 19,
+        "player": "Juan Jesus Ojeda Ortega",
+        "team": "CELTICOS",
+        "goals": 1
+      },
+      {
+        "rank": 20,
+        "player": "Jose Guadalupe Flores Peñaloza",
+        "team": "CELTICOS",
+        "goals": 1
+      },
+      {
+        "rank": 21,
+        "player": "Juan Yasbeth Landin Ramirez",
+        "team": "SAN JOSE JRS",
+        "goals": 1
+      },
+      {
+        "rank": 22,
+        "player": "Gilberto Yañez Ramirez",
+        "team": "SAN JULIAN",
+        "goals": 1
+      },
+      {
+        "rank": 23,
+        "player": "Antonio Alejandro Guerrero Villegas",
+        "team": "SAN JULIAN",
+        "goals": 1
+      },
+      {
+        "rank": 24,
+        "player": "Jose Julian Figueroa Cano",
+        "team": "SAN ANTONIO FC",
+        "goals": 1
+      },
+      {
+        "rank": 25,
+        "player": "Luis Rodriguez Perez",
+        "team": "PACHANGAS FC",
+        "goals": 1
+      },
+      {
+        "rank": 26,
+        "player": "Luis Julian Negrete Cervantes",
+        "team": "PACHANGAS FC",
+        "goals": 1
+      },
+      {
+        "rank": 27,
+        "player": "PASCUAL GIRON PALACIOS",
+        "team": "DEP. NOPALERO",
+        "goals": 1
+      },
+      {
+        "rank": 28,
+        "player": "BENJAMIN FIGUEROA ARELLANO",
+        "team": "DEP. LA LUZ",
+        "goals": 1
+      },
+      {
+        "rank": 29,
+        "player": "Kevin Gustavo Ojeda Ortega",
+        "team": "CELTICOS",
+        "goals": 1
+      },
+      {
+        "rank": 30,
+        "player": "Oscar Ruiz Ramirez",
+        "team": "TAVERA FC",
+        "goals": 1
+      },
+      {
+        "rank": 31,
+        "player": "CARLOS FRANCISCO BELMAN AGUADO",
+        "team": "DEP. NOPALERO",
+        "goals": 1
+      },
+      {
+        "rank": 32,
+        "player": "Pablo Zavala Frias",
+        "team": "SAN JULIAN",
+        "goals": 1
+      },
+      {
+        "rank": 33,
+        "player": "Jose Alberto Aguilar Ojeda",
+        "team": "SAN ANTONIO FC",
+        "goals": 1
+      },
+      {
+        "rank": 34,
+        "player": "Dave Ricardo Guerrero Ramirez",
+        "team": "SAN ANTONIO FC",
+        "goals": 1
+      },
+      {
+        "rank": 35,
+        "player": "Jose Ignacio Tovar Cabello",
+        "team": "DEP. ZAPATA",
+        "goals": 1
+      },
+      {
+        "rank": 36,
+        "player": "Francisco Javier Muñoz Badillo",
+        "team": "DEP. ZAPATA",
+        "goals": 1
+      },
+      {
+        "rank": 37,
+        "player": "Alan Eduardo Meji Damian",
+        "team": "CELTICOS",
+        "goals": 1
+      },
+      {
+        "rank": 38,
+        "player": "Honorio Ochoa Aguilar",
+        "team": "TAVERA FC",
+        "goals": 1
+      },
+      {
+        "rank": 39,
+        "player": "Francisco Javier Ruiz Plascencia",
+        "team": "SAN ANTONIO FC",
+        "goals": 1
+      }
+    ],
+    "cards": [
+      {
+        "type": "Amarilla",
+        "player": "Jorge Luis Guzman Moreno",
+        "team": "TAPATIO",
+        "total": 1
+      },
+      {
+        "type": "Roja",
+        "player": "Ismael Juarez Aldavera",
+        "team": "CELTICOS",
+        "total": 1
+      },
+      {
+        "type": "Roja",
+        "player": "TELESFORO FREYRE VALADEZ",
+        "team": "DEP. NOPALERO",
+        "total": 1
+      }
+    ]
   }
 }
