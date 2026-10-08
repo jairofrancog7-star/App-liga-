@@ -25,3 +25,15 @@ test('multiple fixture blocks deduplicate official match IDs without crossing ca
  const c=normalizeCompetition({categories:{x:{fixtures:[{rows:[row]},{rows:[row]}]},y:{fixtures:[{rows:[row]}]}}});
  assert.equal(c[0].matches.length,1);assert.equal(c[1].matches.length,1);assert.notEqual(c[0].matches[0].id,c[1].matches[0].id);assert.equal(c[0].matches[0].status,'FINAL');
 });
+
+test('J7/J8 rol: las victorias administrativas no inventan marcadores',()=>{
+ const primera=categories.find(c=>c.id==='3').matches.find(m=>m.round==='7'&&m.home==='LINCES'&&m.away==='GALACTICOS');
+ const veteranos=categories.find(c=>c.id==='1').matches.find(m=>m.round==='8'&&m.home==='BOAVISTA'&&m.away==='BOCA JRS');
+ for(const m of [primera,veteranos]){assert.ok(m);assert.equal(m.status,'AWARDED');assert.equal(m.complete,false);assert.equal(m.homeScore,null);assert.equal(m.awayScore,null);assert.ok(m.decision?.winner)}
+ const j8=categories.find(c=>c.id==='1').matches.filter(m=>m.round==='8');
+ assert.equal(j8.length,3);
+ assert.equal(j8.find(m=>m.home==='MANCHESTER').time,'15:00');
+ assert.equal(j8.find(m=>m.home==='TOROS DE CUENDA').time,'16:30');
+ const friendly=categories.find(c=>c.id==='2').matches.find(m=>m.round==='AMISTOSO');
+ assert.ok(friendly);assert.equal(friendly.complete,false);assert.equal(friendly.iso,'');
+});
