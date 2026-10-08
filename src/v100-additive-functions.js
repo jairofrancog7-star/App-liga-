@@ -1327,7 +1327,35 @@ function bindMatchday(root){
 }
 
 /* ---------- PARTIDO: recordatorio local y cédula ---------- */
-function matchExtra(){const h=$('.screen-title')?.textContent?.trim().replace(/\s+/g,' ')||'Partido de la Liga';const meta=$('.match-detail .muted.tiny')?.textContent?.trim()||'';return '<section class="v100-subblock" id="v100-match-extra">'+sectionTitle('PARTIDO','Acciones rápidas','Se agregan al final de Ver detalles.')+'<div class="v100-form-grid"><label><span>Fecha y hora para recordar</span><input type="datetime-local" data-v100-reminder-time></label><label><span>Partido / sede</span><input type="text" data-v100-reminder-title value="'+esc(h)+'" data-meta="'+esc(meta)+'"></label></div><div class="v100-actions"><button class="v100-primary" data-v100-ics>Recordar · calendario</button><button class="v100-secondary" data-v100-route="cedulas">Cédula oficial</button><button class="v100-secondary" data-v100-route="weatherFields">Clima y campo</button></div></section>'}
+function v936MatchIcon(kind){
+  const shapes={
+    calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M12 13v6M9 16h6"/>',
+    card:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M5.5 16c1-2 6-2 7 0M15 10h4M15 14h4"/>',
+    weather:'<path d="M11 2v2M4.5 5.5l1.4 1.4M18 5l-1.4 1.4"/><circle cx="11" cy="10" r="4"/><path d="M6 21a4 4 0 0 1 1-7.6 5 5 0 0 1 9.1 1.1A3.5 3.5 0 1 1 17.5 21H6z"/>'
+  };
+  return '<span class="v936-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">'+(shapes[kind]||shapes.calendar)+'</svg></span>';
+}
+function v936MatchAction(kind,title,desc,attributes,primary){
+  return '<button type="button" class="'+(primary?'v100-primary':'v100-secondary')+'" '+attributes+'>'+
+    v936MatchIcon(kind)+'<span class="v936-action-copy"><b>'+title+'</b><small>'+desc+'</small></span>'+
+    '<span class="v936-arrow" aria-hidden="true">›</span></button>';
+}
+function matchExtra(){
+  const h=$('.screen-title')?.textContent?.trim().replace(/\s+/g,' ')||'Partido de la Liga';
+  const meta=$('.match-detail .muted.tiny')?.textContent?.trim()||'';
+  return '<section class="v100-subblock" id="v100-match-extra">'+
+    sectionTitle('PARTIDO','Acciones rápidas','Recordatorios y herramientas para este encuentro.')+
+    '<div class="v100-form-grid">'+
+      '<label><span>Fecha y hora del partido</span><input type="datetime-local" data-v100-reminder-time aria-label="Fecha y hora para recordar el partido"></label>'+
+      '<label><span>Partido / sede</span><input type="text" data-v100-reminder-title value="'+esc(h)+'" data-meta="'+esc(meta)+'"></label>'+
+    '</div>'+
+    '<div class="v100-actions">'+
+      v936MatchAction('calendar','Recordar partido','Agregar al calendario','data-v100-ics',true)+
+      v936MatchAction('card','Cédula oficial','Consultar o crear','data-v100-route="cedulas"',false)+
+      v936MatchAction('weather','Clima y campo','Consultar condiciones y sede','data-v100-route="weatherFields"',false)+
+    '</div>'+
+  '</section>';
+}
 function icsDate(d){return d.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'')}
 function bindMatch(root){$('[data-v100-ics]',root).onclick=()=>{const v=$('[data-v100-reminder-time]',root).value;if(!v)return toast('Selecciona fecha y hora');const start=new Date(v),end=new Date(start.getTime()+120*60000),title=$('[data-v100-reminder-title]',root).value||'Partido Liga Juventino';const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Liga Juventino//App//ES','BEGIN:VEVENT','UID:'+Date.now()+'@ligajuventino','DTSTAMP:'+icsDate(new Date()),'DTSTART:'+icsDate(start),'DTEND:'+icsDate(end),'SUMMARY:'+title.replace(/[,;]/g,' '),'DESCRIPTION:Recordatorio creado desde la app Liga Juventino Rosas','END:VEVENT','END:VCALENDAR'].join('\r\n');download(new Blob([ics],{type:'text/calendar;charset=utf-8'}),'Partido_Liga_Juventino.ics')}}
 
