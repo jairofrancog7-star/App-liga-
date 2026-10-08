@@ -1,0 +1,185 @@
+/* V964 — Histórico de Quiniela: resultados oficiales publicados y pronósticos locales.
+   Afecta únicamente #/quiniela. No añade ni modifica resultados o apuestas. */
+body[data-app-route="quiniela"] .v964-q-history{
+  display:grid!important;
+  gap:10px!important;
+  width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+  padding-bottom:20px!important;
+}
+body[data-app-route="quiniela"] .v964-q-history>.v960-q-source{
+  margin:0!important;
+  padding:10px 12px!important;
+  border:1px solid rgba(85,180,250,.28)!important;
+  border-radius:12px!important;
+  background:#0b1d67!important;
+  color:#c4d6f3!important;
+  font-size:11px!important;
+  line-height:1.5!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-links{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:7px!important;
+  width:100%!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-links>a,
+body[data-app-route="quiniela"] .v964-q-history-links>button{
+  box-sizing:border-box!important;
+  display:flex!important;
+  justify-content:center!important;
+  align-items:center!important;
+  min-width:0!important;
+  min-height:43px!important;
+  margin:0!important;
+  padding:8px 9px!important;
+  border:1px solid rgba(93,212,252,.46)!important;
+  border-radius:13px!important;
+  background:linear-gradient(140deg,#1a49b3,#0c236e)!important;
+  color:#fff!important;
+  font:750 11px/1.25 Inter,Roboto,Arial,sans-serif!important;
+  text-align:center!important;
+  text-decoration:none!important;
+  white-space:normal!important;
+  cursor:pointer!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-summary{
+  box-sizing:border-box!important;
+  display:flex!important;
+  justify-content:space-between!important;
+  align-items:center!important;
+  flex-wrap:wrap!important;
+  gap:5px 10px!important;
+  padding:12px 13px!important;
+  border:1px solid rgba(101,157,244,.35)!important;
+  border-radius:13px!important;
+  background:linear-gradient(120deg,#143386,#081a64)!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-summary b{
+  color:#6be7f6!important;
+  font-size:12px!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-summary span{
+  color:#bfceef!important;
+  font-size:10px!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-round{
+  min-width:0!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+  border:1px solid rgba(95,147,252,.34)!important;
+  border-radius:18px!important;
+  background:#08175f!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-round>header{
+  display:flex!important;
+  justify-content:space-between!important;
+  align-items:center!important;
+  gap:8px!important;
+  padding:12px 13px!important;
+  background:linear-gradient(145deg,#153999,#0c226e)!important;
+  color:#fff!important;
+  font-size:13px!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-round>header b{
+  color:#fff!important;
+  font-size:13px!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-round>header span{
+  font-size:10px!important;
+  color:#bad1f5!important;
+  font-weight:650!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-card{
+  box-sizing:border-box!important;
+  margin:0!important;
+  padding:12px!important;
+  border-top:1px solid rgba(109,160,238,.19)!important;
+  background:linear-gradient(150deg,#122d83,#0c1b65)!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-card:nth-of-type(even){
+  background:linear-gradient(150deg,#102474,#0a165a)!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-match{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 78px minmax(0,1fr)!important;
+  gap:7px!important;
+  align-items:center!important;
+  min-width:0!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-team{
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  align-items:center!important;
+  gap:5px!important;
+  min-width:0!important;
+  color:#fff!important;
+  text-align:center!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-team img{
+  display:block!important;
+  width:42px!important;
+  height:42px!important;
+  max-width:100%!important;
+  object-fit:contain!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  filter:none!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-team b{
+  display:block!important;
+  max-width:100%!important;
+  color:#fff!important;
+  font:750 clamp(10px,2.8vw,13px)/1.25 Inter,Roboto,Arial,sans-serif!important;
+  overflow-wrap:anywhere!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-middle{
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:5px!important;
+  text-align:center!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-middle strong{
+  color:#62f0f3!important;
+  font:870 20px/1.1 Inter,Roboto,Arial,sans-serif!important;
+  white-space:nowrap!important;
+  font-variant-numeric:tabular-nums!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-middle small{
+  display:block!important;
+  color:#bad0fa!important;
+  font-size:9px!important;
+  line-height:1.35!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-detail{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:4px!important;
+  margin-top:10px!important;
+  padding:9px 10px!important;
+  border:1px solid rgba(100,167,244,.28)!important;
+  border-radius:10px!important;
+  background:#071653!important;
+  color:#daeafa!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-detail span{
+  font-size:11px!important;
+  font-weight:760!important;
+  line-height:1.3!important;
+}
+body[data-app-route="quiniela"] .v964-q-history-detail small{
+  font-size:10px!important;
+  line-height:1.4!important;
+  color:#b0c5e9!important;
+}
+@media(max-width:350px){
+ body[data-app-route="quiniela"] .v964-q-history-match{grid-template-columns:minmax(0,1fr) 65px minmax(0,1fr)!important;gap:4px!important}
+ body[data-app-route="quiniela"] .v964-q-history-middle strong{font-size:17px!important}
+ body[data-app-route="quiniela"] .v964-q-history-team img{width:35px!important;height:35px!important}
+}
