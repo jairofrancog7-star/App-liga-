@@ -48,23 +48,22 @@ test('a stale photo from a transferred player cannot be used for their new team'
   assert.deepEqual(await registeredTeamPhotos(registry,'2026–2027','Azul','3',[{name:'Jose Perez'}],async()=>({name:'José Pérez',team:'Verde',dataUrl:'wrong'})),{});
 });
 
-test('Android calendar chooser drafts retain every match field and safely encode extras', () => {
+test('Android Chrome uses the Google Calendar prefilled template, not a broken Android intent', () => {
   const event=calendarEvent({...game,home:'América; FC',away:'PSV',iso:'2026-10-31',time:'15:30',venue:'Campo 2'});
   assert.equal(googleCalendarDestination(event),event.googleURL);
-  const intent=googleCalendarDestination(event,true);
-  const extras=Object.fromEntries(intent.split('#Intent;')[1].split(';').filter(part=>part.includes('=')).map(part=>{const i=part.indexOf('=');return [part.slice(0,i),decodeURIComponent(part.slice(i+1))]}));
-  assert.equal(extras.package,undefined);
-  assert.equal(extras.action,'android.intent.action.INSERT');
-  assert.equal(extras['S.title'],'América; FC - PSV');
-  assert.equal(extras['S.eventLocation'],'Campo 2');
-  assert.match(extras['S.description'],/Primera Fuerza/);
-  assert.match(extras['S.description'],/Jornada 8/);
-  assert.equal(extras['S.eventTimezone'],'America/Mexico_City');
-  assert.equal(+extras['l.beginTime'],Date.UTC(2026,9,31,21,30));
-  assert.equal(+extras['l.endTime']-+extras['l.beginTime'],7200000);
-  assert.equal(extras['B.allDay'],'false');
-  assert.equal(extras['S.browser_fallback_url'],event.googleURL);
-  assert.equal(new URL(event.googleURL).searchParams.get('dates'),'20261031T213000Z/20261031T233000Z');
+  assert.equal(googleCalendarDestination(event,true),event.googleURL);
+  assert.equal(event.googleURL.startsWith('intent:'),false);
+  const google=new URL(event.googleURL);
+  assert.equal(google.origin,'https://calendar.google.com');
+  assert.equal(google.pathname,'/calendar/render');
+  assert.equal(google.searchParams.get('action'),'TEMPLATE');
+  assert.equal(google.searchParams.get('text'),'América; FC - PSV');
+  assert.equal(google.searchParams.get('location'),'Campo 2');
+  assert.match(google.searchParams.get('details'),/Primera Fuerza/);
+  assert.match(google.searchParams.get('details'),/Jornada 8/);
+  assert.match(google.searchParams.get('details'),/15:30/);
+  assert.equal(google.searchParams.get('ctz'),'America/Mexico_City');
+  assert.equal(google.searchParams.get('dates'),'20261031T213000Z/20261031T233000Z');
 });
 
 test('explicit all-day match retains kickoff details and uses exclusive UTC date boundaries', () => {
