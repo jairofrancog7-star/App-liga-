@@ -15,6 +15,13 @@ const CAT_FALLBACK={
   '2':'Veteranos 35+',
   '1':'Veteranos 50+'
 };
+const V945_CATEGORY_LOGOS={
+  '3':'./assets/branding/primera-fuerza-hd.png',
+  '5':'./assets/categories/intermedia.webp',
+  '4':'./assets/categories/segunda-fuerza.webp',
+  '2':'./assets/categories/veteranos-35-user.png',
+  '1':'./assets/categories/veteranos-50.webp'
+};
 const MODE_KEY='v194-scorer-mode';
 try{localStorage.setItem(MODE_KEY,'players')}catch(_){}
 const TEAM_KEY='v194-scorer-team';
@@ -320,6 +327,11 @@ function chooseLowerStat(mode){
   return false;
 }
 
+function v945CategoryLogo(id){
+ const src=V945_CATEGORY_LOGOS[String(id)]||'./assets/liga-logo.webp';
+ return '<span class="v945-cat-logo"><img src="'+esc(src)+'" alt="'+esc(catName(id))+'" loading="eager" decoding="async"></span>';
+}
+
 function v931ScorerIcon(name){
  const p={
   category:'<path d="M12 3 20 6v6c0 5-3 8-8 10-5-2-8-5-8-10V6l8-3Z"/><path d="M8 10h8M8 14h5"/>',
@@ -335,7 +347,7 @@ function categoryStrip(){
   return '<section class="v391-category-wrap v472-unified-controls v934-scorer-controls" aria-label="Filtros del ranking">'+
     '<span class="v391-category-label">CLASIFICAR POR CATEGORÍA</span>'+
     '<div class="v391-category-strip v934-category-grid">'+CAT_ORDER.map(id=>
-      '<button type="button" class="v934-category-button '+(id===active?'active':'')+'" data-v194-cat="'+id+'" aria-pressed="'+(id===active?'true':'false')+'"><span class="v931-filter-icon">'+v931ScorerIcon('category')+'</span><b>'+esc(catName(id))+'</b></button>'
+      '<button type="button" class="v934-category-button '+(id===active?'active':'')+'" data-v194-cat="'+id+'" aria-pressed="'+(id===active?'true':'false')+'">'+v945CategoryLogo(id)+'<b>'+esc(catName(id))+'</b></button>'
     ).join('')+'</div>'+
     '<div class="v391-stat-strip v934-stat-grid" aria-label="Estadística del ranking">'+
       '<button type="button" class="v934-stat-button '+(stat==='goals'?'active':'')+'" data-v462-stat="goals" aria-pressed="'+(stat==='goals'?'true':'false')+'"><span class="v931-filter-icon">'+v931ScorerIcon('goals')+'</span><b>Goles</b></button>'+
