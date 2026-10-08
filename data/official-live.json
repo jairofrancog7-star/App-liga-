@@ -804,20 +804,20 @@
               "vs",
               "-",
               "BOCA JRS",
-              "Campo 3",
-              "10/10/2026 15:30",
+              "",
+              "10/10/2026",
               "---"
             ],
             [
               "23",
               "8",
-              "LA ESPERANZA",
+              "MANCHESTER",
               "-",
               "vs",
               "-",
-              "MANCHESTER",
+              "LA ESPERANZA",
               "Campo 1 (Empastado)",
-              "10/10/2026 15:30",
+              "10/10/2026 15:00",
               "---"
             ],
             [
@@ -829,7 +829,7 @@
               "-",
               "DYNAMO",
               "Campo 1 (Empastado)",
-              "10/10/2026 17:00",
+              "10/10/2026 16:30",
               "---"
             ],
             [
@@ -2677,7 +2677,17 @@
         50,
         51
       ],
-      "public_player_count_scraped": 118
+      "public_player_count_scraped": 118,
+      "fixture_decisions": {
+        "22": {
+          "winner": "BOAVISTA",
+          "label": "GANA BOAVISTA",
+          "type": "administrative",
+          "score": null,
+          "source": "Rol de partidos compartido por la Liga",
+          "round": "8"
+        }
+      }
     },
     "2": {
       "id": 2,
@@ -3463,6 +3473,18 @@
               "Campo 4",
               "19/12/2026 17:00",
               "---"
+            ],
+            [
+              "amistoso-huracan-franco-tavera",
+              "AMISTOSO",
+              "HURACAN",
+              "-",
+              "vs",
+              "-",
+              "FRANCO-TAVERA-JR",
+              "Campo 3",
+              "Fecha por confirmar 04:30",
+              "---"
             ]
           ]
         }
@@ -3702,7 +3724,16 @@
       },
       "cedulas": [],
       "cedulas_scanned": [],
-      "public_player_count_scraped": 31
+      "public_player_count_scraped": 31,
+      "fixture_annotations": {
+        "amistoso-huracan-franco-tavera": {
+          "kind": "friendly",
+          "date_confirmed": false,
+          "time_display": "04:30",
+          "team_display": "FRANCO TAVERA",
+          "source": "Rol de partidos compartido por la Liga"
+        }
+      }
     },
     "3": {
       "id": 3,
@@ -4672,23 +4703,23 @@
             [
               "32",
               "7",
-              "GALACTICOS",
+              "LINCES",
               "-",
               "vs",
               "-",
-              "LINCES",
-              "Pozos",
-              "04/10/2026 09:00",
+              "GALACTICOS",
+              "",
+              "04/10/2026",
               "---"
             ],
             [
               "33",
               "7",
-              "ABEJAS",
+              "HERRERAS FC",
               "-",
               "vs",
               "-",
-              "HERRERAS FC",
+              "ABEJAS",
               "Pozos",
               "04/10/2026 10:00",
               "---"
@@ -4708,11 +4739,11 @@
             [
               "35",
               "7",
-              "SAN JOSE FC",
+              "FRANCO FC",
               "-",
               "vs",
               "-",
-              "FRANCO FC",
+              "SAN JOSE FC",
               "San Jose  de la Montaña",
               "04/10/2026 12:00",
               "---"
@@ -8714,7 +8745,17 @@
         164,
         165
       ],
-      "public_player_count_scraped": 292
+      "public_player_count_scraped": 292,
+      "fixture_decisions": {
+        "32": {
+          "winner": "LINCES",
+          "label": "GANA LINCES",
+          "type": "administrative",
+          "score": null,
+          "source": "Rol de partidos compartido por la Liga",
+          "round": "7"
+        }
+      }
     },
     "4": {
       "id": 4,
@@ -9908,11 +9949,11 @@
             [
               "37",
               "7",
-              "PACHANGAS FC",
+              "TAPATIO",
               "-",
               "vs",
               "-",
-              "TAPATIO",
+              "PACHANGAS FC",
               "Campo 2",
               "04/10/2026 08:00",
               "---"
@@ -9920,11 +9961,11 @@
             [
               "38",
               "7",
-              "SAN JOSE JRS",
+              "SAN JUAN FC",
               "-",
               "vs",
               "-",
-              "SAN JUAN FC",
+              "SAN JOSE JRS",
               "San Jose  de la Montaña",
               "04/10/2026 10:00",
               "---"
@@ -9944,11 +9985,11 @@
             [
               "40",
               "7",
-              "DEP. NOPALERO",
+              "SAN ANTONIO FC",
               "-",
               "vs",
               "-",
-              "SAN ANTONIO FC",
+              "DEP. NOPALERO",
               "Campo 2",
               "04/10/2026 10:00",
               "---"
@@ -9956,11 +9997,11 @@
             [
               "41",
               "7",
-              "CELTICOS",
+              "DEP. LA LUZ",
               "-",
               "vs",
               "-",
-              "DEP. LA LUZ",
+              "CELTICOS",
               "Campo 1 (Empastado)",
               "04/10/2026 12:00",
               "---"
@@ -15848,11 +15889,11 @@
             [
               "38",
               "7",
-              "LA CUADRILLA",
+              "MAZACOTES FC",
               "-",
               "vs",
               "-",
-              "MAZACOTES FC",
+              "LA CUADRILLA",
               "Fraccionamiento",
               "04/10/2026 08:00",
               "---"
@@ -15860,11 +15901,11 @@
             [
               "39",
               "7",
-              "SAN ANTONIO JRS",
+              "CAPIBARAS",
               "-",
               "vs",
               "-",
-              "CAPIBARAS",
+              "SAN ANTONIO JRS",
               "Romerillo",
               "04/10/2026 10:00",
               "---"
@@ -15872,11 +15913,11 @@
             [
               "40",
               "7",
-              "MALVINAS",
+              "LA CANCHITA DEPORTES",
               "-",
               "vs",
               "-",
-              "LA CANCHITA DEPORTES",
+              "MALVINAS",
               "Campo 1 (Empastado)",
               "04/10/2026 10:00",
               "---"
@@ -15884,11 +15925,11 @@
             [
               "41",
               "7",
-              "PROMESAS FC",
+              "LA HUERTA",
               "-",
               "vs",
               "-",
-              "LA HUERTA",
+              "PROMESAS FC",
               "Fraccionamiento",
               "04/10/2026 10:00",
               "---"
@@ -20974,5 +21015,22 @@
     "categories": 5
   },
   "veteranos50_synced_at_utc": "2026-10-06T09:23:07Z",
-  "veteranos50_source": "Liga_Futbol/data/official-live.json"
+  "veteranos50_source": "Liga_Futbol/data/official-live.json",
+  "manual_fixture_update": {
+    "source": "Imagen del rol compartida por usuario",
+    "applied_date": "2026-10-07",
+    "categories": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "date_note": "Fechas de Copa obtenidas del calendario existente; el amistoso no indica fecha",
+    "time_note": "Las horas 03:00 y 04:30 de Veteranos 50+ se muestran en formato de tarde (15:00, 16:30).",
+    "unscored_awards": [
+      "1:22",
+      "3:32"
+    ]
+  }
 }
