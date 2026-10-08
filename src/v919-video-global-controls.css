@@ -1,0 +1,52 @@
+/* V919 | Todos los reproductores: iconos blancos sin panel azul, ocultación de 1.5s. */
+html body .ljr-video-player.v918-overlay-player{border:0!important;background:#000!important}
+html body .ljr-video-player.v918-overlay-player .ljr-video-controls{transition:opacity .18s ease,visibility .18s ease!important}
+html body .ljr-video-player.v918-overlay-player:not(.ljr-controls-visible) .ljr-video-controls,
+html body .ljr-video-player.v918-overlay-player:not(.ljr-controls-visible):is(:hover,:focus-within) .ljr-video-controls{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+html body .ljr-video-player.v918-overlay-player.ljr-controls-visible .ljr-video-controls{opacity:1!important;visibility:visible!important}
+html body .ljr-video-player.v918-overlay-player .ljr-video-controls::before{background:linear-gradient(180deg,rgba(0,0,0,.25),transparent 30%,transparent 67%,rgba(0,0,0,.32))!important}
+html body .ljr-video-player.v918-overlay-player .ljr-video-controls button{color:#fff!important;background:rgba(0,0,0,.10)!important;border:1px solid rgba(255,255,255,.20)!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;text-shadow:0 1px 3px rgba(0,0,0,.8);font-size:12px!important}
+html body .ljr-video-player.v918-overlay-player .ljr-video-center button{background:rgba(0,0,0,.12)!important}
+html body .ljr-video-player.v918-overlay-player .ljr-video-center [data-v777-action="play"]{background:rgba(0,0,0,.23)!important;border-color:rgba(255,255,255,.40)!important;box-shadow:none!important}
+html body .ljr-video-player.v918-overlay-player .ljr-video-controls button[aria-pressed="true"]{border-color:rgba(255,255,255,.85)!important;background:rgba(255,255,255,.15)!important}
+html body .ljr-video-player.v918-overlay-player .ljr-video-quick{gap:3px;justify-content:flex-end}
+html body .ljr-video-player.v918-overlay-player .ljr-video-quick button{width:32px!important;min-width:32px!important;height:32px!important;min-height:32px!important}
+html body .ljr-video-player.v918-overlay-player .ljr-video-center{gap:clamp(14px,6vw,36px)}
+html body .ljr-video-player.v918-overlay-player .ljr-video-footer{padding:9px 10px 7px}
+html body .ljr-video-player.v918-overlay-player .ljr-video-actions button{width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important}
+html body .ljr-video-player.v918-overlay-player .ljr-video-actions{margin-top:1px!important}
+html body .ljr-video-player.v918-overlay-player .ljr-video-timeline input[data-seek]{accent-color:#fff}
+html body .ljr-video-player.v918-overlay-player .ljr-video-actions input[data-volume]{accent-color:#fff}
+html body .ljr-video-player.v918-overlay-player .v919-video-menu[hidden]{display:none!important}
+html body .ljr-video-player.v918-overlay-player .v919-video-menu:not([hidden]){position:absolute;top:46px;right:9px;z-index:5;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;max-width:min(275px,calc(100% - 18px));padding:8px;border:1px solid rgba(255,255,255,.25);border-radius:14px;background:rgba(0,0,0,.64);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);pointer-events:auto}
+html body .ljr-video-player.v918-overlay-player .v919-video-menu button{display:flex!important;align-items:center;gap:6px;width:auto!important;min-width:0!important;height:38px!important;min-height:38px!important;padding:5px 8px!important;border-radius:8px!important;background:rgba(255,255,255,.07)!important;font-size:10px!important;white-space:nowrap}
+html body .ljr-video-player.v918-overlay-player .v919-video-menu button svg{width:16px;height:16px;flex:none}
+html body .ljr-video-player.v918-overlay-player>video.v919-video-cover{aspect-ratio:16/9!important;object-fit:cover!important}
+html body .ljr-video-player.v918-overlay-player>video.v919-video-mirror{transform:scaleX(-1)}
+html body .ljr-video-player.v918-overlay-player .ljr-video-controls button:focus-visible{outline:2px solid #fff!important;outline-offset:2px}
+html body .v196-frame.v919-stream-frame{position:relative!important;isolation:isolate;overflow:hidden!important}
+html body .v196-frame.v919-stream-frame .v919-stream-controls{position:absolute!important;z-index:4;inset:0!important;display:block!important;width:100%!important;height:100%!important;min-height:0!important;margin:0!important;padding:0!important;background:transparent!important;pointer-events:none;opacity:0;visibility:hidden;transition:opacity .18s ease,visibility .18s ease}
+html body .v196-frame.v919-stream-frame .v919-stream-controls.v919-shown{opacity:1;visibility:visible}
+html body .v196-frame.v919-stream-frame .v919-stream-quick{position:absolute;top:6px;left:5px;right:5px;display:flex;justify-content:flex-end;gap:2px;align-items:center;pointer-events:none}
+html body .v196-frame.v919-stream-frame .v919-stream-center{position:absolute;top:52%;left:50%;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;gap:clamp(12px,5vw,28px);pointer-events:none}
+html body .v196-frame.v919-stream-frame .v919-stream-controls button{display:grid!important;place-items:center!important;position:relative;flex:none;margin:0!important;padding:0!important;width:31px!important;min-width:31px!important;height:31px!important;min-height:31px!important;border:1px solid rgba(255,255,255,.17)!important;border-radius:50%!important;background:rgba(0,0,0,.14)!important;color:#fff!important;box-shadow:none!important;text-shadow:0 1px 3px #000;font:700 12px/1 system-ui,sans-serif!important;pointer-events:auto;touch-action:manipulation}
+html body .v196-frame.v919-stream-frame .v919-stream-controls button:focus-visible{outline:2px solid #fff!important;outline-offset:2px}
+html body .v196-frame.v919-stream-frame .v919-stream-controls button svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+html body .v196-frame.v919-stream-frame .v919-stream-controls [data-action="play"]{width:55px!important;height:55px!important;min-width:55px!important;min-height:55px!important;background:rgba(0,0,0,.22)!important}
+html body .v196-frame.v919-stream-frame .v919-stream-controls [data-action="play"] svg{width:27px;height:27px}
+html body .v196-frame.v919-stream-frame .v919-stream-controls [data-action="zoom"]{display:flex!important;gap:0!important;justify-content:center!important}
+html body .v196-frame.v919-stream-frame .v919-stream-controls [data-zoom-label]{font-size:9px;position:absolute;bottom:-6px;right:-3px;text-shadow:0 1px 4px #000}
+html body .v196-frame.v919-stream-frame .v919-stream-controls button[aria-pressed="true"]{border-color:#fff!important;background:rgba(255,255,255,.16)!important}
+html body .v196-frame.v919-stream-frame .v919-stream-reveal{position:absolute;inset:0;z-index:3;width:100%;height:100%;border:0!important;margin:0!important;padding:0!important;background:transparent!important;opacity:0;cursor:pointer}
+html body .v196-frame.v919-stream-frame .v919-stream-controls.v919-shown~.v919-stream-reveal{pointer-events:none!important;visibility:hidden}
+html body .v196-frame.v919-stream-frame .v919-stream-controls:not(.v919-shown)~.v919-stream-reveal{pointer-events:auto!important;visibility:visible}
+html body.v558-native-pip .v196-frame.v919-stream-frame .v919-stream-controls,
+html body.v558-native-pip .v196-frame.v919-stream-frame .v919-stream-reveal,
+html body.ljr-native-pip .ljr-native-pip-player .v919-stream-controls,
+html body.ljr-native-pip .ljr-native-pip-player .v919-stream-reveal{display:none!important}
+@media (max-width:390px){
+ html body .v196-frame.v919-stream-frame .v919-stream-quick{gap:1px;top:3px;right:3px;left:3px}
+ html body .v196-frame.v919-stream-frame .v919-stream-quick button{width:28px!important;min-width:28px!important;height:28px!important;min-height:28px!important}
+ html body .v196-frame.v919-stream-frame .v919-stream-controls [data-action="play"]{width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important}
+}
+@media(prefers-reduced-motion:reduce){html body .v196-frame.v919-stream-frame .v919-stream-controls,html body .ljr-video-player.v918-overlay-player .ljr-video-controls{transition:none!important}}
