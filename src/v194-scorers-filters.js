@@ -332,15 +332,15 @@ function v931ScorerIcon(name){
 
 function categoryStrip(){
   const active=catId(),stat=lowerStat();
-  return '<section class="v391-category-wrap v472-unified-controls" aria-label="Filtros del ranking">'+
+  return '<section class="v391-category-wrap v472-unified-controls v934-scorer-controls" aria-label="Filtros del ranking">'+
     '<span class="v391-category-label">CLASIFICAR POR CATEGORÍA</span>'+
-    '<div class="v391-category-strip">'+CAT_ORDER.map(id=>
-      '<button type="button" class="'+(id===active?'active':'')+'" data-v194-cat="'+id+'" aria-pressed="'+(id===active?'true':'false')+'"><span class="v931-filter-icon">'+v931ScorerIcon('category')+'</span><b>'+esc(catName(id))+'</b></button>'
+    '<div class="v391-category-strip v934-category-grid">'+CAT_ORDER.map(id=>
+      '<button type="button" class="v934-category-button '+(id===active?'active':'')+'" data-v194-cat="'+id+'" aria-pressed="'+(id===active?'true':'false')+'"><span class="v931-filter-icon">'+v931ScorerIcon('category')+'</span><b>'+esc(catName(id))+'</b></button>'
     ).join('')+'</div>'+
-    '<div class="v391-stat-strip" aria-label="Estadística del ranking">'+
-      '<button type="button" class="'+(stat==='goals'?'active':'')+'" data-v462-stat="goals" aria-pressed="'+(stat==='goals'?'true':'false')+'"><span class="v931-filter-icon">'+v931ScorerIcon('goals')+'</span><b>Goles</b></button>'+
-      '<button type="button" class="'+(stat==='shots'?'active':'')+'" data-v462-stat="shots" aria-pressed="'+(stat==='shots'?'true':'false')+'"><span class="v931-filter-icon">'+v931ScorerIcon('shots')+'</span><b>Remates</b></button>'+
-      '<button type="button" class="'+(stat==='passes'?'active':'')+'" data-v462-stat="passes" aria-pressed="'+(stat==='passes'?'true':'false')+'"><span class="v931-filter-icon">'+v931ScorerIcon('passes')+'</span><b>Pases</b></button>'+
+    '<div class="v391-stat-strip v934-stat-grid" aria-label="Estadística del ranking">'+
+      '<button type="button" class="v934-stat-button '+(stat==='goals'?'active':'')+'" data-v462-stat="goals" aria-pressed="'+(stat==='goals'?'true':'false')+'"><span class="v931-filter-icon">'+v931ScorerIcon('goals')+'</span><b>Goles</b></button>'+
+      '<button type="button" class="v934-stat-button '+(stat==='shots'?'active':'')+'" data-v462-stat="shots" aria-pressed="'+(stat==='shots'?'true':'false')+'"><span class="v931-filter-icon">'+v931ScorerIcon('shots')+'</span><b>Remates</b></button>'+
+      '<button type="button" class="v934-stat-button '+(stat==='passes'?'active':'')+'" data-v462-stat="passes" aria-pressed="'+(stat==='passes'?'true':'false')+'"><span class="v931-filter-icon">'+v931ScorerIcon('passes')+'</span><b>Pases</b></button>'+
     '</div>'+
   '</section>';
 }
