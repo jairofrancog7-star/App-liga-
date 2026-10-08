@@ -1,0 +1,213 @@
+/* V977 — controles unificados: archivo, portada de inicio y otros videos HTML5.
+   Encapsulados para no modificar navegación, cámaras, transmisiones externas ni tarjetas. */
+.v977-player{
+  position:relative!important;
+  display:block!important;
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-width:0!important;
+  aspect-ratio:16/9;
+  overflow:hidden!important;
+  isolation:isolate;
+  background:#030923;
+  color:#fff;
+  border:0;
+  border-radius:inherit;
+}
+.v977-player>video{
+  display:block!important;
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  object-fit:contain!important;
+  background:#030923!important;
+}
+.v977-player.v977-cover>video{object-fit:cover!important}
+.v977-player.v977-mirror>video{transform:scaleX(-1)!important}
+.v977-player .v977-controls{
+  box-sizing:border-box!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:8!important;
+  pointer-events:none;
+  color:#fff!important;
+  font:600 12px/1.15 Inter,Roboto,Arial,sans-serif;
+  background:linear-gradient(to bottom,rgba(0,0,0,.48),transparent 34%,transparent 52%,rgba(0,0,0,.6));
+  opacity:0;
+  transition:opacity .18s ease;
+}
+.v977-player.v977-visible .v977-controls,
+.v977-player.v977-paused .v977-controls,
+.v977-player:focus-within .v977-controls{opacity:1}
+.v977-player .v977-top{
+  position:absolute!important;top:8px;left:8px;right:8px;
+  z-index:2;display:flex!important;align-items:center;justify-content:space-between;
+  gap:3px;pointer-events:none;
+}
+.v977-player .v977-middle{
+  position:absolute!important;
+  inset:0;
+  display:flex!important;align-items:center;justify-content:center;
+  gap:clamp(8px,5vw,26px);
+  pointer-events:none;
+}
+.v977-player .v977-bottom{
+  position:absolute!important;
+  left:8px;right:8px;bottom:8px;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto;
+  column-gap:9px;row-gap:5px;
+  align-items:center;
+  pointer-events:none;
+}
+.v977-player .v977-timeline{
+  min-width:0;
+  display:flex!important;align-items:center;gap:6px;
+  font-size:11px;font-weight:700;
+  font-variant-numeric:tabular-nums;
+  text-shadow:0 1px 2px #000;
+}
+.v977-player .v977-timeline span{flex:none;white-space:nowrap}
+.v977-player .v977-audio{
+  display:flex!important;align-items:center;gap:3px;
+}
+.v977-player .v977-controls button{
+  flex:none!important;
+  display:grid!important;
+  box-sizing:border-box!important;
+  place-items:center!important;
+  min-width:30px!important;min-height:30px!important;
+  width:30px!important;height:30px!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:4px!important;
+  border:0!important;
+  border-radius:8px!important;
+  background:rgba(0,0,0,.15)!important;
+  box-shadow:none!important;
+  color:#fff!important;
+  text-decoration:none!important;
+  line-height:1!important;
+  font-size:12px!important;
+  font-weight:800!important;
+  cursor:pointer;
+  pointer-events:auto;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+.v977-player .v977-controls button svg{
+  width:22px!important;height:22px!important;
+  fill:none;stroke:currentColor;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round;
+  flex:none;
+}
+.v977-player .v977-middle button{width:39px!important;height:39px!important;background:rgba(0,0,0,.2)!important}
+.v977-player .v977-middle button[data-v977-action="play"]{
+  width:58px!important;height:58px!important;
+  border-radius:50%!important;
+  background:rgba(237,242,247,.83)!important;
+  color:#111!important;
+}
+.v977-player .v977-middle button[data-v977-action="play"] svg{width:32px!important;height:32px!important}
+.v977-player .v977-controls button:focus-visible,
+.v977-player .v977-controls input:focus-visible{
+  outline:2px solid #48e7f6!important;outline-offset:2px!important;
+}
+.v977-player .v977-controls button[aria-pressed="true"]{
+  background:rgba(0,197,235,.45)!important;
+}
+.v977-player .v977-controls input[type="range"]{
+  display:block!important;
+  position:relative!important;
+  box-sizing:border-box!important;
+  appearance:auto!important;
+  -webkit-appearance:auto!important;
+  background:transparent!important;
+  accent-color:#fff!important;
+  height:21px!important;
+  min-height:21px!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  box-shadow:none!important;
+  pointer-events:auto;
+  touch-action:pan-y;
+  cursor:pointer;
+}
+.v977-player .v977-timeline input{width:100%!important;min-width:16px!important;flex:1!important}
+.v977-player .v977-audio input{width:clamp(37px,9vw,73px)!important;flex:none!important}
+.v977-player .v977-menu{
+  position:absolute!important;z-index:9!important;
+  top:42px;right:8px;width:min(210px,72%)!important;
+  display:grid!important;gap:4px!important;
+  padding:7px!important;margin:0!important;
+  border:1px solid rgba(127,208,245,.5)!important;
+  border-radius:12px!important;
+  background:rgba(5,16,55,.96)!important;
+  box-shadow:0 8px 22px rgba(0,0,0,.5)!important;
+  pointer-events:auto;
+}
+.v977-player .v977-menu[hidden],
+.v977-player .v977-status[hidden]{display:none!important}
+.v977-player .v977-menu button{
+  display:block!important;text-align:left!important;
+  width:100%!important;max-width:none!important;
+  height:auto!important;min-height:32px!important;
+  font-size:12px!important;padding:8px 9px!important;
+  background:rgba(60,100,170,.2)!important;
+}
+.v977-player .v977-status{
+  position:absolute!important;z-index:10!important;
+  left:12px;right:12px;bottom:53px;
+  padding:8px!important;border-radius:8px!important;
+  background:rgba(0,10,43,.88)!important;
+  color:#fff!important;font-size:11px!important;
+  text-align:center!important;pointer-events:none;
+}
+/* Conserva la proporción de la portada vertical de inicio. */
+.v105-final .v977-player{aspect-ratio:4/5!important;max-height:min(76vh,660px)!important}
+.v105-final .v977-player>video{object-fit:contain!important}
+/* Conserva exactamente el tamaño compacto de las tarjetas del archivo de videos. */
+.v105-video-card>.v977-player{
+  width:100%!important;
+  aspect-ratio:16/9!important;
+  border-radius:0!important;
+}
+html body[data-app-route="video"] #v105-bottom[data-v105-route="video"] .v105-video-card>.v977-player{
+  height:clamp(146px,42vw,183px)!important;
+  max-height:183px!important;
+}
+.v105-video-card.v977-ready>.v941-tv-play{display:none!important}
+/* Videos pequeños de Momentos: controles proporcionales, sin tapar textos. */
+.v26-reference-video .v977-player{
+  height:104px!important;
+  aspect-ratio:auto!important;
+}
+.v26-reference-video .v977-top{top:3px;left:4px;right:4px}
+.v26-reference-video .v977-top button{width:23px!important;height:23px!important;min-width:23px!important;min-height:23px!important;padding:3px!important}
+.v26-reference-video .v977-top button svg{width:17px!important;height:17px!important}
+.v26-reference-video .v977-middle button{width:25px!important;height:25px!important;min-height:25px!important}
+.v26-reference-video .v977-middle button[data-v977-action="play"]{width:32px!important;height:32px!important}
+.v26-reference-video .v977-middle button svg,
+.v26-reference-video .v977-middle button[data-v977-action="play"] svg{width:18px!important;height:18px!important}
+.v26-reference-video .v977-bottom{left:4px;right:4px;bottom:1px;gap:3px}
+.v26-reference-video .v977-timeline{font-size:9px;gap:3px}
+.v26-reference-video .v977-audio input{display:none!important}
+.v26-reference-video .v977-audio button{width:22px!important;height:22px!important;min-width:22px!important;min-height:22px!important}
+.v977-player:fullscreen{width:100vw!important;height:100dvh!important;max-height:none!important;aspect-ratio:auto!important;border-radius:0!important}
+.v977-player:fullscreen>video{object-fit:contain!important}
+@media(max-width:400px){
+ .v977-player .v977-top button{width:27px!important;height:27px!important;min-width:27px!important;min-height:27px!important;padding:3px!important}
+ .v977-player .v977-top button svg{width:19px!important;height:19px!important}
+ .v977-player .v977-middle button[data-v977-action="play"]{width:48px!important;height:48px!important}
+ .v977-player .v977-middle button[data-v977-action="play"] svg{width:27px!important;height:27px!important}
+ .v977-player .v977-bottom{left:6px;right:6px;bottom:5px;column-gap:4px}
+ .v977-player .v977-timeline{gap:4px;font-size:10px}
+ .v977-player .v977-audio input{width:37px!important}
+}
+@media(prefers-reduced-motion:reduce){.v977-player .v977-controls{transition:none}}
