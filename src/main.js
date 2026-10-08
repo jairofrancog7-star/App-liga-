@@ -6614,7 +6614,14 @@ function render(){
      antes de pintar la vista para que se apliquen sus estilos desde el primer frame. */
   document.body.dataset.appRoute=state.route;
 
-  screen.innerHTML=views[state.route]?views[state.route]():views.home();
+  /* V929: reference-driven pages mount asynchronously. Showing Home beneath
+     their official artwork causes a visible flash of the wrong design. */
+  const moduleRoutes=new Set(['v4-calendar','v4-matchcenter','v4-discipline',
+    'calendar','monthlyCalendar','calendarMonthly','whereToWatch','safe-about',
+    'safe-data','safe-performance','v38About','v38Home']);
+  const delegated=moduleRoutes.has(state.route)||state.route.startsWith('v4-');
+  screen.innerHTML=views[state.route]?views[state.route]():
+    (delegated?'<div data-ljr-reference-mount aria-hidden="true"></div>':views.home());
   bind();
   window.LJR_NAVIGATION?.rendered?.();
   setTimeout(bindV553Weekly,0);
@@ -6623,6 +6630,7 @@ function go(route,push=true){
   if(route==='quiz')route='quizArena';
   const page=String(route).split('?')[0];
   if(push&&state.route!==page)state.history.push(state.route);
+  if(page!==state.route)window.LJR_VISUAL_STABILITY?.begin?.('#/'+route);
   window.LJR_NAVIGATION?.leaving?.(route,push);
   state.route=page;location.hash='#/'+route;render();
 }
