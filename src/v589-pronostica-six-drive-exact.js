@@ -224,7 +224,8 @@ function savedText(id){
 function card(g,i){
   const saved=savedText(g.id);
   return '<article class="v589-match-card" data-v589-card="'+g.id+'">'+
-    '<small class="v871-game-category">'+esc(({'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'})[g.cid])+'</small><div class="v589-card-head"><button type="button" data-v589-info aria-label="Cómo conseguir puntos">ⓘ</button><b>'+esc(fixtureDate(g))+', '+esc(g.time)+'</b><button type="button" class="v851-card-form" data-v851-card-form="'+g.id+'" aria-label="Ver últimos 5 partidos"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M6 21V13M14 21V7M22 21V11"/></svg></button></div>'+
+    '<div class="v958-game-number" aria-hidden="true"><span>PARTIDO</span><b>'+String((Number(i)||0)+1)+'</b></div>'+
+    '<small class="v871-game-category">'+esc(({'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'})[g.cid])+'</small><div class="v589-card-head"><button type="button" data-v589-info aria-label="Cómo conseguir puntos"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 10v6M12 7h.01"/></svg></button><b>'+esc(fixtureDate(g))+', '+esc(g.time)+'</b><button type="button" class="v851-card-form" data-v851-card-form="'+g.id+'" aria-label="Ver últimos 5 partidos"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M6 21V13M14 21V7M22 21V11"/></svg></button></div>'+
     '<div class="v589-teams">'+
       '<div class="v589-team">'+logo(g.homeLogo,g.home)+'<b>'+esc(g.home)+'</b></div>'+
       '<button type="button" class="v589-score-pair" data-v589-open="'+g.id+'" aria-label="Pronosticar '+esc(g.home)+' contra '+esc(g.away)+'">'+
@@ -239,10 +240,19 @@ function card(g,i){
 function predictions(){
   refreshGames();
   const date=games[0]?fixtureDate(games[0]):'Partidos por publicar';
+  const savedCount=games.filter(g=>savedText(g.id)).length;
+  const activeRound=journeys[ui.journey-1]?.round||'—';
+  const leagueIcon='<img src="'+LEAGUE+'" alt="Liga Juventino Rosas">';
+  const target=Math.max(6,games.length||0);
   return '<section class="v589-page predictions" data-v589-root>'+top('Pronósticos',true)+
     bottomSwitch('predictions')+sponsor()+
+    '<section class="v958-game-hero">'+
+      '<div class="v958-game-brand">'+leagueIcon+'<div><small>JUEGO OFICIAL · LIGA JUVENTINO</small><h2>Pronostica Seis</h2><p>Elige seis marcadores y compite por puntos.</p></div></div>'+
+      '<div class="v958-game-progress"><div><span>Jornada '+esc(activeRound)+'</span><strong>'+savedCount+' / '+target+'</strong></div><i><b style="width:'+Math.min(100,(savedCount/Math.max(1,target))*100)+'%"></b></i></div>'+
+      '<div class="v958-game-actions"><button type="button" data-v589-points><span>★</span>Cómo puntúa</button><button type="button" data-v589-rules><span>☰</span>Reglas</button></div>'+
+    '</section>'+
     '<nav class="v589-journeys">'+journeys.map((j,i)=>{const n=i+1;return '<button type="button" data-v589-journey="'+n+'" class="'+(ui.journey===n?'active':'')+'">Jornada '+esc(j.round)+'</button>'}).join('')+'</nav>'+
-    '<main class="v589-list"><h2>'+date+'</h2>'+games.map(card).join('')+(games.length<6?'<p>Hay '+games.length+' de 6 partidos publicados para esta fecha. Se completarán al publicarse el calendario.</p>':'')+'</main>'+
+    '<main class="v589-list"><div class="v958-list-head"><div><small>PARTIDOS SELECCIONADOS</small><h2>'+date+'</h2></div><span>'+games.length+' juegos</span></div>'+games.map(card).join('')+(games.length<6?'<p class="v958-incomplete">Hay '+games.length+' de 6 partidos publicados para esta fecha. Se completarán al publicarse el calendario.</p>':'')+'</main>'+
     (ui.menu?menuHtml():'')+
   '</section>';
 }
