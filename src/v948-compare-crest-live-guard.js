@@ -50,6 +50,8 @@ function sources(team){
 function replace(holder,team){
  if(!team||!holder.isConnected)return;
  const key=norm(team),list=sources(team);
+ // Do not retry known failing URLs on every MutationObserver callback.
+ if(holder.dataset.v948Team===key&&holder.dataset.v948LogoUnavailable==='true')return;
  // No image loading cycle: the emblem remains in place on every scan.
  const existing=holder.querySelector('img[data-v948-team]');
  if(existing?.dataset.v948Team===key)return;
@@ -62,6 +64,8 @@ function replace(holder,team){
   ab.className='v946-crest-initials';
   ab.textContent=initials(team);
   holder.append(ab);
+  holder.dataset.v948Team=key;
+  holder.dataset.v948LogoUnavailable='true';
   return;
  }
  const img=document.createElement('img');
@@ -89,6 +93,7 @@ function replace(holder,team){
  holder.replaceChildren(img);
  holder.classList.add('v946-team-crest');
  holder.dataset.v948Team=key;
+ delete holder.dataset.v948LogoUnavailable;
  img.src=list[0];
 }
 let scheduled=false;
