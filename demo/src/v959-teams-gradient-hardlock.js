@@ -1,29 +1,28 @@
-/* V961 — Un solo azul uniforme en Equipos; elimina el degradado anterior.
-   Sólo toca fondos de #/teams. No mueve/oculta letras, logos o controles. */
+/* V962 — Retirar los fondos inline de versiones V959-V961.
+   El CSS V962 es la única fuente del degradado. Sólo ruta Equipos. */
 (function(){
   'use strict';
-  if(window.__LJR_V959_TEAMS_GRADIENT__)return;
-  window.__LJR_V959_TEAMS_GRADIENT__=true;
-  var PAGE='#1938b5';
-  var HEADER='#1938b5';
-  function active(){
+  if(window.__LJR_V962_TEAMS_GRADIENT__)return;
+  window.__LJR_V962_TEAMS_GRADIENT__=true;
+
+  function routeIsTeams(){
     var hash=String(location.hash||'');
-    var current=(hash.indexOf('#/')===0?hash.slice(2):hash.replace(/^#/,'' )).split('?')[0];
-    return current==='teams' || (document.body && document.body.dataset.appRoute==='teams');
+    var route=(hash.indexOf('#/')===0?hash.slice(2):hash.replace(/^#/,'')).split('?')[0];
+    return route==='teams' || (document.body && document.body.dataset.appRoute==='teams');
   }
-  function set(el,name,value){
-    if(el && el.style.getPropertyValue(name)!==value)el.style.setProperty(name,value,'important');
+  function releaseBackground(el){
+    if(!el)return;
+    ['background','background-color','background-image','background-attachment',
+     'background-position','background-size','background-repeat'].forEach(function(prop){
+      if(el.style.getPropertyValue(prop))el.style.removeProperty(prop);
+    });
   }
   function apply(){
-    if(!active())return;
+    if(!routeIsTeams())return;
     var page=document.querySelector('#screen .v27-teams-page');
-    var header=page&&page.querySelector(':scope > .v27-teams-head');
-    if(!header)return;
-    set(page,'background',PAGE);
-    set(header,'background',HEADER);
-    set(header,'background-color','#1938b5');
-    set(header,'border-bottom','0');
-    set(header,'box-shadow','none');
+    if(!page)return;
+    releaseBackground(page);
+    releaseBackground(page.querySelector(':scope > .v27-teams-head'));
   }
   var pending=false;
   function queue(){

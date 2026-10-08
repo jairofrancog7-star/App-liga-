@@ -11,7 +11,7 @@
   "categories": {
     "Veteranos 35+": {
       "scope": "Categoría por edad",
-      "current_phase": "Jornada 1 · 10/10/2026",
+      "current_phase": "Jornada 1 · 17/10/2026",
       "teams": [
         "BOAVISTA",
         "FRANCO-TAVERA-JR",
@@ -22,7 +22,8 @@
         "JUVENTUS",
         "LEYENDAS FC",
         "PSV",
-        "LA TRINIDAD"
+        "LA TRINIDAD",
+        "POZOS FC"
       ],
       "standings": [
         {
@@ -152,37 +153,40 @@
           {
             "home": "BOAVISTA",
             "away": "FRANCO-TAVERA-JR",
+            "date": "2026-10-17",
             "time": "00:00",
-            "field": "Campo 1 (Empastado)",
-            "date": "2026-10-10"
-          },
-          {
-            "home": "HURACAN",
-            "away": "CUENDA",
-            "time": "15:30",
-            "field": "Campo 4",
-            "date": "2026-10-10"
-          },
-          {
-            "home": "AMERICA",
-            "away": "AGUILARES",
-            "time": "15:30",
-            "field": "Fraccionamiento",
-            "date": "2026-10-10"
+            "field": "Campo 1 (Empastado)"
           },
           {
             "home": "JUVENTUS",
             "away": "LEYENDAS FC",
+            "date": "2026-10-17",
             "time": "15:30",
-            "field": "Campo 3",
-            "date": "2026-10-10"
+            "field": "Campo 3"
+          },
+          {
+            "home": "HURACAN",
+            "away": "CUENDA",
+            "date": "2026-10-17",
+            "time": "15:30",
+            "field": "Campo 4"
+          },
+          {
+            "home": "AMERICA",
+            "away": "AGUILARES",
+            "date": "2026-10-17",
+            "time": "15:30",
+            "field": "Fraccionamiento"
           },
           {
             "home": "PSV",
             "away": "LA TRINIDAD",
+            "date": "2026-10-17",
             "time": "17:00",
-            "field": "Campo 4",
-            "date": "2026-10-10"
+            "field": "Campo 4"
+          },
+          {
+            "rest": "POZOS FC"
           }
         ],
         "AMISTOSO": [
@@ -193,9 +197,409 @@
             "field": "Campo 3",
             "date_confirmed": false
           }
+        ],
+        "J2": [
+          {
+            "home": "LEYENDAS FC",
+            "away": "POZOS FC",
+            "date": "2026-10-24",
+            "time": "15:30",
+            "field": "San Jose de la Montaña"
+          },
+          {
+            "home": "FRANCO-TAVERA-JR",
+            "away": "PSV",
+            "date": "2026-10-24",
+            "time": "15:30",
+            "field": "Campo 2"
+          },
+          {
+            "home": "HURACAN",
+            "away": "BOAVISTA",
+            "date": "2026-10-24",
+            "time": "15:30",
+            "field": "Fraccionamiento"
+          },
+          {
+            "home": "AGUILARES",
+            "away": "JUVENTUS",
+            "date": "2026-10-24",
+            "time": "17:00",
+            "field": "AGUILARES"
+          },
+          {
+            "home": "CUENDA",
+            "away": "AMERICA",
+            "date": "2026-10-24",
+            "time": "17:00",
+            "field": "Cuenda"
+          },
+          {
+            "rest": "LA TRINIDAD"
+          }
+        ],
+        "J3": [
+          {
+            "home": "JUVENTUS",
+            "away": "CUENDA",
+            "date": "2026-10-31",
+            "time": "15:30",
+            "field": "Campo 2"
+          },
+          {
+            "home": "AMERICA",
+            "away": "BOAVISTA",
+            "date": "2026-10-31",
+            "time": "15:30",
+            "field": "Campo 3"
+          },
+          {
+            "home": "POZOS FC",
+            "away": "LA TRINIDAD",
+            "date": "2026-10-31",
+            "time": "15:30",
+            "field": "Pozos"
+          },
+          {
+            "home": "PSV",
+            "away": "HURACAN",
+            "date": "2026-10-31",
+            "time": "17:00",
+            "field": "Campo 1 (Empastado)"
+          },
+          {
+            "home": "LEYENDAS FC",
+            "away": "AGUILARES",
+            "date": "2026-10-31",
+            "time": "17:00",
+            "field": "San Jose de la Montaña"
+          },
+          {
+            "rest": "FRANCO-TAVERA-JR"
+          }
+        ],
+        "J4": [
+          {
+            "home": "CUENDA",
+            "away": "LEYENDAS FC",
+            "date": "2026-11-07",
+            "time": "15:30",
+            "field": "Cuenda"
+          },
+          {
+            "home": "AMERICA",
+            "away": "PSV",
+            "date": "2026-11-07",
+            "time": "15:30",
+            "field": "Campo 2"
+          },
+          {
+            "home": "AGUILARES",
+            "away": "POZOS FC",
+            "date": "2026-11-07",
+            "time": "15:30",
+            "field": "AGUILARES"
+          },
+          {
+            "home": "FRANCO-TAVERA-JR",
+            "away": "LA TRINIDAD",
+            "date": "2026-11-07",
+            "time": "17:00",
+            "field": "Campo 3"
+          },
+          {
+            "home": "BOAVISTA",
+            "away": "JUVENTUS",
+            "date": "2026-11-07",
+            "time": "17:00",
+            "field": "Campo 4"
+          },
+          {
+            "rest": "HURACAN"
+          }
+        ],
+        "J5": [
+          {
+            "home": "LA TRINIDAD",
+            "away": "HURACAN",
+            "date": "2026-11-14",
+            "time": "15:30",
+            "field": "La Trinidad"
+          },
+          {
+            "home": "JUVENTUS",
+            "away": "PSV",
+            "date": "2026-11-14",
+            "time": "15:30",
+            "field": "Fraccionamiento"
+          },
+          {
+            "home": "POZOS FC",
+            "away": "FRANCO-TAVERA-JR",
+            "date": "2026-11-14",
+            "time": "15:30",
+            "field": "Pozos"
+          },
+          {
+            "home": "LEYENDAS FC",
+            "away": "BOAVISTA",
+            "date": "2026-11-14",
+            "time": "17:00",
+            "field": "San Jose de la Montaña"
+          },
+          {
+            "home": "AGUILARES",
+            "away": "CUENDA",
+            "date": "2026-11-14",
+            "time": "17:00",
+            "field": "AGUILARES"
+          },
+          {
+            "rest": "AMERICA"
+          }
+        ],
+        "J6": [
+          {
+            "home": "PSV",
+            "away": "LEYENDAS FC",
+            "date": "2026-11-21",
+            "time": "15:30",
+            "field": "Fraccionamiento"
+          },
+          {
+            "home": "CUENDA",
+            "away": "POZOS FC",
+            "date": "2026-11-21",
+            "time": "15:30",
+            "field": "Cuenda"
+          },
+          {
+            "home": "BOAVISTA",
+            "away": "AGUILARES",
+            "date": "2026-11-21",
+            "time": "15:30",
+            "field": "Campo 4"
+          },
+          {
+            "home": "AMERICA",
+            "away": "LA TRINIDAD",
+            "date": "2026-11-21",
+            "time": "17:00",
+            "field": "Campo 1 (Empastado)"
+          },
+          {
+            "home": "HURACAN",
+            "away": "FRANCO-TAVERA-JR",
+            "date": "2026-11-21",
+            "time": "17:00",
+            "field": "Campo 3"
+          },
+          {
+            "rest": "JUVENTUS"
+          }
+        ],
+        "J7": [
+          {
+            "home": "LA TRINIDAD",
+            "away": "JUVENTUS",
+            "date": "2026-11-28",
+            "time": "15:30",
+            "field": "La Trinidad"
+          },
+          {
+            "home": "POZOS FC",
+            "away": "HURACAN",
+            "date": "2026-11-28",
+            "time": "15:30",
+            "field": "Pozos"
+          },
+          {
+            "home": "FRANCO-TAVERA-JR",
+            "away": "AMERICA",
+            "date": "2026-11-28",
+            "time": "15:30",
+            "field": "Campo 4"
+          },
+          {
+            "home": "CUENDA",
+            "away": "BOAVISTA",
+            "date": "2026-11-28",
+            "time": "17:00",
+            "field": "Cuenda"
+          },
+          {
+            "home": "AGUILARES",
+            "away": "PSV",
+            "date": "2026-11-28",
+            "time": "17:00",
+            "field": "AGUILARES"
+          },
+          {
+            "rest": "LEYENDAS FC"
+          }
+        ],
+        "J8": [
+          {
+            "home": "BOAVISTA",
+            "away": "POZOS FC",
+            "date": "2026-12-05",
+            "time": "15:30",
+            "field": "Campo 2"
+          },
+          {
+            "home": "LEYENDAS FC",
+            "away": "LA TRINIDAD",
+            "date": "2026-12-05",
+            "time": "15:30",
+            "field": "San Jose de la Montaña"
+          },
+          {
+            "home": "PSV",
+            "away": "CUENDA",
+            "date": "2026-12-05",
+            "time": "15:30",
+            "field": "Campo 1 (Empastado)"
+          },
+          {
+            "home": "AMERICA",
+            "away": "HURACAN",
+            "date": "2026-12-05",
+            "time": "17:00",
+            "field": "Campo 3"
+          },
+          {
+            "home": "JUVENTUS",
+            "away": "FRANCO-TAVERA-JR",
+            "date": "2026-12-05",
+            "time": "17:00",
+            "field": "Campo 4"
+          },
+          {
+            "rest": "AGUILARES"
+          }
+        ],
+        "J9": [
+          {
+            "home": "HURACAN",
+            "away": "JUVENTUS",
+            "date": "2026-12-12",
+            "time": "15:30",
+            "field": "Fraccionamiento"
+          },
+          {
+            "home": "POZOS FC",
+            "away": "AMERICA",
+            "date": "2026-12-12",
+            "time": "15:30",
+            "field": "Pozos"
+          },
+          {
+            "home": "AGUILARES",
+            "away": "LA TRINIDAD",
+            "date": "2026-12-12",
+            "time": "15:30",
+            "field": "AGUILARES"
+          },
+          {
+            "home": "BOAVISTA",
+            "away": "PSV",
+            "date": "2026-12-12",
+            "time": "17:00",
+            "field": "Campo 2"
+          },
+          {
+            "home": "FRANCO-TAVERA-JR",
+            "away": "LEYENDAS FC",
+            "date": "2026-12-12",
+            "time": "17:00",
+            "field": "Campo 1 (Empastado)"
+          },
+          {
+            "rest": "CUENDA"
+          }
+        ],
+        "J10": [
+          {
+            "home": "PSV",
+            "away": "POZOS FC",
+            "date": "2026-12-19",
+            "time": "15:30",
+            "field": "Campo 3"
+          },
+          {
+            "home": "LEYENDAS FC",
+            "away": "HURACAN",
+            "date": "2026-12-19",
+            "time": "15:30",
+            "field": "San Jose de la Montaña"
+          },
+          {
+            "home": "AGUILARES",
+            "away": "FRANCO-TAVERA-JR",
+            "date": "2026-12-19",
+            "time": "15:30",
+            "field": "AGUILARES"
+          },
+          {
+            "home": "JUVENTUS",
+            "away": "AMERICA",
+            "date": "2026-12-19",
+            "time": "17:00",
+            "field": "Campo 2"
+          },
+          {
+            "home": "LA TRINIDAD",
+            "away": "CUENDA",
+            "date": "2026-12-19",
+            "time": "17:00",
+            "field": "La Trinidad"
+          },
+          {
+            "rest": "BOAVISTA"
+          }
+        ],
+        "J11": [
+          {
+            "home": "BOAVISTA",
+            "away": "LA TRINIDAD",
+            "date": "2026-12-26",
+            "time": "15:30",
+            "field": "Campo 3"
+          },
+          {
+            "home": "CUENDA",
+            "away": "FRANCO-TAVERA-JR",
+            "date": "2026-12-26",
+            "time": "15:30",
+            "field": "Cuenda"
+          },
+          {
+            "home": "POZOS FC",
+            "away": "JUVENTUS",
+            "date": "2026-12-26",
+            "time": "15:30",
+            "field": "Pozos"
+          },
+          {
+            "home": "AMERICA",
+            "away": "LEYENDAS FC",
+            "date": "2026-12-26",
+            "time": "17:00",
+            "field": "Campo 4"
+          },
+          {
+            "home": "HURACAN",
+            "away": "AGUILARES",
+            "date": "2026-12-26",
+            "time": "17:00",
+            "field": "Campo 2"
+          },
+          {
+            "rest": "PSV"
+          }
         ]
       },
-      "source_page": "https://www.juventinorosasliga.com/?categoria=2",
+      "source_page": "https://www.juventinorosasliga.com/reportes/jornadas/completo/?temporada=6",
       "updated_at_utc": "2026-10-08T00:23:45Z"
     },
     "Veteranos 50+": {
@@ -2108,49 +2512,54 @@
         ],
         "J6": [
           {
-            "home": "Pachangas FC",
-            "away": "Dep. Nopalero",
+            "home": "SAN JULIAN",
+            "away": "SAN JUAN FC",
+            "date": "2026-09-27",
             "time": "08:00",
-            "field": "2",
-            "status": "Finalizado",
-            "score": "4-7",
-            "date": "2026-09-27"
-          },
-          {
-            "home": "Dep. Zapata",
-            "away": "San Antonio FC",
-            "time": "12:00",
-            "field": "1",
-            "status": "Finalizado",
-            "score": "2-5",
-            "date": "2026-09-27"
-          },
-          {
-            "home": "Célticos FC",
-            "away": "Barza",
-            "time": "12:00",
-            "field": "3",
+            "field": "San Juan de la Cruz",
             "status": "Jugado"
           },
           {
-            "home": "San José Jrs",
-            "away": "Dep. La Luz",
+            "home": "PACHANGAS FC",
+            "away": "DEP. NOPALERO",
+            "date": "2026-09-27",
+            "time": "08:00",
+            "field": "Campo 2",
+            "status": "Finalizado",
+            "score": "4-7"
+          },
+          {
+            "home": "DEP. LA LUZ",
+            "away": "SAN JOSE JRS",
+            "date": "2026-09-27",
             "time": "10:00",
-            "field": "San José",
+            "field": "San Jose de la Montaña",
             "status": "Jugado"
           },
           {
-            "home": "San Julián",
-            "away": "San Juan FC",
-            "time": "08:00",
-            "field": "San Juan",
-            "status": "Jugado"
-          },
-          {
-            "home": "Tapatío",
-            "away": "Tavera FC",
+            "home": "TAVERA FC",
+            "away": "TAPATIO",
+            "date": "2026-09-27",
             "time": "12:00",
             "field": "Tavera",
+            "status": "Finalizado",
+            "score": "12-0"
+          },
+          {
+            "home": "DEP. ZAPATA",
+            "away": "SAN ANTONIO FC",
+            "date": "2026-09-27",
+            "time": "12:00",
+            "field": "Campo 1 (Empastado)",
+            "status": "Finalizado",
+            "score": "2-5"
+          },
+          {
+            "home": "CELTICOS",
+            "away": "BARZA",
+            "date": "2026-09-27",
+            "time": "12:00",
+            "field": "Campo 3",
             "status": "Jugado"
           }
         ],
@@ -2381,6 +2790,18 @@
       "standings": [
         {
           "pos": 1,
+          "team": "TAVERA FC",
+          "jj": 5,
+          "g": 4,
+          "e": 1,
+          "p": 0,
+          "gf": 22,
+          "gc": 3,
+          "dg": 19,
+          "pts": 13
+        },
+        {
+          "pos": 2,
           "team": "SAN JULIAN",
           "jj": 5,
           "g": 4,
@@ -2392,7 +2813,7 @@
           "pts": 13
         },
         {
-          "pos": 2,
+          "pos": 3,
           "team": "SAN JUAN FC",
           "jj": 5,
           "g": 4,
@@ -2404,7 +2825,7 @@
           "pts": 12
         },
         {
-          "pos": 3,
+          "pos": 4,
           "team": "SAN JOSE JRS",
           "jj": 5,
           "g": 3,
@@ -2412,18 +2833,6 @@
           "p": 1,
           "gf": 12,
           "gc": 5,
-          "dg": 7,
-          "pts": 10
-        },
-        {
-          "pos": 4,
-          "team": "TAVERA FC",
-          "jj": 4,
-          "g": 3,
-          "e": 1,
-          "p": 0,
-          "gf": 10,
-          "gc": 3,
           "dg": 7,
           "pts": 10
         },
@@ -2442,29 +2851,53 @@
         {
           "pos": 6,
           "team": "DEP. ZAPATA",
-          "jj": 5,
+          "jj": 6,
           "g": 2,
           "e": 2,
-          "p": 1,
-          "gf": 7,
-          "gc": 6,
-          "dg": 1,
+          "p": 2,
+          "gf": 9,
+          "gc": 11,
+          "dg": -2,
           "pts": 8
         },
         {
           "pos": 7,
-          "team": "PACHANGAS FC",
+          "team": "SAN ANTONIO FC",
           "jj": 5,
           "g": 2,
           "e": 0,
           "p": 3,
-          "gf": 6,
-          "gc": 18,
-          "dg": -12,
+          "gf": 18,
+          "gc": 13,
+          "dg": 5,
           "pts": 6
         },
         {
           "pos": 8,
+          "team": "DEP. NOPALERO",
+          "jj": 6,
+          "g": 3,
+          "e": 0,
+          "p": 3,
+          "gf": 16,
+          "gc": 14,
+          "dg": 2,
+          "pts": 6
+        },
+        {
+          "pos": 9,
+          "team": "PACHANGAS FC",
+          "jj": 6,
+          "g": 2,
+          "e": 0,
+          "p": 4,
+          "gf": 10,
+          "gc": 25,
+          "dg": -15,
+          "pts": 6
+        },
+        {
+          "pos": 10,
           "team": "BARZA",
           "jj": 5,
           "g": 1,
@@ -2474,30 +2907,6 @@
           "gc": 12,
           "dg": -1,
           "pts": 4
-        },
-        {
-          "pos": 9,
-          "team": "SAN ANTONIO FC",
-          "jj": 4,
-          "g": 1,
-          "e": 0,
-          "p": 3,
-          "gf": 13,
-          "gc": 11,
-          "dg": 2,
-          "pts": 3
-        },
-        {
-          "pos": 10,
-          "team": "DEP. NOPALERO",
-          "jj": 5,
-          "g": 2,
-          "e": 0,
-          "p": 3,
-          "gf": 9,
-          "gc": 10,
-          "dg": -1,
-          "pts": 3
         },
         {
           "pos": 11,
@@ -2514,13 +2923,13 @@
         {
           "pos": 12,
           "team": "TAPATIO",
-          "jj": 5,
+          "jj": 6,
           "g": 0,
           "e": 0,
-          "p": 5,
+          "p": 6,
           "gf": 5,
-          "gc": 30,
-          "dg": -25,
+          "gc": 42,
+          "dg": -37,
           "pts": -3
         }
       ],
@@ -2545,7 +2954,10 @@
     "decisions_without_score": [
       "GANA LINCES",
       "GANA BOAVISTA"
-    ]
+    ],
+    "verified_on": "2026-10-08",
+    "vet35_first_round": "2026-10-17",
+    "verified_source": "https://www.juventinorosasliga.com/reportes/jornadas/completo/"
   },
   "last_user_verified_results": {
     "date": "2026-10-08",
