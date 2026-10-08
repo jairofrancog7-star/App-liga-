@@ -13,7 +13,7 @@
     {id:'LOB',name:'Lobos CDG',logo:'assets/official-logos/lobos-cdg.png',abbr:'LOB'},
     {id:'JUV',name:'Juventino',logo:'assets/liga-logo.webp',abbr:'JUV'},
     {id:'CUE',name:'Cuenda',logo:'assets/teams/tc-cuenda.webp',abbr:'CUE'},
-    {id:'POZ',name:'Pozos FC',logo:'public/assets/season-2026/pozos.webp',abbr:'POZ'},
+    {id:'POZ',name:'Pozos FC',logo:'https://jairofrancog7-star.github.io/App-liga-/assets/season-2026/pozos.webp',abbr:'POZ'},
     {id:'STC',name:'Santa Cruz',logo:'assets/teams/atletico-santa-cruz.webp',abbr:'STC'},
     {id:'TAV',name:'Franco Tavera',logo:'assets/teams/franco-tavera-jr-veteranos.webp',abbr:'TAV'},
     {id:'SJO',name:'San José FC',logo:'assets/official-logos/san-jose-fc.png',abbr:'SJO'},
