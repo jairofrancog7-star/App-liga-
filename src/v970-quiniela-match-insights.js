@@ -132,6 +132,7 @@ function addProgress(root,cat,visibleMatches,data){
  card.innerHTML='<div class="v970-progress-head"><span>MI JORNADA · AVANCE</span><b>'+saved+' / '+count+' guardados</b></div>'+
    '<div class="v970-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="'+count+'" aria-valuenow="'+saved+'"><i style="width:'+percent+'%"></i></div>'+
    '<div class="v970-progress-footer"><span>'+missing.length+' pendientes para pronosticar'+(when?' · Próximo: '+escapeHtml(when):'')+'</span>'+
+   '<button type="button" data-v970-first-preview>Ver análisis</button>'+
    (missing.length?'<button type="button" data-v970-jump>Pendientes →</button>':
      saved===count?'<span class="v970-progress-complete">✓ Jornada completa</span>':
      '<span class="v970-progress-complete">Partidos ya cerrados</span>')+'</div>';
@@ -139,7 +140,14 @@ function addProgress(root,cat,visibleMatches,data){
  const title=$('.v618-q-section-title',root);
  if(round)round.insertAdjacentElement('afterend',card);
  else if(title)title.insertAdjacentElement('beforebegin',card);
- card.querySelector('[data-v970-jump]')?.addEventListener('click',()=>{
+ card.querySelector('[data-v970-first-preview]')?.addEventListener('click',()=>{
+   const preview=$('.v970-preview-toggle',root);
+   if(!preview)return;
+   const panel=preview.parentElement?.querySelector('.v970-preview-panel');
+   if(panel?.hidden)preview.click();
+   preview.scrollIntoView({behavior:'smooth',block:'center'});
+ });
+  card.querySelector('[data-v970-jump]')?.addEventListener('click',()=>{
    const picksNow=safeRead('v561-quiniela');
    const match=visibleMatches.find(m=>!isClosed(m)&&!savedPrediction(m,data,picksNow));
    if(!match)return;
@@ -209,6 +217,14 @@ async function mount(){
  }catch(error){
    // Fail independently; no impact on existing Quiniela controls or saved selections.
    root.dataset.v970Enhanced='error';
+    // Keep the core Quiniela usable and surface an actionable local diagnostic.
+    if(!root.querySelector('[data-v970-error]')){
+      const status=document.createElement('p');
+      status.className='v970-error';
+      status.dataset.v970Error='true';
+      status.textContent='Análisis temporalmente no disponible. Los pronósticos siguen funcionando.';
+      ($('.v618-q-round',root)||$('.v618-q-ranking',root)||root).append(status);
+    }
  }
 }
 function schedule(){clearTimeout(scheduled);scheduled=setTimeout(mount,95)}
