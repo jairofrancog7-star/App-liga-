@@ -40,3 +40,25 @@
     box-shadow:none!important;
   }
 }
+
+/* V968 — Eliminar EXCLUSIVAMENTE la franja azul oscuro entre
+   el borde del buscador/cabecera y "Siguiendo".
+   Era el margen superior de 26px del primer bloque .v27-section,
+   que dejaba ver el fondo marino de .v27-teams-page.
+   El parche pertenece al primer bloque (se desplaza con él) para que
+   NO tape el texto ni la cabecera sticky al hacer scroll. */
+@media (max-width:1023px) {
+  html body[data-app-route="teams"] #screen .v27-teams-page > .v27-section:first-of-type::before,
+  html body.v27-teams-active #screen .v27-teams-page > .v27-section:first-of-type::before {
+    content:""!important;
+    position:absolute!important;
+    left:-16px!important;
+    right:-16px!important;
+    top:-42px!important;
+    height:43px!important;
+    background:#1d3bb8!important;
+    background-image:none!important;
+    pointer-events:none!important;
+    z-index:0!important;
+  }
+}
