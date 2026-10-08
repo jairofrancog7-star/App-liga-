@@ -1,0 +1,65 @@
+/* V928: fotografías aéreas de las ubicaciones mediante mosaicos JPEG de World Imagery.
+   El servicio ArcGIS export estaba devolviendo HTTP 500; tile/{z}/{y}/{x} respondió 200.
+   © Esri y proveedores. Sin capturas repetidas ni atribuciones falsas. */
+html body .v921-field-page .v928-tile-preview,
+body[data-app-route="home"] .v928-tile-preview{
+  isolation:isolate!important;
+  overflow:hidden!important;
+  background:#12305f!important;
+}
+html body .v921-field-page .v928-tile-preview .v928-tile-grid,
+body[data-app-route="home"] .v928-tile-preview .v928-tile-grid{
+  position:absolute!important;
+  z-index:2!important;
+  display:block!important;
+  box-sizing:border-box!important;
+  width:1024px!important;
+  height:768px!important;
+  max-width:none!important;
+  max-height:none!important;
+  pointer-events:none!important;
+  border:0!important;
+  overflow:visible!important;
+}
+html body .v921-field-page .v928-tile-preview .v928-imagery-tile,
+body[data-app-route="home"] .v928-tile-preview .v928-imagery-tile{
+  position:absolute!important;
+  display:block!important;
+  width:256px!important;
+  height:256px!important;
+  max-width:none!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  opacity:1!important;
+  filter:none!important;
+  pointer-events:none!important;
+}
+html body .v921-field-page .v928-tile-preview .v928-imagery-tile[hidden],
+body[data-app-route="home"] .v928-tile-preview .v928-imagery-tile[hidden]{
+  display:none!important;
+}
+html body .v921-field-page .v928-tile-preview.v928-tile-loaded .v923-google-photo-empty,
+body[data-app-route="home"] .v928-tile-preview.v928-tile-loaded .v923-google-photo-empty{
+  opacity:0!important;
+  pointer-events:none!important;
+}
+html body .v921-field-page .v928-tile-preview .v927-google-photo{
+  z-index:3!important;
+}
+html body .v921-field-page .v928-tile-preview .v927-imagery-credits{
+  z-index:4!important;
+}
+html body .v921-field-page .v928-tile-preview .v923-google-open{
+  z-index:5!important;
+}
+body[data-app-route="home"] .v928-tile-preview.v928-tile-loaded .v923-google-photo-empty svg,
+body[data-app-route="home"] .v928-tile-preview.v928-tile-loaded .v923-google-photo-empty b{
+  display:none!important;
+}
+@media(prefers-reduced-motion:reduce){
+  html body .v921-field-page .v928-tile-preview *{transition:none!important}
+}
