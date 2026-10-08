@@ -23,6 +23,17 @@ const V812_ACTIVE_STORE_BY_CAT={
 };
 const V812_ACTIVE_STORE_TEAMS=CAT_ORDER.flatMap(id=>V812_ACTIVE_STORE_BY_CAT[id]||[]);
 window.LJR_V812_ACTIVE_STORE_TEAMS=V812_ACTIVE_STORE_TEAMS.slice();
+/* A club can have more than one registration. Preserve category membership rather
+   than inventing extra clubs or merging distinct clubs such as Cuenda/Toros. */
+window.LJR_V812_TEAM_CATEGORIES=function(name){
+ const key=norm(name);
+ return [...new Set(v812ActiveStoreList().filter(row=>norm(row.name)===key).map(row=>row.category))];
+};
+window.LJR_V812_TEAM_CATALOG={
+ registrations:()=>v812ActiveStoreList(),
+ uniqueTeams:()=>[...new Map(v812ActiveStoreList().map(row=>[norm(row.name),row.name])).values()],
+ categoriesFor:name=>window.LJR_V812_TEAM_CATEGORIES(name)
+};
 window.LJR_V812_IS_ACTIVE_STORE_TEAM=function(name){return V812_ACTIVE_STORE_TEAMS.some(n=>same(n,name))};
 function v812ActiveStoreList(){
   const out=[],seen=new Set();
