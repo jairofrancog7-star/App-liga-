@@ -61,6 +61,38 @@ function poll(root){
   finally{button.disabled=false}
  };
 }
+function v919MeetingIcon(name){
+ const p={
+  calendar:'<rect x="3.5" y="5.5" width="17" height="15" rx="3"/><path d="M7 3.5v4M17 3.5v4M3.5 10h17"/><path d="m9 15 2 2 4-4"/>',
+  clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  pin:'<path d="M12 21s6-5.3 6-11a6 6 0 1 0-12 0c0 5.7 6 11 6 11Z"/><circle cx="12" cy="10" r="2"/>',
+  user:'<circle cx="12" cy="8" r="3"/><path d="M5.5 20c.8-4 3-6 6.5-6s5.7 2 6.5 6"/>',
+  flag:'<path d="M6 21V4m0 1h10l-2 4 2 4H6"/>',
+  list:'<path d="M9 6h11M9 12h11M9 18h11"/><path d="m4 6 1 1 2-2m-3 7 1 1 2-2m-3 7 1 1 2-2"/>',
+  chart:'<path d="M5 20V10m7 10V5m7 15v-7"/>',
+  shield:'<path d="M12 3 20 6v6c0 5-3 8-8 10-5-2-8-5-8-10V6l8-3Z"/><path d="m9 12 2 2 4-4"/>',
+  message:'<path d="M4 5h16v12H9l-5 4V5Z"/><path d="M8 9h8m-8 4h5"/>',
+  users:'<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2"/><path d="M3 20a6 6 0 0 1 12 0m1-5a4 4 0 0 1 5 4"/>',
+  save:'<path d="M5 4h12l2 2v14H5V4Z"/><path d="M8 4v6h8V4M8 20v-6h8v6"/>',
+  print:'<path d="M7 9V4h10v5M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><path d="M7 14h10v7H7z"/>',
+  share:'<circle cx="18" cy="5" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="19" r="2"/><path d="m8 11 8-5m-8 7 8 5"/>'
+ };
+ return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(p[name]||p.calendar)+'</svg>';
+}
+function v919MeetingShortcut(root){
+ if(route()!=='leagueTools')return;
+ const page=root.querySelector('.v726-tools-page,.v60-tool-page');if(!page||page.querySelector('[data-v919-meeting-shortcut]'))return;
+ const entry=document.createElement('button');
+ entry.type='button';entry.className='v919-meeting-shortcut';entry.dataset.v919MeetingShortcut='1';
+ entry.innerHTML='<span class="v919-shortcut-icon">'+v919MeetingIcon('calendar')+'</span><span class="v919-shortcut-copy"><small>JUNTA SEMANAL · MARTES</small><b>Minuta y acuerdos de la Liga</b><em>Asistencia, agenda, pendientes, imprimir PDF y compartir</em></span><span class="v919-shortcut-arrow">›</span>';
+ const target=page.querySelector('.v726-tool-grid,.v60-tool-grid');
+ (target||page).insertAdjacentElement('beforebegin',entry);
+ entry.onclick=()=>{
+  if(typeof window.LJR_OPEN_MEETING==='function'){window.LJR_OPEN_MEETING();return}
+  window.LJR_MAIN_ROUTE?.go?.('v38Weekly')||(location.hash='#/v38Weekly');
+  setTimeout(()=>document.querySelector('[data-v105-action="meeting"]')?.click(),350);
+ };
+}
 function meeting(root){
  const form=root.querySelector('.v105-meeting-form');if(!form||form.querySelector('[data-v875-meeting]'))return;
  const meetingModal=form.closest('.v105-modal');
@@ -78,8 +110,22 @@ function meeting(root){
  }
  const wrap=document.createElement('div');wrap.dataset.v875Meeting='';wrap.className='v875-meeting-options';
  let old={};try{old=JSON.parse(localStorage.getItem('ljr-meeting-options-v875')||'{}')}catch{}
- wrap.innerHTML='<label>Hora<input data-meeting-field="time" type="time" value="'+esc(old.time||'19:00')+'"></label><label>Lugar<input data-meeting-field="place" value="'+esc(old.place||'')+'" placeholder="Sede de la junta"></label><label>Responsable<input data-meeting-field="owner" value="'+esc(old.owner||'')+'" placeholder="Nombre del responsable"></label><label>Fecha límite de acuerdos<input data-meeting-field="deadline" type="date" value="'+esc(old.deadline||'')+'"></label><label class="wide">Pendientes y seguimiento<textarea data-meeting-field="tasks" rows="4" placeholder="Acuerdo · responsable · fecha límite">'+esc(old.tasks||'')+'</textarea></label><div class="v875-agenda-chips wide">'+['Resultados de jornada','Programación y campos','Arbitraje y disciplina','Propuestas del buzón','Equipos y registros'].map(t=>'<button type="button" data-add-topic="'+esc(t)+'">'+esc(t)+'</button>').join('')+'</div>';
- form.append(wrap);const share=document.createElement('button');share.type='button';share.className='v105-btn alt';share.textContent='Compartir minuta';form.parentElement.querySelector('.v105-actions')?.append(share);
+ const topics=[['Resultados de jornada','chart'],['Programación y campos','calendar'],['Arbitraje y disciplina','shield'],['Propuestas del buzón','message'],['Equipos y registros','users']];
+ wrap.innerHTML='<label><span class="v919-field-label">'+v919MeetingIcon('clock')+'Hora</span><input data-meeting-field="time" type="time" value="'+esc(old.time||'19:00')+'"></label><label><span class="v919-field-label">'+v919MeetingIcon('pin')+'Lugar</span><input data-meeting-field="place" value="'+esc(old.place||'')+'" placeholder="Sede de la junta"></label><label><span class="v919-field-label">'+v919MeetingIcon('user')+'Responsable</span><input data-meeting-field="owner" value="'+esc(old.owner||'')+'" placeholder="Nombre del responsable"></label><label><span class="v919-field-label">'+v919MeetingIcon('flag')+'Fecha límite de acuerdos</span><input data-meeting-field="deadline" type="date" value="'+esc(old.deadline||'')+'"></label><label class="wide"><span class="v919-field-label">'+v919MeetingIcon('list')+'Pendientes y seguimiento</span><textarea data-meeting-field="tasks" rows="4" placeholder="Acuerdo · responsable · fecha límite">'+esc(old.tasks||'')+'</textarea></label><div class="v919-topic-head wide"><span>AGREGAR AL ORDEN DEL DÍA</span><small>Toca un tema para sumarlo a la agenda</small></div><div class="v875-agenda-chips wide">'+topics.map(t=>'<button type="button" data-add-topic="'+esc(t[0])+'"><span>'+v919MeetingIcon(t[1])+'</span><b>'+esc(t[0])+'</b></button>').join('')+'</div>';
+ form.append(wrap);
+ const dialog=meetingModal?.querySelector('.v105-dialog');
+ if(dialog&&!dialog.querySelector('[data-v919-meeting-hero]')){
+  const hero=document.createElement('div');hero.className='v919-meeting-hero';hero.dataset.v919MeetingHero='1';
+  hero.innerHTML='<span class="v919-hero-logo"><img src="./assets/liga-logo.webp" alt="Liga Juventino Rosas"></span><span class="v919-hero-copy"><small>OPERACIÓN SEMANAL</small><b>Junta de la Liga</b><em>Agenda, acuerdos y seguimiento</em></span><span class="v919-hero-day">MAR</span>';
+  const title=dialog.querySelector(':scope>h3');if(title){title.hidden=true;title.insertAdjacentElement('beforebegin',hero)}
+  const intro=dialog.querySelector(':scope>p');if(intro)intro.classList.add('v919-meeting-intro');
+ }
+ const actions=form.parentElement.querySelector('.v105-actions');
+ const saveButton=actions?.querySelector('[data-save]');
+ const printButtonBase=actions?.querySelector('[data-pdf]');
+ if(saveButton){saveButton.classList.add('v919-action','is-save');saveButton.innerHTML=v919MeetingIcon('save')+'<span>Guardar junta</span>'}
+ if(printButtonBase){printButtonBase.classList.add('v919-action','is-print');printButtonBase.innerHTML=v919MeetingIcon('print')+'<span>Imprimir PDF</span>'}
+ const share=document.createElement('button');share.type='button';share.className='v105-btn alt v919-action is-share';share.innerHTML=v919MeetingIcon('share')+'<span>Compartir minuta</span>';actions?.append(share);
  share.onclick=async()=>{const lines=['JUNTA DE LA LIGA',...Array.from(form.querySelectorAll('[data-x],[data-meeting-field]')).map(el=>(el.closest('label')?.querySelector('span')?.textContent||el.dataset.meetingField||el.dataset.x)+': '+el.value)];const text=lines.join('\n\n');try{if(navigator.share)await navigator.share({title:'Junta semanal de la Liga',text});else{await navigator.clipboard.writeText(text);share.textContent='Minuta copiada'}}catch(e){if(e.name!=='AbortError')share.textContent='Vuelve a intentar compartir'}};
  const printButton=form.parentElement.querySelector('[data-pdf]');
  const printMeeting=()=>{
@@ -169,7 +215,7 @@ function liveCard(root){
  if(!card){card=document.createElement('button');card.type='button';card.className='v875-live-score';card.dataset.v875Live='';root.prepend(card)}
  card.dataset.signature=signature;card.innerHTML='<small>EN VIVO · '+esc(p.minute?p.minute+"′":'Resultado directo')+'</small><div><span><img src="'+esc(logo(p.home))+'" alt=""><b>'+esc(p.home)+'</b></span><strong>'+esc(p.homeScore??0)+' – '+esc(p.awayScore??0)+'</strong><span><img src="'+esc(logo(p.away))+'" alt=""><b>'+esc(p.away)+'</b></span></div>';card.onclick=()=>window.LJR_MAIN_ROUTE?.go('matchCenter');
 }
-function apply(){timer=0;const root=document.querySelector('#screen');if(!root)return;cleanText(document.body);if(route()==='history')history(root);studioEntry(root);poll(document);meeting(document);profiles();liveCard(root)}
+function apply(){timer=0;const root=document.querySelector('#screen');if(!root)return;cleanText(document.body);if(route()==='history')history(root);studioEntry(root);v919MeetingShortcut(root);poll(document);meeting(document);profiles();liveCard(root)}
 function schedule(){if(!timer)timer=setTimeout(apply,80)}
 new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true});for(const event of ['hashchange','liga:admin','liga:content','ljr:profile-updated','storage','pageshow'])addEventListener(event,schedule);
 document.addEventListener('click',e=>{if(e.target.closest('[data-v875-studio],[data-v875-canva]'))return;setTimeout(schedule,100)});
