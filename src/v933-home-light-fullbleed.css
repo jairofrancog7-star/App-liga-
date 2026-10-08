@@ -1,25 +1,67 @@
-/* V933 — La iluminación de Historias llega a ambos bordes de la pantalla.
-   Solo Inicio móvil/APK. Mantiene la posición, tamaño y scroll de los círculos. */
-@media (max-width:1023px){
-  html body[data-app-route="home"] #screen > .stories{
+/* V934 — Iluminación continua de Historias a TODO el ancho del viewport.
+   La versión anterior ensanchaba 34px desde el contenido, pero en algunos
+   móviles la fila seguía limitada por el padding de #screen (17px).
+   Ahora se ancla al viewport. Solo afecta a la ruta Inicio en móvil/APK. */
+@media (max-width:1023px) {
+  html body[data-app-route="home"] #screen > .stories {
+    position:relative!important;
     box-sizing:border-box!important;
-    width:calc(100% + 34px)!important;
-    max-width:none!important;
-    margin-left:-17px!important;
-    margin-right:-17px!important;
-    /* Los 17px añadidos compensan el desplazamiento negativo: el contenido no se mueve. */
-    padding-left:31px!important;
-    padding-right:31px!important;
+    width:100vw!important;
+    max-width:100vw!important;
+    min-width:100vw!important;
+    margin-left:calc(50% - 50vw)!important;
+    margin-right:calc(50% - 50vw)!important;
+    /* Alinea los círculos como antes; no modifica sus anchos ni su altura. */
+    padding-left:clamp(24px,8vw,31px)!important;
+    padding-right:clamp(24px,8vw,31px)!important;
     background-color:#000144!important;
     background-image:linear-gradient(
-      180deg,
-      rgba(16,28,145,.28) 0%,
-      rgba(9,19,128,.14) 24px,
-      rgba(0,1,68,0) 62px
+      to bottom,
+      rgba(19,35,166,.44) 0%,
+      rgba(13,26,140,.30) 14px,
+      rgba(8,17,113,.16) 28px,
+      rgba(0,1,68,0) 58px
     )!important;
+    background-size:100% 100%!important;
     background-repeat:no-repeat!important;
-    background-position:center top!important;
+    background-position:left top!important;
+    border-inline:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+  }
+  /* Franja luminosa independiente: llena las esquinas que otras capas recortaban. */
+  html body[data-app-route="home"] #screen > .stories::before {
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    top:0!important;
+    left:0!important;
+    right:0!important;
+    width:100vw!important;
+    height:43px!important;
+    margin:0!important;
+    border:0!important;
+    border-radius:0!important;
+    transform:none!important;
+    background:linear-gradient(
+      180deg,
+      rgba(27,47,185,.28) 0%,
+      rgba(18,35,159,.19) 38%,
+      rgba(0,1,68,0) 100%
+    )!important;
+    opacity:1!important;
+    pointer-events:none!important;
+    z-index:0!important;
+  }
+  html body[data-app-route="home"] #screen > .stories > .story {
+    position:relative!important;
+    z-index:1!important;
+  }
+}
+@media (min-width:1024px) {
+  /* En PC se conserva el layout; solo se pinta el brillo de borde a borde. */
+  html body[data-app-route="home"] #screen > .stories {
+    background-image:linear-gradient(180deg,rgba(19,35,166,.34),rgba(0,1,68,0) 62px)!important;
     background-size:100% 100%!important;
   }
 }
-/* PC: se respeta el diseño de escritorio sin desplazamientos ni cambios. */
