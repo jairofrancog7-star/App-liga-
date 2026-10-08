@@ -1,0 +1,32 @@
+/* V918 · Controles superpuestos al video. Conserva la identidad azul de la liga. */
+html body .ljr-video-player.v918-overlay-player{position:relative;isolation:isolate;overflow:hidden;background:#020719;border-radius:15px}
+html body .ljr-video-player.v918-overlay-player>video{display:block!important;width:100%!important;height:auto!important;max-height:70vh!important;object-fit:contain!important;background:#020719;cursor:pointer}
+html body .ljr-video-player.v918-overlay-player .ljr-video-controls{position:absolute!important;inset:0!important;z-index:3;display:block!important;margin:0!important;padding:0!important;background:transparent!important;color:#fff;pointer-events:none;transition:opacity .22s ease,visibility .22s ease;opacity:1;visibility:visible}
+html body .ljr-video-player.v918-overlay-player .ljr-video-controls::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(0,8,28,.79),transparent 32%,transparent 52%,rgba(0,5,23,.88) 100%)}
+html body .ljr-video-player.v918-overlay-player:not(.ljr-controls-visible):not(.ljr-video-paused) .ljr-video-controls{opacity:0;visibility:hidden}
+html body .ljr-video-player.v918-overlay-player:is(:hover,:focus-within) .ljr-video-controls{opacity:1!important;visibility:visible!important}
+html body .ljr-video-player.v918-overlay-player .ljr-video-quick{position:absolute;top:9px;left:9px;right:9px;display:flex;align-items:center;justify-content:flex-end;gap:5px;min-width:0;pointer-events:none}
+html body .ljr-video-player.v918-overlay-player .ljr-video-center{position:absolute;top:49%;left:50%;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;gap:clamp(13px,5vw,32px);width:max-content;max-width:96%;pointer-events:none}
+html body .ljr-video-player.v918-overlay-player .ljr-video-footer{position:absolute;bottom:0;left:0;right:0;padding:14px 12px 10px;pointer-events:none}
+html body .ljr-video-player.v918-overlay-player .ljr-video-timeline{display:flex;align-items:center;gap:9px;margin:0!important;color:#fff;font:600 11px/1.2 system-ui,sans-serif;text-shadow:0 1px 3px #000}
+html body .ljr-video-player.v918-overlay-player .ljr-video-actions{display:flex;align-items:center;justify-content:flex-start;gap:8px;margin-top:4px!important}
+html body .ljr-video-player.v918-overlay-player .ljr-video-actions input[data-volume]{width:65px!important;max-width:24vw}
+html body .ljr-video-player.v918-overlay-player .ljr-video-controls button{display:grid!important;place-items:center!important;flex:none;position:relative;min-width:35px!important;width:35px!important;min-height:35px!important;height:35px!important;margin:0!important;padding:0!important;border:1px solid rgba(225,240,255,.2)!important;border-radius:50%!important;color:#fff!important;background:rgba(4,15,35,.56)!important;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 2px 9px rgba(0,0,0,.3);font:700 12px/1 system-ui,sans-serif!important;pointer-events:auto;touch-action:manipulation}
+html body .ljr-video-player.v918-overlay-player .ljr-video-center button{width:43px!important;height:43px!important;min-width:43px!important;min-height:43px!important;background:rgba(2,11,30,.56)!important}
+html body .ljr-video-player.v918-overlay-player .ljr-video-center [data-v777-action="play"]{width:59px!important;height:59px!important;min-width:59px!important;min-height:59px!important;background:rgba(4,24,54,.73)!important;border-color:rgba(107,224,253,.65)!important;box-shadow:0 0 0 3px rgba(9,30,52,.16),0 0 16px rgba(16,194,240,.28)}
+html body .ljr-video-player.v918-overlay-player .ljr-video-controls button svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none;pointer-events:none}
+html body .ljr-video-player.v918-overlay-player .ljr-video-center [data-v777-action="play"] svg{width:30px;height:30px}
+html body .ljr-video-player.v918-overlay-player .ljr-video-controls button .v918-icon-filled{fill:currentColor;stroke:none}
+html body .ljr-video-player.v918-overlay-player .ljr-video-quick [data-v777-action="speed"]{font-size:12px!important}
+html body .ljr-video-player.v918-overlay-player .ljr-video-controls button:active{transform:scale(.94)}
+html body .ljr-video-player.v918-overlay-player .ljr-video-controls button:focus-visible{outline:2px solid #30dafa!important;outline-offset:2px}
+html body .ljr-video-player.v918-overlay-player .ljr-video-timeline input[data-seek]{flex:1;min-width:0;min-height:26px!important;height:26px!important;padding:0!important;margin:0!important;accent-color:#25d6f2;cursor:pointer;pointer-events:auto}
+html body .ljr-video-player.v918-overlay-player .ljr-video-actions input[data-volume]{accent-color:#25d6f2;min-height:20px!important;height:20px!important;padding:0!important;pointer-events:auto}
+html body .ljr-video-player.v918-overlay-player .ljr-video-footer>small{display:block;text-align:center;color:#bceffc;font-size:11px;line-height:1.35;pointer-events:none}
+html body .ljr-video-player.v918-overlay-player .ljr-video-footer>small:empty{display:none}
+html body .ljr-video-player.v918-overlay-player:fullscreen{border:0;border-radius:0;width:100vw;height:100dvh;display:flex;align-items:center;justify-content:center;background:#000}
+html body .ljr-video-player.v918-overlay-player:fullscreen>video{width:100%!important;height:100%!important;max-height:none!important;object-fit:contain!important}
+html body .ljr-video-player.v918-overlay-player:fullscreen .ljr-video-footer{padding-bottom:max(12px,env(safe-area-inset-bottom))}
+html body.ljr-native-pip .ljr-native-pip-player .ljr-video-controls{display:none!important}
+@media (max-width:390px){html body .ljr-video-player.v918-overlay-player .ljr-video-quick{gap:3px;top:6px;right:6px}html body .ljr-video-player.v918-overlay-player .ljr-video-quick button{width:31px!important;height:31px!important;min-width:31px!important;min-height:31px!important}html body .ljr-video-player.v918-overlay-player .ljr-video-footer{padding:7px 9px 7px}html body .ljr-video-player.v918-overlay-player .ljr-video-center button{width:38px!important;height:38px!important;min-width:38px!important;min-height:38px!important}html body .ljr-video-player.v918-overlay-player .ljr-video-center [data-v777-action="play"]{width:52px!important;height:52px!important;min-width:52px!important;min-height:52px!important}}
+@media (prefers-reduced-motion:reduce){html body .ljr-video-player.v918-overlay-player .ljr-video-controls{transition:none!important}}
