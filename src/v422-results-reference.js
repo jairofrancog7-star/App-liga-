@@ -28,7 +28,7 @@ function dateOnly(v){
  const s=String(v||'').trim(),m=s.match(/(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/);
  if(m)return m[1].padStart(2,'0')+'/'+m[2].padStart(2,'0')+'/'+m[3];
  const iso=s.match(/(\d{4})-(\d{2})-(\d{2})/);if(iso)return iso[3]+'/'+iso[2]+'/'+iso[1];
- return s?String(s).slice(0,10):'Fecha por confirmar';
+ return /fecha por confirmar/i.test(s)?'Fecha por confirmar':s?String(s).slice(0,10):'Fecha por confirmar';
 }
 function rawStatus(r,complete){
  const s=String(r?.status||r?.estado||'').toUpperCase();
@@ -42,9 +42,10 @@ function matches(){
    (c?.fixtures||[]).forEach((g,gi)=>(g?.rows||[]).forEach((r,i)=>{
      if(!Array.isArray(r)||!r[2]||!r[6])return;
      const hs=num(r[3]),as=num(r[5]),complete=hs!==null&&as!==null;
+     const decision=c?.fixture_decisions?.[String(r[0])]||null;
      const statusSource=String(r?.[10]||r?.[9]||'').trim();
      const minuteMatch=/\b(\d{1,3})\s*['’]?\b/.exec(statusSource);
-     out.push({id:cid+'|'+gi+'|'+i,streamKey:cid+':'+gi+':'+i,cat:String(cid),category:String(c?.name||cid),round:String(r[1]||''),home:String(r[2]||''),away:String(r[6]||''),homeScore:hs,awayScore:as,complete,field:String(r[7]||'Campo por confirmar'),date:String(r[8]||''),statusSource,minute:minuteMatch?Number(minuteMatch[1]):null,status:rawStatus({status:statusSource},complete)});
+     out.push({id:cid+'|'+gi+'|'+i,streamKey:cid+':'+gi+':'+i,cat:String(cid),category:String(c?.name||cid),round:String(r[1]||''),home:String(r[2]||''),away:String(r[6]||''),homeScore:hs,awayScore:as,complete,field:String(r[7]||'Campo por confirmar'),date:String(r[8]||''),statusSource,minute:minuteMatch?Number(minuteMatch[1]):null,status:decision?'AWARDED':rawStatus({status:statusSource},complete),decision});
    }));
  });
  return out;
@@ -74,11 +75,12 @@ function icon(name){
 function statusText(m){
  if(m.status==='LIVE')return '<span class="v422-live-status"><i></i>'+(Number.isFinite(m.minute)?esc(m.minute)+"'":'EN VIVO')+'</span>';
  if(m.status==='FINAL')return '<span class="v422-final">Final</span>';
+ if(m.status==='AWARDED')return '<span class="v422-final">Decisión del rol</span>';
  if(m.status==='SUSPENDED')return '<span class="v422-special">Suspendido</span>';
  if(m.status==='POSTPONED')return '<span class="v422-special">Aplazado</span>';
  return '<span class="v422-time">'+esc(timeFrom(m.date))+'</span>';
 }
-function scoreText(m){return m.complete?'<b>'+m.homeScore+'</b><span>–</span><b>'+m.awayScore+'</b>':'<strong>'+esc(timeFrom(m.date))+'</strong>'}
+function scoreText(m){return m.decision?'<strong>'+esc(m.decision.label)+'</strong>':m.complete?'<b>'+m.homeScore+'</b><span>–</span><b>'+m.awayScore+'</b>':'<strong>'+esc(timeFrom(m.date))+'</strong>'}
 function provider(url){const u=String(url||'').toLowerCase();if(u.includes('youtube'))return 'YouTube';if(u.includes('facebook')||u.includes('fb.watch'))return 'Facebook';if(u.includes('tiktok'))return 'TikTok';return 'Liga TV'}
 function streamFor(key){try{const a=JSON.parse(localStorage.getItem('ljr-stream-list-v196:'+key)||'[]');const x=Array.isArray(a)?a.find(v=>v?.url):null;return x?{url:String(x.url),name:String(x.name||provider(x.url))}:null}catch(_){return null}}
 function categoryIcon(id,label){if(id==='all')return '⚽';if(/veteranos/i.test(label))return '🛡';if(id==='3')return '🏆';if(id==='5')return '⚽';if(id==='4')return '🥈';return '⚽'}
