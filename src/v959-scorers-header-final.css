@@ -1,5 +1,5 @@
-/* V959 — Máximo goleador: cabecera única, aislada de parches viejos.
-   - Expandida al inicio
+/* Máximo goleador — Máximo goleador: cabecera única, aislada de parches viejos.
+   - Expandida al inicio; el texto conserva tamaño y estilo al compactarse
    - Compacta al hacer scroll
    - Flecha izquierda
    - Título sin duplicados
@@ -8,7 +8,7 @@
 */
 @media(max-width:1023px){
   html body[data-app-route="scorers"]{
-    --v959-head-h:132px!important;
+    --v959-head-h:104px!important;
   }
   html body[data-app-route="scorers"].v959-compact{
     --v959-head-h:64px!important;
@@ -58,10 +58,10 @@
     z-index:0!important;
     pointer-events:none!important;
     opacity:.23!important;
-    background:
-      radial-gradient(circle at 27% 10%,transparent 0 58px,rgba(121,166,255,.54) 59px 61px,transparent 62px),
-      radial-gradient(circle at 84% 18%,transparent 0 76px,rgba(108,156,255,.38) 77px 79px,transparent 80px),
-      linear-gradient(145deg,transparent 31%,rgba(106,157,255,.24) 31.4% 32%,transparent 32.5% 58%,rgba(106,157,255,.18) 58.4% 59%,transparent 59.5%)!important;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 440 140'%3E%3Cg fill='none' stroke='%237195ff' stroke-width='1.5'%3E%3Cpath d='M65 -15C40 22 20 65 7 145M83 -20L65 29Q57 44 81 52L128 69Q141 74 158 69L235 51Q248 48 252 27L264 -16'/%3E%3Cpath d='M18 117Q90 65 123 74T222 117T340 92M278 -20L266 30Q262 48 282 57L325 73Q342 80 357 65L406 20'/%3E%3C/g%3E%3C/svg%3E")!important;
+    background-size:100% 140px!important;
+    background-position:center top!important;
+    background-repeat:no-repeat!important;
   }
   html body[data-app-route="scorers"] #app > .topbar::after,
   html body[data-app-route="scorers"] .app-shell > .topbar::after{
@@ -69,19 +69,8 @@
     display:none!important;
   }
 
-  /* Oculta TODOS los elementos anteriores de esta ruta. */
-  html body[data-app-route="scorers"] .topbar > :is(
-    .wordmark,
-    #backButton,
-    .profile-button,
-    .v943-scorers-back,
-    .v944-scorers-title,
-    .v943-scorers-trophy,
-    .v956-scorers-title,
-    .v958-scorers-profile,
-    .v918-transfer-title,
-    .v918-transfer-bell
-  ){
+  /* This route owns exactly three direct controls; legacy chrome stays hidden. */
+  html body[data-app-route="scorers"] #app > .topbar > :not(.v959-back):not(.v959-title):not(.v959-profile){
     display:none!important;
     visibility:hidden!important;
     opacity:0!important;
@@ -110,7 +99,7 @@
     opacity:1!important;
     position:absolute!important;
     z-index:6!important;
-    top:18px!important;
+    top:32px!important;
     width:40px!important;
     height:40px!important;
     min-width:40px!important;
@@ -155,15 +144,15 @@
     opacity:1!important;
     position:absolute!important;
     z-index:5!important;
-    left:20px!important;
+    left:66px!important;
     right:68px!important;
-    top:82px!important;
+    top:42px!important;
     min-width:0!important;
     margin:0!important;
     padding:0!important;
     color:#fff!important;
-    font:800 clamp(27px,7vw,31px)/1.05 Inter,Roboto,Arial,sans-serif!important;
-    letter-spacing:-.035em!important;
+    font:600 20px/1.2 Roboto,Arial,sans-serif!important;
+    letter-spacing:-.02em!important;
     white-space:nowrap!important;
     overflow:hidden!important;
     text-overflow:ellipsis!important;
@@ -221,12 +210,12 @@
     top:12px!important;
   }
   html body[data-app-route="scorers"].v959-compact .topbar > .v959-title{
-    left:60px!important;
-    right:60px!important;
-    top:20px!important;
-    font-size:19px!important;
-    line-height:1.05!important;
-    letter-spacing:-.025em!important;
+    left:66px!important;
+    right:68px!important;
+    top:22px!important;
+    font-size:20px!important;
+    line-height:1.2!important;
+    letter-spacing:-.02em!important;
   }
 
   /* Nunca permitir que el contenido quede debajo de la barra. */
@@ -281,20 +270,29 @@
 }
 
 @media(max-width:390px){
+  html body[data-app-route="scorers"] .topbar > .v959-back,
+  html body[data-app-route="scorers"] .topbar > .v959-profile{
+    top:30px!important;
+  }
+  html body[data-app-route="scorers"] .topbar > .v959-title{
+    left:62px!important;
+    right:62px!important;
+  }
   html body[data-app-route="scorers"]{
-    --v959-head-h:124px!important;
+    --v959-head-h:100px!important;
   }
   html body[data-app-route="scorers"].v959-compact{
     --v959-head-h:62px!important;
   }
   html body[data-app-route="scorers"] .topbar > .v959-title{
-    top:78px!important;
-    font-size:27px!important;
+    top:39px!important;
+    font-size:19px!important;
   }
   html body[data-app-route="scorers"].v959-compact .topbar > .v959-title{
-    top:19px!important;
-    left:58px!important;
-    font-size:18px!important;
+    top:19.5px!important;
+    left:62px!important;
+    right:62px!important;
+    font-size:19px!important;
   }
   html body[data-app-route="scorers"].v959-compact .topbar > .v959-back,
   html body[data-app-route="scorers"].v959-compact .topbar > .v959-profile{
@@ -302,98 +300,6 @@
   }
 }
 
-
-/* V960 — quitar cuadro superpuesto y fijar altura de cabecera */
-@media(max-width:1023px){
-  /* La barra ya NO se expande ni cambia de color/tamaño al hacer scroll. */
-  html body[data-app-route="scorers"],
-  html body[data-app-route="scorers"].v959-compact{
-    --v959-head-h:72px!important;
-  }
-
-  html body[data-app-route="scorers"] #app > .topbar,
-  html body[data-app-route="scorers"] .app-shell > .topbar,
-  html body[data-app-route="scorers"].v959-compact #app > .topbar,
-  html body[data-app-route="scorers"].v959-compact .app-shell > .topbar{
-    height:72px!important;
-    min-height:72px!important;
-    max-height:72px!important;
-    background:linear-gradient(180deg,#263ff0 0%,#182dce 55%,#0d167f 100%)!important;
-    transition:none!important;
-    box-shadow:0 1px 0 rgba(255,255,255,.07)!important;
-  }
-
-  /* Este era el cuadro/capa de color que quedaba encima del texto. */
-  html body[data-app-route="scorers"] #app > .topbar::before,
-  html body[data-app-route="scorers"] .app-shell > .topbar::before{
-    content:none!important;
-    display:none!important;
-    opacity:0!important;
-    background:none!important;
-  }
-
-  html body[data-app-route="scorers"] .topbar > .v959-back,
-  html body[data-app-route="scorers"].v959-compact .topbar > .v959-back{
-    top:15px!important;
-    transition:none!important;
-  }
-
-  html body[data-app-route="scorers"] .topbar > .v959-profile,
-  html body[data-app-route="scorers"].v959-compact .topbar > .v959-profile{
-    top:16px!important;
-    transition:none!important;
-  }
-
-  html body[data-app-route="scorers"] .topbar > .v959-title,
-  html body[data-app-route="scorers"].v959-compact .topbar > .v959-title{
-    left:62px!important;
-    right:62px!important;
-    top:23px!important;
-    font-size:20px!important;
-    line-height:1.05!important;
-    letter-spacing:-.025em!important;
-    transition:none!important;
-  }
-
-  html body[data-app-route="scorers"] #screen,
-  html body.v768-scroll-root[data-app-route="scorers"] #screen,
-  html body[data-app-route="scorers"].v959-compact #screen{
-    top:72px!important;
-    transition:none!important;
-  }
-}
-
-@media(max-width:390px){
-  html body[data-app-route="scorers"],
-  html body[data-app-route="scorers"].v959-compact{
-    --v959-head-h:68px!important;
-  }
-  html body[data-app-route="scorers"] #app > .topbar,
-  html body[data-app-route="scorers"] .app-shell > .topbar,
-  html body[data-app-route="scorers"].v959-compact #app > .topbar,
-  html body[data-app-route="scorers"].v959-compact .app-shell > .topbar{
-    height:68px!important;
-    min-height:68px!important;
-    max-height:68px!important;
-  }
-  html body[data-app-route="scorers"] .topbar > .v959-back,
-  html body[data-app-route="scorers"].v959-compact .topbar > .v959-back{
-    top:13px!important;
-  }
-  html body[data-app-route="scorers"] .topbar > .v959-profile,
-  html body[data-app-route="scorers"].v959-compact .topbar > .v959-profile{
-    top:14px!important;
-  }
-  html body[data-app-route="scorers"] .topbar > .v959-title,
-  html body[data-app-route="scorers"].v959-compact .topbar > .v959-title{
-    top:21px!important;
-    left:58px!important;
-    right:58px!important;
-    font-size:18px!important;
-  }
-  html body[data-app-route="scorers"] #screen,
-  html body.v768-scroll-root[data-app-route="scorers"] #screen,
-  html body[data-app-route="scorers"].v959-compact #screen{
-    top:68px!important;
-  }
+@media(prefers-reduced-motion:reduce){
+  html body[data-app-route="scorers"] :is(.topbar,#screen,.v959-back,.v959-profile,.v959-title){transition:none!important}
 }

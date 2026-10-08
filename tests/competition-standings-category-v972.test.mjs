@@ -10,10 +10,10 @@ const fast=readFileSync(new URL('src/v571-tournament-lower-tools.js',root),'utf8
 const full=readFileSync(new URL('src/v40-competition-master.js',root),'utf8');
 
 test('Restauración: Clasificación usa el diseño anterior y sus tres vistas originales',()=>{
-  assert.doesNotMatch(html, /<script[^>]+src="[^"]*v972-competition-standings-category\\.js/);
-  assert.doesNotMatch(html, /<link[^>]+href="[^"]*v972-competition-standings-category\\.css/);
-  assert.doesNotMatch(html, /<link[^>]+href="[^"]*v971-competition-standings-visible\\.css/);
-  assert.match(html, /src\\/v40-competition-master\\.js/);
+  assert.doesNotMatch(html, /<script[^>]+src="[^"]*v972-competition-standings-category\.js/);
+  assert.doesNotMatch(html, /<link[^>]+href="[^"]*v972-competition-standings-category\.css/);
+  assert.doesNotMatch(html, /<link[^>]+href="[^"]*v971-competition-standings-visible\.css/);
+  assert.match(html, /src\/v40-competition-master\.js/);
   assert.match(full, /data-v40-mode="compact"/);
   assert.match(full, /data-v40-mode="complete"/);
   assert.match(full, /data-v40-mode="criteria"/);
