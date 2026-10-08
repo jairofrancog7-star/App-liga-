@@ -183,3 +183,26 @@ body[data-app-route="home"] .v65-field-map.v923-google-preview .v923-photo-label
   html body .v921-field-page .v923-google-preview .v923-google-open{font-size:9px!important;max-width:52%!important}
   html body .v921-field-page .v923-google-preview .v923-photo-label{font-size:9px!important;max-width:49%!important}
 }
+
+/* V925 — El estado sin API ahora es un enlace real, no una imagen fingida. */
+html body .v921-field-page .v923-google-preview .v923-google-photo-link{
+  cursor:pointer!important;
+  text-decoration:none!important;
+  pointer-events:auto!important;
+}
+html body .v921-field-page .v923-google-preview .v923-google-photo-link span{
+  max-width:250px!important;
+  margin:0 auto!important;
+  text-wrap:balance!important;
+}
+html body .v921-field-page .v923-google-preview .v923-google-photo-link:focus-visible{
+  outline:3px solid #8df0ff!important;
+  outline-offset:-5px!important;
+  border-radius:15px!important;
+}
+html body .v921-field-page .v923-google-preview.v923-photo-loaded .v923-google-photo-link{
+  pointer-events:none!important;
+}
+body[data-app-route="home"] .v65-field-map.v923-google-preview .v923-google-photo-link{
+  pointer-events:none!important;
+}
