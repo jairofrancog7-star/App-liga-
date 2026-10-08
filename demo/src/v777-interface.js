@@ -21,7 +21,18 @@ const PROFILE='.profile-button,.ljr-profile-control,[data-route="profile"],[data
 const BACK='.back-button,.ljr-back-control,.v35-back,.v46-back,.v41-back,.v27-back,.v31-back,.v32-back,.v501-back,[data-v415-top-back],button[aria-label^="Volver"],button[aria-label^="Regresar"],button[aria-label^="Atrás"]';
 let syncing=false,timer;
 function sync(header,custom=false){
- if(!header||syncing)return;syncing=true;
+ if(!header||syncing)return;
+ // Scorers owns its direct controls and avatar. Do not move/remove them
+ // as duplicate global controls; its scroll controller measures this bar.
+ if(route()==='scorers'&&!custom&&window.__LJR_V959_SCORERS_HEADER__&&matchMedia('(max-width:1023px)').matches){
+  document.body.dataset.headerOwner='global';
+  header.querySelector('.ljr-chrome-actions')?.remove();
+  for(const [key,value] of [['display','block'],['visibility','visible'],['opacity','1']]){
+   if(header.style.getPropertyValue(key)!==value)header.style.setProperty(key,value,'important');
+  }
+  return;
+ }
+ syncing=true;
  try{
  if(HEADERLESS_GAMES.has(route())){
   const top=document.querySelector('#app>.topbar');
