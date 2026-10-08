@@ -1,0 +1,46 @@
+name: Auditar altas, fotos y cedulas de AdminFut
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '18 12 * * *'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: adminfut-public-players-audit
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar privacidad y parser de registros
+        run: node --test tests/adminfut-public-registrations.test.mjs
+      - name: Comprobar todas las fichas por equipo y cedulas conocidas
+        run: node scripts/sync-adminfut-public-players.mjs
+      - name: Crear propuesta cuando cambien las fichas publicas
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: bot/adminfut-public-player-updates
+          delete-branch: true
+          add-paths: |
+            data/official-live.json
+            public/data/official-live.json
+            data/adminfut-public-audit.json
+          commit-message: 'data(adminfut): sincronizar altas publicas, perfiles y fotos'
+          title: 'Datos oficiales: altas, imagenes de perfiles y auditoria de cedulas'
+          body: |
+            Datos publicos contrastados con juventinorosasliga.com.
+            Incluye solamente nombres deportivos, equipos, posicion, dorsales e imagenes de perfil publicas.
+            Audita marcadores en las cedulas ya registradas; no cambia sanciones ni puntos automaticamente.
+            No incorpora CURP, documentos, fecha de nacimiento ni edad.
+            Revisar el cambio y las cédulas señaladas antes de fusionarlo.
+          labels: |
+            datos-oficiales
