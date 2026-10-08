@@ -424,3 +424,145 @@
     overflow:hidden!important;
   }
 }
+
+
+/* V951 — sin cabecera fantasma y barra superior realmente de orilla a orilla. */
+@media(max-width:1023px){
+  html body[data-app-route="scorers"]{
+    --v768-head-h:0px!important;
+  }
+
+  /* La V775 antigua era el bloque transparente/grande que quedaba encima. */
+  html body[data-app-route="scorers"] #screen .v775-scorers-head,
+  html body[data-app-route="scorers"] #screen .ljr-scroll-header.v775-scorers-head{
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    position:absolute!important;
+    width:0!important;
+    height:0!important;
+    min-height:0!important;
+    max-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    pointer-events:none!important;
+  }
+
+  html body[data-app-route="scorers"] #screen > .v950-scorers-head{
+    width:100vw!important;
+    max-width:none!important;
+    margin-left:calc(50% - 50vw)!important;
+    margin-right:calc(50% - 50vw)!important;
+    padding-left:16px!important;
+    padding-right:16px!important;
+    border-radius:0!important;
+    background-color:#1020b8!important;
+    opacity:1!important;
+    isolation:isolate!important;
+  }
+
+  html body[data-app-route="scorers"] #screen > .v950-scorers-head::before{
+    content:""!important;
+    position:absolute!important;
+    inset:0!important;
+    z-index:0!important;
+    pointer-events:none!important;
+    opacity:1!important;
+    background:
+      radial-gradient(190px 100px at 17% -10%,rgba(112,150,255,.30),transparent 72%),
+      radial-gradient(210px 105px at 88% -12%,rgba(55,112,255,.25),transparent 72%),
+      linear-gradient(180deg,#2642f0 0%,#1a2fd5 44%,#111d9e 78%,#0a0d77 100%)!important;
+  }
+  html body[data-app-route="scorers"] #screen > .v950-scorers-head::after{
+    z-index:1!important;
+  }
+
+  html body[data-app-route="scorers"] #screen > .v28-scorers-page{
+    margin-top:0!important;
+    padding-top:12px!important;
+  }
+
+  /* Perfil real de la cuenta iniciada. */
+  html body[data-app-route="scorers"] .v950-scorers-profile{
+    overflow:hidden!important;
+    border:0!important;
+    background:transparent!important;
+  }
+  html body[data-app-route="scorers"] .v951-profile-slot{
+    width:34px!important;
+    height:34px!important;
+    min-width:34px!important;
+    min-height:34px!important;
+    max-width:34px!important;
+    max-height:34px!important;
+    display:grid!important;
+    place-items:center!important;
+    overflow:hidden!important;
+    border-radius:50%!important;
+    background:rgba(255,255,255,.08)!important;
+    box-sizing:border-box!important;
+  }
+  html body[data-app-route="scorers"] .v951-account-photo{
+    display:block!important;
+    width:34px!important;
+    height:34px!important;
+    min-width:34px!important;
+    min-height:34px!important;
+    max-width:34px!important;
+    max-height:34px!important;
+    object-fit:cover!important;
+    object-position:center!important;
+    border-radius:50%!important;
+    border:1px solid rgba(255,255,255,.65)!important;
+    background:transparent!important;
+    filter:none!important;
+  }
+  html body[data-app-route="scorers"] .v951-account-avatar{
+    width:34px!important;
+    height:34px!important;
+    display:grid!important;
+    place-items:center!important;
+    overflow:hidden!important;
+    border-radius:50%!important;
+  }
+  html body[data-app-route="scorers"] .v951-account-avatar > *,
+  html body[data-app-route="scorers"] .v951-account-avatar .ljr-gamer-avatar,
+  html body[data-app-route="scorers"] .v951-account-avatar .ljr-profile-image{
+    width:34px!important;
+    height:34px!important;
+    min-width:34px!important;
+    min-height:34px!important;
+    max-width:34px!important;
+    max-height:34px!important;
+    margin:0!important;
+    padding:0!important;
+    border-radius:50%!important;
+    object-fit:cover!important;
+  }
+  html body[data-app-route="scorers"] .v951-account-initial{
+    width:34px!important;
+    height:34px!important;
+    display:grid!important;
+    place-items:center!important;
+    border-radius:50%!important;
+    border:1px solid rgba(255,255,255,.55)!important;
+    background:#173db4!important;
+    color:#fff!important;
+    font:800 12px/1 Inter,Roboto,Arial,sans-serif!important;
+  }
+  html body[data-app-route="scorers"] .v951-profile-fallback{
+    width:29px!important;
+    height:29px!important;
+    fill:none!important;
+    stroke:#fff!important;
+    stroke-width:1.7!important;
+  }
+}
+
+@media(max-width:390px){
+  html body[data-app-route="scorers"] #screen > .v950-scorers-head{
+    padding-left:12px!important;
+    padding-right:12px!important;
+  }
+}
