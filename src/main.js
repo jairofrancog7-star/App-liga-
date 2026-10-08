@@ -6600,7 +6600,7 @@ function go(route,push=true){
   if(route==='quiz')route='quizArena';
   const page=String(route).split('?')[0];
   if(push&&state.route!==page)state.history.push(state.route);
-  window.LJR_NAVIGATION?.leaving?.(page,push);
+  window.LJR_NAVIGATION?.leaving?.(route,push);
   state.route=page;location.hash='#/'+route;render();
 }
 // Delegation also covers navigation buttons appended after the initial render.
