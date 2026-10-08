@@ -49,12 +49,14 @@
     const navValue=Math.max(0,navHeight)+'px';if(body.style.getPropertyValue('--v774-nav-h')!==navValue)body.style.setProperty('--v774-nav-h',navValue);
     const header=routeOverlay?null:(custom||document.querySelector('#app>.topbar'));
     window.LJR_CHROME?.sync?.(header,!!custom);
-    document.querySelectorAll('.ljr-scroll-header').forEach(n=>{if(n!==custom||overlay(n))n.classList.remove('ljr-scroll-header')});
-    if(custom&&!overlay(custom)&&!custom.classList.contains('ljr-scroll-header'))custom.classList.add('ljr-scroll-header');
+    /* Rankings owns a two-row header + tabs in normal document flow. Never force the
+       global fixed 88px chrome on it: that moves tabs over the standings card. */
+    document.querySelectorAll('.ljr-scroll-header').forEach(n=>{if(n!==custom||overlay(n)||route==='rankings')n.classList.remove('ljr-scroll-header')});
+    if(custom&&!overlay(custom)&&route!=='rankings'&&!custom.classList.contains('ljr-scroll-header'))custom.classList.add('ljr-scroll-header');
     // Every mobile route gets a scroll surface, including routes with their own header.
     body.classList.toggle('v768-scroll-root',true);
     {
-      const value=(routeOverlay?0:(!overlay(header)&&visible(header)?header.getBoundingClientRect().height:0))+'px';
+      const value=(route==='rankings'||routeOverlay?0:(!overlay(header)&&visible(header)?header.getBoundingClientRect().height:0))+'px';
       if(body.style.getPropertyValue('--v768-head-h')!==value)body.style.setProperty('--v768-head-h',value);
     }
     if(header!==observedHeader||nav!==observedNav){sizes.disconnect();if(header)sizes.observe(header);if(nav)sizes.observe(nav);observedHeader=header;observedNav=nav;}
