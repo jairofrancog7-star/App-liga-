@@ -70,8 +70,10 @@ function meta(row,p,target){
  if(!target)return;
  const detail=[p.position&&p.position!=='No especificada'?p.position:'',p.dorsal&&p.dorsal!=='—'?'#'+p.dorsal:''].filter(Boolean).join(' · ');
  if(!detail)return;
- let mini=target.querySelector(':scope > .v971-player-meta');
- if(!mini){mini=document.createElement('span');mini.className='v971-player-meta';target.append(mini)}
+ // Se incorpora en la linea existente, sin aumentar la altura de los cuadros.
+ const line=target.querySelector('small')||target;
+ let mini=line.querySelector(':scope > .v971-player-meta');
+ if(!mini){mini=document.createElement('span');mini.className='v971-player-meta';line.append(mini)}
  if(mini.textContent!==detail)mini.textContent=detail;
 }
 function applyRow(row,person,club,cat,selector,copySelector,showMeta){
