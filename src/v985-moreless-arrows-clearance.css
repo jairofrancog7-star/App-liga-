@@ -1,0 +1,31 @@
+/* V985 — Más o Menos: flechas fuera de las letras.
+   Ajuste solamente horizontal: conserva título, colores, curvas y controles. */
+body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-curves{
+  left:0!important;
+  width:100%!important;
+  max-width:none!important;
+  transform:none!important;
+  overflow:visible!important;
+  pointer-events:none!important;
+}
+body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-curves .up .v12-curve-arrow{
+  right:3px!important;
+  left:auto!important;
+  width:clamp(38px,9vw,58px)!important;
+}
+body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-curves .down .v12-curve-arrow{
+  left:3px!important;
+  right:auto!important;
+  width:clamp(38px,9vw,58px)!important;
+}
+/* En celulares angostos, los bordes siguen libres sin cruzar el texto. */
+@media (max-width:370px){
+  body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-curves .up .v12-curve-arrow{
+    right:2px!important;
+    width:37px!important;
+  }
+  body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-curves .down .v12-curve-arrow{
+    left:2px!important;
+    width:37px!important;
+  }
+}
