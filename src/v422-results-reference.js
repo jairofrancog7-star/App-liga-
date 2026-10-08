@@ -75,7 +75,7 @@ function icon(name){
 function statusText(m){
  if(m.status==='LIVE')return '<span class="v422-live-status"><i></i>'+(Number.isFinite(m.minute)?esc(m.minute)+"'":'EN VIVO')+'</span>';
  if(m.status==='FINAL')return '<span class="v422-final">Final</span>';
- if(m.status==='AWARDED')return '<span class="v422-final">Decisión del rol</span>';
+ if(m.status==='AWARDED')return '<span class="v422-final" title="Derrota por default: -3 puntos para el equipo perdedor. La tabla oficial ya contempla la sanción.">DEFAULT · −3 pts al perdedor</span>';
  if(m.status==='SUSPENDED')return '<span class="v422-special">Suspendido</span>';
  if(m.status==='POSTPONED')return '<span class="v422-special">Aplazado</span>';
  return '<span class="v422-time">'+esc(timeFrom(m.date))+'</span>';
