@@ -4595,17 +4595,27 @@ function v60FieldPreview(f,cls=''){
     '<b>'+(photoSrc?'Google Street View':'Ver fotografía en Google Maps')+'</b>'+
     '<span>'+(photoSrc?'Cargando panorama de Google…':'Para mostrar la foto aquí, falta activar Street View Static API')+'</span>'+
     '</a>';
-  const image=photoSrc?'<img class="v923-google-photo" src="'+v64Esc(photoSrc)+
-    '" alt="Vista cercana de Google Street View de '+name+'; no se garantiza que sea la cancha exacta"'+
-    ' loading="lazy" decoding="async" onload="this.parentElement.classList.add(&quot;v923-photo-loaded&quot;)" onerror="this.hidden=true;this.parentElement.classList.add(&quot;v923-photo-error&quot;);this.parentElement.querySelector(&quot;.v923-google-photo-empty span&quot;).textContent=&quot;No hay imagen disponible aquí. Abre Google Maps para comprobarla.&quot;">':'';
+  // Siempre mostrar una FOTO verificable como archivo: captura de Google Maps
+  // entregada por el usuario (2014). Es ilustrativa: no identifica estas sedes.
+  // Cuando se active Street View Static API, su foto específica cubre la muestra.
+  const sampleSrc='./assets/maps/google-streetview-referencia-2014.svg';
+  const sample='<img class="v923-google-photo v926-photo-example" src="'+sampleSrc+
+    '" alt="Ejemplo de cancha desde Google Maps, captura compartida de 2014; no representa necesariamente esta sede"'+
+    ' loading="lazy" decoding="async" onload="this.parentElement.classList.add(&quot;v926-example-loaded&quot;)"'+
+    ' onerror="this.hidden=true;this.parentElement.classList.add(&quot;v926-example-error&quot;)">';
+  const image=photoSrc?'<img class="v923-google-photo v926-photo-live" src="'+v64Esc(photoSrc)+
+    '" alt="Google Street View cerca de '+name+'; puede no mostrar exactamente el terreno"'+
+    ' loading="lazy" decoding="async" onload="this.parentElement.classList.add(&quot;v926-live-loaded&quot;)"'+
+    ' onerror="this.hidden=true;this.parentElement.classList.add(&quot;v926-live-error&quot;)">':'';
   const button=large?'<a class="v923-google-open" href="'+link+'" target="_blank" rel="noopener noreferrer"'+
     ' aria-label="Abrir Google Street View de '+name+'">'+
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.5 7-13a7 7 0 0 0-14 0c0 6.5 7 13 7 13Z"/><circle cx="12" cy="9" r="2.6"/></svg>'+
     '<span>'+(hasCoords?'Abrir Google Maps':'Ver en Maps')+'</span></a>':'';
   return '<span class="v60-field-preview v921-map-preview v923-google-preview'+
     (photoSrc?' v923-has-photo':' v923-no-photo')+' '+v64Esc(cls)+'"'+
-    ' title="'+v64Esc(info)+'">'+placeholder+image+
-    (large?'<span class="v923-photo-label">Google Maps · vista cercana</span>':'')+
+    ' title="'+v64Esc(info)+'">'+placeholder+sample+image+
+    (large?'<span class="v923-photo-label v926-label-example">Google Maps (2014) · foto de ejemplo, cancha no confirmada</span>'+
+      (photoSrc?'<span class="v923-photo-label v926-label-live">Street View · imagen cercana</span>':''):'')+
     button+'</span>';
 }
 
