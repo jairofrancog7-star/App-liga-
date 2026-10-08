@@ -55,6 +55,7 @@ const CAT_LOGOS_V630={
   '2':'./assets/categories/veteranos-35-user.png',
   '1':'./assets/categories/veteranos-50.webp'
 };
+let storeRailScroll=0;
 let db=null, loading=null, teamQuery='', storeCat=(()=>{try{const id=localStorage.getItem('v989-store-category')||'all';return CAT_ORDER.includes(id)?id:'all'}catch(_){return 'all'}})(), playerQuery='', playerCat=localStorage.getItem('v66-player-cat')||'all', playerTeam=localStorage.getItem('v66-player-team')||'all', cedulaCat=localStorage.getItem('v66-cedula-cat-filter')||'all', cedulaTeam=localStorage.getItem('v66-cedula-team-filter')||'all';
 
 function route(){return location.hash.replace(/^#\/?/,'')||'home'}
@@ -223,9 +224,11 @@ function teamMarkup(store=false){
   const currentCat=store&&CAT_ORDER.includes(storeCat)?storeCat:'all';
   const list=source.filter(t=>(!store||currentCat==='all'||t.cat===currentCat)&&
     (!q||norm(t.name).includes(q)||norm(t.category).includes(q)));
-  const categories=store?'<div class="v989-store-filter-title"><b>FILTRAR POR CATEGORÍA</b><span>Desliza para explorar ↔</span></div>'+
+  const categories=store?'<div class="v989-store-filter-title"><b>FILTRAR POR CATEGORÍA</b><div class="v990-rail-actions">'+
+    '<span>Desliza</span><button type="button" data-v990-rail-step="-1" aria-label="Categorías anteriores"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></button>'+
+    '<button type="button" data-v990-rail-step="1" aria-label="Más categorías"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg></button></div></div>'+
     '<div class="v989-store-categories" role="group" aria-label="Filtrar tiendas por categoría">'+
-      '<button type="button" data-v66-store-cat="all" class="'+(currentCat==='all'?'active':'')+'" aria-pressed="'+(currentCat==='all')+'"><span class="v989-all-icon" aria-hidden="true">⚽</span><span>Todas</span><span class="v989-filter-count">'+source.length+'</span></button>'+
+      '<button type="button" data-v66-store-cat="all" class="'+(currentCat==='all'?'active':'')+'" aria-pressed="'+(currentCat==='all')+'"><span class="v989-all-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m12 7 4 3-1.5 4.5h-5L8 10zM8 10 4.7 9M9.5 14.5 8 19M14.5 14.5 16 19M16 10l3.3-1"/></svg></span><span>Todas</span><span class="v989-filter-count">'+source.length+'</span></button>'+
       CAT_ORDER.map(id=>{
         const count=source.filter(t=>t.cat===id).length;
         const name=CAT_LABEL[id];
@@ -249,7 +252,7 @@ function teamMarkup(store=false){
   return '<section class="v66-directory" data-v66-directory="'+(store?'store':'teams')+'">'+
     header+
     (store?'<div class="v989-shop-label"><strong>Encuentra tu club</strong><span>Temporada 2026</span></div>':'')+
-    '<div class="v66-search"><span aria-hidden="true">⌕</span><input data-v66-team-search aria-label="Buscar equipo" type="search" autocomplete="off" placeholder="'+(store?'Buscar equipo activo':'Buscar equipo registrado')+'" value="'+esc(teamQuery)+'"></div>'+
+    (store?'<div class="v66-search v990-store-search"><span class="v990-search-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 5 5"/></svg></span><input data-v66-team-search aria-label="Buscar equipo activo" type="search" autocomplete="off" placeholder="Busca tu equipo favorito..." value="'+esc(teamQuery)+'"><button type="button" data-v990-search-clear aria-label="Limpiar búsqueda" '+(!teamQuery?'hidden':'')+'><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6 18 18M18 6 6 18"/></svg></button></div>':'<div class="v66-search"><span aria-hidden="true">⌕</span><input data-v66-team-search aria-label="Buscar equipo" type="search" autocomplete="off" placeholder="Buscar equipo registrado" value="'+esc(teamQuery)+'"></div>')+
     categories+
     '<p class="v66-source-note" aria-live="polite">'+list.length+(store?' de '+source.length+' inscripciones · '+(currentCat==='all'?'Todas las categorías':esc(CAT_LABEL[currentCat]||'')):' equipos registrados · datos oficiales sincronizados')+'</p>'+
     '<div class="v66-team-grid">'+list.map(t=>'<button type="button" class="v66-team-card" data-v66-open-team="'+esc(t.name)+'" data-v66-cat-id="'+esc(t.cat)+'" aria-label="Abrir tienda de '+esc(t.name)+', '+esc(t.category)+'">'+teamLogo(t)+'<span><b>'+esc(t.name)+'</b><small>'+esc(t.category)+(store?' · Tienda':'')+'</small></span><i aria-hidden="true">›</i></button>').join('')+'</div>'+
@@ -290,10 +293,19 @@ function bind(){
   document.querySelector('[data-v447-store-back]')?.addEventListener('click',()=>{if(history.length>1)history.back();else location.hash='#/more'});
 
   document.querySelector('[data-v66-team-search]')?.addEventListener('input',e=>{teamQuery=e.target.value;render(true,true,false)});
+  document.querySelector('[data-v990-search-clear]')?.addEventListener('click',()=>{
+    teamQuery='';render(true,true,false);
+  });
+  document.querySelectorAll('[data-v990-rail-step]').forEach(button=>button.addEventListener('click',()=>{
+    const rail=document.querySelector('.v989-store-categories');
+    if(!rail)return;
+    rail.scrollBy({left:(Number(button.dataset.v990RailStep)||1)*Math.max(135,rail.clientWidth*.72),behavior:'smooth'});
+  }));
   document.querySelectorAll('[data-v66-store-cat]').forEach(button=>button.addEventListener('click',()=>{
     const cat=button.dataset.v66StoreCat||'all';
     if(cat!=='all'&&!CAT_ORDER.includes(cat))return;
     storeCat=cat;
+    storeRailScroll=cat==='all'?0:(button.closest('.v989-store-categories')?.scrollLeft||0);
     try{localStorage.setItem('v989-store-category',cat)}catch(_){}
     render(true,false,false);
   }));
@@ -303,7 +315,7 @@ function bind(){
     rail?.querySelector('button.active')?.focus({preventScroll:true});
   });
   document.querySelector('[data-v989-store-reset]')?.addEventListener('click',()=>{
-    storeCat='all';teamQuery='';
+    storeCat='all';teamQuery='';storeRailScroll=0;
     try{localStorage.setItem('v989-store-category','all')}catch(_){}
     render(true,false,false);
   });
@@ -387,6 +399,13 @@ async function render(force=false,focusSearch=false,revealFilters=false){
   if(!force&&screen.querySelector('[data-v66-directory="'+kind+'"]'))return;
   screen.innerHTML=r==='players'?playerMarkup():teamMarkup(true);
   bind();
+  if(r==='club-store'){
+    const rail=screen.querySelector('.v989-store-categories');
+    if(rail){
+      rail.scrollLeft=storeRailScroll;
+      rail.addEventListener('scroll',()=>{storeRailScroll=rail.scrollLeft},{passive:true});
+    }
+  }
   if(focusSearch){
     if(r==='club-store'){
       const input=screen.querySelector('[data-v66-team-search]'); if(input){input.focus({preventScroll:true});input.setSelectionRange(input.value.length,input.value.length)}
