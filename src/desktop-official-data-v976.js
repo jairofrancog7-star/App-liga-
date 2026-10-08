@@ -159,8 +159,16 @@ function onNavClick(e){
  e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();go(next);
 }
 document.addEventListener('click',onNavClick,true);
-let queued=false;function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;sync()})}
-window.addEventListener('hashchange',schedule);window.addEventListener('ljr:official-data',()=>{db=null;document.querySelector('[data-ljpc-v976]')?.remove();schedule()});
-function start(){css();sync();const screen=document.querySelector('#screen');if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:true})}
+function restoreNativeDirectLink(){
+ if(!desktop()||!names.includes(route()))return;
+ const screen=document.getElementById('screen'),api=window.LJR_MAIN_ROUTE;
+ if(!screen||!api?.render||!api.state)return;
+ if(!screen.querySelector(':scope > [data-desktop-shell],:scope > [data-ds-page],:scope > [data-lj-special]'))return;
+ api.state.route=route();
+ api.render();
+}
+let queued=false;function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;restoreNativeDirectLink();sync()})}
+window.addEventListener('hashchange',schedule);window.addEventListener('load',schedule);window.addEventListener('ljr:official-data',()=>{db=null;document.querySelector('[data-ljpc-v976]')?.remove();schedule()});
+function start(){css();restoreNativeDirectLink();sync();const screen=document.querySelector('#screen');if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:true})}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
