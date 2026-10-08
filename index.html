@@ -32,10 +32,13 @@
   <style data-ljr-entry-guard>
     html.ljr-preboot #app{visibility:hidden!important}
     html.ljr-preboot body{background:#000144!important}
+    /* Avoid exposing legacy markup during route transitions; no layout shift. */
+    html.ljr-route-staging #screen{visibility:hidden!important}
   </style>
   <script>
     document.documentElement.classList.add('ljr-preboot');
   </script>
+  <script src="./src/v929-route-paint-guard.js?v=20261007-v929"></script>
 
   <script>
     (function(){
