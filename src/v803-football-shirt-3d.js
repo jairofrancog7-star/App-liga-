@@ -46,9 +46,32 @@ function cleanKitColor(value){
   return /^#[0-9a-f]{6}$/i.test(v)?v:'#0b4bd8';
 }
 
-function drawKitHalf(ctx,left,base){
-  const w=1024,h=1024,color=cleanKitColor(base);
+function drawKitHalf(ctx,left,base,accent=base,pattern='plain'){
+  const w=1024,h=1024,color=cleanKitColor(base),accentColor=cleanKitColor(accent||base);
   ctx.fillStyle=color;ctx.fillRect(left,0,w,h);
+
+  // V916 — optional club design. Profile shirts that do not pass a pattern remain plain.
+  ctx.save();
+  const p=String(pattern||'plain').toLowerCase();
+  if(accentColor!==color){
+    ctx.fillStyle=accentColor;
+    if(p==='stripes'){
+      for(let xx=left+92;xx<left+w;xx+=170)ctx.fillRect(xx,0,72,h);
+    }else if(p==='halves'){
+      ctx.fillRect(left+w/2,0,w/2,h);
+    }else if(p==='center'){
+      ctx.fillRect(left+w*.405,0,w*.19,h);
+    }else if(p==='chest'){
+      ctx.fillRect(left,245,w,155);
+    }else if(p==='shoulders'){
+      ctx.beginPath();ctx.moveTo(left,0);ctx.lineTo(left+w,0);ctx.lineTo(left+w*.82,260);ctx.lineTo(left+w*.18,260);ctx.closePath();ctx.fill();
+    }else if(p==='sleeves'){
+      ctx.fillRect(left,0,205,h);ctx.fillRect(left+w-205,0,205,h);
+    }else if(p==='diag'){
+      ctx.translate(left+w*.5,h*.45);ctx.rotate(-.42);ctx.fillRect(-w*.65,-75,w*1.3,150);
+    }
+  }
+  ctx.restore();
 
   // Light and shade are transparent overlays, so every chosen color keeps its own hue.
   const light=ctx.createLinearGradient(left,0,left+w,0);
@@ -183,14 +206,14 @@ function bakeCategoryLogo(ctx,url,texture){
   bakeLogo(ctx,url,texture,1326,700,420,300);
 }
 
-function fabricTexture(name='JAIRO',number='7',base='#0b4bd8',logoUrl='',category='',categoryLogoUrl=''){
+function fabricTexture(name='JAIRO',number='7',base='#0b4bd8',logoUrl='',category='',categoryLogoUrl='',accentColor='',pattern='plain'){
   const c=document.createElement('canvas');
   c.width=2048;c.height=1024;
   const x=c.getContext('2d');
-  const color=cleanKitColor(base);
+  const color=cleanKitColor(base),accent=cleanKitColor(accentColor||color);
 
-  drawKitHalf(x,0,color);
-  drawKitHalf(x,1024,color);
+  drawKitHalf(x,0,color,accent,pattern);
+  drawKitHalf(x,1024,color,accent,pattern);
 
   x.textAlign='center';x.textBaseline='middle';
 
@@ -373,7 +396,7 @@ async function buildRealJersey(current){
     if(o.isMesh&&o.geometry)o.geometry=o.geometry.clone();
   });
   const bounds=normalizeRealModel(group);
-  const texture=fabricTexture(current.name,current.number,current.color,current.logo,current.category,current.categoryLogo);
+  const texture=fabricTexture(current.name,current.number,current.color,current.logo,current.category,current.categoryLogo,current.accentColor,current.pattern);
   texture.channel=1;
   const bump=makeFabricBump();
   const materials=[];
@@ -394,7 +417,7 @@ async function buildRealJersey(current){
 
 function updateJerseyTexture(jersey,current){
   if(!jersey)return;
-  const next=fabricTexture(current.name,current.number,current.color,current.logo,current.category,current.categoryLogo);
+  const next=fabricTexture(current.name,current.number,current.color,current.logo,current.category,current.categoryLogo,current.accentColor,current.pattern);
   next.channel=jersey.uvChannel||0;
   jersey.materials.forEach(m=>{m.map=next;m.needsUpdate=true});
   jersey.texture?.dispose?.();
@@ -430,8 +453,8 @@ function createInstance(host,opts={}){
   const rim=new THREE.DirectionalLight(0x52bfff,1.9);rim.position.set(-3.5,2.5,-4.5);scene.add(rim);
   const rear=new THREE.DirectionalLight(0x3156ff,.8);rear.position.set(3,-.2,-4);scene.add(rear);
 
-  let current={name:opts.name||'JAIRO',number:opts.number||'7',color:cleanKitColor(opts.color||'#0b4bd8'),team:opts.team||'',logo:opts.logo||'',category:opts.category||'',categoryLogo:opts.categoryLogo||''};
-  let jersey=buildFallback(fabricTexture(current.name,current.number,current.color,current.logo,current.category,current.categoryLogo));
+  let current={name:opts.name||'JAIRO',number:opts.number||'7',color:cleanKitColor(opts.color||'#0b4bd8'),accentColor:cleanKitColor(opts.accentColor||opts.color||'#0b4bd8'),pattern:String(opts.pattern||'plain'),team:opts.team||'',logo:opts.logo||'',category:opts.category||'',categoryLogo:opts.categoryLogo||''};
+  let jersey=buildFallback(fabricTexture(current.name,current.number,current.color,current.logo,current.category,current.categoryLogo,current.accentColor,current.pattern));
   scene.add(jersey.group);
 
   const floor=new THREE.Mesh(
@@ -464,7 +487,7 @@ function createInstance(host,opts={}){
 
   const api={
     update(data={}){
-      current={...current,...data,color:cleanKitColor(data.color??current.color)};
+      current={...current,...data,color:cleanKitColor(data.color??current.color),accentColor:cleanKitColor(data.accentColor??current.accentColor??data.color??current.color),pattern:String(data.pattern??current.pattern??'plain')};
       updateJerseyTexture(jersey,current);
     },
     front(){

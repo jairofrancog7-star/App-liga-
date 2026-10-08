@@ -653,6 +653,90 @@ function storePlayerAvatar(team,cat,name){
    (p.photo?'<img src="'+esc(p.photo)+'" alt="'+esc(name)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer">':'<b>'+esc(initials(name)||"JR")+'</b>')+
  '</span>';
 }
+
+/* V916 — exact team crest + club-specific shirt color/design.
+   The 50-team jersey registry is the source of truth for the store. */
+function storeKitItem(team){
+ try{return window.LJR_JERSEY_ASSETS?.itemFor?.(team)||null}catch(_){return null}
+}
+function storeTeamLogo(team){
+ const item=storeKitItem(team);
+ if(item?.logo)return String(item.logo);
+ try{const x=window.LJR_SEASON_LOGOS?.get?.(team);if(x)return String(x)}catch(_){}
+ try{const x=window.LJR_TEAM_LOGOS?.get?.(team);if(x)return String(x)}catch(_){}
+ try{const x=window.LJR_OFFICIAL_API?.getLogo?.(team);if(x)return String(x)}catch(_){}
+ return String(logoFor(team)||'');
+}
+function v916FallbackColors(team){
+ const n=norm(team),rows=[
+  [/franco/,['#d71920','#0a0b10']], [/galacticos|pozos/,['#e8b519','#101010']],
+  [/juventus/,['#f4f4f4','#121212']], [/manchester/,['#e31d2b','#111111']],
+  [/boavista/,['#111111','#e2bd22']], [/esperanza/,['#18b76d','#08261b']],
+  [/lobos/,['#1458d7','#071c4f']], [/san julian/,['#e52d36','#ffffff']],
+  [/tavera/,['#1c67d5','#ffffff']], [/america/,['#f0d326','#173a8e']],
+  [/herrera/,['#111111','#d91c28']], [/promesas/,['#2468d8','#ffffff']],
+  [/cuenda/,['#0b6a42','#efd94c']], [/aldama/,['#d52231','#111111']],
+  [/linces/,['#0c2e77','#dfb72c']], [/psv/,['#e1222c','#ffffff']],
+  [/napoli/,['#1b8bd1','#ffffff']], [/dynamo|dinamo/,['#2456c7','#101010']],
+  [/boca/,['#1748a5','#f0cb26']], [/san jose/,['#16884a','#ffffff']],
+  [/hermanos/,['#111111','#d8c39a']], [/abejas/,['#f0c52e','#161616']],
+  [/terricola/,['#2e8b57','#ffffff']], [/celtic/,['#17964b','#ffffff']],
+  [/nopalero/,['#39a935','#183e28']], [/barza/,['#17378f','#a81535']]
+ ];
+ for(const row of rows)if(row[0].test(n))return row[1];
+ let h=0;for(const ch of String(team||''))h=(h*31+ch.charCodeAt(0))>>>0;
+ const hue=h%360;return ['hsl('+hue+' 72% 43%)','hsl('+((hue+42)%360)+' 65% 28%)'];
+}
+function v916Pattern(item){
+ const o=String(item?.original||'').toLowerCase();
+ if(/inter|club brugge|atleti|lens|porto|psv|real betis|sporting|shakhtar/.test(o))return 'stripes';
+ if(/feyenoord|galatasaray|slavia/.test(o))return 'halves';
+ if(/paris/.test(o))return 'center';
+ if(/stuttgart/.test(o))return 'chest';
+ if(/aston villa/.test(o))return 'sleeves';
+ if(/dortmund/.test(o))return 'shoulders';
+ if(/barcelona/.test(o))return 'stripes';
+ return 'plain';
+}
+function v916Hex(r,g,b){
+ const h=n=>Math.max(0,Math.min(255,Math.round(n))).toString(16).padStart(2,'0');
+ return '#'+h(r)+h(g)+h(b);
+}
+function v916SampleKit(item,fallback){
+ return new Promise(resolve=>{
+   if(!item?.url){resolve({color:fallback[0],accentColor:fallback[1],pattern:v916Pattern(item)});return}
+   const im=new Image();im.decoding='async';
+   im.onload=()=>{
+     try{
+       const c=document.createElement('canvas');c.width=64;c.height=64;
+       const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(im,0,0,64,64);
+       const d=x.getImageData(0,0,64,64).data,bins=new Map();
+       for(let yy=8;yy<55;yy++)for(let xx=12;xx<52;xx++){
+         const i=(yy*64+xx)*4;if(d[i+3]<100)continue;
+         const r=d[i],g=d[i+1],b=d[i+2],max=Math.max(r,g,b),min=Math.min(r,g,b);
+         if(max<24)continue;
+         const qr=Math.round(r/32)*32,qg=Math.round(g/32)*32,qb=Math.round(b/32)*32;
+         const key=qr+','+qg+','+qb;bins.set(key,(bins.get(key)||0)+1+(max-min>35?1:0));
+       }
+       const arr=[...bins.entries()].sort((a,b)=>b[1]-a[1]).map(([k])=>k.split(',').map(Number));
+       const first=arr[0]||null;
+       let second=null;
+       if(first)second=arr.find(v=>Math.hypot(v[0]-first[0],v[1]-first[1],v[2]-first[2])>95)||null;
+       resolve({
+         color:first?v916Hex(...first):fallback[0],
+         accentColor:second?v916Hex(...second):fallback[1],
+         pattern:v916Pattern(item)
+       });
+     }catch(_){resolve({color:fallback[0],accentColor:fallback[1],pattern:v916Pattern(item)})}
+   };
+   im.onerror=()=>resolve({color:fallback[0],accentColor:fallback[1],pattern:v916Pattern(item)});
+   im.src=String(item.url);
+ });
+}
+function storeTeamStyle(team){
+ const fallback=v916FallbackColors(team),item=storeKitItem(team);
+ return {color:fallback[0],accentColor:fallback[1],pattern:v916Pattern(item),item};
+}
 function crest(name,logo,cls){return '<span class="'+(cls||"v431-crest")+'">'+(logo?'<img src="'+esc(logo)+'" alt="'+esc(name)+'">':'<b>'+esc(initials(name)||"JR")+'</b>')+'</span>'}
 var V441_SHIRT_SEQ=0;
 function shirtPalette(variant){
@@ -666,9 +750,11 @@ function shirtPalette(variant){
 }
 function shirt(logo,variant,label,number,name){
  const team=sessionStorage.getItem(TEAM_KEY)||'';
- logo=window.LJR_SEASON_LOGOS?.get(team)||logo;
- var v=variant||"home",p=shirtPalette(v);
- var pattern=v==="home"?"bands":v==="away"?"plain":v==="third"?"diag":v==="training"?"shoulders":v==="keeper"?"plain":"stripes";
+ logo=storeTeamLogo(team)||logo;
+ var v=variant||"home",base=storeTeamStyle(team),p=shirtPalette(v);
+ if(v==="home"){p={a:base.color,b:base.color,c:base.accentColor,ink:"#ffffff",edge:base.accentColor}}
+ else if(v==="away"){p={a:base.accentColor,b:base.accentColor,c:base.color,ink:"#ffffff",edge:base.color}}
+ var pattern=v==="home"?(base.pattern==="stripes"?"stripes":base.pattern==="halves"?"diag":base.pattern==="shoulders"?"shoulders":"bands"):v==="away"?"plain":v==="third"?"diag":v==="training"?"shoulders":v==="keeper"?"plain":"stripes";
  return '<div class="v431-shirt v440-shirt v441-shirt v442-shirt-3d v602-store-real-shirt '+esc(v)+' '+pattern+'" data-v442-tilt style="--v602-a:'+esc(p.a)+';--v602-b:'+esc(p.b)+';--v602-c:'+esc(p.c)+';--v602-edge:'+esc(p.edge)+';--v602-ink:'+esc(p.ink)+'">'+
   '<span class="v602-shirt-base" aria-hidden="true"></span>'+
   '<span class="v602-shirt-tint" aria-hidden="true"></span>'+
@@ -1062,7 +1148,7 @@ function store3DPanel(team,cat,logo){
        '<button type="button" data-v915-shirt-back><span>Espalda</span></button>'+
        '<button type="button" data-v915-shirt-spin aria-pressed="false"><span data-v915-spin-label>Girar</span></button>'+
      '</div>'+
-     '<p>Escudo de '+esc(team)+' al frente · '+esc(category)+' en la espalda.</p>'+
+     '<p>Colores y diseño según '+esc(team)+' · escudo del equipo al frente · '+esc(category)+' en la espalda.</p>'+
    '</div>'+
  '</section>';
 }
@@ -1072,17 +1158,33 @@ function mountStore3D(root,team){
  function boot(){
    var engine=window.LJR_FOOTBALL_SHIRT_3D;
    if(!engine?.mount){if(tries++<100)setTimeout(boot,50);return}
-   var cat=sessionStorage.getItem(CAT_KEY)||"3";
+   var cat=sessionStorage.getItem(CAT_KEY)||"3",style=storeTeamStyle(team),teamLogo=storeTeamLogo(team);
    var viewer=engine.mount(host,{
      name:"",
      number:"",
-     color:"#0b4bd8",
+     color:style.color,
+     accentColor:style.accentColor,
+     pattern:style.pattern,
      team:team,
-     logo:logoFor(team),
+     logo:teamLogo,
      category:storeCategoryName(cat),
      categoryLogo:V915_STORE_CAT_LOGOS[String(cat)]||""
    });
    root.__v915StoreViewer=viewer;
+
+   // Read the exact assigned 3/4 jersey to match its dominant club colors.
+   v916SampleKit(style.item,[style.color,style.accentColor]).then(function(sample){
+     if(!root.isConnected||root.__v915StoreViewer!==viewer)return;
+     viewer?.update?.({
+       color:sample.color,
+       accentColor:sample.accentColor,
+       pattern:sample.pattern,
+       logo:storeTeamLogo(team)
+     });
+     root.style.setProperty("--v916-club-primary",sample.color);
+     root.style.setProperty("--v916-club-accent",sample.accentColor);
+   });
+
    root.querySelector("[data-v915-shirt-front]")?.addEventListener("click",function(){viewer?.front?.()});
    root.querySelector("[data-v915-shirt-back]")?.addEventListener("click",function(){viewer?.back?.()});
    root.querySelector("[data-v915-shirt-spin]")?.addEventListener("click",function(e){
@@ -1362,7 +1464,7 @@ async function renderStore(team,cat){
    sessionStorage.removeItem(OPEN_KEY);sessionStorage.removeItem(TEAM_KEY);sessionStorage.removeItem(CAT_KEY);return;
  }
  ensureStyle();await load();var screen=document.querySelector("#screen");if(!screen||route()!=="club-store")return;
- var logo=logoFor(team),roster=rosterFor(team,cat);document.body.dataset.appRoute="club-store";
+ var logo=storeTeamLogo(team)||logoFor(team),roster=rosterFor(team,cat);document.body.dataset.appRoute="club-store";
  var oldStore=screen.querySelector("[data-v431-store]");try{oldStore?.__v915StoreViewer?.destroy?.()}catch(_){}
  screen.innerHTML=markup(team,cat,roster,logo);bind(team);
  try{screen.scrollTop=0;window.scrollTo({top:0,left:0,behavior:"instant"})}catch(_){window.scrollTo(0,0)}

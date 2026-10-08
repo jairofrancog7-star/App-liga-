@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v899-modern-cards';
+const CACHE='liga-juventino-v916-store-team-colors-logo';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
