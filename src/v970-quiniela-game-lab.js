@@ -165,14 +165,16 @@ function v970Play(section,c,db,guesses,catId){
      if(!predicted||v970Date(match))return;
      const home=card.querySelector('[data-q-home]'),away=card.querySelector('[data-q-away]');
      if(!home||!away||home.disabled||away.disabled)return;
+     const hint=row.querySelector('.v970-insight-footer p');
      if(home.value!==''||away.value!==''){
-       window.alert('Ya escribiste un marcador. Para usar la sugerencia, primero borra ambos valores.');
+       if(hint)hint.textContent='Ya escribiste un marcador. Bórralo para pedir una sugerencia nueva.';
        return;
      }
      home.value=String(predicted.home);away.value=String(predicted.away);
      home.dispatchEvent(new Event('input',{bubbles:true}));
      away.dispatchEvent(new Event('input',{bubbles:true}));
-     suggest.textContent='Marcador sugerido · pendiente de guardar';
+     if(hint)hint.textContent='Marcador orientativo aplicado. Revísalo y pulsa Guardar pronóstico.';
+     suggest.textContent='Sugerencia aplicada · sin guardar';
    };
  }
  applyFilter(filter);
