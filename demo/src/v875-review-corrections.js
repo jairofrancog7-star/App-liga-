@@ -68,6 +68,59 @@ function meeting(root){
  wrap.innerHTML='<label>Hora<input data-meeting-field="time" type="time" value="'+esc(old.time||'19:00')+'"></label><label>Lugar<input data-meeting-field="place" value="'+esc(old.place||'')+'" placeholder="Sede de la junta"></label><label>Responsable<input data-meeting-field="owner" value="'+esc(old.owner||'')+'" placeholder="Nombre del responsable"></label><label>Fecha límite de acuerdos<input data-meeting-field="deadline" type="date" value="'+esc(old.deadline||'')+'"></label><label class="wide">Pendientes y seguimiento<textarea data-meeting-field="tasks" rows="4" placeholder="Acuerdo · responsable · fecha límite">'+esc(old.tasks||'')+'</textarea></label><div class="v875-agenda-chips wide">'+['Resultados de jornada','Programación y campos','Arbitraje y disciplina','Propuestas del buzón','Equipos y registros'].map(t=>'<button type="button" data-add-topic="'+esc(t)+'">'+esc(t)+'</button>').join('')+'</div>';
  form.append(wrap);const share=document.createElement('button');share.type='button';share.className='v105-btn alt';share.textContent='Compartir minuta';form.parentElement.querySelector('.v105-actions')?.append(share);
  share.onclick=async()=>{const lines=['JUNTA DE LA LIGA',...Array.from(form.querySelectorAll('[data-x],[data-meeting-field]')).map(el=>(el.closest('label')?.querySelector('span')?.textContent||el.dataset.meetingField||el.dataset.x)+': '+el.value)];const text=lines.join('\n\n');try{if(navigator.share)await navigator.share({title:'Junta semanal de la Liga',text});else{await navigator.clipboard.writeText(text);share.textContent='Minuta copiada'}}catch(e){if(e.name!=='AbortError')share.textContent='Vuelve a intentar compartir'}};
+ const printButton=form.parentElement.querySelector('[data-pdf]');
+ const printMeeting=()=>{
+  const get=s=>form.querySelector(s)?.value?.trim?.()||'';
+  const fmtDate=value=>{
+   const m=String(value||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+   if(!m)return value||'—';
+   const d=new Date(Number(m[1]),Number(m[2])-1,Number(m[3]),12,0,0);
+   try{return new Intl.DateTimeFormat('es-MX',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(d)}
+   catch(_){return value}
+  };
+  const nl=value=>esc(value||'—').replace(/\n/g,'<br>');
+  const data={
+   date:get('[data-x="date"]'),time:get('[data-meeting-field="time"]'),place:get('[data-meeting-field="place"]'),
+   attendance:get('[data-x="attendance"]'),owner:get('[data-meeting-field="owner"]'),deadline:get('[data-meeting-field="deadline"]'),
+   agenda:get('[data-x="agenda"]'),agreements:get('[data-x="agreements"]'),tasks:get('[data-meeting-field="tasks"]')
+  };
+  const html='<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'+
+   '<title>Minuta · Liga Juventino Rosas</title><style>'+
+   '@page{size:letter;margin:13mm}*{box-sizing:border-box}html,body{margin:0;padding:0;background:#fff;color:#111827;font-family:Arial,Helvetica,sans-serif}'+
+   'body{font-size:11pt;line-height:1.42}.page{width:100%}.head{border-bottom:3px solid #0b4fb3;padding:0 0 12px;margin-bottom:16px}.kicker{font-size:9pt;font-weight:800;letter-spacing:.12em;color:#0b4fb3}.head h1{margin:4px 0 4px;font-size:22pt;line-height:1.08;color:#071b4d}.head p{margin:0;color:#475569;font-size:10pt}'+
+   '.meta{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;margin-bottom:16px}.meta div{border:1px solid #cbd5e1;border-radius:8px;padding:8px 10px;min-height:48px}.meta b{display:block;font-size:8.5pt;color:#0b4fb3;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}.section{break-inside:avoid;margin:0 0 13px}.section h2{margin:0 0 6px;font-size:11pt;color:#0b4fb3;border-bottom:1px solid #dbe3f0;padding-bottom:4px}.box{border:1px solid #cbd5e1;border-radius:8px;padding:10px 12px;min-height:52px;white-space:normal}.footer{margin-top:18px;padding-top:8px;border-top:1px solid #cbd5e1;color:#64748b;font-size:8.5pt;text-align:center}'+
+   '@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.page{page-break-after:auto}}</style></head><body><main class="page">'+
+   '<header class="head"><div class="kicker">LIGA MUNICIPAL DE FÚTBOL JUVENTINO ROSAS</div><h1>Minuta de junta semanal</h1><p>Documento generado desde la aplicación oficial de la Liga.</p></header>'+
+   '<section class="meta"><div><b>Fecha de junta</b>'+esc(fmtDate(data.date))+'</div><div><b>Hora</b>'+esc(data.time||'—')+'</div><div><b>Lugar</b>'+esc(data.place||'—')+'</div><div><b>Responsable</b>'+esc(data.owner||'—')+'</div><div><b>Asistencia</b>'+esc(data.attendance||'—')+'</div><div><b>Fecha límite de acuerdos</b>'+esc(fmtDate(data.deadline))+'</div></section>'+
+   '<section class="section"><h2>Orden del día</h2><div class="box">'+nl(data.agenda)+'</div></section>'+
+   '<section class="section"><h2>Acuerdos / minuta</h2><div class="box">'+nl(data.agreements)+'</div></section>'+
+   '<section class="section"><h2>Pendientes y seguimiento</h2><div class="box">'+nl(data.tasks)+'</div></section>'+
+   '<footer class="footer">Liga Juventino Rosas · Minuta para impresión / PDF</footer></main></body></html>';
+  document.querySelector('[data-v875-print-frame]')?.remove();
+  const frame=document.createElement('iframe');
+  frame.dataset.v875PrintFrame='';
+  frame.setAttribute('aria-hidden','true');
+  frame.style.cssText='position:fixed;left:-12000px;top:0;width:816px;height:1056px;border:0;background:#fff;visibility:visible;pointer-events:none';
+  document.body.append(frame);
+  const doc=frame.contentDocument||frame.contentWindow?.document;
+  if(!doc){frame.remove();return}
+  doc.open();doc.write(html);doc.close();
+  let started=false;
+  const run=()=>{
+   if(started)return;started=true;
+   try{frame.contentWindow?.focus();frame.contentWindow?.print();log('Imprimir minuta de junta')}
+   catch(_){toast('No se pudo abrir la impresión. Vuelve a intentar.');frame.remove()}
+  };
+  frame.addEventListener('load',()=>setTimeout(run,120),{once:true});
+  setTimeout(()=>{if(frame.isConnected&&doc.readyState==='complete')run()},350);
+  const cleanup=()=>setTimeout(()=>frame.remove(),1200);
+  try{frame.contentWindow?.addEventListener('afterprint',cleanup,{once:true})}catch(_){}
+  setTimeout(()=>frame.remove(),60000);
+ };
+ if(printButton){
+  printButton.onclick=e=>{e.preventDefault();e.stopPropagation();printMeeting()};
+  printButton.type='button';
+ }
  wrap.querySelectorAll('[data-meeting-field]').forEach(input=>input.oninput=()=>{const data={};wrap.querySelectorAll('[data-meeting-field]').forEach(el=>data[el.dataset.meetingField]=el.value);localStorage.setItem('ljr-meeting-options-v875',JSON.stringify(data))});
  wrap.querySelectorAll('[data-add-topic]').forEach(button=>button.onclick=()=>{const agenda=form.querySelector('[data-x="agenda"]');if(agenda&&!agenda.value.includes(button.dataset.addTopic))agenda.value+='\n• '+button.dataset.addTopic});
 }
