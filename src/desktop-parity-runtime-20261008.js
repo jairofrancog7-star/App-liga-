@@ -38,9 +38,24 @@ function renderTools(){
  if(host.querySelector('[data-pc-tools-hub]'))return;
  const h=page.querySelector('.ds-pagehead h1');if(h)h.textContent='Herramientas PC';
  const p=page.querySelector('.ds-pagehead p');if(p)p.textContent='Las mismas funciones reales de la app azul, adaptadas al navegador de computadora.';
- host.innerHTML='<div class="ljpc-toolhub" data-pc-tools-hub><div class="ljpc-hub-head"><span>🖥️ CENTRO DE ESCRITORIO</span><p>Abre las herramientas originales y conserva sus datos, categorías y preferencias. Algunas funciones administrativas requieren inicio de sesión.</p></div>'+
+ host.innerHTML='<div class="ljpc-toolhub" data-pc-tools-hub><div class="ljpc-hub-head"><span>🖥️ CENTRO DE ESCRITORIO</span><p>Abre las herramientas originales y conserva sus datos, categorías y preferencias. Algunas funciones administrativas requieren inicio de sesión.</p></div><div class="ljpc-hub-controls"><label for="ljpc-tools-find">Buscar funciones de la liga</label><input id="ljpc-tools-find" data-ljpc-tools-find type="search" autocomplete="off" placeholder="Buscar calendario, equipos, quiniela, credenciales…" aria-controls="ljpc-tool-list"><span data-ljpc-tools-counter></span></div><div id="ljpc-tool-list">'+
  toolGroups.map(([title,tools])=>'<section class="ljpc-hub-group"><h2>'+title+'</h2><div class="ljpc-hub-grid">'+
- tools.map(([symbol,label,r])=>'<button class="ljpc-hub-btn" type="button" data-ljpc-hub-route="'+r+'"><span aria-hidden="true">'+symbol+'</span><b>'+label+'</b><i aria-hidden="true">›</i></button>').join('')+'</div></section>').join('')+'</div>';
+ tools.map(([symbol,label,r])=>'<button class="ljpc-hub-btn" type="button" data-ljpc-hub-route="'+r+'"><span aria-hidden="true">'+symbol+'</span><b>'+label+'</b><i aria-hidden="true">›</i></button>').join('')+'</div></section>').join('')+'</div><p class="ljpc-hub-empty" data-ljpc-tools-empty hidden>No hay herramientas con ese nombre. Prueba otro término.</p></div>';
+ const field=host.querySelector('[data-ljpc-tools-find]');
+ const buttons=[...host.querySelectorAll('[data-ljpc-hub-route]')];
+ const counter=host.querySelector('[data-ljpc-tools-counter]');
+ const empty=host.querySelector('[data-ljpc-tools-empty]');
+ const normalize=t=>String(t||'').toLocaleLowerCase('es-MX').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+ function filter(){
+  const term=normalize(field?.value).trim();
+  let matches=0;
+  buttons.forEach(b=>{const visible=!term||normalize(b.textContent).includes(term);b.hidden=!visible;if(visible)matches++});
+  host.querySelectorAll('.ljpc-hub-group').forEach(g=>{g.hidden=![...g.querySelectorAll('.ljpc-hub-btn')].some(b=>!b.hidden)});
+  if(counter)counter.textContent=matches+' funciones';
+  if(empty)empty.hidden=matches!==0;
+ }
+ field?.addEventListener('input',filter);
+ filter();
 }
 function restoreNative(){
  const name=route();if(!desktop()||!window.LJR_PC_NATIVE_ROUTES?.has(name))return;
@@ -76,6 +91,22 @@ body.lj-desktop .ds-menu>[data-ljpc-desktop-tools],body.lj-desktop .desk-menu>[d
 .ljpc-hub-btn{display:flex;gap:10px;align-items:center;min-height:57px;width:100%;padding:11px 13px!important;border:1px solid #cfdeed!important;border-radius:10px!important;background:#fff!important;color:#10294a!important;text-align:left!important;cursor:pointer!important;box-shadow:0 4px 14px #0b2f5610}
 .ljpc-hub-btn:hover{background:#f0f8ff!important;border-color:#438fce!important}
 .ljpc-hub-btn span{font-size:20px}.ljpc-hub-btn b{font-size:12px;flex:1}.ljpc-hub-btn i{font-size:22px;font-style:normal;color:#2674bf}
+.ljpc-hub-controls{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:0 0 18px;padding:12px 14px;border:1px solid #c9def0;border-radius:12px;background:#edf6ff}
+.ljpc-hub-controls label{font:800 12px system-ui;color:#134677}
+.ljpc-hub-controls input{flex:1 1 240px;min-width:0;padding:11px 12px;border:1px solid #b5cfe8;border-radius:9px;color:#0a235c;background:#fff;font:500 13px system-ui}
+.ljpc-hub-controls [data-ljpc-tools-counter]{font:800 11px system-ui;color:#245f9c}
+.ljpc-hub-empty{font:650 13px system-ui;color:#597597;padding:16px}
+.ljpc-hub-group[hidden],.ljpc-hub-btn[hidden],.ljpc-hub-empty[hidden]{display:none!important}
+body.lj-desktop :is(button,input,select,textarea,a):focus-visible{outline:2px solid #30a4fd!important;outline-offset:2px!important}
+body.lj-desktop #screen :is(.ds-wrap,.desk-wrap){max-width:min(100%,1320px);box-sizing:border-box}
+body.lj-desktop :is(.ds-page,.ds-content,.ds-wrap,.desk-wrap,.desk-main,.desk-page-shell,.desktop-liga){min-width:0}
+body.lj-desktop #screen .ljpc-function-root{max-width:100%;min-width:0}
+body.lj-desktop #screen .ljpc-match{min-width:0}
+body.lj-desktop #screen .ljpc-team span{min-width:0;overflow-wrap:anywhere}
+body.lj-desktop #screen .ljpc-data-tablebox,body.lj-desktop #screen .ljpc-panel{max-width:100%}
+body.lj-desktop #screen button{touch-action:manipulation}
+@media (max-width:980px){body.lj-desktop #screen .ljpc-match{grid-template-columns:minmax(0,1fr) minmax(70px,100px) minmax(0,1fr)}body.lj-desktop #screen .ljpc-match>.ljpc-muted{grid-column:1/-1}}
+
 @media(max-width:1100px){.ljpc-hub-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#ljpc-native-toolbar{padding:9px 16px}}
 @media(max-width:760px){.ljpc-hub-grid{grid-template-columns:1fr}#ljpc-native-toolbar{position:relative;display:block}#ljpc-native-toolbar .ljpc-native-links{margin-top:8px}body.ljpc-native-route #screen{width:100%!important;padding:10px!important}}
 `;
