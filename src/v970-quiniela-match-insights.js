@@ -17,7 +17,12 @@ const safeWrite=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value)
 const snapshot=()=>dataPromise||(dataPromise=fetch(DATA,{cache:'no-store'}).then(r=>{
  if(!r.ok)throw Error('No se pudo cargar el archivo local');
  return r.json();
-}).catch(error=>{dataPromise=null;throw error}));
+}).catch(error=>{
+  dataPromise=null;
+  const cached=(()=>{try{return JSON.parse(localStorage.getItem('ljr-blue:quiniela:fixture-snapshot:v1')||'null')}catch{return null}})();
+  if(cached?.categories?.['3'])return cached;
+  throw error;
+}));
 function matchKey(m,data){
  return [m.category,data.categories?.[String(m.category)]?.season_id||'',m.round,norm(m.home),norm(m.away)].join('|');
 }
@@ -79,6 +84,37 @@ function previewMarkup(m,cat,data){
        '</div></div>'+
    '</section></div>';
 }
+function addRanking(root,cat,data){
+ const host=$('.v618-q-ranking',root);
+ if(!host||host.querySelector('.v970-performance'))return;
+ const picks=safeRead('v561-quiniela');
+ const byRound=new Map();let checked=0,hits=0;
+ for(const m of cat.matches){
+   if(!m.complete||!savedPrediction(m,data,picks))continue;
+   const value=picks[matchKey(m,data)];
+   const exact=value.home===m.homeScore&&value.away===m.awayScore;
+   const correct=exact||Math.sign(value.home-value.away)===Math.sign(m.homeScore-m.awayScore);
+   const pts=exact?2:correct?1:0;
+   checked++;if(correct)hits++;
+   const id=String(m.round||'—');
+   if(!byRound.has(id))byRound.set(id,{round:id,evaluated:0,points:0,correct:0});
+   const row=byRound.get(id);row.evaluated++;row.points+=pts;if(correct)row.correct++;
+ }
+ const rows=[...byRound.values()].sort((a,b)=>Number(b.round)-Number(a.round));
+ const percent=checked?Math.round(hits/checked*100):0;
+ const panel=document.createElement('section');
+ panel.className='v970-performance';
+ panel.innerHTML='<header><span>MI RENDIMIENTO POR JORNADA</span><strong>'+percent+'% <small>aciertos</small></strong></header>'+
+   '<p>Estadísticas de tus pronósticos evaluados en este dispositivo · '+checked+' partido'+(checked===1?'':'s')+'.</p>'+
+   (rows.length?'<div class="v970-performance-list">'+rows.map(r=>{
+     const max=r.evaluated*2;
+     return '<div class="v970-performance-row"><span>J'+escapeHtml(r.round)+'</span>'+
+       '<div class="v970-performance-track" role="meter" aria-label="Puntos de jornada '+escapeHtml(r.round)+'" aria-valuemin="0" aria-valuemax="'+max+'" aria-valuenow="'+r.points+'">'+
+       '<i style="width:'+Math.round(r.points/max*100)+'%"></i></div>'+
+       '<b>'+r.points+'/'+max+' pts</b></div>';
+   }).join('')+'</div>':'<p class="v970-performance-empty">Cuando se publiquen marcadores completos de tus partidos pronosticados aparecerá aquí tu rendimiento.</p>');
+ host.append(panel);
+}
 function addProgress(root,cat,visibleMatches,data){
  if(!visibleMatches.length)return;
  const picks=safeRead('v561-quiniela');
@@ -115,8 +151,8 @@ async function mount(){
  const root=$('#screen [data-v561-quiniela-mount] .v618-quiniela');
  if(!root||root.dataset.v970Enhanced==='true')return;
  const categoryId=String(localStorage.getItem('v561-category')||'3');
- const cards=$$('[data-q-match]',root);
- if(!cards.length)return;
+ const cards=$('[data-q-match]',root);
+ if(!cards.length&&!$('.v618-q-ranking',root))return;
  // Mark this precise rendered instance to avoid observer feedback.
  root.dataset.v970Enhanced='true';
  try{
@@ -125,7 +161,8 @@ async function mount(){
    const cat=normalizeCompetition(data).find(c=>c.id===categoryId);
    if(!cat)return;
    const visible=cards.map(el=>cat.matches.find(m=>m.id===el.dataset.qMatch)).filter(Boolean);
-   addProgress(root,cat,visible,data);
+   if(cards.length)addProgress(root,cat,visible,data);
+   addRanking(root,cat,data);
    for(const card of cards){
      const m=cat.matches.find(item=>item.id===card.dataset.qMatch);
      if(!m||card.querySelector('.v970-pre-match'))continue;
