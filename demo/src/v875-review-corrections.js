@@ -50,7 +50,22 @@ function studioEntry(root){
 function poll(root){
  const host=root.querySelector('.v105-poll-status')?.parentElement;if(!host||host.querySelector('[data-v875-mailbox]'))return;
  const form=document.createElement('form');form.className='v875-mailbox';form.dataset.v875Mailbox='';
- form.innerHTML='<small>BUZÓN DE LA LIGA</small><h3>Tu propuesta puede mejorar la liga</h3><p>Mensaje privado para administración. Se envía con tu cuenta registrada.</p><label>¿Qué propones mejorar?<textarea name="message" minlength="10" maxlength="10000" rows="7" required placeholder="Cuéntanos el problema, tu idea y cómo podríamos mejorar…"></textarea></label><div><span data-count>0 / 10 000</span><button type="submit">Enviar propuesta</button></div><p role="status" data-status></p>';
+ form.innerHTML=[
+  '<div class="v927-mail-head">',
+   '<span class="v927-mail-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="15" rx="3"/><path d="m4 8 8 6 8-6"/><path d="m15.5 3 2 2 3-3"/></svg></span>',
+   '<span class="v927-mail-kicker"><small>BUZÓN DE LA LIGA</small><strong>Tu opinión importa</strong></span>',
+   '<span class="v927-mail-private">PRIVADO</span>',
+  '</div>',
+  '<h3>Tu propuesta puede mejorar la liga</h3>',
+  '<p>Comparte tu idea directamente con la administración. Se envía con tu cuenta registrada.</p>',
+  '<label><span class="v927-field-label">¿Qué propones mejorar?</span>',
+   '<textarea name="message" minlength="10" maxlength="10000" rows="6" required placeholder="Describe tu propuesta, qué cambiarías y cómo ayudaría a la Liga…"></textarea>',
+  '</label>',
+  '<div class="v927-mail-footer"><span class="v927-mail-count"><strong data-count>0 / 10 000</strong><small>caracteres</small></span>',
+   '<button type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4 20-7ZM22 2 11 13"/></svg><span>Enviar propuesta</span></button>',
+  '</div>',
+  '<p class="v927-mail-status" role="status" data-status aria-live="polite"></p>'
+ ].join('');
  host.append(form);const text=form.elements.message,status=form.querySelector('[data-status]'),button=form.querySelector('button');
  text.oninput=()=>{form.querySelector('[data-count]').textContent=text.value.length+' / 10 000'};
  form.onsubmit=async e=>{
@@ -75,7 +90,8 @@ function v919MeetingIcon(name){
   users:'<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2"/><path d="M3 20a6 6 0 0 1 12 0m1-5a4 4 0 0 1 5 4"/>',
   save:'<path d="M5 4h12l2 2v14H5V4Z"/><path d="M8 4v6h8V4M8 20v-6h8v6"/>',
   print:'<path d="M7 9V4h10v5M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><path d="M7 14h10v7H7z"/>',
-  share:'<circle cx="18" cy="5" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="19" r="2"/><path d="m8 11 8-5m-8 7 8 5"/>'
+  share:'<circle cx="18" cy="5" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="19" r="2"/><path d="m8 11 8-5m-8 7 8 5"/>',
+  image:'<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="m4 18 5-5 3.5 3.5 3.5-4L21 17"/>'
  };
  return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(p[name]||p.calendar)+'</svg>';
 }
@@ -117,6 +133,7 @@ function meeting(root){
  if(dialog&&!dialog.querySelector('[data-v919-meeting-hero]')){
   const hero=document.createElement('div');hero.className='v919-meeting-hero';hero.dataset.v919MeetingHero='1';
   hero.innerHTML='<span class="v919-hero-logo"><img src="./assets/liga-logo.webp" alt="Liga Juventino Rosas"></span><span class="v919-hero-copy"><small>OPERACIÓN SEMANAL</small><b>Junta de la Liga</b><em>Agenda, acuerdos y seguimiento</em></span><span class="v919-hero-day">MAR</span>';
+  window.LJR_MINUTA_MEDIA?.transparentLogo?.().then(src=>{if(src&&hero.isConnected)hero.querySelector('img').src=src}).catch(()=>{});
   const title=dialog.querySelector(':scope>h3');if(title){title.hidden=true;title.insertAdjacentElement('beforebegin',hero)}
   const intro=dialog.querySelector(':scope>p');if(intro)intro.classList.add('v919-meeting-intro');
  }
@@ -126,9 +143,17 @@ function meeting(root){
  if(saveButton){saveButton.classList.add('v919-action','is-save');saveButton.innerHTML=v919MeetingIcon('save')+'<span>Guardar junta</span>'}
  if(printButtonBase){printButtonBase.classList.add('v919-action','is-print');printButtonBase.innerHTML=v919MeetingIcon('print')+'<span>Imprimir PDF</span>'}
  const share=document.createElement('button');share.type='button';share.className='v105-btn alt v919-action is-share';share.innerHTML=v919MeetingIcon('share')+'<span>Compartir minuta</span>';actions?.append(share);
- share.onclick=async()=>{const lines=['JUNTA DE LA LIGA',...Array.from(form.querySelectorAll('[data-x],[data-meeting-field]')).map(el=>(el.closest('label')?.querySelector('span')?.textContent||el.dataset.meetingField||el.dataset.x)+': '+el.value)];const text=lines.join('\n\n');try{if(navigator.share)await navigator.share({title:'Junta semanal de la Liga',text});else{await navigator.clipboard.writeText(text);share.textContent='Minuta copiada'}}catch(e){if(e.name!=='AbortError')share.textContent='Vuelve a intentar compartir'}};
+ const png=document.createElement('button');png.type='button';png.className='v105-btn alt v919-action is-png';png.innerHTML=v919MeetingIcon('image')+'<span>Descargar PNG</span>';actions?.append(png);
+ const onPNG=(button,asShare)=>async()=>{
+  const original=button.innerHTML;button.disabled=true;button.innerHTML=v919MeetingIcon('image')+'<span>Preparando PNG…</span>';
+  try{await window.LJR_MINUTA_MEDIA.exportPNG(form,asShare)}
+  catch(error){console.warn('Minuta PNG:',error);button.innerHTML='<span>No se pudo generar PNG</span>';setTimeout(()=>{if(button.isConnected)button.innerHTML=original},1800)}
+  finally{button.disabled=false;if(button.innerHTML.includes('Preparando PNG'))button.innerHTML=original}
+ };
+ share.onclick=onPNG(share,true);
+ png.onclick=onPNG(png,false);
  const printButton=form.parentElement.querySelector('[data-pdf]');
- const printMeeting=()=>{
+ const printMeeting=async()=>{
   const get=s=>form.querySelector(s)?.value?.trim?.()||'';
   const fmtDate=value=>{
    const m=String(value||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
@@ -143,7 +168,8 @@ function meeting(root){
    attendance:get('[data-x="attendance"]'),owner:get('[data-meeting-field="owner"]'),deadline:get('[data-meeting-field="deadline"]'),
    agenda:get('[data-x="agenda"]'),agreements:get('[data-x="agreements"]'),tasks:get('[data-meeting-field="tasks"]')
   };
-  const leagueLogo='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp';
+  // Imagen ya sin el fondo oscuro, tomada del mismo escudo oficial de la app.
+  const leagueLogo=await window.LJR_MINUTA_MEDIA?.transparentLogo?.()||'./assets/liga-logo.webp';
   const html='<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'+
    '<title>Minuta · Liga Juventino Rosas</title><style>'+
    '@page{size:letter;margin:13mm}*{box-sizing:border-box}html,body{margin:0;padding:0;background:#fff;color:#111827;font-family:Arial,Helvetica,sans-serif}'+
@@ -168,8 +194,8 @@ function meeting(root){
   let started=false;
   const run=()=>{
    if(started)return;started=true;
-   try{frame.contentWindow?.focus();frame.contentWindow?.print();log('Imprimir minuta de junta')}
-   catch(_){toast('No se pudo abrir la impresión. Vuelve a intentar.');frame.remove()}
+   try{frame.contentWindow?.focus();frame.contentWindow?.print()}
+   catch(error){console.warn('No se pudo imprimir minuta:',error);frame.remove()}
   };
   const waitAssets=()=>{
    const imgs=[...doc.images];
@@ -186,7 +212,7 @@ function meeting(root){
   setTimeout(()=>frame.remove(),60000);
  };
  if(printButton){
-  printButton.onclick=e=>{e.preventDefault();e.stopPropagation();printMeeting()};
+  printButton.onclick=e=>{e.preventDefault();e.stopPropagation();printMeeting().catch(error=>console.warn('PDF de minuta:',error))};
   printButton.type='button';
  }
  wrap.querySelectorAll('[data-meeting-field]').forEach(input=>input.oninput=()=>{const data={};wrap.querySelectorAll('[data-meeting-field]').forEach(el=>data[el.dataset.meetingField]=el.value);localStorage.setItem('ljr-meeting-options-v875',JSON.stringify(data))});
