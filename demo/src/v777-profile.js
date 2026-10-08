@@ -14,11 +14,14 @@ const SHIRT_CATEGORIES=['Primera Fuerza','Intermedia','Segunda Fuerza','Veterano
 const CAT_BY_ID={'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'};
 const SHIRT_CATEGORY_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const SHIRT_CATEGORY_LOGOS={
- 'primerafuerza':'assets/branding/primera-fuerza-hd.png',
- 'intermedia':'assets/categories/intermedia.webp',
- 'segundafuerza':'assets/categories/segunda-fuerza.webp',
- 'veteranos35':'assets/categories/veteranos-35-user.png',
- 'veteranos50':'assets/categories/veteranos-50.webp'
+ // V914 — usar los archivos transparentes originales que el usuario ya había
+ // entregado y que están guardados en season-2026. No usar las copias antiguas
+ // de Liga_Futbol porque esas sí traen fondos sólidos.
+ 'primerafuerza':'./assets/season-2026/primera.webp',
+ 'intermedia':'./assets/season-2026/intermedia.webp',
+ 'segundafuerza':'./assets/season-2026/segunda.webp',
+ 'veteranos35':'./assets/season-2026/veteranos-35.webp',
+ 'veteranos50':'./assets/season-2026/veteranos-50.webp'
 };
 const SHIRT_TEAM_CATEGORY_FALLBACK={
  'Primera Fuerza':['Hermanos','San José FC','Linces','Juventus','Napoli','Lobos CDG','Terrícolas','Galácticos de Pozos','Galácticos','Franco FC','Herreras FC','Abejas'],
@@ -28,8 +31,8 @@ const SHIRT_TEAM_CATEGORY_FALLBACK={
  'Veteranos 50+':['La Esperanza','Dynamo','Boca JRS','Toros de Cuenda','Manchester']
 };
 function categoryLogo(name){
- const p=SHIRT_CATEGORY_LOGOS[norm(name)];
- return p?SHIRT_CATEGORY_ROOT+p:'';
+ // Las rutas ya apuntan a los assets transparentes locales exactos.
+ return SHIRT_CATEGORY_LOGOS[norm(name)]||'';
 }
 function categoryForTeam(name){
  const target=norm(name);if(!target)return '';
