@@ -55,7 +55,7 @@ const CAT_LOGOS_V630={
   '2':'./assets/categories/veteranos-35-user.png',
   '1':'./assets/categories/veteranos-50.webp'
 };
-let db=null, loading=null, teamQuery='', playerQuery='', playerCat=localStorage.getItem('v66-player-cat')||'all', playerTeam=localStorage.getItem('v66-player-team')||'all', cedulaCat=localStorage.getItem('v66-cedula-cat-filter')||'all', cedulaTeam=localStorage.getItem('v66-cedula-team-filter')||'all';
+let db=null, loading=null, teamQuery='', storeCat=(()=>{try{const id=localStorage.getItem('v989-store-category')||'all';return CAT_ORDER.includes(id)?id:'all'}catch(_){return 'all'}})(), playerQuery='', playerCat=localStorage.getItem('v66-player-cat')||'all', playerTeam=localStorage.getItem('v66-player-team')||'all', cedulaCat=localStorage.getItem('v66-cedula-cat-filter')||'all', cedulaTeam=localStorage.getItem('v66-cedula-team-filter')||'all';
 
 function route(){return location.hash.replace(/^#\/?/,'')||'home'}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -220,12 +220,40 @@ function v812IsActiveStoreTeam(name){
 function teamMarkup(store=false){
   const q=norm(teamQuery);
   const source=store?v812ActiveStoreList():teamList();
-  const list=source.filter(t=>!q||norm(t.name).includes(q)||norm(t.category).includes(q));
+  const currentCat=store&&CAT_ORDER.includes(storeCat)?storeCat:'all';
+  const list=source.filter(t=>(!store||currentCat==='all'||t.cat===currentCat)&&
+    (!q||norm(t.name).includes(q)||norm(t.category).includes(q)));
+  const categories=store?'<div class="v989-store-filter-title"><b>FILTRAR POR CATEGORÍA</b><span>Desliza para explorar ↔</span></div>'+
+    '<div class="v989-store-categories" role="group" aria-label="Filtrar tiendas por categoría">'+
+      '<button type="button" data-v66-store-cat="all" class="'+(currentCat==='all'?'active':'')+'" aria-pressed="'+(currentCat==='all')+'"><span class="v989-all-icon" aria-hidden="true">⚽</span><span>Todas</span><span class="v989-filter-count">'+source.length+'</span></button>'+
+      CAT_ORDER.map(id=>{
+        const count=source.filter(t=>t.cat===id).length;
+        const name=CAT_LABEL[id];
+        const logo=CAT_LOGOS_V630[id];
+        return '<button type="button" data-v66-store-cat="'+id+'" class="'+(currentCat===id?'active':'')+'" aria-pressed="'+(currentCat===id)+'">'+
+          (logo?'<img src="'+esc(logo)+'" alt="" loading="lazy" decoding="async">':'')+
+          '<span>'+esc(name)+'</span><span class="v989-filter-count">'+count+'</span></button>';
+      }).join('')+
+    '</div>':'';
+  const header=store?'<header class="v510-store-head">'+
+    '<button type="button" data-v447-store-back aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>'+
+    '<div class="v989-store-copy"><span class="v989-store-kicker">LIGA JUVENTINO ROSAS · 2026</span>'+
+    '<h1 class="v989-store-title">Tienda de clubes</h1>'+
+    '<span class="v989-store-subtitle">Encuentra tu equipo y explora su colección</span>'+
+    '<button type="button" class="v989-store-jump" data-v989-store-categories>Ver categorías ↓</button></div>'+
+    '<span class="v510-store-crest" aria-hidden="true"></span>'+
+    '<button type="button" data-route="profile" class="v510-store-profile" aria-label="Perfil"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19c.7-3.4 3-5.5 6.5-5.5s5.8 2.1 6.5 5.5"/></svg></button></header>':'';
+  const empty='<div class="v989-store-empty" role="status"><b>Sin equipos para esta búsqueda</b>'+
+    '<p>Prueba con otro nombre o elige una categoría diferente.</p>'+
+    '<button type="button" data-v989-store-reset>Mostrar todos los equipos</button></div>';
   return '<section class="v66-directory" data-v66-directory="'+(store?'store':'teams')+'">'+
-    (store?'<header class="v510-store-head"><button type="button" data-v447-store-back aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button><span class="v510-store-crest" aria-hidden="true"></span><button type="button" data-route="profile" class="v510-store-profile" aria-label="Perfil"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19c.7-3.4 3-5.5 6.5-5.5s5.8 2.1 6.5 5.5"/></svg></button></header>':'')+
-    '<div class="v66-search"><span>⌕</span><input data-v66-team-search type="search" autocomplete="off" placeholder="'+(store?'Buscar equipo activo':'Buscar equipo registrado')+'" value="'+esc(teamQuery)+'"></div>'+
-    '<p class="v66-source-note">'+list.length+(store?' equipos activos · temporada 2026':' equipos registrados · datos oficiales sincronizados')+'</p>'+
-    '<div class="v66-team-grid">'+list.map(t=>'<button type="button" class="v66-team-card" data-v66-open-team="'+esc(t.name)+'" data-v66-cat-id="'+esc(t.cat)+'">'+teamLogo(t)+'<span><b>'+esc(t.name)+'</b><small>'+esc(t.category)+(store?' · Tienda':'')+'</small></span><i>›</i></button>').join('')+'</div>'+
+    header+
+    (store?'<div class="v989-shop-label"><strong>Encuentra tu club</strong><span>Temporada 2026</span></div>':'')+
+    '<div class="v66-search"><span aria-hidden="true">⌕</span><input data-v66-team-search aria-label="Buscar equipo" type="search" autocomplete="off" placeholder="'+(store?'Buscar equipo activo':'Buscar equipo registrado')+'" value="'+esc(teamQuery)+'"></div>'+
+    categories+
+    '<p class="v66-source-note" aria-live="polite">'+list.length+(store?' de '+source.length+' inscripciones · '+(currentCat==='all'?'Todas las categorías':esc(CAT_LABEL[currentCat]||'')):' equipos registrados · datos oficiales sincronizados')+'</p>'+
+    '<div class="v66-team-grid">'+list.map(t=>'<button type="button" class="v66-team-card" data-v66-open-team="'+esc(t.name)+'" data-v66-cat-id="'+esc(t.cat)+'" aria-label="Abrir tienda de '+esc(t.name)+', '+esc(t.category)+'">'+teamLogo(t)+'<span><b>'+esc(t.name)+'</b><small>'+esc(t.category)+(store?' · Tienda':'')+'</small></span><i aria-hidden="true">›</i></button>').join('')+'</div>'+
+    (store&&!list.length?empty:'')+
   '</section>';
 }
 function playerMarkup(){
@@ -262,6 +290,23 @@ function bind(){
   document.querySelector('[data-v447-store-back]')?.addEventListener('click',()=>{if(history.length>1)history.back();else location.hash='#/more'});
 
   document.querySelector('[data-v66-team-search]')?.addEventListener('input',e=>{teamQuery=e.target.value;render(true,true,false)});
+  document.querySelectorAll('[data-v66-store-cat]').forEach(button=>button.addEventListener('click',()=>{
+    const cat=button.dataset.v66StoreCat||'all';
+    if(cat!=='all'&&!CAT_ORDER.includes(cat))return;
+    storeCat=cat;
+    try{localStorage.setItem('v989-store-category',cat)}catch(_){}
+    render(true,false,false);
+  }));
+  document.querySelector('[data-v989-store-categories]')?.addEventListener('click',()=>{
+    const rail=document.querySelector('.v989-store-categories');
+    rail?.scrollIntoView?.({behavior:'smooth',block:'center',inline:'nearest'});
+    rail?.querySelector('button.active')?.focus({preventScroll:true});
+  });
+  document.querySelector('[data-v989-store-reset]')?.addEventListener('click',()=>{
+    storeCat='all';teamQuery='';
+    try{localStorage.setItem('v989-store-category','all')}catch(_){}
+    render(true,false,false);
+  });
   document.querySelector('[data-v66-player-search]')?.addEventListener('input',e=>{playerQuery=e.target.value;render(true,true,false)});
   document.querySelectorAll('[data-v66-player-cat]').forEach(b=>b.onclick=()=>{
     playerCat=b.dataset.v66PlayerCat||'all';
