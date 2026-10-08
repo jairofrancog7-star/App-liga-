@@ -2293,7 +2293,7 @@ function bindRosterImport(root){
     fileZone.addEventListener('dragleave',()=>fileZone.classList.remove('is-dragging'));
     fileZone.addEventListener('drop',e=>{e.preventDefault();fileZone.classList.remove('is-dragging');v202ChooseFiles(e.dataTransfer?.files)});
   }
-  $('[data-v202-page]',root).forEach(b=>b.addEventListener('click',()=>{v202Index=Number(b.dataset.v202Page)||0;renderManager(true)}));
+  $$('[data-v202-page]',root).forEach(b=>b.addEventListener('click',()=>{v202Index=Number(b.dataset.v202Page)||0;renderManager(true)}));
   $('[data-v202-prev]',root)?.addEventListener('click',()=>{v202Index=(v202Index-1+rosterImportFiles.length)%rosterImportFiles.length;renderManager(true)});
   $('[data-v202-next]',root)?.addEventListener('click',()=>{v202Index=(v202Index+1)%rosterImportFiles.length;renderManager(true)});
   $('[data-v202-zoom]',root)?.addEventListener('click',e=>{
