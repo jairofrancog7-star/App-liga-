@@ -7,30 +7,49 @@ const isDesktop=()=>qs().get('mode')==='desktop'||(!['mobile','apk'].includes(qs
 const route=()=>location.hash.replace(/^#\/?/,'')||'home';
 const host=()=>document.querySelector('#screen');
 const go=r=>{location.hash='#/'+r};
-const teams=['Juventino','Franco Tavera','Pozos','Cuenda','Rincón del Carmen','América','San Pedro','Morales','La Luz','Valencia','Real Juventino','Atlético Rosas','Unión Juvenil','Deportivo 18','Los Arcos','Santiago Cuenda'];
+let teams=[],fixtures=[],standings=[];
+function hydrateOfficialDesktop(){
+ const db=window.LJR_OFFICIAL_DATA||window.LJR_OFFICIAL_API?.getData?.();
+ if(!db?.categories)return false;
+ const clubs=new Set(),f=[],r=[];
+ const d=new Date(),today=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
+ for(const c of Object.values(db.categories)){
+  for(const row of c.standings?.[0]?.rows||[])if(row[1])clubs.add(String(row[1]).trim());
+  for(const g of c.fixtures||[])for(const row of g.rows||[]){
+   if(!Array.isArray(row)||!row[2]||!row[6])continue;
+   clubs.add(String(row[2]).trim());clubs.add(String(row[6]).trim());
+   const m=String(row[8]||'').match(/^(\d\d)\/(\d\d)\/(\d{4}) (\d\d:\d\d)$/);
+   if(!m||m[4]==='00:00'||c.fixture_decisions?.[String(row[0])])continue;
+   const iso=m[3]+'-'+m[2]+'-'+m[1],date=iso+'T'+m[4];
+   const played=/^\d+$/.test(String(row[3]))&&/^\d+$/.test(String(row[5]));
+   const entry={date,iso,fixture:['Jornada '+row[1]+' · '+m[1]+'/'+m[2]+'/'+m[3],row[2],row[6],m[4],row[7]||'',played?row[3]+'–'+row[5]:'–']};
+   if(!played&&iso>=today)f.push(entry);
+   else if(played)r.push(entry);
+  }
+ }
+ f.sort((a,b)=>a.date.localeCompare(b.date));
+ r.sort((a,b)=>b.date.localeCompare(a.date));
+ teams=[...clubs].filter(Boolean);
+ fixtures=[...f.slice(0,4),...r.slice(0,4)].map(x=>x.fixture);
+ standings=(db.categories['3']?.standings?.[0]?.rows||[]).map(x=>[x[1],...x.slice(2,10).map(v=>Number(v)||0),'']);
+ return true;
+}
+hydrateOfficialDesktop();
 const short=n=>n.split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase();
-const fixtures=[
- ['Jornada 5 · Sáb 19 Sep','Juventino','Pozos','18:00','Campo Municipal 1','–'],['Jornada 5 · Sáb 19 Sep','Cuenda','Rincón del Carmen','20:00','Campo Municipal 2','–'],
- ['Jornada 5 · Dom 20 Sep','Franco Tavera','América','17:00','Campo La Alameda','–'],['Jornada 5 · Dom 20 Sep','San Pedro','Morales','18:30','Campo Municipal 1','–'],
- ['Jornada 4 · Sáb 12 Sep','Juventino','Cuenda','18:00','Campo Municipal 1','3–1'],['Jornada 4 · Sáb 12 Sep','Pozos','América','20:00','Campo Municipal 2','2–2'],
- ['Jornada 4 · Dom 13 Sep','Franco Tavera','Rincón del Carmen','17:00','Campo La Alameda','2–0'],['Jornada 4 · Dom 13 Sep','San Pedro','La Luz','18:30','Campo Municipal 1','1–1']
-];
-const standings=[
- ['Juventino',5,4,1,0,13,5,8,13,'WWDWW'],['Franco Tavera',5,3,2,0,11,5,6,11,'WDWWW'],['Pozos',5,2,3,0,9,6,3,9,'DWWDD'],['Cuenda',5,2,1,2,8,7,1,7,'WLWDW'],['América',5,1,3,1,7,8,-1,6,'DDWLD'],['Rincón del Carmen',5,1,2,2,6,8,-2,5,'LDWDL'],['San Pedro',5,1,2,2,5,8,-3,5,'DLDWW'],['Morales',5,1,1,3,6,10,-4,4,'LWLLD'],['La Luz',5,1,1,3,4,9,-5,4,'DLLWL'],['Valencia',5,1,1,3,5,11,-6,4,'LLWDL'],['Real Juventino',5,1,0,4,5,10,-5,3,'WLLLL'],['Atlético Rosas',5,0,3,2,4,7,-3,3,'DDLLD'],['Unión Juvenil',5,0,2,3,3,8,-5,2,'DLLDD'],['Deportivo 18',5,0,2,3,4,10,-6,2,'LDDLL'],['Los Arcos',5,0,1,4,2,9,-7,1,'LLLLD'],['Santiago Cuenda',5,0,1,4,3,12,-9,1,'DLLLL']
-];
+// Las jornadas y clasificaciones se obtienen del snapshot oficial, nunca de datos de ejemplo.
 const news=[
- ['JORNADA','Confirmadas las sedes y horarios para la próxima fecha','La liga publicó la programación oficial de la Jornada 5.','big'],
+ ['JORNADA','Confirmadas las sedes y horarios para la próxima fecha','Consulta los horarios y campos publicados en el calendario de esta semana.','big'],
  ['ENCUESTA','Elige al Jugador de la Semana','Vota por el futbolista más destacado de la fecha.',''],
- ['EQUIPOS','Franco Tavera recupera piezas importantes','El plantel se prepara para su siguiente compromiso.',''],
+ ['EQUIPOS','Consulta los planteles y estadísticas de los equipos','El plantel se prepara para su siguiente compromiso.',''],
  ['DATOS','Así marcha la tabla de goleadores','Consulta goles, asistencias y minutos jugados.','wide alt'],
  ['FICHAJES','Altas y bajas registradas esta semana','Movimientos oficiales de los equipos de la liga.',''],
  ['DISCIPLINA','Reporte de tarjetas de la jornada','Sanciones y acumulación de amonestaciones.',''],
  ['FANTASY','Arma tu once ideal de la jornada','Selecciona jugadores y suma puntos con sus actuaciones.','wide gold'],
  ['HISTORIA','Los campeones de las últimas temporadas','Recorrido por los títulos más recientes de la liga.',''],
  ['CAMPOS','Mantenimiento y mejoras en las sedes','Trabajos previos a los partidos del fin de semana.',''],
- ['VIDEO','Los mejores goles de la Jornada 4','Revive las jugadas más importantes.','wide alt'],
+ ['VIDEO','Vídeos y momentos de la liga','Revive las jugadas más importantes.','wide alt'],
  ['COMUNICADO','Reunión de delegados y acuerdos','Información oficial para todos los equipos participantes.',''],
- ['JUVENIL','La cantera vuelve a escena','Actividad y resultados de las categorías formativas.','']
+ ['LIGA','Consulta las categorías oficiales','Primera, Intermedia, Segunda y Veteranos 35+/50+.','']
 ];
 const champions=[['2026','Juventino'],['2025','Franco Tavera'],['2024','Pozos'],['2023','Cuenda'],['2022','América'],['2021','Juventino'],['2020','Rincón del Carmen'],['2019','Franco Tavera']];
 const nav=[['Partidos','competition'],['Clasificación','standings'],['Liga TV','video'],['Sorteos','draws'],['Gaming','gaming'],['Datos','safe-data'],['Equipos','teams'],['Noticias','news'],['Historia','history'],['Sobre','about'],['Más','more']];
@@ -60,5 +79,5 @@ const renderers={competition:fixturesPage,standings:standingsPage,bracket:bracke
 function enhanceHome(){const h=host();if(!h)return;const shellEl=h.querySelector('[data-desktop-shell]');if(!shellEl)return;const map={'Sorteos':'draws','Gaming':'gaming','Sobre':'about','Clasificación':'standings'};shellEl.querySelectorAll('.desk-menu button').forEach(b=>{const k=b.textContent.trim();if(map[k])b.dataset.deskRoute=map[k]});if(!shellEl.querySelector('.ds-home-extra')){const foot=shellEl.querySelector('.desk-footer');const sec=document.createElement('section');sec.className='ds-home-extra';sec.innerHTML=`<div class="ds-wrap"><div class="ds-section-title"><h2 style="color:#fff">En portada</h2><button data-ds-route="news" style="color:var(--ds-green)">Ver todo ›</button></div><div class="ds-home-featured">${news.slice(0,4).map(n=>`<button class="ds-home-tile" data-ds-route="news"><div class="copy"><small>${n[0]}</small><b>${n[1]}</b></div></button>`).join('')}</div></div>`;foot?.before(sec);const sp=document.createElement('div');sp.innerHTML=sponsors();foot?.before(sp.firstElementChild)}}
 function render(){if(!isDesktop())return;document.body.classList.add('lj-desktop');const r=route();if(r==='home'){setTimeout(enhanceHome,15);return}const h=host();if(!h)return;h.innerHTML=(renderers[r]||(()=>specialized(r)))()}
 function click(e){const b=e.target.closest('[data-ds-route]');if(b){e.preventDefault();go(b.dataset.dsRoute);return}const f=e.target.closest('[data-match-filter]');if(f){const box=f.closest('[data-filter-tabs]');box?.querySelectorAll('.ds-tab').forEach(x=>x.classList.remove('active'));f.classList.add('active');const val=f.dataset.matchFilter;document.querySelectorAll('[data-match-kind]').forEach(x=>x.hidden=val!=='all'&&x.dataset.matchKind!==val);return}const s=e.target.closest('[data-stat]');if(s){const bar=s.closest('[data-stat-tabs]');bar?.querySelectorAll('.ds-tab').forEach(x=>x.classList.remove('active'));s.classList.add('active');document.querySelectorAll('[data-stat-panel]').forEach(p=>p.hidden=p.dataset.statPanel!==s.dataset.stat);return}}
-document.addEventListener('click',click);window.addEventListener('hashchange',()=>setTimeout(render,5));let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(isDesktop())render()},120)});setTimeout(render,20);
+document.addEventListener('click',click);window.addEventListener('hashchange',()=>setTimeout(render,5));let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(isDesktop())render()},120)});window.addEventListener('ljr:official-data',()=>{if(hydrateOfficialDesktop()&&isDesktop()&&route()!=='home'&&!route().startsWith('pc-'))render()});setTimeout(render,20);
 })();
