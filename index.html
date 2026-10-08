@@ -1454,7 +1454,7 @@ html body.v587-fantasy-team-open .v576-field-row.por{
     window.__LJR_V918_TRANSFER_HEADER__=true;
     var pending=false;
     function inFichajes(){
-      return String(location.hash||'').replace(/^#\\/?/,'').split('?')[0]==='transfers';
+      var path=String(location.hash||''); return (path.startsWith('#/')?path.slice(2):path.replace('#','')).split('?')[0]==='transfers';
     }
     function align(){
       pending=false;
