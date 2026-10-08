@@ -1,0 +1,170 @@
+/* V970 · Quiniela Liga Juventino: progreso, filtros, análisis y rendimiento.
+   Sólo añade módulos locales, sin modificar las tarjetas oficiales originales. */
+html body[data-app-route="quiniela"] .v970-game-tools {
+  width:100%!important;min-width:0!important;box-sizing:border-box!important;display:grid!important;
+  gap:10px!important;margin:9px 0 11px!important;padding:14px!important;
+  border:1px solid rgba(87,212,252,.48)!important;border-radius:18px!important;
+  background:radial-gradient(ellipse at 92% 0%,rgba(45,161,245,.18),transparent 60%),linear-gradient(130deg,#14348c,#0b1c68)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.10)!important;
+}
+html body[data-app-route="quiniela"] .v970-progress-head {
+  display:flex!important;justify-content:space-between!important;align-items:center!important;gap:9px!important;
+}
+html body[data-app-route="quiniela"] .v970-progress-head>span {
+  display:inline-flex!important;align-items:center!important;gap:7px!important;
+  font:820 13px/1.2 Inter,Roboto,Arial,sans-serif!important;color:#fff!important;
+}
+html body[data-app-route="quiniela"] .v970-progress-head>strong {
+  color:#60eff6!important;font-size:15px!important;font-weight:850!important;
+  white-space:nowrap!important;font-variant-numeric:tabular-nums!important;
+}
+html body[data-app-route="quiniela"] .v970-game-tools svg, 
+html body[data-app-route="quiniela"] .v970-match-insight svg {
+  flex:0 0 17px!important;display:block!important;width:17px!important;height:17px!important;
+  fill:none!important;stroke:currentColor!important;stroke-width:2!important;stroke-linecap:round!important;stroke-linejoin:round!important;
+}
+html body[data-app-route="quiniela"] .v970-progress-track {
+  display:block!important;height:8px!important;width:100%!important;border-radius:999px!important;
+  background:rgba(0,10,56,.72)!important;overflow:hidden!important;
+  border:1px solid rgba(99,154,254,.37)!important;
+}
+html body[data-app-route="quiniela"] .v970-progress-track span {
+  display:block!important;height:100%!important;max-width:100%!important;
+  background:linear-gradient(90deg,#23cfe9,#78f8f7)!important;border-radius:999px!important;
+  transition:width .18s ease!important;
+}
+html body[data-app-route="quiniela"] .v970-progress-caption {
+  display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:8px!important;
+  color:#bdcef3!important;font-size:11px!important;line-height:1.32!important;
+}
+html body[data-app-route="quiniela"] .v970-filter-row {
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important;
+}
+html body[data-app-route="quiniela"] .v970-filter-row button {
+  display:flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;
+  min-width:0!important;box-sizing:border-box!important;min-height:39px!important;padding:7px 5px!important;
+  border:1px solid rgba(131,175,254,.37)!important;border-radius:10px!important;
+  background:linear-gradient(130deg,#162f86,#10206c)!important;color:#d0e3ff!important;
+  font:760 clamp(10px,2.6vw,12px)/1.15 Inter,Roboto,Arial,sans-serif!important;
+  cursor:pointer!important;touch-action:manipulation!important;
+}
+html body[data-app-route="quiniela"] .v970-filter-row button.active {
+  color:#051956!important;border-color:#8ff5fc!important;
+  background:linear-gradient(115deg,#48dbea,#89f7fc)!important;
+  box-shadow:0 3px 14px rgba(54,221,250,.13)!important;
+}
+html body[data-app-route="quiniela"] .v970-filter-row button svg {width:15px!important;height:15px!important;flex-basis:15px!important;}
+html body[data-app-route="quiniela"] .v970-match-insight {
+  display:grid!important;gap:7px!important;
+  width:100%!important;box-sizing:border-box!important;
+  padding:10px 11px!important;margin:0!important;
+  border-top:1px solid rgba(106,174,246,.21)!important;
+  background:rgba(9,26,91,.5)!important;
+}
+html body[data-app-route="quiniela"] .v970-insight-toggle {
+  display:flex!important;justify-content:center!important;align-items:center!important;gap:6px!important;
+  min-height:32px!important;width:100%!important;box-sizing:border-box!important;
+  border:1px solid rgba(104,211,255,.33)!important;border-radius:9px!important;
+  background:rgba(24,71,155,.28)!important;color:#aeefff!important;
+  font:780 11px/1.2 Inter,Roboto,Arial,sans-serif!important;
+  cursor:pointer!important;
+}
+html body[data-app-route="quiniela"] .v970-insight-panel[hidden] {display:none!important;}
+html body[data-app-route="quiniela"] .v970-insight-panel {
+  display:grid!important;gap:10px!important;
+  border:1px solid rgba(103,190,253,.30)!important;border-radius:11px!important;
+  background:linear-gradient(130deg,#102b82,#0b1a5f)!important;padding:11px!important;
+  color:#e2edff!important;
+}
+html body[data-app-route="quiniela"] .v970-insight-panel>strong{
+  display:flex!important;align-items:center!important;gap:7px!important;
+  color:#fff!important;font-size:12px!important;font-weight:850!important;
+}
+html body[data-app-route="quiniela"] .v970-form-grid {
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;
+}
+html body[data-app-route="quiniela"] .v970-form-grid>div {
+  display:flex!important;flex-direction:column!important;gap:4px!important;
+  min-width:0!important;padding:9px!important;border:1px solid rgba(92,163,243,.31)!important;
+  border-radius:10px!important;background:rgba(5,15,70,.55)!important;
+}
+html body[data-app-route="quiniela"] .v970-form-grid b{
+  font:760 11px/1.25 Inter,Roboto,Arial,sans-serif!important;color:#fff!important;
+  overflow-wrap:anywhere!important;
+}
+html body[data-app-route="quiniela"] .v970-form-grid span{
+  font:680 12px/1.25 Inter,Roboto,Arial,sans-serif!important;color:#6debf4!important;
+}
+html body[data-app-route="quiniela"] .v970-form-grid small {
+  font-size:10px!important;line-height:1.3!important;color:#c0d2ed!important;
+}
+html body[data-app-route="quiniela"] .v970-insight-footer {
+  display:flex!important;align-items:center!important;justify-content:space-between!important;flex-wrap:wrap!important;gap:7px!important;
+}
+html body[data-app-route="quiniela"] .v970-insight-footer p{
+  margin:0!important;color:#becff1!important;font:530 10px/1.35 Inter,Roboto,Arial,sans-serif!important;
+  flex:1 1 135px!important;
+}
+html body[data-app-route="quiniela"] .v970-insight-footer button {
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;
+  min-height:36px!important;padding:7px 10px!important;
+  border-radius:10px!important;border:1px solid rgba(91,237,245,.63)!important;
+  background:linear-gradient(110deg,#36d6e4,#79f0f4)!important;
+  color:#092254!important;font:830 11px/1.2 Inter,Roboto,Arial,sans-serif!important;
+  cursor:pointer!important;
+}
+html body[data-app-route="quiniela"] .v970-insight-footer button:disabled {
+  opacity:.5!important;cursor:not-allowed!important;
+}
+html body[data-app-route="quiniela"] .v970-no-matches {
+  display:grid!important;gap:8px!important;justify-items:center!important;
+  width:100%!important;box-sizing:border-box!important;
+  padding:23px 13px!important;border:1px dashed rgba(106,195,243,.4)!important;border-radius:16px!important;
+  color:#c7dcf6!important;font-size:12px!important;text-align:center!important;
+  background:#11246e!important;
+}
+html body[data-app-route="quiniela"] .v970-no-matches button {
+  border:1px solid rgba(103,225,247,.6)!important;background:#175cc3!important;
+  color:#fff!important;padding:9px 15px!important;border-radius:10px!important;font-weight:750!important;
+  cursor:pointer!important;
+}
+html body[data-app-route="quiniela"] .v970-round-performance{
+  display:grid!important;gap:9px!important;margin:12px 0!important;
+  padding:13px!important;border:1px solid rgba(100,191,251,.43)!important;
+  border-radius:17px!important;background:linear-gradient(125deg,#15368f,#0b1c66)!important;
+}
+html body[data-app-route="quiniela"] .v970-round-performance h3 {
+  display:flex!important;align-items:center!important;gap:7px!important;margin:0!important;
+  color:#fff!important;font:835 15px/1.2 Inter,Roboto,Arial,sans-serif!important;
+}
+html body[data-app-route="quiniela"] .v970-round-performance p{
+  margin:0!important;color:#b8cee9!important;font-size:11px!important;line-height:1.4!important;
+}
+html body[data-app-route="quiniela"] .v970-round-score {
+  display:grid!important;grid-template-columns:68px minmax(0,1fr) 58px!important;
+  gap:10px!important;align-items:center!important;min-width:0!important;
+  color:#e6f4ff!important;font-size:11px!important;font-weight:760!important;
+}
+html body[data-app-route="quiniela"] .v970-round-score>div{
+  width:100%!important;height:9px!important;border-radius:999px!important;overflow:hidden!important;
+  background:#08164b!important;border:1px solid rgba(120,163,238,.32)!important;
+}
+html body[data-app-route="quiniela"] .v970-round-score>div>i {
+  display:block!important;height:100%!important;border-radius:999px!important;
+  background:linear-gradient(90deg,#21ccf0,#75f3f8)!important;
+}
+html body[data-app-route="quiniela"] .v970-round-score>strong{text-align:right!important;color:#6becf7!important;font-variant-numeric:tabular-nums!important;}
+html body[data-app-route="quiniela"] .v970-filter-row button:focus-visible,
+html body[data-app-route="quiniela"] .v970-insight-toggle:focus-visible,
+html body[data-app-route="quiniela"] .v970-insight-footer button:focus-visible{
+  outline:2px solid #8dffff!important;outline-offset:2px!important;
+}
+@media(max-width:360px){
+ html body[data-app-route="quiniela"] .v970-game-tools {padding:10px!important;}
+ html body[data-app-route="quiniela"] .v970-insight-footer {justify-content:center!important;}
+ html body[data-app-route="quiniela"] .v970-filter-row button{font-size:9px!important;}
+ html body[data-app-route="quiniela"] .v970-round-score {grid-template-columns:57px minmax(0,1fr) 49px!important;gap:5px!important;}
+}
+@media(prefers-reduced-motion:reduce) {
+ html body[data-app-route="quiniela"] .v970-progress-track span {transition:none!important;}
+}
