@@ -465,6 +465,16 @@ document.addEventListener('click',e=>{
  if(route()==='search'&&e.target.closest('#v413-page-design'))return;
  const target=e.target;
 
+ /* V950 — A selection in a list/picker belongs to its owning component.
+    Global entity navigation must not turn player/team selection into Comparar. */
+ if(target.closest(
+  '[data-v414-player],[data-v414-team],[data-v414-star-player],[data-v414-star-team],'+
+  '[data-v414-tab],[data-v414-cat],[data-v414-search],'+
+  '.v123-picker-overlay,.v206-picker,.v208-picker,.v944-overlay,'+
+  '#v369-team-compare,#v369-team-notify,.v42-overlay,'+
+  '[data-v369-team-choice],[data-v369-pick-team],[data-v42-compare-name]'
+ ))return;
+
  /* V144 — REGISTRO DE JUGADOR:
     elegir un equipo dentro de credentialBuilder pertenece únicamente al formulario
     de alta/credencial. Nunca debe abrir Team Detail ni “Comparar equipos”.
