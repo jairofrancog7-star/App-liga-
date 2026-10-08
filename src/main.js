@@ -4558,44 +4558,53 @@ const V60_FIELDS=[
 function v60Field(id){return V60_FIELDS.find(f=>f.id===id)||V60_FIELDS[0]}
 function v60MapUrl(f){const m=f.maps||f.address||f.name;return /^https?:\/\//i.test(m)?m:'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(m)}
 function v60HasExactMap(f){return /^https?:\/\//i.test(String(f?.maps||''))}
+function v60StreetViewUrl(f){
+  // Enlace oficial de Google Maps: no requiere clave ni fotografía descargada.
+  const lat=f?.lat,lon=f?.lon;
+  if(lat!==null&&lat!==undefined&&lon!==null&&lon!==undefined&&
+    Number.isFinite(Number(lat))&&Number.isFinite(Number(lon))&&
+    Math.abs(Number(lat))<=90&&Math.abs(Number(lon))<=180){
+    return 'https://www.google.com/maps/@?api=1&map_action=pano&viewpoint='+
+      encodeURIComponent(Number(lat).toFixed(6)+','+Number(lon).toFixed(6));
+  }
+  return v60MapUrl(f);
+}
 function v60FieldPreview(f,cls=''){
-  /* V922 — Imagen fija de archivo en lugar del mapa incrustado.
-     Solo Unidad Deportiva Sur cuenta con una foto etiquetada con su sede;
-     para el resto se identifica explícitamente la fotografía como referencia
-     deportiva, NO como toma verificada del campo indicado. */
-  const archive='./assets/history/enhanced-v326/';
-  const photos={
-    'sur-1':{url:'./deportiva-sur-partido.jpg',caption:'Archivo · Deportiva Sur',verified:true},
-    'sur-2':{url:'./deportiva-sur-partido.jpg',caption:'Archivo · Deportiva Sur',verified:true},
-    'sur-3':{url:'./deportiva-sur-partido.jpg',caption:'Archivo · Deportiva Sur',verified:true},
-    'romerillo':{url:archive+'archive-v293/romerillo-tercer-lugar-intermedia-23-nov-2013.jpg'},
-    'san-julian':{url:archive+'archive-v218/san-julian-campeon-copa-segunda-18-feb-2024.jpg'},
-    'cuenda':{url:archive+'archive-v203/la-huerta-cuenda-campeon-segunda-29-jun-2025.jpg'},
-    'fraccionamiento':{url:archive+'archive-v203/la-huerta-cuenda-campeon-segunda-29-jun-2025.jpg'},
-    'tavera':{url:archive+'archive-v119/tavera-finalista-2025.jpg'},
-    'pozos':{url:archive+'archive-v239/pozos-fc-campeon-liga-veteranos35-15-sep-2024.webp'},
-    'cerrito':{url:archive+'archive-v293/romerillo-tercer-lugar-intermedia-23-nov-2013.jpg'},
-    'zapata-4':{url:'./deportiva-sur-partido.jpg'},
-    'san-juan':{url:archive+'archive-v218/san-julian-campeon-copa-segunda-18-feb-2024.jpg'},
-    'rincon':{url:archive+'archive-v293/romerillo-tercer-lugar-intermedia-23-nov-2013.jpg'},
-    'san-jose':{url:'./deportiva-sur-partido.jpg'}
-  };
-  const photo=photos[f?.id]||{url:'./deportiva-sur-partido.jpg'};
+  /* V923 — Street View de Google en vez de fotos de partidos.
+     Un fotograma estático requiere una clave habilitada para Street View Static.
+     Nunca etiquetar una panorámica cercana como foto exacta de una cancha. */
   const large=String(cls).includes('v60-field-preview-card');
   const name=v64Esc(String(f?.name||'campo'));
-  const open=large?'<a class="v921-map-open" href="'+v64Esc(v60MapUrl(f))+
-    '" target="_blank" rel="noopener noreferrer" aria-label="Ver ubicación de '+name+' en Maps">'+
+  const lat=f?.lat,lon=f?.lon;
+  const hasCoords=lat!==null&&lat!==undefined&&lon!==null&&lon!==undefined&&
+    Number.isFinite(Number(lat))&&Number.isFinite(Number(lon))&&
+    Math.abs(Number(lat))<=90&&Math.abs(Number(lon))<=180;
+  const key=String(import.meta.env.VITE_GOOGLE_STREETVIEW_API_KEY||'').trim();
+  const photoSrc=key&&hasCoords?'https://maps.googleapis.com/maps/api/streetview?'+
+    'size=640x360&location='+encodeURIComponent(Number(lat).toFixed(6)+','+Number(lon).toFixed(6))+
+    '&radius=75&fov=80&pitch=0&source=outdoor&return_error_code=true&key='+encodeURIComponent(key):'';
+  const link=v64Esc(v60StreetViewUrl(f));
+  const info=hasCoords?
+    'Vista de Street View cercana a la ubicación. Puede no corresponder al interior de la cancha.':
+    'Ubicación para consultar fotografías en Google Maps.';
+  const placeholder='<span class="v923-google-photo-empty" aria-hidden="true">'+
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="3"/><circle cx="12" cy="13" r="3.5"/><path d="m8 6 1.2-2h5.6L16 6"/></svg>'+
+    '<b>Google Street View</b><span>'+(hasCoords?'Ver fotografías de los alrededores':'Ver fotos de la ubicación')+'</span>'+
+    '</span>';
+  const image=photoSrc?'<img class="v923-google-photo" src="'+v64Esc(photoSrc)+
+    '" alt="Vista cercana de Google Street View de '+name+'; no se garantiza que sea la cancha exacta"'+
+    ' loading="lazy" decoding="async" onerror="this.hidden=true;this.parentElement.classList.add(\\'v923-photo-error\\')">':'';
+  const button=large?'<a class="v923-google-open" href="'+link+'" target="_blank" rel="noopener noreferrer"'+
+    ' aria-label="Abrir Google Street View de '+name+'">'+
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.5 7-13a7 7 0 0 0-14 0c0 6.5 7 13 7 13Z"/><circle cx="12" cy="9" r="2.6"/></svg>'+
-    '<span>Ubicación</span></a>':'';
-  const caption=photo.verified?'Archivo · Unidad Deportiva Sur':'Foto de archivo · referencia';
-  return '<span class="v60-field-preview v921-map-preview v922-photo-preview '+v64Esc(cls)+'">'+
-    '<span class="v921-map-fallback" aria-hidden="true"><span class="v921-map-fallback-pin">◈</span><span>Fotografía no disponible</span></span>'+
-    '<img class="v922-field-photo" src="'+v64Esc(photo.url)+'" alt="Fotografía de archivo deportivo: '+name+
-      (photo.verified?' (Unidad Deportiva Sur)':' (imagen referencial, no verificada en esta cancha)')+
-      '" loading="lazy" decoding="async" onerror="this.hidden=true">'+
-    (large?'<span class="v922-photo-caption">'+v64Esc(caption)+'</span>':'')+
-    open+'</span>';
+    '<span>'+(hasCoords?'Abrir Street View':'Ver en Maps')+'</span></a>':'';
+  return '<span class="v60-field-preview v921-map-preview v923-google-preview'+
+    (photoSrc?' v923-has-photo':' v923-no-photo')+' '+v64Esc(cls)+'"'+
+    ' title="'+v64Esc(info)+'">'+placeholder+image+
+    (large?'<span class="v923-photo-label">Google Maps · vista cercana</span>':'')+
+    button+'</span>';
 }
+
 function v60Icon(name){
   const p={
     rules:'<path d="M6 3h10a3 3 0 0 1 3 3v15H8a3 3 0 0 1-3-3V4a1 1 0 0 1 1-1Z"/><path d="M8 7h8M8 11h8M8 15h5"/>',
