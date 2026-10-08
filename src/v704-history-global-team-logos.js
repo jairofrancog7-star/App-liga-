@@ -9,9 +9,9 @@ window.__LJR_V704_HISTORY_LOGO_GLOBAL__=true;
 const SPECIAL={
   'pozos':'./assets/season-2026/pozos.webp',
   'pozos fc':'./assets/season-2026/pozos.webp',
-  'olimpicos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
-  'olimpicos de pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
-  'olimpicos pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
+  'olimpicos':'./assets/history/team-logos/olimpicos-pozos-original.jpg',
+  'olimpicos de pozos':'./assets/history/team-logos/olimpicos-pozos-original.jpg',
+  'olimpicos pozos':'./assets/history/team-logos/olimpicos-pozos-original.jpg',
   'puros cuates':'./assets/history/team-logos/legacy-2015-puros-cuates.webp',
   'puros cuates fc':'./assets/history/team-logos/legacy-2015-puros-cuates.webp',
   'mazacotes':'./assets/history/team-logos/legacy-2015-mazacotes.webp',
@@ -46,7 +46,7 @@ const SPECIAL={
 /* V724 — fuente ÚNICA para Memoria de clubes.
    Estos escudos ya están confirmados en el repo; se usa un solo archivo por club
    para evitar que V672/V701/V704 alternen imágenes y produzcan parpadeo. */
-const LEGACY_BROKEN_SOURCE_FALLBACK=new Set(['la pandilla','la pandilla fc']);
+const LEGACY_BROKEN_SOURCE_FALLBACK=new Set(['la pandilla','la pandilla fc','el alto','el alto fc']);
 
 const LEGACY_CARD_LOGOS={
   'pozos':'./assets/season-2026/pozos.webp',
@@ -75,9 +75,9 @@ const LEGACY_CARD_LOGOS={
   'manchester':'./assets/official-logos/manchester.png',
   'manchester united':'./assets/teams/manchester-united.webp',
 
-  'olimpicos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
-  'olimpicos de pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
-  'olimpicos pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
+  'olimpicos':'./assets/history/team-logos/olimpicos-pozos-original.jpg',
+  'olimpicos de pozos':'./assets/history/team-logos/olimpicos-pozos-original.jpg',
+  'olimpicos pozos':'./assets/history/team-logos/olimpicos-pozos-original.jpg',
   'puros cuates':'./assets/history/team-logos/legacy-2015-puros-cuates.webp',
   'puros cuates fc':'./assets/history/team-logos/legacy-2015-puros-cuates.webp',
   'mazacotes':'./assets/history/team-logos/legacy-2015-mazacotes.webp',
@@ -89,8 +89,8 @@ const LEGACY_CARD_LOGOS={
 };
 
 const RECORDS_2015_SPECIAL={
-  'el alto':'./assets/history/team-logos/legacy-2015-el-alto.webp',
-  'el alto fc':'./assets/history/team-logos/legacy-2015-el-alto.webp',
+  'el alto':'',
+  'el alto fc':'',
 
   'hermanos':'./assets/history/team-logos/legacy-2015-hermanos.webp',
   'dep hermanos':'./assets/history/team-logos/legacy-2015-hermanos.webp',
@@ -106,8 +106,8 @@ const RECORDS_2015_SPECIAL={
   'la pandilla':'./assets/history/team-logos/legacy-2015-la-pandilla.webp',
   'la pandilla fc':'./assets/history/team-logos/legacy-2015-la-pandilla.webp',
 
-  'olimpicos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
-  'olimpicos de pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
+  'olimpicos':'./assets/history/team-logos/olimpicos-pozos-original.jpg',
+  'olimpicos de pozos':'./assets/history/team-logos/olimpicos-pozos-original.jpg',
 
   'cerrito':'./assets/history/team-logos/legacy-2015-cerrito.webp',
   'cerrito de g':'./assets/history/team-logos/legacy-2015-cerrito.webp',
@@ -182,6 +182,7 @@ function aliases(name){
   return [...new Set(out.filter(Boolean))];
 }
 function logoFor(name){
+  if(/^(?:deportivo |dep )?el alto(?: fc)?$/.test(norm(name)))return '';
   const supplied=window.LJR_SEASON_LOGOS?.get(name);if(supplied)return supplied;
   for(const a of aliases(name)){
     const k=norm(a);
@@ -304,11 +305,14 @@ function patchArchives(root){
        Evitamos mostrar media imagen: se deja un monograma limpio hasta tener
        el escudo completo, sin inventar un logo nuevo. */
     if(LEGACY_BROKEN_SOURCE_FALLBACK.has(key)){
-      holder.replaceChildren();
-      const fallback=document.createElement('b');
-      fallback.textContent='LP';
-      fallback.className='v725-legacy-monogram';
-      holder.appendChild(fallback);
+      const initials=key.startsWith('el alto')?'EA':'LP';
+      let fallback=holder.querySelector('.v725-legacy-monogram');
+      if(!fallback||fallback.textContent!==initials||holder.children.length!==1){
+        fallback=document.createElement('b');
+        fallback.textContent=initials;
+        fallback.className='v725-legacy-monogram';
+        holder.replaceChildren(fallback);
+      }
       holder.classList.remove('v704-has-team-logo','v724-single-logo','v672-has-historic-logo','v701-has-logo');
       holder.classList.add('is-fallback','v725-broken-logo-fallback');
       card.dataset.v724LegacyLogo='1';

@@ -14,15 +14,15 @@ const USER_ALIAS={
   'la pandilla de morales':'./assets/history/team-logos/legacy-2015-la-pandilla.webp',
   'la pandilla morales':'./assets/history/team-logos/legacy-2015-la-pandilla.webp',
   'pandilla de morales':'./assets/history/team-logos/legacy-2015-la-pandilla.webp',
-  'olimpicos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
-  'olimpicos de pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
+  'olimpicos':'./assets/history/team-logos/olimpicos-pozos-original.jpg',
+  'olimpicos de pozos':'./assets/history/team-logos/olimpicos-pozos-original.jpg',
   'puros cuates':'./assets/history/team-logos/legacy-2015-puros-cuates.webp',
   'mazacotes':'./assets/history/team-logos/legacy-2015-mazacotes.webp',
   'mazacotes fc':'./assets/history/team-logos/legacy-2015-mazacotes.webp',
   'cerrito':'./assets/history/team-logos/legacy-2015-cerrito.webp',
   'cerrito de g':'./assets/history/team-logos/legacy-2015-cerrito.webp',
   'cerrito de gasca':'./assets/history/team-logos/legacy-2015-cerrito.webp',
-  'el alto':'./assets/history/team-logos/legacy-2015-el-alto.webp',
+  'el alto':'',
   'juventus':'./assets/history/team-logos/legacy-2015-juventus.webp',
   'linces':'./assets/history/team-logos/legacy-2015-linces.webp',
   'san antonio':'./assets/history/team-logos/legacy-2015-san-antonio-romerillo.webp',
@@ -160,6 +160,7 @@ function candidates(name){
   return [...new Set(out.filter(Boolean))];
 }
 function logoFor(name){
+  if(/^(?:deportivo |dep )?el alto(?: fc)?$/.test(norm(name)))return '';
   const supplied=window.LJR_SEASON_LOGOS?.get(name);if(supplied)return supplied;
   for(const c of candidates(name)){
     const supplied=USER_ALIAS[norm(c)];

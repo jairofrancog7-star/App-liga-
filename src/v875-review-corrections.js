@@ -27,13 +27,8 @@ function history(root){
   details.append(summary,table);card.append(details);
   details.addEventListener('toggle',()=>{summary.textContent=details.open?'Ocultar detalles':'Ver más detalles'});
  });
- root.querySelectorAll('.v370-legacy-team,.v340-champion-row').forEach(card=>{
-  const name=card.querySelector('.v340-champion-name,h3,h4,b')?.textContent||card.textContent||'';
-  let src='';if(/pandilla/i.test(name))src='./assets/history/team-logos/legacy-2015-la-pandilla.webp';if(/\bel alto\b/i.test(name))src='./assets/history/team-logos/legacy-2015-el-alto.webp';
-  if(!src)return;const host=card.querySelector('.v370-legacy-crest,.v370-legacy-logo,.v340-champion-logo');if(!host)return;
-  let img=host.querySelector('img');if(!img){img=document.createElement('img');img.alt=name;host.replaceChildren(img)}
-  if(img.getAttribute('src')!==src){img.removeAttribute('onerror');img.src=src;img.style.removeProperty('display');img.hidden=false;host.classList.remove('is-fallback');host.querySelector('b')?.setAttribute('hidden','')}
- });
+ // The shared History resolver owns crests and damaged-source fallbacks.
+ // Reviving them here caused an endless image/monogram mutation cycle.
 }
 function studioEntry(root){
  if(!['more','leagueTools','publicationCenter','ligaControl','jrControl','publications'].includes(route()))return;

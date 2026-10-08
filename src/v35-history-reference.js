@@ -1,5 +1,6 @@
 /* V35 — Historia mobile reconstruction from the user's master references.
    Replaces only #/history on mobile/APK. Keeps the rest of the app logic intact. */
+import { historyPhotoHtml } from './history-media.js';
 (function(){
 'use strict';
 
@@ -264,8 +265,8 @@ const HIST_USER_LOGO_XOLOS='./assets/history/team-logos/xolos-jaralillo.webp';
 const APP_HISTORIC_LOGOS={
   'la pandilla':'./assets/history/team-logos/legacy-2015-la-pandilla.webp',
   'real de roque':'./assets/history/team-logos/real-de-roque.webp',
-  'olimpicos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
-  'olimpicos de pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
+  'olimpicos':'./assets/history/team-logos/olimpicos-pozos-original.jpg',
+  'olimpicos de pozos':'./assets/history/team-logos/olimpicos-pozos-original.jpg',
   'puros cuates':'./assets/history/team-logos/legacy-2015-puros-cuates.webp',
   'mazacotes':'./assets/history/team-logos/legacy-2015-mazacotes.webp',
   'mazacotes fc':'./assets/history/team-logos/legacy-2015-mazacotes.webp',
@@ -277,7 +278,7 @@ const APP_HISTORIC_LOGOS={
   'deportivo cerrito':'./assets/history/team-logos/legacy-2015-cerrito.webp',
   'dep cerrito':'./assets/history/team-logos/legacy-2015-cerrito.webp',
   /* V714 — escudos antiguos visibles en el rol oficial del 05 jul 2015. */
-  'el alto':'./assets/history/team-logos/legacy-2015-el-alto.webp',
+  'el alto':'',
   'juventus':'./assets/history/team-logos/legacy-2015-juventus.webp',
   'linces':'./assets/history/team-logos/legacy-2015-linces.webp',
   'san antonio':'./assets/history/team-logos/legacy-2015-san-antonio-romerillo.webp',
@@ -1288,6 +1289,7 @@ function canonicalHistoricName(name){
 }
 function historicLogo(name){
   const k=histTeamKey(canonicalHistoricName(name));
+  if(k==='el alto')return '';
   const local=APP_HISTORIC_LOGOS[k]||APP_HISTORIC_LOGOS[histTeamKey(name)];
   if(local)return local;
   const p=historicTeamLogoMap[k];
@@ -2243,6 +2245,7 @@ function v348ArchiveHtml(kind){
   else if(kind==='seasons')html='';
   else if(kind==='champions')html=championsArchiveBlock();
   else if(kind==='finals')html=finalsArchiveBlock();
+  html=historyPhotoHtml(html);
   v348ArchiveCache[kind]=html;
   return html;
 }
@@ -2600,6 +2603,7 @@ function v340ChampionAchievements(){
   return out;
 }
 function v340ChampionLogo(team,preferred){
+  if(histTeamKey(team)==='el alto')return '';
   if(preferred)return preferred;
   const directKey=histTeamKey(canonicalHistoricName(team));
   const direct=APP_HISTORIC_LOGOS[directKey]||APP_HISTORIC_LOGOS[histTeamKey(team)];
@@ -2809,6 +2813,7 @@ function v370HistoryTeamLogo(name){
   /* V700 — Memoria de clubes: resolver primero los escudos históricos locales.
      Tecos tiene un archivo propio y no debe quedar con el cuadro vacío. */
   const key=histTeamKey(canonicalHistoricName(name));
+  if(key==='el alto')return '';
   if(['tecos','tecos fc','tecos jr','tecos jrs','tecos pozos'].includes(key))return './assets/history/team-logos/tecos.webp';
   try{
     const localHistoric=historicLogo(name);
@@ -2921,7 +2926,8 @@ function v370ArchiveTeamsBlock(){
         aliases:lineage.aliases||[lineage.display],
         note:lineage.note||'',
         categories:new Set(),
-        years:new Set()
+        years:new Set(),
+        entries:[]
       });
     }
     return byKey.get(lineage.key);
@@ -2935,6 +2941,8 @@ function v370ArchiveTeamsBlock(){
       if(!club)return;
       cats.forEach(x=>club.categories.add(x));
       years.forEach(x=>club.years.add(x));
+      if(!club.entries.some(x=>x.period===group.period&&x.category===group.category))
+        club.entries.push({period:group.period,category:group.category});
     });
   });
   supplemental.forEach(raw=>ensureClub(raw));
@@ -2984,7 +2992,7 @@ function v370ArchiveTeamsBlock(){
         sortButton('newest','Año ↓')+
       '</div></div>'+
     '</div>'+
-    '<div class="v370-legacy-grid">'+clubs.map((club,i)=>{const name=club.display,logo=v370HistoryTeamLogo(name),evolved=club.note&&club.aliases.length>1;return '<article class="v370-legacy-team '+(evolved?'v706-evolved-club':'')+'" data-v710-name="'+esc(name)+'" data-v710-categories="'+esc(club.categoryKeys.join('|'))+'" data-v710-first-year="'+club.firstYear+'" data-v710-last-year="'+club.lastYear+'">'+
+    '<div class="v370-legacy-grid">'+clubs.map((club,i)=>{const name=club.display,logo=v370HistoryTeamLogo(name),evolved=club.note&&club.aliases.length>1;return '<article class="v370-legacy-team v731-history-card '+(evolved?'v706-evolved-club':'')+'" data-v731-detail-ready="1" data-v710-name="'+esc(name)+'" data-v710-categories="'+esc(club.categoryKeys.join('|'))+'" data-v710-first-year="'+club.firstYear+'" data-v710-last-year="'+club.lastYear+'">'+
       '<span class="v370-legacy-no">'+String(i+1).padStart(2,'0')+'</span>'+
       '<span class="v370-legacy-crest '+(logo?'':'is-fallback')+'">'+
         (logo?'<img src="'+esc(logo)+'" alt="'+esc(name)+'" loading="lazy" decoding="async" onerror="this.parentElement?.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(v370HistoryTeamInitials(name))+'</b>')+
@@ -2993,6 +3001,12 @@ function v370ArchiveTeamsBlock(){
         '<span class="v717-first-seen"><span>DOCUMENTADO</span><b>'+esc(club.firstSeenText)+'</b></span>'+
         '<span class="v710-team-meta"><em>'+esc(club.categories.join(' · '))+'</em><b>'+esc(club.yearText)+'</b></span>'+
         (evolved?'<em class="v706-lineage">'+esc(club.note)+'</em>':'')+
+        '<button type="button" class="v731-history-details" data-v370-details aria-expanded="false" aria-controls="historic-club-'+i+'" aria-label="Ver detalles de '+esc(name)+'"><span>Ver detalles</span><i aria-hidden="true">›</i></button>'+
+        '<span class="v370-archive-details" id="historic-club-'+i+'" hidden>'+
+          '<strong>Participaciones documentadas</strong>'+
+          (club.entries.length?'<ul>'+club.entries.map(entry=>'<li><b>'+esc(entry.period)+'</b><span>'+esc(entry.category)+'</span></li>').join('')+'</ul>':'<p>El club aparece en el archivo histórico; sus temporadas están por precisar.</p>')+
+          (name==='El Alto'?'<p>Escudo original pendiente de recuperar. Se muestran las iniciales del equipo.</p>':'')+
+        '</span>'+
       '</span>'+
       '<span class="v370-legacy-seal" aria-hidden="true">JR</span>'+
     '</article>';}).join('')+'</div>'+
@@ -3076,7 +3090,7 @@ function v355HydrateHistoryLazy(root){
       else if(kind==='seasons')html='';
       else if(kind==='champions')html=championsArchiveBlock();
       if(!html){host.remove();return;}
-      host.insertAdjacentHTML('afterend',html);
+      host.insertAdjacentHTML('afterend',historyPhotoHtml(html));
       host.remove();
       requestAnimationFrame(()=>{
         const page=document.querySelector('.v35-history-page');
@@ -3119,6 +3133,7 @@ function v351BodyFor(tab){
   else if(tab==='Récords') html=recordsBody();
   else if(tab==='Videos') html=videosBody();
   else html=summaryBody();
+  html=historyPhotoHtml(html);
   v350TabHtmlCache.set(key,html);
   return html;
 }
@@ -3579,6 +3594,21 @@ async function share(){
 }
 function onClick(e){
   if(route()!=='history') return;
+  const legacyDetails=e.target.closest('[data-v370-details]');
+  if(legacyDetails){
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    const card=legacyDetails.closest('.v370-legacy-team');
+    const panel=card?.querySelector('.v370-archive-details');
+    if(!panel)return;
+    const open=legacyDetails.getAttribute('aria-expanded')!=='true';
+    panel.hidden=!open;
+    card.classList.toggle('is-v731-open',open);
+    legacyDetails.setAttribute('aria-expanded',String(open));
+    legacyDetails.setAttribute('aria-label',(open?'Ocultar detalles de ':'Ver detalles de ')+card.dataset.v710Name);
+    legacyDetails.querySelector('span').textContent=open?'Ocultar detalles':'Ver detalles';
+    legacyDetails.querySelector('i').textContent=open?'⌃':'›';
+    return;
+  }
   const back=e.target.closest('[data-v35-back]');
   if(back){e.preventDefault();e.stopPropagation();if(history.length>1)history.back();else location.hash='#/more';return;}
   const loadSeasons=e.target.closest('[data-v351-load-seasons]');
