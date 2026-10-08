@@ -4593,7 +4593,7 @@ function v60FieldPreview(f,cls=''){
     '</span>';
   const image=photoSrc?'<img class="v923-google-photo" src="'+v64Esc(photoSrc)+
     '" alt="Vista cercana de Google Street View de '+name+'; no se garantiza que sea la cancha exacta"'+
-    ' loading="lazy" decoding="async" onerror="this.hidden=true;this.parentElement.classList.add(\\'v923-photo-error\\')">':'';
+    ' loading="lazy" decoding="async" onerror="this.hidden=true;this.parentElement.classList.add(&quot;v923-photo-error&quot;)">':'';
   const button=large?'<a class="v923-google-open" href="'+link+'" target="_blank" rel="noopener noreferrer"'+
     ' aria-label="Abrir Google Street View de '+name+'">'+
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.5 7-13a7 7 0 0 0-14 0c0 6.5 7 13 7 13Z"/><circle cx="12" cy="9" r="2.6"/></svg>'+
