@@ -843,3 +843,11 @@ body[data-app-route="credentialBuilder"] .v124-registry{
 @media(prefers-reduced-motion:reduce){
  .v124-registry .v126-file,.v124-registry .v126-team-open{transition:none}
 }
+
+/* Apertura local del PDF cuando el navegador móvil no lo muestra dentro del visor. */
+.v124-registry .v202-open-pdf{
+ flex:none;padding:5px 7px;border:1px solid rgba(103,210,246,.35);
+ border-radius:7px;text-decoration:none;background:#1e5bb5;
+ color:#f4fcff;font-size:9px;font-weight:850;white-space:nowrap;
+}
+.v124-registry .v202-open-pdf:focus-visible{outline:2px solid #8cf5ff;outline-offset:2px}
