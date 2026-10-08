@@ -79,18 +79,18 @@ html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v576-bui
 html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v576-builder-head button[data-v576-back] {
   grid-column:1!important;
   justify-self:start!important;
-  background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2040%2040%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M24.5%207.5%2012%2020l12.5%2012.5M12.8%2020H35%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%222.9%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E")!important;
+  background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2040%2040%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M24.5%207.5%2012%2020l12.5%2012.5M12.8%2020H35%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%223.05%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E")!important;
   background-repeat:no-repeat!important;
   background-position:center!important;
-  background-size:35px 35px!important;
+  background-size:38px 38px!important;
 }
 html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v576-builder-head button[data-v576-menu] {
   grid-column:3!important;
   justify-self:end!important;
-  background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2036%2042%22%3E%3Ccircle%20cx%3D%2218%22%20cy%3D%228%22%20r%3D%222.8%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Ccircle%20cx%3D%2218%22%20cy%3D%2221%22%20r%3D%222.8%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Ccircle%20cx%3D%2218%22%20cy%3D%2234%22%20r%3D%222.8%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E")!important;
+  background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2036%2042%22%3E%3Ccircle%20cx%3D%2218%22%20cy%3D%228%22%20r%3D%223.2%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Ccircle%20cx%3D%2218%22%20cy%3D%2221%22%20r%3D%223.2%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Ccircle%20cx%3D%2218%22%20cy%3D%2234%22%20r%3D%223.2%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E")!important;
   background-repeat:no-repeat!important;
   background-position:center!important;
-  background-size:21px 27px!important;
+  background-size:25px 31px!important;
 }
 html body[data-app-route="fantasyTeam"].v587-fantasy-team-open #screen .v576-builder-head::after {
   content:""!important;
