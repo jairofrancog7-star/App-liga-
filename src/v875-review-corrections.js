@@ -50,7 +50,22 @@ function studioEntry(root){
 function poll(root){
  const host=root.querySelector('.v105-poll-status')?.parentElement;if(!host||host.querySelector('[data-v875-mailbox]'))return;
  const form=document.createElement('form');form.className='v875-mailbox';form.dataset.v875Mailbox='';
- form.innerHTML='<small>BUZÓN DE LA LIGA</small><h3>Tu propuesta puede mejorar la liga</h3><p>Mensaje privado para administración. Se envía con tu cuenta registrada.</p><label>¿Qué propones mejorar?<textarea name="message" minlength="10" maxlength="10000" rows="7" required placeholder="Cuéntanos el problema, tu idea y cómo podríamos mejorar…"></textarea></label><div><span data-count>0 / 10 000</span><button type="submit">Enviar propuesta</button></div><p role="status" data-status></p>';
+ form.innerHTML=[
+  '<div class="v927-mail-head">',
+   '<span class="v927-mail-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="15" rx="3"/><path d="m4 8 8 6 8-6"/><path d="m15.5 3 2 2 3-3"/></svg></span>',
+   '<span class="v927-mail-kicker"><small>BUZÓN DE LA LIGA</small><strong>Tu opinión importa</strong></span>',
+   '<span class="v927-mail-private">PRIVADO</span>',
+  '</div>',
+  '<h3>Tu propuesta puede mejorar la liga</h3>',
+  '<p>Comparte tu idea directamente con la administración. Se envía con tu cuenta registrada.</p>',
+  '<label><span class="v927-field-label">¿Qué propones mejorar?</span>',
+   '<textarea name="message" minlength="10" maxlength="10000" rows="6" required placeholder="Describe tu propuesta, qué cambiarías y cómo ayudaría a la Liga…"></textarea>',
+  '</label>',
+  '<div class="v927-mail-footer"><span class="v927-mail-count"><strong data-count>0 / 10 000</strong><small>caracteres</small></span>',
+   '<button type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4 20-7ZM22 2 11 13"/></svg><span>Enviar propuesta</span></button>',
+  '</div>',
+  '<p class="v927-mail-status" role="status" data-status aria-live="polite"></p>'
+ ].join('');
  host.append(form);const text=form.elements.message,status=form.querySelector('[data-status]'),button=form.querySelector('button');
  text.oninput=()=>{form.querySelector('[data-count]').textContent=text.value.length+' / 10 000'};
  form.onsubmit=async e=>{
