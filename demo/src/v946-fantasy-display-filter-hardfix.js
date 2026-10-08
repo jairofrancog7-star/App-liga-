@@ -98,8 +98,11 @@ function value(p){
  const home=same(m.home,p.team),rival=home?m.away:m.home;
  return '- '+rival+' ('+(home?'H':'A')+')';
 }
-function icon(){
- return metric==='rival'?'▣':metric==='date'?'▢':metric==='points'?'+1':'$';
+function metricIcon(id){
+ if(id==='rival')return '<svg class="v948-metric-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="1.8"/><path d="M12 3.5v17M3.5 8h3.8a4.7 4.7 0 0 1 0 8H3.5M20.5 8h-3.8a4.7 4.7 0 0 0 0 8h3.8"/><circle cx="12" cy="12" r="2.2"/></svg>';
+ if(id==='date')return '<svg class="v948-metric-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="15" rx="2"/><path d="M8 3.5v4M16 3.5v4M4 9.5h16"/></svg>';
+ if(id==='points')return '<span class="v948-text-icon">+1</span>';
+ return '<span class="v948-text-icon v948-money-icon">$</span>';
 }
 function normalizePill(){
  if(!active())return;
@@ -107,7 +110,7 @@ function normalizePill(){
   btn.removeAttribute('data-v576-search');
   btn.setAttribute('data-v946-display-filter','');
   btn.setAttribute('aria-label','Cambiar dato mostrado: Rival, Fecha, Precio o Puntos totales');
-  const b=btn.querySelector('b');if(b)b.textContent=icon();
+  const b=btn.querySelector('b');if(b)b.innerHTML=metricIcon(metric);
  });
 }
 function decorate(){
@@ -124,8 +127,8 @@ function schedule(){cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>requ
 function close(){
  document.querySelectorAll('.v946-display-filter-layer').forEach(n=>n.remove());
 }
-function row(id,label,symbol){
- return '<button type="button" class="'+(metric===id?'active':'')+'" data-v946-metric="'+id+'"><span>'+esc(label)+'</span><b>'+esc(symbol)+'</b></button>';
+function row(id,label){
+ return '<button type="button" class="'+(metric===id?'active':'')+'" data-v946-metric="'+id+'"><span>'+esc(label)+'</span><b>'+metricIcon(id)+'</b></button>';
 }
 function openMenu(){
  close();
@@ -133,10 +136,10 @@ function openMenu(){
  layer.className='v576-layer display-filter v946-display-filter-layer';
  layer.innerHTML='<button type="button" class="v576-backdrop" data-v946-close aria-label="Cerrar"></button>'+
   '<section class="v945-fantasy-display-sheet" role="dialog" aria-modal="true" aria-label="Dato mostrado debajo del jugador">'+
-   row('rival','Rival','▣')+
-   row('date','Fecha','▢')+
-   row('price','Precio','$')+
-   row('points','Puntos totales','+1')+
+   row('rival','Rival')+
+   row('date','Fecha')+
+   row('price','Precio')+
+   row('points','Puntos totales')+
   '</section>';
  document.body.appendChild(layer);
 }
