@@ -4,7 +4,7 @@
 (function(){
 'use strict';
 
-const BUILD='20261007-v930-official-stats-five-cats';
+const BUILD='20261008-v966-segunda-finales';
 const LOCAL_DATA='./data/official-live.json?v='+BUILD;
 const REMOTE_DATA='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v='+BUILD;
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
@@ -463,6 +463,9 @@ function chooseNewer(a,b){
   if(!a)return b;if(!b)return a;
   // El rol manual es más reciente que el último espejo verde: no dejar que un
   // snapshot antiguo revierta sedes, horas o decisiones administrativas.
+  // Preservar marcadores finales confirmados por el usuario frente a un espejo anterior.
+  const verifiedStamp=String(a.latest_user_verified_results?.applied_at_utc||'');
+  if(verifiedStamp&&String(b.captured_at_utc||'')<verifiedStamp)return a;
   const manualStamp=String(a.manual_fixture_update?.applied_at_utc||'');
   if(manualStamp&&String(b.captured_at_utc||'')<manualStamp)return a;
   const ta=String(a.captured_at_utc||''),tb=String(b.captured_at_utc||'');
