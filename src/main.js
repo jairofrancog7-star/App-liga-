@@ -4569,54 +4569,62 @@ function v60StreetViewUrl(f){
   }
   return v60MapUrl(f);
 }
+function v60AerialPreviewUrl(f){
+  // Imagen aérea geográfica, NO foto de partido ni panorámica falsa de Google.
+  // Las coordenadas son las disponibles en el directorio; sedes sin pin exacto
+  // se centran en su comunidad. UDS 1/2/3 son recortes distintos del complejo.
+  const hasCoord=(v)=>v!==null&&v!==undefined&&Number.isFinite(Number(v));
+  const latitude=hasCoord(f?.lat)?Number(f.lat):(hasCoord(f?.weatherLat)?Number(f.weatherLat):null);
+  const longitude=hasCoord(f?.lon)?Number(f.lon):(hasCoord(f?.weatherLon)?Number(f.weatherLon):null);
+  if(latitude===null||longitude===null||Math.abs(latitude)>90||Math.abs(longitude)>180)return '';
+  const offsets={
+    'sur-1':[-.00026,.00021],
+    'sur-2':[.00025,-.00017],
+    'sur-3':[-.00012,-.00026],
+    'fraccionamiento':[.00042,-.00038]
+  };
+  const shift=offsets[f?.id]||[0,0];
+  const y=latitude+shift[0],x=longitude+shift[1];
+  const dx=.00165,dy=.00093;
+  const bbox=[x-dx,y-dy,x+dx,y+dy].map(n=>n.toFixed(6)).join(',');
+  // ArcGIS World Imagery export; cada BBOX genera una imagen aérea diferente.
+  return 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?'+
+    'bbox='+encodeURIComponent(bbox)+'&bboxSR=4326&imageSR=4326'+
+    '&size=720%2C406&format=jpg&f=image';
+}
 function v60FieldPreview(f,cls=''){
-  /* V923 — Street View de Google en vez de fotos de partidos.
-     Un fotograma estático requiere una clave habilitada para Street View Static.
-     Nunca etiquetar una panorámica cercana como foto exacta de una cancha. */
   const large=String(cls).includes('v60-field-preview-card');
   const name=v64Esc(String(f?.name||'campo'));
-  const lat=f?.lat,lon=f?.lon;
-  const hasCoords=lat!==null&&lat!==undefined&&lon!==null&&lon!==undefined&&
-    Number.isFinite(Number(lat))&&Number.isFinite(Number(lon))&&
-    Math.abs(Number(lat))<=90&&Math.abs(Number(lon))<=180;
+  const hasExact=f?.lat!==null&&f?.lat!==undefined&&Number.isFinite(Number(f.lat))&&
+    f?.lon!==null&&f?.lon!==undefined&&Number.isFinite(Number(f.lon));
+  const latitude=hasExact?Number(f.lat):Number(f?.weatherLat);
+  const longitude=hasExact?Number(f.lon):Number(f?.weatherLon);
   const key=String(import.meta.env.VITE_GOOGLE_STREETVIEW_API_KEY||'').trim();
-  const photoSrc=key&&hasCoords?'https://maps.googleapis.com/maps/api/streetview?'+
-    'size=640x360&location='+encodeURIComponent(Number(lat).toFixed(6)+','+Number(lon).toFixed(6))+
+  const googleSrc=key&&hasExact?'https://maps.googleapis.com/maps/api/streetview?'+
+    'size=640x360&location='+encodeURIComponent(latitude.toFixed(6)+','+longitude.toFixed(6))+
     '&radius=75&fov=80&pitch=0&source=outdoor&return_error_code=true&key='+encodeURIComponent(key):'';
-  const link=v64Esc(v60StreetViewUrl(f));
-  const info=hasCoords?
-    'Vista de Street View cercana a la ubicación. Puede no corresponder al interior de la cancha.':
-    'Ubicación para consultar fotografías en Google Maps.';
-  // Sin clave no existe imagen estática que descargar de Google.
-  // El cuadro completo actúa como acceso al Street View real en Google Maps.
-  const placeholder='<a class="v923-google-photo-empty v923-google-photo-link" href="'+link+
-    '" target="_blank" rel="noopener noreferrer" aria-label="Ver las fotografías de Google Maps de '+name+'">'+
+  const aerialSrc=v60AerialPreviewUrl(f);
+  const link=v64Esc(v60MapUrl(f));
+  const fallback='<a class="v923-google-photo-empty v923-google-photo-link" href="'+link+
+    '" target="_blank" rel="noopener noreferrer" aria-label="Consultar '+name+' en Google Maps">'+
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="3"/><circle cx="12" cy="13" r="3.5"/><path d="m8 6 1.2-2h5.6L16 6"/></svg>'+
-    '<b>'+(photoSrc?'Google Street View':'Ver fotografía en Google Maps')+'</b>'+
-    '<span>'+(photoSrc?'Cargando panorama de Google…':'Para mostrar la foto aquí, falta activar Street View Static API')+'</span>'+
-    '</a>';
-  // Siempre mostrar una FOTO verificable como archivo: captura de Google Maps
-  // entregada por el usuario (2014). Es ilustrativa: no identifica estas sedes.
-  // Cuando se active Street View Static API, su foto específica cubre la muestra.
-  const sampleSrc='./assets/maps/google-streetview-referencia-2014.svg';
-  const sample='<img class="v923-google-photo v926-photo-example" src="'+sampleSrc+
-    '" alt="Ejemplo de cancha desde Google Maps, captura compartida de 2014; no representa necesariamente esta sede"'+
-    ' loading="lazy" decoding="async" onload="this.parentElement.classList.add(&quot;v926-example-loaded&quot;)"'+
-    ' onerror="this.hidden=true;this.parentElement.classList.add(&quot;v926-example-error&quot;)">';
-  const image=photoSrc?'<img class="v923-google-photo v926-photo-live" src="'+v64Esc(photoSrc)+
-    '" alt="Google Street View cerca de '+name+'; puede no mostrar exactamente el terreno"'+
-    ' loading="lazy" decoding="async" onload="this.parentElement.classList.add(&quot;v926-live-loaded&quot;)"'+
-    ' onerror="this.hidden=true;this.parentElement.classList.add(&quot;v926-live-error&quot;)">':'';
-  const button=large?'<a class="v923-google-open" href="'+link+'" target="_blank" rel="noopener noreferrer"'+
-    ' aria-label="Abrir Google Street View de '+name+'">'+
+    '<b>Vista aérea del campo</b><span>'+(aerialSrc?'Cargando imagen de la zona…':'Ver ubicación en Maps')+'</span></a>';
+  const aerial=aerialSrc?'<img class="v927-aerial-photo" src="'+v64Esc(aerialSrc)+
+    '" alt="Vista aérea aproximada de la zona de '+name+'; imagen satelital Esri"'+
+    ' loading="lazy" decoding="async" onload="this.parentElement.classList.add(&quot;v927-aerial-loaded&quot;)"'+
+    ' onerror="this.hidden=true;this.parentElement.classList.add(&quot;v927-aerial-error&quot;)">':'';
+  const street=googleSrc?'<img class="v927-google-photo" src="'+v64Esc(googleSrc)+
+    '" alt="Street View de los alrededores de '+name+'; ubicación no verificada"'+
+    ' loading="lazy" decoding="async" onload="this.parentElement.classList.add(&quot;v927-street-loaded&quot;)"'+
+    ' onerror="this.hidden=true;this.parentElement.classList.add(&quot;v927-street-error&quot;)">':'';
+  const areaText=hasExact?'Zona de la sede':'Ubicación aproximada de la comunidad';
+  const open=large?'<a class="v923-google-open" href="'+link+'" target="_blank" rel="noopener noreferrer" aria-label="Abrir ubicación de '+name+' en Google Maps">'+
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.5 7-13a7 7 0 0 0-14 0c0 6.5 7 13 7 13Z"/><circle cx="12" cy="9" r="2.6"/></svg>'+
-    '<span>'+(hasCoords?'Abrir Google Maps':'Ver en Maps')+'</span></a>':'';
-  return '<span class="v60-field-preview v921-map-preview v923-google-preview'+
-    (photoSrc?' v923-has-photo':' v923-no-photo')+' '+v64Esc(cls)+'"'+
-    ' title="'+v64Esc(info)+'">'+placeholder+sample+image+
-    (large?'<span class="v923-photo-label v926-label-example">Google Maps (2014) · foto de ejemplo, cancha no confirmada</span>'+
-      (photoSrc?'<span class="v923-photo-label v926-label-live">Street View · imagen cercana</span>':''):'')+
-    button+'</span>';
+    '<span>Abrir Google Maps</span></a>':'';
+  const credits=large?'<span class="v927-imagery-credits">Vista aérea · '+areaText+' · © Esri</span>':'';
+  return '<span class="v60-field-preview v921-map-preview v923-google-preview v927-unique-imagery '+v64Esc(cls)+'"'+
+    ' title="Vista de la zona, no fotografía individual verificada de la cancha">'+
+    fallback+aerial+street+credits+open+'</span>';
 }
 
 function v60Icon(name){
