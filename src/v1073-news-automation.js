@@ -33,7 +33,7 @@ function controlMarkup(){
  return '<section class="v1073-controls" aria-label="Herramientas de noticias">'+
   '<div class="v1073-search-line"><label class="v1073-search"><span aria-hidden="true">⌕</span><input type="search" maxlength="100" data-v1073-query autocomplete="off" placeholder="Buscar noticias, equipos o avisos" aria-label="Buscar noticias y avisos"></label>'+
   '<button type="button" class="v1073-icon" data-v1073-refresh title="Actualizar noticias" aria-label="Actualizar noticias">↻</button>'+
-  '<button type="button" class="v1073-icon" data-v1073-alerts title="Activar avisos" aria-label="Activar avisos">♧</button></div>'+
+  '<button type="button" class="v1073-icon" data-v1073-alerts title="Activar avisos" aria-label="Activar avisos"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></button></div>'+
   '<div class="v1073-control-row"><div class="v1073-filter-switch">'+
   '<button type="button" data-v1073-mode="unread">Sin leer</button>'+
   '<button type="button" data-v1073-mode="saved">Guardadas</button></div>'+
@@ -106,8 +106,8 @@ function updateButtons(){
  document.querySelectorAll('#screen [data-v1073-actions]').forEach(function(el){
   var id=el.dataset.v1073Actions;
   var read=el.querySelector('[data-v1073-read]'),save=el.querySelector('[data-v1073-save]');
-  if(read)read.textContent=isRead(id)?'✓ Leída':'✓ Leer';
-  if(save){save.textContent=isSaved(id)?'★ Guardada':'☆ Guardar';save.setAttribute('aria-pressed',String(isSaved(id)))}
+  if(read){var readLabel=isRead(id)?'✓ Leída':'✓ Leer';if(read.textContent!==readLabel)read.textContent=readLabel}
+  if(save){var saveLabel=isSaved(id)?'★ Guardada':'☆ Guardar';if(save.textContent!==saveLabel)save.textContent=saveLabel;save.setAttribute('aria-pressed',String(isSaved(id)))}
   el.closest('[data-v1073-id]')?.classList.toggle('v1073-unread',!isRead(id));
  });
 }
@@ -137,7 +137,7 @@ function applyFilters(host){
  host.controls.querySelectorAll('[data-v1073-mode]').forEach(function(b){b.classList.toggle('active',mode===b.dataset.v1073Mode)});
  updateButtons();
  var st=host.controls.querySelector('[data-v1073-status]');
- if(st)st.textContent=(shown+' publicaciones visibles · ')+'Revisión automática cada minuto';
+ if(st){var status=shown+' publicaciones visibles · Revisión automática cada minuto';if(st.textContent!==status)st.textContent=status}
 }
 function revisionsOf(items){var out={};items.forEach(function(r){var p=r.payload||{};out[recordId(r)]=String(r.revision??r.updated??p.updatedAt??'')+'|'+String(p.title||'')+'|'+String(p.body||'')});return out}
 async function deviceAlert(r){
