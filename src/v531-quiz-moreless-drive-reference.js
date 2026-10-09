@@ -45,6 +45,13 @@ const more={mode:'legacy',answered:false,selected:'',points:0,attempts:2,exit:fa
 let v538MoreTimers=[];
 let v538MoreInterval=null;
 let v614QuizCountdownTimer=null;
+let v1050NotifyOpen=false;
+const V1050_NOTIFY_KEY='ljr-quiz-notice-dismissed';
+function v1050NoticeAvailable(){try{return localStorage.getItem(V1050_NOTIFY_KEY)!=='1'&&(!('Notification' in window)||Notification.permission!=='granted')}catch(_){return true}}
+function v1050BellSvg(){return '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 34h28l-4-5V19a10 10 0 0 0-20 0v10l-4 5Z" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 38a4 4 0 0 0 8 0M6 19a18 18 0 0 1 5-12m31 12a18 18 0 0 0-5-12" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/></svg>'}
+function v1050NotifyCard(){return v1050NoticeAvailable()?'<aside class="v1050-notice-card"><div class="v1050-notice-art">'+v1050BellSvg()+'</div><div class="v1050-notice-copy"><b>¡No te pierdas ningún quiz!</b><p>Recibe recordatorios y novedades del Quiz Arena.</p></div><button type="button" data-v1050-notice-open>Activar notificaciones</button><button type="button" class="v1050-notice-dismiss" data-v1050-notice-dismiss>Ahora no</button></aside>':''}
+function v1050NotifyModal(){return '<div class="v1050-notify-backdrop" data-v1050-notify-backdrop><section class="v1050-notify-sheet" role="dialog" aria-modal="true" aria-labelledby="v1050-notify-heading"><button type="button" class="v1050-notify-x" data-v1050-notify-close aria-label="Cerrar">'+closeSvg()+'</button><div class="v1050-notify-icon">'+v1050BellSvg()+'</div><h2 id="v1050-notify-heading">¡No te pierdas ningún quiz!</h2><p>Activa las notificaciones para recibir avisos del Quiz Arena cuando esta aplicación pueda mostrarlos.</p><button type="button" class="v1050-notify-yes" data-v1050-notify-allow>Activar notificaciones</button><button type="button" class="v1050-notify-no" data-v1050-notify-close>Ahora no</button><small data-v1050-notify-status role="status">Los recordatorios con el navegador cerrado requieren notificaciones push; esta versión solo utiliza permisos y avisos locales.</small></section></div>'}
+
 
 function route(){return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home'}
 function esc(v){return String(v??'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
@@ -234,14 +241,14 @@ function quizGame(data){
     return '<button type="button" class="v531-q-answer v614-q-answer" '+(hidden?'disabled style="visibility:hidden"':'')+' data-v531-q-answer="'+esc(name)+'"><span aria-hidden="true"></span><b>'+esc(name)+'</b></button>';
   }).join('');
   return '<section class="v531-page v531-quiz v531-game-screen v614-quiz-game" data-v531-quiz data-v531-view="game">'+
-    '<header class="v614-game-head"><span></span><button type="button" data-v531-quiz-close aria-label="Cerrar">'+closeSvg()+'</button></header>'+
+    '<header class="v614-game-head"><strong class="v1050-quiz-title">Quiz Aleatorio</strong><button type="button" data-v531-quiz-close aria-label="Cerrar quiz">'+closeSvg()+'</button></header>'+
     '<div class="v614-scorebar"><div class="v614-progress-track">'+v614QuizProgress()+'</div><span class="v614-score-total"><small>Total</small><b>'+quiz.points+' ptos</b></span></div>'+
     '<main class="v531-q-main v614-q-main">'+
       '<article class="v531-question-card v614-question-card"><div class="v531-question-media v614-question-media"><img src="'+esc(QUIZ_STADIUM)+'" alt="" loading="eager" decoding="async"><p>'+esc(q.question)+'</p></div><div class="v531-q-grid v614-q-grid">'+options+'</div></article>'+
       '<div class="v614-league-band"><img src="'+esc(LEAGUE)+'" alt=""><span><b>LIGA JUVENTINO ROSAS</b><small>FÚTBOL MUNICIPAL</small></span></div>'+
-      '<div class="v531-turbos v614-turbos"><button data-quiz-half '+(quiz.halfUsed?'disabled':'')+'><small>Tus turbos</small><b><span class="v617-turbo-icon">'+v617LightningIcon()+'</span><span>50-50</span></b></button><button data-quiz-retry '+(quiz.retryUsed?'disabled':'')+'><small>Turbo</small><b><span class="v617-turbo-icon">'+v617BallIcon()+'</span><span>2 intentos</span></b></button></div>'+
+      '<div class="v531-turbos v614-turbos"><button data-quiz-half '+(quiz.halfUsed?'disabled':'')+'><small>Tus turbos</small><b><span class="v617-turbo-icon">'+v617LightningIcon()+'</span><span>50-50</span></b></button><button data-quiz-retry '+(quiz.retryUsed?'disabled':'')+'><small>Turbo</small><b><span class="v617-turbo-icon">'+v617BallIcon()+'</span><span>2 intentos</span></b></button></div>'+v1050NotifyCard()+
     '</main>'+
-    (quiz.exit?exitModal('quiz'):'')+
+    (quiz.exit?exitModal('quiz'):'')+(v1050NotifyOpen?v1050NotifyModal():'')+
   '</section>';
 }
 function quizResult(data){
@@ -710,6 +717,34 @@ document.addEventListener('click',function(e){
   }
 
   if(!(e.target instanceof Element))return;
+  if(route()==='quizArena'){
+    const notify=e.target.closest('[data-v1050-notice-open],[data-v1050-notice-dismiss],[data-v1050-notify-close],[data-v1050-notify-allow]');
+    if(notify){
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+      if(notify.matches('[data-v1050-notice-open]')){v1050NotifyOpen=true;render(false);return}
+      if(notify.matches('[data-v1050-notice-dismiss]')){
+        try{localStorage.setItem(V1050_NOTIFY_KEY,'1')}catch(_){}
+        v1050NotifyOpen=false;render(false);return;
+      }
+      if(notify.matches('[data-v1050-notify-close]')){v1050NotifyOpen=false;render(false);return}
+      if(notify.matches('[data-v1050-notify-allow]')){
+        const state=document.querySelector('[data-v1050-notify-status]');
+        if(!('Notification' in window)||!window.isSecureContext){
+          if(state)state.textContent='Tu navegador no permite notificaciones locales en este dispositivo.';
+          return;
+        }
+        const done=permission=>{
+          if(permission==='granted'){
+            try{localStorage.setItem(V1050_NOTIFY_KEY,'1')}catch(_){}
+            v1050NotifyOpen=false;render(false);
+          }else if(state){state.textContent=permission==='denied'?'Notificaciones bloqueadas: actívalas en los permisos del navegador.':'No se activaron; puedes seguir jugando sin notificaciones.'}
+        };
+        try{const result=Notification.requestPermission();if(result&&typeof result.then==='function')result.then(done).catch(()=>{if(state)state.textContent='No se pudieron habilitar las notificaciones.'});else if(typeof result==='string')done(result)}
+        catch(_){if(state)state.textContent='No se pudo solicitar permiso en este dispositivo.'}
+        return;
+      }
+    }
+  }
 
   /* V536: al tocar cualquiera de los dos monitos del cuadro principal
      de Más o Menos se abren los otros diseños de las referencias Drive. */
@@ -800,7 +835,7 @@ document.addEventListener('click',function(e){
   if(t.matches('[data-v531-quiz-start]')){v614StartQuizCountdown();return}
   if(t.matches('[data-v614-countdown-skip]')){v614OpenQuizGame();return}
   if(t.matches('[data-v614-countdown-close]')){v614ClearQuizCountdown();quiz.mode='hub';quiz.exit=false;render(false);return}
-  if(t.matches('[data-v531-quiz-close]')){quiz.exit=true;render(true);return}
+  if(t.matches('[data-v531-quiz-close]')){quiz.exit=true;v1050NotifyOpen=false;render(false);return}
   if(t.matches('[data-v531-result-back]')){v614ClearQuizCountdown();quiz.mode='hub';quiz.exit=false;render(false);return}
   if(t.matches('[data-v531-q-answer]')){
     const data=db||window.LJR_OFFICIAL_DATA||{},q=quizData(data),pick=t.dataset.v531QAnswer||'';
@@ -842,7 +877,7 @@ document.addEventListener('click',function(e){
   }
   if(t.matches('[data-v531-exit-cancel]')){
     const kind=t.dataset.v531ExitCancel;
-    if(kind==='quiz'){quiz.exit=false;render(true);return}
+    if(kind==='quiz'){quiz.exit=false;render(false);return}
     more.exit=false;v543RenderMorePortal();return;
   }
 },true);
@@ -859,6 +894,12 @@ setInterval(()=>{if(route()!=='quizArena'||quiz.mode!=='game'||quiz.exit||quiz.a
   quiz.remaining=Math.max(0,quiz.remaining-1);const clock=document.querySelector('[data-quiz-timer]');if(clock)clock.textContent=quiz.remaining;
   if(quiz.remaining===0){quiz.selected='';quiz.answered=true;if(!Array.isArray(quiz.history))quiz.history=[];quiz.history.push('bad');quiz.mode='result';render(true)}
 },1000);
+document.addEventListener('keydown',event=>{
+ if(event.key!=='Escape'||route()!=='quizArena')return;
+ if(v1050NotifyOpen){event.preventDefault();v1050NotifyOpen=false;render(false)}
+ else if(quiz.exit){event.preventDefault();quiz.exit=false;render(false)}
+});
+window.addEventListener('hashchange',()=>{v1050NotifyOpen=false});
 document.addEventListener('click',event=>{
  if(event.target.closest('[data-quiz-login]')){go('accountLogin');return}const half=event.target.closest('[data-quiz-half]'),retry=event.target.closest('[data-quiz-retry]');
  if(half&&!quiz.halfUsed){quiz.halfUsed=true;half.disabled=true;const q=quizData(db||window.LJR_OFFICIAL_DATA||{});Array.from(document.querySelectorAll('[data-v531-q-answer]')).filter(b=>norm(b.dataset.v531QAnswer)!==norm(q.correct)).slice(0,2).forEach(b=>{b.disabled=true;b.style.visibility='hidden'})}
