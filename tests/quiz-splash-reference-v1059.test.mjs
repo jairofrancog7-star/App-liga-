@@ -70,3 +70,28 @@ test('V1063: portada exacta de Drive sin duplicar Android ni bloquear botones',(
  assert.ok(index.includes('v1063-quiz-drive-pixel-perfect.css'));
  assert.ok(main.includes("if(t.matches('[data-v531-quiz-start]')){v614StartQuizCountdown();return}"));
 });
+
+test('V1064: recorte proporcional de Drive y zonas A-D coinciden con la referencia',()=>{
+ const cssDrive=readFileSync(new URL('../src/v1063-quiz-drive-pixel-perfect.css',import.meta.url),'utf8');
+ const view=2217,top=0.0532*view;
+ const clipHeight=view-top;
+ const imageHeight=clipHeight*1.1434;
+ const offset=(imageHeight-clipHeight)*.392;
+ assert.ok(Math.abs(top-118)<1,'no repetir la barra de estado de Android');
+ assert.ok(Math.abs(offset-118)<1,'comenzar con el pixel 118 del original');
+ assert.ok(Math.abs(top+clipHeight-2217)<1,'no copiar la barra de navegacion al fondo');
+ const buttonTop=0.5825*view;
+ const groupHeight=.222*view,rowHeight=.205*groupHeight;
+ const step=(groupHeight-rowHeight*4)/3+rowHeight;
+ // Rangos azules y verde, medidos en la captura original proporcionada.
+ const bands=[[1303,1391],[1431,1519],[1558,1647],[1686,1775]];
+ for(let i=0;i<4;i++){
+   const start=buttonTop+i*step;
+   assert.ok(Math.abs(start-bands[i][0])<17,'barra '+(i+1)+' alineada arriba');
+   assert.ok(Math.abs(start+rowHeight-bands[i][1])<18,'barra '+(i+1)+' alineada abajo');
+ }
+ assert.ok(cssDrive.includes('top:58.25%!important;'));
+ assert.ok(cssDrive.includes('height:22.2%!important;'));
+ assert.ok(cssDrive.includes('background-position:50% 39.2%!important;'));
+ assert.ok(!cssDrive.includes('overflow-y:scroll!important;'));
+});
