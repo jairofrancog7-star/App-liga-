@@ -1046,7 +1046,7 @@ function v444Unmount(el){
  var s=el&&el.__v4443d;if(!s)return;
  try{cancelAnimationFrame(s.raf)}catch(_){}
  try{v444DisposeObject(s.scene)}catch(_){}
- try{s.renderer.dispose()}catch(_){}
+ try{s.renderer.dispose();s.renderer.forceContextLoss?.()}catch(_){}
  try{s.canvas.remove()}catch(_){}
  el.classList.remove("v444-live");
  delete el.__v4443d;
@@ -1058,7 +1058,7 @@ async function v444Mount(el){
  var renderer;
  try{
    renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:"high-performance"});
-   renderer.setPixelRatio(Math.min(1.6,window.devicePixelRatio||1));
+   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,(window.matchMedia?.("(pointer: coarse)")?.matches?1.15:1.4)));
    renderer.setSize(w,h,false);
    renderer.shadowMap.enabled=true;
    renderer.shadowMap.type=THREE.PCFSoftShadowMap;
@@ -1184,13 +1184,20 @@ async function v444Mount(el){
  el.addEventListener("pointerleave",leave,{passive:true});
  state.cleanup=function(){try{el.removeEventListener("pointermove",pointer);el.removeEventListener("pointerleave",leave)}catch(_){}};
 
- var start=performance.now();
+ /* V1013: miniaturas WebGL: 18fps táctil / 24fps PC en lugar de 60.
+    Mantener movimiento suave sin competir con el visor 3D principal. */
+ var start=performance.now(),lastPaint=0;
+ var minStep=1000/(window.matchMedia?.("(pointer: coarse)")?.matches?18:24);
  function frame(now){
    if(!el.isConnected||!el.__v4443d)return;
-   group.rotation.y+=(state.targetY-group.rotation.y)*.075;
-   group.rotation.x+=(state.targetX-group.rotation.x)*.075;
-   group.position.y=Math.sin((now-start)/1050)*.035;
-   renderer.render(scene,camera);
+   if(!document.hidden&&now-lastPaint>=minStep){
+     var blend=.075*Math.min(3,Math.max(1,(now-lastPaint)/16.67));
+     group.rotation.y+=(state.targetY-group.rotation.y)*blend;
+     group.rotation.x+=(state.targetX-group.rotation.x)*blend;
+     group.position.y=Math.sin((now-start)/1050)*.035;
+     renderer.render(scene,camera);
+     lastPaint=now;
+   }
    state.raf=requestAnimationFrame(frame);
  }
  state.raf=requestAnimationFrame(frame);
