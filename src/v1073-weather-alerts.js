@@ -113,7 +113,7 @@ function stamp(at){return new Date(at).toLocaleString('es-MX',{timeZone:TZ,day:'
 function notify(title,body){
  if(!options.automatic||!options.device||!('Notification'in window)||Notification.permission!=='granted')return;
  if(!('serviceWorker'in navigator))return;
- navigator.serviceWorker.getRegistration().then(r=>r?.showNotification?.(title,{body,tag:'ljr-weather-alert',icon:'./assets/icon-192.png'})).catch(()=>{});
+ navigator.serviceWorker.getRegistration().then(r=>r?.showNotification?.(title,{body,tag:'ljr-weather-alert'})).catch(()=>{});
 }
 function addAlert(field,wx){
  if(!options.automatic||wx.level==='info')return;
@@ -152,13 +152,13 @@ async function check(force=false){
  const btn=$('[data-v1073-refresh]',panel);if(btn)btn.disabled=true;
  try{
   const wx=await forecast(field,force);
-  if(route()!=='v38Weather')return;
+  if(route()!=='v38Weather'||options.field!==field.id)return;
   last={field,wx};lastRun=Date.now();
   output(wx,field);addAlert(field,wx);updateControls();
   status('Pronóstico consultado '+stamp(Date.now())+' · Monitoreo '+(options.automatic?'activado':'manual'),'ok');
  }catch(err){
   status('No se pudo actualizar: '+(err?.name==='AbortError'?'tiempo de espera agotado':err.message||String(err))+'. Intenta de nuevo.','error');
- }finally{fetching=false;if(btn)btn.disabled=false}
+ }finally{fetching=false;if(btn)btn.disabled=false;if(route()==='v38Weather'&&options.field!==field.id)queueMicrotask(()=>check(true))}
 }
 function message(){
  if(!last)return '';
@@ -196,7 +196,7 @@ function bind(){
   else if(b.matches('[data-v1073-copy]'))share(true);
   else if(b.matches('[data-v1073-share]'))share(false);
   else if(b.matches('[data-v1073-official]'))location.hash='#/notices';
-  else if(b.matches('[data-v1073-fields]'))window.LJR_V172_WEATHER?.openFields?.();
+  else if(b.matches('[data-v1073-fields]'))Promise.resolve(window.LJR_V172_WEATHER?.openFields?.()).then(()=>{const select=$('[data-v172-field-select]');if(select&&Array.from(select.options).some(x=>x.value===options.field)){select.value=options.field;select.dispatchEvent(new Event('change',{bubbles:true}))}}).catch(()=>{});
   else if(b.matches('[data-v1073-clear]')){options.alerts=[];save();updateControls();status('Historial de este dispositivo borrado.','ok')}
  });
 }
