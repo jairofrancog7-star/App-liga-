@@ -414,6 +414,12 @@ async function process(img){
     for(const [k,v] of Object.entries(styles))img.style.setProperty(k,v,'important');
     return;
   }
+  /* V1007: los avatares del registro se dibujan con su propio estilo.
+     Evita imponer contain/reconocimiento facial a cada tarjeta al hacer scroll. */
+  if(img.closest('.v124-avatar') && (document.body?.dataset?.appRoute==='credentialBuilder'||location.hash.startsWith('#/credentialBuilder'))){
+    clearFaceCrop(img);
+    return;
+  }
   /* V650: Disciplina controla sus retratos con object-fit:cover para llenar
      el círculo. No aplicar aquí el hard-lock global de foto completa/contain. */
   if(img.closest('.v576-discipline-photo')){
