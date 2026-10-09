@@ -137,7 +137,13 @@ function morePair(data){
     }
     if(pairs.length>=36)break;
   }
-  if(pairs.length)return pairs[Math.abs(Number(more.round)||0)%pairs.length];
+  if(pairs.length){
+    const round=Math.abs(Number(more.round)||0);
+    const chosen=pairs[round%pairs.length];
+    // Mezclar dirección sin cambiar goles ni jugadores oficiales.
+    return (round*7+chosen.a.goals+chosen.b.goals)%3===0
+      ?chosen:{a:chosen.b,b:chosen.a,kind:chosen.kind};
+  }
   const rows=standings(data);
   const pool=rows.slice(0,6).map(function(r){return {name:String(r?.[1]||'EQUIPO'),team:String(r?.[1]||'EQUIPO'),goals:Number(r?.[6])||0}});
   if(pool.length>=2){
