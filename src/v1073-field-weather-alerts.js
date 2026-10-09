@@ -155,7 +155,8 @@ function paint(f,r,expanded){
  });
 }
 async function notifyRisk(f,r){
- if(!state.followed.includes(f.id)||r.tone==='good')return;
+ if(!state.followed.includes(f.id))return;
+ if(r.tone==='good'){if(state.alerts[f.id]){delete state.alerts[f.id];save();}return;}
  var last=state.alerts[f.id],recent=last&&last.tone===r.tone&&Date.now()-last.time<12*60*60*1000;
  if(recent)return;
  state.alerts[f.id]={tone:r.tone,time:Date.now()};save();
