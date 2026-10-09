@@ -118,7 +118,7 @@ function v31BindHospitality(){
 
 // Only Hospitalidad's original background and Android/PWA upper system bar.
 // Neither the header nor the invitation controls are repositioned.
-const V31_HOSPITALITY_BG='linear-gradient(180deg, #0A369F 0%, #081F7A 40%, #050B4E 100%)';
+// Page and sticky header share a single gradient on #app; no inline background.
 let v31OriginalThemeColor=null;
 function v31SyncHospitalityTheme(active){
   const theme=document.querySelector('meta[name="theme-color"]');
@@ -144,12 +144,10 @@ function v31ApplyHospitality(){
   if(!mount.querySelector('.v31-hospitality-page')){
     mount.innerHTML = v31HospitalityMarkup();
   }
-  // Apply only the two-blue background to the existing hospitalidad page.
-  // Inline !important wins over legacy stylesheets, even if loaded later.
+  // One seamless background is painted on #app by the hospitality-only stylesheet.
+  // Remove the old inline !important background, which formed a second blue band.
   const hospitalityPage=mount.querySelector('.v31-hospitality-page');
-  if(hospitalityPage){
-    hospitalityPage.style.setProperty('background',V31_HOSPITALITY_BG,'important');
-  }
+  hospitalityPage?.style.removeProperty('background');
   v31BindHospitality();
 }
 
