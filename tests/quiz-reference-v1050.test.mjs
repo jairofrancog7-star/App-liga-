@@ -39,13 +39,23 @@ test('estilo aislado a Quiz Arena y cache de assets actualizado',()=>{
  assert.match(html,/v531-quiz-moreless-drive-reference\.js\?v=20261009-v\d+-[a-z0-9-]+/);
 });
 
-test('recordatorio en pantalla principal, sin ocupar la pregunta',()=>{
+test('V1057: portada compacta con menú de tres puntos sin recordatorios ni popups',()=>{
  const hub=js.slice(js.indexOf('function quizHub(data)'),js.indexOf('function quizGame(data)'));
  const game=js.slice(js.indexOf('function quizGame(data)'),js.indexOf('function quizResult(data)'));
- assert.ok(hub.includes('v1050NotifyCard()'));
- assert.ok(hub.includes('v1050NotifyModal()'));
+ assert.ok(hub.includes('data-v1057-quiz-menu-toggle'));
+ assert.ok(hub.includes('data-v1057-quiz-share'));
+ assert.ok(hub.includes('data-v1057-quiz-rankings'));
+ assert.ok(hub.includes('data-v1057-quiz-help'));
+ assert.ok(!hub.includes('v1050NotifyCard()'));
+ assert.ok(!hub.includes('v1050NotifyModal()'));
+ assert.ok(!hub.includes('Notifications'));
  assert.ok(!game.includes('v1050NotifyCard()'));
- assert.ok(game.includes('v1050NotifyModal()'));
+ assert.ok(game.includes('v1050NotifyModal()')); // legacy game modal remains dormant; not called from hub
+ const refCss=readFileSync(new URL('../src/v1057-quiz-compact-hub-menu.css',import.meta.url),'utf8');
+ assert.ok(refCss.includes('.v1057-quiz-content'));
+ assert.ok(refCss.includes('.v531-quiz-hero'));
+ assert.ok(refCss.includes('.v583-challenge-art'));
+ assert.ok(html.includes('v1057-quiz-compact-hub-menu.css'));
 });
 test('trabajador de avisos locales requiere permiso y no usa servidores',()=>{
  const sw=readFileSync(new URL('../src/quiz-local-worker.js',import.meta.url),'utf8');
