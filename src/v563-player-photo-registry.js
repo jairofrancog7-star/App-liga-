@@ -97,7 +97,7 @@ async function hydrate(){
  if(route()!=='credentialBuilder')return;
  const cards=$$('.v124-player-card[data-v124-id]');
  for(const card of cards){
-  const avatar=$('.v124-avatar',card),id=card.dataset.v124Id;if(!avatar||avatar.dataset.v563PhotoReady)return;
+  const avatar=$('.v124-avatar',card),id=card.dataset.v124Id;if(!avatar||avatar.dataset.v563PhotoReady)continue;
   avatar.dataset.v563PhotoReady='1';
   const row=await getPhoto(id);if(!row?.dataUrl)continue;
   const d=registry(),rec=(d?.seasons?.[season()]||[]).find(x=>x.id===id)||row;cache(rec,row.dataUrl);
@@ -123,7 +123,14 @@ document.addEventListener('change',e=>{if(route()==='credentialBuilder'&&e.targe
 
 let t=0;function schedule(){clearTimeout(t);t=setTimeout(hydrate,120)}
 window.addEventListener('hashchange',schedule);window.addEventListener('load',schedule);
-const screen=$('#screen');if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:true});
+const screen=$('#screen');
+if(screen)new MutationObserver(records=>{
+ if(route()!=='credentialBuilder')return;
+ const newCards=records.some(r=>[...r.addedNodes].some(n=>
+  n.nodeType===1&&(n.matches?.('.v124-player-card,#v124-player-registry,[data-v64-photo]')||
+  n.querySelector?.('.v124-player-card,[data-v64-photo]'))));
+ if(newCards)schedule();
+}).observe(screen,{childList:true,subtree:true});
 schedule();setTimeout(schedule,900);
 window.LJR_V563_PHOTOS={get:getPhoto,put:putPhoto,delete:delPhoto,hydrate,restore};
 })();
