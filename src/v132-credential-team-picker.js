@@ -252,7 +252,12 @@ async function enhance(){
 let timer=0;function schedule(){clearTimeout(timer);timer=setTimeout(enhance,40)}
 window.addEventListener('hashchange',schedule);
 window.addEventListener('ljr:official-data',schedule);
-const screen=$('#screen');if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:true});
+const screen=$('#screen');
+if(screen)new MutationObserver(()=>{
+  if(route()!=='credentialBuilder')return;
+  const select=nativeSelect();
+  if(select&&(!select.dataset.v132Enhanced||!$('[data-v132-open]',screen)))schedule();
+}).observe(screen,{childList:true,subtree:true});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
 setTimeout(schedule,700);
 })();
