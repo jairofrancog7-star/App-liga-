@@ -14,7 +14,9 @@ test('biblioteca UMD pdf-lib esta alojada en GitHub y permite crear PDF real',as
  const lib=pdfLib();
  assert.equal(typeof lib.PDFDocument?.create,'function');
  const pdf=await lib.PDFDocument.create();
- const page=pdf.addPage([mmToPt(MM_CARD_W),mmToPt(MM_CARD_H)]);
+ // PDF-lib runs in a different Node VM realm; avoid passing an Array from the host realm.
+ const page=pdf.addPage();
+ page.setSize(mmToPt(MM_CARD_W),mmToPt(MM_CARD_H));
  page.drawRectangle({x:0,y:0,width:page.getWidth(),height:page.getHeight(),borderWidth:0.5});
  const bytes=await pdf.save({useObjectStreams:true});
  assert.equal(new TextDecoder().decode(bytes.subarray(0,5)),'%PDF-');
