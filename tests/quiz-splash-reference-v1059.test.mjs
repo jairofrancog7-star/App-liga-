@@ -33,7 +33,10 @@ test('cuatro respuestas de referencia accionables y C verde',()=>{
  assert.ok(splash.includes('v1059-answer-tick'));
  assert.ok(css.includes('.v1059-answer-c .v1059-answer-track'));
  assert.ok(css.includes('#1cba3a'));
- assert.ok(main.includes("if(t.matches('[data-v531-quiz-start]')){v614StartQuizCountdown();return}"));
+ // La portada abre primero el HUB; desde el HUB arranca la cuenta 3-2-1.
+ assert.ok(main.includes("if(t.matches('[data-v531-quiz-start]')){"));
+ assert.ok(main.includes("quiz.mode='hub';quiz.exit=false;render(true);return"));
+ assert.ok(main.includes("v614StartQuizCountdown();return"));
 });
 test('logo abre portada funcional antigua sin perder clasificaciones',()=>{
  assert.ok(main.includes("quiz.mode='splash'"));
@@ -68,7 +71,10 @@ test('V1063: portada exacta de Drive sin duplicar Android ni bloquear botones',(
  assert.ok(fs.includes('pointer-events:auto!important'));
  assert.ok(fs.includes('.v1059-splash-logo:focus-visible'));
  assert.ok(index.includes('v1063-quiz-drive-pixel-perfect.css'));
- assert.ok(main.includes("if(t.matches('[data-v531-quiz-start]')){v614StartQuizCountdown();return}"));
+ // La portada abre primero el HUB; desde el HUB arranca la cuenta 3-2-1.
+ assert.ok(main.includes("if(t.matches('[data-v531-quiz-start]')){"));
+ assert.ok(main.includes("quiz.mode='hub';quiz.exit=false;render(true);return"));
+ assert.ok(main.includes("v614StartQuizCountdown();return"));
 });
 
 test('V1064: recorte proporcional de Drive y zonas A-D coinciden con la referencia',()=>{
