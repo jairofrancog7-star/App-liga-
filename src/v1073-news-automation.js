@@ -131,7 +131,7 @@ function applyFilters(host){
  var head=host.alerts.querySelector('.v1073-alert-head');
  if(head)head.hidden=!host.alerts.querySelector('.v1073-alert-card:not([hidden])');
  var old=host.root.querySelector('.v1073-no-results');
- if(!shown && (q||mode!=='all')){
+ if(!shown){
   if(!old){old=document.createElement('p');old.className='v1073-no-results';old.textContent='No hay publicaciones con estos filtros.';host.list.insertAdjacentElement('afterend',old)}
  }else old?.remove();
  host.controls.querySelectorAll('[data-v1073-mode]').forEach(function(b){b.classList.toggle('active',mode===b.dataset.v1073Mode)});
@@ -173,8 +173,8 @@ async function enableAlerts(){
  }
  if(!('Notification' in window)||!('serviceWorker' in navigator)){toast('Tu navegador no admite avisos del sistema');goto('notifications');return}
  try{
-  var reg=await navigator.serviceWorker.register('./sw.js');
   var perm=await Notification.requestPermission();
+  if(perm==='granted')await navigator.serviceWorker.register('./sw.js');
   settings.alerts=perm==='granted';persist();
   toast(settings.alerts?'Avisos activados mientras se consulta la app':'Permiso de avisos no concedido');
  }catch(_){toast('No se pudieron activar los avisos')}
