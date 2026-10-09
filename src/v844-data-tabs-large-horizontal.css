@@ -1,23 +1,21 @@
 /* V844 — Datos > Estadísticas.
-   Restauración: NO modifica texto, tamaños, cuadros, padding ni altura de pestañas.
-   Únicamente ajusta las barritas inferiores activas. */
+   NO modifica texto, tamaños, cuadros, padding ni altura de pestañas.
+   Únicamente ajusta la barrita inferior activa. */
 
 @media (max-width:1023px){
-  /* Mantener exactamente el diseño/tamaños originales; sólo tocar el indicador. */
   html body.v33-data-active #screen .v33-tabs button.active::after{
+    left:4px!important;
+    right:4px!important;
+    width:auto!important;
     height:5px!important;
     min-height:5px!important;
     bottom:0!important;
     border-radius:6px 6px 0 0!important;
+    background:#16ddea!important;
     opacity:1!important;
   }
 
-  /* General: quitar morado y dejar azul. */
-  html body.v33-data-active #screen .v33-data-page[data-v33-mode="general"] .v33-tabs button[data-v33-tab="general"].active::after{
-    background:#1c69d4!important;
-  }
-
-  /* Equipo / jugadores: conservar cyan, sólo hacer visible la barrita. */
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="general"] .v33-tabs button[data-v33-tab="general"].active::after,
   html body.v33-data-active #screen .v33-data-page[data-v33-mode="team"] .v33-tabs button[data-v33-tab="team"].active::after,
   html body.v33-data-active #screen .v33-data-page[data-v33-mode="player"] .v33-tabs button[data-v33-tab="player"].active::after{
     background:#16ddea!important;
