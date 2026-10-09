@@ -260,17 +260,40 @@
           }
         }catch(_){}
       }
+      /* V1071 — el borrado de caché antes era asíncrono SIN recarga, de modo
+         que Android seguía mostrando la página antigua aunque el repositorio
+         ya tuviera el diseño nuevo. Una sola recarga tras purgar versiones. */
       try{
         var key='ljr-refresh-token-v445';
         if(sessionStorage.getItem(key)===token)return;
         sessionStorage.setItem(key,token);
       }catch(_){}
-      try{
-        if('caches' in window)caches.keys().then(function(keys){return Promise.all(keys.map(function(k){return caches.delete(k)}))}).catch(function(){});
-      }catch(_){}
-      try{
-        if('serviceWorker' in navigator)navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){r.update().catch(function(){})})}).catch(function(){});
-      }catch(_){}
+      (async function(){
+        try{
+          if('serviceWorker' in navigator){
+            var regs=await navigator.serviceWorker.getRegistrations();
+            await Promise.all(regs.map(function(r){
+              var script=String(r.active?.scriptURL||r.waiting?.scriptURL||'');
+              // No desactivar servicios de otros sitios ni el worker de avisos.
+              return /\/sw\.js(?:\?|$)/.test(script)?r.unregister().catch(function(){}):r.update().catch(function(){});
+            }));
+          }
+        }catch(_){}
+        try{
+          if('caches' in window){
+            var keys=await caches.keys();
+            await Promise.all(keys.map(function(k){return caches.delete(k).catch(function(){})}));
+          }
+        }catch(_){}
+        try{
+          var marker='ljr-refresh-reloaded-v1071';
+          if(sessionStorage.getItem(marker)===token)return;
+          sessionStorage.setItem(marker,token);
+          var fresh=new URL(location.href);
+          fresh.searchParams.set('_fresh',token.replace(/[^a-zA-Z0-9._-]/g,'').slice(0,64));
+          location.replace(fresh.href);
+        }catch(_){}
+      })();
     })();
   </script>
   <meta charset="UTF-8" />
@@ -564,8 +587,8 @@ html body.v587-fantasy-team-open .v576-field-row.por{
 
   <!-- V972: únicamente la iluminación y curvas neón de la cabecera Equipos -->
   <!-- V1009: lienzos de luz AZUL EXCLUSIVOS de Hospitalidad; Siguiendo no se modifica. -->
-  <script type="module" crossorigin src="./assets/index-BB9p8r5a.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-CHoAfmjp.css">
+  <script type="module" crossorigin src="./assets/index-qv3Un76T.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-Caxd2XNT.css">
 </head>
 <body>
 <div id="ljr-boot" aria-label="Cargando Liga Juventino" role="status"><i></i></div>
@@ -1231,6 +1254,8 @@ html body.v587-fantasy-team-open .v576-field-row.por{
   <!-- V1066: Automatización segura de avisos. Revisión, clima y enlace al programador existente. -->
   <script defer src="./src/v1066-suspension-automation.js?v=20261009-v1066-automation-savefix"></script>
   <!-- V1067: restauración del Simulador y giro limpio de tarjetas, sin filtros duplicados. -->
+  <!-- V1068: escudos reales, tabla compacta y cabecera clásica del Simulador. -->
+  <script defer src="./src/v1068-simulator-crest-fallback.js?v=20261009-v1068-logo-retry"></script>
   <!-- V1070: A-D lleva a portada, Generar quiz inicia 3-2-1; azul continuo y cancelar en hoja. -->
 </body>
 </html>
