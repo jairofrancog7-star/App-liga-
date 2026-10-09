@@ -1,0 +1,229 @@
+/* V1059 — Aviso de suspensión: modernizar campos manteniendo dimensiones compactas.
+   No reemplaza selects ni opciones. Sólo pantalla #/suspensionTool. */
+html body[data-app-route="suspensionTool"] #screen .v425-suspension{
+  --v1059-ink:#f3f8ff;
+  --v1059-muted:#aec3e9;
+  --v1059-cyan:#41e4f8;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-status-grid{
+  gap:10px!important;
+  margin:8px 0 14px!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-status-grid article{
+  border:1px solid rgba(81,139,248,.34)!important;
+  background:
+    radial-gradient(ellipse 95% 92% at 100% 0%,rgba(35,114,237,.12),transparent 81%),
+    linear-gradient(160deg,#10177c,#0b0f65)!important;
+  border-radius:18px!important;
+  box-shadow:inset 0 1px 0 rgba(198,230,255,.075),0 8px 19px rgba(1,5,51,.13)!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-status-grid small{
+  color:#a9bae7!important;
+  font-size:10px!important;
+  font-weight:850!important;
+  letter-spacing:.065em!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-status-grid b{
+  color:var(--v1059-ink)!important;
+  font-size:14px!important;
+  line-height:1.3!important;
+  font-weight:820!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  text-overflow:clip!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-status-grid b.cyan{
+  color:var(--v1059-cyan)!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel{
+  border:1px solid rgba(82,137,251,.35)!important;
+  border-radius:19px!important;
+  background:
+    radial-gradient(ellipse 95% 36% at 83% 0%,rgba(37,111,226,.14),transparent 85%),
+    linear-gradient(165deg,#101477 0%,#0d106d 55%,#090b60 100%)!important;
+  padding:14px!important;
+  margin-top:13px!important;
+  box-shadow:inset 0 1px 0 rgba(200,234,255,.06),0 11px 24px rgba(0,2,39,.15)!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel>header{
+  margin:0 0 15px!important;
+  padding-bottom:11px!important;
+  border-bottom:1px solid rgba(109,161,255,.13)!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel>header>span{
+  grid-template-columns:35px minmax(0,1fr)!important;
+  gap:11px!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel>header small{
+  height:35px!important;
+  width:35px!important;
+  border-radius:11px!important;
+  border:1px solid rgba(78,217,247,.48)!important;
+  background:linear-gradient(140deg,#123386,#11246b)!important;
+  box-shadow:inset 0 1px 0 rgba(137,244,255,.11)!important;
+  font-size:11px!important;
+  color:var(--v1059-cyan)!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel>header b{
+  color:#fff!important;
+  font:850 15px/1.18 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:-.012em!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel>header em{
+  color:var(--v1059-muted)!important;
+  font-size:10px!important;
+  line-height:1.38!important;
+  font-weight:530!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid{
+  grid-template-columns:1fr!important;
+  gap:10px!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid label{
+  position:relative!important;
+  isolation:isolate!important;
+  min-width:0!important;
+  display:grid!important;
+  gap:5px!important;
+  margin:0!important;
+  padding:0!important;
+  background:transparent!important;
+  color:#fff!important;
+  border:0!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid label>b{
+  display:block!important;
+  position:relative!important;
+  z-index:2!important;
+  margin:0 0 1px!important;
+  padding:0 1px!important;
+  color:#d9e8ff!important;
+  font:750 11px/1.25 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:.012em!important;
+  text-shadow:none!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid :is(select,input,textarea){
+  box-sizing:border-box!important;
+  position:relative!important;
+  z-index:1!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  min-height:50px!important;
+  height:50px!important;
+  margin:0!important;
+  padding:0 39px 0 13px!important;
+  border:1px solid rgba(111,152,244,.36)!important;
+  border-radius:12px!important;
+  background-color:#101b70!important;
+  background-image:linear-gradient(155deg,rgba(32,65,157,.25),rgba(11,16,98,.11))!important;
+  box-shadow:inset 0 1px 0 rgba(205,234,255,.075),0 2px 8px rgba(3,7,60,.09)!important;
+  color:#f8fbff!important;
+  font:720 12px/1.25 Inter,Roboto,Arial,sans-serif!important;
+  text-overflow:ellipsis!important;
+  outline:none!important;
+  transition:border-color .15s ease,box-shadow .15s ease,background-color .15s ease!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid select.v1059-native-select{
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  cursor:pointer!important;
+  padding-left:42px!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid label.v1059-category :is(select,[role="combobox"]){
+  font-weight:800!important;
+}
+/* El escudo de categoría preexistente se conserva: NO se añade otro encima. */
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid label.v1059-category select{
+  padding-left:52px!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid :is(input[type="date"],input[type="time"]){
+  padding-left:43px!important;
+  padding-right:9px!important;
+  color-scheme:dark!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid textarea{
+  height:auto!important;
+  min-height:104px!important;
+  padding:13px 12px 12px 43px!important;
+  resize:vertical!important;
+  white-space:pre-wrap!important;
+  text-overflow:clip!important;
+  line-height:1.45!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid :is(select,input,textarea):focus-visible,
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid :is(select,input,textarea):focus{
+  border-color:rgba(64,220,252,.83)!important;
+  background-color:#13257e!important;
+  box-shadow:0 0 0 2px rgba(43,215,255,.12),inset 0 1px 0 rgba(221,250,255,.09)!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid select option{
+  color:#fff!important;
+  background:#111767!important;
+  font-size:13px!important;
+}
+/* Los adornos no capturan eventos: las selecciones siguen siendo nativas. */
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1059-field-icon,
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1059-chevron{
+  position:absolute!important;
+  z-index:3!important;
+  bottom:14px!important;
+  display:grid!important;
+  place-items:center!important;
+  pointer-events:none!important;
+  user-select:none!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1059-field-icon{
+  left:12px!important;
+  width:23px!important;
+  height:23px!important;
+  color:#55ddf4!important;
+  border-radius:7px!important;
+  background:rgba(44,129,228,.16)!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1059-chevron{
+  right:12px!important;
+  width:23px!important;
+  height:23px!important;
+  border-left:1px solid rgba(128,177,250,.20)!important;
+  padding-left:6px!important;
+  color:#bfd9ff!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1059-field-icon svg{
+  width:15px!important;height:15px!important;
+  display:block!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:1.8!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1059-chevron svg{
+  width:13px!important;height:13px!important;
+  fill:none!important;stroke:currentColor!important;
+  stroke-width:1.9!important;stroke-linecap:round!important;stroke-linejoin:round!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension label.v1059-textarea .v1059-field-icon{
+  top:39px!important;bottom:auto!important;
+}
+@media(max-width:390px){
+  html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel{
+    padding:12px!important;border-radius:17px!important;
+  }
+  html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid{
+    gap:9px!important;
+  }
+  html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid :is(select,input,textarea){
+    font-size:12px!important;
+  }
+}
+@media(min-width:760px){
+  html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid :is(select,input,textarea){
+    transition:none!important;
+  }
+}
