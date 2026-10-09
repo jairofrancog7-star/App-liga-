@@ -60,7 +60,7 @@ body[data-app-route="competition"] .topbar .wordmark{
   border:0!important;
   border-radius:0!important;
   background-color:transparent!important;
-  background-image:url('https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp')!important;
+  background-image:url('../assets/branding/escudo-liga-azul-sin-fondo-v1007.png')!important;
   background-repeat:no-repeat!important;
   background-position:center!important;
   background-size:contain!important;
@@ -454,7 +454,7 @@ body[data-app-route="competition"] .topbar .wordmark::after{
   content:""!important;
   position:absolute!important;
   inset:0!important;
-  background-image:url("https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp")!important;
+  background-image:url("../assets/branding/escudo-liga-azul-sin-fondo-v1007.png")!important;
   background-repeat:no-repeat!important;
   background-size:contain!important;
   background-position:center!important;
@@ -554,7 +554,7 @@ body[data-app-route="competition"] .topbar .wordmark::after{
   content:""!important;
   position:absolute!important;
   inset:0!important;
-  background-image:url("https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp")!important;
+  background-image:url("../assets/branding/escudo-liga-azul-sin-fondo-v1007.png")!important;
   background-repeat:no-repeat!important;
   background-position:center!important;
   background-size:156%!important;
