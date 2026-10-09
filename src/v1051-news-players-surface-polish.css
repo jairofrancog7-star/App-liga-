@@ -1,0 +1,171 @@
+/* V1051 — Noticias + Registro de jugadores, acabado azul integrado.
+   Sólo cosmética. No cambia dimensiones, tipografías, fotos, círculos, rutas ni datos. */
+@media(max-width:1023px){
+  /* MISMA altura e iconos originales en ambas barras: tono superior luminoso
+     que se funde hacia el azul marino de la pantalla. */
+  html body[data-app-route="news"] #app > .topbar,
+  html body[data-app-route="news"] .app-shell > .topbar,
+  html body[data-app-route="players"] #app > .topbar,
+  html body[data-app-route="players"] .app-shell > .topbar{
+    background:
+      radial-gradient(ellipse 58% 72% at 25% -5%,rgba(90,207,255,.28) 0%,transparent 85%),
+      radial-gradient(ellipse 48% 88% at 100% 0%,rgba(64,169,255,.20),transparent 84%),
+      linear-gradient(180deg,#086af0 0%,#0a4bcd 28%,#0a2b9b 58%,#080f70 85%,#080b61 100%)!important;
+    border-bottom:1px solid rgba(101,217,255,.42)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.19),inset 0 -1px 0 rgba(0,189,255,.11)!important;
+  }
+  /* Las líneas y el trofeo original siguen visibles, sin crear otra capa encima
+     de la flecha, del perfil ni de sus zonas táctiles. */
+  html body:is([data-app-route="news"],[data-app-route="players"]) .topbar.v397-tool-topbar-exact .wordmark::before{
+    opacity:.23!important;
+    filter:drop-shadow(0 0 8px rgba(55,212,255,.22))!important;
+  }
+  html body:is([data-app-route="news"],[data-app-route="players"]) .topbar.v397-tool-topbar-exact::before{
+    opacity:.37!important;
+    filter:drop-shadow(0 0 7px rgba(86,219,255,.33))!important;
+  }
+  /* Transición suave entre cabecera y contenido, misma geometría. */
+  html body[data-app-route="news"] #screen{
+    background:linear-gradient(180deg,#090c64 0%,#07095f 26%,#07085e 100%)!important;
+  }
+  html body[data-app-route="players"] #screen{
+    background:linear-gradient(180deg,#090d69 0%,#07085f 27%,#07075c 100%)!important;
+  }
+
+  /* NOTICIAS — bajar solamente el rótulo ACTUALIDAD con todo su contenido
+     fluyendo normalmente; no desplazar manualmente las tarjetas. */
+  html body[data-app-route="news"] #screen > .eyebrow{
+    margin-top:14px!important;
+    color:#65e7fa!important;
+    text-shadow:0 0 10px rgba(24,201,246,.20)!important;
+  }
+  html body[data-app-route="news"] #screen > .screen-title{
+    color:#fff!important;
+    text-shadow:0 3px 13px rgba(1,8,58,.30)!important;
+  }
+  html body[data-app-route="news"] #screen .v727-news-tabs .chip{
+    border-color:rgba(127,168,255,.29)!important;
+    background:linear-gradient(140deg,rgba(19,34,117,.96),rgba(10,15,87,.98))!important;
+    color:#e2eaff!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.07)!important;
+    transition:filter .14s ease,border-color .14s ease!important;
+  }
+  html body[data-app-route="news"] #screen .v727-news-tabs .chip.active{
+    border-color:rgba(103,240,250,.72)!important;
+    background:linear-gradient(135deg,#22dce9 0%,#06c7e1 72%,#08abda 100%)!important;
+    color:#05205c!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 5px 14px rgba(9,186,230,.15)!important;
+  }
+  /* news-row conserva SU min-height, padding, tipografía, grid y separación. */
+  html body[data-app-route="news"] #screen [data-news-list] .news-row{
+    position:relative!important;
+    isolation:isolate!important;
+    border-color:rgba(107,166,255,.35)!important;
+    background:
+      radial-gradient(ellipse 76% 115% at 2% 2%,rgba(37,116,237,.17),transparent 77%),
+      linear-gradient(128deg,#14267f 0%,#101e75 55%,#0b1766 100%)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.095),0 9px 22px rgba(0,4,51,.16)!important;
+    color:#fff!important;
+    transition:border-color .17s ease,filter .17s ease!important;
+  }
+  html body[data-app-route="news"] #screen [data-news-list] .news-row:active{
+    border-color:rgba(92,225,252,.8)!important;
+    filter:brightness(1.09)!important;
+  }
+  /* Miniatura: mismo ancho, alto y radio. Icono tipo periódico como marca de agua.
+     Se evita insertar imágenes/fotos ficticias de noticias. */
+  html body[data-app-route="news"] #screen [data-news-list] .news-thumb{
+    position:relative!important;
+    overflow:hidden!important;
+    border:1px solid rgba(117,225,255,.31)!important;
+    background:
+      radial-gradient(ellipse at 15% 13%,rgba(163,249,255,.27),transparent 53%),
+      linear-gradient(149deg,#17cde5 0%,#1686e9 46%,#2447bb 100%)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.19),0 5px 15px rgba(0,13,84,.16)!important;
+  }
+  html body[data-app-route="news"] #screen [data-news-list] .news-thumb::after{
+    content:""!important;
+    position:absolute!important;
+    pointer-events:none!important;
+    inset:0!important;
+    opacity:.48!important;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='8' y='9' width='24' height='22' rx='3'/%3E%3Cpath d='M13 15h9v7h-9zM25 16h3M25 20h3M13 26h15'/%3E%3C/svg%3E") center/36% auto no-repeat!important;
+  }
+  html body[data-app-route="news"] #screen [data-news-list] .news-row > span:last-child{
+    min-width:0!important;
+  }
+  html body[data-app-route="news"] #screen [data-news-list] .news-row small{
+    color:#aabfe6!important;
+  }
+  html body[data-app-route="news"] #screen [data-news-list] .news-row b{
+    color:#fff!important;
+    text-shadow:0 1px 4px rgba(0,9,56,.16)!important;
+  }
+  html body[data-app-route="news"] #screen [data-news-list] .news-row p{
+    color:#c3d1ee!important;
+  }
+
+  /* REGISTRO / JUGADORES — mantener foto, escudo, ancho, alto, círculo y letra. */
+  html body[data-app-route="players"] #screen .v66-directory[data-v66-directory="players"]{
+    background:transparent!important;
+  }
+  html body[data-app-route="players"] #screen .v695-player-kicker{
+    color:#72e9f6!important;
+    text-shadow:0 0 9px rgba(35,213,247,.19)!important;
+  }
+  html body[data-app-route="players"] #screen .v695-player-title{
+    text-shadow:0 2px 11px rgba(1,6,55,.21)!important;
+  }
+  html body[data-app-route="players"] #screen .v66-filter-label{
+    color:#63e5f4!important;
+  }
+  html body[data-app-route="players"] #screen .v66-directory[data-v66-directory="players"] :is(.v66-category-rail button,.v66-team-filter-rail button){
+    border-color:rgba(104,166,250,.34)!important;
+    background:linear-gradient(135deg,#142b88,#0c176b)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.075)!important;
+  }
+  html body[data-app-route="players"] #screen .v66-directory[data-v66-directory="players"] :is(.v66-category-rail button.active,.v66-team-filter-rail button.active){
+    border-color:rgba(87,232,249,.65)!important;
+    background:linear-gradient(135deg,#2178dd,#1455bd)!important;
+    color:#fff!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.15),0 4px 13px rgba(0,63,180,.14)!important;
+  }
+  html body[data-app-route="players"] #screen .v66-directory[data-v66-directory="players"] .v66-search{
+    border-color:rgba(95,191,251,.39)!important;
+    background:linear-gradient(132deg,#132d8a,#0b1a70)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.07)!important;
+  }
+  html body[data-app-route="players"] #screen .v66-directory[data-v66-directory="players"] .v66-search span{
+    color:transparent!important;
+    font-size:0!important;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234feeff' stroke-width='2.1' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.3'/%3E%3Cpath d='m15.3 15.3 5.2 5.2'/%3E%3C/svg%3E") center/21px 21px no-repeat!important;
+  }
+  html body[data-app-route="players"] #screen .v66-directory[data-v66-directory="players"] .v66-player-row{
+    border-color:rgba(91,156,245,.28)!important;
+    background:linear-gradient(119deg,#10217b,#0a176b)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.075)!important;
+    transition:border-color .14s ease,filter .14s ease!important;
+  }
+  html body[data-app-route="players"] #screen .v66-directory[data-v66-directory="players"] .v66-player-row:active{
+    border-color:rgba(78,228,255,.75)!important;
+    filter:brightness(1.08)!important;
+  }
+  html body[data-app-route="players"] #screen .v66-directory[data-v66-directory="players"] .v66-player-row i{
+    color:#62e7f5!important;
+  }
+  html body[data-app-route="players"] #screen .v66-directory[data-v66-directory="players"] :is(.v66-player-avatar,.v66-team-logo){
+    background:#10277f!important;
+    border-color:rgba(68,203,248,.51)!important;
+    box-shadow:0 0 0 1px rgba(19,84,192,.12)!important;
+  }
+  /* Logos originales y fotografías originales: ni tamaño ni crop cambian. */
+  html body[data-app-route="players"] #screen .v66-directory[data-v66-directory="players"] :is(.v66-player-avatar img,.v66-team-logo img){
+    filter:none!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  html body:is([data-app-route="news"],[data-app-route="players"]) #screen .news-row,
+  html body:is([data-app-route="news"],[data-app-route="players"]) #screen .v66-player-row{
+    transition:none!important;
+  }
+}
