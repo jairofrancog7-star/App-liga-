@@ -125,7 +125,7 @@ function v31SyncHospitalityTheme(active){
   if(!theme)return;
   if(active){
     if(v31OriginalThemeColor===null)v31OriginalThemeColor=theme.getAttribute('content')||'#000144';
-    if(theme.content!=='#0A369F')theme.setAttribute('content','#0A369F');
+    if(theme.content!=='#090c83')theme.setAttribute('content','#090c83');
   }else if(v31OriginalThemeColor!==null){
     theme.setAttribute('content',v31OriginalThemeColor);
     v31OriginalThemeColor=null;
