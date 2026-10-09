@@ -1,0 +1,158 @@
+/* V991 — UEFA-like Rankings header: expanded at top, compact on scroll. */
+@media(max-width:1023px){
+html body.v32-rankings-active #screen .v32-rankings:not(.v32-filter-mode){overflow:visible!important;isolation:isolate!important}
+html body.v32-rankings-active #screen .v32-rankings:not(.v32-filter-mode)>.v32-head.v32-head-unified{
+position:sticky!important;top:0!important;inset-inline:auto!important;bottom:auto!important;
+align-self:stretch!important;display:block!important;box-sizing:border-box!important;width:100%!important;
+height:auto!important;min-height:0!important;margin:0!important;
+padding:calc(12px + env(safe-area-inset-top)) 17px 0!important;
+z-index:75!important;overflow:hidden!important;isolation:isolate!important;
+background:radial-gradient(115% 105% at 75% 0%,rgba(36,73,246,.76),transparent 78%),
+linear-gradient(180deg,#142cc8 0%,#0b1eae 27%,#080c79 77%,#06065e 100%)!important;
+box-shadow:0 1px 0 rgba(188,203,255,.17)!important
+}
+html body.v32-rankings-active #screen .v32-head.v32-head-unified::before{
+content:""!important;position:absolute!important;top:-83px!important;left:12%!important;width:74%!important;
+height:133px!important;border:1px solid rgba(78,128,255,.24)!important;
+border-radius:35% 42% 52% 46%!important;transform:rotate(-12deg)!important;
+box-shadow:0 0 20px rgba(18,57,230,.15)!important;background:none!important;
+pointer-events:none!important;z-index:-1!important
+}
+html body.v32-rankings-active #screen .v32-head.v32-head-unified::after{
+content:""!important;position:absolute!important;left:-10%!important;top:55px!important;
+width:110%!important;height:100px!important;border-top:1px solid rgba(41,116,255,.20)!important;
+border-radius:50%!important;transform:rotate(6deg)!important;pointer-events:none!important;z-index:-1!important
+}
+html body.v32-rankings-active #screen .v32-head-unified>.v32-head-row{
+display:grid!important;position:relative!important;grid-template-columns:40px minmax(0,1fr) 40px!important;
+grid-template-rows:43px auto!important;align-items:center!important;column-gap:12px!important;
+width:100%!important;height:auto!important;min-height:0!important;margin:0!important;padding:0!important;
+overflow:visible!important;transform:none!important
+}
+html body.v32-rankings-active #screen .v32-head-row>[data-v32-back],
+html body.v32-rankings-active #screen .v32-head-row>[data-v32-share]{
+position:relative!important;inset:auto!important;transform:none!important;
+display:grid!important;place-items:center!important;width:40px!important;height:40px!important;
+min-width:40px!important;max-width:40px!important;min-height:40px!important;max-height:40px!important;
+margin:0!important;padding:0!important;background:transparent!important;border:0!important;
+border-radius:0!important;box-shadow:none!important;z-index:2!important;touch-action:manipulation!important
+}
+html body.v32-rankings-active #screen .v32-head-row>[data-v32-back]{grid-column:1!important;grid-row:1!important;justify-self:start!important}
+html body.v32-rankings-active #screen .v32-head-row>[data-v32-share]{grid-column:3!important;grid-row:1!important;justify-self:end!important}
+html body.v32-rankings-active #screen .v32-head-row>.v32-icon svg{width:29px!important;height:29px!important;stroke-width:2!important}
+html body.v32-rankings-active #screen .v32-head-unified .v32-head-row>h1{
+position:static!important;inset:auto!important;display:block!important;grid-column:1/-1!important;grid-row:2!important;
+min-width:0!important;width:100%!important;max-width:100%!important;height:auto!important;
+margin:17px 0 22px!important;padding:0!important;color:#fff!important;text-align:left!important;
+font:650 clamp(25px,7vw,31px)/1.14 Inter,ui-sans-serif,system-ui,sans-serif!important;
+letter-spacing:-.55px!important;white-space:normal!important;overflow:visible!important;
+text-overflow:clip!important;transform:none!important
+}
+html body.v32-rankings-active #screen .v32-head-unified>.v32-tabs{
+display:flex!important;position:relative!important;inset:auto!important;flex-wrap:nowrap!important;
+grid-template-columns:none!important;align-items:stretch!important;justify-content:flex-start!important;
+gap:16px!important;width:100%!important;height:49px!important;min-height:49px!important;
+margin:0!important;padding:0!important;background:transparent!important;
+border:0!important;border-bottom:1px solid rgba(167,183,255,.20)!important;
+overflow:visible!important;z-index:1!important
+}
+html body.v32-rankings-active #screen .v32-head-unified>.v32-tabs>.v32-tab{
+position:relative!important;inset:auto!important;display:flex!important;align-items:center!important;
+justify-content:flex-start!important;flex:0 0 116px!important;min-width:0!important;
+width:116px!important;max-width:116px!important;height:49px!important;min-height:49px!important;
+margin:0!important;padding:0 1px!important;background:transparent!important;border:0!important;
+color:#abb1d9!important;font-size:15px!important;line-height:1.1!important;
+text-align:left!important;font-weight:630!important;white-space:nowrap!important;
+text-transform:none!important;transform:none!important;touch-action:manipulation!important;cursor:pointer!important
+}
+html body.v32-rankings-active #screen .v32-head-unified>.v32-tabs>.v32-tab.active{color:#19eaf5!important}
+html body.v32-rankings-active #screen .v32-head-unified>.v32-tabs>.v32-tab.active::after{
+content:""!important;display:block!important;position:absolute!important;
+left:1px!important;right:auto!important;top:auto!important;bottom:-2px!important;
+width:43px!important;height:4px!important;border-radius:5px!important;
+background:#19eaf5!important;box-shadow:0 0 8px rgba(24,231,244,.25)!important;transform:none!important
+}
+/* Scrolled header: arrow, title and share are on one row. */
+html body.v32-rankings-active.v991-rankings-compact #screen .v32-rankings:not(.v32-filter-mode)>.v32-head.v32-head-unified{
+padding-top:calc(9px + env(safe-area-inset-top))!important
+}
+html body.v32-rankings-active.v991-rankings-compact #screen .v32-head-unified>.v32-head-row{
+grid-template-rows:43px!important
+}
+html body.v32-rankings-active.v991-rankings-compact #screen .v32-head-unified .v32-head-row>h1{
+grid-column:2!important;grid-row:1!important;align-self:center!important;
+margin:0!important;padding:0!important;
+font:580 clamp(17px,5.2vw,22px)/1.12 Inter,ui-sans-serif,system-ui,sans-serif!important;
+letter-spacing:-.35px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important
+}
+html body.v32-rankings-active.v991-rankings-compact #screen .v32-head-unified>.v32-tabs,
+html body.v32-rankings-active.v991-rankings-compact #screen .v32-head-unified>.v32-tabs>.v32-tab{
+height:47px!important;min-height:47px!important
+}
+html body.v32-rankings-active.v991-rankings-compact #screen .v32-head-unified>.v32-tabs{margin-top:5px!important}
+/* UEFA-style filter proportions; keep the third filter control always visible. */
+html body.v32-rankings-active #screen .v32-rankings:not(.v32-filter-mode)>.v32-controls.clubs,
+html body.v32-rankings-active #screen .v32-rankings:not(.v32-filter-mode)>.v32-controls.fed{
+display:grid!important;grid-template-columns:minmax(0,1.8fr) minmax(0,.95fr) 40px!important;
+align-items:center!important;gap:8px!important;padding:13px 16px 12px!important;
+margin:0!important;width:100%!important;height:auto!important;min-height:0!important;
+overflow:visible!important;z-index:2!important
+}
+html body.v32-rankings-active #screen .v32-controls.clubs .v32-select,
+html body.v32-rankings-active #screen .v32-controls.fed .v32-select{
+min-width:0!important;width:100%!important;max-width:100%!important;
+height:43px!important;min-height:43px!important;flex:none!important;
+background:#1b1e70!important;border-radius:11px!important;font-size:12px!important;padding:0 11px!important
+}
+html body.v32-rankings-active #screen .v32-controls.clubs .v32-select>span,
+html body.v32-rankings-active #screen .v32-controls.fed .v32-select>span{
+min-width:0!important;white-space:normal!important;overflow:visible!important;
+text-overflow:clip!important;line-height:1.15!important;font-weight:620!important
+}
+html body.v32-rankings-active #screen .v32-controls.clubs .v32-filter,
+html body.v32-rankings-active #screen .v32-controls.fed .v32-filter{
+width:40px!important;min-width:40px!important;max-width:40px!important;
+height:43px!important;min-height:43px!important;flex:none!important;
+margin:0!important;background:#1b1e70!important;border-radius:11px!important
+}
+html body.v32-rankings-active #screen .v32-controls.clubs .v32-selected-club{
+grid-column:1/-1!important;grid-row:auto!important;width:max-content!important;
+max-width:100%!important;min-width:0!important;margin:0!important;height:34px!important
+}
+/* Remove the redundant institution line between club table headings and rows. */
+html body.v32-rankings-active #screen .v32-club-card .v190-club-group{display:none!important}
+html body.v32-rankings-active #screen .v32-club-card .v190-club-head{
+display:grid!important;height:45px!important;min-height:45px!important;
+align-items:center!important;padding:0!important;margin:0!important;
+grid-template-columns:minmax(0,1fr) 82px 25px!important
+}
+html body.v32-rankings-active #screen .v32-club-card .v190-club-row{
+min-height:61px!important;height:auto!important;
+grid-template-columns:var(--v32-pos-w) var(--v32-logo-w) minmax(0,1fr) 82px 25px!important;
+align-items:center!important;gap:var(--v32-row-gap)!important;padding:7px 0!important
+}
+html body.v32-rankings-active #screen .v32-club-card .v32-club-copy b{
+display:block!important;white-space:nowrap!important;overflow:hidden!important;
+text-overflow:ellipsis!important;line-height:1.12!important;font-size:13px!important
+}
+html body.v32-rankings-active #screen .v32-club-card .v32-club-copy small{
+display:block!important;margin-top:4px!important;color:#a8b4da!important;
+font-size:10px!important;line-height:1.05!important;font-weight:500!important
+}
+html body.v32-rankings-active #screen .v32-club-card .v32-club-points{font-size:13px!important}
+}
+@media(max-width:385px){
+html body.v32-rankings-active #screen .v32-rankings:not(.v32-filter-mode)>.v32-controls.clubs,
+html body.v32-rankings-active #screen .v32-rankings:not(.v32-filter-mode)>.v32-controls.fed{
+grid-template-columns:minmax(0,1.6fr) minmax(0,.95fr) 36px!important;
+padding-left:12px!important;padding-right:12px!important;gap:6px!important
+}
+html body.v32-rankings-active #screen .v32-controls.clubs .v32-filter,
+html body.v32-rankings-active #screen .v32-controls.fed .v32-filter{
+width:36px!important;min-width:36px!important;max-width:36px!important
+}
+html body.v32-rankings-active.v991-rankings-compact #screen .v32-head-unified .v32-head-row>h1{font-size:17px!important}
+}
+@media(prefers-reduced-motion:reduce){
+html body.v32-rankings-active #screen .v32-head.v32-head-unified{transition:none!important}
+}
