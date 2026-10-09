@@ -37,7 +37,7 @@ export function officialItem(raw){
  const body=text(p.body||p.message||p.details||(
   kind==='fixture'?'Se actualizó la programación oficial. Consulta la jornada.':'Consulta el comunicado oficial.'),240);
  const category=CATEGORIES.has(String(p.category))?String(p.category):'all';
- const team=text(p.team||p.home||p.away||'',90);
+ const team=text(p.team||[p.home,p.away].filter(Boolean).join(' / ')||'',90);
  const field=text(p.field||p.venue||'',90);
  const route=kind==='fixture'?'competition':'news';
  const id=String(raw.id).slice(0,160);
@@ -54,7 +54,7 @@ export function matches(sub,item){
  if(c!=='all'&&item.category!=='all'&&c!==item.category)return false;
  if(p.types?.length&&!p.types.includes(item.type))return false;
  // A team/field filter only suppresses if an official announcement names that target.
- if(p.team&&item.team&&norm(p.team)!==norm(item.team))return false;
+ if(p.team&&item.team&&!item.team.split(/\s*\/\s*/).some(team=>norm(team)===norm(p.team)))return false;
  if(p.field&&item.field&&!norm(item.field).includes(norm(p.field)))return false;
  return true;
 }
