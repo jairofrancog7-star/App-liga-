@@ -45,7 +45,7 @@ export function officialItem(raw){
  if(!relevant)return null;
  const signature=kind==='fixture'?
   Object.fromEntries(['status','date','time','field','venue','home','away','category','round','jornada'].map(k=>[k,p[k]??null])):
-  {title,body,type,category,team,field};
+  {title,body,type,category,team,field,date:text(p.date,35),time:text(p.time,30),round:p.round??null};
  const digest=createHash('sha256').update(JSON.stringify(signature)).digest('hex').slice(0,24);
  return {id:kind+':'+id,kind,type,title,body,category,team,field,route,digest};
 }
