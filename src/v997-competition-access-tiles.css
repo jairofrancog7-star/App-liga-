@@ -140,7 +140,7 @@
   /* Exportar PNG sigue siendo el mismo botón funcional. */
   html body[data-app-route="competition"] #screen .v938-png-category-card {
     min-height:89px!important;
-    padding:16px 52px 16px 84px!important;
+    padding:16px 52px 16px 102px!important;
     border-radius:21px!important;
     background:radial-gradient(ellipse at 2% 0%,rgba(33,208,254,.22),transparent 55%),linear-gradient(115deg,#1550b1,#0d256f 63%,#071959)!important;
     border-color:rgba(112,231,253,.63)!important;
@@ -148,7 +148,7 @@
     box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 10px 22px rgba(0,12,64,.24)!important;
   }
   html body[data-app-route="competition"] #screen .v938-png-category-card::before {
-    width:51px!important;height:51px!important;left:16px!important;
+    width:49px!important;height:49px!important;left:16px!important;
     border-radius:16px!important;
   }
   html body[data-app-route="competition"] #screen .v938-png-category-card::after {
@@ -173,6 +173,26 @@
   html body[data-app-route="competition"] #screen .v997-competition-tile:not(.v105-card):not(.v938-png-category-card)::after,
   html body[data-app-route="competition"] #screen .v938-png-category-card::after {
     right:10px!important;
+  }
+}
+/* V1072: reserva espacio real entre el icono y el titulo PNG en pantallas angostas.
+   Mayor especificidad que el padding global de las tarjetas para evitar solapamientos. */
+@media(max-width:480px){
+  html body[data-app-route="competition"] #screen .v938-png-category-card.v997-competition-tile:not(.v105-card),
+  html body[data-app-route="competition"] #screen .v938-png-category-card:not(.v997-competition-tile){
+    padding-left:96px!important;
+    padding-right:47px!important;
+    line-height:1.32!important;
+  }
+  html body[data-app-route="competition"] #screen .v938-png-category-card::before{
+    left:14px!important;
+    width:47px!important;
+    height:47px!important;
+  }
+  html body[data-app-route="competition"] #screen .v938-png-category-card :is(span,b,strong,small){
+    min-width:0!important;
+    max-width:100%!important;
+    overflow-wrap:break-word!important;
   }
 }
 @media(prefers-reduced-motion:reduce){
