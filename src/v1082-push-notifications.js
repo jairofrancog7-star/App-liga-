@@ -1,0 +1,178 @@
+/* V1082 — Suscripciones Web Push reales, opcionales.
+   Sin servidor configurado no se prometen avisos con la aplicación cerrada. */
+(()=>{
+'use strict';
+if(window.__LJR_V1082_PUSH__)return;
+window.__LJR_V1082_PUSH__=true;
+const KEY='ljr-push-preferences-v1082';
+const CATEGORIES=[['all','Todas'],['3','Primera'],['5','Intermedia'],['4','Segunda'],['2','Veteranos 35+'],['1','Veteranos 50+']];
+const FIELDS=['','Campo 1','Campo 2','Campo 3','Campo 4','Fraccionamiento','Romerillo','San Julián','Franco Tavera','Cuenda'];
+const TYPES=[['suspension','Suspensiones'],['cancha','Cambios de cancha'],['horario','Cambios de horario'],['jornada','Jornadas'],['partido','Partidos'],['resultados','Resultados'],['junta','Juntas'],['registro','Inscripciones'],['clima','Clima']];
+const read=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch{return {}}};
+const $=(s,root=document)=>root.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
+const path=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0];
+let basePromise,working=false,renderQueued=false;
+async function apiBase(){
+ if(basePromise)return basePromise;
+ basePromise=fetch('./push-config.json',{cache:'no-store'}).then(async r=>{
+  if(!r.ok)throw Error('Sin configuración');
+  const config=await r.json(),s=String(config.apiBase||'').trim().replace(/\/+$/,'');
+  if(!s)return '';
+  const u=new URL(s);
+  if(u.protocol!=='https:'||u.username||u.password||u.search||u.hash)throw Error('URL inválida');
+  return u.origin+u.pathname.replace(/\/+$/,'');
+ }).catch(()=> '');
+ return basePromise;
+}
+async function server(path,opts={}){
+ const base=await apiBase();if(!base)throw Error('El servidor de notificaciones todavía no está configurado.');
+ const res=await fetch(base+'/api/push/'+path,{...opts,headers:{'Content-Type':'application/json'},cache:'no-store'});
+ let data;try{data=await res.json()}catch{data={}}
+ if(!res.ok)throw Error(data.error||'Error del servidor ('+res.status+')');
+ return data;
+}
+function supported(){return isSecureContext&&'Notification'in window&&'serviceWorker'in navigator&&'PushManager'in window;}
+function keyBytes(str){
+ const padding='='.repeat((4-str.length%4)%4),bin=atob((str+padding).replace(/-/g,'+').replace(/_/g,'/'));
+ return Uint8Array.from(bin,c=>c.charCodeAt(0));
+}
+function preferences(){
+ const p=read();
+ return {category:CATEGORIES.some(x=>x[0]===p.category)?p.category:'all',
+  team:String(p.team||'').slice(0,90),field: FIELDS.includes(p.field)?p.field:'',
+  types:Array.isArray(p.types)?p.types.filter(t=>TYPES.some(x=>x[0]===t)):TYPES.map(x=>x[0])};
+}
+function save(p){try{localStorage.setItem(KEY,JSON.stringify(p))}catch{}}
+function routeHost(){
+ const r=path();
+ if(!['notifications','venues','weatherFields','news'].includes(r))return null;
+ if(r==='notifications'){
+  return $('#screen [data-v1073-center]')||$('#screen [data-v66-notifications]')||$('#screen');
+ }
+ if(r==='news')return $('#screen [data-news-list]')?.parentElement||null;
+ return $('#screen .v921-field-page');
+}
+function markup(){
+ const p=preferences();
+ return '<section class="v1082-push" data-v1082-push>'+
+ '<header class="v1082-head"><span><small>ALERTAS OFICIALES</small><strong>Notificaciones de la Liga</strong><em data-v1082-state>Comprobando servicio…</em></span><span class="v1082-signal" aria-hidden="true">♧</span></header>'+
+ '<div class="v1082-filters">'+
+ '<label>Categoría<select data-v1082-category>'+CATEGORIES.map(([id,label])=>'<option value="'+id+'" '+(id===p.category?'selected':'')+'>'+esc(label)+'</option>').join('')+'</select></label>'+
+ '<label>Equipo favorito (opcional)<input data-v1082-team maxlength="90" type="text" value="'+esc(p.team)+'" placeholder="Todos los equipos"></label>'+
+ '<label>Cancha (opcional)<select data-v1082-field>'+FIELDS.map(f=>'<option value="'+esc(f)+'" '+(p.field===f?'selected':'')+'>'+(f?esc(f):'Todas las canchas')+'</option>').join('')+'</select></label>'+
+ '</div>'+
+ '<details class="v1082-types"><summary>Elegir tipos de aviso</summary><div>'+
+ TYPES.map(([id,label])=>'<label><input type="checkbox" value="'+id+'" data-v1082-type '+(p.types.includes(id)?'checked':'')+'>'+esc(label)+'</label>').join('')+
+ '</div></details>'+
+ '<div class="v1082-actions"><button type="button" data-v1082-toggle>Activar avisos</button><button type="button" data-v1082-save>Guardar filtros</button></div>'+
+ '<p class="v1082-status" data-v1082-status aria-live="polite">Publicaciones oficiales de la Liga, verificadas antes del envío.</p>'+
+ '<small class="v1082-note">La Liga decide oficialmente los cambios; el pronóstico del tiempo no cancela partidos. Solo se envían avisos si el administrador los publica en el sistema oficial.</small>'+
+ '</section>';
+}
+function status(root,s){const el=$('[data-v1082-status]',root);if(el)el.textContent=s;}
+function getValues(root){
+ const types=Array.from(root.querySelectorAll('[data-v1082-type]:checked'),el=>el.value);
+ return {category:$('[data-v1082-category]',root)?.value||'all',
+  team:$('[data-v1082-team]',root)?.value.trim().slice(0,90)||'',
+  field:$('[data-v1082-field]',root)?.value||'',types};
+}
+async function registration(){
+ // Esta ruta utiliza el service worker existente (sw.js) sin reemplazar su cache de la app.
+ return await navigator.serviceWorker.register('./sw.js');
+}
+async function subscription(){
+ if(!supported())return null;
+ const reg=await registration();return reg.pushManager.getSubscription();
+}
+async function syncState(root){
+ const label=$('[data-v1082-state]',root),toggle=$('[data-v1082-toggle]',root);
+ if(!label||!toggle)return;
+ toggle.disabled=false;
+ if(!supported()){label.textContent='No compatible con este navegador';toggle.disabled=true;return;}
+ const base=await apiBase();
+ if(!base){label.textContent='Falta conectar el servidor de envío';toggle.disabled=true;
+  status(root,'Los avisos locales siguen disponibles. Para recibirlos con la app cerrada, falta configurar el servidor Web Push.');return;}
+ try{
+  const sub=await subscription(),enabled=!!sub;
+  toggle.dataset.active=String(enabled);
+  toggle.textContent=enabled?'Desactivar avisos':'Activar avisos';
+  label.textContent=enabled?'Suscripción de este dispositivo activada':'Disponible para activar';
+  if(enabled)status(root,'Al publicar un aviso oficial, este dispositivo podrá recibirlo incluso si la app está cerrada (según permisos y conectividad).');
+ }catch(_){label.textContent='No fue posible comprobar la suscripción';toggle.disabled=true;}
+}
+async function enable(root){
+ if(!supported())throw Error('Las notificaciones push no son compatibles con este navegador.');
+ const info=await server('public-key');
+ if(!info.publicKey)throw Error('Servidor sin clave pública VAPID');
+ let permission=Notification.permission;
+ if(permission==='default')permission=await Notification.requestPermission();
+ if(permission!=='granted')throw Error('Debes permitir las notificaciones en el navegador.');
+ const reg=await registration();
+ const ready=await navigator.serviceWorker.ready;
+ const manager=(ready?.scope===reg.scope?ready:reg).pushManager;
+ let sub=await manager.getSubscription(),created=false;
+ if(!sub){sub=await manager.subscribe({userVisibleOnly:true,applicationServerKey:keyBytes(info.publicKey)});created=true;}
+ try{
+  const ack=await server('subscribe',{method:'POST',body:JSON.stringify({subscription:sub.toJSON(),preferences:getValues(root)})});
+  if(!ack.active)throw Error('El servidor no confirmó la suscripción');
+ }catch(err){if(created)await sub.unsubscribe().catch(()=>{});throw err;}
+ save(getValues(root));
+ status(root,'✓ Suscripción confirmada. Llegarán avisos solo después de una publicación oficial.');
+}
+async function disable(root){
+ const sub=await subscription();
+ if(sub){
+  // El servidor borra la suscripción antes de quitarla del navegador.
+  await server('unsubscribe',{method:'POST',body:JSON.stringify({subscription:{endpoint:sub.endpoint}})});
+  await sub.unsubscribe();
+ }
+ status(root,'Avisos desactivados en este dispositivo.');
+}
+async function saveFilters(root){
+ const next=getValues(root);save(next);
+ const sub=await subscription();
+ if(sub){
+  await server('subscribe',{method:'POST',body:JSON.stringify({subscription:sub.toJSON(),preferences:next})});
+  status(root,'Filtros actualizados. Solo recibirás las categorías seleccionadas.');
+ }else status(root,'Filtros guardados en este dispositivo. Activa avisos cuando el servidor esté disponible.');
+}
+document.addEventListener('click',async event=>{
+ const button=event.target.closest('[data-v1082-toggle],[data-v1082-save]');
+ if(!button||working)return;
+ const root=button.closest('[data-v1082-push]');if(!root)return;
+ event.preventDefault();working=true;
+ root.querySelectorAll('button').forEach(b=>b.disabled=true);
+ status(root,'Guardando preferencias…');
+ try{
+  if(button.hasAttribute('data-v1082-save'))await saveFilters(root);
+  else{
+   const sub=await subscription();
+   if(sub)await disable(root);else await enable(root);
+  }
+ }catch(err){status(root,'⚠ '+String(err.message||'No se pudo activar. Revisa conexión y permisos.'));}
+ finally{
+  working=false;root.querySelectorAll('button').forEach(b=>b.disabled=false);
+  await syncState(root);
+ }
+});
+function mount(){
+ if(renderQueued)return;renderQueued=true;
+ setTimeout(async()=>{
+  renderQueued=false;
+  const host=routeHost();if(!host||host.querySelector('[data-v1082-push]'))return;
+  const template=document.createElement('div');template.innerHTML=markup();
+  const panel=template.firstElementChild;
+  // Se coloca antes de la lista, sin duplicar barras ni ocupar espacio entre tarjetas.
+  const anchor=host.querySelector('[data-v1073-list],.v921-field-list,[data-news-list]');
+  if(anchor)anchor.before(panel);else host.append(panel);
+  await syncState(panel);
+ },110);
+}
+window.addEventListener('hashchange',mount);
+window.addEventListener('pageshow',mount);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')mount();});
+const screen=document.querySelector('#screen');
+if(screen)new MutationObserver(mount).observe(screen,{childList:true,subtree:false});
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
+})();
