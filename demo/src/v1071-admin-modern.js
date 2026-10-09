@@ -153,3 +153,54 @@ function start(){
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});
 else start();
 })();
+
+/* V1081 · Mejoras progresivas de los modales privados, sin sustituir funciones originales. */
+(()=>{
+ 'use strict';
+ if(window.__LJR_ADMIN_V1081__)return;window.__LJR_ADMIN_V1081__=true;
+ const lower=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+ const titles=/administraci[oó]n|publicar en la liga|crear dise[nñ]o nuevo|editar esta p[aá]gina|editar mi p[aá]gina|publicaciones de la liga|cambiar contrase[nñ]a|mis dispositivos|invitaciones de hospitalidad|transmitir directamente|aviso oficial|revisar avisos|noticias|tabla de goleo|tabla de posiciones|c[eé]dulas y documentos/i;
+ function studio(dialog){
+  dialog.classList.add('ljr-admin-studio');
+  const intro=dialog.querySelector('.cms-design-intro');
+  if(intro&&!intro.closest('details')){
+   const details=document.createElement('details');details.className='ljr-admin-howto';
+   const summary=document.createElement('summary');summary.textContent='Cómo crear y descargar el diseño';
+   intro.before(details);details.append(summary,intro);
+  }
+  const presets=dialog.querySelector('.cms-design-presets');
+  if(!presets||presets.dataset.ljrV1081)return;
+  presets.dataset.ljrV1081='1';
+  const buttons=[...presets.querySelectorAll('button[data-design-preset]')];
+  const bar=document.createElement('div');bar.className='ljr-admin-preset-tools';
+  const search=document.createElement('input');search.type='search';search.placeholder='Buscar diseño…';search.setAttribute('aria-label','Buscar tipo de diseño');
+  const count=document.createElement('span');count.className='ljr-admin-preset-count';bar.append(search,count);presets.before(bar);
+  const update=()=>{const q=lower(search.value).trim();let n=0;buttons.forEach(b=>{b.hidden=!!q&&!lower(b.textContent).includes(q);if(!b.hidden)n++});count.textContent=n+' diseños'};
+  buttons.forEach(b=>{b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>buttons.forEach(x=>x.setAttribute('aria-pressed',String(x===b))))});
+  search.addEventListener('input',update);update();
+ }
+ function decorate(dialog){
+  if(dialog.dataset.ljrAdminV1081||!window.LJR_MEDIA?.admin)return;
+  const title=(dialog.querySelector(':scope > header h2')?.textContent||dialog.getAttribute('aria-label')||'').trim();
+  if(!(dialog.matches('.ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-editor-dialog')||
+   dialog.querySelector('.cms-design-form,.cms-design-presets,.cms-kind-grid,[data-pick-element],.ljr-editor-form,.cms-table-wrap')||titles.test(title)))return;
+  dialog.dataset.ljrAdminV1081='1';dialog.classList.add('ljr-admin-v1081');
+  if(dialog.querySelector('.cms-design-presets'))studio(dialog);
+  if(/editar esta p[aá]gina/i.test(title))dialog.classList.add('ljr-admin-picker');
+  const close=dialog.querySelector(':scope > header [data-close]');
+  if(close){close.setAttribute('aria-label','Cerrar '+(title||'administración'));close.title='Cerrar'}
+  const status=dialog.querySelector('[data-status]');if(status)status.setAttribute('aria-live','polite');
+  dialog.querySelectorAll('input[type=file]').forEach(input=>{
+   if(input.dataset.ljrUploadV1081)return;input.dataset.ljrUploadV1081='1';
+   const hint=document.createElement('small');hint.className='ljr-admin-upload-name';hint.setAttribute('aria-live','polite');
+   input.after(hint);const update=()=>{hint.textContent=[...(input.files||[])].map(f=>f.name).join(' · ')};
+   input.addEventListener('change',update);update();
+  });
+ }
+ let pending=false;
+ function scan(){if(!window.LJR_MEDIA?.admin)return;document.querySelectorAll('.liga-media-modal>section').forEach(decorate)}
+ function schedule(){if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;scan()})}
+ function start(){new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true});scan()}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+ window.addEventListener('liga:admin',schedule);
+})();
