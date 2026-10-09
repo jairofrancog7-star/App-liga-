@@ -1,0 +1,49 @@
+/* V1057 — Centro de jornada (#/matchday): barra superior unificada con el fondo.
+   Únicamente ajusta color y lienzos; NO altera tamaños, controles ni rutas. */
+html body[data-app-route="matchday"] #app > .topbar.topbar,
+html body[data-app-route="matchday"] .app-shell > .topbar.topbar{
+  background-color:#02065f!important;
+  background-image:
+    radial-gradient(ellipse 84% 65% at 16% -17%,rgba(92,199,255,.30) 0%,transparent 78%),
+    radial-gradient(ellipse 62% 65% at 96% -22%,rgba(75,170,255,.18) 0%,transparent 79%),
+    linear-gradient(151deg,transparent 0% 36%,rgba(111,198,255,.055) 36.5%,transparent 37.2% 69%,rgba(52,111,234,.045) 69.3%,transparent 70%),
+    linear-gradient(180deg,
+      #278afa 0%,
+      #176bea 18%,
+      #1049c6 37%,
+      #0a2b9d 58%,
+      #07166f 79%,
+      #02065f 100%)!important;
+  background-size:100% 100%!important;
+  background-position:center top!important;
+  background-repeat:no-repeat!important;
+  border-bottom:0!important;
+  box-shadow:inset 0 1px 0 rgba(170,224,255,.12)!important;
+}
+/* No permitir que los lienzos heredados formen un corte brillante en el borde inferior. */
+html body[data-app-route="matchday"] #app > .topbar .wordmark,
+html body[data-app-route="matchday"] .app-shell > .topbar .wordmark{
+  background-color:transparent!important;
+  background-image:linear-gradient(180deg,rgba(26,93,202,.055) 0%,rgba(2,6,95,.025) 100%)!important;
+  pointer-events:none!important;
+}
+html body[data-app-route="matchday"] #app > .topbar .wordmark::before,
+html body[data-app-route="matchday"] .app-shell > .topbar .wordmark::before{
+  opacity:.19!important;
+  filter:drop-shadow(0 0 3px rgba(39,151,250,.13))!important;
+}
+html body[data-app-route="matchday"] #app > .topbar .wordmark::after,
+html body[data-app-route="matchday"] .app-shell > .topbar .wordmark::after{
+  opacity:.12!important;
+  filter:none!important;
+}
+/* Mantener la silueta del trofeo y los botones de atrás/perfil originales. */
+html body[data-app-route="matchday"] #app > .topbar :is(.back-button,.profile-button),
+html body[data-app-route="matchday"] .app-shell > .topbar :is(.back-button,.profile-button){
+  pointer-events:auto!important;
+}
+/* La parte inferior del degradado coincide exactamente con la pantalla. */
+html body[data-app-route="matchday"] #screen,
+html body[data-app-route="matchday"] #screen .v60-tool-page{
+  background-color:#02065f!important;
+}
