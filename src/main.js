@@ -4524,6 +4524,7 @@ function v19MoreIcon(name){
     ticket:'<path d="M4 7a2 2 0 0 0 0 4v6h16v-6a2 2 0 0 0 0-4V5H4v2Z"/><path d="M9 5v12M13 9h4m-4 4h4"/>',
     comparePlayers:'<circle cx="7.5" cy="8" r="2.5"/><circle cx="16.5" cy="8" r="2.5"/><path d="M3.5 16a4 4 0 0 1 8 0m1 0a4 4 0 0 1 8 0M8 20h8m0 0-2-2m2 2-2 2"/>',
     compareTeams:'<path d="M7 4 11 5.7v3.1c0 2.7-1.6 5-4 6-2.4-1-4-3.3-4-6V5.7L7 4Zm10 0 4 1.7v3.1c0 2.7-1.6 5-4 6-2.4-1-4-3.3-4-6V5.7L17 4Z"/><path d="M8 19h8m0 0-2-2m2 2-2 2"/>',
+    simulator:'<path d="M7.1 2.4 12 4.3v4.5c0 3.7-2.2 6.5-4.9 7.8-2.8-1.3-4.9-4.1-4.9-7.8V4.3l4.9-1.9Z"/><path d="M2.8 16.3c.6 2.8 2.1 4.7 4.3 5.5 2.1-.8 3.6-2.7 4.2-5.5"/><path d="m17.8 3.7-2.6 4.4h5.2l-2.6-4.4Zm0 16.6-2.6-4.4h5.2l-2.6 4.4Z"/>',
     vip:'<path d="M4 6h16v12H4z"/><path d="m12 8 1.1 2.2 2.4.3-1.7 1.7.4 2.4-2.2-1.2-2.2 1.2.4-2.4-1.7-1.7 2.4-.3L12 8Z"/>',
     book:'<path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H12v17H7.5A3.5 3.5 0 0 0 4 22V5.5Zm16 0A3.5 3.5 0 0 0 16.5 2H12v17h4.5A3.5 3.5 0 0 1 20 22V5.5Z"/>',
     tools:'<path d="M14.5 5.5a4 4 0 0 0-5 5L3 17l4 4 6.5-6.5a4 4 0 0 0 5-5l-2.5 2.5-2.5-2.5 2.5-2.5 2.5-2.5a4 4 0 0 0-4 1Z"/><path d="m4 4 6 6"/>',
@@ -4695,7 +4696,6 @@ function leagueToolsView(){
     v726ToolCard('matchday','Jornadas','Abre calendario, resultados, próximos partidos y pendientes de cada jornada.','', 'data-v60-comp="fixtures"','PARTIDOS')+
     v726ToolCard('center','Match Center','Marcador, cronología, alineaciones y contexto del partido en una sola pantalla.','v4-matchcenter','','EN VIVO')+
     v726ToolCard('download','Exportar tabla','Genera la tabla completa para descargar o compartir en PNG y CSV.','tableExport','','PNG / CSV')+
-    v726ToolCard('sim','Simulador','Prueba escenarios de clasificación sin modificar los datos oficiales de la Liga.','simulator','','PRUEBA')+
     v726ToolCard('trophy','Quiniela','Juego de pronósticos por partido: elige marcadores, guarda tus resultados y consulta tu quiniela.','quiniela','','JUEGO');
 
   const matchday=
@@ -6572,6 +6572,7 @@ function moreView(){
       v19MoreButton('predict','Pronostica Seis','predictor')+
       v19MoreButton('ticket','Quiniela','quiniela')+
       v19MoreButton('quiz','Quiz Arena','quizArena')+
+      v19MoreButton('simulator','Simulador de resultados','simulator')+
       v19MoreButton('arrows','Más O Menos','moreLess')+
     '</div>'+
     '<div class="v19-more-label compare">Comparar</div>'+
