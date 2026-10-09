@@ -140,3 +140,32 @@ html body[data-app-route="quizArena"] #v612-quiz-portal .v1059-answer:active .v1
     transition:none!important;
   }
 }
+
+
+/* V1062: el estadio es SVG insertado directamente, sin dependencia de IMG externo. */
+html body[data-app-route="quizArena"] #v612-quiz-portal svg.v1059-splash-stadium{
+  display:block!important;
+  position:absolute!important;
+  left:0!important;right:0!important;bottom:0!important;
+  width:100%!important;
+  height:var(--qa1061-bottom)!important;
+  max-width:100%!important;
+  min-height:0!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  background:transparent!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+  transform:translateZ(0)!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1059-splash-logo svg{
+  shape-rendering:geometricPrecision!important;
+  overflow:visible!important;
+}
+/* Conserva los trazos rosa y la palomita íntegros, incluso en Android. */
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1059-splash-logo svg path[stroke="#fb4ba7"],
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1059-splash-logo svg path[stroke="#fc4da2"]{
+  vector-effect:non-scaling-stroke!important;
+  stroke-linejoin:miter!important;
+}
