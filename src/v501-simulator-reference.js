@@ -297,6 +297,33 @@ function tableView(){
        rows.filter(r=>r.pos>=g.from&&r.pos<=g.to).map(tableRow).join('')+
      '</div>'
    ).join('')+'</div>'+
+   classificationGuide(rows)+
+ '</section>';
+}
+/* Explains the simulator's implemented math, without inventing official
+   tie-break rules or copying the UEFA competition format. */
+function classificationGuide(rows){
+ const games=simulatedCount(),total=simFixtures().length;
+ return '<section class="v1051-guide" aria-label="Información sobre la clasificación">'+
+   '<div class="v1051-guide-eyebrow">GUÍA DEL SIMULADOR</div>'+
+   '<h2>¿Cómo funciona esta clasificación?</h2>'+
+   '<p>La tabla parte de los datos disponibles de la categoría seleccionada. Al probar marcadores se actualizan provisionalmente los puntos y las posiciones, sin modificar los resultados oficiales.</p>'+
+   '<div class="v1051-stats-grid">'+
+     '<div class="v1051-stat"><strong>'+rows.length+'</strong><span>Equipos en la tabla</span></div>'+
+     '<div class="v1051-stat"><strong>'+games+' / '+total+'</strong><span>Partidos simulados</span></div>'+
+   '</div>'+
+   '<h3>¿Qué significan las columnas?</h3>'+
+   '<div class="v1051-key-list">'+
+     '<span><b>PTOS</b> Puntos</span><span><b>+/-</b> Diferencia de goles</span>'+
+     '<span><b>GF</b> Goles a favor</span><span><b>GC</b> Goles en contra</span>'+
+     '<span><b>V</b> Victorias</span><span><b>PJ</b> Partidos jugados</span>'+
+   '</div>'+
+   '<h3>¿Qué ocurre si dos equipos empatan a puntos?</h3>'+
+   '<p>Para ordenar <strong>esta simulación</strong> se utiliza primero la diferencia de goles y después los goles a favor. Si persiste el empate se ordenan los nombres. Los criterios oficiales del reglamento pueden ser diferentes.</p>'+
+   '<h3>¿Cómo se construye el Cuadro?</h3>'+
+   '<p>El cuadro muestra una proyección según la clasificación. Los cuadritos con un guion (—) corresponden a plazas todavía por definir; no representan resultados confirmados.</p>'+
+   '<button type="button" class="v1051-show-bracket" data-v501-view="bracket">Ver cuadro de eliminatorias <span aria-hidden="true">→</span></button>'+
+   '<p class="v1051-guide-note">Información orientativa. Consulta el reglamento y los comunicados de la Liga para conocer los criterios y fases oficiales.</p>'+
  '</section>';
 }
 function v512Logo(name){
@@ -307,8 +334,8 @@ function v512Logo(name){
 }
 function bracketTeam(t,mini=false){
  if(!t){
-   return '<div class="v12-bracket-team '+(mini?'mini ':'')+'empty">'+
-     '<small class="v12-bracket-seed"></small><span class="v12-bracket-fallback">—</span><strong>—</strong>'+
+   return '<div class="v12-bracket-team '+(mini?'mini ':'')+'empty v1051-pending-team" title="Cruce por definir" aria-label="Plaza pendiente de definir">'+
+     '<small class="v12-bracket-seed"></small><span class="v12-bracket-fallback" aria-hidden="true">—</span><strong aria-hidden="true">—</strong>'+
    '</div>';
  }
  return '<div class="v12-bracket-team '+(mini?'mini':'')+'" title="'+esc(t.name)+'" aria-label="'+esc(t.name)+'">'+
@@ -357,8 +384,12 @@ function v512BuildRoutes(rows){
  };
 }
 function v512BracketRoute(route){
- const safePairs=(route.pairs||[]).length?route.pairs:[null,null];
- const winners=(route.winners||[]).length?route.winners:[[null,null],[null,null]];
+ // Render all four bracket rows even where the club is not determined yet.
+ // Empty cards never stand for real, qualified teams.
+ const safePairs=(route.pairs||[]).slice(0,4);
+ while(safePairs.length<4)safePairs.push(null);
+ const winners=(route.winners||[]).slice(0,2);
+ while(winners.length<2)winners.push([null,null]);
  return '<section class="v12-bracket-route">'+
    '<div class="v12-bracket-side-label"><span>'+route.label+'</span></div>'+
    '<div class="v12-bracket-pairs">'+
@@ -522,7 +553,8 @@ function v515SheetSnaps(){
  return {
    expanded:Math.max(96,(document.querySelector('.ljr-scroll-header')?.getBoundingClientRect().height||88)+8),
    mid:Math.max(190,Math.round(vh*.455)),
-   collapsed:Math.max(300,vh-(document.querySelector('.bottom-nav')?.getBoundingClientRect().height||69)-62)
+   // A slimmer collapsed sheet matches the handle/title/progress reference.
+   collapsed:Math.max(300,vh-110)
  };
 }
 function v515SheetTop(sheet){
