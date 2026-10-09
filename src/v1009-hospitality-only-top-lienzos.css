@@ -97,32 +97,37 @@ html.v31-hospitality-active .v31-hospitality-page h1{
 }
 
 
-/* V1012 — Corrección de la causa real del corte azul.
-   V777 pintaba #06075f sobre la cabecera fija y #app/#screen.
-   Sólo se reemplaza el FONDO en #/hospitality. Conserva los textos,
-   posiciones, iconos, bordes, tamaños y colores de todos los controles. */
-html.v31-hospitality-active body.ljr-v777[data-app-route="hospitality"] #app,
-html.v31-hospitality-active body.ljr-v777[data-app-route="hospitality"] #screen{
+/* V1013 — Hospitalidad: UNA SOLA SUPERFICIE AZUL.
+   Diagnóstico: v777-interface.css pintaba #06075f en cabecera y en pantalla;
+   además, un estilo inline pintaba otro degradado en .v31-hospitality-page.
+   El degradado se pinta únicamente en #app, a altura de viewport;
+   #screen, la página y la cabecera quedan TRANSPARENTES sobre ese fondo.
+   Esto elimina físicamente la franja entre título y selector.
+   No se modifica NINGUNA regla de texto, botones, inputs o posiciones. */
+html.v31-hospitality-active body[data-app-route="hospitality"] #app{
   background-color:#050B4E!important;
-  background-image:none!important;
-}
-html.v31-hospitality-active body.ljr-v777[data-app-route="hospitality"] #app #screen .v31-hospitality-page{
-  background-color:#050B4E!important;
-  background-image:linear-gradient(180deg,#0A369F 0%,#081F7A 40%,#050B4E 100%)!important;
-}
-html.v31-hospitality-active body.ljr-v777[data-app-route="hospitality"] #app #screen .v774-hospitality-head,
-html.v31-hospitality-active body.ljr-v777[data-mobile-layout="v775"][data-app-route="hospitality"] #app #screen .v774-hospitality-head.ljr-scroll-header{
-  background-color:#0A369F!important;
   background-image:linear-gradient(180deg,#0A369F 0%,#081F7A 40%,#050B4E 100%)!important;
   background-size:100% 100dvh!important;
-  background-repeat:no-repeat!important;
   background-position:center top!important;
-  backdrop-filter:none!important;
-  -webkit-backdrop-filter:none!important;
+  background-repeat:no-repeat!important;
+  background-attachment:fixed!important;
 }
-/* No añadir otro panel opaco entre la cabecera y el contenido. */
-html.v31-hospitality-active body.ljr-v777[data-app-route="hospitality"] #app #screen .v774-hospitality-head::before{
-  background:
-    url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22720%22%20height%3D%22250%22%20viewBox%3D%220%200%20720%20250%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M-60%20178C64%2036%20201%20-22%20346%2033S583%20136%20794%2026%22%20stroke%3D%22%2344AFFF%22%20stroke-opacity%3D%22.34%22%20stroke-width%3D%222%22%2F%3E%3Cpath%20d%3D%22M-75%2090C65%20-28%20242%202%20392%2069S603%20123%20780%2056%22%20stroke%3D%22%232B8DEF%22%20stroke-opacity%3D%22.40%22%20stroke-width%3D%221.6%22%2F%3E%3Cpath%20d%3D%22M-89%20238C65%20153%20158%2074%20308%20111S545%20225%20780%20131%22%20stroke%3D%22%2369C3FF%22%20stroke-opacity%3D%22.25%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E") center top / 100% 100% no-repeat,
-    radial-gradient(ellipse 72% 75% at 22% -18%,rgba(23,105,237,.16),transparent 78%)!important;
+html.v31-hospitality-active body[data-app-route="hospitality"] #app #screen,
+html.v31-hospitality-active body[data-app-route="hospitality"] #app #screen .v31-hospitality-page,
+html.v31-hospitality-active body[data-app-route="hospitality"] #app #screen .v774-hospitality-head,
+html.v31-hospitality-active body[data-app-route="hospitality"] #app #screen .v774-hospitality-head.ljr-scroll-header {
+  background:transparent!important;
+  background-color:transparent!important;
+  background-image:none!important;
+  background-attachment:scroll!important;
+}
+html.v31-hospitality-active body[data-app-route="hospitality"] #app #screen .v31-hospitality-page::before{
+  background:none!important;
+}
+html.v31-hospitality-active body[data-app-route="hospitality"] #app #screen .v774-hospitality-head::before{
+  background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22720%22%20height%3D%22250%22%20viewBox%3D%220%200%20720%20250%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M-60%20178C64%2036%20201%20-22%20346%2033S583%20136%20794%2026%22%20stroke%3D%22%2344AFFF%22%20stroke-opacity%3D%22.34%22%20stroke-width%3D%222%22%2F%3E%3Cpath%20d%3D%22M-75%2090C65%20-28%20242%202%20392%2069S603%20123%20780%2056%22%20stroke%3D%22%232B8DEF%22%20stroke-opacity%3D%22.40%22%20stroke-width%3D%221.6%22%2F%3E%3Cpath%20d%3D%22M-89%20238C65%20153%20158%2074%20308%20111S545%20225%20780%20131%22%20stroke%3D%22%2369C3FF%22%20stroke-opacity%3D%22.25%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E") center top / 100% 100% no-repeat!important;
+  pointer-events:none!important;
+}
+html.v31-hospitality-active body[data-app-route="hospitality"] #app #screen .v774-hospitality-head::after{
+  background:none!important;
 }
