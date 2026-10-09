@@ -54,6 +54,14 @@ try{
   console.error('URL:',page.url());
   console.error('Browser errors:', errors.slice(0,25));
   console.error('Visible portal snippet:', (await page.locator('#v612-quiz-portal').innerText().catch(()=>'' )).slice(0,1200));
+  console.error('Quiz runtime diagnostics:',await page.evaluate(()=>({
+    build:window.__LJR_V531_GAMES__,route:location.hash,bodyRoute:document.body.dataset.appRoute,
+    screen:!!document.querySelector('#screen'),screenChildren:document.querySelector('#screen')?.children.length,
+    portal:!!document.querySelector('#v612-quiz-portal'),mainReady:!!window.LJR_APP_ROUTER,
+    ready:document.readyState,
+    standalone:[...performance.getEntriesByType('resource')].filter(x=>x.name.includes('quiz-arena-independent')).map(x=>({name:x.name,status:x.responseStatus,duration:x.duration})),
+    standaloneTag:[...document.scripts].filter(x=>x.src.includes('quiz-arena-independent')).map(x=>x.src)
+  })));
   throw e;
 } finally {
   await browser.close();
