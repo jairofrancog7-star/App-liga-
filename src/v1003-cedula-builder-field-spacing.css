@@ -1,0 +1,144 @@
+/* V1003 — Cédulas: evitar superposición de etiquetas, selectores y fecha/campo.
+   Aplica SOLO al formulario interno del generador; mantiene sus selectores y datos. */
+html body[data-app-route="cedulaBuilder"] #screen .v640-cedula-combined .v64-form-grid.one{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  column-gap:12px!important;
+  row-gap:16px!important;
+  align-items:start!important;
+  align-content:start!important;
+  grid-auto-rows:auto!important;
+  width:100%!important;
+  min-width:0!important;
+  height:auto!important;
+  padding:14px 12px 16px!important;
+  box-sizing:border-box!important;
+  overflow:visible!important;
+}
+/* El borde exterior aplicado globalmente a cada label es el que pasa por
+   encima del título. Dejarlo solamente en el campo interactivo. */
+html body[data-app-route="cedulaBuilder"] #screen .v640-cedula-combined .v64-form-grid.one > label{
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:flex-start!important;
+  align-items:stretch!important;
+  position:relative!important;
+  grid-row:auto!important;
+  align-self:stretch!important;
+  gap:7px!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  min-height:0!important;
+  height:auto!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  outline:none!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+  transform:none!important;
+}
+html body[data-app-route="cedulaBuilder"] #screen .v640-cedula-combined .v64-form-grid.one > label:first-child,
+html body[data-app-route="cedulaBuilder"] #screen .v640-cedula-combined .v64-form-grid.one > label:last-child{
+  grid-column:1/-1!important;
+}
+html body[data-app-route="cedulaBuilder"] #screen .v640-cedula-combined .v64-form-grid.one > label > b{
+  display:block!important;
+  position:static!important;
+  inset:auto!important;
+  width:100%!important;
+  min-height:15px!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+  margin:0!important;
+  padding:0 2px!important;
+  border:0!important;
+  background:transparent!important;
+  color:#e4eaff!important;
+  font-size:clamp(10px,2.7vw,12px)!important;
+  font-weight:800!important;
+  line-height:1.35!important;
+  letter-spacing:0!important;
+  white-space:normal!important;
+  transform:none!important;
+}
+html body[data-app-route="cedulaBuilder"] #screen .v640-cedula-combined .v64-form-grid.one > label > input,
+html body[data-app-route="cedulaBuilder"] #screen .v640-cedula-combined .v64-form-grid.one > label > select{
+  display:block!important;
+  position:relative!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  float:none!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+  height:50px!important;
+  min-height:50px!important;
+  max-height:none!important;
+  margin:0!important;
+  border:1px solid rgba(94,147,235,.68)!important;
+  border-radius:13px!important;
+  padding:0 12px!important;
+  background-color:#101b71!important;
+  color:#fff!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;
+  font-size:clamp(11px,3vw,14px)!important;
+  line-height:1.3!important;
+  transform:none!important;
+}
+/* El control de fecha del navegador trae un tamaño mínimo nativo: permitir
+   que se reduzca para que jamás invada el selector Campo. */
+html body[data-app-route="cedulaBuilder"] #screen .v640-cedula-combined .v64-form-grid.one input[type="datetime-local"]{
+  min-width:0!important;
+  width:100%!important;
+  padding:0 8px!important;
+  font-size:clamp(10px,2.8vw,13px)!important;
+  overflow:hidden!important;
+  color-scheme:dark;
+}
+html body[data-app-route="cedulaBuilder"] #screen .v640-cedula-combined .v64-form-grid.one input[type="datetime-local"]::-webkit-datetime-edit{
+  min-width:0!important;
+  max-width:100%!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+html body[data-app-route="cedulaBuilder"] #screen .v640-cedula-combined .v64-form-grid.one select{
+  padding-right:28px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+html body[data-app-route="cedulaBuilder"] #screen .v640-cedula-combined .v64-form-grid.one :is(input,select):focus-visible{
+  outline:2px solid #36dcf3!important;
+  outline-offset:1px!important;
+}
+/* En teléfonos, dar toda la fila a Fecha y Campo. El local y el visitante
+   siguen lado a lado con sus escudos; las etiquetas nunca pisan los bordes. */
+@media(max-width:520px){
+  html body[data-app-route="cedulaBuilder"] #screen .v640-cedula-combined .v64-form-grid.one{
+    column-gap:10px!important;
+    row-gap:14px!important;
+    padding:12px 10px 14px!important;
+  }
+  html body[data-app-route="cedulaBuilder"] #screen .v640-cedula-combined .v64-form-grid.one > label:has([data-v64-ced-date]),
+  html body[data-app-route="cedulaBuilder"] #screen .v640-cedula-combined .v64-form-grid.one > label:has([data-v64-ced-field]){
+    grid-column:1/-1!important;
+  }
+  html body[data-app-route="cedulaBuilder"] #screen .v640-cedula-combined .v64-form-grid.one > label > input,
+  html body[data-app-route="cedulaBuilder"] #screen .v640-cedula-combined .v64-form-grid.one > label > select{
+    height:48px!important;
+    min-height:48px!important;
+  }
+}
+@media(max-width:360px){
+  html body[data-app-route="cedulaBuilder"] #screen .v640-cedula-combined .v64-form-grid.one > label:has([data-v64-ced-home]),
+  html body[data-app-route="cedulaBuilder"] #screen .v640-cedula-combined .v64-form-grid.one > label:has([data-v64-ced-away]){
+    grid-column:1/-1!important;
+  }
+}
