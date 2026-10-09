@@ -4142,10 +4142,10 @@ html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-playoff 
   grid-template-columns:27px minmax(0,1fr)!important;
   gap:5px!important;
   align-items:center!important;
-  border:1px dashed rgba(103,167,255,.42)!important;
+  border:0!important;
   border-radius:9px!important;
-  background:linear-gradient(180deg,#0c2583 0%,#0b1e72 100%)!important;
-  box-shadow:inset 0 1px 0 rgba(155,184,255,.055)!important;
+  background:linear-gradient(180deg,#0b2588 0%,#091d73 100%)!important;
+  box-shadow:inset 0 0 0 1px rgba(61,97,220,.10)!important;
   box-sizing:border-box!important;
 }
 html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-playoff .v12-bracket-team.v1051-pending-team .v12-bracket-fallback{
@@ -4158,9 +4158,9 @@ html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-playoff 
   max-width:24px!important;
   max-height:24px!important;
   margin:0!important;
-  border:1px solid rgba(84,226,255,.62)!important;
+  border:1px solid rgba(84,199,246,.50)!important;
   border-radius:50%!important;
-  background:rgba(36,86,195,.22)!important;
+  background:#123681!important;
   font:750 16px/1 Inter,Roboto,Arial,sans-serif!important;
   color:#a5d8ff!important;
 }
