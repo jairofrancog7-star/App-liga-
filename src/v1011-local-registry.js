@@ -1,7 +1,7 @@
 /* V1011 · Indexacion local Dexie + respaldo AES-GCM (SIN NUBE).
    El localStorage existente conserva autoridad: no se borran ni migran registros.
    Los documentos y fotos permanecen en IndexedDB del dispositivo. */
-import {REGISTRY_KEY,makeLocalIndex,parseRegistry,mergeRegistry,encryptRegistry,decryptRegistry,clean} from './local-registration-core.js';
+import {REGISTRY_KEY,makeLocalIndex,parseRegistry,mergeRegistry,encryptRegistry,decryptRegistry,clean} from './local-registration-core.js?v=20261009-v1011-safe-merge';
 
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0];
 const $=(s,r=document)=>r.querySelector(s);
