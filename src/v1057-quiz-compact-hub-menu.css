@@ -36,13 +36,13 @@ html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-head{
   top:0!important;
   z-index:180!important;
   width:100%!important;
-  height:103px!important;
-  min-height:103px!important;
+  height:clamp(132px,37vw,152px)!important;
+  min-height:clamp(132px,37vw,152px)!important;
   padding:0 15px!important;
   border:0!important;
   display:grid!important;
   grid-template-columns:42px minmax(0,1fr) 42px!important;
-  grid-template-rows:48px 55px!important;
+  grid-template-rows:1fr 55px!important;
   align-items:center!important;
   visibility:visible!important;
   opacity:1!important;
@@ -70,6 +70,8 @@ html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-head>button{
   position:relative!important;
   z-index:3!important;
   grid-row:1!important;
+  align-self:end!important;
+  margin-bottom:13px!important;
   width:39px!important;
   height:39px!important;
   min-height:0!important;
@@ -105,7 +107,7 @@ html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-menu-help[hidden]
 html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-menu{
   box-sizing:border-box!important;
   position:absolute!important;
-  top:47px!important;
+  top:calc(clamp(132px,37vw,152px) - 60px)!important;
   right:12px!important;
   z-index:200!important;
   display:grid!important;
