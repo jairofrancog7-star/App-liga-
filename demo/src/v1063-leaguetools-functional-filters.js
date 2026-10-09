@@ -97,15 +97,6 @@ document.addEventListener('click',e=>{
   e.stopPropagation();
   const root=btn.closest('.v726-tools-page,.v60-tool-page');
   apply(root,btn.dataset.v1063Filter||'all');
-
-  // Mantiene el filtro visible y evita saltos largos.
-  requestAnimationFrame(()=>{
-    const nav=root?.querySelector('.v1063-tools-filters');
-    if(nav){
-      const top=nav.getBoundingClientRect().top;
-      if(top<58||top>window.innerHeight*.72)nav.scrollIntoView({block:'start',behavior:'smooth'});
-    }
-  });
 },true);
 
 window.addEventListener('hashchange',schedule);
