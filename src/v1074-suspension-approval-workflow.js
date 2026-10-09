@@ -26,7 +26,7 @@ const missing=s=>{
  return out;
 };
 const isAuthorized=p=>{
- if(!p)return false;
+ if(!p||!window.LJR_MEDIA?.admin)return false;
  const s=read(),hash=stable(fields(p));
  return !!s.reviewedAt&&s.reviewHash===hash&&s.authorization?.hash===hash&&!!s.authorization?.name&&!!s.authorization?.at;
 };
@@ -48,6 +48,7 @@ function message(p,value){
  n.textContent=value||'';
 }
 function panel(p){
+ if(!window.LJR_MEDIA?.admin){$('[data-v1074-flow]',p)?.remove();return}
  if($('[data-v1074-flow]',p))return;
  const anchor=$('[data-v1066-auto]',p)||$('.v425-summary',p);
  if(!anchor)return;
@@ -397,6 +398,7 @@ function boot(){
  },true);
  window.addEventListener('ljr:auto-notice',()=>{const p=$('.v425-suspension',screen);if(p)refresh(p)});
  window.addEventListener('hashchange',queueRedraw);
+ window.addEventListener('liga:admin',queueRedraw);
  window.addEventListener('pageshow',queueRedraw);
  window.addEventListener('focus',()=>{if(route()==='suspensionTool'){const p=$('.v425-suspension',screen);if(p)refresh(p)}});
  queueRedraw();
