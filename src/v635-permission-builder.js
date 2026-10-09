@@ -521,7 +521,8 @@ function permissionHtml(p){
     '<div class="v635-doc-grid">'+details.map(([k,v])=>'<div><small>'+esc(k)+'</small><b>'+esc(v)+'</b></div>').join('')+'</div>'+
     '<section class="v635-reason"><small>MOTIVO Y CONDICIONES</small><p>'+esc(p.reason||defaultReason(p.type))+'</p></section>'+
     '<p class="v635-validity">Este permiso es válido únicamente para la persona, equipo, jornada y periodo indicados. Cualquier uso distinto requiere nueva autorización de la Liga.</p>'+
-    '<div class="v635-signature">'+sign+'<b>'+esc(p.signer||'Nombre de la autoridad')+'</b><span>'+esc(p.role||'Autoridad de la Liga')+'</span><small>Firma de autorización</small></div>'+
+    '<div class="v635-signature">'+sign+'<b>'+esc(p.signer||'Nombre de la autoridad')+'</b><span>'+esc(p.role||'Autoridad de la Liga')+'</span><small>Firma de autorización</small></div>'+ 
+    (window.LJR_PERMISSION_WORKFLOW?.qrHtml?.(p)||'')+
     '<footer><span>'+esc(p.folio)+'</span><span>Liga Municipal de Fútbol Juventino Rosas A.C.</span></footer>'+
   '</article>';
 }
@@ -566,6 +567,7 @@ function setTeam(name){
   const label=q('[data-v635-team-label]');
   if(label)label.textContent=input?.value||'Selecciona un equipo';
   refreshLists();
+  window.LJR_PERMISSION_WORKFLOW?.onTeamChange?.();
 }
 function renderTeamPicker(){
   const host=q('[data-v635-team-options]');
@@ -725,6 +727,7 @@ function generate(){
   if(empty)empty.hidden=true;
   const tools=q('[data-v635-preview-tools]');
   if(tools)tools.hidden=false;
+  window.LJR_PERMISSION_WORKFLOW?.onGenerated?.(p);
   setTimeout(()=>q('[data-v635-document]')?.scrollIntoView({behavior:'smooth',block:'start'}),60);
 }
 function clearForm(){
@@ -814,6 +817,7 @@ async function svgString(p){
     svgText(reasonLines,76,y+44,13,'500','#111a47',1.45)+
     svgText(wrap(validity,95).slice(0,3),56,780,11,'600','#555d80',1.35)+
     signature+
+    (window.LJR_PERMISSION_WORKFLOW?.qrSvg?.(p)||'')+
     svgText([p.signer||'Nombre de la autoridad'],408,918,14,'800','#07105d')+
     svgText([p.role||'Autoridad de la Liga'],408,940,11,'700','#5f6694')+
     svgText(['Firma de autorización'],408,958,10,'600','#7c82a4')+
@@ -887,7 +891,27 @@ window.LJR_PERMISSION_BUILDER_API={
   openPlayerPicker,
   closePlayerPicker,
   choosePlayer(name){setPlayer(name||'');closePlayerPicker();},
-  refresh(){refreshLists();renderTeamPicker();renderPlayerPicker();}
+  refresh(){refreshLists();renderTeamPicker();renderPlayerPicker();},
+  setSignature(data){
+    if(typeof data!=='string'||!/^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(data)||data.length>4*1024*1024)return false;
+    signatureData=data;
+    return true;
+  },
+  showStored(saved){
+    if(!saved||typeof saved.folio!=='string'||!saved.folio.startsWith('LJR-P-'))return false;
+    // No guardar ni restaurar una firma desde el historial del navegador.
+    const fields=['folio','type','target','category','team','person','delegate','date','until','round','field','reason','signer','role'];
+    const p=Object.fromEntries(fields.map(k=>[k,String(saved[k]||'').slice(0,k==='reason'?900:160)]));
+    p.signature='';
+    lastPayload=p;
+    const target=q('[data-v635-preview]');
+    if(!target)return false;
+    target.innerHTML=permissionHtml(p);
+    const empty=q('[data-v635-empty]');if(empty)empty.hidden=true;
+    const buttons=q('[data-v635-preview-tools]');if(buttons)buttons.hidden=false;
+    target.scrollIntoView?.({behavior:'smooth',block:'nearest'});
+    return true;
+  }
 };
 
 function bind(){
