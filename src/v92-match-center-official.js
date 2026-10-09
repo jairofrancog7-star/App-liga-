@@ -100,6 +100,26 @@ function allMatches(){
   }
   return out.sort((a,b)=>a.start-b.start);
 }
+const AUTO_FIRST_MS=45*60*1000;
+const AUTO_BREAK_MS=15*60*1000;
+const AUTO_SECOND_MS=45*60*1000;
+const AUTO_MATCH_MS=AUTO_FIRST_MS+AUTO_BREAK_MS+AUTO_SECOND_MS;
+
+function automaticPhase(m,now=mexicoStamp()){
+  if(!Number.isFinite(m?.start))return {phase:'unknown',label:'—',elapsed:0};
+  const elapsed=now-m.start;
+  if(elapsed<0)return {phase:'scheduled',label:clock(m.r?.[8]),elapsed};
+  if(elapsed<AUTO_FIRST_MS){
+    const minute=Math.min(45,Math.floor(elapsed/60000)+1);
+    return {phase:'first',label:minute+'′ · 1T',elapsed};
+  }
+  if(elapsed<AUTO_FIRST_MS+AUTO_BREAK_MS)return {phase:'halftime',label:'MEDIO TIEMPO',elapsed};
+  if(elapsed<AUTO_MATCH_MS){
+    const minute=Math.min(90,46+Math.floor((elapsed-AUTO_FIRST_MS-AUTO_BREAK_MS)/60000));
+    return {phase:'second',label:minute+'′ · 2T',elapsed};
+  }
+  return {phase:'final',label:'FINAL',elapsed};
+}
 function stateFor(m,now=mexicoStamp()){
   const decision=officialDecision(m);
   const score=publishedScore(m?.r);
@@ -117,21 +137,39 @@ function stateFor(m,now=mexicoStamp()){
   if(!Number.isFinite(start))return {kind:'unknown',label:'PROGRAMACIÓN OFICIAL',primary:'VS',secondary:'Horario por confirmar'};
   const live=confirmedLivePhase(m);
   if(live==='first'||live==='second'||live==='halftime')return {
-    kind:'window',label:'PARTIDO EN DIRECTO',primary:'—',secondary:live==='halftime'?'Medio tiempo':'Cronómetro del operador'};
-  if(live==='final')return {kind:'pending',label:'PARTIDO FINALIZADO',primary:'—',secondary:'Esperando cédula oficial'};
+    kind:'window',label:'PARTIDO EN DIRECTO',primary:'—',secondary:live==='halftime'?'Medio tiempo':'Cronómetro del operador',livePhase:live};
+  if(live==='final')return {kind:'pending',label:'PARTIDO FINALIZADO',primary:'FINAL',secondary:'Esperando cédula oficial'};
   if(now<start)return {kind:'scheduled',label:'PRÓXIMO PARTIDO OFICIAL',primary:clock(m.r[8]),secondary:dateOnly(m.r[8])};
-  return {kind:'pending',label:'INICIO SIN CONFIRMAR',primary:'—',secondary:'Esperando confirmación oficial'};
+  const auto=automaticPhase(m,now);
+  if(auto.phase==='first'||auto.phase==='halftime'||auto.phase==='second')return {
+    kind:'window',label:'PARTIDO EN DIRECTO',primary:auto.label,
+    secondary:auto.phase==='halftime'?'Descanso automático':'Cronómetro automático según hora oficial',
+    autoPhase:auto.phase};
+  return {kind:'pending',label:'PARTIDO FINALIZADO',primary:'FINAL',secondary:'Esperando resultado oficial'};
 }
 function selectedFixture(){
   const list=allMatches();if(!list.length)return null;
+  const now=mexicoStamp();
   if(selectedKey){
     const chosen=list.find(m=>m.key===selectedKey);
-    if(chosen)return chosen;
+    if(chosen){
+      const s=stateFor(chosen,now);
+      const auto=automaticPhase(chosen,now);
+      if(s.kind==='scheduled'||s.kind==='window'||auto.phase!=='final')return chosen;
+      // El partido seleccionado terminó: liberar la selección para saltar al siguiente horario.
+      selectedKey='';
+    }
   }
-  const now=mexicoStamp();
-  const inWindow=list.filter(m=>stateFor(m,now).kind==='window').sort((a,b)=>a.start-b.start);
-  if(inWindow.length)return inWindow[0];
-  const future=list.filter(m=>m.start>now&&stateFor(m,now).kind==='scheduled').sort((a,b)=>a.start-b.start);
+  const live=list.filter(m=>stateFor(m,now).kind==='window')
+    .sort((a,b)=>a.start-b.start||Number(a.catId)-Number(b.catId)||a.key.localeCompare(b.key));
+  if(live.length){
+    // Si hay varios partidos a la misma hora, mostrar solo uno de forma estable.
+    const slot=live[0].start;
+    return live.filter(m=>m.start===slot)
+      .sort((a,b)=>Number(a.catId)-Number(b.catId)||a.key.localeCompare(b.key))[0];
+  }
+  const future=list.filter(m=>Number.isFinite(m.start)&&m.start>now&&stateFor(m,now).kind==='scheduled')
+    .sort((a,b)=>a.start-b.start||Number(a.catId)-Number(b.catId)||a.key.localeCompare(b.key));
   if(future.length)return future[0];
   const withScore=list.filter(m=>publishedScore(m.r)).sort((a,b)=>b.start-a.start);
   if(withScore.length)return withScore[0];
@@ -330,11 +368,40 @@ function buildUpBody(m,state){
     v526MatchExtras(m)+
   '</section>';
 }
+let autoFollowKey='';
 function updateLiveClock(){
   if(!isDirectRoute())return;
   const now=mexicoStamp(),m=selectedFixture();
   if(!m)return;
   const state=stateFor(m,now);
+
+  // Cuando termina el bloque 45 + 15 + 45, selectedFixture() cambia al siguiente horario.
+  // Si cambia el partido activo, reconstruir toda la pantalla para renovar logos, estadísticas y equipos.
+  if(autoFollowKey&&autoFollowKey!==m.key){
+    autoFollowKey=m.key;
+    activeTab='Resumen';profileSide='home';renderGuard=false;render();
+    return;
+  }
+  autoFollowKey=m.key;
+
+  const auto=automaticPhase(m,now);
+  const liveClock=document.querySelector('[data-v92-live-clock]');
+  const liveSub=document.querySelector('[data-v92-live-sub]');
+  const liveState=document.querySelector('[data-v92-live-state]');
+  if(state.kind==='window'){
+    if(liveClock&&state.primary!=='—')liveClock.textContent=state.primary;
+    if(liveSub)liveSub.textContent=state.secondary||'En directo';
+    if(liveState)liveState.textContent='En directo';
+  }else if(state.kind==='scheduled'){
+    if(liveClock)liveClock.textContent=clock(m.r?.[8]);
+    if(liveSub)liveSub.textContent=dateOnly(m.r?.[8]);
+    if(liveState)liveState.textContent='Pre-partido';
+  }else if(auto.phase==='final'&&state.kind==='pending'){
+    if(liveClock)liveClock.textContent='FINAL';
+    if(liveSub)liveSub.textContent='Esperando resultado oficial';
+    if(liveState)liveState.textContent='Finalizado';
+  }
+
   document.querySelectorAll('[data-v420-countdown]').forEach(el=>{
     if(state.kind==='awarded'||state.kind==='final'||state.kind==='pending'){
       el.textContent=countdownText(m,state);
@@ -342,10 +409,10 @@ function updateLiveClock(){
       return;
     }
     if(state.kind==='window'){
-      // El reloj 1T/MT/2T lo controla V144/V145 al registrar el operador
-      // o al recibir un feed; no simular minutos usando sólo la hora fijada.
-      if(!el.classList.contains('v144-live-label'))el.textContent='EN DIRECTO';
-      el.dataset.phase='live';
+      // Si existe operador/feed, V144 puede reemplazar esta etiqueta; si no,
+      // el reloj automático usa 45 + descanso + 45 desde la hora oficial.
+      if(!el.classList.contains('v144-live-label'))el.textContent=state.primary==='—'?'EN DIRECTO':state.primary;
+      el.dataset.phase=state.autoPhase||state.livePhase||'live';
       return;
     }
     const raw=el.dataset.v420Start;
@@ -990,7 +1057,7 @@ function render(){
     '<section class="v518-matchcenter-unified" data-v518-unified>'+
     '<section class="v92-score-card">'+
       '<div class="v92-side">'+teamLogo(home)+'<b>'+esc(home)+'</b></div>'+
-      '<div class="v92-center"><strong>'+esc(center)+'</strong><small>'+esc(state.kind==='window'?'En directo':state.secondary)+'</small><em class="v418-match-state '+esc(state.kind)+'">'+esc(state.kind==='window'?'En directo':state.kind==='final'?'Finalizado':state.kind==='scheduled'?'Pre-partido':'Pendiente')+'</em></div>'+
+      '<div class="v92-center"><strong data-v92-live-clock>'+esc(center)+'</strong><small data-v92-live-sub>'+esc(state.kind==='window'?state.secondary:state.secondary)+'</small><em class="v418-match-state '+esc(state.kind)+'" data-v92-live-state>'+esc(state.kind==='window'?'En directo':state.kind==='final'?'Finalizado':state.kind==='scheduled'?'Pre-partido':'Pendiente')+'</em></div>'+
       '<div class="v92-side">'+teamLogo(away)+'<b>'+esc(away)+'</b></div>'+
     '</section>'+
     '<div class="v92-official-meta"><span>'+esc(dateOnly(r[8]))+' · '+esc(clock(r[8]))+'</span><span>'+esc(venue)+'</span></div>'+
