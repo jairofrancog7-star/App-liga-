@@ -33,3 +33,16 @@ html body[data-app-route="cedulaBuilder"] .v131-sheet-head .v1004-league-logo > 
     filter:none!important;
   }
 }
+
+
+/* V1006 — Encabezado institucional azul. Solo cambia el texto; el escudo PNG
+   transparente permanece intacto, sin filtros ni edición de colores. */
+body[data-app-route="cedulaBuilder"] .v131-cedula-sheet .v131-head-copy small,
+body[data-app-route="cedulaBuilder"] .v131-cedula-sheet .v131-head-copy h1,
+body.v131-print-cedula #v143-cedula-print-root .v131-sheet-head .v131-head-copy small,
+body.v131-print-cedula #v143-cedula-print-root .v131-sheet-head .v131-head-copy h1 {
+  color:#0055A5!important;
+  -webkit-text-fill-color:#0055A5!important;
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
+}
