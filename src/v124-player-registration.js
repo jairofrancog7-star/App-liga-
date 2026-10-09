@@ -248,6 +248,8 @@ function saveStore(x){
   const raw=JSON.stringify(x);
   localStorage.setItem(KEY,raw);
   storedRegistryRaw=raw;storedRegistryValue=x;
+  /* No incluye informacion del jugador en el evento: activa indice local diferido. */
+  window.dispatchEvent(new Event('ljr:local-roster-changed'));
 }
 function selectedSeason(){return localStorage.getItem(SEASON_KEY)||currentSeason()}
 function setSeason(s){localStorage.setItem(SEASON_KEY,s)}
