@@ -63,6 +63,52 @@ function teamsForCategory(catName){
   }
   return out.sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
 }
+/* V1054 — Escudos reales del equipo dentro de los selectores, sin cambiar las rutas. */
+function teamLogo(name){
+  if(!name)return '';
+  let source='';
+  try{source=window.V66_OFFICIAL_DIRECTORY?.logoFor?.(name)||''}catch(_){}
+  if(!source)try{source=window.LJR_OFFICIAL_API?.getLogo?.(name)||''}catch(_){}
+  if(!source)try{source=window.LJR_TEAM_LOGOS?.get?.(name)||''}catch(_){}
+  if(!source){
+    for(const data of [window.LJR_OFFICIAL_DATA,db]){
+      const hit=Object.entries(data?.team_logos||{}).find(([key])=>same(key,name));
+      if(hit){source=hit[1];break}
+    }
+  }
+  if(source&&typeof source==='object')source=source.local||source.source||source.url||source.src||'';
+  const value=String(source||'').trim();
+  if(!value||/^(?:javascript|file):/i.test(value))return '';
+  if(/^(?:https:\/\/|data:image\/(?:png|jpeg|webp);base64,|\.\/|\/|assets\/)/i.test(value))return value;
+  return '';
+}
+function teamCrest(name,extra=''){
+  const logo=teamLogo(name);
+  const label=String(name||'').trim().split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'EQ';
+  return '<span class="v635-team-crest '+esc(extra)+'" aria-hidden="true">'+
+    '<span class="v635-team-crest-fallback">'+esc(label)+'</span>'+
+    (logo?'<img src="'+esc(logo)+'" alt="" loading="lazy" decoding="async">':'')+
+    '</span>';
+}
+function activateTeamCrests(root){
+  if(!root)return;
+  root.querySelectorAll('.v635-team-crest img:not([data-v635-crest-init])').forEach(img=>{
+    img.dataset.v635CrestInit='1';
+    img.addEventListener('load',()=>img.parentElement?.classList.add('v635-logo-loaded'),{once:true});
+    img.addEventListener('error',()=>img.remove(),{once:true});
+    if(img.complete&&img.naturalWidth>0)img.parentElement?.classList.add('v635-logo-loaded');
+    else if(img.complete&&!img.naturalWidth)img.remove();
+  });
+}
+function refreshSelectedTeamCrest(team){
+  const button=q('[data-v635-team-open]');
+  if(!button)return;
+  button.querySelector('.v635-team-crest')?.remove();
+  if(team){
+    button.insertAdjacentHTML('afterbegin',teamCrest(team,'v635-selected-crest'));
+    activateTeamCrests(button);
+  }
+}
 function playerName(x){
   if(typeof x==='string')return x.trim();
   if(!x||typeof x!=='object')return '';
@@ -321,7 +367,7 @@ function view(){
       '<button type="button" class="v635-team-backdrop" data-v635-player-close aria-label="Cerrar selector de jugador"></button>'+
       '<section class="v635-team-dialog" role="dialog" aria-modal="true" aria-label="Seleccionar jugador">'+
         '<div class="v635-team-dialog-head"><div><small>JUGADORES DEL EQUIPO</small><b>Seleccionar jugador</b></div><button type="button" data-v635-player-close aria-label="Cerrar">×</button></div>'+
-        '<div class="v635-player-context"><small data-v635-player-cat-label>'+esc(defaultCat)+'</small><b data-v635-player-team-label>Selecciona primero un equipo</b></div>'+
+        '<div class="v635-player-context"><span data-v635-player-context-crest></span><small data-v635-player-cat-label>'+esc(defaultCat)+'</small><b data-v635-player-team-label>Selecciona primero un equipo</b></div>'+
         '<label><span>Buscar jugador</span><input type="search" data-v635-player-search placeholder="Escribe el nombre del jugador" autocomplete="off"></label>'+
         '<div class="v635-team-options" data-v635-player-options></div>'+
       '</section>'+
@@ -405,6 +451,7 @@ function refreshLists(){
   }
   const teamLabel=q('[data-v635-team-label]');
   if(teamLabel)teamLabel.textContent=team||'Selecciona un equipo';
+  refreshSelectedTeamCrest(team);
   const hint=q('[data-v635-team-hint]');
   if(hint)hint.textContent='Equipos filtrados por '+(cat||'categoría');
   const person=q('[data-v635-person]')?.value||'';
@@ -442,8 +489,9 @@ function renderTeamPicker(){
   const term=norm(q('[data-v635-team-search]')?.value||'');
   const list=teamsForCategory(cat).filter(n=>!term||norm(n).includes(term));
   host.innerHTML=list.length
-    ?list.map(n=>'<button type="button" class="v635-team-option" data-v635-team-choice="'+esc(n)+'"><span>'+esc(String(n).trim().slice(0,1).toUpperCase()||'•')+'</span><b>'+esc(n)+'</b><small>'+esc(cat)+'</small></button>').join('')
+    ?list.map(n=>'<button type="button" class="v635-team-option v635-team-logo-option" data-v635-team-choice="'+esc(n)+'">'+teamCrest(n)+'<b>'+esc(n)+'</b><small>'+esc(cat)+'</small></button>').join('')
     :'<div class="v635-team-empty">No hay equipos que coincidan en esta categoría.</div>';
+  activateTeamCrests(host);
 }
 function openTeamPicker(){
   const sheet=q('[data-v635-team-sheet]');
@@ -473,15 +521,17 @@ function renderPlayerPicker(){
   const teamLabel=q('[data-v635-player-team-label]');
   if(catLabel)catLabel.textContent=cat||'Categoría';
   if(teamLabel)teamLabel.textContent=team||'Selecciona primero un equipo';
+  const contextCrest=q('[data-v635-player-context-crest]');
+  if(contextCrest){contextCrest.innerHTML=team?teamCrest(team,'v635-context-crest'):'';activateTeamCrests(contextCrest)}
   if(!team){
     host.innerHTML='<div class="v635-team-empty">Selecciona un equipo antes de elegir al jugador.</div>';
     return;
   }
   const list=playersFor(cat,team).filter(n=>!term||norm(n).includes(term));
   host.innerHTML=list.length
-    ?list.map(n=>'<button type="button" class="v635-team-option v635-player-option" data-v635-player-choice="'+esc(n)+'"><span class="v635-player-avatar">'+esc(String(n).trim().slice(0,1).toUpperCase()||'•')+'</span><b>'+esc(n)+'</b><small>'+esc(team)+'</small></button>').join('')
+    ?list.map(n=>'<button type="button" class="v635-team-option v635-player-option" data-v635-player-choice="'+esc(n)+'"><span class="v635-player-avatar">'+esc(String(n).trim().slice(0,1).toUpperCase()||'•')+'</span><b>'+esc(n)+'</b>'+teamCrest(team,'v635-player-team-crest')+'</button>').join('')
     :'<div class="v635-team-empty">No hay jugadores que coincidan para '+esc(team)+'.</div>';
-  if(list.length)hydratePickerPhotos(host,cat,team);
+  if(list.length){activateTeamCrests(host);hydratePickerPhotos(host,cat,team)}
 }
 function openPlayerPicker(e){
   e?.preventDefault?.();
