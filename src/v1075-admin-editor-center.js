@@ -34,8 +34,8 @@ function createModal(title,html,className){
  modal.querySelector('section')?.classList.add('ljr-editor-dialog',className);
  return modal;
 }
-function showComposer(){
- if(!admin())return media()?.login?.(showComposer);
+function showComposer(prefill){
+ if(!admin())return media()?.login?.(()=>showComposer(prefill));
  const choices=Object.entries(TYPES).map(([key,val])=>'<option value="'+key+'">'+esc(val[0])+'</option>').join('');
  const modal=createModal('Crear aviso oficial','<form class="ljr-editor-form" data-editor-form>'+
   '<p class="ljr-editor-note">Sin programar: escribe, revisa y confirma. La publicación aparecerá en Noticias de toda la Liga; un borrador queda privado en el servidor.</p>'+
@@ -82,6 +82,20 @@ function showComposer(){
  form.querySelectorAll('[data-generate]').forEach(b=>b.onclick=()=>generate(b.dataset.generate));
  form.addEventListener('input',updatePreview);form.addEventListener('change',updatePreview);
  generate('formal');
+ // V1077: importación opcional del aviso de suspensión, sin publicar ni eludir la API.
+ // Solo se rellenan campos del formulario; el administrador debe revisar y pulsar Publicar.
+ if(prefill&&typeof prefill==='object'&&!Array.isArray(prefill)){
+  const values={type:'suspension',category:String(prefill.category||'all'),round:String(prefill.round||''),date:String(prefill.date||''),time:String(prefill.time||''),field:String(prefill.field||'').slice(0,110)};
+  for(const [key,value] of Object.entries(values)){
+   const field=form.elements[key];if(!field)continue;
+   if(field.tagName==='SELECT'&&![...field.options].some(o=>o.value===value))continue;
+   field.value=value;
+  }
+  form.elements.details.value=String(prefill.details||'').slice(0,1200);
+  title.value=String(prefill.title||'Aviso de suspensión').slice(0,160);
+  body.value=String(prefill.body||'').slice(0,4000);
+  updatePreview();
+ }
  async function save(published){
   if(saving||!form.reportValidity())return;
   if(body.value.trim().length<15){status(modal,'Agrega un mensaje de por lo menos 15 caracteres.');return}
