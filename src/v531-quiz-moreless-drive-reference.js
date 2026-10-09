@@ -40,7 +40,7 @@ const FALLBACK_LOGOS={
 };
 let db=window.LJR_OFFICIAL_DATA||null;
 let loading=null;
-const quiz={mode:'legacy',answered:false,selected:'',points:0,step:1,exit:false,remaining:15,halfUsed:false,retryUsed:false,attempts:1,countdown:3,history:[]};
+const quiz={mode:'legacy',answered:false,selected:'',points:0,step:1,exit:false,remaining:15,halfUsed:false,retryUsed:false,attempts:1,countdown:3,history:[],missed:[]};
 const more={mode:'legacy',answered:false,selected:'',points:0,attempts:2,exit:false,phase:'intro',countdown:15,roundToken:0,round:0};
 let v538MoreTimers=[];
 let v538MoreInterval=null;
@@ -48,6 +48,17 @@ let v614QuizCountdownTimer=null;
 let v1050NotifyOpen=false;
 const V1050_NOTIFY_KEY='ljr-quiz-notice-dismissed';
 function v1050NoticeAvailable(){try{return localStorage.getItem(V1050_NOTIFY_KEY)!=='1'&&(!('Notification' in window)||Notification.permission!=='granted')}catch(_){return true}}
+function v1050LocalNotice(body){
+  if(!('Notification' in window)||Notification.permission!=='granted')return;
+  const title='Quiz Arena · Liga Juventino Rosas',options={body,tag:'ljr-quiz-result'};
+  try{
+    if(navigator.serviceWorker?.getRegistration){
+      navigator.serviceWorker.getRegistration().then(reg=>{
+        if(reg?.showNotification)reg.showNotification(title,options).catch(()=>{});
+      }).catch(()=>{});
+    }else new Notification(title,options);
+  }catch(_){}
+}
 function v1050BellSvg(){return '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 34h28l-4-5V19a10 10 0 0 0-20 0v10l-4 5Z" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 38a4 4 0 0 0 8 0M6 19a18 18 0 0 1 5-12m31 12a18 18 0 0 0-5-12" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/></svg>'}
 function v1050NotifyCard(){return v1050NoticeAvailable()?'<aside class="v1050-notice-card"><div class="v1050-notice-art">'+v1050BellSvg()+'</div><div class="v1050-notice-copy"><b>¡No te pierdas ningún quiz!</b><p>Recibe recordatorios y novedades del Quiz Arena.</p></div><button type="button" data-v1050-notice-open>Activar notificaciones</button><button type="button" class="v1050-notice-dismiss" data-v1050-notice-dismiss>Ahora no</button></aside>':''}
 function v1050NotifyModal(){return '<div class="v1050-notify-backdrop" data-v1050-notify-backdrop><section class="v1050-notify-sheet" role="dialog" aria-modal="true" aria-labelledby="v1050-notify-heading"><button type="button" class="v1050-notify-x" data-v1050-notify-close aria-label="Cerrar">'+closeSvg()+'</button><div class="v1050-notify-icon">'+v1050BellSvg()+'</div><h2 id="v1050-notify-heading">¡No te pierdas ningún quiz!</h2><p>Activa las notificaciones para recibir avisos del Quiz Arena cuando esta aplicación pueda mostrarlos.</p><button type="button" class="v1050-notify-yes" data-v1050-notify-allow>Activar notificaciones</button><button type="button" class="v1050-notify-no" data-v1050-notify-close>Ahora no</button><small data-v1050-notify-status role="status">Los recordatorios con el navegador cerrado requieren notificaciones push; esta versión solo utiliza permisos y avisos locales.</small></section></div>'}
@@ -192,7 +203,7 @@ function quizCountdown(data){
 }
 function v614StartQuizCountdown(){
   v614ClearQuizCountdown();
-  quiz.mode='countdown';quiz.answered=false;quiz.selected='';quiz.exit=false;quiz.remaining=15;quiz.step=1;quiz.points=0;quiz.halfUsed=false;quiz.retryUsed=false;quiz.attempts=1;quiz.countdown=3;quiz.history=[];
+  quiz.mode='countdown';quiz.answered=false;quiz.selected='';quiz.exit=false;quiz.remaining=15;quiz.step=1;quiz.points=0;quiz.halfUsed=false;quiz.retryUsed=false;quiz.attempts=1;quiz.countdown=3;quiz.history=[];quiz.missed=[];
   render(true);
   v614QuizCountdownTimer=setInterval(function(){
     if(route()!=='quizArena'||quiz.mode!=='countdown'){v614ClearQuizCountdown();return}
@@ -238,7 +249,8 @@ function quizGame(data){
   const wrong=q.options.filter(n=>norm(n)!==norm(q.correct));
   const options=q.options.map(function(name){
     const hidden=quiz.halfUsed&&wrong.slice(0,2).includes(name);
-    return '<button type="button" class="v531-q-answer v614-q-answer" '+(hidden?'disabled style="visibility:hidden"':'')+' data-v531-q-answer="'+esc(name)+'"><span aria-hidden="true"></span><b>'+esc(name)+'</b></button>';
+    const missed=(quiz.missed||[]).some(v=>norm(v)===norm(name));
+    return '<button type="button" class="v531-q-answer v614-q-answer'+(missed?' is-wrong':'')+'" '+(hidden?'disabled style="visibility:hidden"':missed?'disabled':'')+' data-v531-q-answer="'+esc(name)+'"><span aria-hidden="true"></span><b>'+esc(name)+'</b></button>';
   }).join('');
   return '<section class="v531-page v531-quiz v531-game-screen v614-quiz-game" data-v531-quiz data-v531-view="game">'+
     '<header class="v614-game-head"><strong class="v1050-quiz-title">Quiz Aleatorio</strong><button type="button" data-v531-quiz-close aria-label="Cerrar quiz">'+closeSvg()+'</button></header>'+
@@ -839,14 +851,14 @@ document.addEventListener('click',function(e){
   if(t.matches('[data-v531-result-back]')){v614ClearQuizCountdown();quiz.mode='hub';quiz.exit=false;render(false);return}
   if(t.matches('[data-v531-q-answer]')){
     const data=db||window.LJR_OFFICIAL_DATA||{},q=quizData(data),pick=t.dataset.v531QAnswer||'';
-    if(quiz.answered)return;if(norm(pick)!==norm(q.correct)&&quiz.attempts>1){quiz.attempts--;t.disabled=true;t.classList.add('is-wrong');return}quiz.selected=pick;quiz.answered=true;
+    if(quiz.answered)return;if(norm(pick)!==norm(q.correct)&&quiz.attempts>1){quiz.attempts--;quiz.missed=quiz.missed||[];quiz.missed.push(pick);t.disabled=true;t.classList.add('is-wrong');return}quiz.selected=pick;quiz.answered=true;
     const ok=norm(pick)===norm(q.correct);
     if(ok)quiz.points+=10;
     if(!Array.isArray(quiz.history))quiz.history=[];
     quiz.history.push(ok?'ok':'bad');
     quiz.mode='result';render(true);return;
   }
-  if(t.matches('[data-v531-quiz-next]')){if(quiz.step>=10){quiz.mode='hub';render(true);return}quiz.step++;quiz.selected='';quiz.answered=false;quiz.remaining=15;quiz.attempts=1;quiz.mode='game';render(true);return}
+  if(t.matches('[data-v531-quiz-next]')){if(quiz.step>=10){v1050LocalNotice('Terminaste el quiz con '+quiz.points+' puntos. ¡Vuelve a jugar!');quiz.mode='hub';render(true);return}quiz.step++;quiz.selected='';quiz.answered=false;quiz.remaining=15;quiz.attempts=1;quiz.missed=[];quiz.mode='game';render(true);return}
   if(t.matches('[data-v531-more-start]')){v538StartMoreRound();return}
   if(t.matches('[data-v531-more-close]')){v538ClearTimers();more.exit=true;v543RenderMorePortal();return}
   if(t.matches('[data-v531-more-choice]')){
@@ -890,7 +902,7 @@ if(target)new MutationObserver(schedule).observe(target,{childList:true,subtree:
 load().then(schedule);
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
 // One clock for the active question; dialogs pause the countdown.
-setInterval(()=>{if(route()!=='quizArena'||quiz.mode!=='game'||quiz.exit||quiz.answered)return;
+setInterval(()=>{if(route()!=='quizArena'||quiz.mode!=='game'||quiz.exit||v1050NotifyOpen||quiz.answered)return;
   quiz.remaining=Math.max(0,quiz.remaining-1);const clock=document.querySelector('[data-quiz-timer]');if(clock)clock.textContent=quiz.remaining;
   if(quiz.remaining===0){quiz.selected='';quiz.answered=true;if(!Array.isArray(quiz.history))quiz.history=[];quiz.history.push('bad');quiz.mode='result';render(true)}
 },1000);
