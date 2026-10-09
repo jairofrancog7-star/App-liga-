@@ -26,10 +26,20 @@
   }
 }
 
-
-/* V845 — bajar primer título debajo de tabs sin tocar tamaños ni tarjetas. */
+/* V845 — separación real debajo de la barra fija.
+   El título estaba entrando por debajo de las pestañas; se baja el CONTENIDO,
+   no el texto ni las tarjetas. */
 @media (max-width:1023px){
-  html body.v33-data-active #screen .v33-data-page[data-v33-mode="general"] .v33-general-content > .v33-general-section:first-child{
-    margin-top:24px!important;
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="general"] > .v33-data-content.v33-general-content{
+    padding-top:52px!important;
+  }
+
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="team"] > .v33-data-content.v593-detail-horizontal,
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="player"] > .v33-data-content.v593-detail-horizontal{
+    padding-top:52px!important;
+  }
+
+  html body.v33-data-active #screen .v33-data-page .v33-data-content > .v33-general-section:first-child > .v33-general-title{
+    margin-top:0!important;
   }
 }
