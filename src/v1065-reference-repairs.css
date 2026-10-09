@@ -1,0 +1,147 @@
+/* V1065 — ajustes acotados a Simulador, Centro de herramientas y Más o menos.
+   Referencias 09/oct/2026; no modifica datos ni rutas de la Liga. */
+
+/* Simulador: el selector superior es opaco; no se filtran tarjetas bajo el borde derecho. */
+html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-top{
+  isolation:isolate!important;
+  background:linear-gradient(180deg,#113fec 0%,#103ce6 56%,#0b34de 100%)!important;
+  background-color:#0b34de!important;
+  opacity:1!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  box-shadow:0 4px 12px rgba(0,15,91,.12)!important;
+}
+html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-tabs{
+  isolation:isolate!important;
+  box-sizing:border-box!important;
+  height:46px!important;
+  min-height:46px!important;
+  border:1.5px solid rgba(181,209,255,.75)!important;
+  border-radius:26px!important;
+  background:#0b38e2!important;
+  overflow:hidden!important;
+  box-shadow:none!important;
+}
+html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-tabs button{
+  display:grid!important;place-items:center!important;
+  height:100%!important;min-height:0!important;
+  margin:0!important;padding:0 5px!important;
+  border:0!important;border-radius:0!important;
+  background:#0b38e2!important;color:#fff!important;
+  font:800 clamp(11px,3vw,14px)/1 Inter,Roboto,Arial,sans-serif!important;
+  white-space:nowrap!important;cursor:pointer!important;
+}
+html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-tabs button.active{
+  border-radius:24px!important;
+  color:#080f48!important;
+  background:#fff!important;
+}
+html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-tabs button:focus-visible{
+  outline:2px solid #73f2ff!important;outline-offset:-4px!important;
+}
+html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-bracket,
+html body[data-app-route="simulator"] #screen [data-v501-simulator] .v12-bracket-board{
+  background-color:#1039e8!important;
+}
+/* La muesca circular debe verse del mismo azul del fondo, nunca transparente
+   respecto a la tabla/controles situados bajo el cuadro. */
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-pair,
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-seeded{
+  background-color:#1039e8!important;
+}
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-pair>.v12-bracket-vs,
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-seeded>.v12-bracket-vs{
+  background:#1039e8!important;
+  color:#35e2f9!important;
+}
+html body[data-app-route="simulator"] #screen .v501-sheet{
+  background-color:#080e67!important;
+}
+/* Máxima legibilidad con los códigos de tres letras existentes: nunca duplicarlos. */
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-team strong{
+  white-space:nowrap!important;text-overflow:clip!important;
+  min-width:0!important;overflow:hidden!important;
+  line-height:1.15!important;letter-spacing:0!important;
+}
+
+/* Sólo los 5 filtros superiores, todos accionables. */
+html body[data-app-route="leagueTools"] #screen .v726-tools-hero.v1065-unique-filter{
+  overflow:visible!important;
+}
+html body[data-app-route="leagueTools"] #screen .v726-tools-hero .v1063-tools-filters{
+  display:flex!important;position:relative!important;
+  flex-wrap:wrap!important;gap:7px!important;
+  margin:14px 0 0!important;padding:0!important;
+  border:0!important;border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+html body[data-app-route="leagueTools"] #screen .v726-tools-hero .v1063-filter{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  min-height:34px!important;margin:0!important;padding:0 12px!important;
+  font:750 11px/1 Inter,Roboto,Arial,sans-serif!important;
+  border-radius:999px!important;white-space:nowrap!important;
+  cursor:pointer!important;
+}
+html body[data-app-route="leagueTools"] #screen .v726-tools-hero .v1063-filter.is-active{
+  color:#051b55!important;background:#28dbe9!important;
+  border-color:#28dbe9!important;
+}
+html body[data-app-route="leagueTools"] #screen .v726-tools-hero .v1063-filter:focus-visible{
+  outline:2px solid #fff!important;outline-offset:2px!important;
+}
+
+/* Más o menos: dos cartas visibles, boca abajo desde el arranque. */
+html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage.intro .v538-loading-question,
+html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage.intro .v538-stage-placeholder{
+  display:none!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage.intro .v538-player-pair{
+  display:grid!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-card.v1065-face-down{
+  display:flex!important;position:relative!important;
+  align-items:center!important;justify-content:center!important;
+  min-width:0!important;height:100%!important;
+  overflow:hidden!important;border:1.5px solid #294fc9!important;
+  border-radius:15px!important;
+  background:linear-gradient(145deg,#172ea6 0%,#111575 62%,#070b51 100%)!important;
+  box-shadow:inset 0 0 0 2px rgba(91,142,255,.12)!important;
+  opacity:1!important;animation:none!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v1065-back-pattern{
+  position:absolute!important;inset:6px!important;
+  display:grid!important;place-items:center!important;
+  border-radius:10px!important;
+  background:
+    repeating-linear-gradient(60deg,transparent 0 28px,rgba(33,76,222,.28) 30px 50px,transparent 53px 82px),
+    repeating-linear-gradient(-60deg,transparent 0 31px,rgba(25,66,196,.3) 33px 53px,transparent 56px 89px),
+    linear-gradient(160deg,#0b187c,#061054)!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v1065-back-pattern svg{
+  width:34px!important;height:34px!important;fill:none!important;
+  stroke:#f9fbff!important;stroke-width:2!important;
+  filter:drop-shadow(0 0 3px #74c5ff)!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage.first .v538-player-card.left{
+  animation:v1065-card-uncover .95s cubic-bezier(.22,.8,.2,1) both!important;
+  transform-origin:center!important;
+  backface-visibility:hidden!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage.both .v538-player-card.right:not(.v1065-face-down){
+  animation:v1065-card-uncover .95s cubic-bezier(.22,.8,.2,1) both!important;
+  transform-origin:center!important;
+  backface-visibility:hidden!important;
+}
+@keyframes v1065-card-uncover{
+  0%{transform:perspective(600px) rotateY(-90deg) scale(.94);opacity:.25}
+  55%{transform:perspective(600px) rotateY(14deg) scale(1);opacity:1}
+  100%{transform:perspective(600px) rotateY(0) scale(1);opacity:1}
+}
+@media (prefers-reduced-motion:reduce){
+  html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage .v538-player-card{animation:none!important}
+}
+@media(min-width:900px){
+  html body[data-app-route="leagueTools"] #screen .v726-tools-hero .v1063-filter{font-size:13px!important;min-height:38px!important}
+}
