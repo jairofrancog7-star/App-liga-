@@ -24,10 +24,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: npm
       - name: Instalar y compilar exactamente para GitHub Pages
         run: |
-          npm ci --no-audit --no-fund
+          npm install --no-audit --no-fund
           npm run build -- --base=/App-liga-/
       - name: Preparar navegador móvil
         run: |
