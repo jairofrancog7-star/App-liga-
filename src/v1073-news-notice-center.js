@@ -15,6 +15,8 @@ const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||doc
 const state=Object.assign({category:'Todas',type:'all',search:'',read:[],saved:[],alerts:false,known:[],limit:4},read(STATE,{}));
 let items=[],loaded=false,lastFetch=0,pending=false,fetchError=false;
 function getLocal(){
+ // No mostrar como oficiales al público avisos solo guardados por el navegador.
+ if(!window.LJR_MEDIA?.admin)return [];
  const rows=read(LOCAL,[]);
  if(!Array.isArray(rows))return [];
  return rows.filter(x=>x&&x.published&&x.channels?.app).map(x=>({...x,local:true}));
