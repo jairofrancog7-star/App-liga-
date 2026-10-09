@@ -528,11 +528,24 @@ function playerCard(p,data,known,side){
     '<div class="v538-player-stat"><small>Goles</small><strong>'+(known?esc(p.goals):'—')+'</strong></div>'+
   '</article>';
 }
-function v1065CardBack(side){
-  return '<article class="v538-player-card v1065-face-down '+esc(side||'')+'" aria-label="Tarjeta boca abajo, pendiente de revelar">'+
-    '<span class="v1065-back-pattern" aria-hidden="true"><svg viewBox="0 0 50 50" focusable="false">'+
-    '<circle cx="25" cy="25" r="22"/><path d="m25 8 10 8-4 12H19l-4-12zM15 16 6 13 5 12m9-13 9 13 5-12M21 29l4 13 9-13 5-12"/>'+
-    '</svg></span></article>';
+/* V1067: las dos cartas conservan la misma geometría mientras giran,
+   con anverso/reverso superpuestos. No hay desplazamiento lateral. */
+function v1067FlipCard(p,data,known,side,revealed,animating){
+  const label=revealed?esc(p.name)+' · '+esc(p.team):'Tarjeta boca abajo';
+  const back='<div class="v1067-flip-side v1067-flip-back" aria-hidden="'+(revealed?'true':'false')+'">'+
+    '<div class="v1067-card-texture" aria-hidden="true"></div>'+
+    '<span class="v1067-back-emblem" aria-hidden="true"><svg viewBox="0 0 64 64" focusable="false">'+
+      '<circle cx="32" cy="32" r="27"/><path d="m32 13 12 9-5 14H25l-5-14z M20 22 10 36l8 13m21-13 8 13 8-13M25 36l7 13 7-13"/>'+
+    '</svg></span>'+
+    '<span class="v1067-back-brand" aria-hidden="true">LIGA<br>JUVENTINO ROSAS</span>'+
+  '</div>';
+  const front='<div class="v1067-flip-side v1067-flip-front" aria-hidden="'+(revealed?'false':'true')+'">'+
+    '<div class="v538-player-image">'+v538Person(p,data,'game')+'</div>'+
+    '<div class="v538-player-name"><b>'+esc(p.name)+'</b><small>'+esc(p.team)+'</small></div>'+
+    '<div class="v538-player-stat"><small>Goles</small><strong>'+(known?esc(p.goals):'—')+'</strong></div>'+
+  '</div>';
+  return '<article class="v538-player-card v1067-flip-card '+esc(side)+' '+(revealed?'is-open':'is-closed')+' '+(animating?'is-revealing':'')+'" aria-label="'+label+'">'+
+    '<div class="v1067-flip-inner">'+back+front+'</div></article>';
 }
 function v538ClearTimers(){
   v538MoreTimers.forEach(function(t){clearTimeout(t)});v538MoreTimers=[];
@@ -580,8 +593,8 @@ function moreGame(data){
       '<div class="v538-game-stage '+esc(more.phase)+'">'+
         '<div class="v538-loading-question">Total de goles en la<br>Liga Juventino Rosas</div>'+
         '<div class="v538-player-pair">'+
-          (intro?v1065CardBack('left'):playerCard(pair.a,data,true,'left'))+
-          (both?playerCard(pair.b,data,more.answered,'right'):v1065CardBack('right'))+
+          v1067FlipCard(pair.a,data,true,'left',!intro,more.phase==='first')+
+          v1067FlipCard(pair.b,data,more.answered,'right',both,more.phase==='both')+
         '</div>'+
       '</div>'+
       '<div class="v538-score-strip"><span><small>Intentos</small><b>'+Array.from({length:Math.max(0,more.attempts)},function(){return '⚽'}).join(' ')+'</b></span><strong class="v538-countdown">'+more.countdown+'</strong><span><small>Puntuación</small><b>'+more.points+' pts</b></span></div>'+
