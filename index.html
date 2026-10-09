@@ -262,38 +262,38 @@
           }
         }catch(_){}
       }
-      /* V1075 — refresh rápido: el parámetro ?refresh ya solicita HTML fresco.
-         No borrar todos los caches ni recargar dos veces cada apertura.
-         Solo hacer una segunda carga si un SW legado aún controla esta pestaña. */
-      try{
+      /* V1075 — ?refresh consulta HTML fresco sin borrar cachés de toda la app.
+         Solo requiere una segunda carga si existe un SW antiguo controlando. */
+      try {
         var key='ljr-refresh-token-v445';
         if(sessionStorage.getItem(key)===token)return;
         sessionStorage.setItem(key,token);
-      }catch(_){}
+      } catch (_) {}
       (async function(){
         var oldController=false;
-        try{
+        try {
           if('serviceWorker' in navigator){
-            oldController=/\\/sw\\.js(?:\\?|$)/.test(String(navigator.serviceWorker.controller?.scriptURL||''));
+            var controller=String(navigator.serviceWorker.controller?.scriptURL||'');
+            oldController=controller.split('?')[0].endsWith('/sw.js');
             var regs=await navigator.serviceWorker.getRegistrations();
             await Promise.all(regs.map(function(r){
               var script=String(r.active?.scriptURL||r.waiting?.scriptURL||'');
-              // Mantener los servicios de avisos; solo retirar el SW legado.
-              return /\\/sw\\.js(?:\\?|$)/.test(script)
+              // No desactivar el SW de avisos ni servicios de otros proyectos.
+              return script.split('?')[0].endsWith('/sw.js')
                 ? r.unregister().catch(function(){})
                 : r.update().catch(function(){});
             }));
           }
-        }catch(_){}
+        } catch (_) {}
         if(!oldController)return;
-        try{
+        try {
           var marker='ljr-refresh-reloaded-v1071';
           if(sessionStorage.getItem(marker)===token)return;
           sessionStorage.setItem(marker,token);
           var fresh=new URL(location.href);
           fresh.searchParams.set('_fresh',token.replace(/[^a-zA-Z0-9._-]/g,'').slice(0,64));
           location.replace(fresh.href);
-        }catch(_){}
+        } catch (_) {}
       })();
     })();
   </script>
