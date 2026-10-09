@@ -43,7 +43,7 @@
         contentObserver.observe(screen,{subtree:true,childList:true});
       }
     }
-    if(title!==watchedTitle&&typeof ResizeObserver!=='undefined'){
+    if(root&&title&&title!==watchedTitle&&typeof ResizeObserver!=='undefined'){
       resizeObserver?.disconnect();
       watchedTitle=title;
       resizeObserver=new ResizeObserver(schedule);
@@ -56,14 +56,15 @@
     raf=0;
     if(!isMoreLess())return;
     const root=document.querySelector('#screen > [data-v12-moreless]');
+    const title=root?.querySelector('.v12-ml-title')||null;
+    // Observar #screen incluso antes de que se inserte la escena asíncrona.
+    bindChanges(root,title);
     if(!root)return;
-    const title=root.querySelector('.v12-ml-title');
     const curve=root.querySelector('.v12-ml-curves');
     const up=curve?.querySelector('.up .v12-curve-arrow');
     const down=curve?.querySelector('.down .v12-curve-arrow');
     const spans=title?.querySelectorAll(':scope > span');
     if(!title||!curve||!up||!down||spans?.length<2)return;
-    bindChanges(root,title);
 
     const first=letters(spans[0]);
     const second=letters(spans[spans.length-1]);
@@ -76,7 +77,7 @@
     const spacing=clamp(frame.width*.018,6,12);
     // SVG verde: trazo visible empieza en 25% de la anchura.
     const greenLeft=first.right+spacing-green.width*.25-frame.left;
-    const greenTop=first.top-green.height*.52-frame.top;
+    const greenTop=first.top-green.height*.52-frame.top+18; // V1005: flecha verde 18 px más abajo
 
     // SVG rojo girado: trazo termina aproximadamente en 75% del ancho.
     // Respeta también la O situada a la izquierda de MENOS.

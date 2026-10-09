@@ -2605,52 +2605,51 @@
             "time": "10:00",
             "field": "Campo 2",
             "date": "2026-10-04"
-          }
-        ],
-        "J8": [
+          },
           {
-            "home": "DEP. LA LUZ",
-            "away": "SAN ANTONIO FC",
+            "home": "PACHANGAS FC",
+            "away": "TAPATIO",
             "date": "2026-10-11",
             "time": "08:00",
             "field": "Campo 2"
           },
           {
-            "home": "SAN JULIAN",
-            "away": "TAVERA FC",
+            "home": "TAVERA FC",
+            "away": "SAN JULIAN",
             "date": "2026-10-11",
-            "time": "08:00",
+            "time": "10:00",
             "field": "San Julian"
+          },
+          {
+            "home": "DEP. NOPALERO",
+            "away": "SAN ANTONIO FC",
+            "date": "2026-10-11",
+            "time": "10:00",
+            "field": "Campo 2"
+          },
+          {
+            "home": "SAN JOSE JRS",
+            "away": "SAN JUAN FC",
+            "date": "2026-10-11",
+            "time": "10:00",
+            "field": "San Jose de la Montaña"
           },
           {
             "home": "BARZA",
             "away": "DEP. ZAPATA",
             "date": "2026-10-11",
-            "time": "10:00",
+            "time": "12:00",
             "field": "Campo 2"
           },
           {
-            "home": "DEP. NOPALERO",
-            "away": "SAN JUAN FC",
-            "date": "2026-10-11",
-            "time": "10:00",
-            "field": "Campo 4"
-          },
-          {
             "home": "CELTICOS",
-            "away": "TAPATIO",
+            "away": "DEP. LA LUZ",
             "date": "2026-10-11",
             "time": "12:00",
             "field": "Campo 1 (Empastado)"
-          },
-          {
-            "home": "SAN JOSE JRS",
-            "away": "PACHANGAS FC",
-            "date": "2026-10-11",
-            "time": "12:00",
-            "field": "San Jose  de la Montaña"
           }
         ],
+        "J8": [],
         "J9": [
           {
             "home": "CELTICOS",
@@ -2948,16 +2947,18 @@
   },
   "official_weekly_sync": {
     "source": "https://www.juventinorosasliga.com/reporte-semanal/",
-    "source_snapshot": "2026-10-08T00:23:45Z",
+    "source_snapshot": "2026-10-09",
     "week": "2026-10-05/2026-10-11",
-    "scope": "J7 Primera e Intermedia; J8 Segunda y Veteranos 50+; rondas futuras desde la copia oficial local; Veteranos 35+ sin fecha confirmada para el amistoso.",
+    "scope": "Reporte semanal 05–11 oct 2026: Primera J7, Intermedia J7, Segunda J7 (corregida oficialmente el 09/10), Veteranos 50+ J8. Los seis partidos Segunda del 11/10 sustituyen rol previo J8; sin goles o puntuaciones inferidas.",
     "decisions_without_score": [
       "GANA LINCES",
       "GANA BOAVISTA"
     ],
-    "verified_on": "2026-10-08",
+    "verified_on": "2026-10-09",
     "vet35_first_round": "2026-10-17",
-    "verified_source": "https://www.juventinorosasliga.com/reportes/jornadas/completo/"
+    "verified_source": "https://www.juventinorosasliga.com/reportes/jornadas/completo/",
+    "second_force_round_2026_10_11": "J7",
+    "corrected_round_source": "https://www.juventinorosasliga.com/reporte-semanal/"
   },
   "last_user_verified_results": {
     "date": "2026-10-08",
