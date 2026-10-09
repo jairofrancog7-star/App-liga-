@@ -98,6 +98,12 @@ function v31ApplyHospitality(){
   if(!mount.querySelector('.v31-hospitality-page')){
     mount.innerHTML = v31HospitalityMarkup();
   }
+  // Apply only the two-blue background to the existing hospitalidad page.
+  // Inline !important wins over legacy stylesheets, even if loaded later.
+  const hospitalityPage=mount.querySelector('.v31-hospitality-page');
+  if(hospitalityPage){
+    hospitalityPage.style.setProperty('background','linear-gradient(180deg, #1689FF 0%, #060950 100%)','important');
+  }
   v31BindHospitality();
 }
 
