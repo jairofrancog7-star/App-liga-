@@ -52,6 +52,19 @@ function cleanKitColor(value){
   return /^#[0-9a-f]{6}$/i.test(v)?v:'#0b4bd8';
 }
 
+let DOT_TILE;
+function fabricDotTile(){
+  if(DOT_TILE)return DOT_TILE;
+  const tile=document.createElement('canvas');
+  tile.width=tile.height=18;
+  const c=tile.getContext('2d');
+  for(const [x,y,shade] of [[4,4,'#fff'],[13,4,'#000'],[4,13,'#000'],[13,13,'#fff']]){
+    c.fillStyle=shade;c.beginPath();c.arc(x,y,.68,0,Math.PI*2);c.fill();
+  }
+  DOT_TILE=tile;
+  return tile;
+}
+
 function drawKitHalf(ctx,left,base,accent=base,pattern='plain'){
   const w=1024,h=1024,color=cleanKitColor(base),accentColor=cleanKitColor(accent||base);
   ctx.fillStyle=color;ctx.fillRect(left,0,w,h);
@@ -112,15 +125,13 @@ function drawKitHalf(ctx,left,base,accent=base,pattern='plain'){
   shoulder.addColorStop(1,'rgba(0,0,0,0)');
   ctx.fillStyle=shoulder;ctx.fillRect(left,0,w,290);
 
-  // Fine breathable fabric texture across the entire shirt.
+  // V1013: misma trama textil, dibujada mediante un mosaico repetible.
+  // Antes se calculaban ~26 000 arcos por textura en el hilo de la interfaz;
+  // el patrón de 18 px evita pausas al abrir la tienda o cambiar el dorsal.
   ctx.save();
   ctx.globalAlpha=.10;
-  for(let y=4;y<h;y+=9){
-    for(let xx=left+4;xx<left+w;xx+=9){
-      ctx.fillStyle=((xx+y)/9)%2<1?'#ffffff':'#000000';
-      ctx.beginPath();ctx.arc(xx,y,.68,0,Math.PI*2);ctx.fill();
-    }
-  }
+  ctx.fillStyle=ctx.createPattern(fabricDotTile(),'repeat');
+  ctx.fillRect(left,0,w,h);
   ctx.restore();
   ctx.save();ctx.globalAlpha=.045;
   for(let xx=left+22;xx<left+w;xx+=30){
