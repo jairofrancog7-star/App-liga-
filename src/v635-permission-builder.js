@@ -892,6 +892,7 @@ window.LJR_PERMISSION_BUILDER_API={
   closePlayerPicker,
   choosePlayer(name){setPlayer(name||'');closePlayerPicker();},
   refresh(){refreshLists();renderTeamPicker();renderPlayerPicker();},
+  getOfficialData(){return db},
   setSignature(data){
     if(typeof data!=='string'||!/^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(data)||data.length>4*1024*1024)return false;
     signatureData=data;
