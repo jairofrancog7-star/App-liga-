@@ -2,7 +2,6 @@ import {validateCurp,parseIdentity,completion,matchAttachment,normalizeName} fro
 const q=s=>document.querySelector(s);
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let dbPromise,restoreVersion=0,pendingPhotos=[],busy=false,installed=false;
-const config=()=>{try{return JSON.parse(sessionStorage.getItem('ljr-registration-ocr')||'{}')}catch{return {}}};
 function status(message){const el=q('[data-capture-status]');if(el)el.textContent=message}
 function db(){
   if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{
@@ -52,31 +51,13 @@ export async function restoreAssets(record){
   }catch(error){status(error.message)}
 }
 export const removeAssets=key=>transaction(key,null,'delete');
-async function imagePayload(file){
-  if(!file.type.startsWith('image/'))throw new Error('Selecciona una imagen JPG, PNG o WebP');
-  const img=await createImageBitmap(file),canvas=document.createElement('canvas');
-  const scale=Math.min(1,2600/Math.max(img.width,img.height));
-  canvas.width=Math.round(img.width*scale);canvas.height=Math.round(img.height*scale);
-  const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(img,0,0,canvas.width,canvas.height);img.close();
-  const encoded=canvas.toDataURL('image/jpeg',.92).split(',')[1];
-  if(encoded.length>3900000)throw new Error('La imagen es demasiado grande para el servicio; recorta sólo la hoja');
-  return encoded;
-}
-async function requestService(path,options={}){
-  const settings=config();
-  if(!settings.endpoint||!settings.token)throw new Error('Conecta primero el servicio de lectura manuscrita');
-  const endpoint=new URL(settings.endpoint);
-  if(endpoint.protocol!=='https:')throw new Error('El servicio debe usar HTTPS');
-  const response=await fetch(endpoint.href+path,{...options,headers:{'Content-Type':'application/json','Authorization':'Bearer '+settings.token,...options.headers},credentials:'omit',signal:AbortSignal.timeout(45000)});
-  const data=await response.json();if(!response.ok)throw new Error(data.error||'El servicio no pudo leer la imagen');
-  return data;
-}
+/* Solo local: no existe ruta de envio OCR a servicios externos.
+   El texto impreso se procesa localmente por el motor ya incluido.
+   Los manuscritos requieren transcripcion o comprobacion manual. */
 export async function readConnected(file,onStatus){
   if(q('[data-capture-mode]')?.value!=='handwriting')return null;
-  onStatus?.('Leyendo pluma/lápiz con el servicio conectado…');
-  const result=await requestService('',{method:'POST',body:JSON.stringify({image:await imagePayload(file)})});
-  if(typeof result.text!=='string'||!result.text.trim())throw new Error('El servicio no encontró texto; prueba una foto más nítida');
-  return result;
+  onStatus?.('Modo privado: no se enviara la imagen a ninguna nube.');
+  throw new Error('La lectura de manuscritos en nube esta desactivada. Corrige la lista manualmente o usa OCR impreso local.');
 }
 function formData(){return {name:q('[data-v64-cred-name]')?.value.trim(),team:q('[data-v64-cred-team]')?.value,curp:q('[data-v64-cred-curp]')?.value,dob:q('[data-v100-dob]')?.value}}
 function update(){
@@ -114,14 +95,14 @@ function photoInbox(){
 function panelHtml(){return `<section class="registration-capture" data-capture-panel>
   <header><small>REGISTRO UNIFICADO</small><h3>Lista → CURP / INE → foto → credencial</h3><p>Importa la hoja del delegado abajo. Después completa cada jugador con su documento y su foto.</p></header>
   <div class="capture-check" data-capture-check></div><small data-capture-curp-check></small>
-  <label>Tipo de lectura<select data-capture-mode><option value="printed">Texto impreso · en este dispositivo</option><option value="handwriting">Pluma / lápiz · servicio conectado</option></select></label>
+  <label>Tipo de lectura<select data-capture-mode><option value="printed">OCR de texto impreso · local</option></select></label><small>Modo privado: el escaneo de este formulario no envia CURP, INE ni fotos a servidores OCR.</small>
   <div class="capture-actions"><button type="button" data-capture-document>📷 Tomar foto de CURP / INE</button><button type="button" data-capture-portrait>👤 Tomar foto del jugador</button><button type="button" data-capture-paste>📋 Pegar imagen copiada</button><button type="button" data-capture-apply-text>Usar texto corregido</button></div>
   <label>Importar una imagen por enlace<input type="url" data-capture-url placeholder="https://…/imagen.jpg"></label>
   <div class="capture-actions"><select data-capture-url-kind><option value="document">Documento CURP / INE</option><option value="photo">Foto del jugador</option><option value="list">Lista del delegado</option></select><button type="button" data-capture-fetch>Cargar imagen</button></div>
   <div class="capture-actions"><button type="button" data-capture-next>Completar siguiente jugador</button><button type="button" data-capture-save-next>Guardar y continuar</button></div><small data-capture-queue></small>
   <details><summary>Vincular varias fotos a jugadores</summary><p>Puedes seleccionar las imágenes guardadas desde WhatsApp. Se sugieren coincidencias por nombre completo o CURP del archivo; tú confirmas el jugador.</p><input type="file" multiple accept="image/*" data-capture-photos><div data-capture-inbox></div></details>
   <details><summary>WhatsApp del administrador · 412 171 5599</summary><p>Guarda las imágenes recibidas y selecciónalas aquí. El botón abre el chat; la recepción automática necesita WhatsApp Business conectado.</p><a href="https://wa.me/524121715599" target="_blank" rel="noopener">Abrir WhatsApp del administrador</a></details>
-  <details><summary>Conectar lectura de pluma / lápiz</summary><p>El texto impreso se lee en tu dispositivo. Para escritura a mano, conecta el servicio OCR del administrador; al detectar se enviará la imagen a ese servicio.</p><label>Enlace del servicio HTTPS<input type="url" data-capture-endpoint placeholder="https://…/api/registration-ocr"></label><label>Acceso del administrador<input type="password" data-capture-token autocomplete="off"></label><button type="button" data-capture-connect>Comprobar conexión</button><small data-capture-connection>Servicio manuscrito sin conectar</small></details>
+  <details><summary>Listas escritas a mano · privado</summary><p>Para una lista con pluma o lápiz, toma la foto, consulta la imagen y corrige los nombres antes de aprobar. No se transmite a Google Cloud Vision ni a otro servidor.</p></details>
   <p role="status" aria-live="polite" data-capture-status>Las fotos y documentos se conservan en este dispositivo. Revisa antes de registrar.</p>
   </section>`}
 function next(){
@@ -150,18 +131,12 @@ function mount(){
   bind('[data-capture-save-next]',async()=>{if(busy)return;if(!completion(formData(),!!q('[data-v64-photo]')?.files?.length).ready){status('Completa y revisa la CURP y la foto antes de continuar. Puedes guardar un borrador abajo.');return}busy=true;try{const saved=await window.LJR_PLAYER_REGISTRY.save();if(saved)next()}finally{busy=false}});
   bind('[data-capture-fetch]',async()=>{try{await fetchImage()}catch{throw new Error('No se pudo abrir el enlace. Si es un enlace de chat o privado, guarda la imagen y selecciónala.')}});
   bind('[data-capture-paste]',async()=>{if(!navigator.clipboard?.read)throw new Error('Este navegador no permite pegar imágenes; selecciónala desde archivos');for(const item of await navigator.clipboard.read()){const type=item.types.find(t=>t.startsWith('image/'));if(type){fillFile(q('[data-capture-url-kind]').value==='photo'?'[data-v64-photo]':'[data-v64-doc]',new File([await item.getType(type)],'imagen-pegada.png',{type}));update();return}}throw new Error('No hay una imagen copiada')});
-  const settings=config();q('[data-capture-endpoint]').value=settings.endpoint||'';q('[data-capture-token]').value=settings.token||'';
-  bind('[data-capture-connect]',async()=>{
-    const endpoint=q('[data-capture-endpoint]').value.trim().replace(/\/$/,''),token=q('[data-capture-token]').value.trim();
-    sessionStorage.setItem('ljr-registration-ocr',JSON.stringify({endpoint,token}));
-    try{const result=await requestService('',{method:'GET'});if(!result.ready)throw new Error('Falta configurar OCR en el servidor');q('[data-capture-connection]').textContent='✓ Servicio manuscrito conectado';status('Conexión comprobada. Elige Pluma / lápiz para leer una imagen.')}
-    catch(error){sessionStorage.removeItem('ljr-registration-ocr');q('[data-capture-connection]').textContent='Sin conexión: '+error.message;throw error}
-  });
   q('[data-capture-photos]').addEventListener('change',e=>{pendingPhotos=Array.from(e.target.files||[]);photoInbox()});
   update();
 }
 export function installCapture(){
   if(installed)return;installed=true;
+  try{sessionStorage.removeItem('ljr-registration-ocr')}catch(_){}
   window.LJR_REGISTRATION_CAPTURE={read:readConnected,parseIdentity,normalizeName,extractCurp:text=>parseIdentity(text).curp,update};
   document.addEventListener('input',e=>{if(e.target.matches('[data-v64-cred-name],[data-v64-cred-curp],[data-v64-cred-team],[data-v100-dob]'))update()});
   document.addEventListener('change',e=>{if(e.target.matches('[data-v64-photo],[data-v64-doc]'))refreshFilePreview(e.target);if(e.target.matches('[data-v64-photo],[data-v64-doc],[data-v64-cred-team]'))update()});
