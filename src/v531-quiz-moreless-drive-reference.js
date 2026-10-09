@@ -910,6 +910,7 @@ window.addEventListener('click',function(e){
   const hit=e.target.closest('#v612-quiz-portal [data-v531-quiz-close]');
   if(!hit)return;
   e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+  document.body.dataset.quizGameCloseCaptured='1';
   quiz.exit=true;v1050NotifyOpen=false;render(false);
 },true);
 document.addEventListener('click',function(e){
