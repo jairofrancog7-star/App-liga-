@@ -612,7 +612,7 @@ function v12BracketLogo(t){
   const path=V12_BRACKET_PATHS[t.key];
   if(path) return '<img src="'+V12_TEAM_ASSET_BASE+path+'" alt="'+t.name+'" loading="eager" decoding="async">';
   if(t.key==='juventino'||t.key==='realjuventino') return '<img src="'+V12_LOGO+'" alt="'+t.name+'" loading="eager" decoding="async">';
-  return '<span class="v12-bracket-fallback">'+t.abbr+'</span>';
+  return '<span class="v12-bracket-fallback v1063-placeholder" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.6 20 5.4v6.1c0 4.8-3.1 8.2-8 10-4.9-1.8-8-5.2-8-10V5.4L12 2.6Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="m8 12 2.6 2.6 5.4-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
 }
 function v12BracketShort(t){
   // Los nombres completos permanecen en los datos; solo el cuadro usa tres caracteres.
