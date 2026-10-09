@@ -28,7 +28,7 @@ function buttons(id){return '<div class="v1073-row-actions" data-v1073-actions="
   '<button type="button" data-v1073-save="'+esc(id)+'" aria-pressed="'+isSaved(id)+'">'+(isSaved(id)?'★ Guardada':'☆ Guardar')+'</button>'+
   '<button type="button" data-v1073-share="'+esc(id)+'">↗ Compartir</button></div>'}
 function mainRows(list){return Array.from(list.querySelectorAll(':scope > .v1073-row-wrap'))}
-function cmsCards(list){return Array.from(list.querySelectorAll('[data-cms-public-feed] .ljr-cms-public-card[data-cms-record]'))}
+function publicCards(host){return Array.from(host.publicFeed.querySelectorAll('.v1073-official-card[data-v1073-id]'))}
 function controlMarkup(){
  return '<section class="v1073-controls" aria-label="Herramientas de noticias">'+
   '<div class="v1073-search-line"><label class="v1073-search"><span aria-hidden="true">⌕</span><input type="search" maxlength="100" data-v1073-query autocomplete="off" placeholder="Buscar noticias, equipos o avisos" aria-label="Buscar noticias y avisos"></label>'+
@@ -60,8 +60,11 @@ function assure(){
  if(input&&document.activeElement!==input&&input.value!==settings.query)input.value=settings.query||'';
  controls.querySelectorAll('[data-v1073-mode]').forEach(function(b){b.classList.toggle('active',settings.mode===b.dataset.v1073Mode);b.setAttribute('aria-pressed',String(settings.mode===b.dataset.v1073Mode))});
  var admin=controls.querySelector('[data-v1073-admin-wrap]');if(admin)admin.hidden=!window.LJR_MEDIA?.admin;
- var alerts=controls.querySelector('[data-v1073-alert-feed]');
+ var alerts=controls.nextElementSibling?.matches('.v1073-alert-feed')?controls.nextElementSibling:null;
  if(!alerts){alerts=document.createElement('div');alerts.className='v1073-alert-feed';alerts.dataset.v1073AlertFeed='';controls.insertAdjacentElement('afterend',alerts)}
+ var pub=alerts.nextElementSibling?.matches('.v1073-official-feed')?alerts.nextElementSibling:null;
+ if(!pub){pub=document.createElement('div');pub.className='v1073-official-feed';pub.dataset.v1073OfficialFeed='';alerts.insertAdjacentElement('afterend',pub)}
+ root.classList.add('v1073-enhanced');
  Array.from(list.children).forEach(function(node){
   if(!node.matches?.('button.news-row[data-news]'))return;
   var id='base:'+node.dataset.news;
@@ -69,12 +72,7 @@ function assure(){
   node.before(wrap);wrap.append(node);
   wrap.insertAdjacentHTML('beforeend',buttons(id));
  });
- cmsCards(list).forEach(function(card){
-  var id='cms:news:'+card.dataset.cmsRecord;
-  card.dataset.v1073Id=id;
-  if(!card.querySelector('.v1073-row-actions'))card.insertAdjacentHTML('beforeend',buttons(id));
- });
- return {root:root,list:list,controls:controls,alerts:alerts};
+ return {root:root,list:list,controls:controls,alerts:alerts,publicFeed:pub};
 }
 function detailOf(id){
  if(id.indexOf('base:')===0){var b=document.querySelector('.v1073-row-wrap[data-v1073-id="'+id+'"] .news-row');return {title:b?.querySelector('b')?.textContent||'Noticias de la Liga',body:b?.querySelector('p')?.textContent||'',route:'newsDetail'}}
@@ -90,6 +88,17 @@ function renderAlerts(host){
   feed.innerHTML=items.length?'<div class="v1073-alert-head"><strong>Comunicados oficiales</strong><button type="button" data-v1073-open="notifications">Ver todos ›</button></div>'+
    items.map(function(r){var p=r.payload||{},id=recordId(r);return '<div class="v1073-alert-card" data-v1073-id="'+esc(id)+'">'+
    '<button type="button" class="v1073-alert-main" data-v1073-open="notifications"><span class="v1073-alert-icon">'+(p.type==='urgente'?'!':'i')+'</span><span><small>'+esc(p.type==='urgente'?'AVISO URGENTE':'PUBLICACIÓN OFICIAL')+'</small><b>'+esc(p.title||'Comunicado de la Liga')+'</b><em>'+esc(p.body||'')+'</em></span><span aria-hidden="true">›</span></button>'+buttons(id)+'</div>'}).join(''):'';
+ }
+ feed.hidden=!items.length;
+}
+function renderPublicNews(host){
+ var feed=host.publicFeed;
+ var items=records().filter(function(r){return r.kind==='news'}).sort(function(a,b){return Number(b.payload?.updatedAt||b.updated||b.created||0)-Number(a.payload?.updatedAt||a.updated||a.created||0)}).slice(0,16);
+ var signature=items.map(function(r){return recordId(r)+'/'+String(r.revision||r.updated||'')+'/'+String(r.payload?.title||'')+'/'+String(r.payload?.body||'')}).join('|');
+ if(feed.dataset.signature!==signature){
+  feed.dataset.signature=signature;
+  feed.innerHTML=items.length?items.map(function(r){var p=r.payload||{},id=recordId(r);return '<article class="v1073-official-card" data-v1073-id="'+esc(id)+'" data-v1073-category="'+esc(scope(r))+'">'+
+   '<small>NOTICIA OFICIAL · '+esc(scope(r))+'</small><h3>'+esc(p.title||'Noticias de la Liga')+'</h3><p>'+esc(p.body||p.description||'')+'</p>'+buttons(id)+'</article>'}).join(''):'';
  }
  feed.hidden=!items.length;
 }
@@ -109,10 +118,9 @@ function applyFilters(host){
   var txt=clean(w.querySelector('.news-row')?.textContent||'');var ok=(!q||txt.includes(q))&&(mode!=='unread'||!isRead(w.dataset.v1073Id))&&(mode!=='saved'||isSaved(w.dataset.v1073Id));
   w.hidden=!ok;if(ok)shown++;
  });
- cmsCards(host.list).forEach(function(c){
-  var rec=records().find(function(x){return x.kind==='news'&&String(x.id)===c.dataset.cmsRecord});
+ publicCards(host).forEach(function(c){
   var id=c.dataset.v1073Id,txt=clean(c.textContent);
-  var ok=!!rec&&(category==='Todas'||scope(rec)===category)&&(!q||txt.includes(q))&&(mode!=='unread'||!isRead(id))&&(mode!=='saved'||isSaved(id));
+  var ok=(category==='Todas'||c.dataset.v1073Category===category)&&(!q||txt.includes(q))&&(mode!=='unread'||!isRead(id))&&(mode!=='saved'||isSaved(id));
   c.hidden=!ok;if(ok)shown++;
  });
  host.alerts.querySelectorAll('.v1073-alert-card').forEach(function(c){
@@ -149,7 +157,7 @@ function checkVersions(){
 }
 function run(){
  if(checking||route()!=='news')return;
- checking=true;try{var host=assure();if(!host)return;renderAlerts(host);checkVersions();applyFilters(host)}catch(err){console.warn('Noticias Liga:',err)}finally{checking=false}
+ checking=true;try{var host=assure();if(!host)return;renderAlerts(host);renderPublicNews(host);checkVersions();applyFilters(host)}catch(err){console.warn('Noticias Liga:',err)}finally{checking=false}
 }
 function schedule(){clearTimeout(timer);timer=setTimeout(run,95)}
 function share(id){
