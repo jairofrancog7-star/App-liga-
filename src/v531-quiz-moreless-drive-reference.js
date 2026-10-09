@@ -22,6 +22,37 @@ const DATA_REMOTE=RAW+'data/official-live.json?v=20261001-v531-games';
 const LEAGUE=RAW+'assets/liga-logo.webp';
 const FEATURE='./assets/home-players-user.jpg';
 const QUIZ_STADIUM='./assets/reference/predictor-v36/predictor-stadium.webp';
+/* V1059: referencias de Campos/Clima. Vista aérea © Esri, NO fotografía
+   verificada del campo ni fotografía extraída de Google Maps. */
+const QUIZ_FIELDS=[{"id":"sur-1","name":"Campo 1 · Unidad Deportiva Sur","community":"Juventino Rosas","lat":20.63753,"lon":-100.99297,"precision":"complejo"},{"id":"sur-2","name":"Campo 2 · Unidad Deportiva Sur","community":"Juventino Rosas","lat":20.63753,"lon":-100.99297,"precision":"complejo"},{"id":"sur-3","name":"Campo 3 · Unidad Deportiva Sur","community":"Juventino Rosas","lat":20.63753,"lon":-100.99297,"precision":"complejo"},{"id":"zapata-4","name":"Campo 4 · Emiliano Zapata","community":"Juventino Rosas","lat":20.64337,"lon":-100.99286,"precision":"regional"},{"id":"cerrito","name":"Campo Cerrito de Gasca","community":"Cerrito de Gasca","lat":20.617778,"lon":-101.0625,"precision":"localidad"},{"id":"tavera","name":"Campo de Tavera","community":"Franco Tavera","lat":20.60839,"lon":-100.93238,"precision":"localidad"},{"id":"san-juan","name":"Campo San Juan de la Cruz","community":"San Juan de la Cruz","lat":20.63379,"lon":-100.911569,"precision":"localidad"},{"id":"cuenda","name":"Unidad Deportiva Santiago de Cuenda","community":"Santiago de Cuenda","lat":20.59793,"lon":-100.99663,"precision":"localidad"},{"id":"romerillo","name":"Campo San Antonio de Romerillo","community":"San Antonio de Romerillo","lat":20.60784,"lon":-100.94854,"precision":"localidad"},{"id":"fraccionamiento","name":"Campo Fraccionamiento Comontuoso","community":"Comontuoso / Santiago de Cuenda","lat":20.59793,"lon":-100.99663,"precision":"regional"},{"id":"pozos","name":"Campo de Fútbol de Pozos","community":"Pozos","lat":20.61767,"lon":-100.90033,"precision":"campo"},{"id":"rincon","name":"Campo Rincón de Centeno","community":"Rincón de Centeno","lat":20.660153,"lon":-100.886766,"precision":"localidad"},{"id":"san-jose","name":"Campo San José de la Montaña","community":"San José de la Montaña","lat":20.60102,"lon":-101.07242,"precision":"localidad"},{"id":"san-julian","name":"Campo San Julián Tierra Blanca","community":"San Julián Tierra Blanca","lat":20.591403,"lon":-101.040358,"precision":"localidad"}];
+function quizLocalFieldQuestions(){
+  return QUIZ_FIELDS.map(function(field,index){
+    const uds=field.id.startsWith('sur-');
+    const question=uds?'¿Cuál es el Campo '+(index+1)+' de la Unidad Deportiva Sur?'
+      :'¿Cuál cancha de la Liga está ubicada en '+field.community+'?';
+    const pool=(uds?QUIZ_FIELDS.filter(f=>f.id.startsWith('sur-')||f.id==='zapata-4'):QUIZ_FIELDS.filter(f=>f.id!==field.id)).map(f=>f.name);
+    return {question,correct:field.name,pool,field};
+  });
+}
+function quizFieldAerial(field){
+  if(!field||!Number.isFinite(field.lat)||!Number.isFinite(field.lon))return '';
+  const z=18,n=2**z,rad=field.lat*Math.PI/180;
+  const wx=(field.lon+180)/360*n*256,wy=(1-Math.asinh(Math.tan(rad))/Math.PI)/2*n*256;
+  const sx=Math.floor(wx/256)-1,sy=Math.floor(wy/256)-1;
+  let imgs='';
+  for(let row=0;row<3;row++)for(let col=0;col<3;col++){
+    const x=sx+col,y=sy+row;
+    const url='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/'+z+'/'+y+'/'+x;
+    imgs+='<img class="v1059-aerial-tile" src="'+url+'" alt="" loading="eager" decoding="async" style="left:'+(col*256)+'px;top:'+(row*256)+'px" onerror="this.hidden=true">';
+  }
+  const left=Math.round(wx-sx*256),top=Math.round(wy-sy*256);
+  const area=field.precision==='campo'?'Sector del campo':'Sector aproximado';
+  return '<div class="v1059-field-aerial" role="img" aria-label="Vista aérea de referencia de '+esc(field.community)+'. No es fotografía verificada de la cancha">'+
+    '<span class="v1059-field-fallback" aria-hidden="true"><i></i></span>'+
+    '<span class="v1059-aerial-tiles" aria-hidden="true" style="left:calc(50% - '+left+'px);top:calc(50% - '+top+'px)">'+imgs+'</span>'+
+    '<small class="v1059-field-source">'+esc(area)+' · © Esri y proveedores</small></div>';
+}
+
 const FALLBACK_LOGOS={
   'san jose fc':'assets/official-logos/san-jose-fc.png',
   'juventus':'assets/official-logos/juventus.png',
@@ -40,7 +71,7 @@ const FALLBACK_LOGOS={
 };
 let db=window.LJR_OFFICIAL_DATA||null;
 let loading=null;
-const quiz={mode:'splash',answered:false,selected:'',points:0,step:1,exit:false,remaining:15,halfUsed:false,retryUsed:false,attempts:1,countdown:3,history:[],missed:[]};
+const quiz={mode:'splash',answered:false,selected:'',points:0,step:1,exit:false,remaining:15,halfUsed:false,retryUsed:false,attempts:1,countdown:3,history:[],missed:[],fieldStart:-5};
 const more={mode:'legacy',answered:false,selected:'',points:0,attempts:2,exit:false,phase:'intro',countdown:15,roundToken:0,round:0,roundsPlayed:0,finished:false,scoreSaved:false};
 let v538MoreTimers=[];
 let v538MoreInterval=null;
@@ -126,13 +157,15 @@ function crest(team,data,cls){
   return '<span class="v531-crest '+esc(cls||'')+'">'+(src?'<img src="'+esc(src)+'" alt="'+esc(team)+'" loading="eager" decoding="async">':'<b>'+esc(initials(team))+'</b>')+'</span>';
 }
 function quizData(data){
-  const rows=standings(data);const scorersList=scorers(data);const questions=[];
-  for(let i=0;i<Math.min(4,rows.length);i++)questions.push({question:'¿Qué equipo ocupa el '+(i+1)+'º lugar en esta categoría?',correct:String(rows[i][1]),pool:rows.map(r=>String(r[1]))});
-  if(scorersList.length>=4)questions.push({question:'¿Quién lidera el goleo de esta categoría?',correct:scorersList[0].name,pool:scorersList.map(r=>r.name)});
-  const q=questions[(quiz.step-1)%Math.max(1,questions.length)]||{question:'Esperando los datos oficiales de la Liga.',correct:'',pool:[]};
-  const options=[q.correct,...q.pool.filter(x=>norm(x)!==norm(q.correct)).slice(0,3)].filter(Boolean);
-  // Rotate the answer position, keeping the questions tied to published data.
-  if(options.length)for(let i=0;i<quiz.step%options.length;i++)options.push(options.shift());
+  const rows=standings(data),scorersList=scorers(data),stats=[];
+  for(let i=0;i<Math.min(4,rows.length);i++)stats.push({question:'¿Qué equipo ocupa el '+(i+1)+'º lugar en esta categoría?',correct:String(rows[i][1]),pool:rows.map(r=>String(r[1]))});
+  if(scorersList.length>=4)stats.push({question:'¿Quién lidera el goleo de esta categoría?',correct:scorersList[0].name,pool:scorersList.map(r=>r.name)});
+  const fields=quizLocalFieldQuestions(),round=Math.max(0,(quiz.step||1)-1);
+  const fieldOffset=((Number(quiz.fieldStart)||0)+Math.floor(round/2))%fields.length;
+  const q=round%2===0||!stats.length?fields[fieldOffset]:stats[Math.floor(round/2)%stats.length];
+  const pool=[q.correct,...(q.pool||[])].filter((v,i,a)=>v&&a.findIndex(x=>norm(x)===norm(v))===i);
+  const options=pool.slice(0,4);
+  if(options.length)for(let i=0;i<(quiz.step||1)%options.length;i++)options.push(options.shift());
   return {...q,options,leader:rows[0]||null};
 }
 function morePair(data){
@@ -234,6 +267,7 @@ function quizCountdown(data){
 }
 function v614StartQuizCountdown(){
   v614ClearQuizCountdown();
+  quiz.fieldStart=(quiz.fieldStart+5)%QUIZ_FIELDS.length;
   quiz.mode='countdown';quiz.answered=false;quiz.selected='';quiz.exit=false;quiz.remaining=15;quiz.step=1;quiz.points=0;quiz.halfUsed=false;quiz.retryUsed=false;quiz.attempts=1;quiz.countdown=3;quiz.history=[];quiz.missed=[];
   render(true);
   v614QuizCountdownTimer=setInterval(function(){
@@ -283,7 +317,7 @@ function quizSplash(){
 }
 function quizHub(data){
   const ranks=rankRows(data);
-  const q=quizData(data);
+  const q={correct:String(standings(data)[0]?.[1]||'Liga Juventino Rosas')};
   // V1057: portada compacta; menú de tres puntos sin opciones de notificación.
   return '<section class="v531-page v531-quiz v1057-quiz-hub" data-v531-quiz data-v531-view="hub">'+
     '<header class="v531-mini-head v1057-quiz-head">'+
@@ -328,7 +362,7 @@ function quizGame(data){
     '<header class="v614-game-head"><strong class="v1050-quiz-title">Quiz Aleatorio</strong><button type="button" data-v531-quiz-close aria-label="Cerrar quiz">'+closeSvg()+'</button></header>'+
     '<div class="v614-scorebar"><div class="v614-progress-track">'+v614QuizProgress()+'</div><span class="v614-score-total"><small>Total</small><b>'+quiz.points+' ptos</b></span></div>'+
     '<main class="v531-q-main v614-q-main">'+
-      '<article class="v531-question-card v614-question-card"><div class="v531-question-media v614-question-media"><img src="'+esc(QUIZ_STADIUM)+'" alt="" loading="eager" decoding="async"><p>'+esc(q.question)+'</p></div><div class="v531-q-grid v614-q-grid">'+options+'</div></article>'+
+      '<article class="v531-question-card v614-question-card"><div class="v531-question-media v614-question-media">'+(q.field?quizFieldAerial(q.field):'<div class="v1059-neutral-pitch" aria-hidden="true"><i></i></div>')+'<p>'+esc(q.question)+'</p></div><div class="v531-q-grid v614-q-grid">'+options+'</div></article>'+
       '<div class="v614-league-band"><img src="'+esc(LEAGUE)+'" alt=""><span><b>LIGA JUVENTINO ROSAS</b><small>FÚTBOL MUNICIPAL</small></span></div>'+
       '<div class="v531-turbos v614-turbos"><button data-quiz-half '+(quiz.halfUsed?'disabled':'')+'><small>Tus turbos</small><b><span class="v617-turbo-icon">'+v617LightningIcon()+'</span><span>50-50</span></b></button><button data-quiz-retry '+(quiz.retryUsed?'disabled':'')+'><small>Turbo</small><b><span class="v617-turbo-icon">'+v617BallIcon()+'</span><span>2 intentos</span></b></button></div>'
     '</main>'+
