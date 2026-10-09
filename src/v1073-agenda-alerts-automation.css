@@ -1,0 +1,29 @@
+/* V1073 · Solo pantalla Preparar mi jornada. Compacto móvil/PC. */
+body[data-app-route="agendaBuilder"] .ag1073{display:grid;gap:9px;padding:12px;margin:10px 0 14px;border:1px solid rgba(101,205,255,.42);border-radius:17px;color:#fff;background:linear-gradient(145deg,#13338b,#071563 94%);box-shadow:inset 0 1px rgba(255,255,255,.12)}
+body[data-app-route="agendaBuilder"] .ag1073-head{display:flex;justify-content:space-between;align-items:center;gap:9px;min-width:0}
+body[data-app-route="agendaBuilder"] .ag1073-head>span{display:grid;gap:2px;min-width:0}
+body[data-app-route="agendaBuilder"] .ag1073-head small{font:750 9px/1.2 Inter,Arial,sans-serif;letter-spacing:.07em;color:#77e7ff}
+body[data-app-route="agendaBuilder"] .ag1073-head strong{font:800 17px/1.2 Inter,Arial,sans-serif;color:white}
+body[data-app-route="agendaBuilder"] .ag1073-head>b{font:800 9px/1 Inter,Arial,sans-serif;padding:6px 8px;background:#124990;border:1px solid #47caeb;border-radius:99px;color:#c1f9ff}
+body[data-app-route="agendaBuilder"] .ag1073-info{color:#c8e0fa;font:600 11px/1.4 Inter,Arial,sans-serif}
+body[data-app-route="agendaBuilder"] .ag1073-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+body[data-app-route="agendaBuilder"] .ag1073-actions button{display:flex;justify-content:center;align-items:center;min-width:0;min-height:42px;padding:8px 6px;border:1px solid rgba(99,194,255,.4);border-radius:11px;background:linear-gradient(140deg,#1c65d0,#0a357f);color:white;font:750 11px/1.24 Inter,Arial,sans-serif;text-align:center;white-space:normal;cursor:pointer}
+body[data-app-route="agendaBuilder"] .ag1073-actions button:focus-visible{outline:2px solid #79eeff;outline-offset:2px}
+body[data-app-route="agendaBuilder"] .ag1073-warnings{padding:8px 10px;border-radius:9px;background:rgba(15,186,169,.11);color:#9ef5dc;font:650 11px/1.35 Inter,Arial,sans-serif}
+body[data-app-route="agendaBuilder"] .ag1073-warnings[data-error="true"]{background:rgba(241,180,61,.12);color:#ffdea0}
+body[data-app-route="agendaBuilder"] .ag1073-details{min-width:0;border-top:1px solid rgba(157,218,255,.22);padding-top:8px}
+body[data-app-route="agendaBuilder"] .ag1073-details summary{display:flex;justify-content:space-between;align-items:center;cursor:pointer;color:#eef6ff;font:750 12px/1.3 Inter,Arial,sans-serif}
+body[data-app-route="agendaBuilder"] .ag1073-details summary span{color:#65e4f5}
+body[data-app-route="agendaBuilder"] .ag1073-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:10px}
+body[data-app-route="agendaBuilder"] .ag1073-controls label{display:grid;gap:5px;min-width:0;font:700 10px/1.3 Inter,Arial,sans-serif;color:#d4e7ff}
+body[data-app-route="agendaBuilder"] .ag1073-controls select{width:100%;min-width:0;min-height:39px;padding:8px 6px;border-radius:9px;border:1px solid #377fbc;background:#091d65;color:white;font:700 10px Inter,Arial,sans-serif;color-scheme:dark}
+body[data-app-route="agendaBuilder"] .ag1073-toggle{display:flex;align-items:center;gap:9px;margin:10px 0;color:#d1e6ff;font:650 11px/1.35 Inter,Arial,sans-serif}
+body[data-app-route="agendaBuilder"] .ag1073-toggle input{width:18px;height:18px;accent-color:#18d3f4;flex:none}
+body[data-app-route="agendaBuilder"] .ag1073-preview-label{display:grid;gap:5px;color:#d7ebff;font:700 11px/1.3 Inter,Arial,sans-serif}
+body[data-app-route="agendaBuilder"] .ag1073-preview-label textarea{width:100%;box-sizing:border-box;resize:vertical;min-height:100px;padding:10px;border:1px solid #407ec2;border-radius:10px;background:#071757;color:#f3fbff;font:600 11px/1.5 Inter,Arial,sans-serif}
+body[data-app-route="agendaBuilder"] .ag1073-actions.small{margin-top:8px}
+body[data-app-route="agendaBuilder"] .ag1073-foot{margin:8px 0 0;font:500 10px/1.45 Inter,Arial,sans-serif;color:#bbd5f7}
+[data-ag1073-toast]{position:fixed;z-index:100000;bottom:100px;left:50%;width:max-content;max-width:min(90vw,420px);box-sizing:border-box;transform:translate(-50%,20px);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;padding:12px 16px;border:1px solid #65dffd;border-radius:13px;background:#08216d;color:#fff;font:700 12px/1.35 Inter,Arial,sans-serif;box-shadow:0 9px 24px #02073799}
+[data-ag1073-toast].show{opacity:1;transform:translate(-50%,0)}
+@media(min-width:768px){body[data-app-route="agendaBuilder"] .ag1073{max-width:900px;margin:12px auto}body[data-app-route="agendaBuilder"] .ag1073-actions{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:360px){body[data-app-route="agendaBuilder"] .ag1073{padding:9px}body[data-app-route="agendaBuilder"] .ag1073-head strong{font-size:15px}body[data-app-route="agendaBuilder"] .ag1073-controls{grid-template-columns:1fr}}
