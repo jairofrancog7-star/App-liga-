@@ -61,7 +61,7 @@ html.v31-hospitality-active .v31-hospitality-page .v31-code-wrap{z-index:3!impor
 
 /* V1010 · Banda superior nativa de Hospitalidad. Se dibuja detrás de la flecha
    y el título, sin moverlos; la barra del navegador Chrome queda fuera de la web. */
-html.v31-hospitality-active body[data-app-route="hospitality"] .v31-hospitality-page .v774-hospitality-head::before{
+html.v31-hospitality-active .v31-hospitality-page .v774-hospitality-head::before{
   content:""!important;
   position:absolute!important;
   z-index:2!important;
@@ -77,7 +77,7 @@ html.v31-hospitality-active body[data-app-route="hospitality"] .v31-hospitality-
     linear-gradient(180deg,rgba(15,48,143,.90) 0%,rgba(10,34,112,.53) 57%,transparent 100%)!important;
   opacity:1!important;
 }
-html.v31-hospitality-active body[data-app-route="hospitality"] .v31-hospitality-page .v774-hospitality-head::after{
+html.v31-hospitality-active .v31-hospitality-page .v774-hospitality-head::after{
   content:""!important;
   position:absolute!important;
   z-index:2!important;
@@ -89,9 +89,9 @@ html.v31-hospitality-active body[data-app-route="hospitality"] .v31-hospitality-
   background:radial-gradient(ellipse 63% 63% at 88% 12%,rgba(37,97,210,.18),transparent 84%)!important;
   opacity:1!important;
 }
-html.v31-hospitality-active body[data-app-route="hospitality"] .v31-hospitality-page .v31-back{
+html.v31-hospitality-active .v31-hospitality-page .v31-back{
   z-index:5!important;
 }
-html.v31-hospitality-active body[data-app-route="hospitality"] .v31-hospitality-page h1{
+html.v31-hospitality-active .v31-hospitality-page h1{
   z-index:4!important;
 }
