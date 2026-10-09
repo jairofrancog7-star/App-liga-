@@ -378,30 +378,67 @@ function markup(){
     (filterMode?filterScreen():header()+(activeTab==='federations'?fedView():clubsView()))+
   '</section>';
 }
-function closePopover(){var p=document.querySelector('.v32-popover');if(p)p.remove()}
+var openRankingMenuAnchor=null;
+function closePopover(){
+  var p=document.querySelector('.v32-popover');if(p)p.remove();
+  if(openRankingMenuAnchor){
+    openRankingMenuAnchor.classList.remove('v993-dropdown-open');
+    openRankingMenuAnchor.setAttribute('aria-expanded','false');
+    openRankingMenuAnchor.removeAttribute('aria-controls');
+    openRankingMenuAnchor=null;
+  }
+}
 function menuAt(anchor,title,items){
+  if(!anchor)return;
+  /* The same arrow closes the dropdown on its second tap. */
+  if(openRankingMenuAnchor===anchor&&document.querySelector('.v993-rankings-menu')){closePopover();return}
   closePopover();
-  var p=document.createElement('div');p.className='v32-popover v992-rankings-menu';
-  p.setAttribute('role','dialog');p.setAttribute('aria-label',title);
-  p.innerHTML='<b>'+esc(title)+'</b>'+items.map(function(item,i){
-    return '<button type="button" data-v992-choice="'+i+'" class="'+(item.active?'active':'')+'">'+esc(item.label)+'</button>';
+  var p=document.createElement('div');
+  p.className='v32-popover v992-rankings-menu v993-rankings-menu';
+  p.id='v993-rankings-dropdown';
+  p.setAttribute('role','listbox');
+  p.setAttribute('aria-label',title);
+  p.innerHTML=items.map(function(item,i){
+    var selected=!!item.active;
+    return '<button type="button" role="option" aria-selected="'+selected+'" data-v992-choice="'+i+'" class="v993-menu-option'+(selected?' active':'')+'">'+
+      '<span class="v993-menu-label">'+esc(item.label)+'</span>'+
+      (selected?'<svg class="v993-menu-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg>':'')+
+    '</button>';
   }).join('');
   document.body.appendChild(p);
-  var bounds=anchor&&anchor.getBoundingClientRect(),width=Math.min(304,window.innerWidth-26);
-  var left=Math.max(13,Math.min(window.innerWidth-width-13,bounds?bounds.left:13));
-  var top=bounds?bounds.bottom+6:70;
-  if(top+p.offsetHeight>window.innerHeight-14)top=Math.max(14,(bounds?bounds.top:window.innerHeight)-p.offsetHeight-6);
+  openRankingMenuAnchor=anchor;
+  anchor.classList.add('v993-dropdown-open');
+  anchor.setAttribute('aria-expanded','true');
+  anchor.setAttribute('aria-haspopup','listbox');
+  anchor.setAttribute('aria-controls',p.id);
+  var bounds=anchor.getBoundingClientRect();
+  var width=Math.min(440,window.innerWidth-26,Math.round(window.innerWidth*.83));
+  var left=Math.max(13,Math.min(window.innerWidth-width-13,bounds.left+8));
+  var top=bounds.bottom+6;
+  if(top+p.offsetHeight>window.innerHeight-12){
+    top=Math.max(12,bounds.top-p.offsetHeight-6);
+  }
   p.style.setProperty('width',width+'px','important');
   p.style.setProperty('left',left+'px','important');
   p.style.setProperty('top',top+'px','important');
   p.style.setProperty('bottom','auto','important');
   p.style.setProperty('transform','none','important');
   p.querySelectorAll('[data-v992-choice]').forEach(function(b){
-    b.onclick=function(){var item=items[Number(b.dataset.v992Choice)];closePopover();if(item&&item.action)item.action()};
+    b.onclick=function(){
+      var item=items[Number(b.dataset.v992Choice)];
+      closePopover();
+      if(item&&item.action)item.action();
+    };
   });
 }
 function seasonPopover(anchor){
-  menuAt(anchor,'Temporada',[{label:'Temporada actual',active:true,action:function(){season='Temporada actual';toast('Mostrando temporada actual');}}]);
+  menuAt(anchor,'Temporada',[
+    {label:'Temporada actual',active:true,action:function(){season='Temporada actual';toast('Mostrando temporada actual')}},
+    {label:'Ver clasificación por categorías',active:false,action:function(){
+      activeTab='federations';localStorage.setItem('v32-rankings-tab',activeTab);expanded=-1;render();
+      var sc=document.querySelector('#screen');if(sc)sc.scrollTop=0;
+    }}
+  ]);
 }
 function beginFilter(){
   pendingClub=selectedClub;
@@ -417,15 +454,15 @@ function beginFilter(){
 }
 function rankingOptions(button){
   if(activeTab==='clubs'){
-    menuAt(button,'Ordenar clubes',[
-      {label:'Puntos · mayor a menor',active:clubOrder==='points',action:function(){clubOrder='points';localStorage.setItem('v32-rankings-club-order',clubOrder);expanded=-1;render()}},
-      {label:'Nombre · A a Z',active:clubOrder==='az',action:function(){clubOrder='az';localStorage.setItem('v32-rankings-club-order',clubOrder);expanded=-1;render()}},
-      {label:'Filtrar categoría',action:beginFilter}
+    menuAt(button,'Coeficientes de clubes',[
+      {label:'Coeficientes de clubes',active:clubOrder==='points',action:function(){clubOrder='points';localStorage.setItem('v32-rankings-club-order',clubOrder);expanded=-1;render()}},
+      {label:'Ordenar clubes por nombre (A-Z)',active:clubOrder==='az',action:function(){clubOrder='az';localStorage.setItem('v32-rankings-club-order',clubOrder);expanded=-1;render()}},
+      {label:'Filtrar por categoría',active:false,action:beginFilter}
     ]);
   }else{
-    menuAt(button,'Categorías',[
+    menuAt(button,'Clasificación por categorías',[
       {label:'Todas las categorías',active:!selectedFederation,action:function(){selectedFederation='';pendingFederation='';localStorage.removeItem('v32-rankings-federation');render()}},
-      {label:'Elegir categoría',action:beginFilter}
+      {label:'Seleccionar una categoría',active:!!selectedFederation,action:beginFilter}
     ]);
   }
 }
@@ -582,5 +619,14 @@ document.addEventListener('click',function(event){
   if(event.target.closest('.v32-popover')||event.target.closest('[data-v32-season]')||event.target.closest('[data-v32-info]'))return;
   closePopover();
 });
+document.addEventListener('keydown',function(event){
+  if(event.key==='Escape'&&document.querySelector('.v32-popover')){
+    var anchor=openRankingMenuAnchor;closePopover();if(anchor&&anchor.isConnected)anchor.focus();
+  }
+});
+var rankingsScroll=document.querySelector('#screen');
+if(rankingsScroll)rankingsScroll.addEventListener('scroll',function(){
+  if(document.querySelector('.v993-rankings-menu'))closePopover();
+},{passive:true});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
 })();
