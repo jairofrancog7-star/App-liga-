@@ -855,9 +855,6 @@ function shirt(logo,variant,label,number,name){
   '<span class="v602-shirt-tint" aria-hidden="true"></span>'+
   '<span class="v602-shirt-pattern" aria-hidden="true"></span>'+
   '<span class="v602-shirt-light" aria-hidden="true"></span>'+
-// V1009: mismo escudo institucional de letras azules para cada camiseta de la tienda.
-// La imagen transparente se agrega sólo como insignia sobre la tela, no es filtro global.
-  '<img class="v1009-shirt-league-badge" src="./assets/branding/escudo-liga-azul-sin-fondo-v1007.png?v=v1009-store-badges" alt="" loading="lazy" decoding="async" aria-hidden="true">'+
   (logo?'<img class="v602-shirt-logo" src="'+esc(logo)+'" alt="'+esc(team)+'" loading="eager" decoding="async">':'')+
   '<span class="v431-shirt-name v602-shirt-name">'+esc(name||"")+'</span>'+
   '<span class="v431-shirt-number v602-shirt-number">'+esc(number||"")+'</span>'+
