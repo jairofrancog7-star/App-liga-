@@ -571,7 +571,8 @@ html body #v543-moreless-portal .v551-more-reference-game .v538-player-pair{
 }
 html body #v543-moreless-portal .v551-more-reference-game .v538-player-card.right.turning{
   position:relative!important;
-  isolation:isolate!important;
+  isolation:auto!important;
+  overflow:visible!important; /* El giro 3D no debe aplanarse por overflow:hidden. */
   transform-style:preserve-3d!important;
   animation:ljrMorelessFlip1055 .68s cubic-bezier(.23,.68,.27,1) both!important;
   will-change:transform!important;
@@ -601,9 +602,8 @@ html body #v543-moreless-portal .v551-more-reference-game .v538-player-card.righ
   -webkit-backface-visibility:hidden!important;
 }
 @keyframes ljrMorelessFlip1055{
-  0%{transform:translateX(19px) rotateY(180deg);opacity:.85}
-  14%{opacity:1}
-  100%{transform:translateX(0) rotateY(0);opacity:1}
+  0%{transform:translateX(19px) rotateY(180deg)}
+  100%{transform:translateX(0) rotateY(0)}
 }
 @media(prefers-reduced-motion:reduce){
   html body #v543-moreless-portal .v551-more-reference-game .v538-player-card.right.turning{
