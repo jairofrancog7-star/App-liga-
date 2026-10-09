@@ -65,3 +65,14 @@
 }
 @media(max-width:345px){.liga-media-modal .ljr-editor-two{grid-template-columns:1fr}.liga-media-modal .ljr-editor-hub-grid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.liga-media-modal .ljr-editor-hub-grid>button{transition:none!important}}
+
+/* V1077: opciones de edición global y controles equilibrados sin huecos. */
+.liga-media-modal .ljr-editor-target{display:grid;gap:6px;color:#d5e8ff;font:700 12px/1.4 system-ui,sans-serif}
+.liga-media-modal .ljr-editor-target select{width:100%;min-height:42px;padding:9px 10px;border-radius:11px;border:1px solid #518dcc;background:#091d62;color:white;font-size:13px}
+.liga-media-modal .ljr-editor-two-choice{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.liga-media-modal .ljr-editor-two-choice button{min-height:48px;padding:9px;border:1px solid #56bddb;border-radius:10px;color:#e4faff;background:linear-gradient(135deg,#1662a6,#153c7e);font-size:12px;font-weight:750;line-height:1.4;overflow-wrap:anywhere}
+.liga-media-modal .ljr-editor-two-choice button:focus-visible{outline:2px solid #5be6f7;outline-offset:2px}
+.liga-media-modal .ljr-editor-row-actions{flex-wrap:wrap;justify-content:flex-end}
+.liga-media-modal .ljr-editor-row-actions button:last-child{border-color:#9c647e!important;background:#412353!important;color:#ffe0e8!important}
+.liga-media-modal .ljr-editor-row-actions button:disabled{opacity:.55}
+@media(max-width:350px){.liga-media-modal .ljr-editor-two-choice{grid-template-columns:1fr}}
