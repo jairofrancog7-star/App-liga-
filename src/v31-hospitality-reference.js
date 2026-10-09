@@ -118,14 +118,14 @@ function v31BindHospitality(){
 
 // Only Hospitalidad's original background and Android/PWA upper system bar.
 // Neither the header nor the invitation controls are repositioned.
-const V31_HOSPITALITY_BG='linear-gradient(180deg, #0C2968 0%, #07174F 36%, #040A3C 100%)';
+const V31_HOSPITALITY_BG='linear-gradient(180deg, #10348F 0%, #091C65 37%, #050943 100%)';
 let v31OriginalThemeColor=null;
 function v31SyncHospitalityTheme(active){
   const theme=document.querySelector('meta[name="theme-color"]');
   if(!theme)return;
   if(active){
     if(v31OriginalThemeColor===null)v31OriginalThemeColor=theme.getAttribute('content')||'#000144';
-    if(theme.content!=='#0C2968')theme.setAttribute('content','#0C2968');
+    if(theme.content!=='#10348F')theme.setAttribute('content','#10348F');
   }else if(v31OriginalThemeColor!==null){
     theme.setAttribute('content',v31OriginalThemeColor);
     v31OriginalThemeColor=null;
