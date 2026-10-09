@@ -42,7 +42,18 @@ try{
   await page.locator('#v612-quiz-portal [data-v531-view="game"]').waitFor({state:'visible',timeout:15000});
   step = 'X en juego permite salir';
   await page.locator('#v612-quiz-portal [data-v531-quiz-close]').click();
-  await page.locator('#v612-quiz-portal [data-v531-exit-confirm="quiz"]').click();
+  const afterGameX=await page.evaluate(()=>{
+    const root=document.querySelector('#v612-quiz-portal');
+    const modal=root?.querySelector('[data-v531-exit-confirm="quiz"]');
+    return {modalCount:root?.querySelectorAll('[data-v531-exit-confirm="quiz"]').length,
+      modalHTML:modal?.outerHTML.slice(0,250),modalStyle:modal?getComputedStyle(modal).display:null,
+      closeCount:root?.querySelectorAll('[data-v531-quiz-close]').length,
+      gameCount:root?.querySelectorAll('[data-v531-view="game"]').length,
+      windowCloseCapture:document.body.dataset.quizGameCloseCaptured||'no',
+      bodyClass:document.body.className.slice(0,250)};
+  });
+  console.log('GAME X DIAGNOSTICS',JSON.stringify(afterGameX));
+  await page.locator('#v612-quiz-portal [data-v531-exit-confirm="quiz"]').click({timeout:5000});
   await page.locator('#v612-quiz-portal [data-v531-view="hub"]').waitFor({state:'visible',timeout:15000});
   console.log('PASS: splash -> hub -> close -> splash -> hub -> countdown -> cancel dialog -> game -> exit');
   console.log('splash computed backdrop', display.bg.slice(0,160));
