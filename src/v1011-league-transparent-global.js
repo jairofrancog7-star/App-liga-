@@ -21,9 +21,8 @@
    if(!(el instanceof HTMLElement||el instanceof SVGElement))return;
    const image=el.style?.backgroundImage||'';
    if(!image||!LEGACY.test(image))return;
-   const updated=image.replace(LEGACY_URL,'"'+PNG+'"');
-   // Use the normal CSS url syntax; never add effects or pixel processing.
-   el.style.backgroundImage=updated.replace(/url\(\s*['"]?"(https?:[^"']+)"['"]?\s*\)/g,'url("$1")');
+   // Change the URL only: preserve any existing CSS quoting and styling.
+   el.style.backgroundImage=image.replace(LEGACY_URL,PNG);
  }
  function fixNode(node){
    if(node?.nodeType!==1)return;
