@@ -37,6 +37,12 @@ function keyBytes(str){
  const padding='='.repeat((4-str.length%4)%4),bin=atob((str+padding).replace(/-/g,'+').replace(/_/g,'/'));
  return Uint8Array.from(bin,c=>c.charCodeAt(0));
 }
+function keyMatches(sub,key){
+ const current=sub?.options?.applicationServerKey;
+ if(!current)return false;
+ const a=new Uint8Array(current),b=keyBytes(key);
+ return a.length===b.length&&a.every((value,i)=>value===b[i]);
+}
 function preferences(){
  const p=read();
  return {category:CATEGORIES.some(x=>x[0]===p.category)?p.category:'all',
@@ -94,7 +100,16 @@ async function syncState(root){
  if(!base){label.textContent='Falta conectar el servidor de envío';toggle.disabled=true;
   status(root,'Los avisos locales siguen disponibles. Para recibirlos con la app cerrada, falta configurar el servidor Web Push.');return;}
  try{
-  const sub=await subscription(),enabled=!!sub;
+  const sub=await subscription();
+  if(sub){
+   const config=await server('public-key');
+   if(!keyMatches(sub,config.publicKey)){
+    label.textContent='Otra suscripción Web Push activa';
+    status(root,'El navegador ya usa una clave de otro servicio de avisos. Para evitar perder alertas, no se modificará automáticamente.');
+    toggle.disabled=true;return;
+   }
+  }
+  const enabled=!!sub;
   toggle.dataset.active=String(enabled);
   toggle.textContent=enabled?'Desactivar avisos':'Activar avisos';
   label.textContent=enabled?'Suscripción de este dispositivo activada':'Disponible para activar';
@@ -113,6 +128,7 @@ async function enable(root){
  const ready=await navigator.serviceWorker.ready;
  const manager=(ready?.scope===reg.scope?ready:reg).pushManager;
  let sub=await manager.getSubscription(),created=false;
+ if(sub&&!keyMatches(sub,info.publicKey))throw Error('Ya hay otro servicio Push activo. Desactívalo desde sus ajustes antes de cambiar de servidor.');
  if(!sub){sub=await manager.subscribe({userVisibleOnly:true,applicationServerKey:keyBytes(info.publicKey)});created=true;}
  try{
   const ack=await server('subscribe',{method:'POST',body:JSON.stringify({subscription:sub.toJSON(),preferences:getValues(root)})});
