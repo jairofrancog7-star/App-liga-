@@ -1,0 +1,183 @@
+/* V997 · Competición: accesos de lectura clara y apariencia premium.
+   Sólo modifica presentación. Conserva los botones y sus manejadores reales. */
+@media (max-width:1023px) {
+  html body[data-app-route="competition"] #screen .v997-competition-tile:not(.v105-card) {
+    position:relative!important;
+    isolation:isolate!important;
+    display:flex!important;
+    align-items:center!important;
+    box-sizing:border-box!important;
+    width:100%!important;
+    min-width:0!important;
+    min-height:88px!important;
+    height:auto!important;
+    margin-block:0!important;
+    padding:15px 57px 15px 86px!important;
+    border:1px solid rgba(105,204,255,.48)!important;
+    border-radius:21px!important;
+    background:
+      radial-gradient(ellipse 72% 125% at 3% 0%,rgba(56,174,255,.23),transparent 75%),
+      linear-gradient(118deg,#143c9d 0%,#102779 49%,#09165a 100%)!important;
+    box-shadow:inset 0 1px 0 rgba(246,253,255,.15),inset 0 -1px 0 rgba(43,129,241,.12),0 9px 19px rgba(0,7,54,.2)!important;
+    color:#f8fbff!important;
+    font:800 clamp(14px,3.65vw,17px)/1.24 Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:-.017em!important;
+    text-align:left!important;
+    text-decoration:none!important;
+    text-shadow:0 1px 2px rgba(0,0,43,.2)!important;
+    white-space:normal!important;
+    overflow-wrap:break-word!important;
+    overflow:hidden!important;
+    cursor:pointer!important;
+    touch-action:manipulation!important;
+    -webkit-tap-highlight-color:transparent!important;
+    transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease!important;
+  }
+  /* Iconos SVG locales, sin dependencias ni llamadas externas. */
+  html body[data-app-route="competition"] #screen .v997-competition-tile:not(.v105-card):not(.v938-png-category-card)::before {
+    content:""!important;
+    position:absolute!important;
+    z-index:1!important;
+    display:block!important;
+    top:50%!important;
+    left:16px!important;
+    transform:translateY(-50%)!important;
+    width:52px!important;
+    height:52px!important;
+    box-sizing:border-box!important;
+    border-radius:16px!important;
+    border:1px solid rgba(129,222,255,.59)!important;
+    background-color:#166cce!important;
+    background-size:27px 27px,cover!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.23),0 5px 13px rgba(0,13,64,.22)!important;
+    pointer-events:none!important;
+  }
+  html body[data-app-route="competition"] #screen .v997-competition-tile[data-v997-icon="calendar"]:not(.v105-card)::before {
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='16' rx='3'/%3E%3Cpath d='M7 3v4m10-4v4M3 10h18m-13 5h3m3 0h2m-8 3h3'/%3E%3C/svg%3E"),linear-gradient(145deg,#249bf4,#1654b4)!important;
+  }
+  html body[data-app-route="competition"] #screen .v997-competition-tile[data-v997-icon="match"]:not(.v105-card)::before {
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='5' width='20' height='14' rx='2'/%3E%3Cpath d='M12 5v14m-10-7h20'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E"),linear-gradient(145deg,#24a5ed,#1458bd)!important;
+  }
+  html body[data-app-route="competition"] #screen .v997-competition-tile[data-v997-icon="discipline"]:not(.v105-card)::before {
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z'/%3E%3Cpath d='M12 7v6m0 4h.01'/%3E%3C/svg%3E"),linear-gradient(145deg,#24a5ed,#1556ae)!important;
+  }
+  html body[data-app-route="competition"] #screen .v997-competition-tile[data-v997-icon="compare"]:not(.v105-card)::before {
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 7h15m0 0-4-4m4 4-4 4M20 17H5m0 0 4-4m-4 4 4 4'/%3E%3C/svg%3E"),linear-gradient(145deg,#248aef,#1646ae)!important;
+  }
+  html body[data-app-route="competition"] #screen .v997-competition-tile:not(.v105-card):not(.v938-png-category-card)::after {
+    content:"›"!important;
+    position:absolute!important;
+    z-index:2!important;
+    display:grid!important;
+    place-items:center!important;
+    right:15px!important;
+    top:50%!important;
+    transform:translateY(-50%)!important;
+    width:31px!important;
+    height:34px!important;
+    border:1px solid rgba(99,213,255,.25)!important;
+    border-radius:11px!important;
+    background:rgba(90,173,253,.14)!important;
+    color:#e4faff!important;
+    font:700 27px/1 Arial,sans-serif!important;
+    pointer-events:none!important;
+  }
+  html body[data-app-route="competition"] #screen .v997-competition-tile:is(:focus-visible,:hover) {
+    border-color:rgba(116,241,255,.8)!important;
+  }
+  html body[data-app-route="competition"] #screen .v997-competition-tile:focus-visible {
+    outline:2px solid #9df2ff!important;
+    outline-offset:3px!important;
+  }
+  html body[data-app-route="competition"] #screen .v997-competition-tile:active {
+    transform:scale(.986)!important;
+    filter:brightness(1.08)!important;
+  }
+  /* Las tarjetas con iconos originales conservan su contenido y navegación. */
+  html body[data-app-route="competition"] #v105-bottom[data-v105-route="competition"] .v105-grid {
+    gap:10px!important;
+  }
+  html body[data-app-route="competition"] #v105-bottom[data-v105-route="competition"] .v105-card {
+    min-height:88px!important;
+    padding:12px 13px!important;
+    border:1px solid rgba(105,204,255,.43)!important;
+    border-radius:20px!important;
+    background:radial-gradient(ellipse at 2% 0%,rgba(57,178,255,.19),transparent 62%),linear-gradient(123deg,#143b9b,#0b1c66)!important;
+    grid-template-columns:48px minmax(0,1fr) 30px!important;
+    align-items:center!important;
+    gap:11px!important;
+    overflow:hidden!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 9px 20px rgba(0,8,59,.21)!important;
+  }
+  html body[data-app-route="competition"] #v105-bottom[data-v105-route="competition"] .v105-icon {
+    width:48px!important;height:48px!important;border-radius:15px!important;
+    border:1px solid rgba(125,216,255,.48)!important;
+    color:white!important;
+    background:linear-gradient(145deg,#238de7,#1455b6)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.17),0 6px 12px rgba(0,8,61,.18)!important;
+  }
+  html body[data-app-route="competition"] #v105-bottom[data-v105-route="competition"] .v105-icon svg {
+    width:25px!important;height:25px!important;stroke:#fff!important;
+  }
+  html body[data-app-route="competition"] #v105-bottom[data-v105-route="competition"] .v105-copy b {
+    font:800 14px/1.22 Inter,Roboto,Arial,sans-serif!important;
+    color:#fff!important;
+    overflow-wrap:break-word!important;
+  }
+  html body[data-app-route="competition"] #v105-bottom[data-v105-route="competition"] .v105-copy small {
+    font:550 11px/1.27 Inter,Roboto,Arial,sans-serif!important;
+    margin-top:4px!important;color:#c1d8f6!important;
+  }
+  html body[data-app-route="competition"] #v105-bottom[data-v105-route="competition"] .v105-arrow {
+    width:29px!important;height:33px!important;
+    display:grid!important;place-items:center!important;
+    border-radius:10px!important;
+    background:rgba(104,181,255,.16)!important;
+    color:#bceeff!important;font-size:25px!important;
+  }
+  /* Exportar PNG sigue siendo el mismo botón funcional. */
+  html body[data-app-route="competition"] #screen .v938-png-category-card {
+    min-height:89px!important;
+    padding:16px 52px 16px 84px!important;
+    border-radius:21px!important;
+    background:radial-gradient(ellipse at 2% 0%,rgba(33,208,254,.22),transparent 55%),linear-gradient(115deg,#1550b1,#0d256f 63%,#071959)!important;
+    border-color:rgba(112,231,253,.63)!important;
+    font-size:clamp(14px,3.7vw,17px)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 10px 22px rgba(0,12,64,.24)!important;
+  }
+  html body[data-app-route="competition"] #screen .v938-png-category-card::before {
+    width:51px!important;height:51px!important;left:16px!important;
+    border-radius:16px!important;
+  }
+  html body[data-app-route="competition"] #screen .v938-png-category-card::after {
+    right:15px!important;
+  }
+}
+@media(max-width:480px){
+  html body[data-app-route="competition"] #v105-bottom[data-v105-route="competition"] .v105-grid {
+    grid-template-columns:1fr!important;
+  }
+  html body[data-app-route="competition"] #screen .v997-competition-tile:not(.v105-card),
+  html body[data-app-route="competition"] #screen .v938-png-category-card {
+    min-height:84px!important;
+    padding-left:78px!important;
+    padding-right:46px!important;
+    font-size:14px!important;
+  }
+  html body[data-app-route="competition"] #screen .v997-competition-tile:not(.v105-card):not(.v938-png-category-card)::before,
+  html body[data-app-route="competition"] #screen .v938-png-category-card::before {
+    left:13px!important;width:49px!important;height:49px!important;
+  }
+  html body[data-app-route="competition"] #screen .v997-competition-tile:not(.v105-card):not(.v938-png-category-card)::after,
+  html body[data-app-route="competition"] #screen .v938-png-category-card::after {
+    right:10px!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  html body[data-app-route="competition"] #screen .v997-competition-tile,
+  html body[data-app-route="competition"] #v105-bottom[data-v105-route="competition"] .v105-card {
+    transition:none!important;
+  }
+}
