@@ -121,7 +121,7 @@ function improveCMS(dialog){
      hint.hidden=true;
    });
  });
- if(buttons.length)buttons[0].classList.add('ljr-admin-tile-primary');
+
  const status=dialog.querySelector('[data-status]');
  if(status)status.setAttribute('aria-live','polite');
 }
@@ -130,6 +130,10 @@ function scan(){
    if(dialog.classList.contains('ljr-admin-manage')||dialog.classList.contains('ljr-admin-cms'))return;
    if(dialog.querySelector('[data-logout]')&&dialog.querySelector('[data-devices]'))improveManage(dialog);
    else if(dialog.querySelector('.cms-kind-grid [data-cms-kind]'))improveCMS(dialog);
+   else if(/^(Administración|Mis dispositivos|Publicaciones de la Liga|Cambiar contraseña|Publicar en la Liga|Invitaciones de hospitalidad|Transmitir directamente desde el teléfono)$/i.test(dialog.getAttribute('aria-label')||'')){
+     dialog.classList.add('ljr-admin-child');
+     dialog.querySelector('[data-status]')?.setAttribute('aria-live','polite');
+   }
  });
 }
 document.addEventListener('click',event=>{
