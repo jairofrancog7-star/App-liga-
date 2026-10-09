@@ -1061,6 +1061,9 @@ function intercept(){
 }
 function schedule(){
   if(applying)return;
+  /* CredentialBuilder handles its own roster/category data. Avoid global
+     home/standings/team DOM patches on every registration DOM mutation. */
+  if(route()==='credentialBuilder')return;
   /* V194 is the sole owner of #/scorers. Do not schedule V62's global
      DOM patch cycle for mutations created by the scorer renderer. */
   if(route()==='scorers'&&(window.__LJR_SCORERS_UI_OWNER__==='v194-reference'||window.__LJR_V194_SCORERS__))return;
