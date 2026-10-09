@@ -338,8 +338,14 @@ function syncAuthority(fromRole=false){
   const manual=q('[data-v635-signer]');
   if(!authority||!role||!manual)return;
   if(fromRole){
-    const official=AUTHORITIES.find(a=>same(a.role,role.value));
-    authority.value=official?official.name:'__manual__';
+    // No sustituir el nombre introducido para una autoridad personalizada.
+    if(authority.value!=='__manual__'){
+      const official=AUTHORITIES.find(a=>same(a.role,role.value));
+      authority.value=official?official.name:'__manual__';
+    }
+  }else if(authority.value==='__manual__'&&AUTHORITIES.some(a=>same(a.role,role.value))){
+    // Una autoridad nueva no debe heredar automáticamente el título de otra persona.
+    role.value='Otro cargo';
   }
   const selected=AUTHORITIES.find(a=>same(a.name,authority.value));
   if(selected){
@@ -925,7 +931,13 @@ function bind(){
   q('[data-v635-ai]')?.addEventListener('click',generateAiReason);
   q('[data-v635-signature]')?.addEventListener('change',async e=>{
     const file=e.target.files?.[0];
-    if(!file){signatureData='';return}
+    signatureData='';
+    if(!file)return;
+    if(!['image/png','image/jpeg','image/webp'].includes(file.type)||file.size>3*1024*1024){
+      e.target.value='';
+      toast('La firma debe ser PNG, JPG o WEBP, máximo 3 MB');
+      return;
+    }
     try{signatureData=await readFile(file);toast('Firma cargada')}catch(_){toast('No se pudo leer la firma')}
   });
   q('[data-v635-generate]')?.addEventListener('click',generate);
