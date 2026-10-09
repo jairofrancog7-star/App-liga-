@@ -301,3 +301,63 @@ body[data-app-route="quizArena"] #v612-quiz-portal .v1050-notify-sheet small{
  body[data-app-route="quizArena"] #v612-quiz-portal .v531-exit-modal,
  body[data-app-route="quizArena"] #v612-quiz-portal .v1050-notify-sheet{animation:none!important;transition:none!important}
 }
+
+/* V1055: el recordatorio pertenece al HUB del Quiz, como la captura de referencia.
+   Mantener la pregunta limpia, con los turbos inmediatamente despues de la imagen. */
+body[data-app-route="quizArena"] #v612-quiz-portal [data-v531-view="hub"] .v1050-notice-card{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 92px!important;
+  grid-template-areas:"copy art" "accept art" "later art"!important;
+  justify-items:stretch!important;align-items:center!important;
+  gap:7px 9px!important;
+  min-height:154px!important;
+  margin:16px 12px 20px!important;width:calc(100% - 24px)!important;
+  padding:18px 18px!important;text-align:left!important;
+  border-radius:17px!important;border:1px solid rgba(78,174,245,.17)!important;
+  background:linear-gradient(140deg,#111469,#111263)!important;
+}
+body[data-app-route="quizArena"] #v612-quiz-portal [data-v531-view="hub"] .v1050-notice-copy{
+  grid-area:copy!important;min-width:0!important;
+}
+body[data-app-route="quizArena"] #v612-quiz-portal [data-v531-view="hub"] .v1050-notice-copy b{
+  font-size:clamp(15px,4vw,18px)!important;line-height:1.23!important;
+}
+body[data-app-route="quizArena"] #v612-quiz-portal [data-v531-view="hub"] .v1050-notice-copy p{
+  margin:5px 0!important;font-size:11px!important;
+}
+body[data-app-route="quizArena"] #v612-quiz-portal [data-v531-view="hub"] .v1050-notice-art{
+  grid-area:art!important;justify-self:center!important;
+  width:78px!important;height:78px!important;
+  background:radial-gradient(circle,rgba(27,49,143,.55),#0a104f)!important;
+}
+body[data-app-route="quizArena"] #v612-quiz-portal [data-v531-view="hub"] [data-v1050-notice-open]{
+  grid-area:accept!important;justify-self:start!important;
+  width:auto!important;min-height:26px!important;padding:2px 0!important;
+  font-size:12px!important;color:#14e1ed!important;
+  border:0!important;background:transparent!important;
+  text-align:left!important;border-radius:0!important;
+}
+body[data-app-route="quizArena"] #v612-quiz-portal [data-v531-view="hub"] [data-v1050-notice-dismiss]{
+  grid-area:later!important;justify-self:start!important;
+  width:auto!important;min-height:22px!important;padding:2px 0!important;
+  font-size:10px!important;color:#a7b7df!important;
+  background:transparent!important;border:0!important;
+  text-align:left!important;
+}
+body[data-app-route="quizArena"] #v612-quiz-portal .v1050-notify-backdrop .v1050-notify-sheet{
+  max-width:min(100vw,520px)!important;
+}
+body[data-app-route="quizArena"] #v612-quiz-portal .v1050-notice-card button:focus-visible,
+body[data-app-route="quizArena"] #v612-quiz-portal .v1050-notify-sheet button:focus-visible,
+body[data-app-route="quizArena"] #v612-quiz-portal .v531-exit-modal button:focus-visible{
+  outline:2px solid #aff7ff!important;outline-offset:2px!important;
+}
+@media(max-width:360px){
+ body[data-app-route="quizArena"] #v612-quiz-portal [data-v531-view="hub"] .v1050-notice-card{
+  grid-template-columns:minmax(0,1fr) 67px!important;
+  padding:13px 12px!important;
+ }
+ body[data-app-route="quizArena"] #v612-quiz-portal [data-v531-view="hub"] .v1050-notice-art{
+  width:62px!important;height:62px!important;
+ }
+}
