@@ -145,3 +145,15 @@ html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage.both 
 @media(min-width:900px){
   html body[data-app-route="leagueTools"] #screen .v726-tools-hero .v1063-filter{font-size:13px!important;min-height:38px!important}
 }
+
+/* El encabezado de carga aparece bajo ambas cartas; todavía no hay respuestas activas. */
+html body #v543-moreless-portal .v551-more-reference-game .v538-question-zone:not(.show){
+  opacity:1!important;transform:none!important;pointer-events:none!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-question-zone:not(.show) h2{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  color:#fff!important;min-height:0!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-question-zone:not(.show) .v531-more-buttons{
+  visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+}
