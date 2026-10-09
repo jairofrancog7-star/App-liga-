@@ -52,7 +52,7 @@ function poll(root){
    '<span class="v927-mail-private">PRIVADO</span>',
   '</div>',
   '<h3>Tu propuesta puede mejorar la liga</h3>',
-  '<p>Comparte tu idea directamente con la administración. Se envía con tu cuenta registrada.</p>',
+  '<p>Comparte tus ideas, sugerencias o inquietudes para mejorar nuestra liga. Cada propuesta nos ayuda a seguir creciendo.</p>',
   '<label><span class="v927-field-label">¿Qué propones mejorar?</span>',
    '<textarea name="message" minlength="10" maxlength="10000" rows="6" required placeholder="Describe tu propuesta, qué cambiarías y cómo ayudaría a la Liga…"></textarea>',
   '</label>',
