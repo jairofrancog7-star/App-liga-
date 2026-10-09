@@ -236,3 +236,45 @@ body[data-app-route="permissionBuilder"] .v1062-tools .v1062-history-items:empty
     margin-bottom:8px!important;
   }
 }
+
+/* V1066 — Cola inferior real: una sola reserva, únicamente por la barra fija.
+   El hueco estaba DESPUÉS de la última tarjeta (padding del formulario +
+   padding de #screen + reserva del shell). No comprimir más la vista previa. */
+@media screen and (max-width:1023px){
+  html body[data-app-route="permissionBuilder"] .app-shell{
+    padding-bottom:0!important;
+    margin-bottom:0!important;
+  }
+  html body[data-app-route="permissionBuilder"] #screen{
+    /* El único margen final es el alto de la navegación de 69px + 3px. */
+    padding-bottom:calc(var(--v34-nav-h,69px) + 3px)!important;
+    scroll-padding-bottom:calc(var(--v34-nav-h,69px) + 3px)!important;
+    margin-bottom:0!important;
+    min-height:0!important;
+  }
+  html body[data-app-route="permissionBuilder"] #screen > [data-v635-permission-mount]{
+    display:block!important;
+    height:auto!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+  }
+  html body[data-app-route="permissionBuilder"] #screen .v635-page{
+    height:auto!important;
+    min-height:0!important;
+    margin-bottom:0!important;
+    padding-bottom:0!important;
+  }
+  html body[data-app-route="permissionBuilder"] #screen .v635-layout,
+  html body[data-app-route="permissionBuilder"] #screen .v635-preview-column,
+  html body[data-app-route="permissionBuilder"] #screen .v1062-tools{
+    margin-bottom:0!important;
+  }
+}
+/* En PC no hay navegación fija: tampoco reservar espacio en esta página. */
+@media screen and (min-width:1024px){
+  html body[data-app-route="permissionBuilder"] #screen .v635-page{
+    padding-bottom:10px!important;
+    margin-bottom:0!important;
+  }
+}
