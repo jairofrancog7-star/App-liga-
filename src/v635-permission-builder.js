@@ -85,6 +85,108 @@ function playersFor(catName,teamName){
   }
   return out.sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
 }
+/* V1052 — Retratos del selector de permisos: coincidencia exacta de persona y equipo.
+   Se leen de fichas oficiales y del registro local privado, sin publicar fotos. */
+function safePickerPhoto(value){
+  const url=String(value||'').trim();
+  if(/^https:\/\/[a-z0-9.-]+(?:\/[^\s<>"']*)?$/i.test(url))return url;
+  if(/^(?:\.\/|\/)?assets\/[a-z0-9/_%.+@-]+$/i.test(url))return url;
+  if(/^data:image\/(?:jpeg|png|webp|gif);base64,[a-z0-9+/=]+$/i.test(url))return url;
+  return '';
+}
+function registeredPlayerPhoto(name,team){
+  try{
+    const photos=window.LJR_PLAYER_PHOTOS;
+    const key=norm(name)+'|'+norm(team);
+    if(!name||!team||!photos)return '';
+    return safePickerPhoto(photos instanceof Map?photos.get(key):photos[key]);
+  }catch(_){return ''}
+}
+function officialPickerPhoto(name,cat,team){
+  if(!name||!team||!cat)return registeredPlayerPhoto(name,team);
+  const sources=[];
+  try{sources.push(window.LJR_OFFICIAL_API?.getData?.())}catch(_){}
+  sources.push(window.LJR_OFFICIAL_DATA,db);
+  for(const source of sources){
+    if(!source?.categories)continue;
+    const photos=new Set();
+    for(const category of Object.values(source.categories)){
+      if(!same(category?.name,cat))continue;
+      for(const [club,records] of Object.entries(category?.player_profiles||{})){
+        if(!same(club,team))continue;
+        for(const person of Array.isArray(records)?records:[]){
+          if(same(playerName(person),name)){
+            const url=safePickerPhoto(person?.photo);
+            if(url)photos.add(url);
+          }
+        }
+      }
+    }
+    if(photos.size===1)return [...photos][0];
+    if(photos.size>1)return ''; // Coincidencia ambigua: no mostrar otra cara.
+  }
+  try{
+    const p=window.LJR_V971_PLAYER_INTEGRATION?.find?.(name,team);
+    if(p?.photo&&same(p.category,cat))return safePickerPhoto(p.photo);
+  }catch(_){}
+  return registeredPlayerPhoto(name,team);
+}
+function localPickerRecordId(name,cat,team){
+  if(!name||!team)return '';
+  try{
+    const saved=JSON.parse(localStorage.getItem('v124-player-registry')||'{}');
+    const season=localStorage.getItem('v124-player-season')||'';
+    const rows=saved?.seasons?.[season]||[];
+    if(!Array.isArray(rows))return '';
+    const matches=rows.filter(p=>same(p.name,name)&&same(p.team,team)&&
+      (!p.category||!cat||same(p.category,cat)));
+    return matches.length===1?String(matches[0].id||''):'';
+  }catch(_){return ''}
+}
+function paintPickerPhoto(avatar,url,name){
+  const safe=safePickerPhoto(url);
+  if(!avatar||!safe)return;
+  const img=document.createElement('img');
+  img.src=safe;
+  img.alt='Foto de '+name;
+  img.loading='lazy';
+  img.decoding='async';
+  img.referrerPolicy='no-referrer';
+  img.addEventListener('error',()=>{
+    if(!avatar.contains(img))return;
+    avatar.textContent=String(name||'').trim().slice(0,1).toUpperCase()||'•';
+    avatar.classList.remove('v1052-has-photo');
+  },{once:true});
+  avatar.replaceChildren(img);
+  avatar.classList.add('v1052-has-photo');
+}
+function hydratePickerPhotos(host,cat,team){
+  if(!host)return;
+  const buttons=[...host.querySelectorAll('.v635-player-option[data-v635-player-choice]')];
+  for(const button of buttons){
+    const name=button.dataset.v635PlayerChoice||'';
+    const avatar=button.querySelector('.v635-player-avatar');
+    if(!avatar)continue;
+    const src=officialPickerPhoto(name,cat,team);
+    if(src)paintPickerPhoto(avatar,src,name);
+  }
+  // Fotos privadas del teléfono: busca solo IDs del jugador/equipo/temporada.
+  const api=window.LJR_V563_PHOTOS;
+  if(typeof api?.get!=='function')return;
+  (async()=>{
+    for(const button of buttons){
+      const name=button.dataset.v635PlayerChoice||'';
+      const avatar=button.querySelector('.v635-player-avatar');
+      if(!avatar||avatar.classList.contains('v1052-has-photo')||!host.contains(button))continue;
+      const id=localPickerRecordId(name,cat,team);
+      if(!id)continue;
+      let record=null;
+      try{record=await api.get(id)}catch(_){}
+      if(!host.contains(button)||!record||!same(record.name,name)||!same(record.team,team))continue;
+      if(!avatar.classList.contains('v1052-has-photo'))paintPickerPhoto(avatar,record.dataUrl,name);
+    }
+  })();
+}
 function today(){
   const d=new Date(),p=n=>String(n).padStart(2,'0');
   return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());
@@ -334,8 +436,9 @@ function renderPlayerPicker(){
   }
   const list=playersFor(cat,team).filter(n=>!term||norm(n).includes(term));
   host.innerHTML=list.length
-    ?list.map(n=>'<button type="button" class="v635-team-option v635-player-option" data-v635-player-choice="'+esc(n)+'"><span>'+esc(String(n).trim().slice(0,1).toUpperCase()||'•')+'</span><b>'+esc(n)+'</b><small>'+esc(team)+'</small></button>').join('')
+    ?list.map(n=>'<button type="button" class="v635-team-option v635-player-option" data-v635-player-choice="'+esc(n)+'"><span class="v635-player-avatar">'+esc(String(n).trim().slice(0,1).toUpperCase()||'•')+'</span><b>'+esc(n)+'</b><small>'+esc(team)+'</small></button>').join('')
     :'<div class="v635-team-empty">No hay jugadores que coincidan para '+esc(team)+'.</div>';
+  if(list.length)hydratePickerPhotos(host,cat,team);
 }
 function openPlayerPicker(e){
   e?.preventDefault?.();
