@@ -2,7 +2,7 @@
    Unifica hub, juego, resultado y modal de salida sin incrustar las capturas. */
 (function(){
 'use strict';
-if(window.__LJR_V531_GAMES__)return;
+if(window.__LJR_V531_GAMES__&&window.__LJR_V531_GAMES_READY__)return;
 window.__LJR_V531_GAMES__=true;
 window.__LJR_V533_PRIMARY_GAMES__=true;
 window.__LJR_V536_MONITO_FLOW__=true;
@@ -1126,6 +1126,19 @@ const target=document.querySelector('#screen');
 if(target)new MutationObserver(schedule).observe(target,{childList:true,subtree:false});
 load().then(schedule);
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
+/* V1073 — evitar pantalla vacía cuando otro módulo reinicia el DOM después de
+   que el quiz ya se cargó. No sobrescribir una partida o un HUB visible. */
+function v1073EnsureQuizVisible(){
+  if(route()!=='quizArena'||!document.querySelector('#screen'))return;
+  const existing=document.querySelector('#v612-quiz-portal [data-v531-view]');
+  if(existing)return;
+  quiz.mode='splash';quiz.exit=false;
+  try{render(false)}catch(err){console.error('Quiz Arena no se pudo montar:',err)}
+}
+[0,150,450,1100,2500].forEach(function(delay){setTimeout(v1073EnsureQuizVisible,delay)});
+window.addEventListener('pageshow',v1073EnsureQuizVisible);
+window.addEventListener('focus',v1073EnsureQuizVisible);
+window.__LJR_V531_GAMES_READY__=true;
 // One clock for the active question; dialogs pause the countdown.
 setInterval(()=>{if(route()!=='quizArena'||quiz.mode!=='game'||quiz.exit||v1050NotifyOpen||quiz.answered)return;
   quiz.remaining=Math.max(0,quiz.remaining-1);const clock=document.querySelector('[data-quiz-timer]');if(clock)clock.textContent=quiz.remaining;
