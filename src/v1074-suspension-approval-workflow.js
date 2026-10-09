@@ -258,6 +258,71 @@ function mark(p,name){
  s.delivery[name]=v;write(s);drawTeams(p);
  message(p,'Estado de '+name+' anotado manualmente. No demuestra entrega ni lectura real.');
 }
+/* El CSV es un archivo LOCAL: las marcas no son constancia verificada de recepción. */
+function exportLog(p){
+ const names=teams(p),s=read(),form=fields(p);
+ if(!names.length){message(p,'No hay equipos oficiales para exportar con estos filtros.');return}
+ const key=stable(form),delivery=s.deliveryHash===key?s.delivery||{}:{};
+ const safe=value=>{
+  let v=String(value??'').replace(/[\\r\\n]+/g,' ').trim();
+  // Impedir ejecución de fórmulas al abrir CSV con Excel/Sheets.
+  if(/^[=+@\\-\\t\\r]/.test(v))v="'"+v;
+  return '"'+v.replace(/"/g,'""')+'"';
+ };
+ const rows=[['Categoría','Jornada','Equipo','Estado anotado','Envío (local)','Recepción (local)','Verificación']];
+ for(const name of names){
+  const row=delivery[name]||{};
+  rows.push([form.cat,form.round,name,row.receivedAt?'Recepción anotada':row.sentAt?'Envío anotado':'Pendiente',
+   row.sentAt||'',row.receivedAt||'','No verificado; registro del dispositivo']);
+ }
+ const csv='\\uFEFF'+rows.map(row=>row.map(safe).join(',')).join('\\r\\n');
+ const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='liga-avisos-equipos-'+new Date().toISOString().slice(0,10)+'.csv';
+ document.body.append(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1500);
+ message(p,'Descargado el reporte CSV con '+names.length+' equipos reales. Las confirmaciones son anotaciones manuales.');
+}
+function openOfficialEditor(p){
+ if(!isAuthorized(p)){message(p,'Revisa el aviso y registra el visto bueno antes de preparar el editor oficial.');return}
+ const editor=window.LJR_EDITOR_CENTER;
+ if(!editor?.openNotice){message(p,'El editor oficial aún no está disponible. Abre Administración y vuelve a intentarlo.');return}
+ const s=fields(p);
+ const category=Object.entries(window.LJR_OFFICIAL_DATA?.categories||{})
+   .find(([,cat])=>String(cat?.name||'').trim()===s.cat)?.[0]||'all';
+ const details=[
+  'Motivo: '+s.reason,'Alcance: '+s.scope,
+  s.match!=='Todos los partidos'?'Partido: '+s.match:'',
+  s.venue!=='Todos los campos'?'Campo: '+s.venue:''
+ ].filter(Boolean).join('. ').slice(0,1200);
+ const body=[
+  'La Liga Municipal de Fútbol Juventino Rosas A. C. informa:',
+  s.type+'.',s.cat+', jornada '+s.round+'.',
+  details+'.','Fecha efectiva: '+s.date+' '+s.time+'.',s.message
+ ].filter(Boolean).join(' ').slice(0,4000);
+ try{
+  editor.openNotice({type:'suspension',category,round:s.round,date:s.date,time:s.time,
+   field:s.venue==='Todos los campos'?'':s.venue,title:s.type,
+   details,body});
+  message(p,'Aviso enviado al editor para revisión, NO publicado. Solo una sesión de administración autorizada puede guardarlo en el servidor.');
+ }catch(e){message(p,'No se pudo abrir el editor oficial. Revisa tu sesión de administración.')}
+}
+function cancelLocalSchedule(p){
+ const s=read(),id=s.previousScheduledId||s.scheduledId;
+ if(!id){message(p,'No hay programación local que cancelar.');return}
+ const list=queue(),item=list.find(x=>String(x.id)===String(id));
+ if(!item){message(p,'La programación ya no existe en este dispositivo.');return}
+ if(item.published){message(p,'El aviso ya figura como procesado. No se puede retirar con esta función local; revisa el editor oficial.');return}
+ if(!window.confirm('¿Eliminar esta programación local? No cancela avisos publicados ni programaciones guardadas en otros dispositivos.'))return;
+ try{
+  localStorage.setItem(QUEUE,JSON.stringify(list.filter(x=>String(x.id)!==String(id))));
+  delete s.previousScheduledId;
+  if(String(s.scheduledId)===String(id)){delete s.scheduledId;delete s.scheduledAt}
+  write(s);refresh(p);
+  message(p,'Programación eliminada de este dispositivo. Confirma por separado si existía una publicación global.');
+ }catch(e){message(p,'No se pudo cancelar la programación local.')}
+}
+
 function invalidate(p){
  const s=read(),h=stable(fields(p));
  if(s.reviewHash===h)return;
@@ -310,6 +375,9 @@ function boot(){
     const box=$('[data-v1074-auth]',p);if(box)box.hidden=!box.hidden;
   }else if(b.matches('[data-v1074-authorize]'))authorize(p);
   else if(b.matches('[data-v1074-schedule]'))schedule(p);
+  else if(b.matches('[data-v1074-official]'))openOfficialEditor(p);
+  else if(b.matches('[data-v1074-export]'))exportLog(p);
+  else if(b.matches('[data-v1074-cancel]'))cancelLocalSchedule(p);
   else if(b.matches('[data-v1074-share]'))prepare(p,b.dataset.v1074Share);
   else if(b.matches('[data-v1074-mark]'))mark(p,b.dataset.v1074Mark);
  });
