@@ -573,7 +573,7 @@ function patchFixturesReference(){
   const existing=screen.querySelector('[data-v12-fixtures]');
   if(existing?.dataset.v12Version===V12_FIXTURE_BUILD)return;
   v12RefreshFixtures();
-  v12LoadFixtureDb().then(()=>requestAnimationFrame(v12RefreshFixtures));
+  v12LoadFixtureDb().then(()=>requestAnimationFrame(()=>{v12RefreshFixtures();patchBracketReference()}));
 }
 
 /* === PARTS25 — CUADRO / PLAY-OFF EXACTO DE REFERENCIA === */
@@ -608,26 +608,31 @@ const V12_BRACKET_PATHS={
 function v12BracketTeam(name,key,abbr,seed,score){
   return {name,key,abbr,seed,score};
 }
+
 function v12BracketLogo(t){
-  const path=V12_BRACKET_PATHS[t.key];
-  if(path) return '<img src="'+V12_TEAM_ASSET_BASE+path+'" alt="'+t.name+'" loading="eager" decoding="async">';
-  if(t.key==='juventino'||t.key==='realjuventino') return '<img src="'+V12_LOGO+'" alt="'+t.name+'" loading="eager" decoding="async">';
-  return '<span class="v12-bracket-fallback v1063-placeholder" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.6 20 5.4v6.1c0 4.8-3.1 8.2-8 10-4.9-1.8-8-5.2-8-10V5.4L12 2.6Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="m8 12 2.6 2.6 5.4-5.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+  let url='';
+  try{url=window.LJR_OFFICIAL_API?.getLogo?.(t.name)||window.LJR_TEAM_LOGOS?.get?.(t.name)||''}catch(_){}
+  if(!url){
+    const item=Object.entries(v12FixtureDb()?.team_logos||{}).find(([k])=>v12Norm(k)===v12Norm(t.name))?.[1];
+    url=typeof item==='string'?item:(item?.app||item?.source||(item?.local?V12_TEAM_ASSET_BASE+String(item.local).replace(/^\.\//,''):''));
+  }
+  return url?'<img src="'+v12Esc(url)+'" alt="" loading="lazy" decoding="async">':
+    '<span class="v12-bracket-fallback v1064-neutral-logo" aria-hidden="true">'+V12_BRACKET_SHIELD+'</span>';
 }
 function v12BracketShort(t){
-  // Los nombres completos permanecen en los datos; solo el cuadro usa tres caracteres.
-  const code=String(t?.abbr||t?.name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-    .toUpperCase().replace(/[^A-Z0-9]/g,'');
+  const known=t?.abbr||'';
+  const code=String(known||t?.name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,'');
   return (code.slice(0,3)||'---').padEnd(3,'-');
 }
 function v12BracketTeamCard(t,mini=false){
-  const full=String(t.name||'');
-  const safe=full.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  return '<div class="v12-bracket-team '+(mini?'mini':'')+'" title="'+safe+'" aria-label="'+safe+'">'+
-    '<small class="v12-bracket-seed">'+(t.seed??'')+'</small>'+
+  if(!t)return '<div class="v12-bracket-team v1064-pending '+(mini?'mini':'')+'" title="Plaza por definir" aria-label="Plaza por definir">'+
+    '<span class="v12-bracket-fallback v1064-neutral-logo" aria-hidden="true">'+V12_BRACKET_SHIELD+'</span><strong>—</strong></div>';
+  const name=v12Esc(t.name);
+  return '<div class="v12-bracket-team '+(mini?'mini':'')+'" title="'+name+'" aria-label="'+name+'">'+
+    '<small class="v12-bracket-seed">'+v12Esc(t.seed??'')+'</small>'+
     v12BracketLogo(t)+
     '<strong class="v1053-bracket-code">'+v12BracketShort(t)+'</strong>'+
-    (t.score!==undefined&&t.score!==null?'<b class="v12-bracket-score">'+t.score+'</b>':'')+
+    (t.score!==undefined&&t.score!==null?'<b class="v12-bracket-score">'+v12Esc(t.score)+'</b>':'')+
   '</div>';
 }
 function v12BracketPair(a,b){
@@ -640,74 +645,39 @@ function v12BracketSeedPair(a,b){
 }
 function v12BracketWinnerBlock(a,b){
   return '<div class="v12-bracket-winner-block">'+
-    '<div class="v12-bracket-winner"><span class="shield">'+V12_BRACKET_SHIELD+'</span><strong>Ganador del play-off</strong></div>'+
-    v12BracketSeedPair(a,b)+
-  '</div>';
+    '<div class="v12-bracket-winner"><span class="shield">'+V12_BRACKET_SHIELD+'</span><strong>Por definir</strong></div>'+
+    v12BracketSeedPair(a,b)+'</div>';
 }
-
-const V12_BRACKET_ROUTE_LEFT={
-  label:'RUTA PLATEADA',
-  pairs:[
-    [
-      v12BracketTeam('América Veteranos','america','AME','1','8'),
-      v12BracketTeam('La Huerta','huerta','HUE','8','')
-    ],
-    [
-      v12BracketTeam('Promesas FC','promesas','PRO','4','5'),
-      v12BracketTeam('Franco FC','franco','FRA','5','')
-    ],
-    [
-      v12BracketTeam('Cuenda','cuenda','CUE','3','6'),
-      v12BracketTeam('Pozos','pozos','POZ','6','')
-    ],
-    [
-      v12BracketTeam('Rincón de Centeno','rincon','RCN','7','0'),
-      v12BracketTeam('Deportivo Rosas','depRosas','ROS','2','')
-    ]
-  ],
-  winners:[
-    [
-      v12BracketTeam('Juventino','juventino','JUV','',''),
-      v12BracketTeam('Lobos CDG','lobos','LOB','','')
-    ],
-    [
-      v12BracketTeam('Santa Cruz','santa','STC','',''),
-      v12BracketTeam('Atlético Galeana','galeana','GAL','','')
-    ]
-  ]
-};
-
-const V12_BRACKET_ROUTE_RIGHT={
-  label:'RUTA AZUL',
-  pairs:[
-    [
-      v12BracketTeam('San José FC','sanjosefc','SJO','2','6'),
-      v12BracketTeam('Hermanos','hermanos','HER','16','')
-    ],
-    [
-      v12BracketTeam('Linces','linces','LIN','12','5'),
-      v12BracketTeam('Napoli','napoli','NAP','13','')
-    ],
-    [
-      v12BracketTeam('Herreras FC','herreras','HFC','11','6'),
-      v12BracketTeam('Abejas','abejas','ABE','14','')
-    ],
-    [
-      v12BracketTeam('Terrícolas','terricolas','TER','10','5'),
-      v12BracketTeam('Galácticos','galacticos','GAC','15','')
-    ]
-  ],
-  winners:[
-    [
-      v12BracketTeam('San Julián','sanjulian','SJL','',''),
-      v12BracketTeam('San Juan FC','sanjuan','SJU','','')
-    ],
-    [
-      v12BracketTeam('Tavera FC','taverafc','TVF','',''),
-      v12BracketTeam('Célticos FC','celticos','CEL','','')
-    ]
-  ]
-};
+/* La clasificación por sí sola NUNCA genera un cruce oficial. */
+function v12OfficialKnockouts(){
+  const cat=v12FixtureDb()?.categories?.[v12StoredCat()];
+  const games={playoff:[],octavos:[],cuartos:[],semifinal:[],final:[]};
+  for(const block of cat?.fixtures||[]){
+    for(const r of Array.isArray(block?.rows)?block.rows:[]){
+      if(!Array.isArray(r)||!String(r[2]||'').trim()||!String(r[6]||'').trim())continue;
+      const text=v12Norm([r[1],block.title,block.name].filter(Boolean).join(' '));
+      const stage=/play.?off|repechaje/.test(text)?'playoff':/octavos/.test(text)?'octavos':
+        /cuartos/.test(text)?'cuartos':/semifinal/.test(text)?'semifinal':
+        /(?:^| )final(?: |$)/.test(text)?'final':null;
+      if(!stage)continue;
+      const home=String(r[2]).trim(),away=String(r[6]).trim();
+      const unknown=/^(?:por definir|pendiente|local|visitante|descansa|bye|\?)$/i;
+      if(unknown.test(home)||unknown.test(away))continue;
+      const score=x=>/^\d+$/.test(String(x??'').trim())?String(x).trim():null;
+      games[stage].push([{name:home,seed:'',score:score(r[3])},{name:away,seed:'',score:score(r[5])}]);
+    }
+  }
+  return games;
+}
+function v12BracketRoutes(){
+  const matches=v12OfficialKnockouts();
+  const route=(label,n)=>({
+    label,
+    pairs:Array.from({length:4},(_,i)=>matches.playoff[n+i]||[null,null]),
+    winners:Array.from({length:2},(_,i)=>matches.octavos[n/2+i]||[null,null])
+  });
+  return {silver:route('RUTA PLATEADA',0),blue:route('RUTA AZUL',4),matches};
+}
 
 function v12BracketRoute(route){
   return '<section class="v12-bracket-route">'+
@@ -727,12 +697,12 @@ function v12FinalTrophy(){
 }
 function v12FinalCard(){
   return '<section class="v12-final-reference" data-v12-final>'+
-    '<div class="v12-final-top-date"><span></span><b>5 jun</b></div>'+
+    '<div class="v12-final-top-date"><span></span><b>Por confirmar</b></div>'+
     '<div class="v12-final-side-mark" aria-hidden="true"></div>'+
     '<div class="v12-final-match-card">'+
-      '<time>5 jun</time>'+
-      '<div class="v12-final-opponent"><span class="v12-final-shield">'+V12_BRACKET_SHIELD+'</span><b>¿?</b></div>'+
-      '<div class="v12-final-opponent"><span class="v12-final-shield">'+V12_BRACKET_SHIELD+'</span><b>¿?</b></div>'+
+      '<time>Por confirmar</time>'+
+      '<div class="v12-final-opponent"><span class="v12-final-shield">'+V12_BRACKET_SHIELD+'</span><b>Por definir</b></div>'+
+      '<div class="v12-final-opponent"><span class="v12-final-shield">'+V12_BRACKET_SHIELD+'</span><b>Por definir</b></div>'+
     '</div>'+
     '<div class="v12-final-trophy-wrap">'+v12FinalTrophy()+'</div>'+
   '</section>';
@@ -740,30 +710,30 @@ function v12FinalCard(){
 
 /* PARTS50 — PROGRESIÓN VISUAL POR RONDA */
 const V12_STAGE_DATES={
-  playoff:['16-19 & 24-25 feb','9-12 & 17-18 mar'],
-  octavos:['9-12 & 17-18 mar','6-7 & 14-15 abr'],
-  cuartos:['6-7 & 14-15 abr','27-28 abr & 5-6 may'],
-  semifinal:['27-28 abr & 5-6 may','5 jun'],
-  final:['5 jun','']
+  playoff:['Fechas por confirmar','Fechas por confirmar'],
+  octavos:['Fechas por confirmar','Fechas por confirmar'],
+  cuartos:['Fechas por confirmar','Fechas por confirmar'],
+  semifinal:['Fechas por confirmar','Fechas por confirmar'],
+  final:['Fecha por confirmar','']
 };
 
 function v12ProgressWinnerBlock(pair){
   return '<div class="v12-progress-winner-block">'+
     '<div class="v12-progress-winner"><span class="shield">'+V12_BRACKET_SHIELD+'</span><strong>Ganador del play-off</strong></div>'+
     '<div class="v12-progress-seeded">'+
-      v12BracketTeamCard(pair[0],true)+
+      v12BracketTeamCard(pair?.[0]||null,true)+
       '<i class="v12-progress-vs">o</i>'+
-      v12BracketTeamCard(pair[1],true)+
+      v12BracketTeamCard(pair?.[1]||null,true)+
     '</div>'+
   '</div>';
 }
 
 function v12ProgressUnknown(dateText,legText='Ida'){
   return '<div class="v12-progress-match">'+
-    '<time>'+dateText+'</time>'+
+    '<time>Por confirmar</time>'+
     '<small>'+legText+'</small>'+
-    '<div class="v12-progress-opponent"><span class="shield">'+V12_BRACKET_SHIELD+'</span><b>¿?</b></div>'+
-    '<div class="v12-progress-opponent"><span class="shield">'+V12_BRACKET_SHIELD+'</span><b>¿?</b></div>'+
+    '<div class="v12-progress-opponent"><span class="shield">'+V12_BRACKET_SHIELD+'</span><b>Por definir</b></div>'+
+    '<div class="v12-progress-opponent"><span class="shield">'+V12_BRACKET_SHIELD+'</span><b>Por definir</b></div>'+
   '</div>';
 }
 
@@ -808,13 +778,13 @@ function v12SemifinalFlow(){
   '</div>';
 }
 
-function v12StagePanels(){
+function v12StagePanels(routes){
   return '<div class="v12-stage-panels">'+
     '<section class="v12-stage-panel v12-stage-panel-octavos">'+
       v12ProgressDates('octavos')+
       '<div class="v12-progress-board">'+
-        v12OctavosRoute(V12_BRACKET_ROUTE_LEFT,'route-silver')+
-        v12OctavosRoute(V12_BRACKET_ROUTE_RIGHT,'route-blue')+
+        v12OctavosRoute(routes.silver,'route-silver')+
+        v12OctavosRoute(routes.blue,'route-blue')+
       '</div>'+
     '</section>'+
     '<section class="v12-stage-panel v12-stage-panel-cuartos">'+
@@ -831,8 +801,12 @@ function v12StagePanels(){
   '</div>';
 }
 
+
 function v12BracketMarkup(){
-  return '<section class="v12-bracket-reference stage-playoff" data-v12-bracket>'+
+  const routes=v12BracketRoutes(),category=v12StoredCat(),db=v12FixtureDb();
+  const total=Object.values(routes.matches).reduce((n,x)=>n+x.length,0);
+  const sig=String(db?.captured_at_utc||'')+':'+Object.values(routes.matches).map(x=>x.length).join(',');
+  return '<section class="v12-bracket-reference stage-playoff" data-v12-bracket data-v1064-cat="'+v12Esc(category)+'" data-v1064-sig="'+v12Esc(sig)+'">'+
     '<div class="v12-bracket-stage-tabs" role="tablist" aria-label="Etapas del cuadro">'+
       '<button class="active" data-v12-bracket-stage="playoff">Play-off</button>'+
       '<button data-v12-bracket-stage="octavos">Octavos de final</button>'+
@@ -841,14 +815,12 @@ function v12BracketMarkup(){
       '<button data-v12-bracket-stage="final">Final</button>'+
     '</div>'+
     '<div class="v12-bracket-dates"><span>'+V12_STAGE_DATES.playoff[0]+'</span><span>'+V12_STAGE_DATES.playoff[1]+'</span></div>'+
-    '<div class="v12-bracket-board">'+
-      v12BracketRoute(V12_BRACKET_ROUTE_LEFT)+
-      v12BracketRoute(V12_BRACKET_ROUTE_RIGHT)+
-    '</div>'+
-    v12StagePanels()+
-    v12FinalCard()+
+    '<div class="v12-bracket-board">'+v12BracketRoute(routes.silver)+v12BracketRoute(routes.blue)+'</div>'+
+    (total?'':'<p class="v1064-unpublished" role="status">Aún no hay cruces oficiales publicados para esta categoría. Plazas por definir.</p>')+
+    v12StagePanels(routes)+v12FinalCard()+
   '</section>';
 }
+
 function patchBracketReference(){
   if(v12Route()!=='competition') return;
   const screen=document.querySelector('#screen');
@@ -856,7 +828,14 @@ function patchBracketReference(){
   if(!screen||!tabs) return;
   const active=tabs.querySelector('.tab.active');
   if(!active||!/Cuadro/i.test(active.textContent||'')) return;
-  if(screen.querySelector('[data-v12-bracket]')) return;
+  const existing=screen.querySelector('[data-v12-bracket]');
+  if(existing){
+    const routes=v12BracketRoutes();
+    const sig=String(v12FixtureDb()?.captured_at_utc||'')+':'+Object.values(routes.matches).map(x=>x.length).join(',');
+    if(existing.dataset.v1064Cat===v12StoredCat()&&existing.dataset.v1064Sig===sig)return;
+    existing.outerHTML=v12BracketMarkup();
+    return;
+  }
   let node=tabs.nextSibling;
   while(node){const next=node.nextSibling;node.remove();node=next}
   tabs.insertAdjacentHTML('afterend',v12BracketMarkup());
@@ -985,8 +964,8 @@ document.addEventListener('click',e=>{
     return;
   }
 },true);
-window.addEventListener('ljr:official-data',()=>{V12_FIXTURE_DB=v12LatestDb(V12_FIXTURE_DB,window.LJR_OFFICIAL_DATA||null);requestAnimationFrame(v12RefreshFixtures)});
-window.addEventListener('ljr:competition-category',()=>requestAnimationFrame(v12RefreshFixtures));
+window.addEventListener('ljr:official-data',()=>{V12_FIXTURE_DB=v12LatestDb(V12_FIXTURE_DB,window.LJR_OFFICIAL_DATA||null);requestAnimationFrame(()=>{v12RefreshFixtures();patchBracketReference()})});
+window.addEventListener('ljr:competition-category',()=>requestAnimationFrame(()=>{v12RefreshFixtures();patchBracketReference()}));
 v12LoadFixtureDb().then(()=>requestAnimationFrame(v12RefreshFixtures));
 window.addEventListener('hashchange',()=>requestAnimationFrame(patch));
 const obs=new MutationObserver(()=>requestAnimationFrame(patch));
