@@ -18,6 +18,7 @@ const context={
   window:{LJR_MATCH_LIVE:{getState:()=>live}},
   Date,Number,String,Object,Set,
   categories:()=>official.categories,
+  selectedKey:'',
   norm:normalized,fixtureStamp:timestamp,publishedScore,
   mexicoStamp:()=>time,
   clock:v=>String(v).match(/\s(\d{1,2}:\d{2})/)?.[1]||'Por confirmar',
