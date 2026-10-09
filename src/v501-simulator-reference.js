@@ -245,7 +245,7 @@ function setBracketStage(s){
    const active=box.querySelector('[data-v512-stage].active');
    const strip=active?.parentElement;
    if(active&&strip){
-     const target=Math.max(0,active.offsetLeft-(strip.clientWidth-active.offsetWidth)/2);
+     const target=Math.max(0,active.offsetLeft-strip.offsetLeft-(strip.clientWidth-active.offsetWidth)/2);
      strip.scrollTo({left:target,behavior:'smooth'});
    }
  });
@@ -335,7 +335,7 @@ function v512Logo(name){
 function bracketTeam(t,mini=false){
  if(!t){
    return '<div class="v12-bracket-team '+(mini?'mini ':'')+'empty v1051-pending-team" title="Cruce por definir" aria-label="Plaza pendiente de definir">'+
-     '<small class="v12-bracket-seed"></small><span class="v12-bracket-fallback" aria-hidden="true">—</span><strong aria-hidden="true">—</strong>'+
+     '<small class="v12-bracket-seed"></small>'+v512Logo('')+'<strong aria-hidden="true">¿?</strong>'+
    '</div>';
  }
  return '<div class="v12-bracket-team '+(mini?'mini':'')+'" title="'+esc(t.name)+'" aria-label="'+esc(t.name)+'">'+
@@ -451,7 +451,7 @@ function v512ProgressWinner(pair){
  '</div>';
 }
 function v1068Opponent(team){
- if(!team?.name)return '<div class="v12-progress-opponent v1068-pending"><span class="shield" aria-hidden="true">—</span><b aria-label="Por definir">—</b></div>';
+ if(!team?.name)return '<div class="v12-progress-opponent v1068-pending"><span class="shield" aria-hidden="true">◈</span><b aria-label="Por definir">¿?</b></div>';
  return '<div class="v12-progress-opponent v1068-club" title="'+esc(team.name)+'" aria-label="'+esc(team.name)+'">'+
    '<span class="v1068-stage-crest">'+v512Logo(team.name)+'</span>'+
    '<b>'+esc(bracketCode(team.name))+'</b></div>';
@@ -504,7 +504,7 @@ function v512StagePanels(rows){
 
 function v512FinalCard(){
  const match=v512OfficialKnockout().final[0]||null;
- const a=match?.[0]?.name||'Por definir',b=match?.[1]?.name||'Por definir';
+ const a=match?.[0]?.name||'¿?',b=match?.[1]?.name||'¿?';
  return '<section class="v12-final-reference" data-v512-final>'+
    '<div class="v12-final-top-date"><span></span><b>Por confirmar</b></div>'+
    '<div class="v12-final-side-mark" aria-hidden="true"></div>'+
@@ -700,6 +700,13 @@ function mount(){
    screen.innerHTML=page();
    const root=screen.querySelector('[data-v501-simulator]');if(root)root.dataset.sig=sig;
    v515InitSheet();
+   /* Tras un remonte, la fase guardada permanece visible sin desplazar toda la página. */
+   const stages=root?.querySelector('[data-v512-bracket] .v12-bracket-stage-tabs');
+   if(stages)requestAnimationFrame(()=>{
+     const active=stages.querySelector('[data-v512-stage].active');
+     if(!active||!stages.isConnected)return;
+     stages.scrollLeft=Math.max(0,active.offsetLeft-stages.offsetLeft-(stages.clientWidth-active.offsetWidth)/2);
+   });
  }finally{rendering=false}
 }
 function render(preserve=false){
