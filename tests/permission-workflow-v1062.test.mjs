@@ -61,7 +61,10 @@ test('estado aprobado es anotación local, no aprobación de la liga',()=>{
  assert.ok(workflow.includes('próximos a vencer (3 días)'));
 });
 test('sin huecos y con firma dibujada; los exportadores conservan QR',()=>{
- assert.match(css,/min-height:174px!important/);
+ assert.match(css,/V1065 — Sin huecos/);
+ assert.match(css,/\.v635-preview-empty:not\(\[hidden\]\)/);
+ assert.match(css,/min-height:0!important/);
+ assert.match(css,/grid-template-columns:32px minmax\(0,1fr\)/);
  assert.match(css,/v1062-tools/);
  assert.match(css,/v1062-sign-panel/);
  assert.ok(base.includes('LJR_PERMISSION_WORKFLOW?.qrHtml?.(p)'));
