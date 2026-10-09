@@ -8,6 +8,11 @@ on:
       - 'src/v124-player-registration.js'
       - 'src/vendor/dexie-4.0.11.min.js'
       - 'tests/local-registry-core.test.mjs'
+      - 'src/credential-pdf-layout.js'
+      - 'src/v1013-local-credential-pdf.js'
+      - 'src/v480-credential-red-exact.js'
+      - 'src/vendor/pdf-lib-1.17.1.min.js'
+      - 'tests/local-pdf-lib.test.mjs'
       - '.github/workflows/local-registration-tests.yml'
   pull_request:
     paths:
@@ -17,6 +22,11 @@ on:
       - 'src/v124-player-registration.js'
       - 'src/vendor/dexie-4.0.11.min.js'
       - 'tests/local-registry-core.test.mjs'
+      - 'src/credential-pdf-layout.js'
+      - 'src/v1013-local-credential-pdf.js'
+      - 'src/v480-credential-red-exact.js'
+      - 'src/vendor/pdf-lib-1.17.1.min.js'
+      - 'tests/local-pdf-lib.test.mjs'
       - '.github/workflows/local-registration-tests.yml'
 permissions:
   contents: read
@@ -31,4 +41,4 @@ jobs:
         with:
           node-version: '22'
       - name: Ejecutar pruebas de privacidad y restauración
-        run: node --test tests/local-registry-core.test.mjs
+        run: node --test tests/local-registry-core.test.mjs tests/local-pdf-lib.test.mjs
