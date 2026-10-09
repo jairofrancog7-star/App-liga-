@@ -262,7 +262,8 @@ function quizCountdown(data){
       '<b>EL QUIZ EMPIEZA EN</b>'+
       '<span class="v614-countdown-ring"><strong data-quiz-countdown>'+count+'</strong></span>'+
     '</div>'+
-    '<button type="button" class="v614-countdown-skip" data-v614-countdown-skip>Pulsa para saltar</button>'+
+    '<button type="button" class="v614-countdown-skip" data-v614-countdown-skip>Pulsa para saltar</button>'+ 
+    (quiz.exit?exitModal('quiz'):'')+
   '</section>';
 }
 function v614StartQuizCountdown(){
@@ -272,6 +273,7 @@ function v614StartQuizCountdown(){
   render(true);
   v614QuizCountdownTimer=setInterval(function(){
     if(route()!=='quizArena'||quiz.mode!=='countdown'){v614ClearQuizCountdown();return}
+    if(quiz.exit)return; // Pausar 3-2-1 mientras la confirmación de salida está abierta.
     if(quiz.countdown>1){
       quiz.countdown--;
       const el=document.querySelector('[data-quiz-countdown]');if(el)el.textContent=String(quiz.countdown);
@@ -358,7 +360,8 @@ function quizHub(data){
     '<header class="v531-mini-head v1057-quiz-head">'+
       '<button type="button" data-v531-quiz-back aria-label="Volver">'+backSvg()+'</button>'+
       '<strong>Quiz Arena</strong>'+
-      '<button type="button" class="v1057-menu-trigger" data-v1057-quiz-menu-toggle aria-label="Abrir opciones" aria-controls="v1057-quiz-menu" aria-expanded="false"><span aria-hidden="true">⋮</span></button>'+
+      '<button type="button" class="v1057-menu-trigger" data-v1057-quiz-menu-toggle aria-label="Abrir opciones" aria-controls="v1057-quiz-menu" aria-expanded="false"><span aria-hidden="true">⋮</span></button>'+ 
+      '<button type="button" class="v1070-hub-close" data-v1070-quiz-hub-close aria-label="Cancelar y regresar a portada">'+closeSvg()+'</button>'+
       '<nav id="v1057-quiz-menu" class="v1057-quiz-menu" data-v1057-quiz-menu role="menu" aria-label="Opciones de Quiz Arena" hidden>'+
         '<button type="button" role="menuitem" data-v1057-quiz-share>Compartir Quiz Arena</button>'+
         '<button type="button" role="menuitem" data-v1057-quiz-rankings>Ver clasificaciones</button>'+
@@ -812,7 +815,7 @@ function v544PrimaryPointerOpen(e){
       e.stopPropagation();
       quiz.selected='';
       quiz.answered=false;
-      quiz.mode='game';
+      quiz.mode='hub';
       quiz.exit=false;
       render(true);
     }
@@ -976,7 +979,7 @@ document.addEventListener('click',function(e){
   const oldQuiz=e.target.closest('[data-v48-quiz]');
   if(route()==='quizArena'&&oldQuiz){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-    v614StartQuizCountdown();
+    v614ClearQuizCountdown();quiz.mode='hub';quiz.exit=false;render(true);
     return;
   }
   const oldMore=e.target.closest('[data-v12-choice]');
@@ -986,7 +989,7 @@ document.addEventListener('click',function(e){
     return;
   }
 
-  const t=e.target.closest('[data-v545-more-screen],[data-v583-more-round],[data-v531-more-open],[data-v48-quiz],[data-v12-choice],[data-v531-quiz-back],[data-v531-more-back],[data-v531-share],[data-v531-rankings],[data-v531-quiz-start],[data-v531-quiz-close],[data-v531-q-answer],[data-v531-quiz-next],[data-v531-result-back],[data-v531-more-start],[data-v531-more-close],[data-v531-more-choice],[data-v539-more-next],[data-v531-exit-confirm],[data-v531-exit-cancel],[data-v614-countdown-skip],[data-v614-countdown-close]');
+  const t=e.target.closest('[data-v545-more-screen],[data-v583-more-round],[data-v531-more-open],[data-v48-quiz],[data-v12-choice],[data-v1070-quiz-hub-close],[data-v531-quiz-back],[data-v531-more-back],[data-v531-share],[data-v531-rankings],[data-v531-quiz-start],[data-v531-quiz-close],[data-v531-q-answer],[data-v531-quiz-next],[data-v531-result-back],[data-v531-more-start],[data-v531-more-close],[data-v531-more-choice],[data-v539-more-next],[data-v531-exit-confirm],[data-v531-exit-cancel],[data-v614-countdown-skip],[data-v614-countdown-close]');
   if(!t)return;
   // Controles del diseño principal anterior: no los bloqueamos.
   // Dejamos que su funcionamiento original ocurra y luego abrimos el diseño secundario debajo.
@@ -1040,16 +1043,19 @@ document.addEventListener('click',function(e){
     return;
   }
 
-  if(t.matches('[data-v531-quiz-back]')){v614ClearQuizCountdown();quiz.mode='hub';quiz.exit=false;go('more');return}
+  if(t.matches('[data-v531-quiz-back],[data-v1070-quiz-hub-close]')){v614ClearQuizCountdown();quiz.mode='splash';quiz.exit=false;render(false);return}
   if(t.matches('[data-v531-more-back]')){
     if(route()==='moreLessGallery'){location.hash='#/moreLess';return}
     v543CloseMorePortal();return
   }
   if(t.matches('[data-v531-share]')){share();return}
   if(t.matches('[data-v531-rankings]')){go('rankings');return}
-  if(t.matches('[data-v531-quiz-start]')){v614StartQuizCountdown();return}
+  if(t.matches('[data-v531-quiz-start]')){
+    if(t.closest('[data-v531-view="splash"]')){v614ClearQuizCountdown();quiz.mode='hub';quiz.exit=false;render(true);return}
+    v614StartQuizCountdown();return
+  }
   if(t.matches('[data-v614-countdown-skip]')){v614OpenQuizGame();return}
-  if(t.matches('[data-v614-countdown-close]')){v614ClearQuizCountdown();quiz.mode='hub';quiz.exit=false;render(false);return}
+  if(t.matches('[data-v614-countdown-close]')){quiz.exit=true;render(false);return}
   if(t.matches('[data-v531-quiz-close]')){quiz.exit=true;v1050NotifyOpen=false;render(false);return}
   if(t.matches('[data-v531-result-back]')){v614ClearQuizCountdown();quiz.mode='hub';quiz.exit=false;render(false);return}
   if(t.matches('[data-v531-q-answer]')){
