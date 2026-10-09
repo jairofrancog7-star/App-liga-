@@ -161,7 +161,7 @@ function quizData(data){
   for(let i=0;i<Math.min(4,rows.length);i++)stats.push({question:'¿Qué equipo ocupa el '+(i+1)+'º lugar en esta categoría?',correct:String(rows[i][1]),pool:rows.map(r=>String(r[1]))});
   if(scorersList.length>=4)stats.push({question:'¿Quién lidera el goleo de esta categoría?',correct:scorersList[0].name,pool:scorersList.map(r=>r.name)});
   const fields=quizLocalFieldQuestions(),round=Math.max(0,(quiz.step||1)-1);
-  const fieldOffset=((Number(quiz.fieldStart)||0)+Math.floor(round/2))%fields.length;
+  const fieldOffset=(((Number(quiz.fieldStart)||0)+Math.floor(round/2))%fields.length+fields.length)%fields.length;
   const q=round%2===0||!stats.length?fields[fieldOffset]:stats[Math.floor(round/2)%stats.length];
   const pool=[q.correct,...(q.pool||[])].filter((v,i,a)=>v&&a.findIndex(x=>norm(x)===norm(v))===i);
   const options=pool.slice(0,4);
