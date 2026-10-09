@@ -902,6 +902,16 @@ function schedule(){
     }
   })});
 }
+/* V1073: Capturar la X de la partida antes de los manejadores globales.
+   En Android otros controles document-level consumían su click y la hoja
+   de confirmación no se montaba, aunque funcionaba la X del 3-2-1. */
+window.addEventListener('click',function(e){
+  if(route()!=='quizArena'||quiz.mode!=='game'||!(e.target instanceof Element))return;
+  const hit=e.target.closest('#v612-quiz-portal [data-v531-quiz-close]');
+  if(!hit)return;
+  e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+  quiz.exit=true;v1050NotifyOpen=false;render(false);
+},true);
 document.addEventListener('click',function(e){
   const v766Start=e.target.closest('[data-v766-quiz-open]');
   if(route()==='quizArena'&&v766Start){
