@@ -94,9 +94,38 @@ function crest(name,cls=''){
  return src?'<span class="v501-crest '+cls+'"><img src="'+esc(src)+'" alt="'+esc(name)+'" loading="lazy" decoding="async"></span>':
  '<span class="v501-crest '+cls+' fallback">'+esc(initials(name))+'</span>';
 }
+/* Sheet labels use complete words, never truncating in the middle.
+   Official team data and logos remain untouched. */
 function shortName(name){
- const s=String(name||'').trim();
- return s.length>16?s.split(/\s+/).map((x,i)=>i<2?x:'').filter(Boolean).join(' ').slice(0,16):s;
+ const full=String(name||'').trim();
+ if(full.length<=18)return full;
+ let label=full;
+ for(const [pattern,abbrev] of [
+    [/\bDEPORTIVO\b/gi,'Dep.'],[/\bDEPORTIVA\b/gi,'Dep.'],
+    [/\bSAN ANTONIO\b/gi,'S. Antonio'],
+    [/\bFRACCIONAMIENTO\b/gi,'Fracc.'],[/\bUNIVERSIDAD\b/gi,'Univ.']
+ ])label=label.replace(pattern,abbrev);
+ return label;
+}
+/* Three character code only in compact brackets. Title and aria-label keep
+   the full club name, preserving usability for long press/accessibility. */
+function bracketCode(name){
+ const original=String(name||'').trim(), n=norm(original);
+ const known=[
+   ['san jose','SJO'],['san julian','SJU'],['san juan','SJN'],
+   ['san antonio','SAT'],['herreras','HFC'],['hermanos','HNO'],
+   ['galacticos','GAL'],['terricolas','TER'],['juventus','JUV'],
+   ['linces','LIN'],['napoli','NAP'],['franco','FRA'],
+   ['lobos','LOB'],['tavera','TAV'],['esperanza','ESP'],
+   ['boavista','BOA'],['manchester','MAN'],['promesas','PRO'],
+   ['mazacotes','MAZ'],['abejas','ABE'],['zapata','ZAP'],['barza','BAR']
+ ];
+ for(const [part,code] of known)if(n.includes(part))return code;
+ const words=original.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().match(/[A-Z0-9]+/g)||[];
+ if(!words.length)return '---';
+ if(words.length===1)return words[0].slice(0,3).padEnd(3,'-');
+ if(words.length>=3)return (words[0][0]+words[1][0]+words[2][0]).slice(0,3);
+ return (words[0].slice(0,2)+words[1][0]).slice(0,3);
 }
 function standings(){
  const rows=(cat()?.standings||[]).flatMap(b=>Array.isArray(b?.rows)?b.rows:[]);
@@ -282,10 +311,10 @@ function bracketTeam(t,mini=false){
      '<small class="v12-bracket-seed"></small><span class="v12-bracket-fallback">—</span><strong>—</strong>'+
    '</div>';
  }
- return '<div class="v12-bracket-team '+(mini?'mini':'')+'">'+
+ return '<div class="v12-bracket-team '+(mini?'mini':'')+'" title="'+esc(t.name)+'" aria-label="'+esc(t.name)+'">'+
    '<small class="v12-bracket-seed">'+esc(t.pos)+'</small>'+
    v512Logo(t.name)+
-   '<strong>'+esc(t.name)+'</strong>'+
+   '<strong class="v1050-team-code">'+esc(bracketCode(t.name))+'</strong>'+
  '</div>';
 }
 function v512Pair(a,b){
@@ -465,11 +494,11 @@ function simulatorSheet(){
      const sc=scoreOf(f,s),hp=posNow(f.home),ap=posNow(f.away),hb=posBefore(f.home),ab=posBefore(f.away);
      return '<div class="v501-sim-match">'+
        '<span class="v501-seed">#<b>'+hp+'</b>'+seedTrend(hp,hb)+'</span>'+
-       '<div class="v501-sim-team home">'+crest(f.home,'sim')+'<b>'+esc(shortName(f.home))+'</b></div>'+
+       '<div class="v501-sim-team home" title="'+esc(f.home)+'" aria-label="'+esc(f.home)+'">'+crest(f.home,'sim')+'<b>'+esc(shortName(f.home))+'</b></div>'+
        scoreControl(f,'home')+
        scoreCenter(f,sc)+
        scoreControl(f,'away')+
-       '<div class="v501-sim-team away">'+crest(f.away,'sim')+'<b>'+esc(shortName(f.away))+'</b></div>'+
+       '<div class="v501-sim-team away" title="'+esc(f.away)+'" aria-label="'+esc(f.away)+'">'+crest(f.away,'sim')+'<b>'+esc(shortName(f.away))+'</b></div>'+
        '<span class="v501-seed right">#<b>'+ap+'</b>'+seedTrend(ap,ab)+'</span>'+
      '</div>';
    }).join('')+'</div>'+
