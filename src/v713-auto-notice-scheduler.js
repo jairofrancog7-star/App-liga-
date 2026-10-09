@@ -268,15 +268,21 @@ function bind(root){
   root.querySelector('[data-v713-save]').onclick=async()=>{
     if(!await authorized()){toast('Solo administración autorizada');return}
     const pub=when(root.querySelector('[data-v713-date]').value,root.querySelector('[data-v713-time]').value);if(!pub){toast('Selecciona fecha y hora');return}
+    if(pub.getTime()<=Date.now()){toast('Selecciona una fecha futura para evitar publicar el aviso por error.');return}
     const mins=Number(root.querySelector('[data-v713-remind]').value||0),channels={};root.querySelectorAll('[data-v713-ch]').forEach(x=>channels[x.dataset.v713Ch]=x.checked);
     const item={id:id(),type,title:root.querySelector('[data-v713-title]').value.trim()||'Aviso importante',body:root.querySelector('[data-v713-body]').value.trim()||'Información importante de la Liga.',category:root.querySelector('[data-v713-category]').value.trim(),publishAt:pub.toISOString(),remindAt:mins?new Date(pub.getTime()-mins*60000).toISOString():'',channels,status:'scheduled',createdAt:new Date().toISOString(),published:false,reminderSent:false};
-    const rows=read();rows.push(item);write(rows);renderLists();toast('Recordatorio local programado; no se publicará globalmente');processDue();
+    const rows=read();
+    const repeated=rows.some(old=>!old.published&&old.type===item.type&&
+      old.category===item.category&&old.title===item.title&&old.body===item.body&&
+      Math.abs(Date.parse(old.publishAt||'')-Date.parse(item.publishAt))<300000);
+    if(repeated){toast('Ya existe un aviso igual para esa hora.');return}
+    rows.push(item);write(rows);renderLists();toast('Recordatorio local programado; no se publicará globalmente');processDue();
   };
   root.addEventListener('click',async e=>{
     if(!await authorized()){toast('Solo administración autorizada');return}
     const png=e.target.closest('[data-v713-png]');if(png){const it=read().find(x=>x.id===png.dataset.v713Png);if(it)makePng(it,true);return}
-    const now=e.target.closest('[data-v713-now]');if(now){const rows=read(),it=rows.find(x=>x.id===now.dataset.v713Now);if(it){it.publishAt=new Date().toISOString();it.forceNow=true;write(rows);processDue(true)}return}
-    const del=e.target.closest('[data-v713-delete]');if(del){write(read().filter(x=>x.id!==del.dataset.v713Delete));renderLists();return}
+    const now=e.target.closest('[data-v713-now]');if(now){const rows=read(),it=rows.find(x=>x.id===now.dataset.v713Now);if(it&&window.confirm('¿Procesar este aviso local ahora? Comprueba el texto y los canales antes de continuar.')){it.publishAt=new Date().toISOString();it.forceNow=true;write(rows);processDue(true)}return}
+    const del=e.target.closest('[data-v713-delete]');if(del){if(window.confirm('¿Eliminar este recordatorio LOCAL de este teléfono?')){write(read().filter(x=>x.id!==del.dataset.v713Delete));renderLists()}return}
   });
 }
 function mount(){
