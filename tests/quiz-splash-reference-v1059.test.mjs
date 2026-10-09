@@ -12,7 +12,11 @@ test('portada de referencia ocupa pantalla completa, sin tarjetas ajenas',()=>{
  assert.ok(splash.includes('data-v531-view="splash"'));
  assert.ok(splash.includes('v1059-splash-logo'));
  assert.ok(splash.includes('v1059-answer-art'));
- assert.ok(splash.includes('v1059-splash-stadium'));
+ assert.ok(splash.includes('V1062_QUIZ_SPLASH_STADIUM'));
+ assert.ok(main.includes('class="v1059-splash-stadium"'));
+ assert.ok(main.includes('preserveAspectRatio="none"'));
+ assert.ok(!splash.includes('<img class="v1059-splash-stadium"'));
+ assert.ok(!splash.includes('src="./src/quiz-arena-night-stadium.svg"'));
  assert.ok(!splash.includes('v531-rank-card'));
  assert.ok(!splash.includes('v531-friend-card'));
  assert.ok(!splash.includes('v531-mini-head'));
@@ -40,7 +44,7 @@ test('logo abre portada funcional antigua sin perder clasificaciones',()=>{
  assert.ok(main.includes('function quizGame(data)'));
  assert.ok(main.includes('function quizCountdown(data)'));
 });
-test('activo en GitHub Pages, gráfico nocturno local y sin archivos privados',()=>{
+test('activo en GitHub Pages, estadio SVG integrado sin carga externa ni archivos privados',()=>{
  assert.match(index,/v531-quiz-moreless-drive-reference\.js\?v=20261009-v\d{4}-[a-z0-9-]+/);
  assert.match(index,/v1059-quiz-splash-exact\.css\?v=20261009-v1059-android-pixel-scale/);
  assert.ok(svg.includes('viewBox="0 0 691 250"'));
