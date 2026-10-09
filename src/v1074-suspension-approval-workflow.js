@@ -264,9 +264,9 @@ function exportLog(p){
  if(!names.length){message(p,'No hay equipos oficiales para exportar con estos filtros.');return}
  const key=stable(form),delivery=s.deliveryHash===key?s.delivery||{}:{};
  const safe=value=>{
-  let v=String(value??'').replace(/[\\r\\n]+/g,' ').trim();
+  let v=String(value??'').replace(/[\r\n]+/g,' ').trim();
   // Impedir ejecución de fórmulas al abrir CSV con Excel/Sheets.
-  if(/^[=+@\\-\\t\\r]/.test(v))v="'"+v;
+  if(/^[=+@\-\t\r]/.test(v))v="'"+v;
   return '"'+v.replace(/"/g,'""')+'"';
  };
  const rows=[['Categoría','Jornada','Equipo','Estado anotado','Envío (local)','Recepción (local)','Verificación']];
@@ -275,7 +275,7 @@ function exportLog(p){
   rows.push([form.cat,form.round,name,row.receivedAt?'Recepción anotada':row.sentAt?'Envío anotado':'Pendiente',
    row.sentAt||'',row.receivedAt||'','No verificado; registro del dispositivo']);
  }
- const csv='\\uFEFF'+rows.map(row=>row.map(safe).join(',')).join('\\r\\n');
+ const csv='\uFEFF'+rows.map(row=>row.map(safe).join(',')).join('\r\n');
  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
  const url=URL.createObjectURL(blob),a=document.createElement('a');
  a.href=url;a.download='liga-avisos-equipos-'+new Date().toISOString().slice(0,10)+'.csv';
