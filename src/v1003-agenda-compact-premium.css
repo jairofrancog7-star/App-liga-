@@ -1,0 +1,334 @@
+/* V1003 · Agenda de jornada: tarjetas compactas e iconografía HD.
+   Alcance estricto: #/agendaBuilder. No cambia registros ni eventos. */
+@media(max-width:1023px){
+  html body[data-app-route="agendaBuilder"] #app > .topbar,
+  html body[data-app-route="agendaBuilder"] .app-shell > .topbar{
+    isolation:isolate!important;
+    background:
+      radial-gradient(ellipse 43% 110% at 7% -20%,rgba(85,231,255,.43),transparent 82%),
+      radial-gradient(ellipse 56% 100% at 90% 2%,rgba(37,151,255,.35),transparent 84%),
+      linear-gradient(180deg,#1364ef 0%,#0c43d2 37%,#082a9d 70%,#081a73 100%)!important;
+    border-bottom:1px solid rgba(97,212,255,.5)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.19),inset 0 -12px 21px rgba(4,15,85,.13)!important;
+  }
+  /* Iluminación tenue para conservar la flecha y la imagen de perfil. */
+  html body[data-app-route="agendaBuilder"] .topbar.v397-tool-topbar-exact::before{
+    opacity:.12!important;
+    filter:drop-shadow(0 0 8px rgba(22,209,255,.18))!important;
+  }
+  html body[data-app-route="agendaBuilder"] .topbar.v397-tool-topbar-exact .wordmark::before{
+    opacity:.19!important;
+    filter:none!important;
+  }
+  html body[data-app-route="agendaBuilder"] .topbar .v1003-agenda-header-title{
+    position:absolute!important;
+    z-index:12!important;
+    left:68px!important;
+    right:75px!important;
+    top:50%!important;
+    transform:translateY(-50%)!important;
+    display:grid!important;
+    gap:4px!important;
+    align-content:center!important;
+    margin:0!important;
+    border:0!important;
+    border-left:3px solid #73edff!important;
+    border-radius:0!important;
+    padding:2px 0 2px 11px!important;
+    background:none!important;
+    box-shadow:none!important;
+    color:#fff!important;
+    text-align:left!important;
+    pointer-events:none!important;
+  }
+  html body[data-app-route="agendaBuilder"] .topbar .v1003-agenda-header-title strong{
+    color:#fff!important;
+    font:850 clamp(14px,4vw,18px)/1.12 Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:-.025em!important;
+    text-shadow:0 2px 7px rgba(4,15,73,.28)!important;
+    white-space:nowrap!important;
+  }
+  html body[data-app-route="agendaBuilder"] .topbar .v1003-agenda-header-title small{
+    color:#bfefff!important;
+    font:700 clamp(8px,2.2vw,10px)/1.2 Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:.012em!important;
+    white-space:nowrap!important;
+  }
+  html body[data-app-route="agendaBuilder"] #screen .v60-tool-page.v64-page:has([data-v64-ag-home]){
+    box-sizing:border-box!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    padding:14px 13px calc(100px + env(safe-area-inset-bottom))!important;
+    background:linear-gradient(180deg,#0b1a74 0%,#080f68 44%,#06095e 100%)!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v64-form-grid.one{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:12px!important;
+    width:100%!important;
+    min-width:0!important;
+    padding:0!important;
+    margin:0!important;
+  }
+  /* Quita el doble marco de cada bloque. Conserva su rótulo y el control real. */
+  html body[data-app-route="agendaBuilder"] .v64-form-grid.one > label{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:7px!important;
+    min-width:0!important;
+    width:100%!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    outline:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    color:#fff!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v64-form-grid.one > label > b{
+    display:block!important;
+    margin:0 1px!important;
+    color:#e7f4ff!important;
+    font:800 13px/1.25 Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:-.01em!important;
+    text-shadow:none!important;
+  }
+  /* Los selects nativos permanecen en el DOM para conservar valor/eventos.
+     El selector visual abre el buscador con filtro de categorías. */
+  html body[data-app-route="agendaBuilder"] .v64-form-grid.one :is(select,input).v159-native{
+    display:none!important;
+    visibility:hidden!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v64-form-grid.one .v159-picker{
+    appearance:none!important;
+    -webkit-appearance:none!important;
+    position:relative!important;
+    isolation:isolate!important;
+    display:grid!important;
+    grid-template-columns:43px minmax(0,1fr) 20px!important;
+    align-items:center!important;
+    column-gap:12px!important;
+    width:100%!important;
+    min-width:0!important;
+    min-height:70px!important;
+    height:auto!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:11px 13px!important;
+    border:1px solid rgba(100,183,254,.46)!important;
+    border-radius:18px!important;
+    background:
+      radial-gradient(ellipse 55% 115% at 0% 0%,rgba(47,144,255,.18),transparent 84%),
+      linear-gradient(112deg,#153795 0%,#0c217a 55%,#0a1769 100%)!important;
+    box-shadow:inset 0 1px 0 rgba(240,252,255,.14),0 6px 15px rgba(1,5,45,.17)!important;
+    color:#fff!important;
+    text-align:left!important;
+    cursor:pointer!important;
+    touch-action:manipulation!important;
+    transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v159-picker .v159-picker-icon{
+    display:grid!important;
+    place-items:center!important;
+    width:43px!important;
+    height:43px!important;
+    border:1px solid rgba(125,224,255,.38)!important;
+    border-radius:14px!important;
+    background-color:#1766d1!important;
+    background-image:linear-gradient(135deg,#218ce9,#1254b6)!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+    background-size:25px 25px,cover!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.23),0 4px 10px rgba(3,17,77,.2)!important;
+    color:transparent!important;
+    font-size:0!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v159-picker[data-v159-picker="team"] .v159-picker-icon{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='10.8' cy='10.7' r='5.8'/%3E%3Cpath d='m15.2 15.2 5.1 5.1M8.7 10.7h4.2m-2.1-2.1v4.2'/%3E%3C/svg%3E"),linear-gradient(135deg,#2195f0,#155ac4)!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v159-picker[data-v159-picker="field"] .v159-picker-icon{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 21s-6.5-5.8-6.5-11.7a6.5 6.5 0 1 1 13 0C18.5 15.2 12 21 12 21Z'/%3E%3Ccircle cx='12' cy='9.4' r='2.5'/%3E%3C/svg%3E"),linear-gradient(135deg,#18a3e7,#1553b9)!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v159-picker > span:nth-child(2){
+    display:block!important;min-width:0!important;overflow:hidden!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v159-picker b{
+    display:block!important;
+    color:#fff!important;
+    font:830 clamp(14px,3.8vw,17px)/1.17 Inter,Roboto,Arial,sans-serif!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v159-picker small{
+    display:block!important;
+    margin-top:4px!important;
+    color:#b6d5fc!important;
+    font:600 clamp(10px,2.6vw,11px)/1.2 Inter,Roboto,Arial,sans-serif!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v159-picker > i{
+    display:block!important;
+    width:20px!important;
+    height:20px!important;
+    margin:0!important;
+    color:transparent!important;
+    font-size:0!important;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2378eaff' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 5 7 7-7 7'/%3E%3C/svg%3E") center/20px 20px no-repeat!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v159-picker:active{
+    transform:scale(.987)!important;
+    border-color:#7beeff!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v159-picker:focus-visible,
+  html body[data-app-route="agendaBuilder"] :is(input,select,button):focus-visible{
+    outline:2px solid #79f1ff!important;outline-offset:2px!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v64-form-grid.one > label > input:not(.v159-native),
+  html body[data-app-route="agendaBuilder"] .v64-form-grid.one > label > select:not(.v159-native){
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+    min-height:53px!important;
+    height:53px!important;
+    margin:0!important;
+    padding:0 13px!important;
+    border:1px solid rgba(102,183,255,.47)!important;
+    border-radius:16px!important;
+    background:linear-gradient(125deg,#122e89,#0a1b70)!important;
+    color:#fff!important;
+    font:750 14px/1.2 Inter,Roboto,Arial,sans-serif!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 5px 13px rgba(0,5,52,.12)!important;
+    color-scheme:dark!important;
+  }
+  html body[data-app-route="agendaBuilder"] input[type="datetime-local"]::-webkit-calendar-picker-indicator{
+    filter:brightness(0) invert(1)!important;opacity:.9!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v159-format{
+    margin:4px 0 0!important;
+    padding:12px!important;
+    border:1px solid rgba(94,174,251,.36)!important;
+    border-radius:17px!important;
+    background:linear-gradient(140deg,#102983,#091970)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v159-format label>b{color:#fff!important;font-size:12px!important}
+  html body[data-app-route="agendaBuilder"] .v159-format select{
+    width:100%!important;
+    min-height:43px!important;
+    height:auto!important;
+    margin-top:5px!important;
+    padding:8px 10px!important;
+    border:1px solid rgba(113,194,255,.38)!important;
+    border-radius:12px!important;
+    background:#0a1b6c!important;
+    color:#fff!important;
+    font-size:12px!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v159-format-note{
+    padding:9px 11px!important;margin-top:8px!important;
+    border-radius:12px!important;
+    background:rgba(46,139,240,.13)!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v159-format-note b{color:#6febff!important;font-size:11px!important}
+  html body[data-app-route="agendaBuilder"] .v159-format-note span{color:#c2d5fa!important;font-size:10px!important}
+  html body[data-app-route="agendaBuilder"] .v64-stack-actions{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+    margin-top:16px!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v64-stack-actions button{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    column-gap:8px!important;
+    min-width:0!important;
+    min-height:47px!important;
+    height:auto!important;
+    margin:0!important;
+    padding:10px 12px!important;
+    border:1px solid rgba(100,193,255,.39)!important;
+    border-radius:14px!important;
+    background:linear-gradient(125deg,#1546ae,#0c246f)!important;
+    color:#f6fdff!important;
+    font:760 11px/1.24 Inter,Roboto,Arial,sans-serif!important;
+    text-align:left!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.11)!important;
+    white-space:normal!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v64-stack-actions button::before{
+    content:""!important;
+    display:block!important;
+    flex:0 0 19px!important;
+    width:19px!important;height:19px!important;
+    background-position:center!important;
+    background-size:contain!important;
+    background-repeat:no-repeat!important;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.9' stroke-linecap='round'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E")!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v64-stack-actions button[data-v64-ag-add]{
+    grid-column:1 / -1!important;
+    min-height:49px!important;
+    background:linear-gradient(110deg,#1a79e5,#1551ba)!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v64-stack-actions button[data-v64-ag-json]::before,
+  html body[data-app-route="agendaBuilder"] .v64-stack-actions button[data-v159-png]::before{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12m0 0-4-4m4 4 4-4M4 17v3h16v-3'/%3E%3C/svg%3E")!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v64-stack-actions button[data-v159-share]::before{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='18' cy='5' r='2'/%3E%3Ccircle cx='6' cy='12' r='2'/%3E%3Ccircle cx='18' cy='19' r='2'/%3E%3Cpath d='m8 11 8-5M8 13l8 5'/%3E%3C/svg%3E")!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v64-stack-actions button[data-v64-ag-clear]::before{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 7h16M9 7V4h6v3m3 0-1 13H7L6 7m4 4v6m4-6v6'/%3E%3C/svg%3E")!important;
+  }
+  html body[data-app-route="agendaBuilder"] .v64-agenda-list article{
+    border-radius:15px!important;
+    background:linear-gradient(120deg,#142d88,#091870)!important;
+    border-color:rgba(86,175,248,.35)!important;
+  }
+  /* Paneles de búsqueda: tarjetas de menor altura e iconos claros. */
+  html body.v159-open .v159-sheet{
+    border-color:rgba(85,209,255,.53)!important;
+    background:linear-gradient(180deg,#122887,#080d5d)!important;
+  }
+  html body.v159-open .v159-search{
+    border-color:rgba(81,184,255,.47)!important;
+    border-radius:15px!important;
+    background:#0c2374!important;
+  }
+  html body.v159-open .v159-search > span{
+    display:block!important;
+    width:22px!important;height:22px!important;
+    font-size:0!important;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2376eaff' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='10.8' cy='10.8' r='6'/%3E%3Cpath d='m15.4 15.4 5 5'/%3E%3C/svg%3E") center/contain no-repeat!important;
+  }
+  html body.v159-open .v159-row{
+    min-height:56px!important;
+    border-bottom-color:rgba(255,255,255,.09)!important;
+  }
+  html body.v159-open .v159-team-logo,
+  html body.v159-open .v159-field-icon{
+    width:39px!important;height:39px!important;
+    border:1px solid rgba(103,215,255,.44)!important;
+    background:#1746b5!important;
+  }
+  html body.v159-open .v159-row b{font-size:12px!important}
+  html body.v159-open .v159-row small{font-size:10px!important;color:#b9d3f7!important}
+}
+@media(max-width:390px){
+  html body[data-app-route="agendaBuilder"] .topbar .v1003-agenda-header-title{left:53px!important;right:52px!important}
+  html body[data-app-route="agendaBuilder"] .topbar .v1003-agenda-header-title strong{font-size:13px!important}
+  html body[data-app-route="agendaBuilder"] .v64-form-grid.one .v159-picker{
+    min-height:64px!important;grid-template-columns:39px minmax(0,1fr) 18px!important;gap:9px!important;padding:9px 10px!important
+  }
+  html body[data-app-route="agendaBuilder"] .v159-picker .v159-picker-icon{width:39px!important;height:39px!important;border-radius:13px!important}
+  html body[data-app-route="agendaBuilder"] .v64-stack-actions button{font-size:10px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  html body[data-app-route="agendaBuilder"] .v159-picker{transition:none!important}
+}
