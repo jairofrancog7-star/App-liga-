@@ -449,7 +449,16 @@
       return;
     }
 
-    if(r==='teams'||r==='scorers'||r==='players'){
+    /* V997 — El banner animado debajo del ranking de goleadores reservaba
+       cientos de píxeles aunque su contenido no se mostrara. Es decorativo:
+       el ranking y las acciones PNG que vienen después no dependen de él. */
+    if(r==='scorers'){
+      screen.querySelectorAll('[data-v28-scorers] > [data-v73-motion-banner], #screen > [data-v73-motion-banner]').forEach(node=>node.remove());
+      syncAll();
+      return;
+    }
+
+    if(r==='teams'||r==='players'){
       mountBelowNative(screen,r,cfg);
       return;
     }
