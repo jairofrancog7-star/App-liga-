@@ -2652,10 +2652,22 @@ function bindList(root){
   $('[data-v124-edit]',root).forEach(b=>b.onclick=()=>{const r=seasonRecords().find(x=>x.id===b.dataset.v124Edit);if(r)loadRecord(r)});
   $('[data-v124-card]',root).forEach(b=>b.onclick=()=>{const r=seasonRecords().find(x=>x.id===b.dataset.v124Card);if(r)loadRecord(r)});
   $('[data-v124-delete]',root).forEach(b=>b.onclick=()=>deleteRecord(b.dataset.v124Delete));
-  $('[data-v124-more]',root)?.addEventListener('click',()=>{
-    const filtered=filterRegistry(seasonRecords());
-    registryVisibleLimit=Math.min(filtered.length,registryVisibleLimit+REGISTRY_PAGE_SIZE);
-    applyRegistryFilters(root,false);
+  $('[data-v124-more]',root)?.addEventListener('click',e=>{
+    const filtered=filterRegistry(seasonRecords()),start=registryVisibleLimit;
+    const nextRows=filtered.slice(start,start+REGISTRY_PAGE_SIZE);
+    const footer=e.currentTarget.closest('.v124-load-more');
+    if(!footer||!nextRows.length)return;
+    registryVisibleLimit=start+nextRows.length;
+    /* Insertar sólo los siguientes jugadores: no destruir lo ya dibujado,
+       no reiniciar fotos ni perder la posición del dedo en el scroll. */
+    footer.insertAdjacentHTML('beforebegin',listHtml(nextRows));
+    const remaining=filtered.length-registryVisibleLimit;
+    if(remaining>0){
+      const label=footer.querySelector('span');
+      if(label)label.textContent='Mostrando '+registryVisibleLimit+' de '+filtered.length+' jugadores';
+      e.currentTarget.textContent='Mostrar '+Math.min(REGISTRY_PAGE_SIZE,remaining)+' más ↓';
+    }else footer.remove();
+    bindList(root);
   });
 }
 function renderManager(force=false){
