@@ -52,19 +52,32 @@ let signatureData='';
 let lastPayload=null;
 let busy=false;
 
-const route=()=>String(document.body?.dataset?.appRoute||location.hash.replace(/^#\/?/,'').split('?')[0]||'home');
+/* V1058: la URL tiene prioridad sobre un data-app-route todavía sin sincronizar. */
+const route=()=>String(location.hash.replace(/^#\/?/,'').split('?')[0]||document.body?.dataset?.appRoute||'home');
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const same=(a,b)=>norm(a)===norm(b);
 const q=s=>document.querySelector(s);
 const qa=s=>[...document.querySelectorAll(s)];
 
+/* Abrir la herramienta aunque la petición oficial tarde o no haya conexión.
+   Reutiliza únicamente los datos oficiales que ya están cargados en la app. */
 async function loadDb(){
-  if(db)return db;
+  if(db?.categories&&Object.keys(db.categories).length)return db;
   try{
-    const r=await fetch(DATA_URL,{cache:'no-store'});
-    if(r.ok)db=await r.json();
+    const ready=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA;
+    if(ready?.categories&&Object.keys(ready.categories).length){db=ready;return db}
   }catch(_){}
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),4500);
+  try{
+    const response=await fetch(DATA_URL,{cache:'no-store',signal:controller.signal});
+    if(response.ok){
+      const fresh=await response.json();
+      if(fresh?.categories)db=fresh;
+    }
+  }catch(_){}
+  finally{clearTimeout(timeout)}
   return db||{};
 }
 function categoriesFromDb(){
@@ -955,14 +968,37 @@ async function mount(){
   busy=true;
   try{
     await loadDb();
-    if(route()!=='permissionBuilder')return;
-    host.dataset.v635Mounted='1';
+    if(route()!=='permissionBuilder'||!host.isConnected)return;
     host.innerHTML=view();
     bind();
     refreshLists();
+    host.dataset.v635Mounted='1';
+  }catch(error){
+    delete host.dataset.v635Mounted;
+    console.warn('[LJR Permisos] Error al abrir',error);
+    host.innerHTML='<section class="v635-page v635-retry-screen"><h2>No se pudo abrir Permisos</h2><p>Intenta cargar nuevamente la herramienta.</p><button type="button" data-v635-retry>Abrir nuevamente</button></section>';
+    host.querySelector('[data-v635-retry]')?.addEventListener('click',()=>{host.innerHTML='';schedule()},{once:true});
   }finally{busy=false}
 }
-function schedule(){requestAnimationFrame(()=>setTimeout(mount,20))}
+let pendingMount=false;
+function schedule(){
+  if(pendingMount)return;
+  pendingMount=true;
+  requestAnimationFrame(()=>{pendingMount=false;setTimeout(mount,20)});
+}
+window.addEventListener('ljr:official-data',()=>{
+  try{
+    const fresh=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA;
+    if(fresh?.categories){
+      db=fresh;
+      if(route()==='permissionBuilder'&&q('[data-v635-page]')){
+        refreshLists();
+        if(!q('[data-v635-team-sheet]')?.hidden)renderTeamPicker();
+        if(!q('[data-v635-player-sheet]')?.hidden)renderPlayerPicker();
+      }
+    }
+  }catch(_){}
+});
 window.addEventListener('hashchange',schedule);
 window.addEventListener('load',schedule);
 document.addEventListener('DOMContentLoaded',schedule,{once:true});
