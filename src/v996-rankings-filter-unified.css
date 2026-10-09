@@ -1,0 +1,218 @@
+/* V996 | Rankings Juventino Rosas — coherencia visual de filtros y barra.
+   SOLO #/rankings; no cambia lógica de resultados, rutas ni escudos. */
+@media (max-width:1023px){
+  /* La marca cian de Categorías/Clubes recupera el grosor de referencia. */
+  html body.v32-rankings-active #screen .v32-head-unified>.v32-tabs>.v32-tab.active::after{
+    content:""!important;
+    left:1px!important;
+    right:auto!important;
+    top:auto!important;
+    bottom:-2px!important;
+    width:47px!important;
+    height:5px!important;
+    min-height:5px!important;
+    border:0!important;
+    border-radius:999px!important;
+    background:#15e9f3!important;
+    box-shadow:0 0 7px rgba(20,231,243,.22)!important;
+    opacity:1!important;
+  }
+  html body.v32-rankings-active #screen .v32-head-unified>.v32-tabs{
+    border-bottom:1px solid rgba(139,154,229,.28)!important;
+    overflow:visible!important;
+  }
+
+  /* Fondo continuo bajo la cabecera azul, sin tres bandas ni saltos morados. */
+  html body.v32-rankings-active #screen{
+    background:#07065f!important;
+  }
+  html body.v32-rankings-active #screen .v32-rankings:not(.v32-filter-mode){
+    background:
+      radial-gradient(95% 235px at 83% 0%,rgba(24,52,191,.38),transparent 100%),
+      linear-gradient(180deg,#0b1686 0,#090d6c 210px,#07065f 410px,#07065f 100%)!important;
+  }
+  html body.v32-rankings-active #screen .v32-rankings:not(.v32-filter-mode)>.v32-head.v32-head-unified{
+    background:
+      radial-gradient(110% 160px at 75% -20px,rgba(39,75,235,.65),transparent 93%),
+      linear-gradient(180deg,#1026bd 0%,#0c1b97 44%,#090a67 100%)!important;
+  }
+
+  /* Filtro abierto: UN mismo fondo desde Cancelar/Hecho hasta las categorías.
+     La cabecera y las tarjetas dejan de pintar bandas separadas. */
+  html body.v32-rankings-active #screen .v32-rankings.v32-filter-mode{
+    display:block!important;
+    width:100%!important;
+    min-height:100dvh!important;
+    height:auto!important;
+    padding:0 0 calc(96px + env(safe-area-inset-bottom))!important;
+    overflow:visible!important;
+    background:linear-gradient(180deg,#0d1676 0px,#090b67 175px,#07065f 470px,#07065f 100%)!important;
+  }
+  html body.v32-rankings-active #screen .v32-rankings.v32-filter-mode::before,
+  html body.v32-rankings-active #screen .v32-rankings.v32-filter-mode::after{
+    display:none!important;
+  }
+  html body.v32-rankings-active #screen .v32-rankings.v32-filter-mode .v32-filter-screen{
+    min-height:calc(100dvh - 98px)!important;
+    width:100%!important;
+    margin:0!important;
+    padding:calc(13px + env(safe-area-inset-top)) 0 20px!important;
+    background:transparent!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+  }
+  html body.v32-rankings-active #screen .v32-rankings.v32-filter-mode .v32-filter-head,
+  html body.v32-rankings-active #screen .v32-rankings.v32-filter-mode .v32-filter-body,
+  html body.v32-rankings-active #screen .v32-rankings.v32-filter-mode .v32-filter-grid{
+    background:transparent!important;
+    box-shadow:none!important;
+  }
+  html body.v32-rankings-active #screen .v32-rankings.v32-filter-mode .v32-filter-body{
+    border-top:1px solid rgba(135,160,244,.13)!important;
+    padding-top:18px!important;
+    min-height:0!important;
+  }
+  html body.v32-rankings-active #screen .v32-filter-search{
+    background:#1b2076!important;
+    border:1px solid rgba(255,255,255,.035)!important;
+    box-shadow:none!important;
+  }
+  html body.v32-rankings-active #screen .v32-filter-club{
+    background:transparent!important;
+  }
+  html body.v32-rankings-active #screen .v32-filter-club.selected{
+    background:rgba(27,30,108,.55)!important;
+    border-color:rgba(21,233,243,.72)!important;
+    box-shadow:none!important;
+    border-radius:12px!important;
+  }
+
+  /* Con filtro activo, 4 cuadros EN LA MISMA FILA y deslizamiento horizontal,
+     en vez de poner la categoría sola y más baja que los otros botones. */
+  html body.v32-rankings-active #screen .v32-rankings:not(.v32-filter-mode)>.v32-controls.clubs.has-club-filter{
+    box-sizing:border-box!important;
+    display:flex!important;
+    grid-template-columns:none!important;
+    flex-flow:row nowrap!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    gap:8px!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-height:0!important;
+    height:auto!important;
+    margin:0 0 3px!important;
+    padding:12px 16px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    overscroll-behavior-x:contain!important;
+    scroll-behavior:smooth!important;
+    scrollbar-width:none!important;
+    -webkit-overflow-scrolling:touch;
+    touch-action:pan-x pan-y!important;
+  }
+  html body.v32-rankings-active #screen .v32-controls.clubs.has-club-filter::-webkit-scrollbar{
+    display:none!important;
+  }
+  html body.v32-rankings-active #screen .v32-controls.clubs.has-club-filter>.v32-coefficient{
+    flex:0 0 178px!important;
+    grid-column:auto!important;
+    grid-row:auto!important;
+    width:178px!important;
+    min-width:178px!important;
+    max-width:178px!important;
+  }
+  html body.v32-rankings-active #screen .v32-controls.clubs.has-club-filter>.v32-season-select{
+    flex:0 0 112px!important;
+    grid-column:auto!important;
+    grid-row:auto!important;
+    width:112px!important;
+    min-width:112px!important;
+    max-width:112px!important;
+  }
+  html body.v32-rankings-active #screen .v32-controls.clubs.has-club-filter>.v32-selected-club{
+    box-sizing:border-box!important;
+    display:flex!important;
+    position:relative!important;
+    grid-column:auto!important;
+    grid-row:auto!important;
+    flex:0 0 auto!important;
+    align-self:center!important;
+    justify-self:auto!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    gap:8px!important;
+    width:auto!important;
+    min-width:120px!important;
+    max-width:190px!important;
+    height:39px!important;
+    min-height:39px!important;
+    max-height:39px!important;
+    margin:0!important;
+    padding:0 8px 0 11px!important;
+    background:#1b1d6b!important;
+    border:0!important;
+    border-radius:10px!important;
+    box-shadow:none!important;
+    color:#fff!important;
+    font:610 12px/1.1 Inter,ui-sans-serif,system-ui,sans-serif!important;
+    white-space:nowrap!important;
+    cursor:pointer!important;
+    touch-action:manipulation!important;
+  }
+  html body.v32-rankings-active #screen .v32-controls.clubs.has-club-filter>.v32-selected-club>span{
+    display:block!important;
+    flex:1 1 auto!important;
+    min-width:0!important;
+    max-width:154px!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+  }
+  html body.v32-rankings-active #screen .v32-controls.clubs.has-club-filter>.v32-selected-club>i{
+    box-sizing:border-box!important;
+    display:grid!important;
+    position:static!important;
+    flex:0 0 24px!important;
+    place-items:center!important;
+    width:24px!important;
+    min-width:24px!important;
+    max-width:24px!important;
+    height:24px!important;
+    min-height:24px!important;
+    max-height:24px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:50%!important;
+    background:#394085!important;
+    color:#d4d9f6!important;
+    font:400 20px/1 Arial,sans-serif!important;
+    text-align:center!important;
+    transform:none!important;
+  }
+  html body.v32-rankings-active #screen .v32-controls.clubs.has-club-filter>.v32-filter{
+    flex:0 0 36px!important;
+    grid-column:auto!important;
+    grid-row:auto!important;
+    align-self:center!important;
+    width:36px!important;
+    min-width:36px!important;
+    max-width:36px!important;
+    height:39px!important;
+    min-height:39px!important;
+    max-height:39px!important;
+    margin:0!important;
+    padding:0!important;
+    border-radius:10px!important;
+    background:#1b1d6b!important;
+    color:#17e7f4!important;
+    box-shadow:none!important;
+  }
+}
+@media(max-width:370px){
+  html body.v32-rankings-active #screen .v32-rankings:not(.v32-filter-mode)>.v32-controls.clubs.has-club-filter{
+    gap:7px!important;padding-left:12px!important;padding-right:12px!important;
+  }
+}
