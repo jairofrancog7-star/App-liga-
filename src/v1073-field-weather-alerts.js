@@ -164,9 +164,9 @@ async function notifyRisk(f,r){
  var title='Pronóstico · '+f.name,body=r.short+' (24 h). No es suspensión oficial.';
  try{
   if('serviceWorker'in navigator){
-   var sw=await navigator.serviceWorker.getRegistration();
+   var sw=await navigator.serviceWorker.getRegistration('./src/field-alerts/');
    if(sw&&typeof sw.showNotification==='function'){
-    await sw.showNotification(title,{body:body,tag:'ljr-weather-'+f.id,icon:'./assets/icon-192.png'});
+    await sw.showNotification(title,{body:body,tag:'ljr-weather-'+f.id});
     return;
    }
   }
@@ -224,6 +224,9 @@ async function askNotify(){
  try{
   var permission=Notification.permission==='default'?await Notification.requestPermission():Notification.permission;
   state.notify=permission==='granted';save();syncDashboard();
+  if(state.notify&&'serviceWorker'in navigator){
+   try{await navigator.serviceWorker.register('./src/field-weather-worker.js',{scope:'./src/field-alerts/'});}catch(_){/* avisos en pantalla siguen activos */}
+  }
   msg(permission==='granted'?'Notificaciones permitidas mientras abres la app. No hay envíos push con la página cerrada.':
    'No se activaron notificaciones; puedes seguir consultando los avisos dentro de la app.');
  }catch(_){msg('No se pudo activar el permiso de notificaciones en este dispositivo.');}
