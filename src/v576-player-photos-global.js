@@ -189,8 +189,20 @@ function attr(el,n){return el.getAttribute(n)||''}
 function catStored(){return localStorage.getItem('v62-category')||''}
 function teamStored(){return localStorage.getItem('v62-team-name')||''}
 
+/* V1008: no repasar toda la aplicación durante el scroll en Registro.
+   Conservar las fotos oficiales existentes y no reescribir las fotos privadas. */
+function hydrateRegistryOnly(){
+ document.querySelectorAll('#v124-player-registry .v124-player-card').forEach(card=>{
+   const target=card.querySelector('.v124-avatar');
+   if(!target||target.querySelector('.v576-inline-player-photo, img'))return;
+   const name=txt(card,'.v124-card-main b')||attr(card,'data-v124-name');
+   const team=txt(card,'.v124-card-main small').split(' · ')[0]||attr(card,'data-v124-team')||'';
+   if(name)addInline(target,resolve(name,team,catStored()),'credential');
+ });
+}
 function hydrate(){
  if(!db){load().then(hydrate);return}
+ if(route()==='credentialBuilder'){hydrateRegistryOnly();return}
 
  document.querySelectorAll('.v66-player-row[data-v66-player]').forEach(row=>{
    const name=attr(row,'data-v66-player'),team=attr(row,'data-v66-player-team'),cat=attr(row,'data-v66-cat-id');
@@ -287,7 +299,18 @@ window.addEventListener('load',()=>schedule(120));
 window.addEventListener('ljr:official-data',()=>{db=withLocalRegistrations(newer(db,window.LJR_OFFICIAL_DATA||null));build();schedule(0)});
 document.addEventListener('DOMContentLoaded',()=>schedule(20),{once:true});
 const screen=document.querySelector('#screen');
-if(screen)new MutationObserver(()=>schedule(60)).observe(screen,{childList:true,subtree:true});
+if(screen)new MutationObserver(records=>{
+ if(route()==='credentialBuilder'){
+   /* Descarta cambios internos de imágenes, letras, canvas y estados.
+      Sólo reaccionar cuando se crean nuevas tarjetas de jugadores. */
+   const hasNewCards=records.some(r=>Array.from(r.addedNodes).some(node=>
+     node.nodeType===1&&(node.matches?.('#v124-player-registry,.v124-player-card')||
+       node.querySelector?.('.v124-player-card'))));
+   if(hasNewCards)schedule(140);
+   return;
+ }
+ schedule(60);
+}).observe(screen,{childList:true,subtree:true});
 load().then(()=>schedule(0));
 setTimeout(()=>schedule(0),700);setTimeout(()=>schedule(0),2200);
 window.LJR_PLAYER_MEDIA={load,resolve,hydrate,photo:(name,team,cat)=>resolve(name,team,cat)?.photo||''};
