@@ -19,3 +19,24 @@ body[data-app-route="tableExport"] .v176-table-page{width:min(100%,760px);margin
 .v176-category-rail button.active{background:#22dfea;border-color:#22dfea;color:#061258;box-shadow:0 0 18px rgba(34,223,234,.18)}
 body[data-app-route="tableExport"] .v176-logo{display:grid!important;visibility:visible!important;opacity:1!important;flex:0 0 auto!important}
 body[data-app-route="tableExport"] .v176-logo img{display:block!important;visibility:visible!important;opacity:1!important;max-width:100%!important;max-height:100%!important}
+
+
+/* V999 — tableExport: remove the false empty tail between the standings card
+   and the existing 'Generar PNG por categoría' shortcut. Both are real content.
+   The bottom navbar clearance belongs to #screen, not to the table component. */
+@media (max-width:1023px) {
+  html body[data-app-route="tableExport"] #screen > .v176-table-page,
+  html body[data-app-route="tableExport"] #screen > [data-v176-page] {
+    height:auto!important;
+    min-height:0!important;
+    margin-bottom:0!important;
+    padding-bottom:8px!important;
+  }
+  html body[data-app-route="tableExport"] #screen > .v176-table-page .v176-card {
+    margin-bottom:0!important;
+  }
+  html body[data-app-route="tableExport"] #screen > .v938-png-category-card,
+  html body[data-app-route="tableExport"] #screen > :is(section,div,article):has(> .v938-png-category-card) {
+    margin-top:8px!important;
+  }
+}
