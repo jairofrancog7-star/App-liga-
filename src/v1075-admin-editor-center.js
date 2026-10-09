@@ -277,7 +277,7 @@ function addPanel(dialog){
   '<button type="button" data-editor-open="review"><b>✓</b><span>Revisar avisos<small>Borradores y publicados</small></span></button>'+
   '<button type="button" data-editor-open="schedule"><b>◷</b><span>Programar avisos<small>Recordatorios en este teléfono</small></span></button>'+ 
   '<button type="button" data-editor-open="page"><b>▣</b><span>Editar páginas<small>Texto, fotos y secciones</small></span></button>'+ 
-  '<button type="button" data-editor-open="backup"><b>↓</b><span>Respaldo privado<small>Exportar datos si eres presidente</small></span></button></div>'+
+  (media()?.admin?.owner?'<button type="button" data-editor-open="backup"><b>↓</b><span>Respaldo privado<small>Solo presidente</small></span></button>':'')+'</div>'+
   '<p class="ljr-editor-security">🔒 Los visitantes solo consultan información. Editar y publicar requiere una sesión autorizada y permiso del servidor.</p>';
  home.after(box);
  box.addEventListener('click',event=>{
