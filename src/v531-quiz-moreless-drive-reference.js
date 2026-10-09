@@ -289,6 +289,41 @@ function v614OpenQuizGame(){
 }
 /* V1059: portada de Quiz Arena dibujada conforme a la referencia 691×1536.
    Las respuestas son cuatro botones reales que inician el quiz, no una imagen sin interaccion. */
+/* V1062: estadio decorativo en SVG local integrado. Evita el icono de imagen rota
+   si GitHub Pages o el navegador falla al servir la imagen externa. */
+const V1062_QUIZ_SPLASH_STADIUM = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 691 250" class="v1059-splash-stadium" aria-hidden="true" focusable="false" preserveAspectRatio="none">
+<defs>
+ <linearGradient id="ljrQuizSplashV1062_sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#040052" stop-opacity="0"/><stop offset=".4" stop-color="#040053" stop-opacity=".32"/><stop offset=".84" stop-color="#090b38" stop-opacity=".8"/><stop offset="1" stop-color="#0e1438"/></linearGradient>
+ <linearGradient id="ljrQuizSplashV1062_water" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#101747"/><stop offset=".18" stop-color="#0c1736"/><stop offset=".65" stop-color="#06102e"/><stop offset="1" stop-color="#010743"/></linearGradient>
+ <linearGradient id="ljrQuizSplashV1062_roof" x1=".1" y1="0" x2=".7" y2="1"><stop stop-color="#57deff"/><stop offset=".18" stop-color="#187ffc"/><stop offset=".58" stop-color="#072cba"/><stop offset="1" stop-color="#000b6a"/></linearGradient>
+ <linearGradient id="ljrQuizSplashV1062_roof2" x1="0" y1="0" x2="1" y2=".7"><stop stop-color="#0c5ff3"/><stop offset=".36" stop-color="#e7f5ff"/><stop offset=".7" stop-color="#667ab1"/><stop offset="1" stop-color="#08146f"/></linearGradient>
+ <linearGradient id="ljrQuizSplashV1062_reflection" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#2b7ff0" stop-opacity=".65"/><stop offset="1" stop-color="#0b1645" stop-opacity="0"/></linearGradient>
+ <filter id="ljrQuizSplashV1062_glow"><feGaussianBlur stdDeviation="4"/></filter>
+ <filter id="ljrQuizSplashV1062_soft"><feGaussianBlur stdDeviation="1.5"/></filter>
+ <pattern id="ljrQuizSplashV1062_building" width="19" height="22" patternUnits="userSpaceOnUse"><path d="M2 9h4M12 12h3M4 17h2M15 6h2" stroke="#ffe5a9" stroke-width=".7" opacity=".26"/></pattern>
+</defs>
+<rect width="691" height="250" fill="url(#ljrQuizSplashV1062_sky)"/>
+<g opacity=".6"><path d="M0 162h691" stroke="#5c5e7f" stroke-width="1"/>
+<path d="M0 166v-16h8v-9h13v13h10v-7h15v14h14v-16h9v12h18v-20h15v-7h12v23h17v-10h9v16h22v-13h10v10h18v-5h13v14h12v-22h17v-9h10v18h17v-16h23v17h20v-11h18v16h14v-22h12v20h18v-16h18v14h12v-21h9v16h15v-12h15v19h20v-16h11v17h19v-18h21v18h23v-11h16v15h19v-20h14v20h25v-8h20v18h21v-13h20v13h20v-12h24v14h25v-9h18v14h20v-12h20v14" fill="#181b38"/>
+<rect y="135" width="691" height="31" fill="url(#ljrQuizSplashV1062_building)" opacity=".8"/></g>
+<ellipse cx="350" cy="153" rx="305" ry="51" fill="#0069e6" opacity=".35" filter="url(#ljrQuizSplashV1062_glow)"/>
+<path d="M74 151 Q135 63 341 62 Q551 57 621 153 Q550 141 482 137 Q333 128 205 138 Q137 138 74 151Z" fill="url(#ljrQuizSplashV1062_roof)" stroke="#32caff" stroke-width="2.5"/>
+<path d="M95 147 Q133 87 223 81 Q307 52 390 78 Q486 72 589 146 Q470 119 348 119 Q200 118 95 147Z" fill="#0d58e0" opacity=".8"/>
+<path d="M141 145 Q181 88 268 88 Q313 76 342 83 Q386 75 435 91 Q487 105 534 141 Q456 121 344 122 Q216 126 141 145Z" fill="#abdfff" opacity=".54"/>
+<path d="M189 110 Q246 94 285 96 Q320 92 346 102 Q375 90 410 97 Q470 105 500 121 L475 151 L226 151Z" fill="url(#ljrQuizSplashV1062_roof2)"/>
+<path d="M207 116 L226 150 L251 142 L228 108M244 108 L263 147 L282 142 L270 99M282 99 L302 144 L323 140 L318 91M341 95 L358 146 L375 143 L367 92M382 97 L395 145 L415 144 L410 99M426 107 L438 145 L453 148 L446 116" stroke="#f1f7ff" stroke-width="2" opacity=".6" fill="none"/>
+<path d="M86 152 Q182 77 337 70 Q508 66 615 153" stroke="#2e9aff" stroke-width="5" fill="none" opacity=".85" filter="url(#ljrQuizSplashV1062_glow)"/>
+<path d="M85 151 Q172 70 341 69 Q513 68 617 152M108 143 Q198 87 342 85 Q480 83 595 144" stroke="#42d5ff" stroke-width="1.8" fill="none" opacity=".86"/>
+<path d="M108 143 Q242 127 338 129 Q452 125 595 145 L570 158 Q357 172 128 158Z" fill="#0a2262" stroke="#558dfb" stroke-width="1"/>
+<path d="M111 148 L161 143 L182 158 L114 160ZM527 146 L579 152 L576 161 L503 156Z" fill="#61aaff" opacity=".38"/>
+<path d="M109 163 Q338 177 574 160" stroke="#b2dbf4" stroke-width="2.2" opacity=".43" fill="none"/>
+<path d="M125 165 Q341 188 567 167" stroke="#76d5ff" stroke-width="5" opacity=".25" filter="url(#ljrQuizSplashV1062_soft)" fill="none"/>
+<rect y="170" width="691" height="80" fill="url(#ljrQuizSplashV1062_water)"/>
+<path d="M0 170h691" stroke="#4d77aa" opacity=".36"/>
+<path d="M85 181 Q298 171 557 185M142 192 Q334 200 526 192M197 206 Q324 199 469 207" stroke="#1e73b1" stroke-width="1.4" fill="none" opacity=".38"/>
+<path d="M131 173 l-14 52M202 177 l-5 67M271 179 l-2 58M350 178 l0 65M411 176 l13 68M492 173 l21 70M552 172 l13 60" stroke="url(#ljrQuizSplashV1062_reflection)" stroke-width="10" filter="url(#ljrQuizSplashV1062_soft)" opacity=".65"/>
+<g stroke="#67c8ff" stroke-width=".75" opacity=".2"><path d="M60 188l145-2M295 191h181M105 204h210M337 218h255M174 233h237M391 241h206M12 219h128"/></g>
+</svg>`;
 function quizSplash(){
   const letters=['A','B','C','D'];
   return '<section class="v531-page v531-quiz v1059-splash" data-v531-quiz data-v531-view="splash" aria-label="Quiz Arena">'+
@@ -311,7 +346,7 @@ function quizSplash(){
       '<span class="v1059-answer-track"><span class="v1059-answer-placeholder"></span>'+(i===2?'<span class="v1059-answer-tick" aria-hidden="true">✓</span>':'')+'</span>'+
       '</button>'}).join('')+
     '</div>'+
-    '<img class="v1059-splash-stadium" src="./src/quiz-arena-night-stadium.svg" alt="" loading="eager" decoding="async" aria-hidden="true">'+
+    V1062_QUIZ_SPLASH_STADIUM+
     '<span class="v1059-sr-only">Toca cualquiera de las cuatro barras para empezar el juego. Toca el logotipo para abrir las opciones y clasificaciones.</span>'+
   '</section>';
 }
