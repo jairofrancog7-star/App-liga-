@@ -1,0 +1,219 @@
+/* V1076 — Recupera únicamente el diseño del SIMULADOR de las capturas:
+   selector de dos mitades con unión RECTA, liguilla azul marino, etapas cyan,
+   mini cuadros con muesca circular y escudos reales. NO cambia Competición,
+   datos oficiales, resultados, rutas ni controles de simulación. */
+html body[data-app-route="simulator"] #screen [data-v501-simulator]{
+  --v1076-blue:#073cf0;
+  --v1076-navy:#050643;
+  --v1076-card:#11115e;
+  --v1076-cyan:#00d9ee;
+  color:#fff!important;
+  background:var(--v1076-blue)!important;
+}
+/* En la referencia el selector ocupa prácticamente todo el ancho. Los
+   iconos de volver/compartir ocupan su propia fila y siguen funcionando. */
+html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-top{
+  display:grid!important;
+  grid-template-columns:34px minmax(0,1fr) 66px!important;
+  grid-template-rows:32px 48px!important;
+  align-items:center!important;
+  gap:7px 8px!important;
+  min-height:0!important;
+  padding:8px clamp(12px,4.3vw,22px) 11px!important;
+  background:#073cf0!important;
+  box-shadow:none!important;
+  border:0!important;
+}
+html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-top>[data-v501-back]{
+  grid-column:1!important;grid-row:1!important;justify-self:start!important;
+}
+html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-top>.v774-sim-icons{
+  grid-column:3!important;grid-row:1!important;justify-self:end!important;
+}
+html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-top>.v501-tabs{
+  grid-column:1/-1!important;grid-row:2!important;
+  display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  width:100%!important;max-width:none!important;
+  height:48px!important;min-height:48px!important;
+  padding:0!important;margin:0!important;
+  overflow:hidden!important;
+  border:1.5px solid rgba(195,217,255,.66)!important;
+  border-radius:999px!important;
+  background:#0733c7!important;
+  box-shadow:none!important;
+  isolation:isolate!important;
+}
+html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-top .v501-tabs button{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  min-width:0!important;width:100%!important;height:100%!important;
+  min-height:0!important;margin:0!important;padding:0 5px!important;
+  border:0!important;border-radius:0!important;
+  background:transparent!important;color:#fff!important;
+  font:800 clamp(12px,3.3vw,15px)/1.05 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:-.018em!important;white-space:nowrap!important;
+}
+html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-top .v501-tabs button.active{
+  background:#fff!important;color:#080b32!important;
+  border-radius:0!important;
+}
+html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-top .v501-tabs button:first-child.active{
+  border-radius:999px 0 0 999px!important;
+}
+html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-top .v501-tabs button:last-child.active{
+  border-radius:0 999px 999px 0!important;
+}
+html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-top .v501-tabs button:focus-visible{
+  outline:2px solid var(--v1076-cyan)!important;outline-offset:-3px!important;
+}
+html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-category{
+  background:#073cf0!important;color:#e9efff!important;
+  padding:4px 16px 6px!important;
+}
+html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-board.v501-bracket{
+  background:var(--v1076-navy)!important;
+  border:0!important;
+  padding:10px clamp(8px,2.4vw,17px) 24px!important;
+  min-height:calc(100dvh - 155px)!important;
+  overflow:hidden!important;
+}
+html body[data-app-route="simulator"] #screen [data-v512-bracket].v12-bracket-reference,
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-board,
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-stage-panels,
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-final-reference{
+  background-color:var(--v1076-navy)!important;
+  background-image:none!important;
+}
+/* Etapas: pastillas compactas de la captura, tres aprox. visibles en móvil. */
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-stage-tabs{
+  display:flex!important;align-items:center!important;flex-wrap:nowrap!important;
+  gap:8px!important;width:100%!important;
+  margin:0 0 10px!important;padding:2px 2px 12px!important;
+  overflow-x:auto!important;overflow-y:hidden!important;
+  scrollbar-width:none!important;-webkit-overflow-scrolling:touch!important;
+  scroll-snap-type:x proximity!important;
+  background:transparent!important;
+}
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-stage-tabs::-webkit-scrollbar{display:none!important}
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-stage-tabs button,
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-stage-tabs button[data-v12-bracket-stage]{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  flex:0 0 auto!important;min-width:max-content!important;width:auto!important;
+  height:36px!important;min-height:36px!important;max-height:36px!important;
+  padding:0 15px!important;margin:0!important;
+  background:#1c1c55!important;color:#f5f8ff!important;
+  border:0!important;border-radius:11px!important;box-shadow:none!important;
+  font:750 clamp(11px,3vw,13px)/1 Inter,Roboto,Arial,sans-serif!important;
+  white-space:nowrap!important;scroll-snap-align:center!important;
+}
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-stage-tabs button.active{
+  background:var(--v1076-cyan)!important;color:#020c35!important;
+}
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-stage-tabs button:focus-visible{
+  outline:2px solid #fff!important;outline-offset:2px!important;
+}
+/* Las fechas no se inventan: la liga las completará cuando estén publicadas. */
+html body[data-app-route="simulator"] #screen [data-v512-bracket]
+:is(.v12-bracket-dates,.v12-progress-dates){
+  color:#b2b6d6!important;
+  border-color:rgba(151,163,205,.22)!important;
+  font:600 clamp(10px,2.9vw,12px)/1.35 Inter,Roboto,Arial,sans-serif!important;
+}
+html body[data-app-route="simulator"] #screen [data-v512-bracket]
+:is(.v12-bracket-route,.v12-progress-route,.v519-octavos-route){
+  --br-line:#a1a9cb!important;
+  --br-cyan:#12e9f4!important;
+}
+/* Mini tarjetas: la referencia conserva la muesca y el VS circular del fondo. */
+html body[data-app-route="simulator"] #screen [data-v512-bracket]
+:is(.v12-bracket-pair,.v12-bracket-seeded,.v12-progress-seeded)>.v12-bracket-team{
+  background:var(--v1076-card)!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  border:0!important;border-radius:10px!important;
+  color:#fff!important;
+  min-width:0!important;
+  overflow:hidden!important;
+}
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-team:not(.v1051-pending-team) strong{
+  color:#fff!important;
+  font:800 clamp(9px,2.65vw,12px)/1.1 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:-.02em!important;white-space:nowrap!important;
+  text-overflow:clip!important;
+}
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-team img{
+  object-fit:contain!important;
+  background:transparent!important;
+}
+html body[data-app-route="simulator"] #screen [data-v512-bracket]
+:is(.v12-bracket-vs,.v12-progress-vs){
+  display:grid!important;place-items:center!important;
+  color:var(--v1076-cyan)!important;
+  background:var(--v1076-navy)!important;
+  border:0!important;border-radius:50%!important;
+  box-shadow:none!important;
+  font:850 10px/1 Inter,Roboto,Arial,sans-serif!important;
+}
+html body[data-app-route="simulator"] #screen [data-v512-bracket]
+:is(.v12-bracket-winner,.v12-progress-winner,.v12-progress-match,.v12-final-match-card){
+  background:var(--v1076-card)!important;
+  background-image:none!important;
+  color:#fff!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-team.v1051-pending-team{
+  background:var(--v1076-card)!important;
+  opacity:1!important;
+}
+html body[data-app-route="simulator"] #screen [data-v512-bracket]
+:is(.v12-bracket-winner,.v12-progress-winner) strong{
+  font-size:clamp(10px,2.65vw,12px)!important;
+  font-weight:700!important;
+  white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+}
+/* Las dos rutas y sus conectores continúan separadas en las cinco etapas. */
+html body[data-app-route="simulator"] #screen [data-v512-bracket]
+:is(.route-blue,.v12-bracket-route:nth-child(2),.v12-semifinal-source.blue){
+  --branch:#0adfea!important;
+}
+html body[data-app-route="simulator"] #screen [data-v512-bracket]
+:is(.route-silver,.v12-bracket-route:nth-child(1),.v12-semifinal-source.silver){
+  --branch:#a8b1d2!important;
+}
+html body[data-app-route="simulator"] #screen [data-v512-bracket]
+:is(.v12-bracket-side-label,.v12-progress-rail){
+  color:#dfe5ff!important;
+}
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v1068-bracket-mode{
+  margin:2px 0 10px!important;padding:6px 9px!important;
+  border-color:rgba(155,194,255,.20)!important;
+  background:rgba(15,21,89,.46)!important;
+  font-size:10px!important;
+}
+/* Pie de resultados: mantiene la bandeja deslizable y sus botones originales. */
+html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-sheet{
+  background:#090a58!important;
+}
+@media(max-width:390px){
+ html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-top{
+   padding:7px 10px 9px!important;
+   grid-template-rows:30px 45px!important;
+ }
+ html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-top>.v501-tabs{
+   height:45px!important;min-height:45px!important;
+ }
+ html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-stage-tabs{
+   gap:7px!important;
+ }
+ html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-stage-tabs button[data-v12-bracket-stage]{
+   padding:0 12px!important;font-size:11px!important;
+ }
+}
+@media(min-width:700px){
+ html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-top{
+   grid-template-rows:36px 50px!important;
+ }
+ html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-top>.v501-tabs{
+   height:50px!important;min-height:50px!important;
+ }
+}
