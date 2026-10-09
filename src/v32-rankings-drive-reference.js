@@ -631,7 +631,17 @@ function bind(){
     selectedClubCategory='';pendingClubCategory='';localStorage.removeItem('v32-rankings-club-category');expanded=-1;showAllClubRankings=false;render();
   };
   document.querySelectorAll('[data-v32-fed]').forEach(function(button){
-    button.onclick=function(){var row=federationRows[Number(button.dataset.v32Fed)];if(row)toast(row[1]+' · '+row[2]+' jugadores · '+row[3]+' equipos')};
+    button.onclick=function(){
+      var row=federationRows[Number(button.dataset.v32Fed)];
+      if(!row)return;
+      closePopover();
+      selectedFederation=row[0];
+      pendingFederation=row[0];
+      localStorage.setItem('v32-rankings-federation',row[0]);
+      syncCategoryContext(row[0]);
+      render();
+      var screen=document.querySelector('#screen');if(screen)screen.scrollTop=0;
+    };
   });
   document.querySelectorAll('[data-v32-club]').forEach(function(button){
     button.onclick=function(){var index=Number(button.dataset.v32Club);expanded=expanded===index?-1:index;render()};
