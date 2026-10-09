@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import json, os, sys
+import json, os, sys, re
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -27,7 +27,9 @@ def make_png(item):
     except Exception:
         return None
     OUT.mkdir(parents=True,exist_ok=True)
-    path=OUT/(str(item.get('id','aviso'))+'.png')
+    safe_id=str(item.get('id',''))
+    if not re.fullmatch(r'[A-Za-z0-9_-]{1,90}',safe_id):return None
+    path=OUT/(safe_id+'.png')
     W,H=1080,1350
     im=Image.new('RGB',(W,H),(8,8,91));d=ImageDraw.Draw(im)
     for y in range(H):
@@ -75,26 +77,42 @@ def main():
     schedule=load(SCHEDULE,[])
     active=load(ACTIVE,[])
     if isinstance(active,dict):active=active.get('items',[])
+    if not isinstance(active,list):active=[]
+    if not isinstance(schedule,list):schedule=[]
+    active=[x for x in active if isinstance(x,dict)]
     changed=False
     existing={str(x.get('id')) for x in active if x.get('id')}
     for item in schedule:
+        if not isinstance(item,dict):continue
+        item_id=str(item.get('id',''))
+        if not re.fullmatch(r'[A-Za-z0-9_-]{1,90}',item_id):continue
+        if not str(item.get('title','')).strip():continue
         pub=parse_dt(item.get('publish_at') or item.get('publishAt'))
         if not pub or now<pub:continue
         channels=item.get('channels') or {'app':True}
+        if not isinstance(channels,dict):continue
         png_path=None
         if channels.get('png') and not item.get('png_generated'):
             png_path=make_png(item)
             if png_path:item['png_generated']=True;item['png_path']='/generated/notices/'+png_path.name;changed=True
         elif item.get('png_path'):png_path=ROOT/'public'/str(item['png_path']).lstrip('/')
-        if channels.get('app') and str(item.get('id')) not in existing:
-            active.append({'id':item.get('id'),'type':item.get('type','Aviso'),'title':item.get('title','Aviso importante'),'body':item.get('body') or item.get('message',''),'published_at':now.isoformat(),'publishAt':item.get('publish_at') or item.get('publishAt'),'png':item.get('png_path','')})
-            existing.add(str(item.get('id')));item['app_published']=True;changed=True
+        if channels.get('app') and item_id not in existing and not item.get('app_published'):
+            active.append({'id':item_id,'type':item.get('type','Aviso'),'title':item.get('title','Aviso importante'),'body':item.get('body') or item.get('message',''),'category':item.get('category','Todas'),'published_at':now.isoformat(),'publishAt':item.get('publish_at') or item.get('publishAt'),'png':item.get('png_path','')})
+            existing.add(item_id);item['app_published']=True;changed=True
         if channels.get('facebook') and item.get('facebook_status')!='sent':
-            st=post_facebook(item,png_path);item['facebook_status']=st;changed=True
+            has_credentials=bool(os.getenv('FACEBOOK_PAGE_ID') and os.getenv('FACEBOOK_PAGE_ACCESS_TOKEN'))
+            last_attempt=parse_dt(item.get('facebook_last_attempt'))
+            if (has_credentials or item.get('facebook_status')!='needs_configuration') and (last_attempt is None or now-last_attempt>=timedelta(hours=1)):
+                st=post_facebook(item,png_path)
+                item['facebook_status']=st
+                if st!='needs_configuration':item['facebook_last_attempt']=now.isoformat()
+                changed=True
         if not item.get('published_at'):
             item['published_at']=now.isoformat();item['status']='published';changed=True
     cutoff=now-timedelta(days=30)
-    active=[x for x in active if (parse_dt(x.get('published_at')) or now)>=cutoff]
+    trimmed=[x for x in active if (parse_dt(x.get('published_at')) or now)>=cutoff]
+    if len(trimmed)!=len(active):changed=True
+    active=trimmed
     if changed:
         save(SCHEDULE,schedule);save(ACTIVE,active)
     return 0
