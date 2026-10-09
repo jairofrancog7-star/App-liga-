@@ -48,8 +48,8 @@
       if(!attr)continue;
       const key=attr.name.slice('data-v64-susp-'.length);
       if(key==='cat'){
-        // Categoría ya muestra el logo oficial en esta pantalla.
         label.classList.add('v1059-category');
+        label.querySelectorAll('.v1059-chevron').forEach(node=>node.remove());
         continue;
       }
       const spec=specs[key];
@@ -64,13 +64,9 @@
         i.innerHTML=svg(spec.icon);
         label.appendChild(i);
       }
-      if(spec.arrow&&!label.querySelector(':scope > .v1059-chevron')){
-        const i=document.createElement('span');
-        i.className='v1059-chevron';
-        i.setAttribute('aria-hidden','true');
-        i.innerHTML=svg('down');
-        label.appendChild(i);
-      }
+      // Evitar la segunda flecha: Android/Chrome ya proporciona la flecha nativa.
+      // Limpiar restos decorativos de versiones anteriores, sin tocar el select.
+      label.querySelectorAll('.v1059-chevron').forEach(node=>node.remove());
     }
   }
   const queue=()=>{
