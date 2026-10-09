@@ -1,0 +1,111 @@
+/* V998 — Estadísticas > Jugadores: no cortar títulos ni etiquetas.
+   Solo afecta a la pestaña de jugadores del módulo V33 (stats, leagueData, safe-data).
+   Conserva la cabecera azul, carrusel horizontal, fotos, escudos y botones. */
+@media(max-width:1023px){
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="player"] .v33-data-content.v593-detail-horizontal{
+    /* La cabecera fija ocupa la parte superior. Reservar margen adicional
+       para que "Jugadores registrados" no nazca pegado a sus pestañas. */
+    padding-top:clamp(34px,8vw,46px)!important;
+  }
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="player"] .v593-detail-section > .v33-general-title{
+    display:block!important;
+    margin:0 10px 15px!important;
+    padding:0!important;
+    min-height:0!important;
+    overflow:visible!important;
+  }
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="player"] .v593-detail-section > .v33-general-title h2{
+    display:block!important;
+    margin:0!important;
+    padding:0 0 2px!important;
+    font-size:clamp(21px,5.5vw,26px)!important;
+    line-height:1.22!important;
+    font-weight:820!important;
+    letter-spacing:-.025em!important;
+    white-space:normal!important;
+    overflow-wrap:break-word!important;
+    height:auto!important;
+  }
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="player"] .v593-detail-carousel .v33-stat-card{
+    min-width:0!important;
+    overflow:hidden!important;
+  }
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="player"] .v593-detail-carousel .v33-stat-row.player{
+    box-sizing:border-box!important;
+    display:grid!important;
+    grid-template-columns:18px 34px minmax(0,1fr) 22px!important;
+    column-gap:9px!important;
+    align-items:center!important;
+    min-height:68px!important;
+    height:auto!important;
+    padding:10px 0!important;
+    overflow:visible!important;
+  }
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="player"] .v593-detail-carousel .v33-stat-row.player > .v33-row-copy{
+    min-width:0!important;
+    width:100%!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:stretch!important;
+    gap:5px!important;
+    overflow:visible!important;
+  }
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="player"] .v593-detail-carousel .v33-stat-row.player .v33-row-copy > b{
+    display:block!important;
+    min-width:0!important;
+    height:auto!important;
+    max-height:none!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    overflow-wrap:anywhere!important;
+    font-size:clamp(11px,3.25vw,13px)!important;
+    line-height:1.28!important;
+  }
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="player"] .v593-detail-carousel .v33-stat-row.player .v33-row-copy > small{
+    display:flex!important;
+    align-items:center!important;
+    flex-wrap:wrap!important;
+    column-gap:5px!important;
+    row-gap:3px!important;
+    min-width:0!important;
+    max-width:100%!important;
+    height:auto!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    overflow-wrap:anywhere!important;
+    font-size:10px!important;
+    line-height:1.32!important;
+  }
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="player"] .v593-detail-carousel .v33-stat-row.player .v33-row-copy > small .v33-inline-team-logo{
+    display:inline-flex!important;
+    flex:0 0 18px!important;
+    width:18px!important;
+    height:18px!important;
+    max-width:18px!important;
+    max-height:18px!important;
+    margin:0 2px 0 0!important;
+    vertical-align:middle!important;
+    object-fit:contain!important;
+  }
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="player"] .v593-detail-carousel .v33-stat-row.player > strong{
+    display:flex!important;
+    width:22px!important;
+    min-width:22px!important;
+    justify-content:center!important;
+    align-items:center!important;
+    position:static!important;
+    margin:0!important;
+    font-size:17px!important;
+  }
+}
+@media(max-width:365px){
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="player"] .v593-detail-carousel .v33-stat-row.player{
+    grid-template-columns:15px 30px minmax(0,1fr) 18px!important;
+    column-gap:6px!important;
+  }
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="player"] .v593-detail-carousel .v33-stat-row.player > strong{
+    width:18px!important;min-width:18px!important;
+  }
+}
