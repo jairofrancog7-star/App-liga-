@@ -28,10 +28,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: npm
       - name: Install and build the actual Pages dist
         run: |
-          npm ci --no-audit --no-fund
+          npm install --prefer-offline --no-audit --no-fund
           npm run build -- --base=/App-liga-/
       - name: Install mobile Chromium
         run: |
