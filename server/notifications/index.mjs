@@ -17,6 +17,8 @@ if(!E.DATABASE_URL||!E.ADMIN_NOTIFY_TOKEN||!E.JOB_NOTIFY_TOKEN||E.ADMIN_NOTIFY_T
 const vapidReady=Boolean(E.VAPID_PUBLIC_KEY&&E.VAPID_PRIVATE_KEY&&E.VAPID_SUBJECT);
 if(vapidReady)webpush.setVapidDetails(E.VAPID_SUBJECT,E.VAPID_PUBLIC_KEY,E.VAPID_PRIVATE_KEY);
 const twilioReady=Boolean(E.TWILIO_ACCOUNT_SID&&E.TWILIO_API_KEY&&E.TWILIO_API_SECRET);
+const smsReady=twilioReady&&Boolean(E.TWILIO_MESSAGING_SERVICE_SID);
+const whatsappReady=twilioReady&&Boolean(E.TWILIO_WHATSAPP_SENDER&&E.TWILIO_WHATSAPP_CONTENT_SID);
 const client=twilioReady?twilio(E.TWILIO_API_KEY,E.TWILIO_API_SECRET,{accountSid:E.TWILIO_ACCOUNT_SID}):null;
 app.use((req,res,next)=>{res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Cache-Control','no-store');
  const requestOrigin=req.get('Origin');
@@ -42,7 +44,7 @@ const matchCat=(cat,from)=>from==='Todas'||cat==='Todas'||cat===from;
 const apiError=(err,res)=>{console.error('Notifier error',err?.message);if(!res.headersSent)res.status(500).json({error:'No se pudo completar la operación'})};
 app.get('/health',(_q,res)=>res.json({ok:true,service:'Liga Juventino Rosas · notificaciones'}));
 app.get('/config',(_q,res)=>res.json({pushEnabled:vapidReady,twilioEnabled:twilioReady,
- vapidPublicKey:vapidReady?E.VAPID_PUBLIC_KEY:null,channels:['push','sms','whatsapp']}));
+ vapidPublicKey:vapidReady?E.VAPID_PUBLIC_KEY:null,smsEnabled:smsReady,whatsappEnabled:whatsappReady,channels:['push','sms','whatsapp']}));
 const lastRequest=new Map();
 function throttle(req,res,next){const key=hash(req.ip||'unknown'),now=Date.now(),value=lastRequest.get(key)||[];
  const recent=value.filter(t=>now-t<60000);if(recent.length>=12)return res.status(429).json({error:'Demasiadas solicitudes; espera un minuto'});
@@ -81,8 +83,8 @@ app.post('/admin/notices',admin,async(req,res)=>{
  const when=Date.parse(sendAt||'');
  if(!title||!body||title.length>120||body.length>700||!Number.isFinite(when)||when<Date.now()-120000||
  selected.length===0||selected.some(x=>!allowed.includes(x)))return res.status(400).json({error:'Aviso inválido; define título, mensaje, canales y hora futura'});
- if(selected.includes('push')&&!vapidReady||selected.includes('sms')&&!twilioReady||
- selected.includes('whatsapp')&&(!twilioReady||!E.TWILIO_WHATSAPP_SENDER||!E.TWILIO_WHATSAPP_CONTENT_SID))
+ if(selected.includes('push')&&!vapidReady||selected.includes('sms')&&!smsReady||
+ selected.includes('whatsapp')&&!whatsappReady)
  return res.status(503).json({error:'Hay canales sin configurar'});
  const id=crypto.randomUUID();
  try{await pool.query('INSERT INTO ljr_scheduled_notices(id,title,body,category,channels,send_at) VALUES($1,$2,$3,$4,$5,$6)',
