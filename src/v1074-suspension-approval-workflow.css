@@ -223,3 +223,26 @@ html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1074-team>
  }
  html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1074-step{font-size:8px!important}
 }
+
+/* V1077 — controles extra en el mismo flujo sin abrir huecos vacíos. */
+html body[data-app-route="suspensionTool"] #screen .v425-suspension :is(
+  .v1074-flow [data-v1074-cancel],
+  .v1074-flow [data-v1074-auth],
+  .v1074-flow [data-v1074-message]
+)[hidden]{display:none!important}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1074-flow [data-v1074-official]{
+  background:linear-gradient(135deg,#176b9a,#123c7d)!important;
+  border-color:rgba(89,231,247,.63)!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1074-flow [data-v1074-cancel]{
+  background:linear-gradient(135deg,#59304e,#37245c)!important;
+  border-color:rgba(239,177,181,.35)!important;
+  font-size:10px!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1074-flow [data-v1074-export]{
+  min-height:36px!important;
+  background:linear-gradient(135deg,#183b82,#16286e)!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1074-recipients{
+  scrollbar-width:thin;
+}
