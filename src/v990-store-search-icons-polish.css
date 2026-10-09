@@ -288,11 +288,11 @@ html body[data-app-route="club-store"] #app #screen > .v66-directory[data-v66-di
 }
 html body[data-app-route="club-store"] #app #screen .v66-directory[data-v66-directory="store"]:not([data-v431-store]) > header.v510-store-head{
   box-sizing:border-box!important;
-  width:calc(100% + var(--v998-store-inset, 14px) * 2)!important;
+  width:calc(100% + var(--v998-store-inset, 14px) + var(--v998-store-inset, 14px))!important;
   min-width:0!important;
   max-width:none!important;
-  margin-left:calc(-1 * var(--v998-store-inset, 14px))!important;
-  margin-right:calc(-1 * var(--v998-store-inset, 14px))!important;
+  margin-left:calc(0px - var(--v998-store-inset, 14px))!important;
+  margin-right:calc(0px - var(--v998-store-inset, 14px))!important;
   border:0!important;
   outline:0!important;
   border-radius:0!important;
@@ -323,7 +323,7 @@ html body[data-app-route="club-store"] #app #screen .v66-directory[data-v66-dire
 /* En móvil rellena hasta ambas orillas sin una ranura de 1px. */
 @media(max-width:719px){
   html body[data-app-route="club-store"] #app #screen .v66-directory[data-v66-directory="store"]:not([data-v431-store]) > header.v510-store-head{
-    width:calc(100% + 2 * var(--v998-store-inset,14px))!important;
-    margin-inline:calc(-1 * var(--v998-store-inset,14px))!important;
+    width:calc(100% + var(--v998-store-inset,14px) + var(--v998-store-inset,14px))!important;
+    margin-inline:calc(0px - var(--v998-store-inset,14px))!important;
   }
 }
