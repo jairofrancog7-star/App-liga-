@@ -40,7 +40,7 @@ const FALLBACK_LOGOS={
 };
 let db=window.LJR_OFFICIAL_DATA||null;
 let loading=null;
-const quiz={mode:'legacy',answered:false,selected:'',points:0,step:1,exit:false,remaining:15,halfUsed:false,retryUsed:false,attempts:1,countdown:3,history:[],missed:[]};
+const quiz={mode:'splash',answered:false,selected:'',points:0,step:1,exit:false,remaining:15,halfUsed:false,retryUsed:false,attempts:1,countdown:3,history:[],missed:[]};
 const more={mode:'legacy',answered:false,selected:'',points:0,attempts:2,exit:false,phase:'intro',countdown:15,roundToken:0,round:0,roundsPlayed:0,finished:false,scoreSaved:false};
 let v538MoreTimers=[];
 let v538MoreInterval=null;
@@ -252,6 +252,34 @@ function v614OpenQuizGame(){
   v614ClearQuizCountdown();
   quiz.mode='game';quiz.countdown=0;quiz.remaining=15;quiz.exit=false;
   render(true);
+}
+/* V1059: portada de Quiz Arena dibujada conforme a la referencia 691×1536.
+   Las respuestas son cuatro botones reales que inician el quiz, no una imagen sin interaccion. */
+function quizSplash(){
+  const letters=['A','B','C','D'];
+  return '<section class="v531-page v531-quiz v1059-splash" data-v531-quiz data-v531-view="splash" aria-label="Quiz Arena">'+
+    '<div class="v1059-splash-glow" aria-hidden="true"></div>'+
+    '<button class="v1059-splash-logo" type="button" data-v1059-open-hub aria-label="Abrir opciones de Quiz Arena">'+
+      '<svg viewBox="0 0 370 270" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Quiz Arena">'+
+        '<g fill="#fff" stroke="none" style="font-family:Impact,Arial Narrow,Roboto Condensed,sans-serif;font-style:italic;font-weight:900">'+
+          '<text x="41" y="102" font-size="106" textLength="194" lengthAdjust="spacingAndGlyphs">QUIZ</text>'+
+          '<text x="72" y="192" font-size="104" textLength="234" lengthAdjust="spacingAndGlyphs">ARENA</text>'+
+        '</g>'+
+        '<path d="M237 47V102H296" fill="none" stroke="#fb4ba7" stroke-width="4.5"/>'+
+        '<path d="M253 74l24 27 79-84" fill="none" stroke="#fb4ba7" stroke-width="4.8" stroke-linecap="square" stroke-linejoin="miter"/>'+
+        '<path d="M20 150H7V228H75" fill="none" stroke="#fc4da2" stroke-width="5"/>'+
+        '<path d="M316 196h27v66h-69v-14" fill="none" stroke="#fb4ba7" stroke-width="5"/>'+
+      '</svg>'+
+    '</button>'+
+    '<div class="v1059-answer-art" role="group" aria-label="Elige una letra para comenzar Quiz Arena">'+
+    letters.map(function(letter,i){return '<button type="button" class="v1059-answer v1059-answer-'+letter.toLowerCase()+'" data-v531-quiz-start aria-label="Jugar Quiz Arena: opcion '+letter+'">'+
+      '<span class="v1059-answer-letter">'+letter+'</span>'+
+      '<span class="v1059-answer-track"><span class="v1059-answer-placeholder"></span>'+(i===2?'<span class="v1059-answer-tick" aria-hidden="true">✓</span>':'')+'</span>'+
+      '</button>'}).join('')+
+    '</div>'+
+    '<img class="v1059-splash-stadium" src="./src/quiz-arena-night-stadium.svg" alt="" loading="eager" decoding="async" aria-hidden="true">'+
+    '<span class="v1059-sr-only">Toca cualquiera de las cuatro barras para empezar el juego. Toca el logotipo para abrir las opciones y clasificaciones.</span>'+
+  '</section>';
 }
 function quizHub(data){
   const ranks=rankRows(data);
@@ -572,7 +600,7 @@ function render(focusAdded=false){
     }else{
       mount.hidden=false;
       mount.style.display='block';
-      mount.innerHTML=quiz.mode==='hub'?quizHub(data):quiz.mode==='countdown'?quizCountdown(data):quiz.mode==='game'?quizGame(data):quizResult(data);
+      mount.innerHTML=quiz.mode==='splash'?quizSplash():quiz.mode==='hub'?quizHub(data):quiz.mode==='countdown'?quizCountdown(data):quiz.mode==='game'?quizGame(data):quizResult(data);
     }
   }else{
     const open=more.mode!=='legacy';
@@ -651,7 +679,7 @@ function v541OpenMorePages(){
 }
 function v541OpenQuizPages(){
   v614ClearQuizCountdown();
-  quiz.mode='hub';
+  quiz.mode='splash';
   quiz.answered=false;
   quiz.selected='';
   quiz.exit=false;
@@ -669,7 +697,7 @@ window.LJR_V541_GAMES_API={
   openMorePages:v541OpenMorePages,
   openQuizPages:v541OpenQuizPages,
   closeMorePages:function(){v538ClearTimers();more.mode='legacy';more.exit=false;render(false)},
-  closeQuizPages:function(){v614ClearQuizCountdown();quiz.mode='legacy';quiz.exit=false;render(false)}
+  closeQuizPages:function(){v614ClearQuizCountdown();quiz.mode='splash';quiz.exit=false;render(false)}
 };
 if(window.__LJR_V541_PENDING_MORE__){window.__LJR_V541_PENDING_MORE__=false;requestAnimationFrame(v541OpenMorePages)}
 if(window.__LJR_V541_PENDING_QUIZ__){window.__LJR_V541_PENDING_QUIZ__=false;requestAnimationFrame(v541OpenQuizPages)}
@@ -787,6 +815,10 @@ document.addEventListener('click',function(e){
   }
 
   if(!(e.target instanceof Element))return;
+  if(route()==='quizArena'&&e.target.closest('[data-v1059-open-hub]')){
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    quiz.mode='hub';quiz.exit=false;render(false);return;
+  }
   if(route()==='quizArena'){
     const menuAction=e.target.closest('[data-v1057-quiz-menu-toggle],[data-v1057-quiz-share],[data-v1057-quiz-rankings],[data-v1057-quiz-help]');
     if(menuAction){
