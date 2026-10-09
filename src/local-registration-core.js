@@ -50,7 +50,7 @@ export function mergeRegistry(current,restored){
       rows.push({...row});identities.add(key);added++;
     }
   }
-  return {registry:{seasons},added,existing};
+  return {registry:{...live,seasons},added,existing};
 }
 function identity(r){
   const id=String(r.id||'').trim();
