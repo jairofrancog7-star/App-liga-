@@ -2,7 +2,7 @@
    Ajuste solamente horizontal: conserva título, colores, curvas y controles. */
 body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-curves{
   left:50%!important;
-  width:90%!important;
+  width:84%!important;
   max-width:none!important;
   transform:translateX(-50%)!important;
   overflow:visible!important;
@@ -21,7 +21,7 @@ body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-curves .do
 /* En celulares angostos el margen es menor, pero las flechas no pisan las letras. */
 @media (max-width:370px){
   body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-curves{
-    width:96%!important;
+    width:92%!important;
   }
 }
 
