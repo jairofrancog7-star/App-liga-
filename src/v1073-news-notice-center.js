@@ -54,12 +54,13 @@ function markCount(){
 function render(){
  const root=$('[data-v1073-center]');if(!root)return;
  root.querySelectorAll('[data-v1073-filter]').forEach(b=>{const on=state.type===b.dataset.v1073Filter;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on))});
- const sel=$('[data-v1073-category]',root);if(sel&&sel.value!==state.category)sel.value=state.category;
+ const catLabel=$('[data-v1073-current-category]',root);if(catLabel)catLabel.textContent=state.category;
+ root.querySelectorAll('[data-v1073-cat-option]').forEach(b=>{const selected=b.dataset.v1073CatOption===state.category;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected))});
  const term=$('[data-v1073-search]',root);if(term&&term.value!==state.search)term.value=state.search;
  const toggle=$('[data-v1073-enable]',root);
- if(toggle){toggle.textContent=state.alerts?'✓ Avisos activados':'♧ Activar avisos';toggle.setAttribute('aria-pressed',String(state.alerts))}
+ if(toggle){const label=toggle.querySelector('[data-v1073-enable-label]');if(label)label.textContent=state.alerts?'Avisos activos':'Activar avisos';toggle.setAttribute('aria-pressed',String(state.alerts))}
  const status=$('[data-v1073-status]',root);
- if(status)status.textContent=fetchError?'Sin conexión · Verifica internet':loaded?'Sincronizado con avisos oficiales':'Buscando avisos oficiales…';
+ if(status)status.textContent=fetchError?(navigator.onLine?'Fuente oficial no disponible · Mostrando avisos guardados':'Sin conexión · Avisos locales disponibles'):loaded?'Avisos oficiales actualizados':'Consultando comunicados oficiales…';
  const visible=items.filter(noticeMatches),box=$('[data-v1073-list]',root);
  if(box){
   box.innerHTML=visible.length?visible.slice(0,state.limit).map(item=>{
@@ -139,15 +140,21 @@ function build(){
  const el=document.createElement('section');
  el.className='v1073-center';el.dataset.v1073Center='';
  el.innerHTML=
- '<div class="v1073-heading"><div><small>INFORMACIÓN VERIFICADA</small><h3>Centro de avisos <span data-v1073-count>0 sin leer</span></h3><p data-v1073-status>Buscando avisos oficiales…</p></div><button type="button" data-v1073-reload aria-label="Actualizar avisos" title="Actualizar avisos">↻</button></div>'+
- '<div class="v1073-quick"><button type="button" data-v1073-enable>♧ Activar avisos</button><button type="button" data-v1073-program>◷ Programar aviso</button></div>'+
- '<div class="v1073-search"><input data-v1073-search type="search" placeholder="Buscar aviso o partido…" aria-label="Buscar en avisos"><select data-v1073-category aria-label="Filtrar categoría">'+CATS.map(c=>'<option value="'+esc(c)+'">'+esc(c)+'</option>').join('')+'</select></div>'+
+ '<div class="v1073-heading"><div><small>INFORMACIÓN VERIFICADA</small><h3>Centro de avisos <span data-v1073-count>0 sin leer</span></h3><p data-v1073-status>Buscando avisos oficiales…</p></div><button type="button" data-v1073-reload aria-label="Actualizar avisos" title="Actualizar avisos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.7 9a7.5 7.5 0 0 1 12.5-2L20 12M4 12l1.8 5a7.5 7.5 0 0 0 12.5-2"/></svg></button></div>'+
+ '<div class="v1073-quick"><button type="button" data-v1073-enable><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span data-v1073-enable-label>Activar avisos</span></button><button type="button" data-v1073-program><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Programar aviso</span></button></div>'+
+ '<div class="v1073-search"><label class="v1073-search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><input data-v1073-search type="search" placeholder="Buscar avisos…" autocomplete="off" aria-label="Buscar en avisos"></label><button type="button" class="v1073-category-trigger" data-v1073-category-trigger aria-label="Seleccionar categoría" aria-expanded="false" aria-controls="v1073-category-options"><span data-v1073-current-category>Todas</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>'+
+ '<div class="v1073-category-menu" id="v1073-category-options" data-v1073-category-menu hidden>'+CATS.map(c=>'<button type="button" data-v1073-cat-option="'+esc(c)+'">'+esc(c)+'</button>').join('')+'</div>'+
  '<div class="v1073-filters"><button data-v1073-filter="all" type="button" class="active">Todos</button><button data-v1073-filter="unread" type="button">Sin leer</button><button data-v1073-filter="saved" type="button">Guardados</button></div>'+
  '<div class="v1073-list" data-v1073-list aria-live="polite"></div>'+
  '<button type="button" class="v1073-more" data-v1073-more hidden>Ver más avisos ↓</button>'+
  '<div class="v1073-footer"><span>Automatización: consulta al abrir y cada minuto mientras esté activa la página.</span><button type="button" data-v1073-markall>Marcar todo leído</button></div>';
  el.addEventListener('input',e=>{if(e.target.matches('[data-v1073-search]')){state.search=e.target.value;state.limit=4;persist()}});
- el.addEventListener('change',e=>{if(e.target.matches('[data-v1073-category]')){state.category=e.target.value;state.limit=4;persist()}});
+ el.addEventListener('change',e=>{});
+ const menu=el.querySelector('[data-v1073-category-menu]'),trigger=el.querySelector('[data-v1073-category-trigger]');
+ function closeCategories(){menu.hidden=true;trigger.setAttribute('aria-expanded','false')}
+ trigger.addEventListener('click',()=>{menu.hidden=!menu.hidden;trigger.setAttribute('aria-expanded',String(!menu.hidden))});
+ el.querySelectorAll('[data-v1073-cat-option]').forEach(btn=>btn.addEventListener('click',()=>{state.category=btn.dataset.v1073CatOption;state.limit=4;closeCategories();persist()}));
+ el.addEventListener('keydown',e=>{if(e.key==='Escape')closeCategories()});
  el.addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;
   if(b.matches('[data-v1073-enable]')){enable();return}
