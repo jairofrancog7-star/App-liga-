@@ -83,7 +83,7 @@
     // Respeta también la O situada a la izquierda de MENOS.
     const textLeft=Math.min(second.left,connector?.left??second.left);
     const redLeft=textLeft-spacing-red.width*.78-frame.left;
-    const redTop=second.top+second.height*.04-frame.top;
+    const redTop=second.top+second.height*.04-frame.top-10; // V1006: flecha roja 10 px arriba
 
     // Un mínimo margen evita recortes en pantallas muy estrechas.
     move(up,clamp(greenLeft,2,frame.width-green.width-2),greenTop,'none');
