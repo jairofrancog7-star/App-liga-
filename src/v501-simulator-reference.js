@@ -364,25 +364,37 @@ function v512WinnerBlock(a,b){
    v512SeedPair(a,b)+
  '</div>';
 }
-function v512BuildRoutes(rows){
- const get=n=>rows[n-1]||null,n=rows.length;
- const pairSeeds=[];
- if(n>=12) pairSeeds.push([5,12],[6,11],[7,10],[8,9]);
- else{
-   let a=5,b=n;
-   while(a<b){pairSeeds.push([a,b]);a++;b--}
-   if(!pairSeeds.length&&n>=6)pairSeeds.push([5,6]);
+
+/* V1064: no se generan cruces ni clasificados mediante posiciones simuladas.
+   Únicamente se muestran los partidos eliminatorios que publicó la liga. */
+function v512OfficialKnockout(){
+ const games={playoff:[],octavos:[],cuartos:[],semifinal:[],final:[]};
+ for(const block of cat()?.fixtures||[]){
+  for(const r of Array.isArray(block?.rows)?block.rows:[]){
+   if(!Array.isArray(r)||!String(r[2]||'').trim()||!String(r[6]||'').trim())continue;
+   const label=norm([r[1],block.title,block.name].filter(Boolean).join(' '));
+   const stage=/play.?off|repechaje/.test(label)?'playoff':/octavos/.test(label)?'octavos':
+     /cuartos/.test(label)?'cuartos':/semifinal/.test(label)?'semifinal':
+     /(?:^| )final(?: |$)/.test(label)?'final':null;
+   if(!stage)continue;
+   const home=String(r[2]).trim(),away=String(r[6]).trim();
+   if(/^(?:por definir|pendiente|local|visitante|descansa|bye|\?)$/i.test(home)||
+      /^(?:por definir|pendiente|local|visitante|descansa|bye|\?)$/i.test(away))continue;
+   games[stage].push([{name:home,pos:''},{name:away,pos:''}]);
+  }
  }
- const pairs=pairSeeds.map(p=>[get(p[0]),get(p[1])]).filter(p=>p[0]&&p[1]);
- const leftPairs=[],rightPairs=[];
- pairs.forEach((p,i)=>(i%2?rightPairs:leftPairs).push(p));
- while(leftPairs.length<2&&pairs.length){leftPairs.push(null)}
- while(rightPairs.length<2&&pairs.length>1){rightPairs.push(null)}
- return {
-   left:{label:'RUTA PLATEADA',pairs:leftPairs,winners:[[get(1),get(2)],[get(3),get(4)]].filter(p=>p[0]||p[1])},
-   right:{label:'RUTA AZUL',pairs:rightPairs,winners:[[get(3),get(4)],[get(1),get(2)]].filter(p=>p[0]||p[1])}
- };
+ return games;
 }
+function v512BuildRoutes(){
+ const matches=v512OfficialKnockout();
+ const route=(label,n)=>({
+   label,
+   pairs:Array.from({length:4},(_,i)=>matches.playoff[n+i]||null),
+   winners:Array.from({length:2},(_,i)=>matches.octavos[n/2+i]||[null,null])
+ });
+ return {left:route('RUTA PLATEADA',0),right:route('RUTA AZUL',4),matches};
+}
+
 function v512BracketRoute(route){
  // Render all four bracket rows even where the club is not determined yet.
  // Empty cards never stand for real, qualified teams.
@@ -403,12 +415,12 @@ function v512BracketRoute(route){
    '</div>'+
  '</section>';
 }
-function v512UnknownMatch(dateText,legText='Ida'){
+function v512UnknownMatch(dateText,legText=''){dateText='Por confirmar';
  return '<div class="v12-progress-match">'+
    '<time>'+dateText+'</time>'+
    '<small>'+legText+'</small>'+
-   '<div class="v12-progress-opponent"><span class="shield"><svg viewBox="0 0 24 24"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg></span><b>¿?</b></div>'+
-   '<div class="v12-progress-opponent"><span class="shield"><svg viewBox="0 0 24 24"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg></span><b>¿?</b></div>'+
+   '<div class="v12-progress-opponent"><span class="shield"><svg viewBox="0 0 24 24"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg></span><b>Por definir</b></div>'+
+   '<div class="v12-progress-opponent"><span class="shield"><svg viewBox="0 0 24 24"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg></span><b>Por definir</b></div>'+
  '</div>';
 }
 function v512ProgressWinner(pair){
@@ -421,62 +433,64 @@ function v512ProgressWinner(pair){
    '</div>'+
  '</div>';
 }
-function v519UnknownMatch(dateText,legText='Ida'){
+function v519UnknownMatch(dateText,legText=''){dateText='Por confirmar';
  return '<div class="v12-progress-match">'+
    '<time>'+dateText+'</time>'+
    (legText?'<small>'+legText+'</small>':'')+
-   '<div class="v12-progress-opponent"><span class="shield"><svg viewBox="0 0 24 24"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg></span><b>¿?</b></div>'+
-   '<div class="v12-progress-opponent"><span class="shield"><svg viewBox="0 0 24 24"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg></span><b>¿?</b></div>'+
+   '<div class="v12-progress-opponent"><span class="shield"><svg viewBox="0 0 24 24"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg></span><b>Por definir</b></div>'+
+   '<div class="v12-progress-opponent"><span class="shield"><svg viewBox="0 0 24 24"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg></span><b>Por definir</b></div>'+
  '</div>';
 }
 function v519OctavosRoute(label,tone){
  return '<section class="v519-octavos-route '+tone+'">'+
    '<div class="v12-progress-rail"><span>'+label+'</span></div>'+
-   '<div class="v519-octavos-left">'+v519UnknownMatch('9-12 mar')+v519UnknownMatch('9-12 mar')+v519UnknownMatch('9-12 mar')+v519UnknownMatch('9-12 mar')+'</div>'+
+   '<div class="v519-octavos-left">'+v519UnknownMatch('Por confirmar')+v519UnknownMatch('Por confirmar')+v519UnknownMatch('Por confirmar')+v519UnknownMatch('Por confirmar')+'</div>'+
    '<div class="v519-octavos-connectors" aria-hidden="true"><i class="a"></i><i class="b"></i></div>'+
-   '<div class="v519-octavos-right">'+v519UnknownMatch('6 - 7 abr')+v519UnknownMatch('6 - 7 abr')+'</div>'+
+   '<div class="v519-octavos-right">'+v519UnknownMatch('Por confirmar')+v519UnknownMatch('Por confirmar')+'</div>'+
  '</section>';
 }
 function v512StagePanels(rows){
  return '<div class="v12-stage-panels v519-stage-panels">'+
    '<section class="v12-stage-panel v12-stage-panel-octavos v519-stage-panel-octavos">'+
-     '<div class="v12-progress-dates"><span>9-12 &amp; 17-18 mar</span><span>6-7 &amp; 14-15 abr</span></div>'+
+     '<div class="v12-progress-dates"><span>Por confirmar</span><span>Por confirmar</span></div>'+
      '<div class="v519-octavos-board">'+v519OctavosRoute('RUTA PLATEADA','route-silver')+v519OctavosRoute('RUTA AZUL','route-blue')+'</div>'+
    '</section>'+
    '<section class="v12-stage-panel v12-stage-panel-cuartos v519-stage-panel-cuartos">'+
-     '<div class="v12-progress-dates"><span>6-7 &amp; 14-15 abr</span><span>27-28 abr &amp; 5-6 may</span></div>'+
+     '<div class="v12-progress-dates"><span>Por confirmar</span><span>Por confirmar</span></div>'+
      '<div class="v12-progress-board">'+
-       '<section class="v12-progress-route route-silver"><div class="v12-progress-rail"><span>RUTA PLATEADA</span></div><div class="v12-progress-left v12-progress-left-matches">'+v519UnknownMatch('6 - 7 abr')+v519UnknownMatch('6 - 7 abr')+'</div><div class="v12-progress-connector" aria-hidden="true"><i></i></div><div class="v12-progress-right">'+v519UnknownMatch('27 - 28 abr')+'</div></section>'+
-       '<section class="v12-progress-route route-blue"><div class="v12-progress-rail"><span>RUTA AZUL</span></div><div class="v12-progress-left v12-progress-left-matches">'+v519UnknownMatch('6 - 7 abr')+v519UnknownMatch('6 - 7 abr')+'</div><div class="v12-progress-connector" aria-hidden="true"><i></i></div><div class="v12-progress-right">'+v519UnknownMatch('27 - 28 abr')+'</div></section>'+
+       '<section class="v12-progress-route route-silver"><div class="v12-progress-rail"><span>RUTA PLATEADA</span></div><div class="v12-progress-left v12-progress-left-matches">'+v519UnknownMatch('Por confirmar')+v519UnknownMatch('Por confirmar')+'</div><div class="v12-progress-connector" aria-hidden="true"><i></i></div><div class="v12-progress-right">'+v519UnknownMatch('Por confirmar')+'</div></section>'+
+       '<section class="v12-progress-route route-blue"><div class="v12-progress-rail"><span>RUTA AZUL</span></div><div class="v12-progress-left v12-progress-left-matches">'+v519UnknownMatch('Por confirmar')+v519UnknownMatch('Por confirmar')+'</div><div class="v12-progress-connector" aria-hidden="true"><i></i></div><div class="v12-progress-right">'+v519UnknownMatch('Por confirmar')+'</div></section>'+
      '</div>'+
    '</section>'+
    '<section class="v12-stage-panel v12-stage-panel-semifinal v519-stage-panel-semifinal">'+
-     '<div class="v12-progress-dates"><span>27-28 abr &amp; 5-6 may</span><span>5 jun</span></div>'+
+     '<div class="v12-progress-dates"><span>Por confirmar</span><span>Por confirmar</span></div>'+
      '<div class="v12-semifinal-flow">'+
-       '<div class="v12-semifinal-source silver"><div class="v12-progress-rail"><span>RUTA PLATEADA</span></div>'+v519UnknownMatch('27 - 28 abr')+'</div>'+
-       '<div class="v12-semifinal-source blue"><div class="v12-progress-rail"><span>RUTA AZUL</span></div>'+v519UnknownMatch('27 - 28 abr')+'</div>'+
+       '<div class="v12-semifinal-source silver"><div class="v12-progress-rail"><span>RUTA PLATEADA</span></div>'+v519UnknownMatch('Por confirmar')+'</div>'+
+       '<div class="v12-semifinal-source blue"><div class="v12-progress-rail"><span>RUTA AZUL</span></div>'+v519UnknownMatch('Por confirmar')+'</div>'+
        '<div class="v12-semifinal-join" aria-hidden="true"></div>'+
-       '<div class="v12-semifinal-target">'+v519UnknownMatch('5 jun','')+'</div>'+
+       '<div class="v12-semifinal-target">'+v519UnknownMatch('Por confirmar','')+'</div>'+
      '</div>'+
    '</section>'+
  '</div>';
 }
-function v512FinalCard(rows){
- const done=simulatedCount()>=simFixtures().length&&simFixtures().length>0;
- const leader=done?(rows[0]||null):null;
+
+function v512FinalCard(){
+ const match=v512OfficialKnockout().final[0]||null;
+ const a=match?.[0]?.name||'Por definir',b=match?.[1]?.name||'Por definir';
  return '<section class="v12-final-reference" data-v512-final>'+
-   '<div class="v12-final-top-date"><span></span><b>5 jun</b></div>'+
+   '<div class="v12-final-top-date"><span></span><b>Por confirmar</b></div>'+
    '<div class="v12-final-side-mark" aria-hidden="true"></div>'+
    '<div class="v12-final-match-card">'+
-     '<time>5 jun</time>'+
-     '<div class="v12-final-opponent"><span class="v12-final-shield"><svg viewBox="0 0 24 24"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg></span><b>'+esc(leader?shortName(leader.name):'¿?')+'</b></div>'+
-     '<div class="v12-final-opponent"><span class="v12-final-shield"><svg viewBox="0 0 24 24"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg></span><b>¿?</b></div>'+
+     '<time>Por confirmar</time>'+
+     '<div class="v12-final-opponent"><span class="v12-final-shield">◈</span><b>'+esc(a)+'</b></div>'+
+     '<div class="v12-final-opponent"><span class="v12-final-shield">◈</span><b>'+esc(b)+'</b></div>'+
    '</div>'+
    '<div class="v12-final-trophy-wrap"><div class="v12-final-trophy-new" aria-label="Trofeo de la final"><img src="./final-trophy-drive.png?v=v512" alt="" aria-hidden="true"></div></div>'+
  '</section>';
 }
+
 function bracketView(){
- const rows=simulatedStandings(),stage=bracketStage(),routes=v512BuildRoutes(rows);
+ const rows=simulatedStandings(),stage=bracketStage(),routes=v512BuildRoutes();
  v514MirrorCompetitionBracketCss();
  return '<section class="v501-board v501-bracket v12-bracket-reference stage-'+stage+'" data-v12-bracket data-v512-bracket>'+
    '<div class="v12-bracket-stage-tabs" role="tablist" aria-label="Etapas del cuadro">'+
@@ -484,13 +498,13 @@ function bracketView(){
        '<button type="button" class="'+(stage===x[0]?'active':'')+'" data-v12-bracket-stage="'+x[0]+'" data-v512-stage="'+x[0]+'">'+x[1]+'</button>'
      ).join('')+
    '</div>'+
-   '<div class="v12-bracket-dates"><span>16-19 &amp; 24-25 feb</span><span>9-12 &amp; 17-18 mar</span></div>'+
+   '<div class="v12-bracket-dates"><span>Por confirmar</span><span>Por confirmar</span></div>'+
    '<div class="v12-bracket-board">'+
      v512BracketRoute(routes.left)+
      v512BracketRoute(routes.right)+
    '</div>'+
    v512StagePanels(rows)+
-   v512FinalCard(rows)+
+   v512FinalCard()+
  '</section>';
 }
 function scoreControl(f,side){
