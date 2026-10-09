@@ -49,3 +49,5 @@ body[data-app-route="news"] .v1073-official-card>h3{color:#fff;font-size:14px;li
 body[data-app-route="news"] .v1073-official-card>p{color:#c7d7f2;font-size:11px;line-height:1.5;white-space:pre-line;margin:0 0 8px}
 body[data-app-route="news"] .v1073-official-card .v1073-row-actions{margin:0 -12px;border:0;border-top:1px solid rgba(94,160,244,.27);border-radius:0 0 14px 14px}
 body[data-app-route="news"] .v1073-official-card.v1073-unread{border-color:rgba(82,228,242,.65)}
+
+body[data-app-route="news"] #screen.v1073-enhanced .v727-news-empty{display:none!important}
