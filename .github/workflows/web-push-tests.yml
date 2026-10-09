@@ -1,0 +1,32 @@
+name: Comprobar servicio Web Push
+on:
+  push:
+    paths:
+      - 'push-server/**'
+      - '.github/workflows/web-push-tests.yml'
+  pull_request:
+    paths:
+      - 'push-server/**'
+      - '.github/workflows/web-push-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar dependencias
+        working-directory: push-server
+        run: npm install --no-audit --no-fund
+      - name: Validar sintaxis
+        run: |
+          node --check push-server/index.mjs
+          node --check push-server/rules.mjs
+          node --check src/v1082-push-notifications.js
+      - name: Ejecutar pruebas
+        working-directory: push-server
+        run: npm test
