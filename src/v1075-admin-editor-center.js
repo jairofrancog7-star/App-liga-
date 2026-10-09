@@ -84,6 +84,7 @@ function showComposer(){
  async function save(published){
   if(!form.reportValidity())return;
   if(body.value.trim().length<15){status(modal,'Agrega un mensaje de por lo menos 15 caracteres.');return}
+  if(published&&!form.elements.details.value.trim()){status(modal,'Antes de publicar, escribe los detalles oficiales confirmados del aviso.');form.elements.details.focus();return}
   const buttons=form.querySelectorAll('[data-editor-draft],[data-editor-publish]');
   buttons.forEach(x=>x.disabled=true);
   status(modal,'Verificando permiso y guardando…');
