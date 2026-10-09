@@ -19,7 +19,7 @@ export function parseRegistry(raw){
       return row;
     });
   }
-  return {seasons};
+  return {...value,seasons};
 }
 export function makeLocalIndex(raw){
   const {seasons}=parseRegistry(raw),out=[];
