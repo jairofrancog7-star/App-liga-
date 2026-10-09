@@ -2,7 +2,7 @@
 (function(){
 'use strict';
 
-const LEAGUE_LOGO='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp';
+const LEAGUE_LOGO='./assets/branding/escudo-liga-azul-sin-fondo-v1007.png?v=v1011-transparent-about';
 const STADIUM='./deportiva-sur-partido.jpg';
 
 function route(){return location.hash.replace('#/','')||'home'}
