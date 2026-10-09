@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   group: adminfut-public-players-audit
@@ -36,7 +37,7 @@ jobs:
         run: |
           cmp data/official-live.json public/data/official-live.json
           node -e "const d=require('./data/official-live.json'); if(!['1','2','3','4','5'].every(k=>d.categories[k])) process.exit(1)"
-      - name: Publicar altas deportivas y fotos verificadas
+      - name: Preparar propuesta de cambios deportivos para revisión
         id: publish
         shell: bash
         run: |
@@ -45,23 +46,19 @@ jobs:
           git add data/official-live.json public/data/official-live.json data/adminfut-public-audit.json
           if git diff --cached --quiet; then
             echo 'changed=false' >> "$GITHUB_OUTPUT"
-            echo 'Sin altas o cambios deportivos confirmados.'
+            echo 'Sin altas ni cambios confirmados.'
             exit 0
           fi
-          git commit -m 'data(adminfut): nuevas inscripciones y fotos oficiales sin CURP'
-          # Conserva las modificaciones simultaneas del usuario sin forzar main.
-          for attempt in 1 2 3 4 5; do
-            if git push origin HEAD:main; then
-              echo 'changed=true' >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-            git fetch origin main
-            if ! git rebase origin/main; then
-              git rebase --abort
-              echo 'Conflicto real con datos actuales: no sobrescribir cambios del usuario.'
-              exit 1
-            fi
-            sleep 2
-          done
-          echo 'GitHub recibio otras modificaciones durante todos los intentos.'
-          exit 1
+          git commit -m 'data(adminfut): propuesta de fichas y fotos deportivas públicas'
+          echo 'changed=true' >> "$GITHUB_OUTPUT"
+      - name: Abrir PR sin modificar main
+        if: steps.publish.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          BRANCH="audit/adminfut-public-${{ github.run_id }}"
+          git push origin "HEAD:refs/heads/$BRANCH"
+          gh pr create --base main --head "$BRANCH" \
+            --title "Auditoría AdminFut: fichas, fotos y cédulas públicas" \
+            --body "Propuesta automática pendiente de revisión humana. Solo datos deportivos públicos de las cinco categorías; ninguna CURP, documento o fecha de nacimiento. Verificar altas, cambios de equipo y diferencias en cédulas antes de fusionar. Los marcadores y puntos no se aplican automáticamente."
