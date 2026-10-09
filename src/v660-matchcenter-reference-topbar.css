@@ -25,9 +25,17 @@
     border-radius:0!important;
     box-shadow:0 1px 0 rgba(35,220,255,.24)!important;
     background:
-      radial-gradient(260px 128px at 18% -4%,rgba(31,173,255,.72),transparent 66%),
-      radial-gradient(300px 145px at 89% 4%,rgba(13,132,255,.72),transparent 68%),
-      linear-gradient(180deg,#0878f2 0%,#0a45da 18%,#0926b3 52%,#08177f 78%,#07106c 100%)!important;
+      radial-gradient(270px 120px at 16% -8%,rgba(79,190,255,.34),transparent 68%),
+      radial-gradient(300px 132px at 88% -2%,rgba(42,143,255,.28),transparent 70%),
+      linear-gradient(180deg,
+        #1688ff 0%,
+        #0d63ea 22%,
+        #0a43cf 43%,
+        #0929a8 64%,
+        #08177f 82%,
+        #070b5d 94%,
+        #06084f 100%
+      )!important;
     z-index:2147482400!important;
   }
 
