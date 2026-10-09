@@ -230,15 +230,26 @@ function openJourneys(){
   }
   sheet('CALENDARIO','Calendario completo',items.join('')||'<div class="v571-empty">No hay jornadas oficiales publicadas.</div>');
 }
+function menuIcon(name){
+  const paths={
+    home:'<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z"/><path d="M9 21v-7h6v7"/>',
+    competition:'<path d="M8 21h8M12 17v4M7 4h10v6a5 5 0 0 1-10 0V4ZM7 6H4v2a4 4 0 0 0 4 4m9-6h3v2a4 4 0 0 1-4 4"/>',
+    teams:'<circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M17 5a3 3 0 0 1 0 6m1 3a5 5 0 0 1 3 5v1"/>',
+    calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/>',
+    rulebook:'<path d="M5 4h14v16H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm0 0v16m3-11h8m-8 4h6"/>',
+    profile:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>'
+  };
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true">'+(paths[name]||paths.home)+'</svg>';
+}
 function openMenu(){
   sheet('LIGA JUVENTINO ROSAS','Menú de Liga',
     '<nav class="v573-menu-list">'+
-      '<button type="button" data-v571-route="home"><span>⌂</span><b>Inicio</b><i>›</i></button>'+
-      '<button type="button" data-v571-route="competition"><span>🏆</span><b>Competición</b><i>›</i></button>'+
-      '<button type="button" data-v571-route="teams"><span>◈</span><b>Equipos</b><i>›</i></button>'+
-      '<button type="button" data-v571-route="v4-calendar"><span>▣</span><b>Calendario</b><i>›</i></button>'+
-      '<button type="button" data-v571-route="rulebook"><span>≣</span><b>Reglamento</b><i>›</i></button>'+
-      '<button type="button" data-v571-route="profile"><span>○</span><b>Perfil / iniciar sesión</b><i>›</i></button>'+
+      '<button type="button" data-v571-route="home"><span class="v573-menu-icon" aria-hidden="true">'+menuIcon('home')+'</span><b>Inicio</b><i>›</i></button>'+
+      '<button type="button" data-v571-route="competition"><span class="v573-menu-icon" aria-hidden="true">'+menuIcon('competition')+'</span><b>Competición</b><i>›</i></button>'+
+      '<button type="button" data-v571-route="teams"><span class="v573-menu-icon" aria-hidden="true">'+menuIcon('teams')+'</span><b>Equipos</b><i>›</i></button>'+
+      '<button type="button" data-v571-route="v4-calendar"><span class="v573-menu-icon" aria-hidden="true">'+menuIcon('calendar')+'</span><b>Calendario</b><i>›</i></button>'+
+      '<button type="button" data-v571-route="rulebook"><span class="v573-menu-icon" aria-hidden="true">'+menuIcon('rulebook')+'</span><b>Reglamento</b><i>›</i></button>'+
+      '<button type="button" data-v571-route="profile"><span class="v573-menu-icon" aria-hidden="true">'+menuIcon('profile')+'</span><b>Perfil / iniciar sesión</b><i>›</i></button>'+
     '</nav>'+
     '<div class="v573-social"><small>SÍGUENOS</small><button type="button" data-v573-facebook>f <span>Facebook oficial de la Liga</span></button></div>'+
     '<button type="button" class="v573-share" data-v573-share>Compartir aplicación <span>↗</span></button>'
