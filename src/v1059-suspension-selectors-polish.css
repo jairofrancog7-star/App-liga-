@@ -430,3 +430,57 @@ html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-action
     grid-column:1/-1!important;
   }
 }
+
+/* V1065 — sin iconos sueltos en Alcance ni Motivo; sin huecos fantasma.
+   Aplica antes y después de que el JavaScript agregue clases. */
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid > label:is(.v1065-no-decor,:has(> select[data-v64-susp-scope]),:has(> select[data-v64-susp-reason])){
+  display:block!important;
+  position:relative!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  align-self:start!important;
+  overflow:visible!important;
+  background:transparent!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid > label:is(.v1065-no-decor,:has(> select[data-v64-susp-scope]),:has(> select[data-v64-susp-reason])) > :not(b):not(select){
+  display:none!important;
+  position:static!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid > label:is(.v1065-no-decor,:has(> select[data-v64-susp-scope]),:has(> select[data-v64-susp-reason]))::before,
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid > label:is(.v1065-no-decor,:has(> select[data-v64-susp-scope]),:has(> select[data-v64-susp-reason]))::after{
+  content:none!important;
+  display:none!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid > label > select:is([data-v64-susp-scope],[data-v64-susp-reason]){
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-height:48px!important;
+  height:48px!important;
+  max-height:48px!important;
+  margin:0!important;
+  padding:0 12px!important;
+  text-indent:0!important;
+  appearance:auto!important;
+  -webkit-appearance:auto!important;
+  background-image:linear-gradient(155deg,rgba(32,65,157,.25),rgba(11,16,98,.11))!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid{
+  row-gap:7px!important;
+  grid-auto-rows:max-content!important;
+  align-content:start!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid > label > b{
+  margin:0 0 5px!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel{
+  margin-top:8px!important;
+}
