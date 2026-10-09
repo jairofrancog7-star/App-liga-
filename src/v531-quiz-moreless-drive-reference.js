@@ -256,24 +256,36 @@ function v614OpenQuizGame(){
 function quizHub(data){
   const ranks=rankRows(data);
   const q=quizData(data);
-  return '<section class="v531-page v531-quiz" data-v531-quiz data-v531-view="hub">'+
-    '<header class="v531-mini-head"><button type="button" data-v531-quiz-back aria-label="Volver">'+backSvg()+'</button><strong>Quiz Arena</strong><button type="button" data-v531-share aria-label="Compartir">'+shareSvg()+'</button></header>'+
-    '<main class="v531-hub-body">'+
+  // V1057: portada compacta; menú de tres puntos sin opciones de notificación.
+  return '<section class="v531-page v531-quiz v1057-quiz-hub" data-v531-quiz data-v531-view="hub">'+
+    '<header class="v531-mini-head v1057-quiz-head">'+
+      '<button type="button" data-v531-quiz-back aria-label="Volver">'+backSvg()+'</button>'+
+      '<strong>Quiz Arena</strong>'+
+      '<button type="button" class="v1057-menu-trigger" data-v1057-quiz-menu-toggle aria-label="Abrir opciones" aria-controls="v1057-quiz-menu" aria-expanded="false"><span aria-hidden="true">⋮</span></button>'+
+      '<nav id="v1057-quiz-menu" class="v1057-quiz-menu" data-v1057-quiz-menu role="menu" aria-label="Opciones de Quiz Arena" hidden>'+
+        '<button type="button" role="menuitem" data-v1057-quiz-share>Compartir Quiz Arena</button>'+
+        '<button type="button" role="menuitem" data-v1057-quiz-rankings>Ver clasificaciones</button>'+
+        '<button type="button" role="menuitem" data-v1057-quiz-help aria-expanded="false">Cómo jugar</button>'+
+        '<p class="v1057-menu-help" data-v1057-quiz-help-content hidden>Responde las preguntas antes de que termine el tiempo. Cada acierto suma puntos.</p>'+
+      '</nav>'+
+    '</header>'+
+    '<main class="v531-hub-body v1057-quiz-content">'+
       '<article class="v531-quiz-hero">'+
         '<div class="v531-hero-ball" aria-hidden="true"><i></i><i></i><i></i></div>'+
-        '<div class="v531-quiz-hero-copy"><h1>QUIZ<br>ARENA</h1><p>Demuestra cuánto sabes de la Liga Juventino Rosas.</p></div>'+
-        '<div class="v531-dual-actions"><button type="button" class="primary" data-quiz-login>Inicia sesión para<br>jugar</button><button type="button" data-v531-quiz-start>Prueba como<br>invitado</button></div>'+
+        '<div class="v531-quiz-hero-copy"><h2>Quiz Arena</h2><p>Pon a prueba tus conocimientos de la Liga.</p></div>'+
+        '<div class="v531-dual-actions"><button type="button" class="primary" data-v531-quiz-start>Generar quiz</button></div>'+
       '</article>'+
-      '<div class="v531-discover"><span>★</span><b>DESCUBRE MÁS</b><em>LIGA JUVENTINO</em></div>'+
-      '<article class="v531-friend-card"><div><h2>¡Reta a tus amigos en el Quiz Arena!</h2><button type="button" data-v531-share>Invita a amigos</button></div><div class="v531-friend-avatar">'+crest(q.correct,data,'friend')+'</div></article>'+
+      '<div class="v531-discover" aria-label="Descubre más juegos"><span aria-hidden="true">⚽</span><b>DESCUBRE MÁS</b><em>LIGA JUVENTINO</em></div>'+
+      '<article class="v531-friend-card"><div><h2>¡Reta a tus amigos en el Quiz Arena!</h2><button type="button" data-v531-share>Invita a amigos</button></div><div class="v531-friend-avatar" aria-hidden="true">'+crest(q.correct,data,'friend')+'</div></article>'+
       '<article class="v531-quiz-random-card">'+
-        '<div class="v531-random-photo"><img src="'+esc(FEATURE)+'" alt="" loading="lazy" decoding="async"><span>'+crest(q.correct,data,'random')+'</span></div>'+
-        '<div class="v531-random-copy"><h2>Quiz Aleatorio</h2><p>Ponte a prueba con preguntas sobre equipos, clasificación y temporada.</p><div class="v531-dual-actions compact"><button type="button" class="primary" data-quiz-login>Inicia sesión para<br>jugar</button><button type="button" data-v531-quiz-start>Prueba como<br>invitado</button></div></div>'+
+        '<div class="v531-random-photo" aria-hidden="true"><span class="v1057-football">⚽</span></div>'+
+        '<div class="v531-random-copy"><h2>Quiz Aleatorio</h2><p>Responde preguntas sobre nuestra Liga y gana puntos.</p><div class="v531-dual-actions compact"><button type="button" class="primary" data-v531-quiz-start>Generar quiz</button></div></div>'+
       '</article>'+
-      v1050NotifyCard()+
-      '<h2 class="v531-section-title">Clasificación de la Liga</h2>'+
-      '<article class="v531-rank-card"><h3>Tabla oficial de la Liga</h3>'+ranks.map(function(r){return '<div class="v531-rank-row"><span>'+r.pos+'º</span>'+crest(r.name,data,'rank')+'<b>'+esc(r.name)+'</b><strong>'+esc(r.pts)+' pts</strong></div>'}).join('')+'<button type="button" data-v531-rankings>Ver clasificaciones</button></article>'+
-    '</main>'+(v1050NotifyOpen?v1050NotifyModal():'')+
+      '<h2 class="v531-section-title">Clasificaciones</h2>'+
+      '<article class="v531-rank-card"><h3>Tabla oficial de la Liga</h3>'+
+      ranks.map(function(r){return '<div class="v531-rank-row"><span>'+r.pos+'</span>'+crest(r.name,data,'rank')+'<b>'+esc(r.name)+'</b><strong>'+esc(r.pts)+' pts</strong></div>'}).join('')+
+      '<button type="button" data-v531-rankings>Ver clasificaciones</button></article>'+
+    '</main>'+
   '</section>';
 }
 function quizGame(data){
@@ -776,6 +788,29 @@ document.addEventListener('click',function(e){
 
   if(!(e.target instanceof Element))return;
   if(route()==='quizArena'){
+    const menuAction=e.target.closest('[data-v1057-quiz-menu-toggle],[data-v1057-quiz-share],[data-v1057-quiz-rankings],[data-v1057-quiz-help]');
+    if(menuAction){
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+      const menu=document.querySelector('#v612-quiz-portal [data-v1057-quiz-menu]');
+      const toggle=document.querySelector('#v612-quiz-portal [data-v1057-quiz-menu-toggle]');
+      if(menuAction.matches('[data-v1057-quiz-menu-toggle]')){
+        if(menu){menu.hidden=!menu.hidden;if(toggle)toggle.setAttribute('aria-expanded',String(!menu.hidden))}
+        return;
+      }
+      if(menuAction.matches('[data-v1057-quiz-help]')){
+        const help=menu?.querySelector('[data-v1057-quiz-help-content]');
+        if(help){help.hidden=!help.hidden;menuAction.setAttribute('aria-expanded',String(!help.hidden))}
+        return;
+      }
+      if(menu){menu.hidden=true;if(toggle)toggle.setAttribute('aria-expanded','false')}
+      if(menuAction.matches('[data-v1057-quiz-share]')){share();return}
+      if(menuAction.matches('[data-v1057-quiz-rankings]')){go('rankings');return}
+    }
+    const openedMenu=document.querySelector('#v612-quiz-portal [data-v1057-quiz-menu]:not([hidden])');
+    if(openedMenu&&!e.target.closest('[data-v1057-quiz-menu]')){
+      openedMenu.hidden=true;
+      document.querySelector('#v612-quiz-portal [data-v1057-quiz-menu-toggle]')?.setAttribute('aria-expanded','false');
+    }
     const notify=e.target.closest('[data-v1050-notice-open],[data-v1050-notice-dismiss],[data-v1050-notify-close],[data-v1050-notify-allow]');
     if(notify){
       e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
