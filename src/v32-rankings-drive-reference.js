@@ -151,6 +151,7 @@ var filterMode=false;
 var filterQuery='';
 var expanded=-1;
 var filterReturnScroll=0;
+var clubOrder=localStorage.getItem('v32-rankings-club-order')==='az'?'az':'points';
 
 function route(){return location.hash.replace('#/','')||'home'}
 function esc(value){
@@ -321,7 +322,9 @@ function fedView(){
     '</section>';
 }
 function filteredClubRows(){
-  return rankingClubRows();
+  var rows=rankingClubRows().slice();
+  if(clubOrder==='az')rows.sort(function(a,b){return String(a[1]||'').localeCompare(String(b[1]||''),'es')});
+  return rows;
 }
 function clubItems(){
   var rows=filteredClubRows(),selectedCategory=categoryByCode(selectedClubCategory||'CAT3');
@@ -376,11 +379,55 @@ function markup(){
   '</section>';
 }
 function closePopover(){var p=document.querySelector('.v32-popover');if(p)p.remove()}
-function seasonPopover(){
+function menuAt(anchor,title,items){
   closePopover();
-  var p=document.createElement('div');p.className='v32-popover';
-  p.innerHTML='<b>Temporada</b><button type="button" class="active">Temporada actual</button>';
+  var p=document.createElement('div');p.className='v32-popover v992-rankings-menu';
+  p.setAttribute('role','dialog');p.setAttribute('aria-label',title);
+  p.innerHTML='<b>'+esc(title)+'</b>'+items.map(function(item,i){
+    return '<button type="button" data-v992-choice="'+i+'" class="'+(item.active?'active':'')+'">'+esc(item.label)+'</button>';
+  }).join('');
   document.body.appendChild(p);
+  var bounds=anchor&&anchor.getBoundingClientRect(),width=Math.min(304,window.innerWidth-26);
+  var left=Math.max(13,Math.min(window.innerWidth-width-13,bounds?bounds.left:13));
+  var top=bounds?bounds.bottom+6:70;
+  if(top+p.offsetHeight>window.innerHeight-14)top=Math.max(14,(bounds?bounds.top:window.innerHeight)-p.offsetHeight-6);
+  p.style.setProperty('width',width+'px','important');
+  p.style.setProperty('left',left+'px','important');
+  p.style.setProperty('top',top+'px','important');
+  p.style.setProperty('bottom','auto','important');
+  p.style.setProperty('transform','none','important');
+  p.querySelectorAll('[data-v992-choice]').forEach(function(b){
+    b.onclick=function(){var item=items[Number(b.dataset.v992Choice)];closePopover();if(item&&item.action)item.action()};
+  });
+}
+function seasonPopover(anchor){
+  menuAt(anchor,'Temporada',[{label:'Temporada actual',active:true,action:function(){season='Temporada actual';toast('Mostrando temporada actual');}}]);
+}
+function beginFilter(){
+  pendingClub=selectedClub;
+  pendingFederation=selectedFederation;
+  pendingClubCategory=selectedClubCategory;
+  var screen=document.querySelector('#screen');
+  filterReturnScroll=screen?screen.scrollTop||0:window.scrollY||0;
+  filterQuery='';
+  filterMode=true;
+  closePopover();
+  render();
+  if(screen)screen.scrollTo({top:0,left:0,behavior:'auto'});
+}
+function rankingOptions(button){
+  if(activeTab==='clubs'){
+    menuAt(button,'Ordenar clubes',[
+      {label:'Puntos · mayor a menor',active:clubOrder==='points',action:function(){clubOrder='points';localStorage.setItem('v32-rankings-club-order',clubOrder);expanded=-1;render()}},
+      {label:'Nombre · A a Z',active:clubOrder==='az',action:function(){clubOrder='az';localStorage.setItem('v32-rankings-club-order',clubOrder);expanded=-1;render()}},
+      {label:'Filtrar categoría',action:beginFilter}
+    ]);
+  }else{
+    menuAt(button,'Categorías',[
+      {label:'Todas las categorías',active:!selectedFederation,action:function(){selectedFederation='';pendingFederation='';localStorage.removeItem('v32-rankings-federation');render()}},
+      {label:'Elegir categoría',action:beginFilter}
+    ]);
+  }
 }
 function setBottomNav(){/* Global nav state/labels/icons are owned by V34. */}
 function share(){
@@ -396,7 +443,11 @@ function renderFilterGridOnly(){
 function restoreFilterReturn(){
   var y=Math.max(0,Number(filterReturnScroll)||0);
   requestAnimationFrame(function(){
-    requestAnimationFrame(function(){window.scrollTo({top:y,left:0,behavior:'auto'})});
+    requestAnimationFrame(function(){
+      var screen=document.querySelector('#screen');
+      if(screen)screen.scrollTo({top:y,left:0,behavior:'auto'});
+      else window.scrollTo({top:y,left:0,behavior:'auto'});
+    });
   });
 }
 function closeFilterToRanking(){
@@ -470,32 +521,20 @@ function bind(){
 
   document.querySelectorAll('[data-v32-tab]').forEach(function(button){
     button.onclick=function(){
+      if(activeTab===button.dataset.v32Tab)return;
       activeTab=button.dataset.v32Tab;
+      closePopover();
       localStorage.setItem('v32-rankings-tab',activeTab);
       expanded=-1;render();
+      var scroll=document.querySelector('#screen');if(scroll)scroll.scrollTop=0;
     };
   });
   document.querySelectorAll('[data-v32-back]').forEach(function(button){button.onclick=function(){location.hash='#/more'}});
   document.querySelectorAll('[data-v32-share]').forEach(function(button){button.onclick=share});
-  document.querySelectorAll('[data-v32-season]').forEach(function(button){button.onclick=seasonPopover});
-  document.querySelectorAll('[data-v32-info]').forEach(function(button){
-    button.onclick=function(){
-      if(button.dataset.v32Info==='season-type')toast('Ranking por temporada');
-      else if(button.dataset.v32Info==='club-coefficient')toast('Coeficientes de clubes');
-      else toast('Clasificación oficial de la Liga');
-    };
-  });
+  document.querySelectorAll('[data-v32-season]').forEach(function(button){button.onclick=function(){seasonPopover(button)}});
+  document.querySelectorAll('[data-v32-info]').forEach(function(button){button.onclick=function(){rankingOptions(button)}});
   var filter=document.querySelector('[data-v32-filter]');
-  if(filter)filter.onclick=function(){
-    pendingClub=selectedClub;
-    pendingFederation=selectedFederation;
-    pendingClubCategory=selectedClubCategory;
-    filterReturnScroll=window.scrollY||document.documentElement.scrollTop||0;
-    filterQuery='';
-    filterMode=true;
-    render();
-    window.scrollTo({top:0,left:0,behavior:'auto'});
-  };
+  if(filter)filter.onclick=beginFilter;
   var clear=document.querySelector('[data-v32-clear-club]');
   if(clear)clear.onclick=function(){
     selectedClubCategory='';pendingClubCategory='';localStorage.removeItem('v32-rankings-club-category');expanded=-1;render();
@@ -520,7 +559,8 @@ function positionClubControls(){
   var controls=document.querySelector('.v32-controls.clubs.has-club-filter');
   if(!controls)return;
   requestAnimationFrame(function(){
-    controls.scrollLeft=Math.max(0,controls.scrollWidth-controls.clientWidth);
+    if(window.getComputedStyle(controls).display==='flex')controls.scrollLeft=Math.max(0,controls.scrollWidth-controls.clientWidth);
+    else controls.scrollLeft=0;
   });
 }
 function render(){
