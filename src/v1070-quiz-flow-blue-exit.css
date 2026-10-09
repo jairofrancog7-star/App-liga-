@@ -1,0 +1,176 @@
+/* V1070 — correcciones puntuales Quiz Arena:
+ * 1) azul superior continuo (sin franja / costura),
+ * 2) A/B/C/D -> portada existente -> Generar quiz -> 3,2,1 -> preguntas,
+ * 3) X funcional y hoja de confirmación fiel a referencia.
+ * No modifica Más o Menos, estadísticas oficiales ni la barra inferior.
+ */
+/* La propia fotografía de referencia ya fue recortada mediante background-size
+   y background-position; 5.32% añadido anteriormente creaba la franja distinta. */
+html body[data-app-route="quizArena"] #v612-quiz-portal>[data-v531-view="splash"]{
+  background:#062fdf!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal>[data-v531-view="splash"]::before{
+  top:0!important;
+  background-color:#062fdf!important;
+  background-image:url("../assets/quiz-arena-drive-reference-20261009.jpg")!important;
+  background-repeat:no-repeat!important;
+  background-size:100% 114.34%!important;
+  background-position:50% 39.2%!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal>[data-v531-view="splash"] .v1059-splash-logo{
+  top:9.3%!important;
+  left:25%!important;
+  width:51%!important;
+  height:20.5%!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal>[data-v531-view="splash"] .v1059-answer-art{
+  top:53.45%!important;
+  left:28.45%!important;
+  width:43.9%!important;
+  height:22.2%!important;
+}
+/* No reordenar la portada de la segunda pantalla; mostrar X compacta
+   junto al menú de tres puntos, con zona de toque sin solapamiento. */
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-head>.v1070-hub-close{
+  box-sizing:border-box!important;
+  position:absolute!important;
+  top:clamp(27px,7vw,48px)!important;
+  right:57px!important;
+  left:auto!important;
+  bottom:auto!important;
+  z-index:184!important;
+  grid-column:auto!important;
+  grid-row:auto!important;
+  width:36px!important;
+  height:36px!important;
+  min-width:36px!important;
+  min-height:36px!important;
+  display:grid!important;
+  place-items:center!important;
+  margin:0!important;
+  padding:4px!important;
+  color:#fff!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:8px!important;
+  cursor:pointer!important;
+  pointer-events:auto!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-head>.v1070-hub-close svg{
+  width:21px!important;
+  height:21px!important;
+  stroke:currentColor!important;
+  stroke-width:2!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-head>.v1070-hub-close:focus-visible{
+  outline:2px solid #14e2f1!important;
+  outline-offset:2px!important;
+}
+/* La hoja inferior aparece al tocar X durante el juego o el 3–2–1.
+   Se posiciona ARRIBA de la navegación fija, sin taparla. */
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-exit-backdrop{
+  box-sizing:border-box!important;
+  position:fixed!important;
+  inset:0 0 calc(var(--bottom-nav-h,60px) + env(safe-area-inset-bottom,0px)) 0!important;
+  z-index:2147482500!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:flex-end!important;
+  align-items:stretch!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  background:rgba(0,0,28,.66)!important;
+  overflow:hidden!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-exit-modal{
+  box-sizing:border-box!important;
+  position:relative!important;
+  flex:0 0 auto!important;
+  width:min(100%,520px)!important;
+  max-width:520px!important;
+  min-height:clamp(324px,42dvh,400px)!important;
+  max-height:calc(100dvh - var(--bottom-nav-h,60px) - 12px)!important;
+  margin:0 auto!important;
+  padding:clamp(75px,10dvh,100px) 18px 25px!important;
+  border:0!important;
+  border-radius:22px 22px 0 0!important;
+  background:#1b1b7e!important;
+  box-shadow:0 -11px 35px rgba(0,0,30,.24)!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-exit-x{
+  position:absolute!important;
+  right:19px!important;
+  top:29px!important;
+  width:37px!important;
+  height:37px!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:3px!important;
+  color:#a6add2!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:50%!important;
+  cursor:pointer!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-exit-x svg{
+  width:23px!important;
+  height:23px!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-exit-modal h2{
+  display:block!important;
+  color:white!important;
+  font:800 clamp(21px,5.5vw,29px)/1.18 Arial,Roboto,sans-serif!important;
+  margin:0 0 18px!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-exit-modal p{
+  color:#c1c1df!important;
+  font:400 clamp(15px,4vw,18px)/1.32 Arial,Roboto,sans-serif!important;
+  margin:0 0 29px!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-exit-modal>.yes,
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-exit-modal>.no{
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  height:clamp(53px,7dvh,67px)!important;
+  min-height:53px!important;
+  padding:10px 12px!important;
+  border-radius:15px!important;
+  font:800 clamp(15px,4.15vw,19px)/1.1 Arial,Roboto,sans-serif!important;
+  cursor:pointer!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-exit-modal>.yes{
+  border:2px solid #00dfee!important;
+  background:#08dded!important;
+  color:#0b2361!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-exit-modal>.no{
+  margin-top:16px!important;
+  border:2px solid #11dfea!important;
+  background:transparent!important;
+  color:#11deed!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-exit-modal>button:focus-visible{
+  outline:2px solid #fff!important;
+  outline-offset:3px!important;
+}
+@media(max-height:650px){
+  html body[data-app-route="quizArena"] #v612-quiz-portal .v531-exit-modal{
+    min-height:292px!important;
+    padding-top:63px!important;
+    padding-bottom:17px!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  html body[data-app-route="quizArena"] #v612-quiz-portal .v531-exit-backdrop,
+  html body[data-app-route="quizArena"] #v612-quiz-portal .v531-exit-modal{
+    animation:none!important;
+    transition:none!important;
+  }
+}
