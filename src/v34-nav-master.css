@@ -624,13 +624,30 @@ body[data-app-route="predictor"] .bottom-nav .nav-item[data-route="more"]{
 }
 /* V801_PREDICTOR_OLD_NAV_END */
 
-/* V1006 — Hospitalidad: degradado de SOLO dos tonos azules.
-   Diseño y posiciones originales intactos. */
-html.v31-hospitality-active .v31-hospitality-page{
-  background:linear-gradient(180deg,#1689FF 0%,#060950 100%)!important;
+/* V1008 — Hospitalidad integrada al azul nocturno de la Liga.
+   Sólo paleta, tela de luz difuminada y continuidad de cabecera.
+   NO altera posición, tamaño ni comportamiento de ningún control. */
+html.v31-hospitality-active,
+html.v31-hospitality-active body[data-app-route="hospitality"] {
+  background-color:#050A48!important;
 }
-html.v31-hospitality-active .v31-hospitality-page::before{
-  background:none!important;
-  filter:none!important;
-  opacity:0!important;
+html.v31-hospitality-active .v31-hospitality-page {
+  background:linear-gradient(180deg,#10387F 0%,#050A48 100%)!important;
+}
+html.v31-hospitality-active .v31-hospitality-page::before {
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  pointer-events:none!important;
+  background:
+    radial-gradient(ellipse 80% 25% at 22% 3%,rgba(76,146,231,.21) 0%,transparent 82%),
+    radial-gradient(ellipse 76% 24% at 86% 28%,rgba(42,102,205,.13) 0%,transparent 82%),
+    linear-gradient(125deg,transparent 18%,rgba(91,145,229,.045) 39%,transparent 62%)!important;
+  filter:blur(15px)!important;
+  opacity:1!important;
+}
+html.v31-hospitality-active .v774-hospitality-head {
+  background:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
 }
