@@ -256,6 +256,19 @@ function boot(){
  };
  const queueRedraw=()=>{if(pending)return;pending=true;requestAnimationFrame(redraw)};
  new MutationObserver(queueRedraw).observe(screen,{childList:true,subtree:true});
+ // No compartir avisos como oficiales sin revisión y constancia de autorización.
+ // Para pedir aprobación existe el botón "Solicitar visto bueno".
+ screen.addEventListener('click',e=>{
+  if(route()!=='suspensionTool')return;
+  const btn=e.target.closest('button');
+  if(!btn?.matches('[data-v64-susp-whatsapp],[data-v1066-share]'))return;
+  const page=btn.closest('.v425-suspension');
+  if(!page||isAuthorized(page))return;
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  const flow=$('[data-v1074-flow]',page);if(flow)flow.open=true;
+  message(page,'Primero revisa y registra una autorización real. Para solicitarla usa «Solicitar visto bueno».');
+ },true);
  screen.addEventListener('click',e=>{
   if(route()!=='suspensionTool')return;
   const p=e.target.closest('.v425-suspension');
