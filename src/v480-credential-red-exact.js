@@ -732,5 +732,5 @@ if(screen)new MutationObserver(()=>{
 }).observe(screen,{childList:true,subtree:true});
 setTimeout(()=>schedule(240),0);
 
-window.LJR_V480={build:BUILD,render,makeCanvas,png,pdf,share,svg};
+window.LJR_V480={build:BUILD,render,makeCanvas,png,pdf,share,svg,schedulePreview:schedule};
 })();
