@@ -48,15 +48,23 @@ let v614QuizCountdownTimer=null;
 let v1050NotifyOpen=false;
 const V1050_NOTIFY_KEY='ljr-quiz-notice-dismissed';
 function v1050NoticeAvailable(){try{return localStorage.getItem(V1050_NOTIFY_KEY)!=='1'&&(!('Notification' in window)||Notification.permission!=='granted')}catch(_){return true}}
-function v1050LocalNotice(body){
+let v1055QuizNoticeReg=null;
+async function v1055RegisterQuizNotices(){
+  if(!navigator.serviceWorker?.register||!window.isSecureContext)return null;
+  if(v1055QuizNoticeReg)return v1055QuizNoticeReg;
+  try{
+    // Scope src/ evita reemplazar cualquier trabajador de cache de la app.
+    v1055QuizNoticeReg=await navigator.serviceWorker.register('./src/quiz-local-worker.js',{scope:'./src/'});
+    return v1055QuizNoticeReg;
+  }catch(_){return null}
+}
+async function v1050LocalNotice(body){
   if(!('Notification' in window)||Notification.permission!=='granted')return;
   const title='Quiz Arena · Liga Juventino Rosas',options={body,tag:'ljr-quiz-result'};
   try{
-    if(navigator.serviceWorker?.getRegistration){
-      navigator.serviceWorker.getRegistration().then(reg=>{
-        if(reg?.showNotification)reg.showNotification(title,options).catch(()=>{});
-      }).catch(()=>{});
-    }else new Notification(title,options);
+    const reg=v1055QuizNoticeReg||await navigator.serviceWorker?.getRegistration?.('./src/');
+    if(reg?.showNotification&&reg.active){await reg.showNotification(title,options);return}
+    new Notification(title,options);
   }catch(_){}
 }
 function v1050BellSvg(){return '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 34h28l-4-5V19a10 10 0 0 0-20 0v10l-4 5Z" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 38a4 4 0 0 0 8 0M6 19a18 18 0 0 1 5-12m31 12a18 18 0 0 0-5-12" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/></svg>'}
@@ -783,8 +791,13 @@ document.addEventListener('click',function(e){
           if(state)state.textContent='Tu navegador no permite notificaciones locales en este dispositivo.';
           return;
         }
-        const done=permission=>{
+        const done=async permission=>{
           if(permission==='granted'){
+            const reg=await v1055RegisterQuizNotices();
+            if(!reg&&navigator.serviceWorker?.register){
+              if(state)state.textContent='Se concedió permiso, pero no se pudo activar el aviso local. Reintenta.';
+              return;
+            }
             try{localStorage.setItem(V1050_NOTIFY_KEY,'1')}catch(_){}
             v1050NotifyOpen=false;render(false);
           }else if(state){state.textContent=permission==='denied'?'Notificaciones bloqueadas: actívalas en los permisos del navegador.':'No se activaron; puedes seguir jugando sin notificaciones.'}
