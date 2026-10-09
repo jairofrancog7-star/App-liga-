@@ -385,14 +385,31 @@ function v512OfficialKnockout(){
  }
  return games;
 }
-function v512BuildRoutes(){
+/* V1068: the Simulator may preview REAL clubs based on their current standings.
+   These are explicitly projections, NEVER official fixtures or completed results.
+   A published knockout fixture always takes precedence. */
+function v512BuildRoutes(rows=simulatedStandings()){
  const matches=v512OfficialKnockout();
- const route=(label,n)=>({
-   label,
-   pairs:Array.from({length:4},(_,i)=>matches.playoff[n+i]||null),
-   winners:Array.from({length:2},(_,i)=>matches.octavos[n/2+i]||[null,null])
+ const projection=matches.playoff.length===0 && rows.length>0;
+ const get=n=>rows[n-1]||null;
+ if(!projection){
+   const route=(label,n)=>({
+     label,pairs:Array.from({length:4},(_,i)=>matches.playoff[n+i]||null),
+     winners:Array.from({length:2},(_,i)=>matches.octavos[n/2+i]||[null,null])
+   });
+   return {left:route('RUTA PLATEADA',0),right:route('RUTA AZUL',4),matches,projection:false};
+ }
+ // Keep the historical 5-12 / 6-11 / 7-10 / 8-9 seed layout,
+ // without inserting imaginary clubs or repeating top seeds across routes.
+ const n=rows.length;
+ const pairSeeds=n>=12?[[5,12],[6,11],[7,10],[8,9]]:
+    Array.from({length:Math.floor(Math.max(0,n-4)/2)},(_,i)=>[5+i,n-i]);
+ const actualPairs=pairSeeds.map(([a,b])=>[get(a),get(b)]).filter(p=>p[0]&&p[1]);
+ const route=(label,index)=>({
+   label,pairs:Array.from({length:4},(_,i)=>actualPairs[index+i*2]||null),
+   winners:index===0?[[get(1),null],[get(3),null]]:[[get(2),null],[get(4),null]]
  });
- return {left:route('RUTA PLATEADA',0),right:route('RUTA AZUL',4),matches};
+ return {left:route('RUTA PLATEADA',0),right:route('RUTA AZUL',1),matches,projection:true};
 }
 
 function v512BracketRoute(route){
@@ -433,40 +450,51 @@ function v512ProgressWinner(pair){
    '</div>'+
  '</div>';
 }
-function v519UnknownMatch(dateText,legText=''){dateText='Por confirmar';
- return '<div class="v12-progress-match">'+
-   '<time>'+dateText+'</time>'+
-   (legText?'<small>'+legText+'</small>':'')+
-   '<div class="v12-progress-opponent"><span class="shield"><svg viewBox="0 0 24 24"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg></span><b>Por definir</b></div>'+
-   '<div class="v12-progress-opponent"><span class="shield"><svg viewBox="0 0 24 24"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg></span><b>Por definir</b></div>'+
+function v1068Opponent(team){
+ if(!team?.name)return '<div class="v12-progress-opponent v1068-pending"><span class="shield" aria-hidden="true">—</span><b aria-label="Por definir">—</b></div>';
+ return '<div class="v12-progress-opponent v1068-club" title="'+esc(team.name)+'" aria-label="'+esc(team.name)+'">'+
+   '<span class="v1068-stage-crest">'+v512Logo(team.name)+'</span>'+
+   '<b>'+esc(bracketCode(team.name))+'</b></div>';
+}
+function v519UnknownMatch(dateText,legText='',pair=null){
+ return '<div class="v12-progress-match'+(pair?.some(t=>t?.name)?' v1068-has-clubs':'')+'">'+
+   '<time>'+esc(dateText||'Por confirmar')+'</time>'+
+   (legText?'<small>'+esc(legText)+'</small>':'')+
+   v1068Opponent(pair?.[0]||null)+
+   v1068Opponent(pair?.[1]||null)+
  '</div>';
 }
-function v519OctavosRoute(label,tone){
+function v519OctavosRoute(label,tone,pairs=[]){
  return '<section class="v519-octavos-route '+tone+'">'+
    '<div class="v12-progress-rail"><span>'+label+'</span></div>'+
-   '<div class="v519-octavos-left">'+v519UnknownMatch('Por confirmar')+v519UnknownMatch('Por confirmar')+v519UnknownMatch('Por confirmar')+v519UnknownMatch('Por confirmar')+'</div>'+
+   '<div class="v519-octavos-left">'+Array.from({length:4},(_,i)=>v519UnknownMatch('Por confirmar','',pairs[i]||null)).join('')+'</div>'+
    '<div class="v519-octavos-connectors" aria-hidden="true"><i class="a"></i><i class="b"></i></div>'+
    '<div class="v519-octavos-right">'+v519UnknownMatch('Por confirmar')+v519UnknownMatch('Por confirmar')+'</div>'+
  '</section>';
 }
 function v512StagePanels(rows){
+ const played=v512OfficialKnockout();
+ const rowAsSeed=(index)=>rows[index]?[rows[index],null]:null;
+ // Real official fixture -> crest and short code; otherwise seeded club alone.
+ const octavos=played.octavos.length?played.octavos:Array.from({length:8},(_,i)=>rowAsSeed(i));
+ const quarter=played.cuartos,semi=played.semifinal;
  return '<div class="v12-stage-panels v519-stage-panels">'+
    '<section class="v12-stage-panel v12-stage-panel-octavos v519-stage-panel-octavos">'+
      '<div class="v12-progress-dates"><span>Por confirmar</span><span>Por confirmar</span></div>'+
-     '<div class="v519-octavos-board">'+v519OctavosRoute('RUTA PLATEADA','route-silver')+v519OctavosRoute('RUTA AZUL','route-blue')+'</div>'+
+     '<div class="v519-octavos-board">'+v519OctavosRoute('RUTA PLATEADA','route-silver',octavos.slice(0,4))+v519OctavosRoute('RUTA AZUL','route-blue',octavos.slice(4,8))+'</div>'+
    '</section>'+
    '<section class="v12-stage-panel v12-stage-panel-cuartos v519-stage-panel-cuartos">'+
      '<div class="v12-progress-dates"><span>Por confirmar</span><span>Por confirmar</span></div>'+
      '<div class="v12-progress-board">'+
-       '<section class="v12-progress-route route-silver"><div class="v12-progress-rail"><span>RUTA PLATEADA</span></div><div class="v12-progress-left v12-progress-left-matches">'+v519UnknownMatch('Por confirmar')+v519UnknownMatch('Por confirmar')+'</div><div class="v12-progress-connector" aria-hidden="true"><i></i></div><div class="v12-progress-right">'+v519UnknownMatch('Por confirmar')+'</div></section>'+
-       '<section class="v12-progress-route route-blue"><div class="v12-progress-rail"><span>RUTA AZUL</span></div><div class="v12-progress-left v12-progress-left-matches">'+v519UnknownMatch('Por confirmar')+v519UnknownMatch('Por confirmar')+'</div><div class="v12-progress-connector" aria-hidden="true"><i></i></div><div class="v12-progress-right">'+v519UnknownMatch('Por confirmar')+'</div></section>'+
+       '<section class="v12-progress-route route-silver"><div class="v12-progress-rail"><span>RUTA PLATEADA</span></div><div class="v12-progress-left v12-progress-left-matches">'+v519UnknownMatch('Por confirmar','',quarter[0])+v519UnknownMatch('Por confirmar','',quarter[1])+'</div><div class="v12-progress-connector" aria-hidden="true"><i></i></div><div class="v12-progress-right">'+v519UnknownMatch('Por confirmar')+'</div></section>'+
+       '<section class="v12-progress-route route-blue"><div class="v12-progress-rail"><span>RUTA AZUL</span></div><div class="v12-progress-left v12-progress-left-matches">'+v519UnknownMatch('Por confirmar','',quarter[2])+v519UnknownMatch('Por confirmar','',quarter[3])+'</div><div class="v12-progress-connector" aria-hidden="true"><i></i></div><div class="v12-progress-right">'+v519UnknownMatch('Por confirmar')+'</div></section>'+
      '</div>'+
    '</section>'+
    '<section class="v12-stage-panel v12-stage-panel-semifinal v519-stage-panel-semifinal">'+
      '<div class="v12-progress-dates"><span>Por confirmar</span><span>Por confirmar</span></div>'+
      '<div class="v12-semifinal-flow">'+
-       '<div class="v12-semifinal-source silver"><div class="v12-progress-rail"><span>RUTA PLATEADA</span></div>'+v519UnknownMatch('Por confirmar')+'</div>'+
-       '<div class="v12-semifinal-source blue"><div class="v12-progress-rail"><span>RUTA AZUL</span></div>'+v519UnknownMatch('Por confirmar')+'</div>'+
+       '<div class="v12-semifinal-source silver"><div class="v12-progress-rail"><span>RUTA PLATEADA</span></div>'+v519UnknownMatch('Por confirmar','',semi[0])+'</div>'+
+       '<div class="v12-semifinal-source blue"><div class="v12-progress-rail"><span>RUTA AZUL</span></div>'+v519UnknownMatch('Por confirmar','',semi[1])+'</div>'+
        '<div class="v12-semifinal-join" aria-hidden="true"></div>'+
        '<div class="v12-semifinal-target">'+v519UnknownMatch('Por confirmar','')+'</div>'+
      '</div>'+
@@ -482,15 +510,15 @@ function v512FinalCard(){
    '<div class="v12-final-side-mark" aria-hidden="true"></div>'+
    '<div class="v12-final-match-card">'+
      '<time>Por confirmar</time>'+
-     '<div class="v12-final-opponent"><span class="v12-final-shield">◈</span><b>'+esc(a)+'</b></div>'+
-     '<div class="v12-final-opponent"><span class="v12-final-shield">◈</span><b>'+esc(b)+'</b></div>'+
+     '<div class="v12-final-opponent"><span class="v1068-final-crest">'+(match?v512Logo(a):'<span class="v12-final-shield">◈</span>')+'</span><b>'+esc(a)+'</b></div>'+
+     '<div class="v12-final-opponent"><span class="v1068-final-crest">'+(match?v512Logo(b):'<span class="v12-final-shield">◈</span>')+'</span><b>'+esc(b)+'</b></div>'+
    '</div>'+
    '<div class="v12-final-trophy-wrap"><div class="v12-final-trophy-new" aria-label="Trofeo de la final"><img src="./final-trophy-drive.png?v=v512" alt="" aria-hidden="true"></div></div>'+
  '</section>';
 }
 
 function bracketView(){
- const rows=simulatedStandings(),stage=bracketStage(),routes=v512BuildRoutes();
+ const rows=simulatedStandings(),stage=bracketStage(),routes=v512BuildRoutes(rows);
  v514MirrorCompetitionBracketCss();
  return '<section class="v501-board v501-bracket v12-bracket-reference stage-'+stage+'" data-v12-bracket data-v512-bracket>'+
    '<div class="v12-bracket-stage-tabs" role="tablist" aria-label="Etapas del cuadro">'+
@@ -498,6 +526,7 @@ function bracketView(){
        '<button type="button" class="'+(stage===x[0]?'active':'')+'" data-v12-bracket-stage="'+x[0]+'" data-v512-stage="'+x[0]+'">'+x[1]+'</button>'
      ).join('')+
    '</div>'+
+   '<p class="v1068-bracket-mode" role="note">'+(routes.projection?'PROYECCIÓN DEL SIMULADOR · No son cruces oficiales':'CRUCES PUBLICADOS POR LA LIGA · Otros por definir')+'</p>'+
    '<div class="v12-bracket-dates"><span>Por confirmar</span><span>Por confirmar</span></div>'+
    '<div class="v12-bracket-board">'+
      v512BracketRoute(routes.left)+
