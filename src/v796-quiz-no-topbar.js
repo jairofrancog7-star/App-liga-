@@ -5,7 +5,8 @@
 if(window.__LJR_V796_QUIZ_NO_TOPBAR__)return;
 window.__LJR_V796_QUIZ_NO_TOPBAR__=true;
 
-const SEL='#app>.topbar,#app>header.topbar,.app-shell>.topbar,.app-shell>header.topbar,.v531-mini-head,.ljr-quiz-head';
+// Ocultar solo la barra GENERAL: la barra interna de Quiz Arena tiene menú ⋮ y botones propios.
+const SEL='#app>.topbar,#app>header.topbar,.app-shell>.topbar,.app-shell>header.topbar';
 function route(){
   return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
 }
