@@ -288,7 +288,7 @@ function predictionSheet(g){
   const current=read().predictions[g.id]||{home:0,away:0};
   if(ui.game!==g.id){ui.game=g.id;ui.tempHome=Number(current.home)||0;ui.tempAway=Number(current.away)||0}
   return '<div class="v589-overlay v897-reference-overlay" data-v589-overlay><button class="v589-dim" type="button" data-v589-close aria-label="Cerrar"></button>'+
-    '<section class="v589-sheet prediction-sheet v897-reference-sheet"><span class="v589-handle"></span>'+
+    '<section class="v589-sheet prediction-sheet v897-reference-sheet"><button type="button" class="v1002-dismiss-grip" data-v1002-dismiss-grip aria-label="Deslizar hacia abajo para cerrar el pronóstico"><span class="v589-handle" aria-hidden="true"></span></button>'+
       '<div class="v589-sheet-score v897-sheet-score">'+
         '<div class="v589-team v897-team home">'+logo(g.homeLogo,g.home)+'<b>'+esc(g.home)+'</b></div>'+
         scorePicker('home',ui.tempHome)+
@@ -382,8 +382,78 @@ function openPrediction(id){
   const current=read().predictions[id]||{home:0,away:0};
   ui.tempHome=Number(current.home)||0;ui.tempAway=Number(current.away)||0;
   render();
-  const root=$('[data-v589-root]');if(root)root.insertAdjacentHTML('beforeend',predictionSheet(g));
+  const root=$('[data-v589-root]');if(root){root.insertAdjacentHTML('beforeend',predictionSheet(g));bindPredictionSwipe()}
 }
+
+/* V1002 — Desliza el tirador blanco hacia abajo y suelta para quitar el panel.
+   No interfiere con los marcadores ni con Guardar. */
+function bindPredictionSwipe(){
+  const overlay=$('.v897-reference-overlay[data-v589-overlay]');
+  const sheet=overlay?.querySelector('.v897-reference-sheet');
+  const grip=sheet?.querySelector('[data-v1002-dismiss-grip]');
+  if(!grip||grip.dataset.v1002Bound==='1')return;
+  grip.dataset.v1002Bound='1';
+  let active=null, ignoreClick=false, finishTimer=null;
+  function reset(){
+    if(!sheet.isConnected)return;
+    sheet.style.removeProperty('transition');
+    sheet.style.removeProperty('transform');
+    sheet.style.removeProperty('will-change');
+  }
+  function springBack(){
+    sheet.classList.remove('v1002-dragging');
+    sheet.style.setProperty('transition','transform 210ms cubic-bezier(.17,.72,.25,1)','important');
+    sheet.style.setProperty('transform','translate3d(0,0,0)','important');
+    clearTimeout(finishTimer);
+    finishTimer=setTimeout(reset,220);
+  }
+  function dismiss(){
+    clearTimeout(finishTimer);
+    sheet.classList.remove('v1002-dragging');
+    sheet.classList.add('v1002-dismissing');
+    sheet.style.setProperty('transition','transform 210ms cubic-bezier(.22,.74,.28,1)','important');
+    sheet.style.setProperty('transform','translate3d(0,'+(sheet.getBoundingClientRect().height+70)+'px,0)','important');
+    finishTimer=setTimeout(()=>{if(overlay.isConnected)overlay.remove()},215);
+  }
+  grip.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='mouse'&&e.button!==0)return;
+    if(active||!overlay.isConnected)return;
+    clearTimeout(finishTimer);
+    reset();
+    ignoreClick=false;
+    active={id:e.pointerId,startY:e.clientY,startX:e.clientX,startT:performance.now(),dy:0,moved:false};
+    sheet.classList.add('v1002-dragging');
+    sheet.style.setProperty('will-change','transform','important');
+    sheet.style.setProperty('transition','none','important');
+    try{grip.setPointerCapture(e.pointerId)}catch(_){}
+  });
+  grip.addEventListener('pointermove',e=>{
+    if(!active||e.pointerId!==active.id)return;
+    const deltaY=e.clientY-active.startY,deltaX=e.clientX-active.startX;
+    if(Math.abs(deltaY)>6||Math.abs(deltaX)>9){active.moved=true;ignoreClick=true}
+    const dy=Math.max(0,Math.min(window.innerHeight||950,deltaY));
+    active.dy=dy;
+    sheet.style.setProperty('transform','translate3d(0,'+dy+'px,0)','important');
+    if(e.cancelable)e.preventDefault();
+  });
+  function finish(e,cancelled=false){
+    if(!active||e.pointerId!==active.id)return;
+    const dy=Math.max(0,e.clientY-active.startY),ms=Math.max(1,performance.now()-active.startT);
+    const minDistance=Math.min(180,Math.max(100,sheet.offsetHeight*.20));
+    const shouldClose=!cancelled&&(dy>=minDistance||(dy>=55&&dy/ms>=.62));
+    ignoreClick=ignoreClick||active.moved;
+    active=null;
+    if(shouldClose)dismiss();else springBack();
+    try{if(grip.hasPointerCapture(e.pointerId))grip.releasePointerCapture(e.pointerId)}catch(_){}
+  }
+  grip.addEventListener('pointerup',e=>finish(e));
+  grip.addEventListener('pointercancel',e=>finish(e,true));
+  grip.addEventListener('click',e=>{
+    if(ignoreClick){e.preventDefault();e.stopPropagation();ignoreClick=false;return}
+    if(!active&&overlay.isConnected){e.preventDefault();overlay.remove()}
+  });
+}
+
 function openPoints(){
   const root=$('[data-v589-root]');if(root&&!$('[data-v589-overlay]',root))root.insertAdjacentHTML('beforeend',pointsSheet());
 }
