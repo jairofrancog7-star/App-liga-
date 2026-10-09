@@ -61,6 +61,26 @@ function publishedScore(r){
   const h=String(r?.[3]??''),a=String(r?.[5]??'');
   return /^\d+$/.test(h)&&/^\d+$/.test(a)?{home:h,away:a,text:h+'–'+a}:null;
 }
+/* V976 — Las resoluciones por DEFAULT/administrativas prevalecen
+   sobre la fecha y jamás generan un 3-0 no publicado. */
+function officialDecision(m){
+  const decision=m?.cat?.fixture_decisions?.[String(m?.r?.[0]??'')];
+  if(!decision?.winner)return null;
+  const winner=norm(decision.winner);
+  if(winner!==norm(m.r?.[2])&&winner!==norm(m.r?.[6]))return null;
+  return decision;
+}
+function confirmedLivePhase(m){
+  try{
+    const s=window.LJR_MATCH_LIVE?.getState?.();
+    if(!s||s.key!==m?.key)return '';
+    const p=String(s.phase||'');
+    if(!['first','halftime','second','final'].includes(p))return '';
+    const hasOperatorEvent=(s.events||[]).some(e=>e?.confirmed!==false&&e?.type==='phase-'+p);
+    const hasFreshFeed=!!(s.source?.connected&&Date.now()-Number(s.source.lastSync||0)<30000);
+    return hasOperatorEvent||hasFreshFeed?p:'';
+  }catch(_){return ''}
+}
 function allMatches(){
   const out=[];
   for(const [catId,c] of Object.entries(categories())){
@@ -81,26 +101,26 @@ function allMatches(){
   return out.sort((a,b)=>a.start-b.start);
 }
 function stateFor(m,now=mexicoStamp()){
+  const decision=officialDecision(m);
   const score=publishedScore(m?.r);
+  if(decision){
+    const loser=norm(decision.winner)===norm(m.r[2])?m.r[6]:m.r[2];
+    return {kind:'awarded',label:decision.default===true?'VICTORIA POR DEFAULT':'RESOLUCIÓN OFICIAL',
+      primary:score?.text||(decision.default===true?'DEFAULT':'RESOLUCIÓN'),
+      secondary:'Gana '+decision.winner+(decision.default===true?' · '+loser+' −3 pts':''),
+      decision};
+  }
   if(score)return {kind:'final',label:'RESULTADO OFICIAL',primary:score.text,secondary:'Final'};
   const status=String(m?.r?.[10]||'').trim();
   if(/\bGANA\b/i.test(status))return {kind:'final',label:'RESOLUCIÓN OFICIAL',primary:status,secondary:'Rol oficial'};
   const start=m?.start;
   if(!Number.isFinite(start))return {kind:'unknown',label:'PROGRAMACIÓN OFICIAL',primary:'VS',secondary:'Horario por confirmar'};
+  const live=confirmedLivePhase(m);
+  if(live==='first'||live==='second'||live==='halftime')return {
+    kind:'window',label:'PARTIDO EN DIRECTO',primary:'—',secondary:live==='halftime'?'Medio tiempo':'Cronómetro del operador'};
+  if(live==='final')return {kind:'pending',label:'PARTIDO FINALIZADO',primary:'—',secondary:'Esperando cédula oficial'};
   if(now<start)return {kind:'scheduled',label:'PRÓXIMO PARTIDO OFICIAL',primary:clock(m.r[8]),secondary:dateOnly(m.r[8])};
-  const elapsed=(now-start)/60000;
-  if(elapsed<=150)return {
-    kind:'window',
-    label:'EN DIRECTO',
-    primary:'—',
-    secondary:'En directo'
-  };
-  return {
-    kind:'pending',
-    label:'RESULTADO PENDIENTE',
-    primary:'—',
-    secondary:'Esperando reporte oficial'
-  };
+  return {kind:'pending',label:'INICIO SIN CONFIRMAR',primary:'—',secondary:'Esperando confirmación oficial'};
 }
 function selectedFixture(){
   const list=allMatches();if(!list.length)return null;
@@ -111,7 +131,7 @@ function selectedFixture(){
   const now=mexicoStamp();
   const inWindow=list.filter(m=>stateFor(m,now).kind==='window').sort((a,b)=>a.start-b.start);
   if(inWindow.length)return inWindow[0];
-  const future=list.filter(m=>m.start>now).sort((a,b)=>a.start-b.start);
+  const future=list.filter(m=>m.start>now&&stateFor(m,now).kind==='scheduled').sort((a,b)=>a.start-b.start);
   if(future.length)return future[0];
   const withScore=list.filter(m=>publishedScore(m.r)).sort((a,b)=>b.start-a.start);
   if(withScore.length)return withScore[0];
@@ -222,8 +242,10 @@ function compactDate(v){
   return Number(m[1])+' '+months[Math.max(0,Math.min(11,Number(m[2])-1))]+' '+m[3];
 }
 function countdownText(m,state){
+  if(state.kind==='awarded')return state.decision?.default===true?'DEFAULT · −3 PTS':'RESOLUCIÓN';
   if(state.kind==='window')return 'EN DIRECTO';
   if(state.kind==='final')return 'FINAL';
+  if(state.kind==='pending')return 'SIN CONFIRMAR';
   if(!Number.isFinite(m?.start))return '—';
   const diff=m.start-mexicoStamp();
   if(diff<=0)return state.kind==='pending'?'PENDIENTE':'00 : 00 : 00';
@@ -276,7 +298,7 @@ function v526MatchExtras(m){
 }
 function buildUpBody(m,state){
   const r=m.r,home=r[2],away=r[6],score=publishedScore(r);
-  const center=score?score.text:clock(r[8]);
+  const center=state.kind==='awarded'?state.primary:(score?score.text:clock(r[8]));
   return '<section class="v420-build-up" data-v420-build-up>'+
     '<section class="v420-hero">'+
       '<video class="v420-hero-media" autoplay muted loop playsinline preload="metadata" src="'+esc(MATCH_MEDIA+'v38-soccer-matchday.mp4')+'"></video>'+
@@ -310,9 +332,25 @@ function buildUpBody(m,state){
 }
 function updateLiveClock(){
   if(!isDirectRoute())return;
-  const now=mexicoStamp();
+  const now=mexicoStamp(),m=selectedFixture();
+  if(!m)return;
+  const state=stateFor(m,now);
   document.querySelectorAll('[data-v420-countdown]').forEach(el=>{
-    const start=Number(el.dataset.v420Start);
+    if(state.kind==='awarded'||state.kind==='final'||state.kind==='pending'){
+      el.textContent=countdownText(m,state);
+      el.dataset.phase=state.kind;
+      return;
+    }
+    if(state.kind==='window'){
+      // El reloj 1T/MT/2T lo controla V144/V145 al registrar el operador
+      // o al recibir un feed; no simular minutos usando sólo la hora fijada.
+      if(!el.classList.contains('v144-live-label'))el.textContent='EN DIRECTO';
+      el.dataset.phase='live';
+      return;
+    }
+    const raw=el.dataset.v420Start;
+    if(!raw)return;
+    const start=Number(raw);
     if(!Number.isFinite(start))return;
     const diff=Math.floor((start-now)/1000);
     const pad=n=>String(Math.max(0,n)).padStart(2,'0');
@@ -322,27 +360,10 @@ function updateLiveClock(){
       el.dataset.phase='countdown';
       return;
     }
-    const elapsed=Math.max(0,Math.floor((now-start)/1000));
-    if(elapsed<45*60){
-      const mm=Math.floor(elapsed/60),ss=elapsed%60;
-      el.textContent='1T · '+pad(mm)+' : '+pad(ss);
-      el.dataset.phase='first';
-      return;
-    }
-    if(elapsed<60*60){
-      const rest=60*60-elapsed;
-      el.textContent='DESCANSO · '+pad(Math.floor(rest/60))+' : '+pad(rest%60);
-      el.dataset.phase='half';
-      return;
-    }
-    if(elapsed<105*60){
-      const play=45*60+(elapsed-60*60),mm=Math.floor(play/60),ss=play%60;
-      el.textContent='2T · '+pad(mm)+' : '+pad(ss);
-      el.dataset.phase='second';
-      return;
-    }
-    el.textContent='90 : 00 +';
-    el.dataset.phase='after';
+    // En caso de cruzar el segundo exacto de inicio mientras el estado
+    // seguía siendo programado, esperar la siguiente confirmación.
+    el.textContent='INICIO SIN CONFIRMAR';
+    el.dataset.phase='pending';
   });
 }
 function predictionsBody(m){
@@ -700,6 +721,7 @@ function v423Saved(key){
 }
 function v423StatusText(x){
   const s=stateFor(x),score=publishedScore(x.r);
+  if(s.kind==='awarded')return {kind:'awarded',score:s.primary,meta:s.secondary};
   if(score)return {kind:'final',score:score.text,meta:'Final'};
   if(s.kind==='window')return {kind:'live',score:'—',meta:'En directo'};
   if(s.kind==='scheduled')return {kind:'scheduled',score:clock(x.r?.[8]),meta:'Programado'};
@@ -1110,7 +1132,9 @@ async function refreshOfficialData(force=false){
   const now=Date.now();
   if(!force&&now-lastOfficialRefresh<45000)return db;
   lastOfficialRefresh=now;
-  const urls=[REMOTE.split('?')[0]+'?ts='+now,LOCAL.split('?')[0]+'?ts='+now];
+  // Fuente local publicada primero: evita que Liga_Futbol desactualizado
+  // sustituya decisiones y jornadas recientes de App-liga-.
+  const urls=[LOCAL.split('?')[0]+'?ts='+now,REMOTE.split('?')[0]+'?ts='+now];
   for(const u of urls){
     try{
       const res=await fetch(u,{cache:'no-store',signal:AbortSignal.timeout(8000)});
