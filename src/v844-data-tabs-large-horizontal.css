@@ -1,78 +1,25 @@
-/* V844 — Datos > Estadísticas: pestañas superiores grandes y visibles.
-   Igualar la presencia visual de la barra horizontal de referencia del usuario. */
+/* V844 — Datos > Estadísticas.
+   Restauración: NO modifica texto, tamaños, cuadros, padding ni altura de pestañas.
+   Únicamente ajusta las barritas inferiores activas. */
+
 @media (max-width:1023px){
-  html body.v33-data-active #screen .v33-tabs{
-    height:58px!important;
-    min-height:58px!important;
-    display:flex!important;
-    align-items:stretch!important;
-    overflow-x:auto!important;
-    overflow-y:hidden!important;
-    scrollbar-width:none!important;
-    -webkit-overflow-scrolling:touch!important;
-    background:#06075f!important;
-    border-bottom:3px solid #16ddea!important;
-  }
-  html body.v33-data-active #screen .v33-tabs::-webkit-scrollbar{display:none!important}
-
-  html body.v33-data-active #screen .v33-tabs button{
-    position:relative!important;
-    flex:0 0 auto!important;
-    width:auto!important;
-    min-width:max-content!important;
-    height:58px!important;
-    min-height:58px!important;
-    padding:0 18px!important;
-    display:flex!important;
-    align-items:center!important;
-    justify-content:center!important;
-    white-space:nowrap!important;
-    line-height:1!important;
-    font-size:clamp(15px,4vw,18px)!important;
-    font-weight:700!important;
-    letter-spacing:-.02em!important;
-    color:#f0f1fb!important;
-    overflow:visible!important;
-  }
-
-  html body.v33-data-active #screen .v33-tabs button.active{
-    color:#18e8f2!important;
-  }
-
+  /* Mantener exactamente el diseño/tamaños originales; sólo tocar el indicador. */
   html body.v33-data-active #screen .v33-tabs button.active::after{
-    content:""!important;
-    position:absolute!important;
-    left:10px!important;
-    right:10px!important;
-    bottom:0!important;
-    width:auto!important;
     height:5px!important;
     min-height:5px!important;
+    bottom:0!important;
     border-radius:6px 6px 0 0!important;
-    background:#16ddea!important;
     opacity:1!important;
   }
 
+  /* General: quitar morado y dejar azul. */
   html body.v33-data-active #screen .v33-data-page[data-v33-mode="general"] .v33-tabs button[data-v33-tab="general"].active::after{
+    background:#1c69d4!important;
+  }
+
+  /* Equipo / jugadores: conservar cyan, sólo hacer visible la barrita. */
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="team"] .v33-tabs button[data-v33-tab="team"].active::after,
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="player"] .v33-tabs button[data-v33-tab="player"].active::after{
     background:#16ddea!important;
-  }
-
-  html body.v33-data-active #screen .v33-data-head.is-collapsed .v33-tabs,
-  html body.v33-data-active #screen .v33-data-head.is-collapsed .v33-tabs button{
-    height:58px!important;
-    min-height:58px!important;
-  }
-
-  html body.v33-data-active #screen .v33-data-head.is-collapsed .v33-tabs button{
-    padding:0 18px!important;
-    font-size:clamp(15px,4vw,18px)!important;
-    white-space:nowrap!important;
-  }
-}
-
-@media (max-width:390px){
-  html body.v33-data-active #screen .v33-tabs button{
-    padding:0 14px!important;
-    font-size:14px!important;
   }
 }
