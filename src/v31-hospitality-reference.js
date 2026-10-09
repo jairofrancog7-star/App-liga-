@@ -17,9 +17,9 @@ function v31HospitalityMarkup(){
           <stop offset="100%" stop-color="#2b73bc" stop-opacity=".09"/>
         </linearGradient>
         <linearGradient id="v31-lienzo-oro" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#b9a578" stop-opacity=".03"/>
-          <stop offset="52%" stop-color="#d0ae7c" stop-opacity=".35"/>
-          <stop offset="100%" stop-color="#ae8fa3" stop-opacity=".03"/>
+          <stop offset="0%" stop-color="#2676D8" stop-opacity=".03"/>
+          <stop offset="52%" stop-color="#55A8FF" stop-opacity=".35"/>
+          <stop offset="100%" stop-color="#2059C8" stop-opacity=".03"/>
         </linearGradient>
       </defs>
       <g fill="none" stroke-linecap="round">
@@ -118,14 +118,14 @@ function v31BindHospitality(){
 
 // Only Hospitalidad's original background and Android/PWA upper system bar.
 // Neither the header nor the invitation controls are repositioned.
-const V31_HOSPITALITY_BG='linear-gradient(180deg, #10348F 0%, #091C65 37%, #050943 100%)';
+const V31_HOSPITALITY_BG='linear-gradient(180deg, #0A369F 0%, #081F7A 40%, #050B4E 100%)';
 let v31OriginalThemeColor=null;
 function v31SyncHospitalityTheme(active){
   const theme=document.querySelector('meta[name="theme-color"]');
   if(!theme)return;
   if(active){
     if(v31OriginalThemeColor===null)v31OriginalThemeColor=theme.getAttribute('content')||'#000144';
-    if(theme.content!=='#10348F')theme.setAttribute('content','#10348F');
+    if(theme.content!=='#0A369F')theme.setAttribute('content','#0A369F');
   }else if(v31OriginalThemeColor!==null){
     theme.setAttribute('content',v31OriginalThemeColor);
     v31OriginalThemeColor=null;
