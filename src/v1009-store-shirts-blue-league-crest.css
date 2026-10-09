@@ -1,0 +1,55 @@
+/* V1009 — Escudo de la Liga azul oficial en cada camiseta del catálogo.
+   No altera la tela, el color del club, los escudos de equipos ni la vista 3D.
+   La insignia usa PNG con transparencia original, sin filtros de recolor. */
+body[data-app-route="club-store"] .v602-store-real-shirt > .v1009-shirt-league-badge{
+  position:absolute!important;
+  display:block!important;
+  visibility:visible!important;
+  z-index:13!important;
+  left:39%!important;
+  top:var(--v819-badge-y,27%)!important;
+  width:12%!important;
+  height:12%!important;
+  max-width:38px!important;
+  max-height:38px!important;
+  min-width:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  outline:0!important;
+  border-radius:0!important;
+  opacity:1!important;
+  background:transparent!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  pointer-events:none!important;
+  mix-blend-mode:normal!important;
+  /* Sombreado LOCAL solo en la insignia: mantiene el azul legible sobre tela clara */
+  filter:drop-shadow(0 .7px .6px rgba(0,10,41,.33))!important;
+  transform:translate(-50%,-50%) translateZ(6px) rotateY(-3deg)!important;
+  transform-origin:50% 50%!important;
+}
+body[data-app-route="club-store"] .v602-store-real-shirt.v814-store-library-kit > .v1009-shirt-league-badge{
+  left:calc(var(--v819-badge-x,57%) - 18%)!important;
+  top:var(--v819-badge-y,27%)!important;
+}
+body[data-app-route="club-store"] .v431-product:nth-child(even) .v602-store-real-shirt > .v1009-shirt-league-badge,
+body[data-app-route="club-store"] .v436-product:nth-child(even) .v602-store-real-shirt > .v1009-shirt-league-badge{
+  transform:translate(-50%,-50%) translateZ(6px) rotateY(3deg)!important;
+}
+body[data-app-route="club-store"] .v431-product-art .v602-store-real-shirt > .v1009-shirt-league-badge,
+body[data-app-route="club-store"] .v436-product-art .v602-store-real-shirt > .v1009-shirt-league-badge,
+body[data-app-route="club-store"] .v436-kit-tiles .v602-store-real-shirt > .v1009-shirt-league-badge{
+  width:10%!important;
+  height:10%!important;
+  max-width:30px!important;
+  max-height:30px!important;
+}
+@media(max-width:390px){
+ body[data-app-route="club-store"] .v602-store-real-shirt > .v1009-shirt-league-badge{
+  width:10%!important;height:10%!important;
+ }
+}
+/* El motor 3D comparte la misma textura entre tienda y perfil.
+   No aplicar CSS filters al canvas: evita volver violeta el azul del escudo. */
