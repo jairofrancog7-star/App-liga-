@@ -399,7 +399,7 @@ function view(){
         '<div class="v635-ai-box"><div><b>Asistente de texto con IA</b><span>Redacta automáticamente un permiso formal usando los datos capturados, sin inventar información.</span></div><button type="button" data-v635-ai>✦ Generar texto con IA</button></div>'+
         '<div class="v635-form-title authority"><b>Autoridad que autoriza</b><span>El documento mostrará este nombre y cargo.</span></div>'+
         '<div class="v635-two">'+
-          '<label><span>Nombre</span><select data-v635-authority>'+authorityOptions()+'</select><input type="text" data-v635-signer placeholder="Nombre completo de la autoridad" aria-label="Nombre de otra autoridad" hidden><small>Directiva citada en el Reglamento 2026–2027. La firma requiere autorización real.</small></label>'+
+          '<label><span>Nombre</span><select data-v635-authority title="Directiva del Reglamento 2026–2027; la selección no sustituye la firma">'+authorityOptions()+'</select><input type="text" data-v635-signer placeholder="Nombre completo de la autoridad" aria-label="Nombre de otra autoridad" hidden></label>'+
           '<label><span>Cargo</span><select data-v635-role>'+options(SIGNER_ROLES,'Presidente de la Liga')+'</select></label>'+
         '</div>'+
         '<label><span>Firma (opcional)</span><input type="file" accept="image/png,image/jpeg,image/webp" data-v635-signature><small>Si no subes una firma, quedará una línea para firmar en físico.</small></label>'+
