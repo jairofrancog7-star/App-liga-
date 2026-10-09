@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v903-match-gradient-blend';
+const CACHE='liga-juventino-v904-seamless-gradient';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
