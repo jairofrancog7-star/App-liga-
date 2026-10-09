@@ -3,7 +3,7 @@
   'use strict';
   if(window.__LJR_V1065_TOOLS_ONCE__)return;
   window.__LJR_V1065_TOOLS_ONCE__=true;
-  function onTools(){return (document.body?.dataset?.appRoute||location.hash.replace(/^#\\/?/,'').split('?')[0])==='leagueTools';}
+  function onTools(){return (document.body?.dataset?.appRoute||location.hash.replace(/^#\/?/,'').split('?')[0])==='leagueTools';}
   let raf=0;
   function sync(){
     if(!onTools())return;
