@@ -46,7 +46,14 @@ html body.ljr-v777 .ljr-profile-control>.ljr-profile-image,html body.ljr-v777 .l
  html body.ljr-v777 .v734-tool-detail-panel[hidden]{display:none!important}
  html body.ljr-v777 .v734-tool-detail-panel p{margin:0 0 10px!important;line-height:1.45!important;font-size:14px!important}
  html body.ljr-v777 .v734-tool-grid,html body.ljr-v777 .v726-tool-grid{align-items:start!important;gap:8px!important}
- html body.ljr-v777[data-app-route="hospitality"] :is(#app,#screen,.v31-hospitality-page,.v774-hospitality-head){background:#06075f!important;background-image:none!important}
+ /* Hospitalidad owns one blue backdrop. Never flatten its page and fixed header to
+   #06075f: that created the solid upper band seen on mobile. No text/button changes. */
+ html body.ljr-v777[data-app-route="hospitality"] :is(#app,#screen,.v31-hospitality-page,.v774-hospitality-head){
+   background:linear-gradient(180deg,#0A369F 0%,#081F7A 40%,#050B4E 100%) fixed!important;
+   background-size:100% 100dvh!important;
+   background-position:center top!important;
+   background-repeat:no-repeat!important;
+ }
  html body.ljr-v777[data-app-route="hospitality"] .v31-hospitality-page{height:100%!important;min-height:0!important;padding:18px 16px 12px!important;gap:14px!important;overflow:auto!important}
  html body.ljr-v777 .v31-hospitality-page::before,.v31-side-accent{display:none!important}
  html body.ljr-v777 .ljr-hospitality-actions{display:grid;gap:9px;margin-top:auto;padding-top:24px;width:100%}
