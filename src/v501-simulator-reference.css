@@ -3877,3 +3877,146 @@ body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-trop
   body[data-app-route="simulator"] [data-v512-bracket].stage-semifinal .v12-semifinal-flow{grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr)!important}
   body[data-app-route="simulator"] [data-v512-bracket] .v519-octavos-route{grid-template-columns:12px minmax(0,1fr) 24px minmax(0,1fr)!important;column-gap:4px!important}
 }
+
+
+/* V1050 — compact three-letter bracket names + reference-sized score controls.
+   Scoped exclusively to #/simulator; no new observers, overlays, or route code. */
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-team .v1050-team-code,
+html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-playoff .v12-bracket-team .v1050-team-code,
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-team.mini .v1050-team-code{
+  display:block!important;
+  min-width:0!important;
+  max-width:100%!important;
+  width:auto!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  white-space:nowrap!important;
+  word-break:normal!important;
+  overflow-wrap:normal!important;
+  -webkit-line-clamp:unset!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
+  font-size:clamp(10px,2.8vw,12px)!important;
+  line-height:1.15!important;
+  font-weight:850!important;
+  letter-spacing:.01em!important;
+  text-align:left!important;
+}
+/* Keep score controls recognizable and finger-friendly like the provided
+   Arsenal/Lille example: one tall rounded control per side, + above −. */
+@media(max-width:620px){
+  html body[data-app-route="simulator"] #screen .v501-sheet .v501-sim-match{
+    display:grid!important;
+    grid-template-columns:
+      14px minmax(0,1fr) clamp(36px,11.6vw,46px)
+      clamp(42px,12vw,52px)
+      clamp(36px,11.6vw,46px) minmax(0,1fr) 14px!important;
+    column-gap:clamp(2px,.75vw,5px)!important;
+    min-height:clamp(136px,39vw,170px)!important;
+    height:auto!important;
+    padding:12px 0!important;
+    align-items:center!important;
+    border-bottom:1px solid rgba(176,191,247,.20)!important;
+    box-sizing:border-box!important;
+  }
+  html body[data-app-route="simulator"] #screen .v501-sheet .v501-score-control{
+    width:100%!important;
+    min-width:0!important;
+    height:clamp(86px,27vw,112px)!important;
+    min-height:86px!important;
+    display:grid!important;
+    grid-template-rows:1fr 1fr!important;
+    overflow:hidden!important;
+    border:1px solid rgba(135,151,232,.16)!important;
+    border-radius:clamp(12px,3.8vw,17px)!important;
+    background:#29277f!important;
+    box-shadow:inset 0 1px rgba(255,255,255,.045)!important;
+  }
+  html body[data-app-route="simulator"] #screen .v501-sheet .v501-score-control button{
+    width:100%!important;
+    min-width:0!important;
+    height:100%!important;
+    min-height:0!important;
+    display:grid!important;
+    place-items:center!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    color:#fff!important;
+    font-family:Inter,Roboto,Arial,sans-serif!important;
+    font-size:clamp(23px,6.8vw,29px)!important;
+    line-height:1!important;
+    font-weight:750!important;
+    touch-action:manipulation!important;
+    cursor:pointer!important;
+  }
+  html body[data-app-route="simulator"] #screen .v501-sheet .v501-score-control button+button{
+    border-top:1px solid rgba(146,164,245,.22)!important;
+  }
+  html body[data-app-route="simulator"] #screen .v501-sheet .v501-score-control button:active{
+    background:#3548a4!important;
+  }
+  html body[data-app-route="simulator"] #screen .v501-sheet .v501-score-control button:focus-visible{
+    outline:2px solid #27d9ea!important;
+    outline-offset:-2px!important;
+  }
+  html body[data-app-route="simulator"] #screen .v501-sheet .v501-crest.sim,
+  html body[data-app-route="simulator"] #screen .v501-sheet .v501-crest.sim img{
+    width:clamp(37px,12.4vw,53px)!important;
+    min-width:0!important;
+    max-width:53px!important;
+    height:clamp(37px,12.4vw,53px)!important;
+    min-height:0!important;
+    max-height:53px!important;
+    object-fit:contain!important;
+  }
+  html body[data-app-route="simulator"] #screen .v501-sheet .v501-sim-team{
+    min-width:0!important;
+    width:100%!important;
+    gap:7px!important;
+    align-items:center!important;
+    justify-content:center!important;
+  }
+  html body[data-app-route="simulator"] #screen .v501-sheet .v501-sim-team b{
+    display:block!important;
+    min-height:0!important;
+    max-width:100%!important;
+    width:100%!important;
+    margin:0!important;
+    color:#fff!important;
+    font:750 clamp(10px,2.85vw,12px)/1.18 Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:-.015em!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    overflow-wrap:break-word!important;
+    word-break:normal!important;
+    text-align:center!important;
+    text-wrap:balance;
+  }
+  html body[data-app-route="simulator"] #screen .v501-sheet .v501-seed{
+    min-width:0!important;
+    gap:2px!important;
+    font-size:9px!important;
+    line-height:1.1!important;
+  }
+  html body[data-app-route="simulator"] #screen .v501-sheet .v501-seed b{
+    font-size:11px!important;
+    line-height:1.15!important;
+  }
+  html body[data-app-route="simulator"] #screen .v501-sheet .v501-score-center{
+    min-width:0!important;
+    gap:7px!important;
+  }
+  html body[data-app-route="simulator"] #screen .v501-sheet .v501-score-center strong{
+    font-size:clamp(15px,4.6vw,21px)!important;
+    line-height:1!important;
+    white-space:nowrap!important;
+    font-weight:800!important;
+  }
+  html body[data-app-route="simulator"] #screen .v501-sheet .v501-score-center button{
+    width:28px!important;
+    height:28px!important;
+    font-size:19px!important;
+  }
+}
