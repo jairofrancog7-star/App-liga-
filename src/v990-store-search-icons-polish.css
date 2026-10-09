@@ -227,3 +227,41 @@ body[data-app-route="club-store"] #screen .v66-directory[data-v66-directory="sto
     width:54px!important;height:54px!important;min-width:54px!important;min-height:54px!important;
   }
 }
+
+/* V992 — cabecera Tienda: bordes azules continuos, sin línea dura entre
+   lienzo y fondo. Afecta exclusivamente al directorio, no a tiendas internas. */
+html body[data-app-route="club-store"] #screen .v66-directory[data-v66-directory="store"]:not([data-v431-store]) .v510-store-head{
+  border:0!important;
+  border-top:0!important;
+  border-right:0!important;
+  border-bottom:0!important;
+  border-left:0!important;
+  outline:none!important;
+  border-radius:0 0 18px 18px!important;
+  box-shadow:none!important;
+  background:
+    radial-gradient(ellipse at 80% 16%,rgba(86,190,255,.25) 0%,transparent 51%),
+    radial-gradient(ellipse at 30% 4%,rgba(25,107,232,.27) 0%,transparent 65%),
+    linear-gradient(180deg,#0b297c 0%,#0b339d 45%,#09237d 78%,#070c61 100%)!important;
+}
+html body[data-app-route="club-store"] #screen .v66-directory[data-v66-directory="store"]:not([data-v431-store]) .v510-store-head::after{
+  content:""!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  top:auto!important;
+  bottom:0!important;
+  height:20px!important;
+  z-index:0!important;
+  pointer-events:none!important;
+  background:linear-gradient(180deg,rgba(7,12,97,0),#070c61)!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+html body[data-app-route="club-store"] #screen:has(.v66-directory[data-v66-directory="store"]:not([data-v431-store])){
+  background:linear-gradient(180deg,#070c61 0%,#08227d 46%,#070c61 100%)!important;
+}
+html body[data-app-route="club-store"] #screen .v66-directory[data-v66-directory="store"]:not([data-v431-store]) .v989-shop-label{
+  border-top:0!important;
+  background:transparent!important;
+}
