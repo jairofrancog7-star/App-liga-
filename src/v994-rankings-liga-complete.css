@@ -1,0 +1,226 @@
+/* V994 — Rankings Juventino Rosas: footer similar to UEFA, league-specific data.
+   Only the Rankings route is changed; team names, points and crests remain official. */
+@media (max-width:1023px){
+  html body.v32-rankings-active #screen .v32-rankings:not(.v32-filter-mode)>.v32-card{
+    margin-bottom:0!important;
+    border-radius:17px!important;
+    padding-bottom:4px!important;
+    overflow:hidden!important;
+  }
+  html body.v32-rankings-active #screen .v32-rankings .v32-club-card .v190-club-row{
+    min-height:64px!important;
+    padding:8px 0!important;
+  }
+  /* The filter has the same restrained rectangle geometry as the reference. */
+  html body.v32-rankings-active #screen .v32-rankings:not(.v32-filter-mode)>.v32-controls{
+    margin-bottom:3px!important;
+    padding-top:12px!important;
+    padding-bottom:12px!important;
+  }
+  html body.v32-rankings-active #screen .v32-controls .v32-select{
+    border-radius:11px!important;
+    box-shadow:none!important;
+    white-space:normal!important;
+  }
+  html body.v32-rankings-active #screen .v32-rankings .v994-show-more{
+    position:relative!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    flex-wrap:wrap!important;
+    column-gap:9px!important;
+    row-gap:4px!important;
+    min-height:48px!important;
+    width:100%!important;
+    margin:0!important;
+    padding:10px 0 12px!important;
+    border:0!important;
+    background:transparent!important;
+    color:#1fdee9!important;
+    cursor:pointer!important;
+    text-align:left!important;
+    font-size:13px!important;
+    line-height:1.3!important;
+    font-weight:650!important;
+    pointer-events:auto!important;
+    touch-action:manipulation!important;
+    -webkit-tap-highlight-color:transparent;
+  }
+  html body.v32-rankings-active #screen .v994-show-more>span{
+    color:#1fdee9!important;
+  }
+  html body.v32-rankings-active #screen .v994-show-more svg{
+    display:block!important;
+    width:17px!important;height:17px!important;
+    flex:0 0 17px!important;
+    margin:0!important;
+    fill:none!important;
+    stroke:#1fdee9!important;
+    stroke-width:2.4!important;
+    stroke-linecap:round!important;stroke-linejoin:round!important;
+    transform:none!important;
+  }
+  html body.v32-rankings-active #screen .v994-show-more svg.up{
+    transform:rotate(180deg)!important;
+  }
+  html body.v32-rankings-active #screen .v994-show-more>small{
+    flex:1 0 100%!important;
+    width:100%!important;
+    padding:0!important;
+    color:#9ea8d2!important;
+    text-align:left!important;
+    font-size:10px!important;
+    line-height:1.2!important;
+    font-weight:500!important;
+  }
+  html body.v32-rankings-active #screen .v994-ranking-footer{
+    display:block!important;
+    position:relative!important;
+    width:calc(100% - 32px)!important;
+    max-width:100%!important;
+    margin:17px 16px 10px!important;
+    padding:0 0 18px!important;
+    background:#07065f!important;
+    color:#eff2ff!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    clear:both!important;
+  }
+  html body.v32-rankings-active #screen .v994-update{
+    display:block!important;
+    width:100%!important;
+    margin:0!important;
+    padding:14px 0 17px!important;
+    color:#a1a9cc!important;
+    font-size:11px!important;
+    font-weight:450!important;
+    line-height:1.45!important;
+    text-align:left!important;
+    letter-spacing:.04px!important;
+    border-bottom:1px solid rgba(157,180,241,.17)!important;
+  }
+  html body.v32-rankings-active #screen .v994-about-rankings{
+    display:block!important;
+    margin:0!important;
+    padding:22px 0 16px!important;
+    background:transparent!important;
+    border:0!important;
+    border-bottom:1px solid rgba(157,180,241,.17)!important;
+    text-align:left!important;
+  }
+  html body.v32-rankings-active #screen .v994-about-rankings h2{
+    margin:0 0 16px!important;
+    padding:0!important;
+    font:650 20px/1.2 Inter,ui-sans-serif,system-ui,sans-serif!important;
+    color:#fff!important;
+    letter-spacing:-.3px!important;
+    text-align:left!important;
+  }
+  html body.v32-rankings-active #screen .v994-about-rankings p{
+    margin:0 0 14px!important;
+    padding:0!important;
+    font:430 13px/1.55 Inter,ui-sans-serif,system-ui,sans-serif!important;
+    color:#e5e8fc!important;
+    text-align:left!important;
+    white-space:normal!important;
+    overflow-wrap:break-word!important;
+  }
+  html body.v32-rankings-active #screen .v994-about-rankings p strong{
+    font-weight:650!important;
+    color:#fff!important;
+  }
+  html body.v32-rankings-active #screen .v994-about-rankings .v994-rulebook-link{
+    position:relative!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    gap:6px!important;
+    width:auto!important;
+    min-height:36px!important;
+    margin:1px 0 15px!important;
+    padding:5px 0!important;
+    background:transparent!important;
+    border:0!important;
+    color:#22e5f0!important;
+    font:600 13px/1.3 Inter,ui-sans-serif,system-ui,sans-serif!important;
+    text-align:left!important;
+    cursor:pointer!important;
+    touch-action:manipulation!important;
+  }
+  html body.v32-rankings-active #screen .v994-about-rankings small{
+    display:block!important;
+    color:#8e97be!important;
+    font-size:10px!important;
+    line-height:1.5!important;
+    font-weight:450!important;
+  }
+  /* Avoid oversized checkbox/triangle artifacts from inherited button/svg styles. */
+  html body .v32-popover.v992-rankings-menu.v993-rankings-menu{
+    box-sizing:border-box!important;
+    border-radius:10px!important;
+    max-width:min(320px,calc(100vw - 26px))!important;
+    padding:4px!important;
+    background:#191a73!important;
+    box-shadow:0 12px 30px rgba(0,0,35,.35)!important;
+    overflow:visible!important;
+  }
+  html body .v32-popover.v992-rankings-menu.v993-rankings-menu>.v993-menu-option{
+    box-sizing:border-box!important;
+    min-height:44px!important;
+    padding:9px 11px!important;
+    font-size:12px!important;
+    line-height:1.25!important;
+    border:0!important;
+    color:#f4f5ff!important;
+  }
+  html body .v32-popover.v992-rankings-menu.v993-rankings-menu .v993-menu-check{
+    display:block!important;
+    position:static!important;
+    width:20px!important;
+    height:20px!important;
+    min-width:20px!important;
+    max-width:20px!important;
+    min-height:20px!important;
+    max-height:20px!important;
+    flex:0 0 20px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    background:none!important;
+    color:#fff!important;
+    fill:none!important;
+    stroke:currentColor!important;
+    stroke-width:2.2!important;
+    transform:none!important;
+    box-shadow:none!important;
+  }
+  html body .v32-popover.v992-rankings-menu.v993-rankings-menu .v993-menu-check path{
+    fill:none!important;
+    stroke:currentColor!important;
+    stroke-width:2.2!important;
+    stroke-linecap:round!important;
+    stroke-linejoin:round!important;
+  }
+}
+@media(min-width:1024px){
+html body.v32-rankings-active .v994-ranking-footer{
+  width:calc(100% - 36px)!important;
+  max-width:760px!important;
+  margin:22px auto 40px!important;
+  color:#ecf0ff!important;
+}
+html body.v32-rankings-active .v994-update{
+  margin:0 0 20px!important;padding-bottom:15px!important;
+  border-bottom:1px solid #4155aa!important;
+  color:#aab4dc!important;
+  font-size:12px!important;
+}
+html body.v32-rankings-active .v994-about-rankings{max-width:760px!important}
+html body.v32-rankings-active .v994-about-rankings h2{font-size:22px!important;color:#fff!important}
+html body.v32-rankings-active .v994-about-rankings p{font-size:14px!important;line-height:1.5!important;color:#dbe4ff!important}
+html body.v32-rankings-active .v994-show-more,
+html body.v32-rankings-active .v994-rulebook-link{color:#20ddea!important;cursor:pointer!important}
+html body.v32-rankings-active .v994-show-more svg{
+  width:18px!important;height:18px!important;fill:none!important;stroke:#20ddea!important
+}
+}
