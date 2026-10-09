@@ -34,7 +34,7 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Arrancar web publicada localmente
         run: |
-          npx vite preview --host 127.0.0.1 --port 4173 > /tmp/quiz-preview.log 2>&1 &
+          npx vite preview --base=/App-liga-/ --host 127.0.0.1 --port 4173 > /tmp/quiz-preview.log 2>&1 &
           for i in $(seq 1 40); do curl --fail --silent http://127.0.0.1:4173/App-liga-/ > /dev/null && exit 0; sleep 1; done
           cat /tmp/quiz-preview.log
           exit 1
