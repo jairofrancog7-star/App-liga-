@@ -93,16 +93,54 @@ async function restore(id){
   }catch(_){}
  }
 }
+/* V1006: leer fotos desde IndexedDB sólo cuando aparece la tarjeta
+   (y no mientras el usuario desplaza cientos de registros). */
+const photoObserved=new Set();
+let photoViewportObserver=null;
+async function loadAvatar(card){
+ const avatar=$('.v124-avatar',card),id=card.dataset.v124Id;
+ if(!avatar||avatar.dataset.v563PhotoReady)return;
+ avatar.dataset.v563PhotoReady='loading';
+ const row=await getPhoto(id);
+ if(!card.isConnected||route()!=='credentialBuilder'||card.dataset.v124Id!==id)return;
+ avatar.dataset.v563PhotoReady='1';
+ if(!row?.dataUrl)return;
+ const d=registry(),rec=(d?.seasons?.[season()]||[]).find(x=>x.id===id)||row;
+ cache(rec,row.dataUrl);
+ const img=document.createElement('img');
+ img.alt='';img.loading='lazy';img.decoding='async';img.src=row.dataUrl;
+ avatar.replaceChildren(img);
+ avatar.classList.add('has-photo');
+}
+function photoObserver(){
+ if(typeof IntersectionObserver!=='function')return null;
+ if(!photoViewportObserver){
+  photoViewportObserver=new IntersectionObserver(entries=>{
+   for(const entry of entries){
+    if(!entry.isIntersecting)continue;
+    photoViewportObserver.unobserve(entry.target);
+    photoObserved.delete(entry.target);
+    loadAvatar(entry.target);
+   }
+  },{rootMargin:'180px 0px',threshold:0});
+ }
+ return photoViewportObserver;
+}
 async function hydrate(){
- if(route()!=='credentialBuilder')return;
+ if(route()!=='credentialBuilder'){
+  photoViewportObserver?.disconnect();photoObserved.clear();return;
+ }
  const cards=$$('.v124-player-card[data-v124-id]');
+ const current=new Set(cards),observer=photoObserver();
+ for(const old of photoObserved){
+  if(current.has(old))continue;
+  observer?.unobserve(old);photoObserved.delete(old);
+ }
  for(const card of cards){
-  const avatar=$('.v124-avatar',card),id=card.dataset.v124Id;if(!avatar||avatar.dataset.v563PhotoReady)continue;
-  avatar.dataset.v563PhotoReady='1';
-  const row=await getPhoto(id);if(!row?.dataUrl)continue;
-  const d=registry(),rec=(d?.seasons?.[season()]||[]).find(x=>x.id===id)||row;cache(rec,row.dataUrl);
-  avatar.innerHTML='<img src="'+row.dataUrl+'" alt="" loading="lazy" decoding="async">';
-  avatar.classList.add('has-photo');
+  const avatar=$('.v124-avatar',card);
+  if(!avatar||avatar.dataset.v563PhotoReady||photoObserved.has(card))continue;
+  if(observer){photoObserved.add(card);observer.observe(card)}
+  else loadAvatar(card);
  }
  const label=$('[data-v64-photo]')?.closest('label');
  if(label&&!label.dataset.v563PhotoLabel){
