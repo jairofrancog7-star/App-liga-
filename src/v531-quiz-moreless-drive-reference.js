@@ -943,7 +943,7 @@ document.addEventListener('click',function(e){
     quiz.history.push(ok?'ok':'bad');
     quiz.mode='result';render(true);return;
   }
-  if(t.matches('[data-v531-quiz-next]')){if(quiz.step>=10){v1050LocalNotice('Terminaste el quiz con '+quiz.points+' puntos. ¡Vuelve a jugar!');quiz.mode='hub';render(true);return}quiz.step++;quiz.selected='';quiz.answered=false;quiz.remaining=15;quiz.attempts=1;quiz.missed=[];quiz.mode='game';render(true);return}
+  if(t.matches('[data-v531-quiz-next]')){if(quiz.step>=10){quiz.mode='hub';render(true);return}quiz.step++;quiz.selected='';quiz.answered=false;quiz.remaining=15;quiz.attempts=1;quiz.missed=[];quiz.mode='game';render(true);return}
   if(t.matches('[data-v531-more-start]')){moreNewGame();v538StartMoreRound();return}
   if(t.matches('[data-v531-more-close]')){v538ClearTimers();more.exit=true;v543RenderMorePortal();return}
   if(t.matches('[data-v531-more-choice]')){
