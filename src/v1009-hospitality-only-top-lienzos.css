@@ -3,10 +3,10 @@
    Teams ni Siguiendo. Se mantiene al píxel la estructura de V31/V34. */
 html.v31-hospitality-active,
 html.v31-hospitality-active body{
-  background-color:#050B4E!important;
+  background-color:#0715c4!important;
 }
 html.v31-hospitality-active .v31-hospitality-page{
-  background:linear-gradient(180deg,#0A369F 0%,#081F7A 40%,#050B4E 100%)!important;
+  background:linear-gradient(180deg,#090c83 0%,#07119e 32%,#051bd8 72%,#061de5 100%)!important;
 }
 html.v31-hospitality-active .v31-hospitality-page::before{
   content:""!important;
@@ -105,8 +105,8 @@ html.v31-hospitality-active .v31-hospitality-page h1{
    Esto elimina físicamente la franja entre título y selector.
    No se modifica NINGUNA regla de texto, botones, inputs o posiciones. */
 html.v31-hospitality-active body[data-app-route="hospitality"] #app{
-  background-color:#050B4E!important;
-  background-image:linear-gradient(180deg,#0A369F 0%,#081F7A 40%,#050B4E 100%)!important;
+  background-color:#0715c4!important;
+  background-image:linear-gradient(180deg,#090c83 0%,#07119e 32%,#051bd8 72%,#061de5 100%)!important;
   background-size:100% 100dvh!important;
   background-position:center top!important;
   background-repeat:no-repeat!important;
