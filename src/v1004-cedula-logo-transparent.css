@@ -1,0 +1,35 @@
+/* V1004 — El emblema municipal aparece limpio en vista previa y hoja A4.
+   No se agrega marco, disco ni fondo alrededor del escudo oficial. */
+html body[data-app-route="cedulaBuilder"] .v131-sheet-head .v131-head-logo.v1004-league-logo{
+  display:grid!important;
+  place-items:center!important;
+  background:transparent!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+}
+html body[data-app-route="cedulaBuilder"] .v131-sheet-head .v1004-league-logo > img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+  mix-blend-mode:normal!important;
+}
+@media print{
+  body.v131-print-cedula #v143-cedula-print-root .v131-head-logo.v1004-league-logo,
+  body.v131-print-cedula #v143-cedula-print-root .v131-head-logo.v1004-league-logo > img{
+    background:transparent!important;
+    border:0!important;
+    box-shadow:none!important;
+    mix-blend-mode:normal!important;
+    filter:none!important;
+  }
+}
