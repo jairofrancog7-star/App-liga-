@@ -69,3 +69,31 @@
 @media (min-width:690px){.liga-media-modal .ljr-admin-cms .cms-kind-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 @media (max-width:380px){.liga-media-modal>section:is(.ljr-admin-manage,.ljr-admin-cms){padding:12px!important}.liga-media-modal>section:is(.ljr-admin-manage,.ljr-admin-cms)>header{margin:-12px -12px 10px!important;padding:12px!important;top:-12px!important}.liga-media-modal button.ljr-admin-tile{gap:6px!important;padding:9px 7px!important;font-size:11.5px!important;min-height:60px!important}.liga-media-modal .ljr-admin-tile-icon{width:27px!important;height:27px!important;flex-basis:27px!important}.liga-media-modal .ljr-admin-tile-next{display:none!important}.liga-media-modal .ljr-admin-add-form{grid-template-columns:1fr!important}}
 @media (prefers-reduced-motion:reduce){.liga-media-modal button.ljr-admin-tile{transition:none!important}}
+
+
+/* Ventanas hijas de administración: contraseña, dispositivos, medios y transmisiones. */
+.liga-media-modal:has(> section.ljr-admin-child){padding:12px!important;background:rgba(1,5,38,.83)!important}
+.liga-media-modal>section.ljr-admin-child{
+ box-sizing:border-box!important;width:min(100%,650px)!important;max-width:650px!important;
+ max-height:91dvh!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain!important;
+ padding:16px!important;border:1px solid #4a78cd!important;border-radius:21px!important;
+ background:radial-gradient(circle at top left,#20448c70,transparent 52%),linear-gradient(170deg,#102773,#0b1754)!important;
+ box-shadow:0 25px 60px #0009!important;color:#edf9ff!important;
+}
+.liga-media-modal>section.ljr-admin-child *{box-sizing:border-box!important;min-width:0}
+.liga-media-modal>section.ljr-admin-child>header{display:flex!important;justify-content:space-between!important;align-items:center!important;gap:10px!important;position:sticky!important;top:-16px!important;z-index:3!important;margin:-16px -16px 12px!important;padding:16px!important;background:#11266ef5!important;border-bottom:1px solid #4a87d04d!important}
+.liga-media-modal>section.ljr-admin-child>header h2{font-size:clamp(19px,5vw,24px)!important;line-height:1.15!important;font-weight:800!important;color:white!important}
+.liga-media-modal>section.ljr-admin-child>header [data-close]{width:36px!important;min-width:36px!important;height:36px!important;display:grid!important;place-items:center!important;padding:0!important;border-radius:11px!important;background:#142b72!important;color:#8ceff6!important;font-size:22px!important}
+.liga-media-modal>section.ljr-admin-child :is(input,select,textarea){width:100%!important;max-width:100%!important;min-height:43px!important;background:#0c1d62!important;border:1px solid #4d72b8!important;border-radius:11px!important;color:#fff!important;font-size:14px!important;padding:9px 11px!important}
+.liga-media-modal>section.ljr-admin-child form{display:grid!important;gap:11px!important;margin:12px 0!important}
+.liga-media-modal>section.ljr-admin-child label{display:grid!important;gap:5px!important;color:#d6e7fd!important;font-size:13px!important}
+.liga-media-modal>section.ljr-admin-child form>button[type=submit],.liga-media-modal>section.ljr-admin-child form>button:not([type]){
+ min-height:44px!important;background:linear-gradient(135deg,#086dba,#165098)!important;border:1px solid #4fd9ee!important;color:#fff!important;font-weight:800!important
+}
+.liga-media-modal>section.ljr-admin-child .liga-media-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+.liga-media-modal>section.ljr-admin-child .liga-media-actions button{min-height:44px!important;margin:0!important;white-space:normal!important;border-radius:11px!important;border:1px solid #5279c0!important;background:#17347d!important;color:#c6f7ff!important}
+.liga-media-modal>section.ljr-admin-child :is([data-post-list],[data-devices-list]) .liga-user{display:flex!important;align-items:center!important;justify-content:space-between!important;flex-wrap:wrap!important;gap:9px!important;padding:10px 0!important;min-height:45px!important;overflow-wrap:anywhere;border-bottom:1px solid #5378b37a}
+.liga-media-modal>section.ljr-admin-child .liga-user button{float:none!important;min-height:34px!important;padding:6px 10px!important;flex:none!important;border-color:#a56889!important;color:#ffd9e3!important;background:#302056!important}
+.liga-media-modal>section.ljr-admin-child [data-status]{display:block!important;color:#8eeef7!important;font-size:12px!important;line-height:1.45!important;margin:8px 0!important;overflow-wrap:anywhere}
+.liga-media-modal>section.ljr-admin-child video{max-height:42dvh!important;background:#020625!important;border-radius:12px!important}
+@media(max-width:380px){.liga-media-modal>section.ljr-admin-child{padding:12px!important}.liga-media-modal>section.ljr-admin-child .liga-media-actions{grid-template-columns:1fr!important}}
