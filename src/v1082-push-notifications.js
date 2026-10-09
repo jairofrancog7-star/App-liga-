@@ -102,6 +102,7 @@ async function syncState(root){
  }catch(_){label.textContent='No fue posible comprobar la suscripción';toggle.disabled=true;}
 }
 async function enable(root){
+ if(!getValues(root).types.length)throw Error('Selecciona al menos un tipo de aviso.');
  if(!supported())throw Error('Las notificaciones push no son compatibles con este navegador.');
  const info=await server('public-key');
  if(!info.publicKey)throw Error('Servidor sin clave pública VAPID');
@@ -130,6 +131,7 @@ async function disable(root){
  status(root,'Avisos desactivados en este dispositivo.');
 }
 async function saveFilters(root){
+ if(!getValues(root).types.length)throw Error('Selecciona al menos un tipo de aviso.');
  const next=getValues(root);save(next);
  const sub=await subscription();
  if(sub){
