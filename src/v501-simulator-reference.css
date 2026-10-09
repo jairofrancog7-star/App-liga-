@@ -4020,3 +4020,160 @@ html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-t
     font-size:19px!important;
   }
 }
+
+
+/* V1051 — Classification guide and visible pending bracket cards.
+   Only #/simulator. No modifications to other app screens. */
+html body[data-app-route="simulator"] #screen .v501-board.v501-standings .v1051-guide{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  margin:21px 0 32px!important;
+  padding:19px 0 28px!important;
+  border-top:1px solid rgba(199,213,255,.24)!important;
+  background:transparent!important;
+  color:#f6f8ff!important;
+  box-sizing:border-box!important;
+}
+html body[data-app-route="simulator"] #screen .v1051-guide-eyebrow{
+  margin:0 0 12px!important;
+  font:800 10px/1.2 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:.075em!important;
+  color:#66e8fa!important;
+}
+html body[data-app-route="simulator"] #screen .v1051-guide h2{
+  margin:0 0 12px!important;
+  font:850 clamp(19px,5.5vw,26px)/1.14 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:-.03em!important;
+  color:#fff!important;
+}
+html body[data-app-route="simulator"] #screen .v1051-guide h3{
+  margin:24px 0 9px!important;
+  font:800 clamp(14px,3.8vw,18px)/1.22 Inter,Roboto,Arial,sans-serif!important;
+  color:#fff!important;
+}
+html body[data-app-route="simulator"] #screen .v1051-guide p{
+  margin:0 0 12px!important;
+  color:#adbdec!important;
+  font:450 clamp(12px,3.5vw,15px)/1.55 Inter,Roboto,Arial,sans-serif!important;
+  overflow-wrap:break-word!important;
+}
+html body[data-app-route="simulator"] #screen .v1051-stats-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:10px!important;
+  margin:19px 0 21px!important;
+}
+html body[data-app-route="simulator"] #screen .v1051-stat{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:5px!important;
+  align-items:flex-start!important;
+  padding:15px 13px!important;
+  min-width:0!important;
+  border:1px solid rgba(124,173,255,.18)!important;
+  border-radius:14px!important;
+  background:linear-gradient(145deg,#142e91 0%,#101e75 100%)!important;
+}
+html body[data-app-route="simulator"] #screen .v1051-stat strong{
+  color:#fff!important;
+  font:850 clamp(19px,5vw,24px)/1 Inter,Roboto,Arial,sans-serif!important;
+}
+html body[data-app-route="simulator"] #screen .v1051-stat span{
+  color:#b4c5fb!important;
+  font:600 11px/1.3 Inter,Roboto,Arial,sans-serif!important;
+}
+html body[data-app-route="simulator"] #screen .v1051-key-list{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:8px 15px!important;
+  margin:12px 0 7px!important;
+  padding:0!important;
+}
+html body[data-app-route="simulator"] #screen .v1051-key-list span{
+  display:block!important;
+  min-width:0!important;
+  font:500 clamp(11px,3vw,13px)/1.4 Inter,Roboto,Arial,sans-serif!important;
+  color:#aebff4!important;
+}
+html body[data-app-route="simulator"] #screen .v1051-key-list b{
+  color:#fff!important;
+  font-weight:850!important;
+  margin-right:4px!important;
+}
+html body[data-app-route="simulator"] #screen .v1051-show-bracket{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  width:100%!important;
+  min-height:46px!important;
+  margin:20px 0 17px!important;
+  padding:11px 16px!important;
+  border:1px solid rgba(124,239,255,.38)!important;
+  border-radius:13px!important;
+  background:linear-gradient(110deg,#0b9dce 0%,#1758d8 100%)!important;
+  color:#fff!important;
+  font:750 14px/1.3 Inter,Roboto,Arial,sans-serif!important;
+  cursor:pointer!important;
+  touch-action:manipulation!important;
+}
+html body[data-app-route="simulator"] #screen .v1051-show-bracket span{
+  font-size:21px!important;
+  line-height:1!important;
+}
+html body[data-app-route="simulator"] #screen .v1051-guide p.v1051-guide-note{
+  font-size:11px!important;
+  line-height:1.45!important;
+  color:#8d9fcf!important;
+}
+html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-playoff .v12-bracket-pair .v12-bracket-team.v1051-pending-team{
+  display:grid!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:relative!important;
+  height:44px!important;
+  min-height:44px!important;
+  max-height:44px!important;
+  width:100%!important;
+  min-width:0!important;
+  overflow:hidden!important;
+  padding:4px 5px!important;
+  grid-template-columns:27px minmax(0,1fr)!important;
+  gap:5px!important;
+  align-items:center!important;
+  border:1px dashed rgba(103,167,255,.42)!important;
+  border-radius:9px!important;
+  background:linear-gradient(180deg,#0c2583 0%,#0b1e72 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(155,184,255,.055)!important;
+  box-sizing:border-box!important;
+}
+html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-playoff .v12-bracket-team.v1051-pending-team .v12-bracket-fallback{
+  display:grid!important;
+  place-items:center!important;
+  width:24px!important;
+  height:24px!important;
+  min-width:24px!important;
+  min-height:24px!important;
+  max-width:24px!important;
+  max-height:24px!important;
+  margin:0!important;
+  border:1px solid rgba(84,226,255,.62)!important;
+  border-radius:50%!important;
+  background:rgba(36,86,195,.22)!important;
+  font:750 16px/1 Inter,Roboto,Arial,sans-serif!important;
+  color:#a5d8ff!important;
+}
+html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-playoff .v12-bracket-team.v1051-pending-team strong{
+  display:block!important;
+  min-width:0!important;
+  font:800 14px/1 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:0!important;
+  color:#b7ccf9!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+}
+@media(max-width:390px){
+  html body[data-app-route="simulator"] #screen .v1051-key-list{gap:8px 9px!important}
+  html body[data-app-route="simulator"] #screen .v1051-stats-grid{gap:8px!important}
+}
