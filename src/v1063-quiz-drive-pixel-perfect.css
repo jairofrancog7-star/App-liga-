@@ -1,0 +1,155 @@
+/* V1063 — Portada Quiz Arena fiel al diseño original suministrado en Google Drive.
+   Captura autorizada por el usuario: Screenshot_20261009-162456_Champions_League.jpg
+   Resolución 1080×2400; recortamos SOLO las barras de estado Android y de navegación
+   grabadas en la captura. Los elementos funcionales HTML permanecen operables.
+   Esta regla afecta exclusivamente la vista splash de Quiz Arena, no a las preguntas. */
+html body[data-app-route="quizArena"].v537-quiz-secondary-open #v612-quiz-portal:has(>[data-v531-view="splash"]){
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal > [data-v531-view="splash"]{
+  box-sizing:border-box!important;
+  isolation:isolate!important;
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:100%!important;
+  max-height:100%!important;
+  overflow:hidden!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  margin:0!important;
+  /* Obra original, NO reconstrucción aproximada: recorte y=118..2217 (2099 px).
+     2400/2099 = 114.34%, desplazamiento hasta y=118 equivale a 39.2%
+     del desbordamiento de la imagen en el eje Y. */
+  background-color:#020755!important;
+  background-image:url("../assets/quiz-arena-drive-reference-20261009.jpg")!important;
+  background-repeat:no-repeat!important;
+  background-size:100% 114.34%!important;
+  background-position:50% 39.2%!important;
+  box-shadow:none!important;
+  overscroll-behavior:none!important;
+  touch-action:manipulation!important;
+}
+/* El fondo ya contiene logo con check rosa, A/B/C/D, estadio y reflejo
+   con tamaños, contorno y colores EXACTOS: ocultar solo dibujos anteriores,
+   jamás los botones funcionales ni la navegación real de la aplicación. */
+html body[data-app-route="quizArena"] #v612-quiz-portal > [data-v531-view="splash"] .v1059-splash-glow,
+html body[data-app-route="quizArena"] #v612-quiz-portal > [data-v531-view="splash"] svg.v1059-splash-stadium{
+  display:none!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal > [data-v531-view="splash"] .v1059-splash-logo{
+  box-sizing:border-box!important;
+  position:absolute!important;
+  z-index:10!important;
+  left:25%!important;
+  top:8.6%!important;
+  width:51%!important;
+  height:22%!important;
+  max-width:none!important;
+  max-height:none!important;
+  min-width:0!important;
+  min-height:0!important;
+  padding:0!important;
+  margin:0!important;
+  transform:none!important;
+  border:0!important;
+  border-radius:5px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  opacity:1!important;
+  color:transparent!important;
+  cursor:pointer!important;
+  pointer-events:auto!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal > [data-v531-view="splash"] .v1059-splash-logo svg{
+  opacity:0!important;
+  pointer-events:none!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal > [data-v531-view="splash"] .v1059-splash-logo:focus-visible{
+  outline:2px solid #ff4da8!important;
+  outline-offset:1px!important;
+}
+/* Las 4 zonas de toque coinciden con las barras visibles en la captura:
+   primer renglón alrededor de y=1295/2400 => 56.1% del recorte útil;
+   4 renglones iguales y espaciados sobre el mismo eje central. */
+html body[data-app-route="quizArena"] #v612-quiz-portal > [data-v531-view="splash"] .v1059-answer-art{
+  box-sizing:border-box!important;
+  position:absolute!important;
+  z-index:12!important;
+  left:28.45%!important;
+  top:56.00%!important;
+  width:43.9%!important;
+  height:23.2%!important;
+  min-height:0!important;
+  max-height:none!important;
+  max-width:none!important;
+  padding:0!important;
+  margin:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  justify-content:space-between!important;
+  gap:0!important;
+  background:none!important;
+  transform:none!important;
+  overflow:visible!important;
+  pointer-events:auto!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal > [data-v531-view="splash"] .v1059-answer-art > .v1059-answer{
+  box-sizing:border-box!important;
+  display:block!important;
+  position:relative!important;
+  opacity:1!important;
+  z-index:12!important;
+  flex:0 0 20.5%!important;
+  width:100%!important;
+  height:20.5%!important;
+  min-height:0!important;
+  max-height:none!important;
+  border:0!important;
+  margin:0!important;
+  padding:0!important;
+  border-radius:11px!important;
+  background:transparent!important;
+  color:transparent!important;
+  box-shadow:none!important;
+  filter:none!important;
+  cursor:pointer!important;
+  pointer-events:auto!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal > [data-v531-view="splash"] .v1059-answer-track,
+html body[data-app-route="quizArena"] #v612-quiz-portal > [data-v531-view="splash"] .v1059-answer-letter,
+html body[data-app-route="quizArena"] #v612-quiz-portal > [data-v531-view="splash"] .v1059-answer-placeholder,
+html body[data-app-route="quizArena"] #v612-quiz-portal > [data-v531-view="splash"] .v1059-answer-tick{
+  opacity:0!important;
+  box-shadow:none!important;
+  pointer-events:none!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal > [data-v531-view="splash"] .v1059-answer:focus-visible{
+  outline:2px solid #fc4da7!important;
+  outline-offset:2px!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal > [data-v531-view="splash"] .v1059-answer:active{
+  outline:2px solid rgba(255,255,255,.8)!important;
+  outline-offset:0!important;
+}
+/* Preservar la barra inferior real, libre de imágenes duplicadas. */
+html body[data-app-route="quizArena"] #v612-quiz-portal > [data-v531-view="splash"] .v1059-sr-only{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  overflow:hidden!important;
+  clip-path:inset(50%)!important;
+}
+@media(min-width:650px){
+  /* En PC, evita expandir y pixelar la referencia; la portada sigue sin scroll. */
+  html body[data-app-route="quizArena"] #v612-quiz-portal > [data-v531-view="splash"]{
+    background-size:auto 114.34%!important;
+    background-position:50% 39.2%!important;
+  }
+}
