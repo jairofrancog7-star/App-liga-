@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v904-seamless-gradient';
+const CACHE='liga-juventino-v905-auto-live-rotation';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
