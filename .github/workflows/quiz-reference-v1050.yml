@@ -1,0 +1,27 @@
+name: Quiz Arena - diseno y controles
+on:
+  push:
+    paths:
+      - 'src/v531-quiz-moreless-drive-reference.js'
+      - 'src/v1050-quiz-modal-reference.css'
+      - 'tests/quiz-reference-v1050.test.mjs'
+      - '.github/workflows/quiz-reference-v1050.yml'
+  pull_request:
+    paths:
+      - 'src/v531-quiz-moreless-drive-reference.js'
+      - 'src/v1050-quiz-modal-reference.css'
+      - 'tests/quiz-reference-v1050.test.mjs'
+permissions:
+  contents: read
+jobs:
+  quiz-visual-contract:
+    name: Verificar salida, turbos y permiso de notificaciones
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Probar Quiz Arena
+        run: node --test tests/quiz-reference-v1050.test.mjs
