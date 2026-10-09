@@ -209,7 +209,7 @@ function markup(){
  '<div class="v1073-result" data-v1073-result></div>'+
  '<div class="v1073-actions secondary"><button type="button" data-v1073-copy>📋 Copiar borrador</button><button type="button" data-v1073-share>↗ Compartir</button><button type="button" data-v1073-fields>🏟 Revisar campo</button><button type="button" data-v1073-official>✓ Avisos Liga</button></div>'+
  '<details class="v1073-history"><summary>Historial preventivo <span>⌄</span></summary><div data-v1073-log></div><button type="button" data-v1073-clear>Limpiar historial local</button></details>'+
- '<p class="v1073-bottom">Los avisos solo aparecen cuando esta página está abierta y puede consultar internet. Para avisos en segundo plano se requiere un servicio push seguro. La Liga conserva la decisión oficial.</p>'+
+ '<p class="v1073-bottom"><a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Datos: Open-Meteo</a> · Interpretación preventiva propia de la Liga. Los avisos solo aparecen mientras la página está abierta y con internet. Para segundo plano se requiere un servicio push seguro. La decisión oficial corresponde a la Liga.</p>'+
  '</section>';
 }
 async function mount(){
