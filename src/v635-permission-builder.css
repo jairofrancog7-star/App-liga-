@@ -476,3 +476,97 @@ body.v635-team-picker-open{overflow:hidden!important}
   }
   .v635-player-sheet .v635-player-option>small{display:none!important}
 }
+
+/* V1054 — Escudos reales y controles táctiles del selector de Permisos. */
+.v635-team-select .v635-team-crest{
+  flex:0 0 30px!important;
+  width:30px!important;height:30px!important;
+  margin:0!important;overflow:hidden!important;
+}
+.v635-team-sheet .v635-team-logo-option{
+  grid-template-columns:40px minmax(0,1fr) auto!important;
+  min-height:60px!important;
+  padding:8px 10px!important;
+  gap:10px!important;
+}
+.v635-team-sheet .v635-team-crest{
+  position:relative!important;
+  box-sizing:border-box!important;
+  display:grid!important;
+  place-items:center!important;
+  width:40px!important;
+  height:40px!important;
+  min-width:0!important;
+  border:1px solid rgba(69,215,244,.46)!important;
+  border-radius:12px!important;
+  background:linear-gradient(145deg,#17429a,#101b73)!important;
+  overflow:hidden!important;
+  color:#9aeff7!important;
+  font:900 11px/1 Inter,Roboto,Arial,sans-serif!important;
+}
+.v635-team-sheet .v635-team-crest-fallback{
+  position:absolute!important;inset:0!important;
+  display:grid!important;place-items:center!important;
+  color:#9aeff7!important;font-size:11px!important;
+}
+.v635-team-sheet .v635-team-crest img{
+  position:absolute!important;inset:2px!important;
+  display:block!important;
+  width:calc(100% - 4px)!important;
+  height:calc(100% - 4px)!important;
+  max-width:none!important;
+  max-height:none!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  opacity:0;
+  background:transparent!important;
+}
+.v635-team-sheet .v635-team-crest.v635-logo-loaded img{opacity:1!important}
+.v635-team-sheet .v635-team-crest.v635-logo-loaded .v635-team-crest-fallback{opacity:0!important}
+.v635-team-field .v635-team-select .v635-team-crest{
+  width:30px!important;height:30px!important;min-width:30px!important;
+  border-radius:9px!important;
+}
+.v635-team-select .v635-team-crest + [data-v635-team-label]{flex:1 1 auto!important}
+.v635-team-sheet .v635-player-option.v635-team-option{
+  grid-template-columns:44px minmax(0,1fr) 30px!important;
+  align-items:center!important;
+  min-height:62px!important;
+}
+.v635-team-sheet .v635-player-option>.v635-player-team-crest{
+  justify-self:end!important;
+  width:30px!important;height:30px!important;
+  border-radius:8px!important;
+  border-color:rgba(93,148,233,.25)!important;
+  background:#101a65!important;
+}
+.v635-player-context{
+  grid-template-columns:32px minmax(0,1fr)!important;
+  grid-template-rows:auto auto!important;
+  column-gap:8px!important;
+  align-items:center!important;
+}
+.v635-player-context [data-v635-player-context-crest]{
+  grid-column:1!important;grid-row:1/3!important;
+}
+.v635-player-context [data-v635-player-cat-label],
+.v635-player-context [data-v635-player-team-label]{
+  grid-column:2!important;min-width:0!important;
+}
+.v635-player-context .v635-context-crest{
+  width:30px!important;height:30px!important;border-radius:9px!important;
+}
+@media(max-width:520px){
+  .v635-team-sheet .v635-team-logo-option{
+    grid-template-columns:40px minmax(0,1fr)!important;
+    min-height:60px!important;
+  }
+  .v635-player-sheet .v635-player-option.v635-team-option{
+    grid-template-columns:44px minmax(0,1fr) 30px!important;
+    gap:9px!important;
+  }
+}
