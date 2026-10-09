@@ -129,3 +129,20 @@ html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1066-autom
 @media(prefers-reduced-motion:reduce){
  html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1066-arrow{transition:none!important}
 }
+
+/* V1066.1: garantizar que el panel <details> cerrado no ocupe altura.
+   Las reglas personalizadas de display:block !important no deben anular el comportamiento nativo. */
+html body[data-app-route="suspensionTool"] #screen .v425-suspension details.v1066-automation:not([open]) > :not(summary){
+  display:none!important;
+  visibility:hidden!important;
+  height:0!important;
+  max-height:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension details.v1066-automation:not([open]){
+  height:auto!important;
+  min-height:0!important;
+}
