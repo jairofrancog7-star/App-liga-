@@ -231,8 +231,24 @@ function nextSeason(s){
   const m=String(s||'').match(/(\d{4})\D+(\d{4})/);const y=m?Number(m[1])+1:new Date().getFullYear()+1;
   return y+'–'+(y+1);
 }
-function store(){const x=read(KEY,{seasons:{}});if(!x.seasons)x.seasons={};return x}
-function saveStore(x){write(KEY,x)}
+/* V1008: evita JSON.parse repetido de miles de registros durante carga y scroll.
+   Invalida caché si otro módulo actualizó localStorage. */
+let storedRegistryRaw=null,storedRegistryValue=null;
+function store(){
+  const raw=localStorage.getItem(KEY);
+  if(storedRegistryValue&&raw===storedRegistryRaw)return storedRegistryValue;
+  let x;
+  try{x=raw?JSON.parse(raw):{seasons:{}}}catch(_){x={seasons:{}}}
+  if(!x||typeof x!=='object')x={seasons:{}};
+  if(!x.seasons)x.seasons={};
+  storedRegistryRaw=raw;storedRegistryValue=x;
+  return x;
+}
+function saveStore(x){
+  const raw=JSON.stringify(x);
+  localStorage.setItem(KEY,raw);
+  storedRegistryRaw=raw;storedRegistryValue=x;
+}
 function selectedSeason(){return localStorage.getItem(SEASON_KEY)||currentSeason()}
 function setSeason(s){localStorage.setItem(SEASON_KEY,s)}
 
@@ -2883,10 +2899,35 @@ function bindCredentialAutoSave(){
     },{capture:true});
   });
 }
-let t=0;function schedule(){clearTimeout(t);t=setTimeout(()=>{if(route()!=='credentialBuilder')return;v126CleanupNonPlayers();autoOfficialSync();renderManager();applyRecruitmentPrefill();bindOcrAssist();bindCredentialAutoSave();bindEligibility()},140)}
+/* V1008: no realizar sincronización, recalcular HTML ni reemplazar el registro
+   en mitad de un gesto de desplazamiento (evita los saltos vistos en Android). */
+let t=0,lastScrollAt=0;
+const noteScrolling=()=>{lastScrollAt=Date.now()};
+window.addEventListener('scroll',noteScrolling,{passive:true});
+const screen=$('#screen');
+screen?.addEventListener('scroll',noteScrolling,{passive:true});
+function schedule(){
+  clearTimeout(t);
+  const wait=Math.max(160,550-(Date.now()-lastScrollAt));
+  t=setTimeout(()=>{
+    if(route()!=='credentialBuilder'||document.hidden)return;
+    if(Date.now()-lastScrollAt<520){schedule();return}
+    v126CleanupNonPlayers();
+    autoOfficialSync();
+    renderManager();
+    applyRecruitmentPrefill();
+    bindOcrAssist();
+    bindCredentialAutoSave();
+    bindEligibility();
+  },wait);
+}
 window.addEventListener('hashchange',schedule);
 window.addEventListener('ljr:official-data',schedule);
-const screen=$('#screen');if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:false});
+/* Sólo montar después de que la SPA crea la página. Los cambios internos
+   del propio registro nunca deben iniciar otra sincronización global. */
+if(screen)new MutationObserver(()=>{
+  if(route()==='credentialBuilder'&&!$('#v124-player-registry',screen))schedule();
+}).observe(screen,{childList:true,subtree:false});
 window.addEventListener('load',schedule);schedule();setTimeout(schedule,1200);
 window.LJR_PLAYER_REGISTRY={sync:syncOfficialSeason,records:seasonRecords,officialPlayers,
   load:loadRecord,save:saveForm,
