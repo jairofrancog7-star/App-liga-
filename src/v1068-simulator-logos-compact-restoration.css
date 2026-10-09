@@ -203,3 +203,12 @@ html body[data-app-route="simulator"] #screen .v501-sheet .v501-sheet-head h2{
     min-height:16px!important;max-height:16px!important;flex-basis:16px!important;
   }
 }
+
+/* Respaldo neutro solamente si fallan todas las URLs del registro oficial. */
+html body[data-app-route="simulator"] #screen .v1068-missing-crest{
+  display:grid!important;place-items:center!important;flex:0 0 18px!important;
+  width:18px!important;height:18px!important;min-width:18px!important;
+  border-radius:50%!important;border:1px solid rgba(126,195,255,.5)!important;
+  background:#123383!important;color:#e2f1ff!important;
+  font:800 9px/1 Inter,Roboto,Arial,sans-serif!important;
+}
