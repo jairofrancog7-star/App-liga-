@@ -558,6 +558,7 @@ async function render(){
   const q=target.getContext('2d');
   q.clearRect(0,0,target.width,target.height);
   q.drawImage(cv,0,0);
+  target.dataset.v480Painted='1';
   const photoFile=playerFile();
   const photo=photoFile?await playerImage(photoFile):null;
   const detected=photo?await playerFaceProfileFast(photo,photoFile):null;
@@ -683,13 +684,20 @@ async function pdf(){
   p.save('Credencial_Liga_Juventino_tamano_INE.pdf');
 }
 
-function schedule(){
+/* V1005: una sola vista previa por cambio, sin redibujar por cada tecla
+   de búsquedas, listas u otros módulos de registro. */
+function schedule(delay=200){
   if(route()!=='credentialBuilder')return;
   clearTimeout(schedule.t);
-  clearTimeout(schedule.late);
-  schedule.t=setTimeout(render,80);
-  schedule.late=setTimeout(render,280);
+  schedule.t=setTimeout(()=>{
+    if(route()==='credentialBuilder'&&!document.hidden)render();
+  },delay);
 }
+const CREDENTIAL_INPUTS='[data-v64-cred-name],[data-v64-cred-team],[data-v64-cred-cat],[data-v64-cred-curp],[data-v64-photo],[data-v100-credential-style],[data-v514-logo]';
+function isCredentialInput(e){
+  return route()==='credentialBuilder'&&e.target instanceof Element&&e.target.matches(CREDENTIAL_INPUTS);
+}
+
 document.addEventListener('change',e=>{
   if(!(e.target instanceof Element)||!e.target.matches('[data-v64-photo]'))return;
   selectedPlayerFile=e.target.files?.[0]||null;
@@ -698,10 +706,10 @@ document.addEventListener('change',e=>{
   schedule();
 },true);
 document.addEventListener('input',e=>{
-  if(route()==='credentialBuilder'&&e.target instanceof Element&&e.target.closest('#screen'))schedule();
+  if(isCredentialInput(e))schedule(240);
 },false);
 document.addEventListener('change',e=>{
-  if(route()==='credentialBuilder'&&e.target instanceof Element&&e.target.closest('#screen'))schedule();
+  if(isCredentialInput(e))schedule(130);
 },false);
 document.addEventListener('click',e=>{
   if(route()!=='credentialBuilder'||!(e.target instanceof Element))return;
@@ -714,13 +722,15 @@ document.addEventListener('click',e=>{
   else png();
 },true);
 
-window.addEventListener('hashchange',schedule);
-window.addEventListener('load',schedule);
+window.addEventListener('hashchange',()=>schedule(170));
+window.addEventListener('load',()=>schedule(260));
 const screen=$('#screen');
-if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:true});
-setTimeout(schedule,0);
-setTimeout(schedule,900);
-setTimeout(schedule,2200);
+if(screen)new MutationObserver(()=>{
+  if(route()!=='credentialBuilder')return;
+  const preview=$('[data-v196-preview-canvas]',screen);
+  if(preview&&!preview.dataset.v480Painted)schedule(180);
+}).observe(screen,{childList:true,subtree:true});
+setTimeout(()=>schedule(240),0);
 
 window.LJR_V480={build:BUILD,render,makeCanvas,png,pdf,share,svg};
 })();
