@@ -9,6 +9,7 @@ function copyStaticReferences() {
       const files = [
         ['src/v606-control-registro-tools.js', 'dist/src/v606-control-registro-tools.js'],
         ['src/v606-control-registro-tools.css', 'dist/src/v606-control-registro-tools.css'],
+        ['src/vendor/QRCODE-LICENSE.txt', 'dist/src/vendor/QRCODE-LICENSE.txt'],
         ['assets/liga-logo-original.webp', 'dist/assets/liga-logo-original.webp'],
         ['assets/liga-logo.webp', 'dist/assets/liga-logo.webp'],
         ['assets/reference/final-trophy-drive.png', 'dist/assets/reference/final-trophy-drive.png'],
