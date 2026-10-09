@@ -26,7 +26,26 @@ const PERMISSION_TYPES=[
   'Otro permiso'
 ];
 const TARGET_TYPES=['Jugador','Delegado','Equipo','Árbitro','Otro'];
-const SIGNER_ROLES=['Presidente de la Liga','Tesorero','Administrador de la Liga','Secretario','Otro cargo'];
+/* Autoridades publicadas en la portada del Reglamento 2026–2027.
+   Su presencia en el selector no equivale a aprobación ni firma del permiso. */
+const SIGNER_ROLES=['Presidente de la Liga','Vicepresidente','Secretario','Tesorero','Administrador de la Liga','Otro cargo'];
+const AUTHORITIES=[
+  {name:'Florencio Franco Lerma',role:'Presidente de la Liga'},
+  {name:'Martín Jaramillo Celedón',role:'Vicepresidente'},
+  {name:'Javier Gonzalez Lopez',role:'Secretario'},
+  {name:'Octavio Alberto García',role:'Tesorero'}
+];
+const PERMISSION_FIELDS=[
+  'Campo 1 · Unidad Deportiva Sur',
+  'Campo 2 · Unidad Deportiva Sur',
+  'Campo 3 · Unidad Deportiva Sur',
+  'Campo 4 · Emiliano Zapata',
+  'Campo Fraccionamiento Comontuoso',
+  'Campo San Antonio de Romerillo',
+  'Campo San Julián Tierra Blanca',
+  'Campo de Tavera',
+  'Unidad Deportiva Santiago de Cuenda'
+];
 
 let db=null;
 let signatureData='';
@@ -292,6 +311,53 @@ function fmtDate(v){
 function options(list,selected){
   return list.map(v=>'<option '+(same(v,selected)?'selected':'')+'>'+esc(v)+'</option>').join('');
 }
+function roundOptions(){
+  // Son números disponibles para elegir, no resultados/jornadas ya disputadas.
+  return '<option value="">Selecciona jornada</option>'+
+    Array.from({length:40},(_,i)=>'<option value="'+(i+1)+'">Jornada '+(i+1)+'</option>').join('');
+}
+function fieldOptions(){
+  // Reutilizar el catálogo local oficial compartido por Campos / Agenda.
+  const fields=Array.isArray(window.LJR_FIELDS?.catalog)&&window.LJR_FIELDS.catalog.length
+    ?window.LJR_FIELDS.catalog.map(f=>f.name)
+    :PERMISSION_FIELDS;
+  const seen=new Set();
+  return '<option value="">Selecciona campo / sede (opcional)</option>'+
+    fields.filter(v=>{const key=norm(v);if(!key||seen.has(key))return false;seen.add(key);return true})
+      .map(v=>'<option value="'+esc(v)+'">'+esc(v)+'</option>').join('')+
+    '<option value="__other__">Otra cancha / sede…</option>';
+}
+function authorityOptions(){
+  return AUTHORITIES.map((a,i)=>
+    '<option value="'+esc(a.name)+'"'+(!i?' selected':'')+'>'+esc(a.name)+'</option>').join('')+
+    '<option value="__manual__">Otra autoridad / administrador…</option>';
+}
+function syncAuthority(fromRole=false){
+  const authority=q('[data-v635-authority]');
+  const role=q('[data-v635-role]');
+  const manual=q('[data-v635-signer]');
+  if(!authority||!role||!manual)return;
+  if(fromRole){
+    const official=AUTHORITIES.find(a=>same(a.role,role.value));
+    authority.value=official?official.name:'__manual__';
+  }
+  const selected=AUTHORITIES.find(a=>same(a.name,authority.value));
+  if(selected){
+    role.value=selected.role;
+    manual.value='';
+    manual.hidden=true;
+  }else{
+    manual.hidden=authority.value!=='__manual__';
+    if(manual.hidden)manual.value='';
+  }
+}
+function syncField(){
+  const field=q('[data-v635-field]');
+  const manual=q('[data-v635-field-other]');
+  if(!field||!manual)return;
+  manual.hidden=field.value!=='__other__';
+  if(manual.hidden)manual.value='';
+}
 function toast(msg){
   let n=document.createElement('div');
   n.className='v635-toast';
@@ -326,14 +392,14 @@ function view(){
         '<div class="v635-three">'+
           '<label><span>Fecha</span><input type="date" value="'+today()+'" data-v635-date></label>'+
           '<label><span>Vigencia hasta</span><input type="date" data-v635-until></label>'+
-          '<label><span>Jornada</span><input type="text" data-v635-round placeholder="Ej. 4"></label>'+
+          '<label><span>Jornada</span><select data-v635-round>'+roundOptions()+'</select></label>'+
         '</div>'+
-        '<label><span>Campo / sede</span><input type="text" data-v635-field placeholder="Opcional"></label>'+
+        '<label><span>Campo / sede</span><select data-v635-field>'+fieldOptions()+'</select><input type="text" data-v635-field-other placeholder="Escribe el nombre de la cancha" aria-label="Otra cancha o sede" hidden></label>'+
         '<label><span>Motivo y condiciones</span><textarea data-v635-reason rows="4" placeholder="Ej. Se autoriza únicamente para este partido mientras se entrega la credencial oficial."></textarea></label>'+
         '<div class="v635-ai-box"><div><b>Asistente de texto con IA</b><span>Redacta automáticamente un permiso formal usando los datos capturados, sin inventar información.</span></div><button type="button" data-v635-ai>✦ Generar texto con IA</button></div>'+
         '<div class="v635-form-title authority"><b>Autoridad que autoriza</b><span>El documento mostrará este nombre y cargo.</span></div>'+
         '<div class="v635-two">'+
-          '<label><span>Nombre</span><input type="text" data-v635-signer placeholder="Nombre del presidente / administrador"></label>'+
+          '<label><span>Nombre</span><select data-v635-authority>'+authorityOptions()+'</select><input type="text" data-v635-signer placeholder="Nombre completo de la autoridad" aria-label="Nombre de otra autoridad" hidden><small>Directiva citada en el Reglamento 2026–2027. La firma requiere autorización real.</small></label>'+
           '<label><span>Cargo</span><select data-v635-role>'+options(SIGNER_ROLES,'Presidente de la Liga')+'</select></label>'+
         '</div>'+
         '<label><span>Firma (opcional)</span><input type="file" accept="image/png,image/jpeg,image/webp" data-v635-signature><small>Si no subes una firma, quedará una línea para firmar en físico.</small></label>'+
@@ -387,9 +453,9 @@ function payload(){
     date:val('[data-v635-date]'),
     until:val('[data-v635-until]'),
     round:val('[data-v635-round]'),
-    field:val('[data-v635-field]'),
+    field:val('[data-v635-field]')==='__other__'?val('[data-v635-field-other]'):val('[data-v635-field]'),
     reason:val('[data-v635-reason]'),
-    signer:val('[data-v635-signer]'),
+    signer:val('[data-v635-authority]')==='__manual__'?val('[data-v635-signer]'):val('[data-v635-authority]'),
     role:val('[data-v635-role]'),
     signature:signatureData
   };
@@ -629,7 +695,9 @@ async function readFile(file){
 function generate(){
   const p=payload();
   if(!p.person&&!p.team){toast('Escribe el jugador, delegado o equipo del permiso');return}
-  if(!p.signer){toast('Escribe quién autoriza el permiso');return}
+  if(!p.signer){toast('Selecciona o escribe quién autoriza el permiso');return}
+  if(p.until&&p.date&&p.until<p.date){toast('La vigencia debe ser igual o posterior a la fecha');return}
+  if(q('[data-v635-field]')?.value==='__other__'&&!p.field){toast('Escribe la cancha seleccionada');return}
   if(!p.reason)p.reason=defaultReason(p.type);
   lastPayload=p;
   const host=q('[data-v635-preview]');
@@ -650,6 +718,8 @@ function clearForm(){
   const empty=q('[data-v635-empty]');if(empty)empty.hidden=false;
   const tools=q('[data-v635-preview-tools]');if(tools)tools.hidden=true;
   refreshLists();
+  syncAuthority();
+  syncField();
 }
 function download(blob,name){
   const url=URL.createObjectURL(blob);
@@ -802,6 +872,11 @@ window.LJR_PERMISSION_BUILDER_API={
 };
 
 function bind(){
+  q('[data-v635-authority]')?.addEventListener('change',()=>syncAuthority());
+  q('[data-v635-role]')?.addEventListener('change',()=>syncAuthority(true));
+  q('[data-v635-field]')?.addEventListener('change',syncField);
+  syncAuthority();
+  syncField();
   q('[data-v635-cat]')?.addEventListener('change',e=>{
     setTeam('');
     const picker=q('[data-v635-team-cat]');
