@@ -31,20 +31,19 @@
     min-height:0!important;
   }
 
-  /* Banner posterior: evita la altura artificial de 430px si su medio
-     no carga. Su texto y botones siguen a la vista. */
+  /* V997: la galería animada vieja ocupaba 320–430px vacíos entre
+     el último jugador y las herramientas. Se quita sólo en Goleadores;
+     no toca los botones reales ni el ranking. */
   html body[data-app-route="scorers"] #screen
-    .v28-scorers-page > .v73-below-native[data-v73-motion-banner] {
+    .v28-scorers-page > [data-v73-motion-banner] {
+    display:none!important;
+    visibility:hidden!important;
+    height:0!important;
     min-height:0!important;
-    height:auto!important;
-    margin:10px 12px 12px!important;
+    max-height:0!important;
+    margin:0!important;
     padding:0!important;
-  }
-  html body[data-app-route="scorers"] #screen
-    .v28-scorers-page > .v73-below-native .v73-motion-inner {
-    min-height:230px!important;
-    height:auto!important;
-    padding:20px 16px 16px!important;
+    border:0!important;
   }
 
   /* Paneles siguientes: separados sólo lo necesario. */
@@ -54,9 +53,3 @@
   }
 }
 
-@media(max-width:390px){
-  html body[data-app-route="scorers"] #screen
-    .v28-scorers-page > .v73-below-native .v73-motion-inner{
-    min-height:210px!important;
-  }
-}
