@@ -895,6 +895,11 @@ window.LJR_PERMISSION_BUILDER_API={
   setSignature(data){
     if(typeof data!=='string'||!/^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(data)||data.length>4*1024*1024)return false;
     signatureData=data;
+    if(lastPayload&&q('[data-v635-document]')){
+      lastPayload.signature=data;
+      const prev=q('[data-v635-preview]');
+      if(prev)prev.innerHTML=permissionHtml(lastPayload);
+    }
     return true;
   },
   showStored(saved){
@@ -975,7 +980,15 @@ function bind(){
       toast('La firma debe ser PNG, JPG o WEBP, máximo 3 MB');
       return;
     }
-    try{signatureData=await readFile(file);toast('Firma cargada')}catch(_){toast('No se pudo leer la firma')}
+    try{
+      signatureData=await readFile(file);
+      if(lastPayload&&q('[data-v635-document]')){
+        lastPayload.signature=signatureData;
+        const preview=q('[data-v635-preview]');
+        if(preview)preview.innerHTML=permissionHtml(lastPayload);
+      }
+      toast('Firma cargada');
+    }catch(_){toast('No se pudo leer la firma')}
   });
   q('[data-v635-generate]')?.addEventListener('click',generate);
   q('[data-v635-clear]')?.addEventListener('click',clearForm);
