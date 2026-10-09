@@ -43,7 +43,7 @@ const isPush=s=>s&&typeof s.endpoint==='string'&&s.endpoint.startsWith('https://
 const matchCat=(cat,from)=>from==='Todas'||cat==='Todas'||cat===from;
 const apiError=(err,res)=>{console.error('Notifier error',err?.message);if(!res.headersSent)res.status(500).json({error:'No se pudo completar la operación'})};
 app.get('/health',(_q,res)=>res.json({ok:true,service:'Liga Juventino Rosas · notificaciones'}));
-app.get('/config',(_q,res)=>res.json({pushEnabled:vapidReady,twilioEnabled:twilioReady,
+app.get('/config',(_q,res)=>res.json({pushEnabled:vapidReady,twilioEnabled:Boolean(smsReady||whatsappReady),
  vapidPublicKey:vapidReady?E.VAPID_PUBLIC_KEY:null,smsEnabled:smsReady,whatsappEnabled:whatsappReady,channels:['push','sms','whatsapp']}));
 const lastRequest=new Map();
 function throttle(req,res,next){const key=hash(req.ip||'unknown'),now=Date.now(),value=lastRequest.get(key)||[];
