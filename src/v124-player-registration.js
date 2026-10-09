@@ -2648,10 +2648,10 @@ function bindManager(root){
   bindList(root);
 }
 function bindList(root){
-  $('[data-v124-select]',root).forEach(c=>c.onchange=()=>{if(c.checked)selectedIds.add(c.dataset.v124Select);else selectedIds.delete(c.dataset.v124Select);updateSelectedUi(root)});
-  $('[data-v124-edit]',root).forEach(b=>b.onclick=()=>{const r=seasonRecords().find(x=>x.id===b.dataset.v124Edit);if(r)loadRecord(r)});
-  $('[data-v124-card]',root).forEach(b=>b.onclick=()=>{const r=seasonRecords().find(x=>x.id===b.dataset.v124Card);if(r)loadRecord(r)});
-  $('[data-v124-delete]',root).forEach(b=>b.onclick=()=>deleteRecord(b.dataset.v124Delete));
+  $$('[data-v124-select]',root).forEach(c=>c.onchange=()=>{if(c.checked)selectedIds.add(c.dataset.v124Select);else selectedIds.delete(c.dataset.v124Select);updateSelectedUi(root)});
+  $$('[data-v124-edit]',root).forEach(b=>b.onclick=()=>{const r=seasonRecords().find(x=>x.id===b.dataset.v124Edit);if(r)loadRecord(r)});
+  $$('[data-v124-card]',root).forEach(b=>b.onclick=()=>{const r=seasonRecords().find(x=>x.id===b.dataset.v124Card);if(r)loadRecord(r)});
+  $$('[data-v124-delete]',root).forEach(b=>b.onclick=()=>deleteRecord(b.dataset.v124Delete));
   $('[data-v124-more]',root)?.addEventListener('click',e=>{
     const filtered=filterRegistry(seasonRecords()),start=registryVisibleLimit;
     const nextRows=filtered.slice(start,start+REGISTRY_PAGE_SIZE);
