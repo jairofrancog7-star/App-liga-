@@ -1,0 +1,165 @@
+/* V1058 — Aviso de suspensión: misma altura/ancho en acciones y cabecera azul continua.
+   Alcance exclusivo: #/suspensionTool. No altera formularios, jornada, datos ni eventos. */
+html body[data-app-route="suspensionTool"] #app > .topbar,
+html body[data-app-route="suspensionTool"] .app-shell > .topbar{
+  background-color:#02065f!important;
+  background-image:
+    radial-gradient(ellipse 82% 68% at 16% -17%,rgba(95,203,255,.28),transparent 76%),
+    radial-gradient(ellipse 62% 62% at 96% -22%,rgba(67,165,255,.18),transparent 79%),
+    linear-gradient(152deg,transparent 0 37%,rgba(122,210,255,.052) 37.4%,transparent 38.1% 67%,rgba(45,111,223,.04) 67.3%,transparent 68%),
+    linear-gradient(180deg,#278afa 0%,#176bea 18%,#1049c6 38%,#0a2b9d 58%,#07166f 79%,#02065f 100%)!important;
+  background-repeat:no-repeat!important;
+  background-position:center top!important;
+  background-size:100% 100%!important;
+  border:0!important;
+  border-bottom:0!important;
+  box-shadow:inset 0 1px 0 rgba(170,224,255,.11)!important;
+}
+html body[data-app-route="suspensionTool"] :is(#app,.app-shell) > .topbar .wordmark{
+  background-color:transparent!important;
+  background-image:linear-gradient(180deg,rgba(29,94,204,.058),rgba(2,6,95,.02))!important;
+  pointer-events:none!important;
+}
+html body[data-app-route="suspensionTool"] :is(#app,.app-shell) > .topbar .wordmark::before{
+  opacity:.18!important;
+  filter:drop-shadow(0 0 3px rgba(47,149,249,.14))!important;
+}
+html body[data-app-route="suspensionTool"] :is(#app,.app-shell) > .topbar .wordmark::after{
+  opacity:.12!important;
+  filter:none!important;
+}
+html body[data-app-route="suspensionTool"] :is(#app,.app-shell) > .topbar :is(.back-button,.profile-button,.ljr-chrome-actions){
+  pointer-events:auto!important;
+  z-index:14!important;
+}
+html body[data-app-route="suspensionTool"],
+html body[data-app-route="suspensionTool"] #app,
+html body[data-app-route="suspensionTool"] .app-shell,
+html body[data-app-route="suspensionTool"] #screen,
+html body[data-app-route="suspensionTool"] #screen>.v425-suspension{
+  background-color:#02065f!important;
+}
+html body[data-app-route="suspensionTool"] #screen>.v425-suspension{
+  background-image:linear-gradient(180deg,#02065f 0%,#05065c 65%,#02065f 100%)!important;
+}
+/* Dos columnas simétricas, incluso con etiquetas de distinta longitud. */
+html body #screen .v425-suspension .v425-actions,
+html body #screen .v425-suspension .v1058-action-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:9px!important;
+  align-items:stretch!important;
+}
+html body #screen .v425-suspension .v425-actions{
+  width:100%!important;
+  margin:14px 0 0!important;
+}
+html body #screen .v425-suspension .v1058-action-grid{
+  width:100%!important;
+  margin:12px 0 0!important;
+}
+html body #screen .v425-suspension .v1058-action-grid > :not(.v1058-action-btn){
+  grid-column:1/-1;
+}
+/* No cambiar selectores, campos ni otros botones de las secciones. */
+html body #screen .v425-suspension :is(button,a).v1058-action-btn{
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  height:53px!important;
+  min-height:53px!important;
+  max-height:53px!important;
+  margin:0!important;
+  padding:7px 8px!important;
+  border:1px solid rgba(81,158,246,.47)!important;
+  border-radius:13px!important;
+  background:linear-gradient(165deg,#112786 0%,#0b176e 100%)!important;
+  color:#e5f7ff!important;
+  box-shadow:inset 0 1px 0 rgba(206,240,255,.045),0 5px 13px rgba(0,0,36,.1)!important;
+  font:800 11px/1.18 Inter,Roboto,Arial,sans-serif!important;
+  text-align:center!important;
+  text-decoration:none!important;
+  white-space:normal!important;
+  overflow-wrap:break-word!important;
+  cursor:pointer!important;
+  touch-action:manipulation;
+  transition:filter .17s ease,transform .17s ease!important;
+}
+html body #screen .v425-suspension :is(button,a).v1058-action-btn.v1058-action-primary{
+  background:linear-gradient(155deg,#1a49b8 0%,#14358f 100%)!important;
+  border-color:rgba(87,188,255,.62)!important;
+  color:#fff!important;
+}
+html body #screen .v425-suspension :is(button,a).v1058-action-btn.v1058-action-president{
+  background:linear-gradient(155deg,#134393,#122c80 100%)!important;
+  border-color:rgba(58,218,238,.48)!important;
+  color:#f1feff!important;
+}
+html body #screen .v425-suspension .v1058-action-btn svg{
+  width:16px!important;
+  height:16px!important;
+  min-width:16px!important;
+  flex:0 0 16px!important;
+  display:block!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:1.85!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+  color:#52e5f5!important;
+}
+html body #screen .v425-suspension .v1058-action-btn.v1058-action-primary svg{
+  color:#a1f6ff!important;
+}
+html body #screen .v425-suspension .v1058-action-label{
+  display:block!important;
+  min-width:0!important;
+  max-width:100%!important;
+  flex:0 1 auto!important;
+  font:inherit!important;
+  text-align:center!important;
+  white-space:normal!important;
+  overflow-wrap:break-word!important;
+}
+html body #screen .v425-suspension :is(button,a).v1058-action-btn:disabled,
+html body #screen .v425-suspension :is(button,a).v1058-action-btn[aria-disabled="true"]{
+  opacity:.47!important;
+  cursor:not-allowed!important;
+  filter:saturate(.65)!important;
+}
+html body #screen .v425-suspension :is(button,a).v1058-action-btn:not(:disabled):active{
+  transform:scale(.982)!important;
+}
+html body #screen .v425-suspension :is(button,a).v1058-action-btn:focus-visible{
+  outline:2px solid #78ecff!important;
+  outline-offset:2px!important;
+}
+@media(max-width:375px){
+  html body #screen .v425-suspension .v425-actions,
+  html body #screen .v425-suspension .v1058-action-grid{gap:8px!important}
+  html body #screen .v425-suspension :is(button,a).v1058-action-btn{
+    font-size:10px!important;
+    gap:5px!important;
+    padding:6px!important;
+  }
+  html body #screen .v425-suspension .v1058-action-btn svg{
+    width:15px!important;height:15px!important;min-width:15px!important;flex-basis:15px!important;
+  }
+}
+@media(min-width:700px){
+  html body #screen .v425-suspension .v425-actions,
+  html body #screen .v425-suspension .v1058-action-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  }
+  html body #screen .v425-suspension :is(button,a).v1058-action-btn{
+    font-size:12px!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  html body #screen .v425-suspension :is(button,a).v1058-action-btn{transition:none!important}
+}
