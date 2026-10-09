@@ -77,7 +77,7 @@
     const spacing=clamp(frame.width*.018,6,12);
     // SVG verde: trazo visible empieza en 25% de la anchura.
     const greenLeft=first.right+spacing-green.width*.25-frame.left;
-    const greenTop=first.top-green.height*.52-frame.top;
+    const greenTop=first.top-green.height*.52-frame.top+18; // V1005: flecha verde 18 px más abajo
 
     // SVG rojo girado: trazo termina aproximadamente en 75% del ancho.
     // Respeta también la O situada a la izquierda de MENOS.
