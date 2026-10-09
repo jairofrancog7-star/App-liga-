@@ -433,8 +433,8 @@ function v538StartMoreRound(){
 function moreGame(data){
   const pair=morePair(data);
   const question=pair.kind==='player'
-    ?'¿Ha marcado '+esc(pair.b.name)+' más o menos goles que '+esc(pair.a.name)+'?'
-    :'¿Tiene '+esc(pair.b.name)+' más o menos goles a favor que '+esc(pair.a.name)+'?';
+    ?'¿Ha marcado '+esc(pair.b.name)+' más o menos?'
+    :'¿Tiene '+esc(pair.b.name)+' más o menos goles?';
   const intro=more.phase==='intro';
   const first=more.phase==='first';
   const both=more.phase==='both'||more.phase==='ready'||more.phase==='result';
@@ -605,6 +605,11 @@ function v543CloseMorePortal(){
   const mount=document.querySelector('[data-v531-mount="more"]');
   if(mount){mount.innerHTML='';mount.hidden=true;delete mount.dataset.v541Open}
   document.body.classList.remove('v537-more-secondary-open','v541-more-pages-open');
+  if(route()==='moreLessGallery'){
+    const gallery=document.querySelector('[data-v546-gallery]');
+    if(gallery)delete gallery.dataset.v546Stamp;
+    v546RenderGallery();
+  }
   setGamesNav();
 }
 function v541OpenMorePages(){
