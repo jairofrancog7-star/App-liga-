@@ -45,7 +45,8 @@ function showComposer(prefill){
   '<label>Jornada (opcional)<input name="round" inputmode="numeric" type="number" min="1" max="60" placeholder="Ej. 12"></label>'+
   '<label>Fecha del evento (opcional)<input type="date" name="date"></label>'+
   '<label>Hora (opcional)<input type="time" name="time"></label>'+
-  '<label>Cancha / sede (opcional)<input name="field" maxlength="110" placeholder="Ej. Campo 3"></label>'+
+  '<label>Cancha / sede (opcional)<input name="field" maxlength="110" placeholder="Ej. Campo 3"></label>'+ 
+  '<label>Equipo afectado (opcional)<input name="team" maxlength="90" placeholder="Ej. Manchester"></label>'+
   '</div>'+
   '<label>Detalles confirmados<textarea name="details" rows="2" maxlength="1200" placeholder="Escribe el cambio o la información oficial. No se inventan resultados."></textarea></label>'+
   '<div class="ljr-editor-tools"><button type="button" data-generate="formal">Generar comunicado</button><button type="button" data-generate="short">Versión corta</button><button type="button" data-generate="urgent">Aviso urgente</button></div>'+
@@ -54,7 +55,7 @@ function showComposer(prefill){
   '<label>Mostrar en<select name="scope"><option value="Liga">Liga</option><option value="Equipos">Equipos</option><option value="Fichajes">Fichajes</option></select></label>'+
   '<div class="ljr-editor-preview"><small>VISTA PREVIA · NOTICIAS</small><strong data-preview-title></strong><p data-preview-body></p><small data-preview-meta></small></div>'+
   '<div class="ljr-editor-bottom"><button type="button" data-editor-draft>Guardar borrador</button><button type="submit" data-editor-publish>Publicar en Noticias</button></div>'+
-  '<small>Las notificaciones push fuera del navegador no se envían desde este formulario. Para eso se necesita un servicio de envío configurado.</small>'+
+  '<small>Cuando esté conectado el servidor Web Push, las publicaciones oficiales se notificarán automáticamente según categoría, equipo y cancha. Sin servidor, se publican solo en Noticias.</small>'+
   '</form>','ljr-editor-compose');
  const form=$('[data-editor-form]',modal);
  const title=$('[name=title]',form),body=$('[name=body]',form);
@@ -69,6 +70,7 @@ function showComposer(prefill){
   if(f.category.value!=='all')parts.push(catName(f.category.value));
   const round=Number(f.round.value);if(Number.isInteger(round)&&round>=1&&round<=60)parts.push('Jornada '+round);
   if(f.field.value.trim())parts.push('Sede: '+f.field.value.trim());
+  if(f.team.value.trim())parts.push('Equipo: '+f.team.value.trim());
   if(f.date.value)parts.push(dateString(f.date.value));
   if(f.time.value)parts.push('Hora: '+f.time.value);
   const details=f.details.value.trim().replace(/\s+/g,' ');
@@ -85,7 +87,7 @@ function showComposer(prefill){
  // V1077: importación opcional del aviso de suspensión, sin publicar ni eludir la API.
  // Solo se rellenan campos del formulario; el administrador debe revisar y pulsar Publicar.
  if(prefill&&typeof prefill==='object'&&!Array.isArray(prefill)){
-  const values={type:'suspension',category:String(prefill.category||'all'),round:String(prefill.round||''),date:String(prefill.date||''),time:String(prefill.time||''),field:String(prefill.field||'').slice(0,110)};
+  const values={type:'suspension',category:String(prefill.category||'all'),round:String(prefill.round||''),date:String(prefill.date||''),time:String(prefill.time||''),field:String(prefill.field||'').slice(0,110),team:String(prefill.team||'').slice(0,90)};
   for(const [key,value] of Object.entries(values)){
    const field=form.elements[key];if(!field)continue;
    if(field.tagName==='SELECT'&&![...field.options].some(o=>o.value===value))continue;
@@ -107,7 +109,10 @@ function showComposer(prefill){
    await verified();
    const id=savedId||'content:'+crypto.randomUUID();
    const payload={title:title.value.trim(),body:body.value.trim(),scope:form.elements.scope.value,
-    category:form.elements.category.value,type:form.elements.type.value};
+    category:form.elements.category.value,type:form.elements.type.value,
+    field:form.elements.field.value.trim().slice(0,110),team:form.elements.team.value.trim().slice(0,90),
+    date:form.elements.date.value,time:form.elements.time.value,
+    round:form.elements.round.value?Number(form.elements.round.value):null};
    const result=await media().api('content/'+encodeURIComponent(id),{method:'PUT',body:{kind:'news',payload,revision:savedRevision,published}});
    savedId=id;savedRevision=Number(result?.revision??savedRevision+1);
    await window.LJR_CMS?.refresh?.();
