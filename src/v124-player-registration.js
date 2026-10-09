@@ -47,6 +47,9 @@ let registryCategory='Todas';
 let registryTeam='Todos';
 let registryLetter='Todas';
 let registrySource='Todos';
+/* V1006 · Mostrar el padrón en grupos para no bloquear el scroll móvil. */
+const REGISTRY_PAGE_SIZE=24;
+let registryVisibleLimit=REGISTRY_PAGE_SIZE;
 
 function toast(msg){
   let n=$('.v124-toast');if(n)n.remove();
@@ -205,10 +208,18 @@ function registryFilterHtml(list){
     '</div></div>'+
   '</section>';
 }
-function applyRegistryFilters(root){
+function registryPagedHtml(filtered){
+  const shown=filtered.slice(0,registryVisibleLimit);
+  const remaining=filtered.length-shown.length;
+  return listHtml(shown)+(remaining>0
+    ?'<div class="v124-load-more"><span>Mostrando '+shown.length+' de '+filtered.length+' jugadores</span><button type="button" data-v124-more>Mostrar '+Math.min(REGISTRY_PAGE_SIZE,remaining)+' más ↓</button></div>'
+    :'');
+}
+function applyRegistryFilters(root,reset=true){
   if(!root)return;
+  if(reset)registryVisibleLimit=REGISTRY_PAGE_SIZE;
   const all=seasonRecords(),filtered=filterRegistry(all),host=$('[data-v124-list]',root);
-  if(host){host.innerHTML=listHtml(filtered);bindList(root)}
+  if(host){host.innerHTML=registryPagedHtml(filtered);bindList(root)}
   const count=$('[data-v161-count]',root);if(count)count.textContent=filtered.length+' de '+all.length+' jugadores';
 }
 
@@ -2560,18 +2571,20 @@ function managerHtml(){
     '<div class="v124-primary-actions"><button class="primary" data-v124-save>'+v202Icon('save')+'<span>Guardar / actualizar jugador</span></button><button data-v124-new>'+v202Icon('plus')+'<span>Nuevo registro</span></button><button data-v124-sync>'+v202Icon('refresh')+'<span>Actualizar padrón</span></button></div>'+
     '<label class="v124-search"><span>Buscar en esta temporada</span><input type="search" data-v124-search placeholder="Nombre, equipo, origen o quién registró" value="'+esc(registryQuery)+'"></label>'+
     registryFilterHtml(list)+
-    '<div class="v124-list" data-v124-list>'+listHtml(filterRegistry(list))+'</div>'+
+    '<div class="v124-list" data-v124-list>'+registryPagedHtml(filterRegistry(list))+'</div>'+
     '<p class="v124-privacy">CURP, fecha de nacimiento y localidad capturadas aquí se conservan solo en este dispositivo; no se suben al repositorio público.</p>'+
   '</section>';
 }
 function bindManager(root){
-  $('[data-v124-season]',root)?.addEventListener('change',e=>{selectedIds.clear();quickTeam='';quickSeason='';registryQuery='';registryCategory='Todas';registryTeam='Todos';registryLetter='Todas';registrySource='Todos';setSeason(e.target.value);localStorage.removeItem(EDIT_KEY);renderManager()});
+  $('[data-v124-season]',root)?.addEventListener('change',e=>{selectedIds.clear();quickTeam='';quickSeason='';registryQuery='';registryCategory='Todas';registryTeam='Todos';registryLetter='Todas';registrySource='Todos';registryVisibleLimit=REGISTRY_PAGE_SIZE;setSeason(e.target.value);localStorage.removeItem(EDIT_KEY);renderManager()});
   $('[data-v124-new-season]',root)?.addEventListener('click',()=>{selectedIds.clear();newSeason()});
   bindRosterImport(root);
   $('[data-v124-renew]',root)?.addEventListener('click',renewFromPrevious);
   $('[data-v124-select-visible]',root)?.addEventListener('click',()=>{
-    const boxes=$$('[data-v124-select]',root),allSelected=boxes.length&&boxes.every(c=>selectedIds.has(c.dataset.v124Select));
-    boxes.forEach(c=>{if(allSelected)selectedIds.delete(c.dataset.v124Select);else selectedIds.add(c.dataset.v124Select)});
+    /* Seleccionar todos los filtrados, también los aún no mostrados en pantalla. */
+    const filtered=filterRegistry(seasonRecords());
+    const allSelected=filtered.length&&filtered.every(r=>selectedIds.has(r.id));
+    filtered.forEach(r=>{if(allSelected)selectedIds.delete(r.id);else selectedIds.add(r.id)});
     updateSelectedUi(root);
   });
   $('[data-v124-clear-selected]',root)?.addEventListener('click',()=>{selectedIds.clear();updateSelectedUi(root)});
@@ -2624,7 +2637,7 @@ function bindManager(root){
   const search=$('[data-v124-search]',root);
   search?.addEventListener('input',()=>{registryQuery=search.value||'';applyRegistryFilters(root)});
   $('[data-v161-sort]',root)?.addEventListener('change',e=>{registrySort=e.target.value||'newest';applyRegistryFilters(root)});
-  $('[data-v161-category]',root)?.addEventListener('change',e=>{registryCategory=e.target.value||'Todas';registryTeam='Todos';renderManager(true)});
+  $('[data-v161-category]',root)?.addEventListener('change',e=>{registryCategory=e.target.value||'Todas';registryTeam='Todos';registryVisibleLimit=REGISTRY_PAGE_SIZE;renderManager(true)});
   $('[data-v161-team]',root)?.addEventListener('change',e=>{registryTeam=e.target.value||'Todos';applyRegistryFilters(root)});
   $('[data-v161-source]',root)?.addEventListener('change',e=>{registrySource=e.target.value||'Todos';applyRegistryFilters(root)});
   $$('[data-v161-letter]',root).forEach(b=>b.addEventListener('click',()=>{
@@ -2635,10 +2648,15 @@ function bindManager(root){
   bindList(root);
 }
 function bindList(root){
-  $$('[data-v124-select]',root).forEach(c=>c.onchange=()=>{if(c.checked)selectedIds.add(c.dataset.v124Select);else selectedIds.delete(c.dataset.v124Select);updateSelectedUi(root)});
-  $$('[data-v124-edit]',root).forEach(b=>b.onclick=()=>{const r=seasonRecords().find(x=>x.id===b.dataset.v124Edit);if(r)loadRecord(r)});
-  $$('[data-v124-card]',root).forEach(b=>b.onclick=()=>{const r=seasonRecords().find(x=>x.id===b.dataset.v124Card);if(r)loadRecord(r)});
-  $$('[data-v124-delete]',root).forEach(b=>b.onclick=()=>deleteRecord(b.dataset.v124Delete));
+  $('[data-v124-select]',root).forEach(c=>c.onchange=()=>{if(c.checked)selectedIds.add(c.dataset.v124Select);else selectedIds.delete(c.dataset.v124Select);updateSelectedUi(root)});
+  $('[data-v124-edit]',root).forEach(b=>b.onclick=()=>{const r=seasonRecords().find(x=>x.id===b.dataset.v124Edit);if(r)loadRecord(r)});
+  $('[data-v124-card]',root).forEach(b=>b.onclick=()=>{const r=seasonRecords().find(x=>x.id===b.dataset.v124Card);if(r)loadRecord(r)});
+  $('[data-v124-delete]',root).forEach(b=>b.onclick=()=>deleteRecord(b.dataset.v124Delete));
+  $('[data-v124-more]',root)?.addEventListener('click',()=>{
+    const filtered=filterRegistry(seasonRecords());
+    registryVisibleLimit=Math.min(filtered.length,registryVisibleLimit+REGISTRY_PAGE_SIZE);
+    applyRegistryFilters(root,false);
+  });
 }
 function renderManager(force=false){
   if(route()!=='credentialBuilder')return;
