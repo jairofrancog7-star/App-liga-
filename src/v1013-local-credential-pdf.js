@@ -113,8 +113,9 @@ async function draw(canvas,pdf,page,index,mode){
  try{imageBytes=await canvasBytes(canvas)}
  finally{canvas.width=1;canvas.height=1}
  const jpg=await pdf.embedJpg(imageBytes);
+ imageBytes=null;
  const p=credentialPlacement(mode,index);
- if(!page||page.getWidth()!==p.pageWidth||page.getHeight()!==p.pageHeight)page=pdf.addPage([p.pageWidth,p.pageHeight]);
+ if(!page||mode==='individual'||(mode==='a4'&&p.slot===0)||page.getWidth()!==p.pageWidth||page.getHeight()!==p.pageHeight)page=pdf.addPage([p.pageWidth,p.pageHeight]);
  page.drawImage(jpg,{x:p.x,y:p.y,width:p.width,height:p.height});
  if(mode==='a4')page.drawRectangle({x:p.x,y:p.y,width:p.width,height:p.height,borderColor:(await loadPdfLib()).rgb(.65,.7,.78),borderWidth:.3,opacity:0,borderOpacity:.75});
  return page;
