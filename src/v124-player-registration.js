@@ -2934,6 +2934,7 @@ if(screen)new MutationObserver(()=>{
 }).observe(screen,{childList:true,subtree:false});
 window.addEventListener('load',schedule);schedule();setTimeout(schedule,1200);
 window.LJR_PLAYER_REGISTRY={sync:syncOfficialSeason,records:seasonRecords,officialPlayers,
+  selected:()=>Array.from(selectedIds),
   load:loadRecord,save:saveForm,
   update:(id,changes)=>{const season=selectedSeason(),list=seasonRecords(season).slice(),index=list.findIndex(r=>r.id===id);if(index<0)throw new Error('Jugador no encontrado');list[index]={...list[index],...changes,updatedAt:new Date().toISOString()};putSeason(season,list);renderManager()},
   setRosterFiles:files=>{v202ChooseFiles(files)}
