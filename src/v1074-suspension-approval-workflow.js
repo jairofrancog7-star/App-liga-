@@ -90,7 +90,8 @@ function refresh(p){
  }
  const status=$('[data-v1074-schedule-status]',ui);
  if(status)status.textContent=st.notice?('Estado del programador local: '+(st.notice.published?'procesado':'programado')+'. Publicación global no comprobada.'):
-  (st.s.scheduledId?'El aviso ya no aparece en el programador; revisa si fue eliminado.':'Sin programación confirmada.');
+  (st.s.previousScheduledId?'Atención: existe una programación anterior. Revísala y elimínala manualmente si quedó obsoleta.':
+  st.s.scheduledId?'El aviso ya no aparece en el programador; revisa si fue eliminado.':'Sin programación confirmada.');
  const scheduleButton=$('[data-v1074-schedule]',ui);
  if(scheduleButton)scheduleButton.disabled=!isAuthorized(p);
  const savedAuth=st.s.authorization;
@@ -233,10 +234,14 @@ function invalidate(p){
  if(s.reviewHash===h)return;
  // Mantener historia pero revocar revisión y autorización cuando cambia el aviso.
  if(s.reviewHash||s.authorization||s.scheduledId){
+  const queuedBefore=s.scheduledId&&queue().some(x=>String(x.id)===String(s.scheduledId));
+  if(queuedBefore)s.previousScheduledId=s.scheduledId;
   s.reviewHash='';s.reviewedAt='';delete s.authorization;delete s.scheduledId;
   s.delivery={};s.deliveryHash='';
   write(s);
-  message(p,'Cambió el aviso: vuelve a revisar y solicitar autorización.');
+  message(p,queuedBefore?
+    'Cambió el aviso. La programación anterior SIGUE ACTIVA: elimínala manualmente en el Programador. Vuelve a revisar y autorizar este texto.':
+    'Cambió el aviso: vuelve a revisar y solicitar autorización.');
  }
  refresh(p);
 }
