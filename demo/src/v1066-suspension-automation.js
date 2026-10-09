@@ -254,7 +254,22 @@ function boot(){
  screen.addEventListener('click',e=>{
    const target=e.target.closest('button');if(!target||route()!=='suspensionTool')return;
    const page=target.closest('.v425-suspension');if(!page)return;
-   if(target.matches('[data-v64-susp-save]')){setTimeout(()=>archive(page),80);return}
+   if(target.matches('[data-v64-susp-save]')){
+     // El guardado principal se vinculó originalmente con {once:true};
+     // persistir cada clic evita que los cambios posteriores se pierdan.
+     const f=snapshot(page);
+     const data={
+       category:f.cat,jornada:f.round,type:f.type,scope:f.scope,match:f.match,
+       venue:f.venue,reason:f.reason,priority:f.priority,date:f.date,
+       time:f.time,channel:f.channel,message:f.message
+     };
+     if(put('v64-suspension-draft',data)){
+       archive(page);
+       autosave(page);
+       say(page,'Borrador y versión guardados en este dispositivo. No se ha publicado.','info');
+     }else say(page,'No fue posible guardar el borrador local.','error');
+     return;
+   }
    if(target.matches('[data-v1066-review]'))review(page);
    else if(target.matches('[data-v1066-weather]'))weather(page);
    else if(target.matches('[data-v1066-schedule]'))moveToScheduler(page);
