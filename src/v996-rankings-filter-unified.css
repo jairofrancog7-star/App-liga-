@@ -8,7 +8,7 @@
     right:auto!important;
     top:auto!important;
     bottom:-2px!important;
-    width:47px!important;
+    width:88px!important;
     height:5px!important;
     min-height:5px!important;
     border:0!important;
@@ -20,6 +20,22 @@
   html body.v32-rankings-active #screen .v32-head-unified>.v32-tabs{
     border-bottom:1px solid rgba(139,154,229,.28)!important;
     overflow:visible!important;
+  }
+  /* V997: texto mediano y espacio proporcional a la marca turquesa. */
+  html body.v32-rankings-active #screen .v32-head-unified>.v32-tabs>.v32-tab{
+    flex:0 0 128px!important;
+    width:128px!important;
+    min-width:128px!important;
+    max-width:128px!important;
+    padding:0 2px!important;
+    font-size:16px!important;
+    font-weight:620!important;
+    line-height:1.1!important;
+    letter-spacing:-.12px!important;
+    white-space:nowrap!important;
+  }
+  html body.v32-rankings-active #screen .v32-head-unified>.v32-tabs{
+    gap:12px!important;
   }
 
   /* Fondo continuo bajo la cabecera azul, sin tres bandas ni saltos morados. */
