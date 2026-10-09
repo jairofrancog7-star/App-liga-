@@ -45,6 +45,9 @@
     if(!isAbout())return;
     const root=document.querySelector('.v33-about[data-v33-about]');
     if(!root)return;
+    // Limpia logos decorativos añadidos por versiones anteriores.
+    // No toca el logo principal, los escudos originales ni las insignias de años.
+    root.querySelectorAll('.v992-crest,.v992-mini-crest,.v992-timeline-crest').forEach(node=>node.remove());
     root.querySelectorAll('.v33-about-history-grid article').forEach(card=>{
       if(card.dataset.v992Card==='record')return;
       card.dataset.v992Card='record';
