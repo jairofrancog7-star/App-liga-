@@ -265,3 +265,65 @@ html body[data-app-route="club-store"] #screen .v66-directory[data-v66-directory
   border-top:0!important;
   background:transparent!important;
 }
+
+/* V998 — ARREGLO DE RAÍZ: la cabecera no es una tarjeta flotante.
+   El origen de los triángulos en las orillas era border-radius inferior
+   (V989 y V992) + separación lateral. Hacerla rectangular y full bleed.
+   SOLO el directorio de 53 tiendas, sin alterar una tienda abierta V431. */
+html body[data-app-route="club-store"] #app #screen:has(.v66-directory[data-v66-directory="store"]:not([data-v431-store])){
+  padding-inline:0!important;
+  background-color:#070c61!important;
+}
+html body[data-app-route="club-store"] #app #screen > .v66-directory[data-v66-directory="store"]:not([data-v431-store]){
+  --v998-store-inset:clamp(12px,3vw,26px);
+  width:100%!important;
+  max-width:1080px!important;
+  min-width:0!important;
+  padding-left:var(--v998-store-inset)!important;
+  padding-right:var(--v998-store-inset)!important;
+  box-sizing:border-box!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  background:transparent!important;
+}
+html body[data-app-route="club-store"] #app #screen .v66-directory[data-v66-directory="store"]:not([data-v431-store]) > header.v510-store-head{
+  box-sizing:border-box!important;
+  width:calc(100% + var(--v998-store-inset, 14px) * 2)!important;
+  min-width:0!important;
+  max-width:none!important;
+  margin-left:calc(-1 * var(--v998-store-inset, 14px))!important;
+  margin-right:calc(-1 * var(--v998-store-inset, 14px))!important;
+  border:0!important;
+  outline:0!important;
+  border-radius:0!important;
+  -webkit-border-radius:0!important;
+  clip-path:none!important;
+  -webkit-clip-path:none!important;
+  box-shadow:none!important;
+  /* El fondo termina en el mismo azul que el contenido inferior */
+  background:
+    radial-gradient(ellipse at 78% 7%,rgba(92,206,255,.28),transparent 55%),
+    radial-gradient(ellipse at 24% 19%,rgba(34,105,227,.2),transparent 58%),
+    linear-gradient(180deg,#0b297c 0%,#0b339d 48%,#09237d 77%,#070c61 100%)!important;
+  background-clip:border-box!important;
+}
+html body[data-app-route="club-store"] #app #screen .v66-directory[data-v66-directory="store"]:not([data-v431-store]) > header.v510-store-head::after{
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:linear-gradient(180deg,rgba(7,12,97,0),#070c61)!important;
+}
+html body[data-app-route="club-store"] #app #screen .v66-directory[data-v66-directory="store"]:not([data-v431-store]) > .v989-shop-label{
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+/* En móvil rellena hasta ambas orillas sin una ranura de 1px. */
+@media(max-width:719px){
+  html body[data-app-route="club-store"] #app #screen .v66-directory[data-v66-directory="store"]:not([data-v431-store]) > header.v510-store-head{
+    width:calc(100% + 2 * var(--v998-store-inset,14px))!important;
+    margin-inline:calc(-1 * var(--v998-store-inset,14px))!important;
+  }
+}
