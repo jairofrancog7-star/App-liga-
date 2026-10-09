@@ -599,7 +599,7 @@ function moreGame(data){
       '</div>'+
       '<div class="v538-score-strip"><span><small>Intentos</small><b>'+Array.from({length:Math.max(0,more.attempts)},function(){return '⚽'}).join(' ')+'</b></span><strong class="v538-countdown">'+more.countdown+'</strong><span><small>Puntuación</small><b>'+more.points+' pts</b></span></div>'+
       '<div class="v538-question-zone '+(ready?'show':'')+'">'+
-        '<h2>'+(intro?'Total de goles en la Liga Juventino Rosas':question)+'</h2>'+
+        '<h2>'+(ready?question:'Total de goles en la Liga Juventino Rosas')+'</h2>'+
         '<div class="v531-more-buttons"><button type="button" class="less" data-v531-more-choice="less" aria-label="Menos">▼</button><span>O</span><button type="button" class="more" data-v531-more-choice="more" aria-label="Más">▲</button></div>'+
         (more.answered?'<div class="v531-more-answer">'+(more.selected==='correct'?'¡Correcto!':more.selected==='timeout'?'Tiempo agotado':'Respuesta incorrecta')+' · '+esc(pair.b.name)+' tiene '+esc(pair.b.goals)+'</div>':'')+
       '</div>'+
