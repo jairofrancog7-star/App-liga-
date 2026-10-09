@@ -1,0 +1,4 @@
+{
+  "apiBaseUrl": "",
+  "note": "Para activar Web Push/SMS/WhatsApp, desplegar server/notifications y sustituir apiBaseUrl por la URL HTTPS del backend. No añadir secretos."
+}
