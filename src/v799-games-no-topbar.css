@@ -97,8 +97,8 @@
 
   /* 3) Quiz Arena: conservar cerrar/volver como controles flotantes,
         pero eliminar la franja azul de cabecera. */
-  html body[data-app-route="quizArena"] .v531-mini-head,
-  html body[data-app-route="quiz"] .v531-mini-head{
+  html body[data-app-route="quizArena"] .v531-mini-head:not(.v1057-quiz-head),
+  html body[data-app-route="quiz"] .v531-mini-head:not(.v1057-quiz-head){
     position:absolute!important;
     z-index:120!important;
     top:0!important;
@@ -112,12 +112,12 @@
     background:transparent!important;
     pointer-events:none!important;
   }
-  html body[data-app-route="quizArena"] .v531-mini-head > strong,
-  html body[data-app-route="quiz"] .v531-mini-head > strong{
+  html body[data-app-route="quizArena"] .v531-mini-head:not(.v1057-quiz-head) > strong,
+  html body[data-app-route="quiz"] .v531-mini-head:not(.v1057-quiz-head) > strong{
     visibility:hidden!important;
   }
-  html body[data-app-route="quizArena"] .v531-mini-head > button,
-  html body[data-app-route="quiz"] .v531-mini-head > button{
+  html body[data-app-route="quizArena"] .v531-mini-head:not(.v1057-quiz-head) > button,
+  html body[data-app-route="quiz"] .v531-mini-head:not(.v1057-quiz-head) > button{
     visibility:visible!important;
     opacity:1!important;
     pointer-events:auto!important;
