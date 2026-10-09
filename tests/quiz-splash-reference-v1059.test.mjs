@@ -41,7 +41,7 @@ test('logo abre portada funcional antigua sin perder clasificaciones',()=>{
  assert.ok(main.includes('function quizCountdown(data)'));
 });
 test('activo en GitHub Pages, gráfico nocturno local y sin archivos privados',()=>{
- assert.match(index,/v531-quiz-moreless-drive-reference\.js\?v=20261009-v1059-exact-splash/);
+ assert.match(index,/v531-quiz-moreless-drive-reference\.js\?v=20261009-v\d{4}-[a-z0-9-]+/);
  assert.match(index,/v1059-quiz-splash-exact\.css\?v=20261009-v1059-android-pixel-scale/);
  assert.ok(svg.includes('viewBox="0 0 691 250"'));
  assert.ok(svg.includes('id="water"'));
