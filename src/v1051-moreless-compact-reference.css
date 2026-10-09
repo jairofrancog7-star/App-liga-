@@ -1,0 +1,376 @@
+/* V1051 — Más o Menos: paridad móvil con la referencia. Solo su portal y galería.
+   Mantener el menú inferior original, datos y rostros sin transformaciones. */
+html body[data-app-route="moreLessGallery"],
+html body.v543-more-portal-open {
+  --ml51-bg:#070744;
+  --ml51-card:#101166;
+  --ml51-deep:#090944;
+  --ml51-cyan:#03e0ef;
+  --ml51-blue:#0839ed;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-reference,
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-reference-game{
+  color:#fff!important;
+  background:#06063e!important;
+  width:100%!important;
+  max-width:100%!important;
+  overflow-x:hidden!important;
+  font-family:Roboto,Arial,sans-serif!important;
+}
+/* Hub: encabezado de 84px y cuadros compactos, sin espacio exagerado. */
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-reference .v538-more-head{
+  position:relative!important;
+  height:90px!important;
+  min-height:90px!important;
+  padding:0!important;
+  background:
+    repeating-linear-gradient(17deg,transparent 0 22px,rgba(0,230,255,.17) 23px 25px,transparent 26px 48px),
+    linear-gradient(180deg,#073ef0 0%,#061ea5 58%,#060651 100%)!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-reference .v538-more-head button{
+  top:12px!important;left:14px!important;width:35px!important;height:35px!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-reference .v538-more-head strong{
+  left:18px!important;bottom:11px!important;
+  font-size:clamp(23px,6.1vw,30px)!important;
+  line-height:1.05!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-reference .v538-hub-body{
+  padding:12px 18px calc(96px + env(safe-area-inset-bottom))!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-reference .v538-hub-feature{
+  margin:0 0 18px!important;
+  border-radius:17px!important;
+  background:#101163!important;
+  box-shadow:none!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-reference .v538-hub-feature-art{
+  height:clamp(140px,44vw,200px)!important;
+  background:
+    repeating-linear-gradient(105deg,transparent 0 24px,rgba(8,222,255,.13) 25px 28px,transparent 29px 52px),
+    linear-gradient(115deg,#061063,#063bec 55%,#080c6b)!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-reference .v538-hub-feature-art .v538-person{
+  height:100%!important;
+  overflow:hidden!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-reference .v538-hub-feature-copy{
+  padding:18px 19px 20px!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-reference .v538-hub-feature-copy h2{
+  font-size:clamp(22px,6vw,27px)!important;line-height:1.12!important;margin:0 0 7px!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-reference .v538-hub-feature-copy p{
+  max-width:100%!important;
+  font-size:clamp(12px,3.5vw,15px)!important;
+  line-height:1.35!important;color:#c5c9e5!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-reference .v538-hub-actions{
+  margin-top:13px!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-reference .v538-hub-actions .primary{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  width:auto!important;min-width:128px!important;
+  min-height:43px!important;max-width:100%!important;
+  padding:10px 20px!important;border-radius:12px!important;
+  background:var(--ml51-cyan)!important;color:#061550!important;
+  font-size:15px!important;font-weight:800!important;line-height:1.1!important;
+  white-space:normal!important;
+}
+/* Rankings pegados al bloque inicial y puntuaciones auténticas de la tabla. */
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-ranking-title{
+  margin:9px 0 12px!important;
+  font-size:22px!important;
+  color:#fff!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-ranking{
+  margin:0 0 18px!important;
+  padding:17px 16px!important;
+  min-height:0!important;
+  border-radius:18px!important;
+  background:#11115f!important;
+  overflow:hidden!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-ranking h3{
+  font-size:17px!important;margin:0 0 12px!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-ranking .v531-rank-row{
+  display:grid!important;grid-template-columns:21px 42px minmax(0,1fr) auto!important;
+  gap:7px!important;align-items:center!important;
+  min-height:63px!important;padding:6px 2px!important;
+  border-bottom:1px solid rgba(255,255,255,.10)!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-ranking .v531-rank-row b{
+  font-size:13px!important;overflow:hidden!important;white-space:nowrap!important;text-overflow:ellipsis!important;
+  min-width:0!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-ranking .v531-rank-row strong{
+  font-size:13px!important;white-space:nowrap!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-ranking .v531-crest{
+  width:36px!important;height:36px!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-ranking [data-v531-rankings]{
+  color:var(--ml51-cyan)!important;font-size:13px!important;font-weight:750!important;
+  padding:13px 0 0!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-discover-banner{
+  margin:15px 0!important;min-height:54px!important;border-radius:10px!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v551-more-reference .v538-friend-card{
+  min-height:94px!important;
+  margin:16px 0!important;padding:12px 15px!important;
+  border-radius:15px!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v583-more-challenges{
+  margin:15px 0!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v583-challenge-art{
+  height:115px!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v583-challenge-copy{
+  padding:11px 14px 13px!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v583-challenge-copy h3{
+  font-size:17px!important;
+}
+html body :is(#v543-moreless-portal,#screen .v546-inline-gallery) .v583-challenge-copy button{
+  min-height:40px!important;min-width:126px!important;
+  font-size:12px!important;border-radius:11px!important;
+}
+/* Juego en una pantalla: dos tarjetas simétricas, reloj y controles en tamaño táctil. */
+html body #v543-moreless-portal .v551-more-reference-game .v538-game-head{
+  position:relative!important;
+  height:74px!important;min-height:74px!important;
+  background:
+    repeating-linear-gradient(164deg,transparent 0 28px,rgba(20,216,245,.13) 29px 31px,transparent 32px 52px),
+    linear-gradient(180deg,#0643d6,#070752)!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-game-head strong{
+  top:39px!important;left:50%!important;transform:translate(-50%,-50%)!important;
+  font-size:17px!important;white-space:nowrap!important;letter-spacing:0!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-game-head button{
+  right:11px!important;top:18px!important;width:36px!important;height:36px!important;
+  min-width:36px!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-game-head button svg{
+  width:23px!important;height:23px!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-game-body{
+  padding:0!important;margin:0!important;min-height:0!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage{
+  height:auto!important;
+  min-height:calc(clamp(260px,34dvh,340px) + 18px)!important;
+  padding:20px 13px 14px!important;
+  background:#06063f!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage.intro,
+html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage.first{
+  min-height:clamp(270px,38dvh,340px)!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-pair{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  width:100%!important;max-width:430px!important;
+  min-height:0!important;
+  gap:12px!important;margin:0 auto!important;align-items:stretch!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-card,
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-card.ghost{
+  height:auto!important;min-height:0!important;
+  display:flex!important;flex-direction:column!important;
+  margin:0!important;border-radius:17px!important;
+  border:2px solid #064de0!important;
+  background:#0e115d!important;box-shadow:none!important;overflow:hidden!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-card.right{
+  border-color:#f13a8e!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-image{
+  height:clamp(148px,20dvh,202px)!important;min-height:148px!important;
+  padding:11px 9px!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  background:
+    repeating-linear-gradient(25deg,transparent 0 19px,rgba(8,225,255,.23) 20px 22px,transparent 23px 41px),
+    linear-gradient(165deg,#063cf4 0%,#0643de 45%,#070968 100%)!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-image .v538-person{
+  width:clamp(110px,32vw,158px)!important;
+  height:clamp(110px,32vw,158px)!important;
+  max-width:100%!important;
+  display:block!important;
+  overflow:hidden!important;
+  border-radius:50%!important;
+  background:#e4e4e4!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-image .v538-person>img{
+  width:100%!important;height:100%!important;max-width:none!important;
+  object-fit:cover!important;object-position:center 28%!important;
+  display:block!important;transform:none!important;border-radius:50%!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-image .v538-person.has-team-logo img{
+  object-fit:contain!important;padding:12%!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-image .v538-person.is-fallback>.v12-avatar{
+  width:100%!important;height:100%!important;margin:0!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-name{
+  height:62px!important;min-height:62px!important;
+  display:flex!important;flex-direction:column!important;
+  justify-content:center!important;align-items:center!important;
+  padding:7px 5px!important;
+  background:#0b0b52!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-name b{
+  display:block!important;font-size:clamp(11px,3.5vw,15px)!important;
+  font-weight:800!important;line-height:1.12!important;max-width:100%!important;
+  white-space:normal!important;overflow:hidden!important;overflow-wrap:anywhere!important;
+  text-overflow:clip!important;text-align:center!important;
+  display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-name small{
+  display:block!important;max-width:100%!important;margin:3px 0 0!important;
+  font-size:11px!important;line-height:1.1!important;color:#b8b8d3!important;
+  overflow:hidden!important;white-space:nowrap!important;text-overflow:ellipsis!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-stat{
+  height:45px!important;min-height:45px!important;display:flex!important;
+  justify-content:space-between!important;align-items:center!important;
+  padding:0 11px!important;margin-top:auto!important;
+  border-top:1px solid rgba(255,255,255,.13)!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-stat small{
+  font-size:12px!important;color:#bcbfe0!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-stat strong{
+  font-size:22px!important;font-weight:850!important;color:#fff!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-score-strip{
+  display:grid!important;grid-template-columns:minmax(0,1fr) 65px minmax(0,1fr)!important;
+  align-items:center!important;min-height:70px!important;
+  padding:0 14px!important;margin:0!important;
+  background:#11115e!important;border-top:1px solid rgba(255,255,255,.06)!important;
+  border-bottom:1px solid rgba(255,255,255,.1)!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-score-strip>span{
+  min-width:0!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-score-strip>span:last-child{
+  text-align:right!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-score-strip small{
+  font-size:11px!important;color:#a9acd2!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-score-strip b{
+  font-size:14px!important;white-space:nowrap!important;
+  color:#fff!important;letter-spacing:0!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-score-strip>span:last-child b{
+  color:var(--ml51-cyan)!important;font-size:15px!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-countdown{
+  width:52px!important;height:52px!important;
+  display:grid!important;place-items:center!important;
+  margin:0 auto!important;border:4px solid #fa3f94!important;border-radius:50%!important;
+  font-size:19px!important;color:#fff!important;line-height:1!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-question-zone{
+  display:block!important;min-height:0!important;
+  padding:23px 17px 16px!important;background:#10105b!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-question-zone h2{
+  font-size:clamp(15px,4vw,19px)!important;
+  line-height:1.22!important;min-height:0!important;
+  margin:0 0 21px!important;text-align:center!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v531-more-buttons{
+  display:grid!important;grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr)!important;
+  gap:10px!important;align-items:center!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v531-more-buttons button{
+  height:67px!important;min-height:67px!important;
+  border-radius:12px!important;
+  background:linear-gradient(180deg,#1855ff,#063be4)!important;
+  color:#fff!important;font-size:31px!important;font-weight:800!important;
+  box-shadow:none!important;touch-action:manipulation!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v531-more-buttons .less{
+  border:2px solid #f34465!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v531-more-buttons .more{
+  border:2px solid #24cf59!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v531-more-buttons span{
+  font-size:15px!important;font-style:italic!important;font-weight:900!important;
+  color:#b7b7d2!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v531-more-buttons button:focus-visible{
+  outline:3px solid var(--ml51-cyan)!important;outline-offset:3px!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-video-banner{
+  display:flex!important;
+  min-height:49px!important;
+  margin:20px 17px 18px!important;
+  border-radius:8px!important;
+  background:linear-gradient(100deg,#071065,#142691,#070963)!important;
+  align-items:center!important;justify-content:center!important;gap:7px!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-video-banner b,
+html body #v543-moreless-portal .v551-more-reference-game .v538-video-banner em{
+  font-size:13px!important;color:#d6edff!important;
+}
+/* Modal inferior fiel a la referencia, por encima del juego, sin tapar navegación. */
+html body #v543-moreless-portal .v551-more-reference-game .v531-exit-backdrop{
+  position:fixed!important;inset:0 0 var(--v34-nav-h,69px) 0!important;
+  display:flex!important;align-items:flex-end!important;
+  justify-content:center!important;z-index:2147481800!important;
+  background:rgba(0,0,27,.65)!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v531-exit-modal{
+  position:relative!important;
+  width:min(100%,520px)!important;
+  min-height:0!important;
+  max-height:calc(100dvh - 80px)!important;overflow:auto!important;
+  padding:57px 19px 22px!important;
+  border-radius:23px 23px 0 0!important;
+  background:#181871!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v531-exit-x{
+  right:16px!important;top:14px!important;width:35px!important;height:35px!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v531-exit-modal h2{
+  font-size:clamp(23px,6vw,29px)!important;
+  margin:0 0 13px!important;color:#fff!important;line-height:1.15!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v531-exit-modal p{
+  font-size:16px!important;color:#bdc0db!important;margin:0 0 20px!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v531-exit-modal>.yes,
+html body #v543-moreless-portal .v551-more-reference-game .v531-exit-modal>.no{
+  width:100%!important;
+  height:53px!important;min-height:53px!important;
+  font-size:17px!important;border-radius:12px!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v531-exit-modal>.yes{
+  color:#061359!important;background:var(--ml51-cyan)!important;border:0!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v531-exit-modal>.no{
+  margin-top:13px!important;
+  color:var(--ml51-cyan)!important;background:transparent!important;
+  border:2px solid var(--ml51-cyan)!important;
+}
+@media(max-height:760px){
+  html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage{padding-top:10px!important;min-height:263px!important}
+  html body #v543-moreless-portal .v551-more-reference-game .v538-player-image{height:148px!important}
+  html body #v543-moreless-portal .v551-more-reference-game .v538-question-zone{padding-top:14px!important}
+  html body #v543-moreless-portal .v551-more-reference-game .v531-more-buttons button{height:56px!important;min-height:56px!important}
+}
+@media(min-width:600px){
+  html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage{max-width:550px!important;margin:auto!important}
+  html body #v543-moreless-portal .v551-more-reference-game .v538-question-zone{max-width:550px!important;margin:auto!important}
+}
+@media(prefers-reduced-motion:reduce){
+  html body #v543-moreless-portal .v551-more-reference-game *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
