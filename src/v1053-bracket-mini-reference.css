@@ -192,3 +192,135 @@
   line-height:1!important;
   pointer-events:none!important;
 }
+
+
+/* V1062 — precisión visual de la referencia LIV vs RMA.
+   La tarjeta de 3 letras ahora reserva el espacio físico del recorte.
+   La geometría se modifica SOLO dentro del play-off de estos dos cuadros. */
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference.stage-playoff,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-playoff)
+ .v12-bracket-route{
+  --row-h:48px!important;
+  --row-gap:16px!important;
+}
+
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ :is(.v12-bracket-pair,.v12-bracket-seeded,.v12-progress-seeded)
+ > .v12-bracket-team{
+  --v1054-notch:14px!important;
+  background:#0a0a60!important;
+  border:0!important;
+  border-radius:12px!important;
+  box-shadow:none!important;
+  color:#f7f8ff!important;
+}
+
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference.stage-playoff,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-playoff)
+ .v12-bracket-pair > .v12-bracket-team{
+  height:48px!important;
+  min-height:48px!important;
+  max-height:48px!important;
+}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference.stage-playoff,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-playoff)
+ .v12-bracket-seeded > .v12-bracket-team.mini{
+  height:46px!important;
+  min-height:46px!important;
+  max-height:46px!important;
+}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference.stage-playoff,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-playoff)
+ .v12-bracket-winner-block{
+  grid-template-rows:50px 46px!important;
+  gap:6px!important;
+}
+
+/* Medidas geométricas de los dos lados: el lado derecho necesita
+   más relleno a la izquierda por la concavidad central. */
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ :is(.v12-bracket-pair,.v12-bracket-seeded,.v12-progress-seeded)
+ > .v12-bracket-team:first-child:not(.v1051-pending-team){
+  padding:4px 15px 4px 4px!important;
+  gap:2px!important;
+}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ :is(.v12-bracket-pair,.v12-bracket-seeded,.v12-progress-seeded)
+ > .v12-bracket-team:last-child:not(.v1051-pending-team){
+  padding:4px 2px 4px 14px!important;
+  gap:2px!important;
+}
+
+/* El escudo y las tres letras usan una proporción legible de una sola línea
+   sin devorar el espacio del dorsal/número de clasificación. */
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ :is(.v12-bracket-pair,.v12-bracket-seeded,.v12-progress-seeded)
+ > .v12-bracket-team img,
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ :is(.v12-bracket-pair,.v12-bracket-seeded,.v12-progress-seeded)
+ > .v12-bracket-team .v12-bracket-fallback{
+  flex:0 0 clamp(12px,3.8vw,16px)!important;
+  width:clamp(12px,3.8vw,16px)!important;
+  min-width:clamp(12px,3.8vw,16px)!important;
+  height:clamp(12px,3.8vw,16px)!important;
+  min-height:clamp(12px,3.8vw,16px)!important;
+  max-height:16px!important;
+  object-fit:contain!important;
+}
+
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ :is(.v12-bracket-pair,.v12-bracket-seeded,.v12-progress-seeded)
+ > .v12-bracket-team .v12-bracket-seed{
+  font:800 clamp(8px,2.1vw,10px)/1 Inter,Roboto,Arial,sans-serif!important;
+  flex:0 0 auto!important;
+  font-variant-numeric:tabular-nums!important;
+}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ :is(.v12-bracket-pair,.v12-bracket-seeded,.v12-progress-seeded)
+ > .v12-bracket-team strong{
+  font:850 clamp(9px,2.65vw,11px)/1 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:-.035em!important;
+  flex:0 1 auto!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ :is(.v12-bracket-seeded,.v12-progress-seeded)
+ > .v12-bracket-team.mini img,
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ :is(.v12-bracket-seeded,.v12-progress-seeded)
+ > .v12-bracket-team.mini .v12-bracket-fallback{
+  flex-basis:12px!important;
+  width:12px!important;
+  height:12px!important;
+  min-width:12px!important;
+  min-height:12px!important;
+}
+
+/* Disco central montado entre recortes: no mueve ni oculta conectores. */
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ :is(.v12-bracket-pair,.v12-bracket-seeded) > .v12-bracket-vs,
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ .v12-progress-seeded > .v12-progress-vs{
+  width:26px!important;
+  height:26px!important;
+  min-width:26px!important;
+  min-height:26px!important;
+  border-radius:50%!important;
+  background:#000040!important;
+  color:#2bdef5!important;
+  z-index:8!important;
+  font:850 11px/1 Inter,Roboto,Arial,sans-serif!important;
+}
