@@ -81,7 +81,7 @@ function improveManage(dialog){
  const form=[...dialog.children].find(x=>x.tagName==='FORM');
  if(title&&users&&form){
    const access=el('div','ljr-admin-area ljr-admin-access');
-   access.append(title,el('p','ljr-admin-section-sub','Controla los accesos sin modificar los permisos de tu cuenta.'));
+   access.append(title,el('p','ljr-admin-section-sub','Gestiona administradores autorizados. Los permisos por apartado aún requieren soporte del servidor: no compartas contraseñas y autoriza solo a personas de confianza.'));
    access.append(users);
    const details=el('details','ljr-admin-add-details');
    const summary=el('summary','','＋ Añadir administrador');

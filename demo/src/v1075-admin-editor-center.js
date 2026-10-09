@@ -34,8 +34,8 @@ function createModal(title,html,className){
  modal.querySelector('section')?.classList.add('ljr-editor-dialog',className);
  return modal;
 }
-function showComposer(){
- if(!admin())return media()?.login?.(showComposer);
+function showComposer(prefill){
+ if(!admin())return media()?.login?.(()=>showComposer(prefill));
  const choices=Object.entries(TYPES).map(([key,val])=>'<option value="'+key+'">'+esc(val[0])+'</option>').join('');
  const modal=createModal('Crear aviso oficial','<form class="ljr-editor-form" data-editor-form>'+
   '<p class="ljr-editor-note">Sin programar: escribe, revisa y confirma. La publicación aparecerá en Noticias de toda la Liga; un borrador queda privado en el servidor.</p>'+
@@ -58,6 +58,7 @@ function showComposer(){
   '</form>','ljr-editor-compose');
  const form=$('[data-editor-form]',modal);
  const title=$('[name=title]',form),body=$('[name=body]',form);
+ let savedId='', savedRevision=0, saving=false;
  const updatePreview=()=>{
   $('[data-preview-title]',form).textContent=title.value||'Título del aviso';
   $('[data-preview-body]',form).textContent=body.value||'Aquí aparecerá el comunicado oficial.';
@@ -81,29 +82,45 @@ function showComposer(){
  form.querySelectorAll('[data-generate]').forEach(b=>b.onclick=()=>generate(b.dataset.generate));
  form.addEventListener('input',updatePreview);form.addEventListener('change',updatePreview);
  generate('formal');
+ // V1077: importación opcional del aviso de suspensión, sin publicar ni eludir la API.
+ // Solo se rellenan campos del formulario; el administrador debe revisar y pulsar Publicar.
+ if(prefill&&typeof prefill==='object'&&!Array.isArray(prefill)){
+  const values={type:'suspension',category:String(prefill.category||'all'),round:String(prefill.round||''),date:String(prefill.date||''),time:String(prefill.time||''),field:String(prefill.field||'').slice(0,110)};
+  for(const [key,value] of Object.entries(values)){
+   const field=form.elements[key];if(!field)continue;
+   if(field.tagName==='SELECT'&&![...field.options].some(o=>o.value===value))continue;
+   field.value=value;
+  }
+  form.elements.details.value=String(prefill.details||'').slice(0,1200);
+  title.value=String(prefill.title||'Aviso de suspensión').slice(0,160);
+  body.value=String(prefill.body||'').slice(0,4000);
+  updatePreview();
+ }
  async function save(published){
-  if(!form.reportValidity())return;
+  if(saving||!form.reportValidity())return;
   if(body.value.trim().length<15){status(modal,'Agrega un mensaje de por lo menos 15 caracteres.');return}
   if(published&&!form.elements.details.value.trim()){status(modal,'Antes de publicar, escribe los detalles oficiales confirmados del aviso.');form.elements.details.focus();return}
   const buttons=form.querySelectorAll('[data-editor-draft],[data-editor-publish]');
-  buttons.forEach(x=>x.disabled=true);
+  saving=true;buttons.forEach(x=>x.disabled=true);
   status(modal,'Verificando permiso y guardando…');
   try{
    await verified();
-   const id='content:'+crypto.randomUUID();
+   const id=savedId||'content:'+crypto.randomUUID();
    const payload={title:title.value.trim(),body:body.value.trim(),scope:form.elements.scope.value,
     category:form.elements.category.value,type:form.elements.type.value};
-   await media().api('content/'+encodeURIComponent(id),{method:'PUT',body:{kind:'news',payload,revision:0,published}});
+   const result=await media().api('content/'+encodeURIComponent(id),{method:'PUT',body:{kind:'news',payload,revision:savedRevision,published}});
+   savedId=id;savedRevision=Number(result?.revision??savedRevision+1);
    await window.LJR_CMS?.refresh?.();
    status(modal,published?'Aviso publicado en Noticias.':'Borrador privado guardado. Ábrelo desde Revisar avisos.');
    form.querySelector('[data-editor-publish]').textContent=published?'Publicado ✓':'Publicar en Noticias';
    form.querySelector('[data-editor-draft]').textContent=published?'Guardar borrador':'Guardado ✓';
    if(published){window.dispatchEvent(new Event('liga:content'));setTimeout(()=>{if(modal.isConnected)modal.querySelector('[data-close]')?.click()},900);}
+   else buttons.forEach(x=>x.disabled=false);
   }catch(err){
    status(modal,'No se guardó el aviso: '+(err?.message||'Error de conexión'));
    buttons.forEach(x=>x.disabled=false);
    if([401,403].includes(err?.status))media()?.login?.();
-  }
+  }finally{saving=false}
  }
  form.onsubmit=ev=>{ev.preventDefault();save(true)};
  $('[data-editor-draft]',form).onclick=()=>save(false);
@@ -146,6 +163,20 @@ function openReview(){
      }catch(err){status(modal,'No se pudo publicar: '+(err?.message||'Error'));publish.disabled=false}
     };actions.append(publish);
    }
+   const remove=document.createElement('button');remove.type='button';
+   remove.textContent=record.published?'Retirar':'Eliminar';
+   remove.title=record.published?'Ocultar esta publicación en toda la Liga':'Eliminar borrador';
+   remove.onclick=async()=>{
+    if(!confirm(record.published?'¿Retirar este aviso de Noticias para todos los visitantes?':'¿Eliminar este borrador?'))return;
+    remove.disabled=true;status(modal,'Retirando aviso…');
+    try{
+     await verified();
+     await media().api('content/'+encodeURIComponent(record.id),{method:'DELETE',body:{revision:record.revision}});
+     await window.LJR_CMS?.refresh?.();await reload();
+     status(modal,'Aviso retirado correctamente.');
+    }catch(err){status(modal,'No se pudo retirar: '+(err?.message||'Error'));remove.disabled=false}
+   };
+   actions.append(remove);
    card.append(actions);list.append(card);
   });
  }
@@ -167,6 +198,67 @@ function openReview(){
  });
  reload();
 }
+
+/* Editor visual para administradores que no conocen rutas ni programación. */
+const SECTIONS=[
+ ['Inicio','home','news'],['Noticias y avisos','news','news'],
+ ['Competición','competition','fixture'],['Jornadas y resultados','competition','fixture'],
+ ['Clasificación','competition','standings'],['Goleadores','scorers','scorers'],
+ ['Equipos','teams','team'],['Jugadores','players','player'],
+ ['Sancionados','discipline','sanction'],['Cédulas y documentos','cedulas','document'],
+ ['Vídeos y transmisiones','video','transmission'],['Historia','history','page'],
+ ['Tienda','club-store','product'],['Match Center','match','fixture'],
+ ['Más y herramientas','more','page']
+];
+function openPages(){
+ if(!admin())return media()?.login?.(openPages);
+ const options=SECTIONS.map((x,i)=>'<option value="'+i+'">'+esc(x[0])+'</option>').join('');
+ const modal=createModal('Editar mi página','<section class="ljr-editor-review">'+
+ '<p class="ljr-editor-note">Elige una sección. Puedes modificar su información oficial o tocar directamente textos, imágenes y tarjetas sin programar.</p>'+
+ '<label class="ljr-editor-target">Sección de la aplicación<select data-section>'+options+'</select></label>'+
+ '<div class="ljr-editor-two-choice">'+
+ '<button type="button" data-page-content>Editar información</button>'+
+ '<button type="button" data-page-visual>Editar diseño en pantalla</button></div>'+
+ '<small class="ljr-editor-note">Solo se publican cambios cuando los guardas. Las ediciones necesitan una sesión verificada por el servidor.</small>'+
+ '</section>','ljr-editor-page-picker');
+ const select=$('[data-section]',modal);
+ async function execute(mode){
+  const item=SECTIONS[Number(select.value)];
+  if(!item)return;
+  try{
+   await verified();
+   if(mode==='content'){
+    window.LJR_CMS?.open?.(item[2]);
+    modal.querySelector('[data-close]')?.click();
+   }else{
+    modal.querySelector('[data-close]')?.click();
+    location.hash='#/'+item[1];
+    setTimeout(()=>{
+     if(!admin()||!window.LJR_CMS?.editPage)return;
+     window.LJR_CMS.editPage();
+    },550);
+   }
+  }catch(err){status(modal,'No se puede editar: '+(err?.message||'Error de sesión'))}
+ }
+ $('[data-page-content]',modal).onclick=()=>execute('content');
+ $('[data-page-visual]',modal).onclick=()=>execute('visual');
+}
+/* Exportación voluntaria de respaldo, nunca a una dirección externa. */
+async function exportBackup(){
+ if(!admin())return media()?.login?.(exportBackup);
+ if(!confirm('Se descargará un archivo JSON con contenido de administración que podría incluir datos personales de jugadores. Guárdalo en un lugar privado. ¿Continuar?'))return;
+ try{
+  const who=await verified();
+  if(!who.owner)throw Error('El respaldo completo solo puede exportarlo el presidente.');
+  const data=await media().api('content?admin=1');
+  if(!Array.isArray(data.items))throw Error('El servidor no devolvió los registros esperados.');
+  const dump={schema:'ljr-admin-backup-v1',exportedAt:new Date().toISOString(),records:data.items};
+  const url=URL.createObjectURL(new Blob([JSON.stringify(dump,null,2)],{type:'application/json'}));
+  const link=document.createElement('a');link.href=url;link.download='liga-juventino-respaldo-'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+ }catch(err){alert('No se pudo descargar el respaldo: '+(err?.message||'Error'))}
+}
+
 function openScheduler(origin){
  if(!admin())return media()?.login?.(()=>openScheduler(origin));
  origin?.closest('.liga-media-modal')?.querySelector('[data-close]')?.click();
@@ -183,7 +275,9 @@ function addPanel(dialog){
   '<div class="ljr-editor-hub-grid">'+
   '<button type="button" data-editor-open="compose"><b>✎</b><span>Crear aviso<small>Texto guiado y publicación</small></span></button>'+
   '<button type="button" data-editor-open="review"><b>✓</b><span>Revisar avisos<small>Borradores y publicados</small></span></button>'+
-  '<button type="button" data-editor-open="schedule"><b>◷</b><span>Programar avisos<small>Recordatorios en este teléfono</small></span></button></div>'+
+  '<button type="button" data-editor-open="schedule"><b>◷</b><span>Programar avisos<small>Recordatorios en este teléfono</small></span></button>'+ 
+  '<button type="button" data-editor-open="page"><b>▣</b><span>Editar páginas<small>Texto, fotos y secciones</small></span></button>'+ 
+  (media()?.admin?.owner?'<button type="button" data-editor-open="backup"><b>↓</b><span>Respaldo privado<small>Solo presidente</small></span></button>':'')+'</div>'+
   '<p class="ljr-editor-security">🔒 Los visitantes solo consultan información. Editar y publicar requiere una sesión autorizada y permiso del servidor.</p>';
  home.after(box);
  box.addEventListener('click',event=>{
@@ -192,6 +286,8 @@ function addPanel(dialog){
   if(choice==='compose')showComposer();
   else if(choice==='review')openReview();
   else if(choice==='schedule')openScheduler(b);
+  else if(choice==='page')openPages();
+  else if(choice==='backup')exportBackup();
  });
 }
 function scan(){
@@ -203,5 +299,5 @@ function scheduleScan(){if(pending)return;pending=true;queueMicrotask(()=>{pendi
 document.addEventListener('liga:admin',scheduleScan);
 function start(){new MutationObserver(scheduleScan).observe(document.body,{childList:true,subtree:true});scan()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
-window.LJR_EDITOR_CENTER={openNotice:showComposer,openReview};
+window.LJR_EDITOR_CENTER={openNotice:showComposer,openReview,openPages,exportBackup};
 })();

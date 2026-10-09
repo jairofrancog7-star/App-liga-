@@ -386,15 +386,9 @@ function patch(){
   openPendingHistoryTab();
 }
 
-document.addEventListener('click',e=>{
-  if(!(e.target instanceof Element))return;
-  const chip=e.target.closest('[data-news-filter]');
-  if(chip&&route()==='news'){
-    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-    filterNews(chip.dataset.newsFilter||'Todas');
-    return;
-  }
-},true);
+/* Noticias: permitir el onclick original de main.js, que actualiza state.newsFilter
+   y reconstruye las noticias oficiales. El handler anterior bloqueaba ese evento
+   y duplicaba los estados vacíos al cambiar a Fichajes. */
 
 let timer=0;
 function schedule(ms=50){clearTimeout(timer);timer=setTimeout(patch,ms)}

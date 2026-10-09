@@ -18,6 +18,11 @@ const stamp=()=>new Date().toISOString();
 const read=()=>{try{const data=JSON.parse(localStorage.getItem(KEY)||'null');return data&&typeof data==='object'?data:{}}catch(_){return {}}};
 const write=s=>{try{localStorage.setItem(KEY,JSON.stringify(s));return true}catch(_){return false}};
 const queue=()=>{try{const a=JSON.parse(localStorage.getItem(QUEUE)||'[]');return Array.isArray(a)?a:[]}catch(_){return []}};
+async function verifyAdminSession(){
+ const media=window.LJR_MEDIA;
+ if(!media?.admin||typeof media.api!=='function')return false;
+ try{return !!(await media.api('me'))?.admin}catch(_){return false}
+}
 const missing=s=>{
  const out=[];
  for(const [key,label] of [['cat','Categoría'],['round','Jornada'],['type','Tipo de aviso'],['reason','Motivo'],['date','Fecha efectiva'],['time','Hora'],['message','Mensaje adicional']])if(!s[key])out.push(label);
@@ -26,7 +31,7 @@ const missing=s=>{
  return out;
 };
 const isAuthorized=p=>{
- if(!p)return false;
+ if(!p||!window.LJR_MEDIA?.admin)return false;
  const s=read(),hash=stable(fields(p));
  return !!s.reviewedAt&&s.reviewHash===hash&&s.authorization?.hash===hash&&!!s.authorization?.name&&!!s.authorization?.at;
 };
@@ -48,6 +53,7 @@ function message(p,value){
  n.textContent=value||'';
 }
 function panel(p){
+ if(!window.LJR_MEDIA?.admin){$('[data-v1074-flow]',p)?.remove();return}
  if($('[data-v1074-flow]',p))return;
  const anchor=$('[data-v1066-auto]',p)||$('.v425-summary',p);
  if(!anchor)return;
@@ -67,9 +73,10 @@ function panel(p){
  '<label class="v1074-confirm"><input type="checkbox" data-v1074-agree><span>Confirmo que recibí autorización real y revisé los datos. Este registro local no verifica identidad.</span></label>'+
  '<button type="button" data-v1074-authorize>Guardar constancia local</button></div></div>'+
  '<div class="v1074-group"><b>03 · Programación</b><p>Elige cuándo publicar en el programador existente. Nada se envía hasta que confirmes allí.</p>'+
- '<button type="button" data-v1074-schedule>Ir al programador</button><small data-v1074-schedule-status></small></div>'+
+ '<div class="v1074-buttons"><button type="button" data-v1074-schedule>Ir al programador</button><button type="button" data-v1074-official>Abrir editor oficial</button></div>'+
+ '<small data-v1074-schedule-status></small><button type="button" data-v1074-cancel hidden>Cancelar programación local anterior</button></div>'+
  '<div class="v1074-group"><b>04 · Avisar a los equipos</b><p>Usa los equipos del rol oficial. Cada envío y recepción se registra manualmente en este teléfono.</p>'+
- '<div class="v1074-recipients" data-v1074-teams></div></div>'+
+ '<button type="button" data-v1074-export>Descargar registro CSV</button><div class="v1074-recipients" data-v1074-teams></div></div>'+
  '<small class="v1074-disclaimer">Las marcas “enviado” o “recibido” no se verifican con WhatsApp. Las notificaciones automáticas fuera del teléfono requieren un servicio autenticado y configuración adicional.</small>'+
  '</div>';
  anchor.before(details);
@@ -94,6 +101,11 @@ function refresh(p){
   st.s.scheduledId?'El aviso ya no aparece en el programador; revisa si fue eliminado.':'Sin programación confirmada.');
  const scheduleButton=$('[data-v1074-schedule]',ui);
  if(scheduleButton)scheduleButton.disabled=!isAuthorized(p);
+ const official=$('[data-v1074-official]',ui);
+ if(official)official.disabled=!isAuthorized(p);
+ const cancel=$('[data-v1074-cancel]',ui);
+ const previous=st.s.previousScheduledId||(!st.notice?st.s.scheduledId:null);
+ if(cancel)cancel.hidden=!previous||!queue().some(x=>String(x.id)===String(previous)&&!x.published);
  const savedAuth=st.s.authorization;
  const author=$('[data-v1074-author]',ui);if(author&&document.activeElement!==author)author.value=savedAuth?.hash===st.hash?(savedAuth.name||''):'';
  drawTeams(p);
@@ -142,27 +154,48 @@ function schedule(p){
  const button=$('[data-v1066-schedule]',p);
  if(!button){message(p,'No se encontró el programador existente.');return}
  try{
-  sessionStorage.setItem(IMPORT_MARK,JSON.stringify({at:Date.now(),ids:queue().map(x=>String(x.id))}));
+  sessionStorage.setItem(IMPORT_MARK,JSON.stringify({
+    at:Date.now(),ids:queue().map(x=>String(x.id)),
+    hash:stable(fields(p)), type:fields(p).type,category:fields(p).cat,
+    round:fields(p).round,message:fields(p).message
+  }));
  }catch(_){}
  button.click();
 }
 function checkScheduled(){
  let raw;try{raw=JSON.parse(sessionStorage.getItem(IMPORT_MARK)||'null')}catch(_){return}
  if(!raw||Date.now()-raw.at>15*60000)return;
- const before=new Set(raw.ids||[]),created=queue().filter(item=>!before.has(String(item.id)));
+ const before=new Set(raw.ids||[]);
+ const created=queue().filter(item=>!before.has(String(item.id)));
  if(!created.length)return;
- const last=created[created.length-1],s=read();
- if(s.reviewHash&&s.authorization?.hash===s.reviewHash){
-  s.scheduledId=last.id;s.scheduledAt=stamp();
+ const s=read();
+ // Asociar exclusivamente el aviso importado, no otra programación hecha en otra pestaña.
+ const expected=created.find(item=>String(item.type)==='suspension'&&
+   String(item.title||'').trim()===String(raw.type||'').trim()&&
+   String(item.body||'').includes('Categoría: '+String(raw.category||''))&&
+   String(item.body||'').includes('Jornada: '+String(raw.round||''))&&
+   String(item.body||'').includes(String(raw.message||''))&&
+   String(item.category||'').length>0);
+ if(expected&&s.reviewHash===raw.hash&&s.authorization?.hash===raw.hash){
+  s.scheduledId=expected.id;s.scheduledAt=stamp();
   write(s);
+  sessionStorage.removeItem(IMPORT_MARK);
+  return;
  }
- sessionStorage.removeItem(IMPORT_MARK);
+ // Dejar el marcador para poder asociar la publicación correcta al guardar.
+ // Si pasan 15 minutos expira al inicio de esta función.
 }
 function teams(p){
  const s=fields(p),result=[];
  const unique=new Set();
  try{
-  const rows=typeof window.v64SuspensionMatches==='function'?window.v64SuspensionMatches(s.cat,s.round):[];
+  // v64SuspensionMatches() es privada de main.js (ES module).
+  // Leer el MISMO catálogo oficial, sin fabricar clubes ni depender de un global inexistente.
+  const categories=Object.values(window.LJR_OFFICIAL_DATA?.categories||{});
+  const wantedCat=String(s.cat||'').trim().toLocaleLowerCase('es-MX');
+  const category=categories.find(c=>String(c?.name||'').trim().toLocaleLowerCase('es-MX')===wantedCat);
+  const rows=(category?.fixtures||[]).flatMap(block=>Array.isArray(block?.rows)?block.rows:[])
+    .filter(r=>Array.isArray(r)&&r[2]&&r[6]&&String(r[1]??'').trim()===String(s.round||'').trim());
   const wanted=String(s.match||'').trim().toLocaleLowerCase('es-MX');
   const field=String(s.venue||'').trim().toLocaleLowerCase('es-MX');
   for(const r of rows){
@@ -184,10 +217,12 @@ function drawTeams(p){
  const key=stable(fields(p)),log=current.deliveryHash===key?(current.delivery||{}):{};
  host.replaceChildren();
  if(!values.length){
-  const n=document.createElement('p');n.textContent='No se encontraron equipos en el rol oficial para esa selección. No se mostrarán equipos ficticios.';host.append(n);return;
+  const n=document.createElement('p');n.textContent='No hay equipos en el rol oficial para la categoría y jornada seleccionadas. No se agregan equipos ficticios.';host.append(n);return;
  }
+ const sent=values.filter(name=>!!log[name]?.sentAt).length;
+ const received=values.filter(name=>!!log[name]?.receivedAt).length;
  const count=document.createElement('small');
- count.textContent=values.length+' equipos reales encontrados · Registro local';
+ count.textContent=values.length+' equipos · '+sent+' envíos anotados · '+received+' recepciones anotadas (solo en este dispositivo)';
  host.append(count);
  for(const name of values){
   const s=log[name]||{},row=document.createElement('div');row.className='v1074-team';
@@ -229,6 +264,71 @@ function mark(p,name){
  s.delivery[name]=v;write(s);drawTeams(p);
  message(p,'Estado de '+name+' anotado manualmente. No demuestra entrega ni lectura real.');
 }
+/* El CSV es un archivo LOCAL: las marcas no son constancia verificada de recepción. */
+function exportLog(p){
+ const names=teams(p),s=read(),form=fields(p);
+ if(!names.length){message(p,'No hay equipos oficiales para exportar con estos filtros.');return}
+ const key=stable(form),delivery=s.deliveryHash===key?s.delivery||{}:{};
+ const safe=value=>{
+  let v=String(value??'').replace(/[\r\n]+/g,' ').trim();
+  // Impedir ejecución de fórmulas al abrir CSV con Excel/Sheets.
+  if(/^[=+@\-\t\r]/.test(v))v="'"+v;
+  return '"'+v.replace(/"/g,'""')+'"';
+ };
+ const rows=[['Categoría','Jornada','Equipo','Estado anotado','Envío (local)','Recepción (local)','Verificación']];
+ for(const name of names){
+  const row=delivery[name]||{};
+  rows.push([form.cat,form.round,name,row.receivedAt?'Recepción anotada':row.sentAt?'Envío anotado':'Pendiente',
+   row.sentAt||'',row.receivedAt||'','No verificado; registro del dispositivo']);
+ }
+ const csv='\uFEFF'+rows.map(row=>row.map(safe).join(',')).join('\r\n');
+ const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='liga-avisos-equipos-'+new Date().toISOString().slice(0,10)+'.csv';
+ document.body.append(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1500);
+ message(p,'Descargado el reporte CSV con '+names.length+' equipos reales. Las confirmaciones son anotaciones manuales.');
+}
+function openOfficialEditor(p){
+ if(!isAuthorized(p)){message(p,'Revisa el aviso y registra el visto bueno antes de preparar el editor oficial.');return}
+ const editor=window.LJR_EDITOR_CENTER;
+ if(!editor?.openNotice){message(p,'El editor oficial aún no está disponible. Abre Administración y vuelve a intentarlo.');return}
+ const s=fields(p);
+ const category=Object.entries(window.LJR_OFFICIAL_DATA?.categories||{})
+   .find(([,cat])=>String(cat?.name||'').trim()===s.cat)?.[0]||'all';
+ const details=[
+  'Motivo: '+s.reason,'Alcance: '+s.scope,
+  s.match!=='Todos los partidos'?'Partido: '+s.match:'',
+  s.venue!=='Todos los campos'?'Campo: '+s.venue:''
+ ].filter(Boolean).join('. ').slice(0,1200);
+ const body=[
+  'La Liga Municipal de Fútbol Juventino Rosas A. C. informa:',
+  s.type+'.',s.cat+', jornada '+s.round+'.',
+  details+'.','Fecha efectiva: '+s.date+' '+s.time+'.',s.message
+ ].filter(Boolean).join(' ').slice(0,4000);
+ try{
+  editor.openNotice({type:'suspension',category,round:s.round,date:s.date,time:s.time,
+   field:s.venue==='Todos los campos'?'':s.venue,title:s.type,
+   details,body});
+  message(p,'Aviso enviado al editor para revisión, NO publicado. Solo una sesión de administración autorizada puede guardarlo en el servidor.');
+ }catch(e){message(p,'No se pudo abrir el editor oficial. Revisa tu sesión de administración.')}
+}
+function cancelLocalSchedule(p){
+ const s=read(),id=s.previousScheduledId||s.scheduledId;
+ if(!id){message(p,'No hay programación local que cancelar.');return}
+ const list=queue(),item=list.find(x=>String(x.id)===String(id));
+ if(!item){message(p,'La programación ya no existe en este dispositivo.');return}
+ if(item.published){message(p,'El aviso ya figura como procesado. No se puede retirar con esta función local; revisa el editor oficial.');return}
+ if(!window.confirm('¿Eliminar esta programación local? No cancela avisos publicados ni programaciones guardadas en otros dispositivos.'))return;
+ try{
+  localStorage.setItem(QUEUE,JSON.stringify(list.filter(x=>String(x.id)!==String(id))));
+  delete s.previousScheduledId;
+  if(String(s.scheduledId)===String(id)){delete s.scheduledId;delete s.scheduledAt}
+  write(s);refresh(p);
+  message(p,'Programación eliminada de este dispositivo. Confirma por separado si existía una publicación global.');
+ }catch(e){message(p,'No se pudo cancelar la programación local.')}
+}
+
 function invalidate(p){
  const s=read(),h=stable(fields(p));
  if(s.reviewHash===h)return;
@@ -269,18 +369,30 @@ function boot(){
   const flow=$('[data-v1074-flow]',page);if(flow)flow.open=true;
   message(page,'Primero revisa y registra una autorización real. Para solicitarla usa «Solicitar visto bueno».');
  },true);
- screen.addEventListener('click',e=>{
+ screen.addEventListener('click',async e=>{
   if(route()!=='suspensionTool')return;
   const p=e.target.closest('.v425-suspension');
   if(!p)return;
   const b=e.target.closest('button');
   if(!b)return;
+  // La aprobación en localStorage no es una credencial; exigir además sesión del servidor.
+  if(b.matches('[data-v1074-review],[data-v1074-ask],[data-v1074-authorize],[data-v1074-schedule],[data-v1074-official],[data-v1074-share],[data-v1074-mark],[data-v1074-cancel]')){
+   if(!await verifyAdminSession()){
+    const flow=$('[data-v1074-flow]',p);if(flow)flow.open=true;
+    message(p,'Inicia sesión en Administración: este control requiere permiso verificado del servidor.');
+    return;
+   }
+   if(!p.isConnected)return;
+  }
   if(b.matches('[data-v1074-review]'))review(p);
   else if(b.matches('[data-v1074-ask]'))ask(p);
   else if(b.matches('[data-v1074-show-auth]')){
     const box=$('[data-v1074-auth]',p);if(box)box.hidden=!box.hidden;
   }else if(b.matches('[data-v1074-authorize]'))authorize(p);
   else if(b.matches('[data-v1074-schedule]'))schedule(p);
+  else if(b.matches('[data-v1074-official]'))openOfficialEditor(p);
+  else if(b.matches('[data-v1074-export]'))exportLog(p);
+  else if(b.matches('[data-v1074-cancel]'))cancelLocalSchedule(p);
   else if(b.matches('[data-v1074-share]'))prepare(p,b.dataset.v1074Share);
   else if(b.matches('[data-v1074-mark]'))mark(p,b.dataset.v1074Mark);
  });
@@ -300,6 +412,7 @@ function boot(){
  },true);
  window.addEventListener('ljr:auto-notice',()=>{const p=$('.v425-suspension',screen);if(p)refresh(p)});
  window.addEventListener('hashchange',queueRedraw);
+ window.addEventListener('liga:admin',queueRedraw);
  window.addEventListener('pageshow',queueRedraw);
  window.addEventListener('focus',()=>{if(route()==='suspensionTool'){const p=$('.v425-suspension',screen);if(p)refresh(p)}});
  queueRedraw();

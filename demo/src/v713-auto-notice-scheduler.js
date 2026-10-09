@@ -9,6 +9,8 @@ window.__LJR_V713_AUTO_NOTICE_SCHEDULER__=true;
 const KEY='ljr-v713-auto-notices';
 const WEBHOOK_KEY='ljr-v713-facebook-webhook';
 const FEED='./data/active-notices.json';
+const isAdmin=()=>!!window.LJR_MEDIA?.admin;
+async function authorized(){if(!isAdmin())return false;try{return !!(await window.LJR_MEDIA.api('me'))?.admin}catch(_){return false}}
 const TYPES={
   jornada:{label:'Jornada',short:'Jornada',title:'Aviso de jornada',body:'Información importante para la próxima jornada de la Liga.'},
   ultima:{label:'Última hora',short:'Última hora',title:'Última hora',body:'Aviso importante de última hora de la Liga Juventino Rosas.'},
@@ -118,6 +120,8 @@ async function sendWebhook(item){
   }catch(e){return {ok:false,error:String(e?.message||e)}}
 }
 async function processDue(force=false){
+  // Nunca tomar un estado local como permiso de publicación oficial.
+  if(!isAdmin())return;
   const now=Date.now(),items=read();let changed=false;
   for(const item of items){
     const pub=Date.parse(item.publishAt||''),rem=Date.parse(item.remindAt||'');
@@ -140,15 +144,15 @@ async function processDue(force=false){
   if(changed){write(items);renderLists()}
 }
 function statusLabel(item){
-  if(item.published)return item.facebookStatus==='error'?'Publicado · Facebook con error':'Publicado';
-  const t=Date.parse(item.publishAt||'');return Number.isFinite(t)&&t<Date.now()?'Pendiente de procesar':'Programado';
+  if(item.published)return item.facebookStatus==='error'?'Procesado local · Facebook con error':'Procesado en este teléfono';
+  const t=Date.parse(item.publishAt||'');return Number.isFinite(t)&&t<Date.now()?'Pendiente de procesar':'Programado local';
 }
 function itemCard(item,global=false){
   return '<article class="v713-item '+(item.published||global?'is-published':'')+'" data-v713-id="'+esc(item.id||'')+'">'+
     '<div class="v713-item-top"><span>'+esc(global?(item.type||'AVISO'):(TYPES[item.type]?.label||'Aviso'))+'</span><b>'+esc(global?'Publicado':statusLabel(item))+'</b></div>'+
     '<h4>'+esc(item.title||'Aviso')+'</h4><p>'+esc(item.body||item.message||'')+'</p>'+
     '<small>'+esc(global?fmt(item.published_at||item.publishAt):fmt(item.publishAt))+'</small>'+
-    (!global?'<div class="v713-item-actions"><button type="button" data-v713-png="'+esc(item.id)+'">PNG</button><button type="button" data-v713-now="'+esc(item.id)+'">Publicar ahora</button><button type="button" data-v713-delete="'+esc(item.id)+'">Eliminar</button></div>':'')+
+    (!global?'<div class="v713-item-actions"><button type="button" data-v713-png="'+esc(item.id)+'">PNG</button><button type="button" data-v713-now="'+esc(item.id)+'">Procesar ahora</button><button type="button" data-v713-delete="'+esc(item.id)+'">Eliminar</button></div>':'')+
   '</article>';
 }
 async function loadGlobal(){
@@ -173,7 +177,7 @@ function markup(){
     ['Veteranos 50+','Veteranos 50+']
   ];
   return '<section class="v713-auto v728-auto v729-auto" data-v713-auto>'+
-    '<div class="v713-auto-head"><div><small>AUTOMATIZACIÓN</small><h2>Programador automático de avisos</h2><p>Elige el tipo, la categoría y usa el texto rápido IA para preparar el aviso en segundos.</p></div><span class="v713-live">AUTO</span></div>'+
+    '<div class="v713-auto-head"><div><small>AUTOMATIZACIÓN LOCAL · ADMINISTRACIÓN</small><h2>Programador de avisos</h2><p>Organiza recordatorios desde tu teléfono. Solo un servicio oficial puede publicar para todos automáticamente.</p></div><span class="v713-live">AUTO</span></div>'+
     '<div class="v713-mode-row v728-type-grid">'+Object.entries(TYPES).map(([k,v],i)=>'<button type="button" class="'+(i===0?'active':'')+'" data-v713-type="'+k+'" title="'+esc(v.label)+'">'+esc(v.short||v.label)+'</button>').join('')+'</div>'+
 
     '<section class="v729-editor-card">'+
@@ -210,13 +214,13 @@ function markup(){
 
     '<section class="v729-output-card">'+
       '<div class="v729-card-title"><span>03</span><div><small>SALIDA</small><b>Dónde se publica</b></div></div>'+
-      '<div class="v713-channels v728-channels"><label><input type="checkbox" data-v713-ch="app" checked><span>App</span></label><label><input type="checkbox" data-v713-ch="device" checked><span>Notificación</span></label><label><input type="checkbox" data-v713-ch="png" checked><span>PNG</span></label><label><input type="checkbox" data-v713-ch="facebook"><span>Facebook</span></label></div>'+
+      '<div class="v713-channels v728-channels"><label><input type="checkbox" data-v713-ch="app" checked><span>Este teléfono</span></label><label><input type="checkbox" data-v713-ch="device" checked><span>Notificación local</span></label><label><input type="checkbox" data-v713-ch="png" checked><span>PNG</span></label><label><input type="checkbox" data-v713-ch="facebook"><span>Facebook</span></label></div>'+
       '<div class="v713-actions v728-main-actions"><button type="button" data-v713-smart>Mejorar texto</button><button type="button" data-v713-enable>Notificaciones</button><button type="button" class="primary" data-v713-save>Programar</button></div>'+
     '</section>'+
 
     '<details class="v713-facebook"><summary>Facebook automático / webhook</summary><p>Para publicar automáticamente en Facebook sin exponer la contraseña ni el token, conecta aquí una URL segura de automatización (Meta API, Make, Zapier o servidor propio). Si está vacía, Facebook queda pendiente pero el aviso de la app y el PNG siguen funcionando.</p><input type="url" data-v713-webhook placeholder="https://.../webhook" value="'+esc(localStorage.getItem(WEBHOOK_KEY)||'')+'"><button type="button" data-v713-webhook-save>Guardar conexión</button></details>'+
     '<div class="v713-columns"><div><h3>Programados en este dispositivo</h3><div data-v713-list></div></div><div><h3>Avisos globales publicados</h3><div data-v713-global-list></div></div></div>'+
-    '<p class="v713-footnote">En navegador, los avisos locales se procesan mientras la app/página está abierta o vuelve a activarse. El motor global de GitHub puede publicar avisos del archivo programado aunque este teléfono esté cerrado.</p>'+
+    '<p class="v713-footnote">Estos avisos son LOCALES. Se procesan cuando administración tiene la app abierta o vuelve a activarla. Los globales requieren servicio autenticado: guardar aquí no añade avisos a GitHub ni envía notificaciones push al público.</p>'+
   '</section>';
 }
 function bind(root){
@@ -260,26 +264,38 @@ function bind(root){
     if(!('Notification'in window)){toast('Este navegador no admite notificaciones');return}
     try{const p=await Notification.requestPermission();toast(p==='granted'?'Notificaciones activadas':'Permiso no concedido')}catch(_){toast('No se pudo solicitar permiso')}
   };
-  root.querySelector('[data-v713-webhook-save]').onclick=()=>{localStorage.setItem(WEBHOOK_KEY,root.querySelector('[data-v713-webhook]').value.trim());toast('Conexión guardada en este dispositivo')};
-  root.querySelector('[data-v713-save]').onclick=()=>{
+  root.querySelector('[data-v713-webhook-save]').onclick=async()=>{if(!await authorized()){toast('Solo administración autorizada');return}localStorage.setItem(WEBHOOK_KEY,root.querySelector('[data-v713-webhook]').value.trim());toast('Conexión guardada solo en este dispositivo')};
+  root.querySelector('[data-v713-save]').onclick=async()=>{
+    if(!await authorized()){toast('Solo administración autorizada');return}
     const pub=when(root.querySelector('[data-v713-date]').value,root.querySelector('[data-v713-time]').value);if(!pub){toast('Selecciona fecha y hora');return}
+    if(pub.getTime()<=Date.now()){toast('Selecciona una fecha futura para evitar publicar el aviso por error.');return}
     const mins=Number(root.querySelector('[data-v713-remind]').value||0),channels={};root.querySelectorAll('[data-v713-ch]').forEach(x=>channels[x.dataset.v713Ch]=x.checked);
     const item={id:id(),type,title:root.querySelector('[data-v713-title]').value.trim()||'Aviso importante',body:root.querySelector('[data-v713-body]').value.trim()||'Información importante de la Liga.',category:root.querySelector('[data-v713-category]').value.trim(),publishAt:pub.toISOString(),remindAt:mins?new Date(pub.getTime()-mins*60000).toISOString():'',channels,status:'scheduled',createdAt:new Date().toISOString(),published:false,reminderSent:false};
-    const rows=read();rows.push(item);write(rows);renderLists();toast('Aviso programado');processDue();
+    const rows=read();
+    const repeated=rows.some(old=>!old.published&&old.type===item.type&&
+      old.category===item.category&&old.title===item.title&&old.body===item.body&&
+      Math.abs(Date.parse(old.publishAt||'')-Date.parse(item.publishAt))<300000);
+    if(repeated){toast('Ya existe un aviso igual para esa hora.');return}
+    rows.push(item);write(rows);renderLists();toast('Recordatorio local programado; no se publicará globalmente');processDue();
   };
-  root.addEventListener('click',e=>{
+  root.addEventListener('click',async e=>{
+    if(!await authorized()){toast('Solo administración autorizada');return}
     const png=e.target.closest('[data-v713-png]');if(png){const it=read().find(x=>x.id===png.dataset.v713Png);if(it)makePng(it,true);return}
-    const now=e.target.closest('[data-v713-now]');if(now){const rows=read(),it=rows.find(x=>x.id===now.dataset.v713Now);if(it){it.publishAt=new Date().toISOString();it.forceNow=true;write(rows);processDue(true)}return}
-    const del=e.target.closest('[data-v713-delete]');if(del){write(read().filter(x=>x.id!==del.dataset.v713Delete));renderLists();return}
+    const now=e.target.closest('[data-v713-now]');if(now){const rows=read(),it=rows.find(x=>x.id===now.dataset.v713Now);if(it&&window.confirm('¿Procesar este aviso local ahora? Comprueba el texto y los canales antes de continuar.')){it.publishAt=new Date().toISOString();it.forceNow=true;write(rows);processDue(true)}return}
+    const del=e.target.closest('[data-v713-delete]');if(del){if(window.confirm('¿Eliminar este recordatorio LOCAL de este teléfono?')){write(read().filter(x=>x.id!==del.dataset.v713Delete));renderLists()}return}
   });
 }
 function mount(){
-  const page=document.querySelector('.v63-alerts-page');if(!page||page.querySelector('[data-v713-auto]'))return;
+  const page=document.querySelector('.v63-alerts-page');if(!page)return;
+  const old=page.querySelector('[data-v713-auto]');
+  if(!isAdmin()){old?.remove();return}
+  if(old)return;
   const head=page.querySelector('.v60-tool-head');if(head)head.insertAdjacentHTML('afterend',markup());else page.insertAdjacentHTML('afterbegin',markup());
   const root=page.querySelector('[data-v713-auto]');bind(root);renderLists();loadGlobal();processDue();
 }
 function burst(){mount();setTimeout(mount,80);setTimeout(mount,300)}
 window.addEventListener('hashchange',burst);
+window.addEventListener('liga:admin',burst);
 window.addEventListener('focus',()=>{processDue();loadGlobal()});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){processDue();loadGlobal()}});
 new MutationObserver(()=>{if(['v38Alerts','notifications'].includes(route())||document.querySelector('.v63-alerts-page'))mount()}).observe(document.documentElement,{childList:true,subtree:true});
