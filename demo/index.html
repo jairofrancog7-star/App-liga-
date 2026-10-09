@@ -62,9 +62,9 @@
           '[data-v635-player-open],[data-v635-player-choice],[data-v635-player-close]'
         );
         if(!hit)return;
-        stop(e);
         var api=window.LJR_PERMISSION_BUILDER_API;
         if(!api)return;
+        stop(e);
         var key='';
         if(hit.hasAttribute('data-v635-team-choice'))key='team:'+String(hit.dataset.v635TeamChoice||'');
         else if(hit.hasAttribute('data-v635-team-open'))key='team-open';
@@ -82,7 +82,8 @@
         else if(hit.hasAttribute('data-v635-player-open'))api.openPlayerPicker?.(e);
         else if(hit.hasAttribute('data-v635-player-close'))api.closePlayerPicker?.(e);
       }
-      window.addEventListener('pointerup',handle,true);
+      /* V1054: una sola activación por toque; pointerup abría el modal antes del click
+         y podía cerrarlo inmediatamente sobre el fondo en Chrome Android. */
       window.addEventListener('click',handle,true);
     })();
   </script>
@@ -563,8 +564,8 @@ html body.v587-fantasy-team-open .v576-field-row.por{
 
   <!-- V972: únicamente la iluminación y curvas neón de la cabecera Equipos -->
   <!-- V1009: lienzos de luz AZUL EXCLUSIVOS de Hospitalidad; Siguiendo no se modifica. -->
-  <script type="module" crossorigin src="./assets/index-UQSwEkXt.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-BkxHDyWb.css">
+  <script type="module" crossorigin src="./assets/index-DrnoJchv.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DIGk1tyk.css">
 </head>
 <body>
 <div id="ljr-boot" aria-label="Cargando Liga Juventino" role="status"><i></i></div>
@@ -1211,6 +1212,8 @@ html body.v587-fantasy-team-open .v576-field-row.por{
   <!-- V1051: Estatísticas / Tabla completa — lienzo azul continuo con barra superior. -->
   <!-- V1053: solo cuadros pequeños de competición y simulador: escudos y siglas de 3 letras. -->
   <!-- V1054: Más o menos, tarjetas con arcoíris, proporciones fieles y sin scroll durante juego. -->
+  <!-- V1052: Exportar tabla oficial — barra azul degradada que se funde con la pantalla. -->
+  <!-- V1057: Centro de jornada — degradado azul claro a azul oscuro, unido al fondo. -->
 </body>
 </html>
 
