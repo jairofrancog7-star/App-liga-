@@ -525,6 +525,12 @@ function playerCard(p,data,known,side){
     '<div class="v538-player-stat"><small>Goles</small><strong>'+(known?esc(p.goals):'—')+'</strong></div>'+
   '</article>';
 }
+function v1065CardBack(side){
+  return '<article class="v538-player-card v1065-face-down '+esc(side||'')+'" aria-label="Tarjeta boca abajo, pendiente de revelar">'+
+    '<span class="v1065-back-pattern" aria-hidden="true"><svg viewBox="0 0 50 50" focusable="false">'+
+    '<circle cx="25" cy="25" r="22"/><path d="m25 8 10 8-4 12H19l-4-12zM15 16 6 13 5 12m9-13 9 13 5-12M21 29l4 13 9-13 5-12"/>'+
+    '</svg></span></article>';
+}
 function v538ClearTimers(){
   v538MoreTimers.forEach(function(t){clearTimeout(t)});v538MoreTimers=[];
   if(v538MoreInterval){clearInterval(v538MoreInterval);v538MoreInterval=null}
@@ -550,9 +556,10 @@ function v538StartMoreRound(){
       v538ClearTimers();v543RenderMorePortal();
     }
   },1000);
-  v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken)return;more.phase='first';v543RenderMorePortal()},650));
-  v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken)return;more.phase='both';v543RenderMorePortal()},1350));
-  v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken)return;more.phase='ready';v543RenderMorePortal()},2100));
+  // Ambas cartas empiezan boca abajo. Giros pausados antes de habilitar respuesta.
+  v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken||more.mode!=='game')return;more.phase='first';v543RenderMorePortal()},1250));
+  v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken||more.mode!=='game')return;more.phase='both';v543RenderMorePortal()},3200));
+  v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken||more.mode!=='game')return;more.phase='ready';v543RenderMorePortal()},4450));
 }
 function moreGame(data){
   const pair=morePair(data);
@@ -569,8 +576,10 @@ function moreGame(data){
     '<main class="v538-game-body">'+
       '<div class="v538-game-stage '+esc(more.phase)+'">'+
         '<div class="v538-loading-question">Total de goles en la<br>Liga Juventino Rosas</div>'+
-        (intro?'<div class="v538-stage-placeholder"><span></span><i></i></div>':'')+
-        (!intro?'<div class="v538-player-pair">'+playerCard(pair.a,data,true,'left')+(both?playerCard(pair.b,data,more.answered,more.phase==='both'?'right turning':'right'):'<div class="v538-player-card ghost right" aria-label="Tarjeta volteada; revelando el siguiente jugador"><div class="v538-ghost-avatar" aria-hidden="true"></div></div>')+'</div>':'')+
+        '<div class="v538-player-pair">'+
+          (intro?v1065CardBack('left'):playerCard(pair.a,data,true,'left'))+
+          (both?playerCard(pair.b,data,more.answered,'right'):v1065CardBack('right'))+
+        '</div>'+
       '</div>'+
       '<div class="v538-score-strip"><span><small>Intentos</small><b>'+Array.from({length:Math.max(0,more.attempts)},function(){return '⚽'}).join(' ')+'</b></span><strong class="v538-countdown">'+more.countdown+'</strong><span><small>Puntuación</small><b>'+more.points+' pts</b></span></div>'+
       '<div class="v538-question-zone '+(ready?'show':'')+'">'+
