@@ -142,8 +142,8 @@ function stateFor(m,now=mexicoStamp()){
   if(now<start)return {kind:'scheduled',label:'PRÓXIMO PARTIDO OFICIAL',primary:clock(m.r[8]),secondary:dateOnly(m.r[8])};
   const auto=automaticPhase(m,now);
   if(auto.phase==='first'||auto.phase==='halftime'||auto.phase==='second')return {
-    kind:'window',label:'PARTIDO EN DIRECTO',primary:auto.label,
-    secondary:auto.phase==='halftime'?'Descanso automático':'Cronómetro automático según hora oficial',
+    kind:'pending',label:'EN ESPERA DE CONFIRMACIÓN',primary:'VS',
+    secondary:'Pendiente de confirmación de inicio por operador; horario no equivale a juego en vivo',
     autoPhase:auto.phase};
   return {kind:'pending',label:'PARTIDO FINALIZADO',primary:'FINAL',secondary:'Esperando resultado oficial'};
 }
