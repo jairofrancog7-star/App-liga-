@@ -570,3 +570,25 @@ body.v635-team-picker-open{overflow:hidden!important}
     gap:9px!important;
   }
 }
+
+/* V1055 — El escudo también mantiene tamaño fijo DENTRO del botón del equipo elegido. */
+.v635-team-field .v635-team-select > .v635-team-crest{
+  position:relative!important;display:grid!important;place-items:center!important;
+  flex:0 0 30px!important;box-sizing:border-box!important;
+  width:30px!important;height:30px!important;min-width:30px!important;
+  border:1px solid rgba(69,215,244,.40)!important;
+  border-radius:9px!important;background:#142981!important;
+  overflow:hidden!important;color:#8ceef5!important;
+}
+.v635-team-field .v635-team-select > .v635-team-crest > .v635-team-crest-fallback{
+  position:absolute!important;inset:0!important;display:grid!important;
+  place-items:center!important;font-size:9px!important;font-weight:900!important;
+}
+.v635-team-field .v635-team-select > .v635-team-crest > img{
+  position:absolute!important;inset:2px!important;display:block!important;
+  width:calc(100% - 4px)!important;height:calc(100% - 4px)!important;
+  max-width:100%!important;max-height:100%!important;margin:0!important;padding:0!important;
+  border:0!important;object-fit:contain!important;opacity:0;
+}
+.v635-team-field .v635-team-select > .v635-team-crest.v635-logo-loaded > img{opacity:1!important}
+.v635-team-field .v635-team-select > .v635-team-crest.v635-logo-loaded > .v635-team-crest-fallback{opacity:0!important}
