@@ -5,8 +5,8 @@ import vm from 'node:vm';
 import {credentialPlacement,MM_CARD_H,MM_CARD_W,mmToPt} from '../src/credential-pdf-layout.js';
 function pdfLib(){
  const source=readFileSync(new URL('../src/vendor/pdf-lib-1.17.1.min.js',import.meta.url),'utf8');
- const exports={};
- const sandbox={exports,Uint8Array,ArrayBuffer,DataView,TextEncoder,TextDecoder,Promise,console,setTimeout,clearTimeout,Date,Math,parseInt,parseFloat,Number,String,Boolean,Object,RegExp};
+ const exports={},module={exports};
+ const sandbox={exports,module,Uint8Array,ArrayBuffer,DataView,TextEncoder,TextDecoder,Promise,console,setTimeout,clearTimeout,Date,Math,parseInt,parseFloat,Number,String,Boolean,Object,RegExp};
  vm.runInNewContext(source,sandbox,{timeout:15000});
  return exports;
 }
