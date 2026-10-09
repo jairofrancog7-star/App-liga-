@@ -1,0 +1,161 @@
+/* V1062 - Permisos: sin huecos, herramientas útiles debajo de la vista previa.
+   Todo aislado a permissionBuilder, no modifica tamaños de otros formularios. */
+body[data-app-route="permissionBuilder"] .v635-page{
+ padding-bottom:calc(82px + env(safe-area-inset-bottom))!important;
+}
+body[data-app-route="permissionBuilder"] .v635-preview-column{
+ align-content:start!important;
+ gap:9px!important;
+}
+body[data-app-route="permissionBuilder"] .v635-preview-column [data-v635-preview]:empty{display:none!important}
+body[data-app-route="permissionBuilder"] .v635-preview-empty{
+ min-height:174px!important;
+ padding:16px 14px!important;
+ gap:6px!important;
+ background:linear-gradient(150deg,#121c78 0%,#0b1167 100%)!important;
+ border-color:rgba(47,219,238,.38)!important;
+}
+body[data-app-route="permissionBuilder"] .v635-preview-empty svg{width:36px!important;height:36px!important}
+body[data-app-route="permissionBuilder"] .v635-preview-empty b{font-size:13px!important}
+body[data-app-route="permissionBuilder"] .v635-preview-empty span{font-size:9px!important}
+body[data-app-route="permissionBuilder"] .v635-document{position:relative}
+body[data-app-route="permissionBuilder"] .v1062-qr-print{
+ position:absolute;right:19px;bottom:47px;
+ width:70px;display:grid;justify-items:center;gap:2px;
+ background:#fff;color:#647092;text-align:center
+}
+body[data-app-route="permissionBuilder"] .v1062-qr-print img{
+ display:block;width:66px;height:66px;object-fit:contain;
+ border:1px solid #e0e6f3;border-radius:3px
+}
+body[data-app-route="permissionBuilder"] .v1062-qr-print small{
+ font:600 5.5px/1.25 Arial,sans-serif;color:#5e688a
+}
+body[data-app-route="permissionBuilder"] .v1062-tools{
+ display:grid;align-content:start;gap:9px;
+ padding:12px;
+ border:1px solid rgba(61,210,236,.32);
+ border-radius:17px;
+ background:linear-gradient(165deg,#151e80,#101673 54%,#0b1168);
+ box-shadow:inset 0 1px rgba(255,255,255,.06);
+ color:#f8fbff;
+ font-family:Inter,Roboto,Arial,sans-serif;
+}
+body[data-app-route="permissionBuilder"] .v1062-tools *{box-sizing:border-box;min-width:0}
+body[data-app-route="permissionBuilder"] .v1062-tools>header{
+ display:flex;align-items:center;justify-content:space-between;gap:8px;
+ padding:0 0 8px;border-bottom:1px solid rgba(132,178,252,.2)
+}
+body[data-app-route="permissionBuilder"] .v1062-tools header small{
+ font-size:8px;letter-spacing:.07em;font-weight:900;color:#3dddea
+}
+body[data-app-route="permissionBuilder"] .v1062-tools header h3{
+ font-size:15px;line-height:1.25;margin:3px 0 0;font-weight:850
+}
+body[data-app-route="permissionBuilder"] [data-v1062-count]{
+ border:1px solid rgba(43,225,236,.34);border-radius:30px;
+ padding:6px 8px;color:#bbf4fe;background:rgba(29,223,241,.07);
+ font-size:9px;font-weight:850;white-space:nowrap;
+}
+body[data-app-route="permissionBuilder"] .v1062-quick,
+body[data-app-route="permissionBuilder"] .v1062-sign-buttons{
+ display:grid;grid-template-columns:1fr 1fr;gap:7px;
+}
+body[data-app-route="permissionBuilder"] .v1062-tools button{
+ display:inline-flex;align-items:center;justify-content:center;
+ min-height:36px;padding:7px 8px;
+ border:1px solid rgba(39,217,240,.54);border-radius:10px;
+ color:#fff;background:linear-gradient(125deg,#172c8c,#141976);
+ font:850 10px/1.3 Inter,Roboto,Arial,sans-serif;
+ cursor:pointer;
+}
+body[data-app-route="permissionBuilder"] .v1062-quick button:first-child,
+body[data-app-route="permissionBuilder"] .v1062-sign-buttons button:last-child{
+ background:linear-gradient(130deg,#29dfed,#23c9e3);
+ color:#071762;
+ border-color:#51eaf8;
+}
+body[data-app-route="permissionBuilder"] .v1062-tools button:focus-visible,
+body[data-app-route="permissionBuilder"] .v1062-tools select:focus-visible{
+ outline:2px solid #43deed;outline-offset:2px
+}
+body[data-app-route="permissionBuilder"] .v1062-note,
+body[data-app-route="permissionBuilder"] .v1062-disclaimer{
+ margin:0;color:#afc6e9;font-size:9px;line-height:1.4;
+}
+body[data-app-route="permissionBuilder"] .v1062-alert{
+ display:block;border:1px solid rgba(108,184,242,.24);
+ border-radius:10px;background:rgba(7,13,92,.42);
+ padding:8px 10px;font-size:10px;font-weight:800;color:#b9eaf5;
+}
+body[data-app-route="permissionBuilder"] .v1062-history-head{
+ display:flex;align-items:center;justify-content:space-between;gap:8px;
+}
+body[data-app-route="permissionBuilder"] .v1062-history-head b{font-size:12px}
+body[data-app-route="permissionBuilder"] .v1062-history-head button{
+ min-height:27px;font-size:9px;padding:5px 9px
+}
+body[data-app-route="permissionBuilder"] .v1062-history-items{display:grid;gap:7px}
+body[data-app-route="permissionBuilder"] .v1062-history-row{
+ display:grid;gap:7px;
+ padding:9px;border:1px solid rgba(129,162,238,.24);
+ border-radius:11px;background:rgba(9,15,103,.62);
+}
+body[data-app-route="permissionBuilder"] .v1062-history-copy{display:grid;gap:4px}
+body[data-app-route="permissionBuilder"] .v1062-history-copy b{
+ font-size:11px;overflow-wrap:anywhere
+}
+body[data-app-route="permissionBuilder"] .v1062-history-copy small{
+ font-size:8px;color:#bac9ed;overflow-wrap:anywhere;
+}
+body[data-app-route="permissionBuilder"] .v1062-history-copy em{
+ font-style:normal;color:#48ddec;font-size:9px;font-weight:850
+}
+body[data-app-route="permissionBuilder"] .v1062-history-copy em.soon{color:#ffe28d}
+body[data-app-route="permissionBuilder"] .v1062-history-copy em.expired{color:#ffb1a6}
+body[data-app-route="permissionBuilder"] .v1062-history-actions{
+ display:grid;grid-template-columns:64px minmax(0,1fr) 32px;gap:6px;
+}
+body[data-app-route="permissionBuilder"] .v1062-history-actions button{
+ min-height:31px;font-size:9px
+}
+body[data-app-route="permissionBuilder"] .v1062-history-actions .danger{
+ color:#ffbbc3;border-color:rgba(255,165,176,.36)
+}
+body[data-app-route="permissionBuilder"] .v1062-history-actions select{
+ width:100%;height:31px;padding:0 6px;
+ font-size:9px;color:#fff;background:#0e1779;
+ border:1px solid rgba(66,212,232,.35);border-radius:9px
+}
+body[data-app-route="permissionBuilder"] .v1062-empty{
+ margin:0;border:1px dashed rgba(53,209,239,.28);
+ border-radius:10px;padding:12px;color:#aabde9;font-size:10px;
+}
+body[data-app-route="permissionBuilder"] .v1062-verification,
+body[data-app-route="permissionBuilder"] .v1062-notice{
+ margin:0;border:1px solid rgba(39,220,237,.43);
+ border-radius:10px;padding:10px;background:#0b1b72;
+ color:#dcfbff;font:700 10px/1.5 Inter,Roboto,Arial,sans-serif;
+ overflow-wrap:anywhere;
+}
+body[data-app-route="permissionBuilder"] .v1062-sign-panel{
+ padding:10px;border:1px solid rgba(42,214,235,.42);
+ border-radius:11px;background:#121978;display:grid;gap:8px;
+}
+body[data-app-route="permissionBuilder"] .v1062-sign-panel b{font-size:11px}
+body[data-app-route="permissionBuilder"] .v1062-sign-panel canvas{
+ display:block;width:100%;height:116px;
+ border:1px solid #7183bc;border-radius:8px;background:#fff;
+}
+body[data-app-route="permissionBuilder"] .v1062-tools [hidden]{display:none!important}
+@media(max-width:520px){
+ body[data-app-route="permissionBuilder"] .v1062-tools{padding:11px}
+ body[data-app-route="permissionBuilder"] .v635-document .v1062-qr-print{right:11px;bottom:37px;width:56px}
+ body[data-app-route="permissionBuilder"] .v635-document .v1062-qr-print img{width:54px;height:54px}
+}
+@media print{
+ body.v635-printing .v635-document{position:relative}
+ body.v635-printing .v1062-qr-print{right:.35in!important;bottom:.75in!important;width:.9in!important}
+ body.v635-printing .v1062-qr-print img{width:.82in!important;height:.82in!important}
+ body.v635-printing .v1062-qr-print small{font-size:6px!important}
+}
