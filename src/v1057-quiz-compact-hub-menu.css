@@ -8,6 +8,9 @@ html body[data-app-route="quizArena"].v537-quiz-secondary-open #v612-quiz-portal
   max-width:520px!important;
   margin:0 auto!important;
   padding:0!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
   overflow-x:hidden!important;
   overflow-y:auto!important;
   overscroll-behavior:contain!important;
