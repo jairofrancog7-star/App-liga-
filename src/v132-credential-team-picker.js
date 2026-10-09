@@ -250,7 +250,11 @@ async function enhance(){
 }
 
 let timer=0;function schedule(){clearTimeout(timer);timer=setTimeout(enhance,40)}
-window.addEventListener('hashchange',schedule);
+window.addEventListener('hashchange',()=>{
+  /* Al salir de Registro, liberar cualquier bloqueo de scroll del selector. */
+  closeSheet();
+  schedule();
+});
 window.addEventListener('ljr:official-data',schedule);
 const screen=$('#screen');
 if(screen)new MutationObserver(()=>{
