@@ -298,3 +298,135 @@ html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel 
   top:36px!important;
   bottom:auto!important;
 }
+
+/* V1064: corrección estructural de huecos del formulario de suspensión.
+   Los label usan flujo de bloque estricto, sin filas implícitas ni altura estirada.
+   Solo afecta la ruta suspensionTool y mantiene todos los controles funcionales. */
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-status-grid{
+  margin-top:6px!important;
+  margin-bottom:9px!important;
+  gap:8px!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel{
+  margin-top:9px!important;
+  padding:12px!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel>header{
+  margin-bottom:10px!important;
+  padding-bottom:9px!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:none!important;
+  grid-auto-rows:max-content!important;
+  align-items:start!important;
+  align-content:start!important;
+  row-gap:9px!important;
+  column-gap:9px!important;
+  height:auto!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid > label{
+  display:block!important;
+  position:relative!important;
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-height:none!important;
+  height:auto!important;
+  align-self:start!important;
+  justify-self:stretch!important;
+  flex:none!important;
+  grid-auto-rows:unset!important;
+  grid-template-rows:unset!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  line-height:normal!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid > label > b{
+  box-sizing:border-box!important;
+  display:block!important;
+  position:static!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0 0 6px!important;
+  padding:0!important;
+  line-height:1.25!important;
+  font-size:11px!important;
+  white-space:normal!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid > label > :is(select,input,textarea){
+  box-sizing:border-box!important;
+  display:block!important;
+  float:none!important;
+  clear:both!important;
+  position:relative!important;
+  inset:auto!important;
+  transform:none!important;
+  align-self:auto!important;
+  justify-self:auto!important;
+  width:100%!important;
+  min-width:0!important;
+  margin:0!important;
+  flex:none!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid > label > select,
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid > label > input{
+  height:48px!important;
+  min-height:48px!important;
+  max-height:48px!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid > label > .v1059-field-icon{
+  position:absolute!important;
+  top:35px!important;
+  bottom:auto!important;
+  left:12px!important;
+  display:grid!important;
+  pointer-events:none!important;
+  margin:0!important;
+  transform:none!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid > label.v1059-textarea > .v1059-field-icon{
+  top:36px!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid > label > .v1059-chevron{
+  display:none!important;
+}
+/* No ocultar la flecha funcional del navegador. */
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid > label > select{
+  appearance:auto!important;
+  -webkit-appearance:auto!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid textarea[data-v64-susp-message]{
+  min-height:104px!important;
+  height:104px!important;
+  max-height:240px!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid > .v1062-writer{
+  align-self:start!important;
+  margin:0!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-summary{
+  margin-top:10px!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-actions{
+  margin-top:10px!important;
+  gap:8px!important;
+}
+@media(min-width:760px){
+  html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid > label.wide,
+  html body[data-app-route="suspensionTool"] #screen .v425-suspension .v425-panel .v64-form-grid > .v1062-writer{
+    grid-column:1/-1!important;
+  }
+}
