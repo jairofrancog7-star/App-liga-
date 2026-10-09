@@ -1,37 +1,42 @@
-/* V985 — Más o Menos: flechas fuera de las letras.
-   Ajuste solamente horizontal: conserva título, colores, curvas y controles. */
-body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-curves{
+/* V1000 — Más o Menos: flechas MÁS CERCA del título sin superponer letras.
+   Ajusta solo su ubicación. Mantiene el diseño, tamaño del título y botones.
+   El lienzo se estrecha de 84% a 70%; en teléfonos estrechos se usa 78%. */
+body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-curves {
   left:50%!important;
-  width:84%!important;
+  width:70%!important;
   max-width:none!important;
   transform:translateX(-50%)!important;
   overflow:visible!important;
   pointer-events:none!important;
 }
-body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-curves .up .v12-curve-arrow{
-  right:3px!important;
+/* Flecha verde: al lado derecho de MENOS, no por encima de la S. */
+body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-curves .up .v12-curve-arrow {
+  right:9px!important;
   left:auto!important;
+  top:0!important;
   width:clamp(38px,9vw,58px)!important;
 }
-body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-curves .down .v12-curve-arrow{
-  left:3px!important;
+/* Flecha roja: junto a la izquierda del bloque, ligeramente más arriba. */
+body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-curves .down .v12-curve-arrow {
+  left:15px!important;
   right:auto!important;
+  top:29%!important;
   width:clamp(38px,9vw,58px)!important;
+  transform:translateY(-7px) rotate(180deg)!important;
 }
-/* En celulares angostos el margen es menor, pero las flechas no pisan las letras. */
-@media (max-width:370px){
+/* Los dispositivos angostos necesitan algo más de margen para los trazos. */
+@media(max-width:370px){
   body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-curves{
-    width:92%!important;
+    width:78%!important;
   }
-}
-
-@media (max-width:370px){
   body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-curves .up .v12-curve-arrow{
-    right:2px!important;
+    right:7px!important;
     width:37px!important;
   }
   body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-curves .down .v12-curve-arrow{
-    left:2px!important;
+    left:11px!important;
+    top:31%!important;
     width:37px!important;
+    transform:translateY(-5px) rotate(180deg)!important;
   }
 }
