@@ -15,6 +15,9 @@ concurrency:
 jobs:
   process:
     runs-on: ubuntu-latest
+    timeout-minutes: 12
+    outputs:
+      site_changed: ${{ steps.publish.outputs.site_changed }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,6 +25,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Probar la automatización (sin credenciales reales)
+        run: python -m unittest discover -s .github/scripts -p 'test_process_scheduled_notices.py'
       - name: Instalar generador PNG y cliente HTTP
         run: python -m pip install --disable-pip-version-check pillow requests
       - name: Procesar avisos vencidos
@@ -29,15 +34,70 @@ jobs:
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
           FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
         run: python .github/scripts/process_scheduled_notices.py
-      - name: Publicar cambios
+      - name: Guardar resultados y decidir despliegue
+        id: publish
+        shell: bash
         run: |
-          if git diff --quiet; then
-            echo "Sin avisos por publicar"
+          git add -A public/data/scheduled-notices.json public/data/active-notices.json
+          if [ -d public/generated/notices ]; then
+            git add -A public/generated/notices
+          fi
+          if git diff --cached --quiet; then
+            echo "Sin cambios en avisos programados"
+            echo "site_changed=false" >> "$GITHUB_OUTPUT"
             exit 0
+          fi
+          if git diff --cached --quiet -- public/data/active-notices.json public/generated/notices; then
+            echo "site_changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "site_changed=true" >> "$GITHUB_OUTPUT"
           fi
           git config user.name "Liga Juventino Bot"
           git config user.email "actions@users.noreply.github.com"
-          git add public/data/scheduled-notices.json public/data/active-notices.json public/generated/notices || true
-          git commit -m "auto: publicar avisos programados [skip ci]"
+          git commit -m "auto: procesar avisos programados"
           git pull --rebase origin main
           git push origin HEAD:main
+
+  deploy:
+    # Los commits que usan GITHUB_TOKEN NO disparan el workflow normal de Pages.
+    # Si se creó un aviso global, reconstruir y publicar desde este mismo workflow.
+    needs: process
+    if: needs.process.outputs.site_changed == 'true'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: github-pages-v8-fast
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: package.json
+      - name: Preparar dependencias
+        run: npm install --prefer-offline --no-audit --no-fund
+      - name: Validar el código
+        run: node --test tests/admin-no-code.test.mjs
+      - name: Compilar avisos y la app pública
+        env:
+          VITE_GOOGLE_STREETVIEW_API_KEY: ${{ secrets.GOOGLE_STREETVIEW_API_KEY }}
+        run: npm run build -- --base=/App-liga-/
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./dist
+      - name: Desplegar avisos oficiales
+        id: deployment
+        uses: actions/deploy-pages@v4
