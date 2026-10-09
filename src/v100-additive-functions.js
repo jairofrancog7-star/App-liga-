@@ -882,6 +882,9 @@ async function v196RenderCredentialPreview(){
   /* V496: V480 es el único dueño de la vista previa. Antes este renderer
      antiguo podía pintar "FOTO" encima después de que V480 ya había cargado
      la imagen real del jugador. */
+  /* V1008: la credencial roja V480 ya programa una sola vista previa.
+     Evitar múltiples renderizados asíncronos por cada tecla y cambio. */
+  if(window.LJR_V480?.schedulePreview){window.LJR_V480.schedulePreview(180);return}
   if(window.LJR_V480?.render){window.LJR_V480.render();return}
   const canvas=$('[data-v196-preview-canvas]');if(!canvas)return;
   const seq=++v196PreviewSeq;
