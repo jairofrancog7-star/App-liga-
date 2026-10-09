@@ -1,0 +1,34 @@
+name: Registro local — privacidad y respaldos
+on:
+  push:
+    paths:
+      - 'src/local-registration-core.js'
+      - 'src/v1011-local-registry.js'
+      - 'src/registration-capture.js'
+      - 'src/v124-player-registration.js'
+      - 'src/vendor/dexie-4.0.11.min.js'
+      - 'tests/local-registry-core.test.mjs'
+      - '.github/workflows/local-registration-tests.yml'
+  pull_request:
+    paths:
+      - 'src/local-registration-core.js'
+      - 'src/v1011-local-registry.js'
+      - 'src/registration-capture.js'
+      - 'src/v124-player-registration.js'
+      - 'src/vendor/dexie-4.0.11.min.js'
+      - 'tests/local-registry-core.test.mjs'
+      - '.github/workflows/local-registration-tests.yml'
+permissions:
+  contents: read
+jobs:
+  local-registry:
+    name: Pruebas con datos ficticios
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Ejecutar pruebas de privacidad y restauración
+        run: node --test tests/local-registry-core.test.mjs
