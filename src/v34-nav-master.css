@@ -624,20 +624,13 @@ body[data-app-route="predictor"] .bottom-nav .nav-item[data-route="more"]{
 }
 /* V801_PREDICTOR_OLD_NAV_END */
 
-/* V1005 — Hospitalidad: RESTAURAR EXACTAMENTE la distribución original.
-   ÚNICAMENTE mejorar el fondo difuminado. No cambiar posiciones, tamaños,
-   botones, cabecera, selector Liga/VIP ni campo de invitación. */
+/* V1006 — Hospitalidad: degradado de SOLO dos tonos azules.
+   Diseño y posiciones originales intactos. */
 html.v31-hospitality-active .v31-hospitality-page{
-  background:
-    radial-gradient(ellipse 90% 34% at 34% -5%,rgba(102,203,255,.54) 0%,rgba(21,113,248,.24) 42%,transparent 78%),
-    radial-gradient(ellipse 90% 36% at 86% 10%,rgba(43,141,255,.32) 0%,transparent 76%),
-    radial-gradient(ellipse 98% 40% at 44% 54%,rgba(28,60,191,.20) 0%,transparent 78%),
-    linear-gradient(180deg,#0345ef 0%,#0026c2 18%,#07116f 39%,#030858 68%,#010447 100%)!important;
+  background:linear-gradient(180deg,#1689FF 0%,#060950 100%)!important;
 }
 html.v31-hospitality-active .v31-hospitality-page::before{
-  background:
-    radial-gradient(ellipse 76% 26% at 20% 9%,rgba(112,231,255,.34),transparent 80%),
-    radial-gradient(ellipse 80% 38% at 82% 20%,rgba(57,137,255,.24),transparent 84%)!important;
-  filter:blur(30px)!important;
-  opacity:.74!important;
+  background:none!important;
+  filter:none!important;
+  opacity:0!important;
 }
