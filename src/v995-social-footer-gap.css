@@ -1,0 +1,26 @@
+/* V995 — Eliminar la franja vacia al final de la tarjeta Facebook
+   (Ver publicaciones / Compartir). No modificar iconos, alto ni posicion
+   de la barra inferior; su espacio seguro ya se reserva en .app-shell. */
+@media (max-width:1023px) {
+  /* Noticias: .v412-shell reservaba 118px adicionales bajo los botones. */
+  html body[data-app-route="news"] #screen .v412-shell[data-v412-screen="news"] {
+    margin-bottom:12px!important;
+  }
+
+  /* Historia: la tarjeta Facebook puede ser el ultimo elemento de su panel.
+     La reserva adicional de 118px duplica el espacio de la barra fija. */
+  html body[data-app-route="history"] #screen .v35-history-page:has([data-v74-facebook-source="history"]) {
+    padding-bottom:12px!important;
+  }
+
+  /* Herramientas de Liga: solo si Facebook es la ultima tarjeta. */
+  html body[data-app-route="leagueTools"] #screen .v60-tool-page:has(> [data-v74-facebook-source="tools"]:last-child) {
+    padding-bottom:12px!important;
+  }
+
+  /* El borde de la ultima tarjeta no debe sumar margenes de mas. */
+  html body[data-app-route="history"] #screen .v351-history-panel.is-active > [data-v74-facebook-source="history"]:last-child,
+  html body[data-app-route="leagueTools"] #screen .v60-tool-page > [data-v74-facebook-source="tools"]:last-child {
+    margin-bottom:8px!important;
+  }
+}
