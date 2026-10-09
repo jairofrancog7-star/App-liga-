@@ -156,3 +156,19 @@ html body.v32-rankings-active.v991-rankings-compact #screen .v32-head-unified .v
 @media(prefers-reduced-motion:reduce){
 html body.v32-rankings-active #screen .v32-head.v32-head-unified{transition:none!important}
 }
+
+/* With a selected category, do not push the filter icon to a third row. */
+@media(max-width:1023px){
+html body.v32-rankings-active #screen .v32-controls.clubs.has-club-filter>.v32-coefficient{
+grid-column:1!important;grid-row:1!important
+}
+html body.v32-rankings-active #screen .v32-controls.clubs.has-club-filter>.v32-season-select{
+grid-column:2!important;grid-row:1!important
+}
+html body.v32-rankings-active #screen .v32-controls.clubs.has-club-filter>.v32-filter{
+grid-column:3!important;grid-row:1!important
+}
+html body.v32-rankings-active #screen .v32-controls.clubs.has-club-filter>.v32-selected-club{
+grid-column:1 / -1!important;grid-row:2!important;justify-self:start!important
+}
+}
