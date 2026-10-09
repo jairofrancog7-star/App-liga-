@@ -592,3 +592,80 @@ body.v635-team-picker-open{overflow:hidden!important}
 }
 .v635-team-field .v635-team-select > .v635-team-crest.v635-logo-loaded > img{opacity:1!important}
 .v635-team-field .v635-team-select > .v635-team-crest.v635-logo-loaded > .v635-team-crest-fallback{opacity:0!important}
+
+
+/* V1056 — Permisos: acabado azul/cyan moderno, sin alterar ancho/alto
+   de campos, botones, tarjetas, columnas ni vista previa. Sólo esta ruta. */
+body[data-app-route="permissionBuilder"] .v635-form{
+  background:linear-gradient(163deg,#121a7c 0%,#111573 53%,#0b1066 100%);
+  border-color:rgba(83,122,226,.38);
+  box-shadow:inset 0 1px 0 rgba(197,223,255,.09),0 10px 30px rgba(0,4,53,.12);
+}
+body[data-app-route="permissionBuilder"] .v635-head{
+  background:linear-gradient(156deg,#132584 0%,#0d136f 72%,#0b0e64 100%);
+  border-color:rgba(58,218,243,.32);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07);
+}
+body[data-app-route="permissionBuilder"] .v635-form-title{
+  border-bottom-color:rgba(76,195,250,.22);
+}
+body[data-app-route="permissionBuilder"] .v635-form-title.authority{
+  border-bottom-color:rgba(39,224,239,.34);
+}
+body[data-app-route="permissionBuilder"] .v635-form label>span{
+  color:#d9e8ff;
+}
+body[data-app-route="permissionBuilder"] .v635-form label>small{
+  color:#9baee0;
+}
+body[data-app-route="permissionBuilder"] .v635-form :is(input:not([type="file"]):not([type="hidden"]),select,textarea){
+  border-color:rgba(98,145,237,.38);
+  background-color:#0c146e;
+  color:#f3f6ff;
+  box-shadow:inset 0 1px 2px rgba(1,5,53,.19);
+  transition:border-color .15s ease,box-shadow .15s ease;
+}
+body[data-app-route="permissionBuilder"] .v635-form input::placeholder,
+body[data-app-route="permissionBuilder"] .v635-form textarea::placeholder{
+  color:#939ec8;
+  opacity:1;
+}
+body[data-app-route="permissionBuilder"] .v635-form select{
+  -webkit-appearance:none;
+  appearance:none;
+  padding-right:34px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2334e4ef' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"),linear-gradient(145deg,#121b79 0%,#0b1167 100%);
+  background-repeat:no-repeat,no-repeat;
+  background-position:right 11px center,center;
+  background-size:16px 16px,cover;
+  cursor:pointer;
+}
+body[data-app-route="permissionBuilder"] .v635-form :is(input,select,textarea):focus-visible{
+  outline:0;
+  border-color:#28ddea;
+  box-shadow:0 0 0 2px rgba(35,218,236,.15),inset 0 1px 2px rgba(1,5,53,.15);
+}
+body[data-app-route="permissionBuilder"] .v635-form [data-v635-signer][hidden],
+body[data-app-route="permissionBuilder"] .v635-form [data-v635-field-other][hidden]{
+  display:none!important;
+}
+body[data-app-route="permissionBuilder"] .v635-form [data-v635-signer]:not([hidden]),
+body[data-app-route="permissionBuilder"] .v635-form [data-v635-field-other]:not([hidden]){
+  border-color:rgba(36,224,236,.62);
+}
+body[data-app-route="permissionBuilder"] .v635-ai-box{
+  background:linear-gradient(150deg,#172386,#101773);
+  border-color:rgba(31,210,239,.46);
+}
+body[data-app-route="permissionBuilder"] .v635-actions button.primary,
+body[data-app-route="permissionBuilder"] .v635-ai-box button{
+  background:linear-gradient(105deg,#27dce8 0%,#22d1e2 100%);
+  border-color:rgba(81,243,250,.53);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.26);
+}
+body[data-app-route="permissionBuilder"] .v635-actions button:not(.primary){
+  background:linear-gradient(150deg,#172581,#121772);
+}
+@media(prefers-reduced-motion:reduce){
+  body[data-app-route="permissionBuilder"] .v635-form :is(input,select,textarea){transition:none}
+}
