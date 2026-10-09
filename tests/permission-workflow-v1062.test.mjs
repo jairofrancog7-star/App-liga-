@@ -76,3 +76,11 @@ test('sin huecos y con firma dibujada; los exportadores conservan QR',()=>{
  assert.ok(index.includes('src/v1062-permission-workflow.js'));
  assert.ok(index.includes('src/v1062-permission-workflow.css'));
 });
+
+test('V1066 elimina la cola inferior del formulario y no tapa la navegación fija',()=>{
+  assert.match(css,/V1066 — Cola inferior real/);
+  assert.match(css,/html body\[data-app-route="permissionBuilder"\] \.app-shell\{\s*padding-bottom:0!important/);
+  assert.match(css,/html body\[data-app-route="permissionBuilder"\] #screen\{[\s\S]*?padding-bottom:calc\(var\(--v34-nav-h,69px\) \+ 3px\)!important/);
+  assert.match(css,/html body\[data-app-route="permissionBuilder"\] #screen \.v635-page\{[\s\S]*?padding-bottom:0!important/);
+  assert.ok(index.includes('v1066-bottom-tail-once'));
+});
