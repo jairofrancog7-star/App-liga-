@@ -3,6 +3,35 @@ const V31_HOSPITALITY_LOGO = './assets/reference/predictor-v36/liga-crest-white.
 function v31HospitalityMarkup(){
   return `
   <section class="v31-hospitality-page" aria-label="Hospitalidad">
+    <!-- Sólo decoración: mantiene el diseño original y no captura pulsaciones. -->
+    <svg class="v31-hospitality-lienzos" viewBox="0 0 690 415" preserveAspectRatio="xMidYMin slice" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="v31-lienzo-azul" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#6bd9ff" stop-opacity=".07"/>
+          <stop offset="42%" stop-color="#3999fc" stop-opacity=".72"/>
+          <stop offset="100%" stop-color="#3048a4" stop-opacity=".10"/>
+        </linearGradient>
+        <linearGradient id="v31-lienzo-cian" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0%" stop-color="#00b8e7" stop-opacity=".16"/>
+          <stop offset="48%" stop-color="#5bceff" stop-opacity=".60"/>
+          <stop offset="100%" stop-color="#2b73bc" stop-opacity=".09"/>
+        </linearGradient>
+        <linearGradient id="v31-lienzo-oro" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#b9a578" stop-opacity=".03"/>
+          <stop offset="52%" stop-color="#d0ae7c" stop-opacity=".35"/>
+          <stop offset="100%" stop-color="#ae8fa3" stop-opacity=".03"/>
+        </linearGradient>
+      </defs>
+      <g fill="none" stroke-linecap="round">
+        <path d="M-100 230 C55 141 171 24 333-55" stroke="url(#v31-lienzo-cian)" stroke-width="3"/>
+        <path d="M-56 337 C92 225 202 154 411 9 S619 -37 747 50" stroke="url(#v31-lienzo-azul)" stroke-width="2.1"/>
+        <path d="M-44 57 C122 -40 259 2 365 53 S601 154 746 107" stroke="url(#v31-lienzo-azul)" stroke-width="1.4" opacity=".8"/>
+        <path d="M-65 345 C91 402 250 374 425 296 S630 252 761 329" stroke="url(#v31-lienzo-oro)" stroke-width="2.5"/>
+        <path d="M-55 388 C125 307 267 296 400 334 S629 380 730 292" stroke="url(#v31-lienzo-cian)" stroke-width="2" opacity=".7"/>
+        <path d="M73 220 C92 137 204 117 338 140 S608 192 612 275 S443 391 253 345 S55 286 73 220Z" stroke="url(#v31-lienzo-azul)" stroke-width="3.6" opacity=".58"/>
+        <path d="M78 230 C97 151 221 130 351 156 S583 203 586 267" stroke="url(#v31-lienzo-oro)" stroke-width="1.25" opacity=".5"/>
+      </g>
+    </svg>
     <header class="v774-hospitality-head"><button type="button" class="v31-back" data-v31-back aria-label="Volver">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
     </button>
@@ -89,14 +118,14 @@ function v31BindHospitality(){
 
 // Only Hospitalidad's original background and Android/PWA upper system bar.
 // Neither the header nor the invitation controls are repositioned.
-const V31_HOSPITALITY_BG='linear-gradient(180deg, #10387F 0%, #050A48 100%)';
+const V31_HOSPITALITY_BG='linear-gradient(180deg, #0C2968 0%, #07174F 36%, #040A3C 100%)';
 let v31OriginalThemeColor=null;
 function v31SyncHospitalityTheme(active){
   const theme=document.querySelector('meta[name="theme-color"]');
   if(!theme)return;
   if(active){
     if(v31OriginalThemeColor===null)v31OriginalThemeColor=theme.getAttribute('content')||'#000144';
-    if(theme.content!=='#10387F')theme.setAttribute('content','#10387F');
+    if(theme.content!=='#0C2968')theme.setAttribute('content','#0C2968');
   }else if(v31OriginalThemeColor!==null){
     theme.setAttribute('content',v31OriginalThemeColor);
     v31OriginalThemeColor=null;
