@@ -1,0 +1,62 @@
+/* V996 — Máximo goleador: sin franja azul enorme entre el último
+   jugador del ranking y el siguiente panel.
+   No altera goles, rostros, escudos ni navegación global. */
+@media (max-width:1023px) {
+  html body[data-app-route="scorers"] #app #screen > .v28-scorers-page {
+    min-height:0!important;
+    height:auto!important;
+    max-height:none!important;
+    padding-bottom:12px!important;
+    margin-bottom:0!important;
+  }
+
+  html body[data-app-route="scorers"] #screen
+    :is(.v194-scorers,.v391-reference,.v391-category-body,.v462-lower-ranking,
+        .v462-rank-card,.v462-rank-list,.v391-ranking) {
+    min-height:0!important;
+    height:auto!important;
+    max-height:none!important;
+  }
+
+  html body[data-app-route="scorers"] #screen .v462-lower-ranking {
+    margin-top:8px!important;
+    margin-bottom:10px!important;
+    padding-top:0!important;
+    padding-bottom:0!important;
+  }
+
+  html body[data-app-route="scorers"] #screen .v194-source {
+    margin-top:8px!important;
+    margin-bottom:6px!important;
+    min-height:0!important;
+  }
+
+  /* Banner posterior: evita la altura artificial de 430px si su medio
+     no carga. Su texto y botones siguen a la vista. */
+  html body[data-app-route="scorers"] #screen
+    .v28-scorers-page > .v73-below-native[data-v73-motion-banner] {
+    min-height:0!important;
+    height:auto!important;
+    margin:10px 12px 12px!important;
+    padding:0!important;
+  }
+  html body[data-app-route="scorers"] #screen
+    .v28-scorers-page > .v73-below-native .v73-motion-inner {
+    min-height:230px!important;
+    height:auto!important;
+    padding:20px 16px 16px!important;
+  }
+
+  /* Paneles siguientes: separados sólo lo necesario. */
+  html body[data-app-route="scorers"] #screen > 
+    :is(#v105-bottom,.v105-bottom,.v73-below-native,.v412-shell,.v413-shell) {
+    margin-top:10px!important;
+  }
+}
+
+@media(max-width:390px){
+  html body[data-app-route="scorers"] #screen
+    .v28-scorers-page > .v73-below-native .v73-motion-inner{
+    min-height:210px!important;
+  }
+}
