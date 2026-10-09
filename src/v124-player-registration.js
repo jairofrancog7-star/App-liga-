@@ -2904,8 +2904,10 @@ function bindCredentialAutoSave(){
 let t=0,lastScrollAt=0;
 const noteScrolling=()=>{lastScrollAt=Date.now()};
 window.addEventListener('scroll',noteScrolling,{passive:true});
+/* El scroll puede ocurrir en #screen, #app o un contenedor móvil interno. */
+document.addEventListener('scroll',noteScrolling,{capture:true,passive:true});
+document.addEventListener('touchmove',noteScrolling,{capture:true,passive:true});
 const screen=$('#screen');
-screen?.addEventListener('scroll',noteScrolling,{passive:true});
 function schedule(){
   clearTimeout(t);
   const wait=Math.max(160,550-(Date.now()-lastScrollAt));
