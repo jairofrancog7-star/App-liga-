@@ -2,8 +2,8 @@
    Alcance ESTRICTO: portal del juego. El hub/Clasificaciones sigue desplazable.
    No altera fotografías, datos oficiales, selección, puntuaciones ni barra inferior. */
 html body #v543-moreless-portal:has(> .v551-more-reference-game){
-  --ml54-card-h:clamp(176px,30dvh,236px);
-  --ml54-photo:clamp(86px,17.5dvh,128px);
+  --ml54-card-h:clamp(222px,37.5dvh,270px);
+  --ml54-photo:clamp(100px,18dvh,126px);
   position:fixed!important;
   top:0!important;
   bottom:calc(var(--v34-nav-h,69px) + env(safe-area-inset-bottom))!important;
@@ -124,8 +124,8 @@ html body #v543-moreless-portal .v551-more-reference-game .v538-player-card.ghos
   max-height:100%!important;
   padding:0!important;
   margin:0!important;
-  border:3px solid transparent!important;
-  border-radius:17px!important;
+  border:1.5px solid transparent!important;
+  border-radius:16px!important;
   background:
     linear-gradient(#0c105a,#0c105a) padding-box,
     conic-gradient(from 20deg,
@@ -155,16 +155,20 @@ html body #v543-moreless-portal .v551-more-reference-game .v538-player-image{
 html body #v543-moreless-portal .v551-more-reference-game .v538-player-image .v538-person{
   display:block!important;
   flex:0 0 auto!important;
-  width:min(var(--ml54-photo),95%)!important;
-  height:min(var(--ml54-photo),95%)!important;
-  max-width:95%!important;
-  max-height:95%!important;
+  width:min(var(--ml54-photo),calc(100% - 8px))!important;
+  height:min(var(--ml54-photo),calc(100% - 8px))!important;
+  max-width:calc(100% - 8px)!important;
+  max-height:calc(100% - 8px)!important;
   margin:0 auto!important;
   padding:0!important;
   border-radius:50%!important;
+  aspect-ratio:1/1!important;
+  flex-shrink:0!important;
+  min-width:0!important;
+  min-height:0!important;
   overflow:hidden!important;
   background:#f8f8fa!important;
-  box-shadow:0 0 0 2px rgba(255,255,255,.65)!important;
+  box-shadow:0 0 0 1.5px rgba(255,255,255,.75)!important;
 }
 html body #v543-moreless-portal .v551-more-reference-game .v538-player-image .v538-person.has-photo>img{
   display:block!important;
@@ -188,20 +192,20 @@ html body #v543-moreless-portal .v551-more-reference-game .v538-player-image .v5
 }
 html body #v543-moreless-portal .v551-more-reference-game .v538-player-name{
   box-sizing:border-box!important;
-  flex:0 0 50px!important;
+  flex:0 0 46px!important;
   display:flex!important;
   align-items:center!important;
   justify-content:center!important;
   flex-direction:column!important;
-  height:50px!important;
+  height:46px!important;
   min-height:0!important;
-  max-height:50px!important;
+  max-height:46px!important;
   padding:3px 5px!important;
   overflow:hidden!important;
   background:#0a0b53!important;
 }
 html body #v543-moreless-portal .v551-more-reference-game .v538-player-name b{
-  font-size:clamp(10px,3.3vw,13px)!important;
+  font-size:clamp(10px,3vw,12px)!important;
   line-height:1.09!important;
   font-weight:800!important;
   max-width:100%!important;
@@ -216,13 +220,13 @@ html body #v543-moreless-portal .v551-more-reference-game .v538-player-name smal
 }
 html body #v543-moreless-portal .v551-more-reference-game .v538-player-stat{
   box-sizing:border-box!important;
-  flex:0 0 35px!important;
+  flex:0 0 33px!important;
   display:flex!important;
   align-items:center!important;
   justify-content:space-between!important;
-  height:35px!important;
+  height:33px!important;
   min-height:0!important;
-  max-height:35px!important;
+  max-height:33px!important;
   width:100%!important;
   padding:0 9px!important;
   margin:0!important;
@@ -233,7 +237,7 @@ html body #v543-moreless-portal .v551-more-reference-game .v538-player-stat smal
   font-size:11px!important;
 }
 html body #v543-moreless-portal .v551-more-reference-game .v538-player-stat strong{
-  font-size:18px!important;
+  font-size:17px!important;
 }
 html body #v543-moreless-portal .v551-more-reference-game .v538-player-card.ghost{
   opacity:.85!important;
@@ -270,11 +274,11 @@ html body #v543-moreless-portal .v551-more-reference-game .v538-score-strip b{
 }
 html body #v543-moreless-portal .v551-more-reference-game .v538-countdown{
   box-sizing:border-box!important;
-  width:46px!important;
-  height:46px!important;
+  width:39px!important;
+  height:39px!important;
   border:3px solid #fc3b8b!important;
   border-radius:50%!important;
-  font-size:17px!important;
+  font-size:15px!important;
 }
 /* Respuestas y botones: visibles EN LA MISMA pantalla siempre. */
 html body #v543-moreless-portal .v551-more-reference-game .v538-question-zone{
@@ -303,7 +307,7 @@ html body #v543-moreless-portal .v551-more-reference-game .v538-question-zone h2
   width:100%!important;
   padding:0 6px!important;
   margin:0 0 11px!important;
-  font-size:clamp(13px,3.7vw,16px)!important;
+  font-size:clamp(12px,3.35vw,14px)!important;
   line-height:1.2!important;
   text-align:center!important;
 }
@@ -318,12 +322,12 @@ html body #v543-moreless-portal .v551-more-reference-game .v531-more-buttons{
 }
 html body #v543-moreless-portal .v551-more-reference-game .v531-more-buttons button{
   box-sizing:border-box!important;
-  height:clamp(50px,8.5dvh,62px)!important;
+  height:clamp(45px,7.1dvh,54px)!important;
   min-height:0!important;
-  max-height:62px!important;
+  max-height:54px!important;
   padding:0!important;
   border-radius:10px!important;
-  font-size:29px!important;
+  font-size:0!important;
   box-shadow:none!important;
   touch-action:manipulation!important;
 }
@@ -429,8 +433,8 @@ html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage:not(.
 /* Móviles bajos: recortar elementos DECORATIVOS antes que contenido funcional. */
 @media(max-height:650px){
   html body #v543-moreless-portal:has(> .v551-more-reference-game){
-    --ml54-card-h:clamp(156px,29dvh,201px);
-    --ml54-photo:clamp(69px,16dvh,102px);
+    --ml54-card-h:clamp(190px,34dvh,230px);
+    --ml54-photo:clamp(86px,17dvh,114px);
   }
   html body #v543-moreless-portal .v551-more-reference-game .v538-game-head{
     height:51px!important;flex-basis:51px!important;max-height:51px!important;
@@ -468,8 +472,8 @@ html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage:not(.
 }
 @media(max-height:490px){
   html body #v543-moreless-portal:has(> .v551-more-reference-game){
-    --ml54-card-h:clamp(120px,26dvh,160px);
-    --ml54-photo:clamp(56px,14dvh,75px);
+    --ml54-card-h:clamp(126px,29dvh,170px);
+    --ml54-photo:clamp(55px,14dvh,80px);
   }
   html body #v543-moreless-portal .v551-more-reference-game .v538-game-head{
     height:41px!important;flex-basis:41px!important;max-height:41px!important;
@@ -484,4 +488,133 @@ html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage:not(.
   html body #v543-moreless-portal .v551-more-reference-game .v538-player-name{flex-basis:37px!important;height:37px!important;max-height:37px!important}
   html body #v543-moreless-portal .v551-more-reference-game .v538-player-stat{flex-basis:26px!important;height:26px!important;max-height:26px!important}
   html body #v543-moreless-portal .v551-more-reference-game .v531-more-buttons button{height:43px!important}
+}
+
+/* V1055 — ajuste visual de la imagen 2: círculo VERDADERO y sin distorsión
+   causada por porcentajes independientes de alto/ancho en la fotografía. */
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-image .v538-person{
+  box-sizing:border-box!important;
+  aspect-ratio:1 / 1!important;
+  display:block!important;
+  width:var(--ml54-photo)!important;
+  height:var(--ml54-photo)!important;
+  min-width:var(--ml54-photo)!important;
+  min-height:var(--ml54-photo)!important;
+  max-width:min(90%,var(--ml54-photo))!important;
+  max-height:min(90%,var(--ml54-photo))!important;
+  flex:0 0 auto!important;
+  transform:none!important;
+  border-radius:50%!important;
+  overflow:hidden!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-image .v538-person>img{
+  box-sizing:border-box!important;
+  display:block!important;
+  width:100%!important;height:100%!important;
+  min-width:100%!important;min-height:100%!important;
+  max-width:100%!important;max-height:100%!important;
+  object-fit:cover!important;
+  object-position:center 32%!important;
+  aspect-ratio:1/1!important;
+  border-radius:50%!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+}
+/* Un único símbolo blanco por botón; el texto sigue como nombre accesible. */
+html body #v543-moreless-portal .v551-more-reference-game .v531-more-buttons button{
+  position:relative!important;
+  display:grid!important;
+  place-items:center!important;
+  line-height:1!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v531-more-buttons button::after{
+  content:""!important;
+  display:block!important;
+  width:19px!important;
+  height:15px!important;
+  background:#fff!important;
+  clip-path:polygon(0 12%,100% 12%,50% 92%)!important;
+  border-radius:2px!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v531-more-buttons button.more::after{
+  transform:rotate(180deg)!important;
+}
+/* Reverso de tarjeta: mismo tamaño exacto que el anverso. */
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-card.ghost.right{
+  position:relative!important;
+  opacity:1!important;
+  display:grid!important;
+  place-items:center!important;
+  background:
+    repeating-linear-gradient(130deg,transparent 0 21px,rgba(16,101,255,.28) 23px 35px,transparent 36px 49px),
+    linear-gradient(145deg,#09175c,#071a91 48%,#0c1261)!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-card.ghost.right .v538-ghost-avatar{
+  width:70px!important;height:70px!important;
+  max-width:70px!important;max-height:70px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  display:grid!important;place-items:center!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-card.ghost.right .v538-ghost-avatar::after{
+  content:"⚽"!important;
+  display:block!important;
+  font-size:43px!important;
+  line-height:1!important;
+  filter:grayscale(1) brightness(4)!important;
+}
+/* Solo la segunda tarjeta de cada pregunta hace el giro 3D. */
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-pair{
+  perspective:950px!important;
+  transform-style:preserve-3d!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-card.right.turning{
+  position:relative!important;
+  isolation:isolate!important;
+  transform-style:preserve-3d!important;
+  animation:ljrMorelessFlip1055 .68s cubic-bezier(.23,.68,.27,1) both!important;
+  will-change:transform!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-card.right.turning::before{
+  content:"⚽"!important;
+  position:absolute!important;
+  z-index:6!important;
+  inset:0!important;
+  display:grid!important;
+  place-items:center!important;
+  font-size:44px!important;
+  color:#fff!important;
+  background:
+    repeating-linear-gradient(130deg,transparent 0 21px,rgba(16,101,255,.28) 23px 35px,transparent 36px 49px),
+    linear-gradient(145deg,#09175c,#071a91 48%,#0c1261)!important;
+  border-radius:14px!important;
+  backface-visibility:hidden!important;
+  -webkit-backface-visibility:hidden!important;
+  transform:rotateY(180deg) translateZ(1px)!important;
+  pointer-events:none!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-card.right.turning>.v538-player-image,
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-card.right.turning>.v538-player-name,
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-card.right.turning>.v538-player-stat{
+  backface-visibility:hidden!important;
+  -webkit-backface-visibility:hidden!important;
+}
+@keyframes ljrMorelessFlip1055{
+  0%{transform:translateX(19px) rotateY(180deg);opacity:.85}
+  14%{opacity:1}
+  100%{transform:translateX(0) rotateY(0);opacity:1}
+}
+@media(prefers-reduced-motion:reduce){
+  html body #v543-moreless-portal .v551-more-reference-game .v538-player-card.right.turning{
+    animation:none!important;
+  }
+}
+/* Las flechas y el contador encajan incluso en pantallas de poca altura. */
+@media(max-height:650px){
+  html body #v543-moreless-portal .v551-more-reference-game .v531-more-buttons button{max-height:47px!important;height:47px!important}
+  html body #v543-moreless-portal .v551-more-reference-game .v538-countdown{height:36px!important;width:36px!important;font-size:14px!important}
+  html body #v543-moreless-portal .v551-more-reference-game .v538-player-image .v538-person{
+    --ml54-photo:clamp(78px,16.5dvh,109px);
+  }
 }
