@@ -579,7 +579,7 @@ if(target)new MutationObserver(function(){
 }).observe(target,{childList:true,subtree:false});
 document.addEventListener('click',function(event){
   var p=document.querySelector('.v32-popover');if(!p)return;
-  if(event.target.closest('.v32-popover')||event.target.closest('[data-v32-season]'))return;
+  if(event.target.closest('.v32-popover')||event.target.closest('[data-v32-season]')||event.target.closest('[data-v32-info]'))return;
   closePopover();
 });
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
