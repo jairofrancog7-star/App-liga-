@@ -1,0 +1,153 @@
+/* V1067: ajustes pedidos el 09/oct/2026.
+   NO contiene reglas del Simulador: conserva su diseño anterior. */
+
+/* En Más herramientas la guía vertical se distingue igual que en otros módulos. */
+html body[data-app-route="leagueTools"] #screen .v726-tool-section .v726-section-head{
+  position:relative!important;
+  padding-left:clamp(12px,3.3vw,18px)!important;
+}
+html body[data-app-route="leagueTools"] #screen .v726-tool-section .v726-section-head::before{
+  content:""!important;display:block!important;
+  position:absolute!important;left:0!important;top:50%!important;
+  width:5px!important;height:clamp(42px,8vw,58px)!important;
+  border-radius:999px!important;transform:translateY(-50%)!important;
+  background:linear-gradient(180deg,#28efff,#166fe8)!important;
+  box-shadow:0 0 12px rgba(30,190,255,.3)!important;
+  pointer-events:none!important;
+}
+/* Barras reales de desplazamiento: ancho uniforme donde el navegador lo admite. */
+html:has(body[data-app-route="leagueTools"]),
+html body[data-app-route="leagueTools"],
+html body[data-app-route="leagueTools"] #screen{
+  scrollbar-width:auto;
+  scrollbar-color:#448ddc #091468;
+}
+html:has(body[data-app-route="leagueTools"])::-webkit-scrollbar,
+html body[data-app-route="leagueTools"]::-webkit-scrollbar,
+html body[data-app-route="leagueTools"] #screen::-webkit-scrollbar{width:9px}
+html:has(body[data-app-route="leagueTools"])::-webkit-scrollbar-thumb,
+html body[data-app-route="leagueTools"]::-webkit-scrollbar-thumb,
+html body[data-app-route="leagueTools"] #screen::-webkit-scrollbar-thumb{
+  background:#3c8bdf;border:2px solid #08135c;border-radius:12px;
+}
+
+/* Giro real a dos caras: la TARJETA no cambia de posición ni de tamaño.
+   Solo rota el interior sobre un eje vertical fijo. */
+html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage.intro .v538-loading-question,
+html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage:not(.intro) .v538-loading-question,
+html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage.intro .v538-stage-placeholder{
+  display:none!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage.intro .v538-player-pair{
+  display:grid!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-player-card.v1067-flip-card{
+  position:relative!important;display:block!important;
+  box-sizing:border-box!important;perspective:1000px!important;
+  -webkit-perspective:1000px!important;
+  min-width:0!important;width:100%!important;height:100%!important;
+  min-height:0!important;overflow:visible!important;
+  transform:none!important;animation:none!important;
+  border-radius:16px!important;isolation:isolate!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v1067-flip-inner{
+  box-sizing:border-box!important;position:absolute!important;inset:0!important;
+  display:block!important;width:100%!important;height:100%!important;
+  transform-origin:center center!important;transform-style:preserve-3d!important;
+  -webkit-transform-style:preserve-3d!important;
+  will-change:transform;
+  transform:rotateY(0deg);
+  animation:none!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v1067-flip-card.is-open:not(.is-revealing) .v1067-flip-inner{
+  transform:rotateY(180deg)!important;animation:none!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v1067-flip-card.is-revealing .v1067-flip-inner{
+  animation:v1067-clean-flip 1.06s cubic-bezier(.45,0,.17,1) both!important;
+}
+@keyframes v1067-clean-flip{
+  from{transform:rotateY(0deg)}
+  to{transform:rotateY(180deg)}
+}
+html body #v543-moreless-portal .v551-more-reference-game .v1067-flip-side{
+  box-sizing:border-box!important;
+  position:absolute!important;inset:0!important;
+  display:flex!important;flex-direction:column!important;
+  width:100%!important;height:100%!important;
+  margin:0!important;padding:0!important;
+  border-radius:14px!important;overflow:hidden!important;
+  -webkit-backface-visibility:hidden!important;backface-visibility:hidden!important;
+  -webkit-transform-style:flat!important;transform-style:flat!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v1067-flip-back{
+  transform:rotateY(0deg)!important;
+  z-index:2!important;justify-content:center!important;align-items:center!important;
+  border:1.5px solid rgba(109,199,255,.62)!important;
+  background:
+    radial-gradient(ellipse at 50% 29%,rgba(26,128,255,.28),transparent 65%),
+    linear-gradient(155deg,#142fa3 0%,#0c1a7f 43%,#080b4d 100%)!important;
+  box-shadow:inset 0 0 0 4px rgba(10,35,142,.28),inset 0 1px 25px rgba(96,154,255,.07)!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v1067-card-texture{
+  position:absolute!important;inset:7px!important;pointer-events:none!important;
+  border:1px solid rgba(128,175,255,.22)!important;border-radius:10px!important;
+  background:
+    repeating-linear-gradient(45deg,transparent 0 22px,rgba(52,108,217,.075) 23px 24px,transparent 25px 45px),
+    repeating-linear-gradient(-45deg,transparent 0 24px,rgba(53,106,231,.08) 25px 26px,transparent 27px 48px)!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v1067-back-emblem{
+  z-index:1!important;display:grid!important;place-items:center!important;
+  width:clamp(58px,13dvh,88px)!important;height:clamp(58px,13dvh,88px)!important;
+  border:1.5px solid rgba(177,216,255,.7)!important;border-radius:50%!important;
+  background:radial-gradient(circle at 38% 27%,rgba(65,143,254,.30),rgba(4,12,74,.85))!important;
+  box-shadow:0 0 0 6px rgba(67,141,239,.07),0 8px 26px rgba(0,6,56,.24)!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v1067-back-emblem svg{
+  display:block!important;width:64%!important;height:64%!important;
+  fill:none!important;stroke:#f0f6ff!important;stroke-width:2!important;
+  stroke-linecap:round!important;stroke-linejoin:round!important;
+  filter:drop-shadow(0 0 4px rgba(126,202,255,.3))!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v1067-back-brand{
+  position:relative!important;z-index:1!important;
+  margin-top:clamp(11px,2.1vh,18px)!important;
+  color:#e5efff!important;
+  font:800 clamp(8px,2.2vw,11px)/1.28 Inter,Roboto,Arial,sans-serif!important;
+  text-align:center!important;letter-spacing:.08em!important;
+  text-shadow:0 1px 2px rgba(0,4,43,.45)!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v1067-flip-front{
+  z-index:1!important;transform:rotateY(180deg)!important;
+  background:#0d166e!important;
+  border:1px solid rgba(116,175,255,.5)!important;
+  justify-content:stretch!important;align-items:stretch!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v1067-flip-front .v538-player-image{
+  flex:1 1 auto!important;min-height:0!important;width:100%!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v1067-flip-front .v538-player-name,
+html body #v543-moreless-portal .v551-more-reference-game .v1067-flip-front .v538-player-stat{
+  flex:0 0 auto!important;width:100%!important;
+}
+/* Sin la entrada antigua desde la derecha/izquierda, ni rebotes ni escala. */
+html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage.first .v538-player-card.left,
+html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage.both .v538-player-card.right,
+html body #v543-moreless-portal .v551-more-reference-game .v538-game-stage.ready .v538-player-card{
+  animation:none!important;transform:none!important;
+}
+/* Texto legible mientras se voltean las cartas. El reloj no corre hasta "ready". */
+html body #v543-moreless-portal .v551-more-reference-game .v538-question-zone:not(.show){
+  opacity:1!important;transform:none!important;pointer-events:none!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-question-zone:not(.show) h2{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  min-height:0!important;color:#f1f8ff!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-question-zone:not(.show) .v531-more-buttons{
+  visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+}
+@media(prefers-reduced-motion:reduce){
+  html body #v543-moreless-portal .v551-more-reference-game .v1067-flip-card.is-revealing .v1067-flip-inner{
+    animation:none!important;transform:rotateY(180deg)!important;
+  }
+}
