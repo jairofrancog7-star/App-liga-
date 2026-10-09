@@ -36,5 +36,5 @@ test('estilo aislado a Quiz Arena y cache de assets actualizado',()=>{
  assert.match(css,/\.v614-question-media/);
  assert.match(css,/grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
  assert.match(html,/v1050-quiz-modal-reference\.css\?v=/);
- assert.match(html,/v531-quiz-moreless-drive-reference\.js\?v=20261009-v1050-quiz-full-fix/);
+ assert.match(html,/v531-quiz-moreless-drive-reference\.js\?v=20261009-v1051-moreless-flow/);
 });
