@@ -614,11 +614,19 @@ function v12BracketLogo(t){
   if(t.key==='juventino'||t.key==='realjuventino') return '<img src="'+V12_LOGO+'" alt="'+t.name+'" loading="eager" decoding="async">';
   return '<span class="v12-bracket-fallback">'+t.abbr+'</span>';
 }
+function v12BracketShort(t){
+  // Los nombres completos permanecen en los datos; solo el cuadro usa tres caracteres.
+  const code=String(t?.abbr||t?.name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .toUpperCase().replace(/[^A-Z0-9]/g,'');
+  return (code.slice(0,3)||'---').padEnd(3,'-');
+}
 function v12BracketTeamCard(t,mini=false){
-  return '<div class="v12-bracket-team '+(mini?'mini':'')+'">'+
+  const full=String(t.name||'');
+  const safe=full.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  return '<div class="v12-bracket-team '+(mini?'mini':'')+'" title="'+safe+'" aria-label="'+safe+'">'+
     '<small class="v12-bracket-seed">'+(t.seed??'')+'</small>'+
     v12BracketLogo(t)+
-    '<strong>'+t.name+'</strong>'+
+    '<strong class="v1053-bracket-code">'+v12BracketShort(t)+'</strong>'+
     (t.score!==undefined&&t.score!==null?'<b class="v12-bracket-score">'+t.score+'</b>':'')+
   '</div>';
 }
