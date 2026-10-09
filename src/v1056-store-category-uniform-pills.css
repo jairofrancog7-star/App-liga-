@@ -1,0 +1,130 @@
+/* V1056 · Categorías tienda: medidas uniformes, círculo X y azul único.
+   Se limita a la tienda del club, sin modificar el catálogo ni otros menús. */
+html body[data-app-route="club-store"] .v431-store > nav.v431-shop-tabs.v435-shop-tabs {
+  --v1056-navy:#0b0f70;
+  --v1056-pill-height:44px;
+  --v1056-pill-width:146px;
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:9px!important;
+  width:100%!important;
+  min-height:70px!important;
+  height:70px!important;
+  padding:11px 13px!important;
+  margin:0!important;
+  background:var(--v1056-navy)!important;
+  border:0!important;
+  border-bottom:1px solid rgba(117,185,255,.16)!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  scrollbar-width:none!important;
+  scroll-snap-type:x proximity;
+  -webkit-overflow-scrolling:touch!important;
+}
+html body[data-app-route="club-store"] .v431-store > nav.v431-shop-tabs.v435-shop-tabs::-webkit-scrollbar{
+  display:none!important;
+}
+/* Todas las categorías, también si una palabra es más larga, ocupan exactamente
+   el mismo ancho y alto: Para ti / Novedades / Equipaciones / Entrenamiento. */
+html body[data-app-route="club-store"] .v431-store > nav.v431-shop-tabs.v435-shop-tabs > button[data-v436-view],
+html body[data-app-route="club-store"] .v431-store > nav.v431-shop-tabs.v435-shop-tabs > button[data-v431-jump]{
+  box-sizing:border-box!important;
+  flex:0 0 var(--v1056-pill-width)!important;
+  width:var(--v1056-pill-width)!important;
+  min-width:var(--v1056-pill-width)!important;
+  max-width:var(--v1056-pill-width)!important;
+  height:var(--v1056-pill-height)!important;
+  min-height:var(--v1056-pill-height)!important;
+  max-height:var(--v1056-pill-height)!important;
+  padding:0 10px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border:1.5px solid rgba(214,226,255,.38)!important;
+  border-radius:999px!important;
+  border-bottom-width:1.5px!important;
+  box-shadow:none!important;
+  background:transparent!important;
+  color:#d5def8!important;
+  font:750 11px/1.1 Inter,Roboto,Arial,sans-serif!important;
+  text-transform:none!important;
+  white-space:nowrap!important;
+  letter-spacing:0!important;
+  text-align:center!important;
+  scroll-snap-align:start;
+}
+html body[data-app-route="club-store"] .v431-store > nav.v431-shop-tabs.v435-shop-tabs > button[data-v436-view].active{
+  border-color:#fff!important;
+  background:#fff!important;
+  color:#101322!important;
+  font-weight:850!important;
+}
+/* En la categoría abierta se muestra X + solo la categoría activa,
+   conservando las dimensiones exactas de la barra normal. */
+html body[data-app-route="club-store"] .v431-store.v436-category-mode > nav.v431-shop-tabs.v435-shop-tabs{
+  min-height:70px!important;
+  height:70px!important;
+  background:var(--v1056-navy)!important;
+}
+html body[data-app-route="club-store"] .v431-store.v436-category-mode > nav.v431-shop-tabs.v435-shop-tabs > button[data-v436-view]:not(.active),
+html body[data-app-route="club-store"] .v431-store.v436-category-mode > nav.v431-shop-tabs.v435-shop-tabs > button[data-v431-jump]{
+  display:none!important;
+}
+html body[data-app-route="club-store"] .v431-store.v436-category-mode > nav.v431-shop-tabs.v435-shop-tabs > button[data-v436-view].active{
+  display:flex!important;
+  box-sizing:border-box!important;
+  flex:0 0 var(--v1056-pill-width)!important;
+  width:var(--v1056-pill-width)!important;
+  min-width:var(--v1056-pill-width)!important;
+  max-width:var(--v1056-pill-width)!important;
+  min-height:var(--v1056-pill-height)!important;
+  height:var(--v1056-pill-height)!important;
+  max-height:var(--v1056-pill-height)!important;
+  padding:0 10px!important;
+  font:850 11px/1.1 Inter,Roboto,Arial,sans-serif!important;
+  text-transform:uppercase!important;
+  border:1.5px solid #fff!important;
+  border-radius:999px!important;
+  background:#fff!important;
+  color:#101322!important;
+  box-shadow:none!important;
+}
+/* La X tiene el mismo alto de 44px que las pastillas y un diámetro perfecto,
+   sin el fondo blanco accidental que heredaba del primer botón. */
+html body[data-app-route="club-store"] .v431-store > nav.v431-shop-tabs.v435-shop-tabs > button.v436-close{
+  box-sizing:border-box!important;
+  flex:0 0 var(--v1056-pill-height)!important;
+  width:var(--v1056-pill-height)!important;
+  min-width:var(--v1056-pill-height)!important;
+  max-width:var(--v1056-pill-height)!important;
+  height:var(--v1056-pill-height)!important;
+  min-height:var(--v1056-pill-height)!important;
+  max-height:var(--v1056-pill-height)!important;
+  aspect-ratio:1!important;
+  padding:0!important;
+  display:none!important;
+  place-items:center!important;
+  border:1.5px solid rgba(214,226,255,.40)!important;
+  border-radius:50%!important;
+  background:transparent!important;
+  color:#fff!important;
+  font:300 29px/1 Arial,sans-serif!important;
+  text-transform:none!important;
+  box-shadow:none!important;
+}
+html body[data-app-route="club-store"] .v431-store.v436-category-mode > nav.v431-shop-tabs.v435-shop-tabs > button.v436-close{
+  display:grid!important;
+}
+html body[data-app-route="club-store"] .v431-store > nav.v431-shop-tabs.v435-shop-tabs > button:focus-visible{
+  outline:2px solid #5feaff!important;
+  outline-offset:3px!important;
+}
+@media (max-width:360px){
+  html body[data-app-route="club-store"] .v431-store > nav.v431-shop-tabs.v435-shop-tabs{
+    --v1056-pill-width:136px;
+    gap:8px!important;
+    padding-left:10px!important;
+    padding-right:10px!important;
+  }
+}
