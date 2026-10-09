@@ -97,3 +97,95 @@
 .liga-media-modal>section.ljr-admin-child [data-status]{display:block!important;color:#8eeef7!important;font-size:12px!important;line-height:1.45!important;margin:8px 0!important;overflow-wrap:anywhere}
 .liga-media-modal>section.ljr-admin-child video{max-height:42dvh!important;background:#020625!important;border-radius:12px!important}
 @media(max-width:380px){.liga-media-modal>section.ljr-admin-child{padding:12px!important}.liga-media-modal>section.ljr-admin-child .liga-media-actions{grid-template-columns:1fr!important}}
+
+/* V1081 · Ventanas premium exclusivamente administrativas. Mantener eventos y permisos existentes. */
+html body .liga-media-modal:has(>section.ljr-admin-v1081){padding:10px!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;background:rgba(2,5,31,.84)!important;backdrop-filter:blur(7px)}
+html body .liga-media-modal>section.ljr-admin-v1081{
+ box-sizing:border-box!important;position:relative!important;display:block!important;width:min(100%,700px)!important;max-width:700px!important;
+ min-height:0!important;height:auto!important;max-height:91dvh!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain!important;
+ padding:0 15px 16px!important;margin:auto!important;border:1px solid #538be0!important;border-radius:22px!important;
+ background:radial-gradient(circle at 85% 0%,#2378c02a,transparent 45%),linear-gradient(160deg,#122d79,#0d205f 50%,#071447)!important;
+ color:#f4f9ff!important;box-shadow:0 22px 58px #0009!important;font:500 13px/1.43 Inter,Roboto,system-ui,sans-serif!important;
+}
+html body .liga-media-modal>section.ljr-admin-v1081 *{box-sizing:border-box!important;min-width:0}
+html body .liga-media-modal>section.ljr-admin-v1081>header{
+ display:flex!important;align-items:center!important;justify-content:space-between!important;gap:9px!important;position:sticky!important;z-index:7!important;top:0!important;
+ margin:0 -15px 11px!important;padding:13px 15px!important;border-bottom:1px solid #6d9bd454!important;
+ background:linear-gradient(180deg,#14377f,#112667)!important;
+}
+html body .liga-media-modal>section.ljr-admin-v1081>header h2{
+ flex:1!important;margin:0!important;padding:0!important;color:#fff!important;font-size:clamp(19px,4.7vw,24px)!important;
+ font-weight:800!important;line-height:1.17!important;letter-spacing:-.02em!important;overflow-wrap:anywhere!important;
+}
+html body .liga-media-modal>section.ljr-admin-v1081>header [data-close]{
+ flex:0 0 39px!important;width:39px!important;min-width:39px!important;height:39px!important;min-height:39px!important;
+ display:grid!important;place-items:center!important;margin:0!important;padding:0!important;border-radius:12px!important;
+ border:1px solid #5e8ed0!important;background:#112a70!important;color:#82effb!important;font:800 22px/1 system-ui!important;
+}
+html body .liga-media-modal>section.ljr-admin-v1081 :is(button,summary){touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+html body .liga-media-modal>section.ljr-admin-v1081 button:not([data-close]){
+ max-width:100%!important;white-space:normal!important;overflow-wrap:break-word!important;
+ transition:background-color .16s,border-color .16s,transform .16s!important;
+}
+html body .liga-media-modal>section.ljr-admin-v1081 button:not([data-close]):active{transform:scale(.985)!important}
+html body .liga-media-modal>section.ljr-admin-v1081 :is(button,input,select,textarea,summary):focus-visible{outline:2px solid #75e8fa!important;outline-offset:2px!important}
+html body .liga-media-modal>section.ljr-admin-v1081 :is(.cms-form,.ljr-editor-form){display:grid!important;gap:10px!important;margin:8px 0 10px!important}
+html body .liga-media-modal>section.ljr-admin-v1081 :is(.cms-form,.ljr-editor-form) label{
+ display:grid!important;gap:5px!important;margin:0!important;font-size:12.5px!important;font-weight:650!important;color:#dbe9ff!important;
+}
+html body .liga-media-modal>section.ljr-admin-v1081 :is(input:not([type=checkbox]):not([type=radio]),select,textarea){
+ display:block;box-sizing:border-box!important;max-width:100%!important;width:100%!important;min-height:42px!important;
+ margin:0!important;padding:9px 10px!important;border:1px solid #5481be!important;border-radius:11px!important;
+ background:#0b205d!important;color:#fff!important;font:500 13px/1.3 system-ui,sans-serif!important;
+}
+html body .liga-media-modal>section.ljr-admin-v1081 textarea{min-height:76px!important;resize:vertical!important}
+html body .liga-media-modal>section.ljr-admin-v1081 :is(input,textarea)::placeholder{color:#9db8d8!important;opacity:1}
+html body .liga-media-modal>section.ljr-admin-v1081 input[type=color]{height:43px!important;padding:5px!important}
+html body .liga-media-modal>section.ljr-admin-v1081 input[type=file]{font-size:11px!important;overflow:hidden!important;text-overflow:ellipsis!important}
+html body .liga-media-modal>section.ljr-admin-v1081 input[type=file]::file-selector-button{max-width:100%;margin-right:8px;padding:7px 9px;border:1px solid #6cbbde;border-radius:8px;background:#194780;color:#effcff;font-weight:750;cursor:pointer}
+html body .liga-media-modal>section.ljr-admin-v1081 .ljr-admin-upload-name{display:block;margin:3px 0 0!important;color:#8ce9f5!important;font-size:11px!important;overflow-wrap:anywhere}
+html body .liga-media-modal>section.ljr-admin-v1081 :is(.cms-design-two,.ljr-editor-two){gap:8px!important}
+html body .liga-media-modal>section.ljr-admin-v1081 .liga-media-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;margin:9px 0 0!important}
+html body .liga-media-modal>section.ljr-admin-v1081 .liga-media-actions>*{min-width:0!important;margin:0!important}
+html body .liga-media-modal>section.ljr-admin-v1081 :is(.liga-media-actions button,.cms-form>button,[data-pick-element]){
+ min-height:41px!important;margin:0!important;padding:9px 10px!important;border:1px solid #538fce!important;border-radius:11px!important;
+ color:#f0faff!important;background:linear-gradient(140deg,#1a4b91,#173875)!important;font:750 12.5px/1.3 system-ui,sans-serif!important;
+}
+html body .liga-media-modal>section.ljr-admin-v1081 :is(.cms-form>button[type=submit],[data-pick-element]){background:linear-gradient(135deg,#147fac,#1a5797)!important;border-color:#67dfee!important}
+html body .liga-media-modal>section.ljr-admin-v1081 [data-status]{margin:8px 0 0!important;color:#9aedf9!important;font-size:12px!important;overflow-wrap:anywhere!important}
+html body .liga-media-modal>section.ljr-admin-v1081 [data-status]:empty{display:none!important}
+html body .liga-media-modal>section.ljr-admin-v1081 :is(details:not(.ljr-admin-howto),.cms-local-ai){margin:5px 0!important;padding:10px!important;border:1px solid #507bb38c!important;border-radius:12px!important;background:#0c215eaa!important}
+html body .liga-media-modal>section.ljr-admin-v1081 details>summary{cursor:pointer!important;color:#96eefa!important;font-size:12.5px!important;font-weight:700!important}
+html body .liga-media-modal>section.ljr-admin-v1081 .cms-table-wrap{max-width:100%!important;overflow-x:auto!important}
+html body .liga-media-modal>section.ljr-admin-v1081 .cms-table-wrap input{min-width:90px!important}
+html body .liga-media-modal>section.ljr-admin-v1081 .ljr-admin-area{margin:8px 0!important;padding:11px!important}
+html body .liga-media-modal>section.ljr-admin-v1081 button.ljr-admin-tile{min-height:61px!important;padding:9px!important;gap:8px!important;font-size:12px!important}
+html body .liga-media-modal>section.ljr-admin-v1081 .ljr-admin-tile-icon{width:32px!important;height:32px!important;flex-basis:32px!important}
+html body .liga-media-modal>section.ljr-admin-v1081 .ljr-admin-tile-icon svg{width:19px!important;height:19px!important}
+html body .liga-media-modal>section.ljr-admin-v1081 .ljr-admin-section-sub{margin-bottom:8px!important}
+/* Estudio: recomendaciones plegables, buscador y rejilla compacta; las opciones originales siguen funcionales. */
+html body .liga-media-modal>section.ljr-admin-studio .ljr-admin-howto{margin:0 0 10px!important;padding:9px 11px!important;border:1px solid #4c77ba!important;border-radius:11px!important;background:#09225e!important}
+html body .liga-media-modal>section.ljr-admin-studio .cms-design-intro{margin:8px 0 0!important;font-size:12px!important;line-height:1.47!important;color:#caddf5!important}
+html body .liga-media-modal>section.ljr-admin-studio .ljr-admin-preset-tools{display:flex;align-items:center;gap:8px;margin:0 0 8px!important}
+html body .liga-media-modal>section.ljr-admin-studio .ljr-admin-preset-tools input{flex:1!important;min-height:39px!important}
+html body .liga-media-modal>section.ljr-admin-studio .ljr-admin-preset-count{flex:none!important;font-size:11px!important;color:#a6c9eb!important;white-space:nowrap}
+html body .liga-media-modal>section.ljr-admin-studio .cms-design-presets{
+ display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:stretch!important;gap:7px!important;
+ max-height:min(28dvh,250px)!important;overflow-y:auto!important;overscroll-behavior:contain!important;
+ margin:0 0 10px!important;padding:1px 2px 3px 1px!important;
+}
+html body .liga-media-modal>section.ljr-admin-studio .cms-design-presets button{
+ min-height:43px!important;width:100%!important;margin:0!important;padding:8px 9px!important;text-align:left!important;
+ border:1px solid #4c75b7!important;border-radius:11px!important;background:linear-gradient(140deg,#1b4289,#162b71)!important;
+ color:#edf8ff!important;font:700 12px/1.25 system-ui,sans-serif!important;
+}
+html body .liga-media-modal>section.ljr-admin-studio .cms-design-presets button[aria-pressed=true]{background:linear-gradient(140deg,#147aa4,#1a4c91)!important;border-color:#7deaf4!important}
+html body .liga-media-modal>section.ljr-admin-studio .cms-design-presets button[hidden]{display:none!important}
+html body .liga-media-modal>section.ljr-admin-studio .cms-poster-preview{margin:8px 0!important;padding:9px!important;border:1px solid #4775b5!important;border-radius:13px!important;background:#091a4e!important}
+html body .liga-media-modal>section.ljr-admin-studio .cms-poster-preview canvas{display:block!important;max-width:100%!important;height:auto!important;margin:auto!important}
+html body .liga-media-modal>section.ljr-admin-picker{max-width:570px!important}
+html body .liga-media-modal>section.ljr-admin-picker [data-pick-element]{display:block!important;margin-top:8px!important}
+@media(min-width:650px){html body .liga-media-modal>section.ljr-admin-studio .cms-design-presets{grid-template-columns:repeat(3,minmax(0,1fr))!important}html body .liga-media-modal>section.ljr-admin-v1081 .ljr-admin-action-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:380px){html body .liga-media-modal>section.ljr-admin-v1081{padding:0 12px 14px!important}html body .liga-media-modal>section.ljr-admin-v1081>header{margin:0 -12px 10px!important;padding:11px 12px!important}html body .liga-media-modal>section.ljr-admin-v1081>header h2{font-size:18px!important}html body .liga-media-modal>section.ljr-admin-studio .cms-design-presets button{font-size:11px!important;padding:8px!important}}
+@media(max-width:330px){html body .liga-media-modal>section.ljr-admin-v1081 .liga-media-actions{grid-template-columns:1fr!important}}
+@media(prefers-reduced-motion:reduce){html body .liga-media-modal>section.ljr-admin-v1081 button{transition:none!important}}
