@@ -400,7 +400,7 @@ async function mountQuiniela(root){
  if(exportBtn)exportBtn.onclick=async()=>{try{const cv=await reportCanvas(catId,'quiniela',{round});downloadFile(new File([await blob(cv)],filename('quiniela',catId),{type:'image/png'}))}catch(e){notice(e.message)}};
 }
 
-function addEntry(root,route,title){if(root.querySelector('[data-v561-route="'+route+'"]'))return;const b=document.createElement('button');b.type='button';b.className='v561-tool-entry';b.dataset.v561Route=route;b.textContent=title+' ›';b.onclick=()=>location.hash='#/'+route;root.append(b)}
+function addEntry(root,route,title){if(root.querySelector('[data-v561-route="'+route+'"],[data-route="'+route+'"],[data-v668-route="'+route+'"]'))return;const b=document.createElement('button');b.type='button';b.className='v561-tool-entry';b.dataset.v561Route=route;b.textContent=title+' ›';b.onclick=()=>location.hash='#/'+route;root.append(b)}
 function brandExistingExports(){
  const exports=window.CompetitionExports;if(!exports)return;
  for(const key of ['standings','results','calendar','single','stats','team','scorers','bracket']){const original=exports[key];if(typeof original!=='function'||original._v561Branded)continue;const wrapped=async context=>brandPng(await original(context),String(context.category));wrapped._v561Branded=true;exports[key]=wrapped}
