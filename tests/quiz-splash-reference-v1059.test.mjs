@@ -54,3 +54,19 @@ test('activo en GitHub Pages, estadio SVG integrado sin carga externa ni archivo
  assert.ok(!css.includes('url(http'));
  assert.ok(!main.slice(main.indexOf('function quizSplash(){'),main.indexOf('function quizHub(data)')).includes('fetch('));
 });
+
+test('V1063: portada exacta de Drive sin duplicar Android ni bloquear botones',()=>{
+ const fs=readFileSync(new URL('../src/v1063-quiz-drive-pixel-perfect.css',import.meta.url),'utf8');
+ const raw=readFileSync(new URL('../assets/quiz-arena-drive-reference-20261009.jpg',import.meta.url));
+ assert.ok(raw.length>100000);
+ assert.deepEqual([...raw.subarray(0,3)],[0xff,0xd8,0xff]);
+ assert.ok(fs.includes('background-image:url("../assets/quiz-arena-drive-reference-20261009.jpg")'));
+ assert.ok(fs.includes('top:5.32%!important'));
+ assert.ok(fs.includes('background-size:100% 114.34%!important'));
+ assert.ok(fs.includes('height:22.2%!important'));
+ assert.ok(fs.includes('.v1059-answer-art > .v1059-answer'));
+ assert.ok(fs.includes('pointer-events:auto!important'));
+ assert.ok(fs.includes('.v1059-splash-logo:focus-visible'));
+ assert.ok(index.includes('v1063-quiz-drive-pixel-perfect.css'));
+ assert.ok(main.includes("if(t.matches('[data-v531-quiz-start]')){v614StartQuizCountdown();return}"));
+});
