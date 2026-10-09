@@ -131,20 +131,42 @@ function officialPickerPhoto(name,cat,team){
   }catch(_){}
   return registeredPlayerPhoto(name,team);
 }
-function localPickerRecordId(name,cat,team){
-  if(!name||!team)return '';
+function localPickerRecord(name,cat,team){
+  if(!name||!team)return null;
   try{
     const saved=JSON.parse(localStorage.getItem('v124-player-registry')||'{}');
     const season=localStorage.getItem('v124-player-season')||'';
     const rows=saved?.seasons?.[season]||[];
-    if(!Array.isArray(rows))return '';
+    if(!Array.isArray(rows))return null;
     const matches=rows.filter(p=>same(p.name,name)&&same(p.team,team)&&
       (!p.category||!cat||same(p.category,cat)));
-    return matches.length===1?String(matches[0].id||''):'';
-  }catch(_){return ''}
+    return matches.length===1?matches[0]:null;
+  }catch(_){return null}
 }
-function paintPickerPhoto(avatar,url,name){
-  const safe=safePickerPhoto(url);
+function capturedPhotoDatabase(){
+  return new Promise(resolve=>{
+    if(!('indexedDB' in window)){resolve(null);return}
+    const req=indexedDB.open('ljr-registration-media',1);
+    req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('players'))req.result.createObjectStore('players')};
+    req.onsuccess=()=>resolve(req.result);
+    req.onerror=()=>resolve(null);
+  });
+}
+function readCapturedPhoto(database,key){
+  return new Promise(resolve=>{
+    if(!database||!key||!database.objectStoreNames.contains('players')){resolve(null);return}
+    try{
+      const request=database.transaction('players','readonly').objectStore('players').get(key);
+      request.onsuccess=()=>{
+        const blob=request.result?.photo;
+        resolve(blob instanceof Blob&&blob.type.startsWith('image/')?blob:null);
+      };
+      request.onerror=()=>resolve(null);
+    }catch(_){resolve(null)}
+  });
+}
+function paintPickerPhoto(avatar,url,name,objectUrl=false){
+  const safe=objectUrl?String(url||''):safePickerPhoto(url);
   if(!avatar||!safe)return;
   const img=document.createElement('img');
   img.src=safe;
@@ -152,6 +174,11 @@ function paintPickerPhoto(avatar,url,name){
   img.loading='lazy';
   img.decoding='async';
   img.referrerPolicy='no-referrer';
+  if(objectUrl){
+    const release=()=>URL.revokeObjectURL(safe);
+    img.addEventListener('load',release,{once:true});
+    img.addEventListener('error',release,{once:true});
+  }
   img.addEventListener('error',()=>{
     if(!avatar.contains(img))return;
     avatar.textContent=String(name||'').trim().slice(0,1).toUpperCase()||'•';
@@ -170,21 +197,37 @@ function hydratePickerPhotos(host,cat,team){
     const src=officialPickerPhoto(name,cat,team);
     if(src)paintPickerPhoto(avatar,src,name);
   }
-  // Fotos privadas del teléfono: busca solo IDs del jugador/equipo/temporada.
-  const api=window.LJR_V563_PHOTOS;
-  if(typeof api?.get!=='function')return;
+  // Registro más reciente (Blob privado) y fotos de temporadas anteriores (JPEG local).
   (async()=>{
-    for(const button of buttons){
-      const name=button.dataset.v635PlayerChoice||'';
-      const avatar=button.querySelector('.v635-player-avatar');
-      if(!avatar||avatar.classList.contains('v1052-has-photo')||!host.contains(button))continue;
-      const id=localPickerRecordId(name,cat,team);
-      if(!id)continue;
-      let record=null;
-      try{record=await api.get(id)}catch(_){}
-      if(!host.contains(button)||!record||!same(record.name,name)||!same(record.team,team))continue;
-      if(!avatar.classList.contains('v1052-has-photo'))paintPickerPhoto(avatar,record.dataUrl,name);
-    }
+    const local=buttons.map(button=>({
+      button,record:localPickerRecord(button.dataset.v635PlayerChoice||'',cat,team)
+    })).filter(entry=>entry.record);
+    if(!local.length)return;
+    let database=null;
+    try{
+      database=await capturedPhotoDatabase();
+      const api=window.LJR_V563_PHOTOS;
+      for(const {button,record} of local){
+        if(!host.contains(button))continue;
+        const name=button.dataset.v635PlayerChoice||'';
+        const avatar=button.querySelector('.v635-player-avatar');
+        if(!avatar||!same(record.name,name)||!same(record.team,team))continue;
+        const photo=await readCapturedPhoto(database,record.assetKey||record.id);
+        if(!host.contains(button))continue;
+        if(photo){
+          const url=URL.createObjectURL(photo);
+          paintPickerPhoto(avatar,url,name,true);
+          continue;
+        }
+        if(typeof api?.get==='function'){
+          let previous=null;
+          try{previous=await api.get(record.id)}catch(_){}
+          if(host.contains(button)&&previous&&same(previous.name,name)&&same(previous.team,team))
+            paintPickerPhoto(avatar,previous.dataUrl,name);
+        }
+      }
+    }catch(_){}
+    finally{try{database?.close()}catch(_){}}
   })();
 }
 function today(){
