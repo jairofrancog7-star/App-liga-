@@ -4712,7 +4712,7 @@ function leagueToolsView(){
     v726ToolCard('file','Permisos y autorizaciones','Genera permisos para jugador o delegado y expórtalos en PDF, PNG, JPG o SVG.','permissionBuilder','','PDF / PNG')+
     v726ToolCard('card','Generar credencial','Crea la credencial del jugador con fotografía, equipo, categoría y datos del registro.','credentialBuilder','','CREDENCIAL')+
     v726ToolCard('rules','Reglamento','Consulta dentro de la app el reglamento oficial vigente de la Liga.','rulebook','','OFICIAL')+
-    v726ToolCard('news','Generador de diseños','Resultados PNG, boletines, avisos y publicaciones de la Liga, ahora dentro de Más herramientas.','publications','','DISEÑOS / PNG');
+    v726ToolCard('news','Centro de publicaciones','Diseños PNG HD, resultados, notificaciones y avisos en un solo lugar.','publicationCenter','','DISEÑOS / PNG');
 
   const info=
     v726ToolCard('history','Historia','Consulta temporadas, campeones, finales, récords y el archivo histórico de la Liga.','history','','ARCHIVO')+
@@ -4742,7 +4742,7 @@ function leagueToolsView(){
         v726QuickCard('bracket','Liguilla','Cuadro eliminatorio','bracketBuilder')+
         v726QuickCard('bell','Avisos','Noticias y comunicados','news')+
         v726QuickCard('alert','Avisos AUTO','Programar fecha y hora','v38Alerts')+
-        v726QuickCard('news','Publicar','PNG y comunicados','publications')+
+        v726QuickCard('news','Publicar','PNG y comunicados','publicationCenter')+
       '</div>'+
     '</section>'+
     '<button type="button" class="v612-tools-entry v726-admin-entry" data-liga-tools><span>'+v60Icon('admin')+'</span><b>Acceso de administración</b><small>Sesión, permisos y herramientas privadas</small><i>›</i></button>'+
