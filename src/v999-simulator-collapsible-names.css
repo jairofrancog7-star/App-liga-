@@ -1,0 +1,60 @@
+/* V999 — panel plegable y nombres legibles (solo simulador). */
+html body[data-app-route="simulator"] #screen .v501-sheet .v999-sheet-toolbar{
+  display:flex!important;justify-content:center!important;align-items:center!important;
+  flex:0 0 36px!important;min-height:36px!important;gap:8px!important;
+  margin:0 0 4px!important;padding:0!important;position:relative!important;z-index:2!important;
+}
+html body[data-app-route="simulator"] #screen .v501-sheet .v999-sheet-toggle{
+  -webkit-appearance:none;appearance:none;display:inline-flex!important;align-items:center!important;
+  justify-content:center!important;gap:8px!important;min-width:150px!important;
+  min-height:32px!important;padding:5px 14px!important;border:1px solid rgba(103,218,255,.55)!important;
+  border-radius:999px!important;background:rgba(29,85,221,.52)!important;
+  color:#f4f9ff!important;box-shadow:0 2px 12px rgba(0,0,45,.20)!important;
+  font:750 12px/1.1 Inter,Roboto,Arial,sans-serif!important;letter-spacing:.01em!important;
+  cursor:pointer!important;touch-action:manipulation!important;
+}
+html body[data-app-route="simulator"] #screen .v501-sheet .v999-sheet-toggle:focus-visible{
+  outline:2px solid #56ecff!important;outline-offset:3px!important;
+}
+html body[data-app-route="simulator"] #screen .v501-sheet .v999-toggle-chevron{
+  color:#51e8f7!important;font-size:19px!important;font-weight:900!important;line-height:.75!important;
+}
+html body[data-app-route="simulator"] #screen .v501-sheet.v999-sheet-hidden{
+  transform:translate3d(0,calc(100dvh - 46px),0)!important;
+  border-radius:19px 19px 0 0!important;
+  box-shadow:0 -4px 17px rgba(1,2,45,.24)!important;
+}
+html body[data-app-route="simulator"] #screen .v501-sheet.v999-sheet-hidden .v501-grabber,
+html body[data-app-route="simulator"] #screen .v501-sheet.v999-sheet-hidden .v501-sheet-head,
+html body[data-app-route="simulator"] #screen .v501-sheet.v999-sheet-hidden .v501-match-list,
+html body[data-app-route="simulator"] #screen .v501-sheet.v999-sheet-hidden .v501-journey{
+  display:none!important;
+}
+html body[data-app-route="simulator"] #screen .v501-sheet.v999-sheet-hidden .v999-sheet-toolbar{
+  margin:0!important;
+}
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-team{
+  min-width:0!important;
+}
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-team strong,
+html body[data-app-route="simulator"] #screen [data-v512-bracket] .v517-ko-team b{
+  min-width:0!important;max-width:100%!important;
+  display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;
+  white-space:normal!important;overflow:hidden!important;
+  overflow-wrap:anywhere!important;word-break:normal!important;text-overflow:ellipsis!important;
+  font-size:clamp(9px,2.65vw,12px)!important;font-weight:750!important;line-height:1.12!important;
+}
+html body[data-app-route="simulator"] #screen .v501-sim-team b{
+  min-width:0!important;max-width:100%!important;
+  display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;
+  overflow:hidden!important;overflow-wrap:anywhere!important;
+  white-space:normal!important;text-overflow:ellipsis!important;line-height:1.14!important;
+}
+@media(max-width:390px){
+  html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-bracket-team strong{
+    font-size:9px!important;letter-spacing:-.015em!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  html body[data-app-route="simulator"] #screen .v501-sheet{transition:none!important}
+}
