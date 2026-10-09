@@ -1,0 +1,131 @@
+/* V1073 — SOLO los accesos rápidos al comienzo de Mi app de la Liga.
+   Misma geometría, iconografía y azul oscuro que las tarjetas v562 inferiores. */
+body.liga-editor:is([data-app-route="ligaControl"],[data-app-route="adminFut"]) #screen > .ljr-cms-entry,
+body.liga-editor #screen > .ljr-cms-entry:has(+ .v562-page[data-v563-control]){
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-auto-rows:minmax(62px,auto)!important;
+  align-items:stretch!important;
+  align-content:start!important;
+  gap:8px!important;
+  width:min(calc(100% - 28px),692px)!important;
+  max-width:692px!important;
+  min-height:0!important;
+  height:auto!important;
+  padding:11px!important;
+  margin:10px auto 0!important;
+  border:1px solid rgba(90,141,245,.33)!important;
+  border-radius:18px!important;
+  background:linear-gradient(180deg,rgba(18,31,131,.94),rgba(9,12,94,.97))!important;
+  box-shadow:0 8px 26px rgba(0,0,40,.23)!important;
+}
+body.liga-editor #screen > .ljr-cms-entry[data-ljr-cms-v1073="1"] > button.ljr-cms-quick-button{
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:32px minmax(0,1fr) 10px!important;
+  align-items:center!important;
+  justify-content:stretch!important;
+  gap:8px!important;
+  width:100%!important;
+  max-width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:62px!important;
+  padding:10px 9px!important;
+  margin:0!important;
+  border:1px solid rgba(93,126,224,.36)!important;
+  border-radius:14px!important;
+  background:#0c1067!important;
+  color:#f2f7ff!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;
+  font:700 12px/1.25 Inter,Roboto,Arial,system-ui,sans-serif!important;
+  text-align:left!important;
+  text-transform:none!important;
+  letter-spacing:0!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  cursor:pointer!important;
+  -webkit-tap-highlight-color:transparent;
+}
+body.liga-editor #screen > .ljr-cms-entry .ljr-cms-quick-icon{
+  display:grid!important;
+  place-items:center!important;
+  flex:none!important;
+  width:32px!important;
+  height:32px!important;
+  margin:0!important;
+  border-radius:10px!important;
+  background:#161d80!important;
+  color:#5ce4f1!important;
+}
+body.liga-editor #screen > .ljr-cms-entry .ljr-cms-quick-icon svg{
+  display:block!important;width:19px!important;height:19px!important;
+}
+body.liga-editor #screen > .ljr-cms-entry .ljr-cms-quick-title{
+  display:block!important;
+  min-width:0!important;
+  max-width:100%!important;
+  color:#f2f7ff!important;
+  overflow-wrap:break-word!important;
+  word-break:normal!important;
+  hyphens:auto!important;
+  line-height:1.25!important;
+}
+body.liga-editor #screen > .ljr-cms-entry .ljr-cms-quick-arrow{
+  display:block!important;
+  width:10px!important;
+  color:#2ae0eb!important;
+  font:700 19px/1 Arial,sans-serif!important;
+  text-align:center!important;
+}
+body.liga-editor #screen > .ljr-cms-entry[data-ljr-cms-v1073="1"] > button.ljr-cms-quick-button:hover{
+  background:#162b7e!important;
+  border-color:#42b9d9!important;
+}
+body.liga-editor #screen > .ljr-cms-entry[data-ljr-cms-v1073="1"] > button.ljr-cms-quick-button:active{
+  transform:scale(.985)!important;
+  background:#18358d!important;
+}
+body.liga-editor #screen > .ljr-cms-entry[data-ljr-cms-v1073="1"] > button.ljr-cms-quick-button:focus-visible{
+  outline:2px solid #65eafa!important;
+  outline-offset:2px!important;
+}
+/* El resumen empieza inmediatamente después de los cuatro accesos, sin hueco artificial. */
+body.liga-editor:is([data-app-route="ligaControl"],[data-app-route="adminFut"]) #screen > .ljr-cms-entry + .v562-page,
+body.liga-editor #screen > .ljr-cms-entry + .v562-page[data-v563-control]{
+  margin-top:0!important;
+  padding-top:1px!important;
+}
+body.liga-editor:is([data-app-route="ligaControl"],[data-app-route="adminFut"]) #screen > .ljr-cms-entry + .v562-page > .v562-hero,
+body.liga-editor #screen > .ljr-cms-entry + .v562-page[data-v563-control] > .v562-hero{
+  padding-top:9px!important;
+}
+@media(max-width:385px){
+  body.liga-editor #screen > .ljr-cms-entry[data-ljr-cms-v1073="1"]{
+    width:calc(100% - 20px)!important;
+    gap:7px!important;
+    padding:9px!important;
+  }
+  body.liga-editor #screen > .ljr-cms-entry[data-ljr-cms-v1073="1"] > button.ljr-cms-quick-button{
+    grid-template-columns:27px minmax(0,1fr) 8px!important;
+    min-height:64px!important;
+    padding:8px 7px!important;
+    gap:6px!important;
+    font-size:11px!important;
+  }
+  body.liga-editor #screen > .ljr-cms-entry .ljr-cms-quick-icon{
+    width:27px!important;height:27px!important;border-radius:8px!important;
+  }
+  body.liga-editor #screen > .ljr-cms-entry .ljr-cms-quick-icon svg{
+    width:17px!important;height:17px!important;
+  }
+}
+@media(max-width:300px){
+  body.liga-editor #screen > .ljr-cms-entry[data-ljr-cms-v1073="1"]{
+    grid-template-columns:1fr!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  body.liga-editor #screen > .ljr-cms-entry button.ljr-cms-quick-button{transition:none!important}
+}
