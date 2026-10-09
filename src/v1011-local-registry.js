@@ -199,9 +199,10 @@ let mountTimer=0;
 function scheduleMount(){clearTimeout(mountTimer);mountTimer=setTimeout(mount,110)}
 window.addEventListener('hashchange',scheduleMount);
 window.addEventListener('ljr:local-roster-changed',()=>queue(1300));
+window.addEventListener('storage',e=>{if(e.key==='v124-player-registry')queue(1800)});
 const screen=$('#screen');
 if(screen)new MutationObserver(()=>{
  if(route()==='credentialBuilder'&&!$('#v124-player-registry [data-v1011-hub]'))scheduleMount();
-}).observe(screen,{childList:true,subtree:true});
+}).observe(screen,{childList:true,subtree:false});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scheduleMount,{once:true});else scheduleMount();
 window.LJR_LOCAL_REGISTRY={refresh:()=>queue(0),open:database};
