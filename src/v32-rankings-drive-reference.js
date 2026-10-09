@@ -333,7 +333,7 @@ function clubItems(){
     return '<div class="v32-club-item v190-club-item">'+
       '<button type="button" class="v32-fed-row v32-club-row v190-club-row '+(isOpen?'expanded':'')+'" data-v32-club="'+originalIndex+'">'+
         '<span class="v32-pos">'+esc(row[4]||String(index+1))+'</span>'+logo(row[0],row[1])+
-        '<span class="v32-fed-name v32-club-copy"><b>'+esc(row[1])+'</b></span>'+
+        '<span class="v32-fed-name v32-club-copy"><b>'+esc(row[1])+'</b><small>'+esc(selectedCategory?selectedCategory[1]:'Liga Juventino Rosas')+'</small></span>'+
         '<strong class="v32-fed-points v32-club-points">'+esc(row[2])+'</strong><i class="v32-row-chevron"></i>'+
       '</button>'+
       '<div class="v32-club-detail '+(isOpen?'show':'')+'"><span>Juventino Rosas · '+esc(selectedCategory?selectedCategory[1]:'Categoría')+' · Clasificación oficial</span><button type="button" data-v32-open-team="'+esc(row[1])+'">Ver equipo</button></div>'+
