@@ -453,7 +453,7 @@ function moreGame(data){
       '<div class="v538-game-stage '+esc(more.phase)+'">'+
         '<div class="v538-loading-question">Total de goles en la<br>Liga Juventino Rosas</div>'+
         (intro?'<div class="v538-stage-placeholder"><span></span><i></i></div>':'')+
-        (!intro?'<div class="v538-player-pair">'+playerCard(pair.a,data,true,'left')+(both?playerCard(pair.b,data,more.answered,'right'):'<div class="v538-player-card ghost right"><div class="v538-ghost-avatar"></div></div>')+'</div>':'')+
+        (!intro?'<div class="v538-player-pair">'+playerCard(pair.a,data,true,'left')+(both?playerCard(pair.b,data,more.answered,more.phase==='both'?'right turning':'right'):'<div class="v538-player-card ghost right" aria-label="Tarjeta volteada; revelando el siguiente jugador"><div class="v538-ghost-avatar" aria-hidden="true"></div></div>')+'</div>':'')+
       '</div>'+
       '<div class="v538-score-strip"><span><small>Intentos</small><b>'+Array.from({length:Math.max(0,more.attempts)},function(){return '⚽'}).join(' ')+'</b></span><strong class="v538-countdown">'+more.countdown+'</strong><span><small>Puntuación</small><b>'+more.points+' pts</b></span></div>'+
       '<div class="v538-question-zone '+(ready?'show':'')+'">'+
