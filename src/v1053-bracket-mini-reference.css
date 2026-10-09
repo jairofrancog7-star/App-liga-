@@ -324,3 +324,77 @@
   z-index:8!important;
   font:850 11px/1 Inter,Roboto,Arial,sans-serif!important;
 }
+
+/* V1063 — Lo que falta en la captura:
+ * el círculo central no tiene un disco negro; permite ver exactamente
+ * el fondo real (incluidos degradados). Los logotipos sin recurso válido
+ * llevan un solo emblema neutro y las siglas se muestran una vez. */
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+  :is(.v12-bracket-pair,.v12-bracket-seeded) > .v12-bracket-vs,
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+  .v12-progress-seeded > .v12-progress-vs{
+  background:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  border:0!important;
+  color:#28ddf6!important;
+  text-shadow:0 0 2px rgba(30,211,244,.25)!important;
+}
+
+/* No doble sigla RCNRCN / ROSROS. El símbolo de reserva es exclusivamente
+ * gráfico. La abreviatura sigue en el strong; el nombre entero en aria-label. */
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ :is(.v12-bracket-pair,.v12-bracket-seeded,.v12-progress-seeded)
+ > .v12-bracket-team .v12-bracket-fallback.v1063-placeholder{
+   display:grid!important;
+   place-items:center!important;
+   flex:0 0 15px!important;
+   width:15px!important;
+   min-width:15px!important;
+   max-width:15px!important;
+   height:15px!important;
+   min-height:15px!important;
+   max-height:15px!important;
+   padding:0!important;
+   margin:0!important;
+   font-size:0!important;
+   color:#9bbef7!important;
+   border:0!important;
+   border-radius:0!important;
+   background:transparent!important;
+   box-shadow:none!important;
+   overflow:hidden!important;
+ }
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+  :is(.v12-bracket-pair,.v12-bracket-seeded,.v12-progress-seeded)
+  > .v12-bracket-team .v12-bracket-fallback.v1063-placeholder svg{
+  display:block!important;
+  width:14px!important;
+  height:14px!important;
+  min-width:14px!important;
+  min-height:14px!important;
+  max-width:14px!important;
+  max-height:14px!important;
+  margin:0!important;
+  color:inherit!important;
+  background:transparent!important;
+}
+
+/* Los tres caracteres no invaden la muesca ni se montan unos en otros. */
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ :is(.v12-bracket-pair,.v12-bracket-seeded,.v12-progress-seeded)
+ > .v12-bracket-team:not(.v1051-pending-team) > strong{
+  display:block!important;
+  flex:0 1 auto!important;
+  min-width:0!important;
+  white-space:nowrap!important;
+  letter-spacing:0!important;
+  word-spacing:normal!important;
+  text-overflow:clip!important;
+  overflow:hidden!important;
+}
