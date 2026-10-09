@@ -3930,17 +3930,29 @@ function v446HomeReference(){
 function homeView(){
   const homeStandings=HOME_OFFICIAL_STANDINGS;
   const homeFields=(typeof V60_FIELDS!=='undefined'?V60_FIELDS:[]).slice(0,4);
-  return `<div class="eyebrow">TORNEO MUNICIPAL · JORNADA 7</div>
-    <h1 class="screen-title">El fútbol de<br>nuestro municipio</h1>
-    <div class="stories">${[['Jornada','competition'],['Resultados','competition'],['Goleadores','scorers'],['Equipos','teams'],['Momentos','moments']].map(([n,r])=>`<button class="story" data-route="${r}"><span class="story-ring"><span class="story-inner"></span></span><small>${n}</small></button>`).join('')}</div>
+  /* V1055 — pintar Inicio definitivo desde el primer render, no los placeholders
+     previos a v15/v103 (círculos sin fotos y el viejo partido demo). */
+  const homeStoryRefs=[
+    {label:'Atlético Galeana 📸',name:'Atlético Galeana',route:'teams',logo:'assets/official-logos/galeana.png'},
+    {label:'Promesas FC 📸',name:'Promesas FC',route:'teams',logo:'assets/official-logos/promesas-fc.png'},
+    {label:'Momentos<br>de la Liga ✨',name:'Momentos de la Liga',route:'moments',logo:'assets/liga-logo.webp'},
+    {label:'La Huerta 📸',name:'La Huerta',route:'teams',logo:'assets/official-logos/la-huerta.png'},
+    {label:'Franco FC 📸',name:'Franco FC',route:'teams',logo:'assets/official-logos/franco-fc.png'}
+  ];
+  const storyHtml=homeStoryRefs.map(x=>`<button class="story" data-v15-story="1" data-route="${x.route}" aria-label="${x.name}"><span class="story-ring"><span class="story-inner v15-story-inner"><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/${x.logo}" alt="${x.name}" loading="eager" decoding="async"></span></span><small>${x.label}</small></button>`).join('');
+  return `<div class="stories">${storyHtml}</div>
 
-    <section class="section hero">
-      <span class="eyebrow" style="color:#fff">PARTIDO DE LA SEMANA</span>
-      <h2>Hermanos vs<br>Lobos CDG</h2>
-      <p>Próximo partido oficial de Primera Fuerza.</p>
-      <div class="button-row"><button class="btn primary" data-match="m1">Ver previa</button><button class="btn outline" data-action="cheer" data-cheer="m1">Apoyar · ${state.cheers.m1||0}</button></div>
+    <section class="section hero" data-v15-home-feature="3">
+      <div class="v21-home-feature-photo" aria-hidden="true">
+        <img class="v21-home-feature-photo-image" src="./assets/home-players-user.jpg?v=20260919-user-photo-public-1" alt="" loading="eager" decoding="async" draggable="false">
+        <span class="v21-home-feature-photo-fade"></span>
+      </div>
+      <div class="v21-home-feature-copy">
+        <h2>Mira todos los goles de la Jornada 1</h2>
+        <p>La pasión del fútbol local en un solo lugar</p>
+      </div>
+      <button class="v15-home-feature-hit" type="button" data-route="video" aria-label="Ver todos los goles de la Jornada 1"></button>
     </section>
-
     <section class="section">${sectionHead('Momentos','moments')}
       <div class="grid-2">
         <button class="moment" data-route="moments"><span class="badge">NUEVO</span><strong>Gol que encendió<br>la cancha</strong></button>
