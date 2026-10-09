@@ -14,7 +14,7 @@ function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(ch){retu
 function route(){return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home'}
 function screen(){return route()==='news'?document.querySelector('#screen'):null}
 function cms(){return window.LJR_CMS||null}
-function records(){var items=cms()&&cms().records;return Array.isArray(items)?items.filter(function(r){return r&&r.published===true&&(r.kind==='news'||r.kind==='notification')&&!isFuture(r)}):[]}
+function records(){var items=cms()&&cms().records;return Array.isArray(items)?items.filter(function(r){return r&&!!r.published&&(r.kind==='news'||r.kind==='notification')&&!isFuture(r)}):[]}
 function isFuture(r){var p=r.payload||{},when=p.publishAt||p.scheduledAt;return !!(when&&Number.isFinite(Date.parse(when))&&Date.parse(when)>Date.now())}
 function recordId(r){return 'cms:'+String(r.kind)+':'+String(r.id)}
 function scope(r){var p=r.payload||{},s=String(p.scope||p.type||'').toLowerCase();if(/fichaj|transfer|alta|baja/.test(s))return 'Fichajes';if(/equipo|club|plantilla/.test(s))return 'Equipos';return 'Liga'}
@@ -137,7 +137,7 @@ function applyFilters(host){
  host.controls.querySelectorAll('[data-v1073-mode]').forEach(function(b){b.classList.toggle('active',mode===b.dataset.v1073Mode)});
  updateButtons();
  var st=host.controls.querySelector('[data-v1073-status]');
- if(st){var status=shown+' publicaciones visibles · Revisión automática cada minuto';if(st.textContent!==status)st.textContent=status}
+ if(st){var status=shown+' publicaciones visibles · '+(cms()?.loaded?'Avisos oficiales revisados cada minuto':'Esperando conexión de avisos oficiales');if(st.textContent!==status)st.textContent=status}
 }
 function revisionsOf(items){var out={};items.forEach(function(r){var p=r.payload||{};out[recordId(r)]=String(r.revision??r.updated??p.updatedAt??'')+'|'+String(p.title||'')+'|'+String(p.body||'')});return out}
 async function deviceAlert(r){
