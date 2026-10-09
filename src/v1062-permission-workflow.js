@@ -56,7 +56,7 @@ function qrSvg(p){
 function hint(message){const x=$('[data-v1062-hint]');if(x)x.textContent=message}
 function notify(message){const x=$('[data-v1062-notice]');if(x){x.textContent=message;x.hidden=false;setTimeout(()=>{if(x.textContent===message)x.hidden=true},5200)}}
 function fixtures(){
- const data=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA;
+ const data=window.LJR_PERMISSION_BUILDER_API?.getOfficialData?.()||window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA;
  return data?.categories||{};
 }
 function fixtureStamp(raw){
