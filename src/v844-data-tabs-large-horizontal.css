@@ -1,23 +1,27 @@
 /* V844 — Datos > Estadísticas.
    NO modifica texto, tamaños, cuadros, padding ni altura de pestañas.
-   Únicamente ajusta la barrita inferior activa. */
+   Únicamente ajusta la barrita inferior activa: cyan y más larga horizontalmente. */
 
 @media (max-width:1023px){
-  html body.v33-data-active #screen .v33-tabs button.active::after{
-    left:4px!important;
-    right:4px!important;
-    width:auto!important;
-    height:5px!important;
-    min-height:5px!important;
-    bottom:0!important;
-    border-radius:6px 6px 0 0!important;
-    background:#16ddea!important;
-    opacity:1!important;
-  }
-
+  html body.v33-data-active #screen .v33-data-page .v33-tabs button.active::after,
   html body.v33-data-active #screen .v33-data-page[data-v33-mode="general"] .v33-tabs button[data-v33-tab="general"].active::after,
   html body.v33-data-active #screen .v33-data-page[data-v33-mode="team"] .v33-tabs button[data-v33-tab="team"].active::after,
   html body.v33-data-active #screen .v33-data-page[data-v33-mode="player"] .v33-tabs button[data-v33-tab="player"].active::after{
-    background:#16ddea!important;
+    content:""!important;
+    position:absolute!important;
+    left:50%!important;
+    right:auto!important;
+    width:clamp(96px,24vw,132px)!important;
+    min-width:96px!important;
+    max-width:132px!important;
+    height:6px!important;
+    min-height:6px!important;
+    bottom:0!important;
+    transform:translateX(-50%)!important;
+    border-radius:8px 8px 0 0!important;
+    background:#00e5ff!important;
+    background-color:#00e5ff!important;
+    opacity:1!important;
+    box-shadow:0 0 8px rgba(0,229,255,.38)!important;
   }
 }
