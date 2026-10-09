@@ -167,5 +167,12 @@ export function installCapture(){
   document.addEventListener('change',e=>{if(e.target.matches('[data-v64-photo],[data-v64-doc]'))refreshFilePreview(e.target);if(e.target.matches('[data-v64-photo],[data-v64-doc],[data-v64-cred-team]'))update()});
   window.addEventListener('hashchange',()=>{resetAssetsVersion();setTimeout(mount,80)});
   function resetAssetsVersion(){restoreVersion++}
-  new MutationObserver(()=>{if(!q('[data-capture-panel]'))mount()}).observe(document.body,{childList:true,subtree:true});mount();
+  /* V1008: sólo detectar la creación de la ruta, no cada mutación del body
+     (fotos, previews, listas y capas de otras herramientas). */
+  const screen=q('#screen');
+  if(screen)new MutationObserver(()=>{
+    if(location.hash.startsWith('#/credentialBuilder')&&
+       !q('[data-capture-panel]')&&q('.v64-form-grid'))mount();
+  }).observe(screen,{childList:true,subtree:false});
+  mount();
 }
