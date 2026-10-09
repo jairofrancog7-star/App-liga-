@@ -195,6 +195,8 @@ function bakeLogo(ctx,url,texture,x,y,w,h){
   img.onload=()=>{
     drawLogoIntoFabric(ctx,img,x,y,w,h);
     texture.needsUpdate=true;
+    // Cuando termina un escudo asíncrono, actualizar el fotograma detenido.
+    texture._ljrWake?.();
   };
   img.onerror=()=>{};
   img.src=String(url);
@@ -421,10 +423,11 @@ async function buildRealJersey(current){
   return {group,materials,texture,bump,uvChannel:1,real:true};
 }
 
-function updateJerseyTexture(jersey,current){
+function updateJerseyTexture(jersey,current,onTextureReady){
   if(!jersey)return;
   const next=fabricTexture(current.name,current.number,current.color,current.logo,current.category,current.categoryLogo,current.accentColor,current.pattern,current.leagueLogo);
   next.channel=jersey.uvChannel||0;
+  next._ljrWake=onTextureReady;
   jersey.materials.forEach(m=>{m.map=next;m.needsUpdate=true});
   jersey.texture?.dispose?.();
   jersey.texture=next;
@@ -473,6 +476,7 @@ function createInstance(host,opts={}){
      cambios de textura/cámara. El lienzo preserva el último fotograma. */
   let alive=true,raf=0,visible=true,lastFrame=0,settleUntil=0,dirty=2;
   let updateTimer=0;
+  let paintedKey=fabricKey(current);
   let lastSize=width+'x'+height;
   const isVisible=()=>alive&&visible&&!document.hidden;
   function draw(time){
@@ -494,6 +498,7 @@ function createInstance(host,opts={}){
     settleUntil=Math.max(settleUntil,performance.now()+ms);
     if(!raf)raf=requestAnimationFrame(draw);
   }
+  jersey.texture._ljrWake=()=>wake(450);
   const onControlsStart=()=>wake(1200);
   const onControlsChange=()=>wake(550);
   const onControlsEnd=()=>wake(750);
@@ -525,7 +530,9 @@ function createInstance(host,opts={}){
     const old=jersey;
     scene.remove(old.group);
     jersey=real;scene.add(real.group);
-    if(fabricKey(current)!==initialKey)updateJerseyTexture(real,current);
+    if(fabricKey(current)!==initialKey)updateJerseyTexture(real,current,()=>wake(450));
+    else real.texture._ljrWake=()=>wake(450);
+    paintedKey=fabricKey(current);
     disposeJersey(old);
     wake(600);
   }).catch(err=>console.warn('Jersey 3D realista: se conserva el respaldo local.',err));
@@ -549,7 +556,8 @@ function createInstance(host,opts={}){
       // Al escribir nombre/dorsal, un único horneado cuando cesa la escritura.
       updateTimer=setTimeout(()=>{
         if(!alive)return;
-        updateJerseyTexture(jersey,current);
+        updateJerseyTexture(jersey,current,()=>wake(450));
+        paintedKey=fabricKey(current);
         wake(450);
       },135);
     },
@@ -570,7 +578,10 @@ function createInstance(host,opts={}){
     },
     snapshot(){
       clearTimeout(updateTimer);
-      updateJerseyTexture(jersey,current);
+      if(paintedKey!==fabricKey(current)){
+        updateJerseyTexture(jersey,current,()=>wake(450));
+        paintedKey=fabricKey(current);
+      }
       controls.update();renderer.render(scene,camera);
       const a=document.createElement('a');
       a.download='camiseta-3d-liga-juventino.png';
@@ -591,7 +602,8 @@ function createInstance(host,opts={}){
       controls.dispose();
       disposeJersey(jersey);
       floor.geometry.dispose();floor.material.dispose();
-      renderer.dispose();host.replaceChildren();INSTANCES.delete(host);
+      renderer.dispose();renderer.forceContextLoss?.();
+      host.replaceChildren();INSTANCES.delete(host);
     }
   };
   wake(750);
