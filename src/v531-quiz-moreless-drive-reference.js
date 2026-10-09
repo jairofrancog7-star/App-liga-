@@ -564,7 +564,7 @@ function v535EnsureMorePrimary(){
   return primary;
 }
 function primaryRoot(r){
-  if(r==='quizArena')return document.querySelector('#screen [data-v48-arena]');
+  if(r==='quizArena')return document.querySelector('#screen [data-v48-arena]')||document.querySelector('#screen');
   if(r==='moreLess')return v535EnsureMorePrimary();
   return null;
 }
@@ -792,8 +792,16 @@ function schedule(){
       window.setTimeout(schedule,70);
       return;
     }
+    const entering=v534LastRoute!==r;
+    // Al abrir la ruta directamente o regresar desde otra pantalla, montar Quiz Arena.
+    // Antes el estado 'legacy' dejaba oculto el portal y parecía que no abría.
+    if(r==='quizArena'&&(quiz.mode==='legacy'||entering)){
+      v614ClearQuizCountdown();
+      quiz.mode='splash';quiz.exit=false;quiz.answered=false;quiz.selected='';
+    }
     const kind=r==='quizArena'?'quiz':'more';
-    if(!document.querySelector('[data-v531-mount="'+kind+'"]'))render(false);
+    const mount=document.querySelector('[data-v531-mount="'+kind+'"]');
+    if(!mount||entering||(r==='quizArena'&&(mount.hidden||!document.body.classList.contains('v537-quiz-secondary-open'))))render(false);
     if(v534LastRoute!==r){
       v534LastRoute=r;
       requestAnimationFrame(function(){window.scrollTo({top:0,left:0,behavior:'auto'})});
