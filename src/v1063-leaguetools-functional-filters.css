@@ -1,9 +1,9 @@
 /* V1063 — filtros táctiles reales de Centro de herramientas. */
 @media(max-width:1023px){
   body[data-app-route="leagueTools"] .v1063-tools-filters{
-    position:sticky;
-    top:58px;
-    z-index:55;
+    position:relative;
+    top:auto;
+    z-index:2;
     display:flex;
     flex-wrap:wrap;
     gap:8px;
@@ -83,4 +83,15 @@
     color:#07115f;
   }
   body[data-app-route="leagueTools"] [hidden]{display:none!important}
+}
+
+/* V1064 — filtros estáticos: no siguen el scroll ni cambian de posición. */
+@media(max-width:1023px){
+  body[data-app-route="leagueTools"] .v1063-tools-filters{
+    position:relative!important;
+    top:auto!important;
+    left:auto!important;
+    right:auto!important;
+    transform:none!important;
+  }
 }
