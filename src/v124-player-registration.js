@@ -226,13 +226,14 @@ function selectedSeason(){return localStorage.getItem(SEASON_KEY)||currentSeason
 function setSeason(s){localStorage.setItem(SEASON_KEY,s)}
 
 function officialPlayers(){
-  const out=[],db=window.LJR_OFFICIAL_DATA||{};
+  const out=[],seen=new Set(),db=window.LJR_OFFICIAL_DATA||{};
   for(const [catId,c] of Object.entries(db.categories||{})){
     for(const [team,roster] of Object.entries(c.rosters||{})){
       for(const name of (Array.isArray(roster)?roster:[])){
         if(!name)continue;
         const key=norm(name)+'|'+norm(team)+'|'+catId;
-        if(out.some(x=>x.key===key))continue;
+        if(seen.has(key))continue;
+        seen.add(key);
         out.push({key,name:String(name).trim(),team:String(team).trim(),category:c.name||'',catId:String(catId)});
       }
     }
@@ -291,6 +292,9 @@ function syncOfficialSeason(silent=false){
     list.push(rec);byKey.set(k,rec);added++;
   }
   const officialKeys=new Set(official.map(p=>norm(p.name)+'|'+norm(p.team)));
+  /* Indexar una sola vez: sin recorrer de nuevo todo el padrón por jugador local. */
+  const officialByNameTeam=new Map(),officialByName=new Map();
+  for(const p of official){const n=norm(p.name),t=norm(p.team);if(!officialByNameTeam.has(n+'|'+t))officialByNameTeam.set(n+'|'+t,p);if(!officialByName.has(n))officialByName.set(n,p)}
   const cleaned=list.filter(r=>{
     if(r.source!=='official')return true;
     if(officialKeys.has(recordKey(r)))return true;
@@ -299,7 +303,7 @@ function syncOfficialSeason(silent=false){
   // Registros locales no se borran automáticamente; se marcan para revisión.
   for(const r of cleaned){
     if(r.source==='official')continue;
-    const hit=officialMatch(r);r.officialPresent=!!hit;r.officialCheckedAt=now;
+    const n=norm(r.name),hit=officialByNameTeam.get(n+'|'+norm(r.team))||officialByName.get(n);r.officialPresent=!!hit;r.officialCheckedAt=now;
     if(hit){r.category=hit.category;r.catId=hit.catId;if(r.status==='Pendiente de validación')r.status='Registrado · coincide con padrón'}
     else if(r.status==='Registrado · coincide con padrón')r.status='Pendiente de validación';
   }
