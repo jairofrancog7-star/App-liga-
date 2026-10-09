@@ -67,9 +67,10 @@ function panel(p){
  '<label class="v1074-confirm"><input type="checkbox" data-v1074-agree><span>Confirmo que recibí autorización real y revisé los datos. Este registro local no verifica identidad.</span></label>'+
  '<button type="button" data-v1074-authorize>Guardar constancia local</button></div></div>'+
  '<div class="v1074-group"><b>03 · Programación</b><p>Elige cuándo publicar en el programador existente. Nada se envía hasta que confirmes allí.</p>'+
- '<button type="button" data-v1074-schedule>Ir al programador</button><small data-v1074-schedule-status></small></div>'+
+ '<div class="v1074-buttons"><button type="button" data-v1074-schedule>Ir al programador</button><button type="button" data-v1074-official>Abrir editor oficial</button></div>'+
+ '<small data-v1074-schedule-status></small><button type="button" data-v1074-cancel hidden>Cancelar programación local anterior</button></div>'+
  '<div class="v1074-group"><b>04 · Avisar a los equipos</b><p>Usa los equipos del rol oficial. Cada envío y recepción se registra manualmente en este teléfono.</p>'+
- '<div class="v1074-recipients" data-v1074-teams></div></div>'+
+ '<button type="button" data-v1074-export>Descargar registro CSV</button><div class="v1074-recipients" data-v1074-teams></div></div>'+
  '<small class="v1074-disclaimer">Las marcas “enviado” o “recibido” no se verifican con WhatsApp. Las notificaciones automáticas fuera del teléfono requieren un servicio autenticado y configuración adicional.</small>'+
  '</div>';
  anchor.before(details);
@@ -94,6 +95,11 @@ function refresh(p){
   st.s.scheduledId?'El aviso ya no aparece en el programador; revisa si fue eliminado.':'Sin programación confirmada.');
  const scheduleButton=$('[data-v1074-schedule]',ui);
  if(scheduleButton)scheduleButton.disabled=!isAuthorized(p);
+ const official=$('[data-v1074-official]',ui);
+ if(official)official.disabled=!isAuthorized(p);
+ const cancel=$('[data-v1074-cancel]',ui);
+ const previous=st.s.previousScheduledId||(!st.notice?st.s.scheduledId:null);
+ if(cancel)cancel.hidden=!previous||!queue().some(x=>String(x.id)===String(previous)&&!x.published);
  const savedAuth=st.s.authorization;
  const author=$('[data-v1074-author]',ui);if(author&&document.activeElement!==author)author.value=savedAuth?.hash===st.hash?(savedAuth.name||''):'';
  drawTeams(p);
@@ -142,27 +148,48 @@ function schedule(p){
  const button=$('[data-v1066-schedule]',p);
  if(!button){message(p,'No se encontró el programador existente.');return}
  try{
-  sessionStorage.setItem(IMPORT_MARK,JSON.stringify({at:Date.now(),ids:queue().map(x=>String(x.id))}));
+  sessionStorage.setItem(IMPORT_MARK,JSON.stringify({
+    at:Date.now(),ids:queue().map(x=>String(x.id)),
+    hash:stable(fields(p)), type:fields(p).type,category:fields(p).cat,
+    round:fields(p).round,message:fields(p).message
+  }));
  }catch(_){}
  button.click();
 }
 function checkScheduled(){
  let raw;try{raw=JSON.parse(sessionStorage.getItem(IMPORT_MARK)||'null')}catch(_){return}
  if(!raw||Date.now()-raw.at>15*60000)return;
- const before=new Set(raw.ids||[]),created=queue().filter(item=>!before.has(String(item.id)));
+ const before=new Set(raw.ids||[]);
+ const created=queue().filter(item=>!before.has(String(item.id)));
  if(!created.length)return;
- const last=created[created.length-1],s=read();
- if(s.reviewHash&&s.authorization?.hash===s.reviewHash){
-  s.scheduledId=last.id;s.scheduledAt=stamp();
+ const s=read();
+ // Asociar exclusivamente el aviso importado, no otra programación hecha en otra pestaña.
+ const expected=created.find(item=>String(item.type)==='suspension'&&
+   String(item.title||'').trim()===String(raw.type||'').trim()&&
+   String(item.body||'').includes('Categoría: '+String(raw.category||''))&&
+   String(item.body||'').includes('Jornada: '+String(raw.round||''))&&
+   String(item.body||'').includes(String(raw.message||''))&&
+   String(item.category||'').length>0);
+ if(expected&&s.reviewHash===raw.hash&&s.authorization?.hash===raw.hash){
+  s.scheduledId=expected.id;s.scheduledAt=stamp();
   write(s);
+  sessionStorage.removeItem(IMPORT_MARK);
+  return;
  }
- sessionStorage.removeItem(IMPORT_MARK);
+ // Dejar el marcador para poder asociar la publicación correcta al guardar.
+ // Si pasan 15 minutos expira al inicio de esta función.
 }
 function teams(p){
  const s=fields(p),result=[];
  const unique=new Set();
  try{
-  const rows=typeof window.v64SuspensionMatches==='function'?window.v64SuspensionMatches(s.cat,s.round):[];
+  // v64SuspensionMatches() es privada de main.js (ES module).
+  // Leer el MISMO catálogo oficial, sin fabricar clubes ni depender de un global inexistente.
+  const categories=Object.values(window.LJR_OFFICIAL_DATA?.categories||{});
+  const wantedCat=String(s.cat||'').trim().toLocaleLowerCase('es-MX');
+  const category=categories.find(c=>String(c?.name||'').trim().toLocaleLowerCase('es-MX')===wantedCat);
+  const rows=(category?.fixtures||[]).flatMap(block=>Array.isArray(block?.rows)?block.rows:[])
+    .filter(r=>Array.isArray(r)&&r[2]&&r[6]&&String(r[1]??'').trim()===String(s.round||'').trim());
   const wanted=String(s.match||'').trim().toLocaleLowerCase('es-MX');
   const field=String(s.venue||'').trim().toLocaleLowerCase('es-MX');
   for(const r of rows){
@@ -184,10 +211,12 @@ function drawTeams(p){
  const key=stable(fields(p)),log=current.deliveryHash===key?(current.delivery||{}):{};
  host.replaceChildren();
  if(!values.length){
-  const n=document.createElement('p');n.textContent='No se encontraron equipos en el rol oficial para esa selección. No se mostrarán equipos ficticios.';host.append(n);return;
+  const n=document.createElement('p');n.textContent='No hay equipos en el rol oficial para la categoría y jornada seleccionadas. No se agregan equipos ficticios.';host.append(n);return;
  }
+ const sent=values.filter(name=>!!log[name]?.sentAt).length;
+ const received=values.filter(name=>!!log[name]?.receivedAt).length;
  const count=document.createElement('small');
- count.textContent=values.length+' equipos reales encontrados · Registro local';
+ count.textContent=values.length+' equipos · '+sent+' envíos anotados · '+received+' recepciones anotadas (solo en este dispositivo)';
  host.append(count);
  for(const name of values){
   const s=log[name]||{},row=document.createElement('div');row.className='v1074-team';
