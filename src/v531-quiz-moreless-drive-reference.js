@@ -41,7 +41,7 @@ const FALLBACK_LOGOS={
 let db=window.LJR_OFFICIAL_DATA||null;
 let loading=null;
 const quiz={mode:'legacy',answered:false,selected:'',points:0,step:1,exit:false,remaining:15,halfUsed:false,retryUsed:false,attempts:1,countdown:3,history:[],missed:[]};
-const more={mode:'legacy',answered:false,selected:'',points:0,attempts:2,exit:false,phase:'intro',countdown:15,roundToken:0,round:0};
+const more={mode:'legacy',answered:false,selected:'',points:0,attempts:2,exit:false,phase:'intro',countdown:15,roundToken:0,round:0,roundsPlayed:0,finished:false,scoreSaved:false};
 let v538MoreTimers=[];
 let v538MoreInterval=null;
 let v614QuizCountdownTimer=null;
@@ -152,6 +152,23 @@ function morePair(data){
 function rankRows(data){
   const rows=standings(data).slice(0,3);
   return rows.map(function(r,i){return {pos:i+1,name:String(r[1]),pts:String(r[9]??'—'),pj:String(r[2]??'—')}});
+}
+function moreLocalScores(){
+ try{const a=JSON.parse(localStorage.getItem('ljr-moreless-completed-scores-v1')||'[]');
+ return (Array.isArray(a)?a:[]).filter(x=>x&&Number.isFinite(Number(x.points))&&Number(x.points)>=0)
+ .sort((a,b)=>Number(b.points)-Number(a.points)).slice(0,3)
+ .map((x,i)=>({pos:i+1,name:'Invitado '+(i+1),pts:Number(x.points)}))}
+ catch(_){return []}
+}
+function moreSaveScore(){
+ if(more.scoreSaved||more.roundsPlayed<1)return;more.scoreSaved=true;
+ try{const k='ljr-moreless-completed-scores-v1',v=JSON.parse(localStorage.getItem(k)||'[]'),a=Array.isArray(v)?v.slice(-29):[];
+ a.push({points:more.points,rounds:more.roundsPlayed,at:new Date().toISOString()});
+ localStorage.setItem(k,JSON.stringify(a))}catch(_){}
+}
+function moreNewGame(){
+ v538ClearTimers();more.points=0;more.attempts=2;more.round=0;more.roundsPlayed=0;
+ more.finished=false;more.scoreSaved=false;more.answered=false;more.selected='';more.exit=false;more.phase='intro';
 }
 function v583PairAt(data,offset){
   const saved=more.round;
@@ -322,7 +339,7 @@ function v545MoreScreenCards(pair,data){
   '</section>';
 }
 function moreHub(data){
-  const pair=morePair(data),ranks=rankRows(data);
+  const pair=morePair(data),ranks=moreLocalScores();
   const extraPairs=[1,2,3].map(function(n){return v583PairAt(data,n)});
   const extraChallenges='<section class="v583-more-challenges"><h2>Más retos de Más o menos</h2>'+
     extraPairs.map(function(p,i){return '<article class="v583-more-challenge">'+
@@ -337,14 +354,16 @@ function moreHub(data){
       '<article class="v538-hub-feature">'+
         '<div class="v538-hub-feature-art">'+v538Person(pair.a,data,'left')+v538Person(pair.b,data,'right')+'</div>'+
         '<div class="v538-hub-feature-copy"><h2>Más o menos</h2><p>Compara las estadísticas de dos jugadores y ¡ponlas en el orden correcto para ganar puntos!</p>'+
-          '<div class="v538-hub-actions"><button type="button" class="primary" data-v531-more-start>Inicia sesión para<br>jugar</button></div>'+
+          '<div class="v538-hub-actions"><button type="button" class="primary" data-v531-more-start>Generar quiz</button></div>'+
         '</div>'+
       '</article>'+
+      '<h2 class="v531-section-title v551-ranking-title">Clasificaciones</h2>'+
+      '<article class="v531-rank-card v551-more-ranking"><h3>Más o menos · puntuaciones locales</h3>'+
+      (ranks.length?ranks.map(function(r){return '<div class="v531-rank-row"><span>'+r.pos+'</span><span class="v531-crest rank" aria-hidden="true">★</span><b>'+esc(r.name)+'</b><strong>'+esc(r.pts)+' pts</strong></div>'}).join(''):'<p class="v1051-no-scores">Aún no hay partidas terminadas en este dispositivo.</p>')+
+      '<button type="button" data-v531-rankings>Ver clasificación de la Liga</button></article>'+
       '<div class="v551-discover-banner"><span>◉</span><b>DESCUBRE MÁS</b><em>LIGA JUVENTINO</em></div>'+
       '<article class="v538-friend-card"><div><h3>¡Reta a tus amigos en el Quiz Arena!</h3><button type="button" data-v531-share>Invita a amigos</button></div><div class="v538-friend-bubble v585-friend-image"><img src="'+esc(LEAGUE)+'" alt="Liga Municipal de Fútbol Juventino Rosas" loading="eager" decoding="async"></div></article>'+
       extraChallenges+
-      '<h2 class="v531-section-title v551-ranking-title">Clasificaciones</h2>'+
-      '<article class="v531-rank-card v551-more-ranking"><h3>Más o menos</h3>'+ranks.map(function(r){return '<div class="v531-rank-row"><span>'+r.pos+'º</span>'+crest(r.name,data,'rank')+'<b>'+esc(r.name)+'</b><strong>'+esc(r.pts)+' pts</strong></div>'}).join('')+'<button type="button" data-v531-rankings>Ver clasificaciones</button></article>'+
     '</main>'+
   '</section>';
 }
@@ -391,14 +410,21 @@ function v538StartMoreRound(){
   more.roundToken++;
   const token=more.roundToken;
   more.round=Math.max(0,Number(more.round)||0)+1;
-  more.mode='game';more.phase='intro';more.answered=false;more.selected='';more.exit=false;more.countdown=15;
+  more.mode='game';more.phase='intro';more.answered=false;more.selected='';more.exit=false;more.countdown=15;more.finished=false;
   document.body.classList.add('v543-more-portal-open');
   v543RenderMorePortal();
   v538MoreInterval=setInterval(function(){
     if(token!==more.roundToken||more.mode!=='game'){v538ClearTimers();return}
+    if(more.exit||more.phase!=='ready'||more.answered)return;
     more.countdown=Math.max(0,more.countdown-1);
-    document.querySelectorAll('.v538-countdown').forEach(function(el){el.textContent=String(more.countdown)});
-    if(more.countdown<=0&&v538MoreInterval){clearInterval(v538MoreInterval);v538MoreInterval=null}
+    document.querySelectorAll('#v543-moreless-portal .v538-countdown').forEach(el=>el.textContent=String(more.countdown));
+    if(more.countdown<=0){
+      more.selected='timeout';more.answered=true;more.phase='result';
+      more.attempts=Math.max(0,more.attempts-1);more.roundsPlayed++;
+      more.finished=more.attempts===0||more.roundsPlayed>=10;
+      if(more.finished)moreSaveScore();
+      v538ClearTimers();v543RenderMorePortal();
+    }
   },1000);
   v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken)return;more.phase='first';v543RenderMorePortal()},650));
   v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken)return;more.phase='both';v543RenderMorePortal()},1350));
@@ -422,14 +448,14 @@ function moreGame(data){
         (intro?'<div class="v538-stage-placeholder"><span></span><i></i></div>':'')+
         (!intro?'<div class="v538-player-pair">'+playerCard(pair.a,data,true,'left')+(both?playerCard(pair.b,data,more.answered,'right'):'<div class="v538-player-card ghost right"><div class="v538-ghost-avatar"></div></div>')+'</div>':'')+
       '</div>'+
-      '<div class="v538-score-strip"><span><small>Attempts</small><b>'+Array.from({length:Math.max(0,more.attempts)},function(){return '⚽'}).join(' ')+'</b></span><strong class="v538-countdown">'+more.countdown+'</strong><span><small>Puntuación</small><b>'+more.points+' pts</b></span></div>'+
+      '<div class="v538-score-strip"><span><small>Intentos</small><b>'+Array.from({length:Math.max(0,more.attempts)},function(){return '⚽'}).join(' ')+'</b></span><strong class="v538-countdown">'+more.countdown+'</strong><span><small>Puntuación</small><b>'+more.points+' pts</b></span></div>'+
       '<div class="v538-question-zone '+(ready?'show':'')+'">'+
         '<h2>'+question+'</h2>'+
-        '<div class="v531-more-buttons"><button type="button" class="less" data-v531-more-choice="less" aria-label="Menos">▼</button><span>OR</span><button type="button" class="more" data-v531-more-choice="more" aria-label="Más">▲</button></div>'+
-        (more.answered?'<div class="v531-more-answer">'+(more.selected==='correct'?'¡Correcto!':'Respuesta registrada')+' · '+esc(pair.b.name)+' tiene '+esc(pair.b.goals)+'</div>':'')+
+        '<div class="v531-more-buttons"><button type="button" class="less" data-v531-more-choice="less" aria-label="Menos">▼</button><span>O</span><button type="button" class="more" data-v531-more-choice="more" aria-label="Más">▲</button></div>'+
+        (more.answered?'<div class="v531-more-answer">'+(more.selected==='correct'?'¡Correcto!':more.selected==='timeout'?'Tiempo agotado':'Respuesta incorrecta')+' · '+esc(pair.b.name)+' tiene '+esc(pair.b.goals)+'</div>':'')+
       '</div>'+
-      (result?'<section class="v539-more-result '+(more.selected==='correct'?'ok':'bad')+'"><span class="v539-result-mark">'+(more.selected==='correct'?'✓':'×')+'</span><div><small>RESULTADO</small><h3>'+(more.selected==='correct'?'¡Acertaste!':'Siguiente intento')+'</h3><p>'+esc(pair.a.name)+' · '+esc(pair.a.goals)+' / '+esc(pair.b.name)+' · '+esc(pair.b.goals)+'</p></div><button type="button" data-v539-more-next>Siguiente comparación</button></section>':'')+
-      '<div class="v538-video-banner"><b>VER</b><em>MEJORES MOMENTOS</em><span>⚽</span></div>'+
+      (result?'<section class="v539-more-result '+(more.selected==='correct'?'ok':'bad')+'"><span class="v539-result-mark">'+(more.selected==='correct'?'✓':'×')+'</span><div><small>RESULTADO</small><h3>'+(more.finished?'Partida terminada':more.selected==='correct'?'¡Acertaste!':more.selected==='timeout'?'Tiempo agotado':'Siguiente intento')+'</h3><p>'+esc(pair.a.name)+' · '+esc(pair.a.goals)+' / '+esc(pair.b.name)+' · '+esc(pair.b.goals)+'</p></div><button type="button" data-v539-more-next>'+(more.finished?'Volver a jugar':'Siguiente comparación')+'</button></section>':'')+
+      '<div class="v538-video-banner" aria-label="Liga Juventino Rosas"><b>LIGA</b><em>JUVENTINO ROSAS</em><span>⚽</span></div>'+
     '</main>'+
     (more.exit?exitModal('more'):'')+
   '</section>';
@@ -802,9 +828,8 @@ document.addEventListener('click',function(e){
   e.preventDefault();e.stopPropagation();
 
   if(t.matches('[data-v583-more-round]')){
+    moreNewGame();
     more.round=Math.max(0,Number(t.dataset.v583MoreRound)||0);
-    more.points=0;
-    more.attempts=2;
     more.mode='game';
     more.phase='intro';
     more.answered=false;
@@ -859,19 +884,22 @@ document.addEventListener('click',function(e){
     quiz.mode='result';render(true);return;
   }
   if(t.matches('[data-v531-quiz-next]')){if(quiz.step>=10){v1050LocalNotice('Terminaste el quiz con '+quiz.points+' puntos. ¡Vuelve a jugar!');quiz.mode='hub';render(true);return}quiz.step++;quiz.selected='';quiz.answered=false;quiz.remaining=15;quiz.attempts=1;quiz.missed=[];quiz.mode='game';render(true);return}
-  if(t.matches('[data-v531-more-start]')){v538StartMoreRound();return}
+  if(t.matches('[data-v531-more-start]')){moreNewGame();v538StartMoreRound();return}
   if(t.matches('[data-v531-more-close]')){v538ClearTimers();more.exit=true;v543RenderMorePortal();return}
   if(t.matches('[data-v531-more-choice]')){
-    if(more.answered)return;
+    if(more.answered||more.phase!=='ready'||more.exit)return;
     const data=db||window.LJR_OFFICIAL_DATA||{},pair=morePair(data);
     const actual=pair.b.goals>pair.a.goals?'more':'less';
     const picked=t.dataset.v531MoreChoice||'less';
     more.selected=picked===actual?'correct':'wrong';
-    more.answered=true;more.phase='result';
+    more.answered=true;more.phase='result';more.roundsPlayed++;
     if(picked===actual)more.points+=10;else more.attempts=Math.max(0,more.attempts-1);
+    more.finished=more.attempts===0||more.roundsPlayed>=10;
+    if(more.finished)moreSaveScore();
     v538ClearTimers();v543RenderMorePortal();return;
   }
   if(t.matches('[data-v539-more-next]')){
+    if(more.finished)moreNewGame();
     more.mode='game';
     more.phase='intro';
     more.answered=false;
