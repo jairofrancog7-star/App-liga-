@@ -18,6 +18,11 @@ const stamp=()=>new Date().toISOString();
 const read=()=>{try{const data=JSON.parse(localStorage.getItem(KEY)||'null');return data&&typeof data==='object'?data:{}}catch(_){return {}}};
 const write=s=>{try{localStorage.setItem(KEY,JSON.stringify(s));return true}catch(_){return false}};
 const queue=()=>{try{const a=JSON.parse(localStorage.getItem(QUEUE)||'[]');return Array.isArray(a)?a:[]}catch(_){return []}};
+async function verifyAdminSession(){
+ const media=window.LJR_MEDIA;
+ if(!media?.admin||typeof media.api!=='function')return false;
+ try{return !!(await media.api('me'))?.admin}catch(_){return false}
+}
 const missing=s=>{
  const out=[];
  for(const [key,label] of [['cat','Categoría'],['round','Jornada'],['type','Tipo de aviso'],['reason','Motivo'],['date','Fecha efectiva'],['time','Hora'],['message','Mensaje adicional']])if(!s[key])out.push(label);
@@ -364,12 +369,21 @@ function boot(){
   const flow=$('[data-v1074-flow]',page);if(flow)flow.open=true;
   message(page,'Primero revisa y registra una autorización real. Para solicitarla usa «Solicitar visto bueno».');
  },true);
- screen.addEventListener('click',e=>{
+ screen.addEventListener('click',async e=>{
   if(route()!=='suspensionTool')return;
   const p=e.target.closest('.v425-suspension');
   if(!p)return;
   const b=e.target.closest('button');
   if(!b)return;
+  // La aprobación en localStorage no es una credencial; exigir además sesión del servidor.
+  if(b.matches('[data-v1074-review],[data-v1074-ask],[data-v1074-authorize],[data-v1074-schedule],[data-v1074-official],[data-v1074-share],[data-v1074-mark],[data-v1074-cancel]')){
+   if(!await verifyAdminSession()){
+    const flow=$('[data-v1074-flow]',p);if(flow)flow.open=true;
+    message(p,'Inicia sesión en Administración: este control requiere permiso verificado del servidor.');
+    return;
+   }
+   if(!p.isConnected)return;
+  }
   if(b.matches('[data-v1074-review]'))review(p);
   else if(b.matches('[data-v1074-ask]'))ask(p);
   else if(b.matches('[data-v1074-show-auth]')){
