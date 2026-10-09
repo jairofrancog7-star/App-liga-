@@ -262,9 +262,10 @@ function quizHub(data){
         '<div class="v531-random-photo"><img src="'+esc(FEATURE)+'" alt="" loading="lazy" decoding="async"><span>'+crest(q.correct,data,'random')+'</span></div>'+
         '<div class="v531-random-copy"><h2>Quiz Aleatorio</h2><p>Ponte a prueba con preguntas sobre equipos, clasificación y temporada.</p><div class="v531-dual-actions compact"><button type="button" class="primary" data-quiz-login>Inicia sesión para<br>jugar</button><button type="button" data-v531-quiz-start>Prueba como<br>invitado</button></div></div>'+
       '</article>'+
+      v1050NotifyCard()+
       '<h2 class="v531-section-title">Clasificación de la Liga</h2>'+
       '<article class="v531-rank-card"><h3>Tabla oficial de la Liga</h3>'+ranks.map(function(r){return '<div class="v531-rank-row"><span>'+r.pos+'º</span>'+crest(r.name,data,'rank')+'<b>'+esc(r.name)+'</b><strong>'+esc(r.pts)+' pts</strong></div>'}).join('')+'<button type="button" data-v531-rankings>Ver clasificaciones</button></article>'+
-    '</main>'+
+    '</main>'+(v1050NotifyOpen?v1050NotifyModal():'')+
   '</section>';
 }
 function quizGame(data){
@@ -281,7 +282,7 @@ function quizGame(data){
     '<main class="v531-q-main v614-q-main">'+
       '<article class="v531-question-card v614-question-card"><div class="v531-question-media v614-question-media"><img src="'+esc(QUIZ_STADIUM)+'" alt="" loading="eager" decoding="async"><p>'+esc(q.question)+'</p></div><div class="v531-q-grid v614-q-grid">'+options+'</div></article>'+
       '<div class="v614-league-band"><img src="'+esc(LEAGUE)+'" alt=""><span><b>LIGA JUVENTINO ROSAS</b><small>FÚTBOL MUNICIPAL</small></span></div>'+
-      '<div class="v531-turbos v614-turbos"><button data-quiz-half '+(quiz.halfUsed?'disabled':'')+'><small>Tus turbos</small><b><span class="v617-turbo-icon">'+v617LightningIcon()+'</span><span>50-50</span></b></button><button data-quiz-retry '+(quiz.retryUsed?'disabled':'')+'><small>Turbo</small><b><span class="v617-turbo-icon">'+v617BallIcon()+'</span><span>2 intentos</span></b></button></div>'+v1050NotifyCard()+
+      '<div class="v531-turbos v614-turbos"><button data-quiz-half '+(quiz.halfUsed?'disabled':'')+'><small>Tus turbos</small><b><span class="v617-turbo-icon">'+v617LightningIcon()+'</span><span>50-50</span></b></button><button data-quiz-retry '+(quiz.retryUsed?'disabled':'')+'><small>Turbo</small><b><span class="v617-turbo-icon">'+v617BallIcon()+'</span><span>2 intentos</span></b></button></div>'
     '</main>'+
     (quiz.exit?exitModal('quiz'):'')+(v1050NotifyOpen?v1050NotifyModal():'')+
   '</section>';
