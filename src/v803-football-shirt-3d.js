@@ -195,9 +195,9 @@ function bakeLogo(ctx,url,texture,x,y,w,h){
   img.onerror=()=>{};
   img.src=String(url);
 }
-function bakeLeagueLogo(ctx,texture){
+function bakeLeagueLogo(ctx,texture,source=LEAGUE_LOGO){
   // Frente, pecho derecho del jugador (izquierda para quien mira).
-  bakeLogo(ctx,LEAGUE_LOGO,texture,245,205,205,205);
+  bakeLogo(ctx,source,texture,245,205,205,205);
 }
 function bakeTeamLogo(ctx,url,texture){
   // Frente, pecho izquierdo del jugador (derecha para quien mira).
@@ -208,7 +208,7 @@ function bakeCategoryLogo(ctx,url,texture){
   bakeLogo(ctx,url,texture,1326,700,420,300);
 }
 
-function fabricTexture(name='JAIRO',number='7',base='#0b4bd8',logoUrl='',category='',categoryLogoUrl='',accentColor='',pattern='plain'){
+function fabricTexture(name='JAIRO',number='7',base='#0b4bd8',logoUrl='',category='',categoryLogoUrl='',accentColor='',pattern='plain',leagueLogo=LEAGUE_LOGO){
   const c=document.createElement('canvas');
   c.width=2048;c.height=1024;
   const x=c.getContext('2d');
@@ -243,7 +243,7 @@ function fabricTexture(name='JAIRO',number='7',base='#0b4bd8',logoUrl='',categor
   t.wrapS=t.wrapT=THREE.ClampToEdgeWrapping;
   t.channel=0;
   t.needsUpdate=true;
-  bakeLeagueLogo(x,t);
+  bakeLeagueLogo(x,t,leagueLogo);
   bakeTeamLogo(x,logoUrl,t);
   bakeCategoryLogo(x,categoryLogoUrl,t);
   return t;
@@ -398,7 +398,7 @@ async function buildRealJersey(current){
     if(o.isMesh&&o.geometry)o.geometry=o.geometry.clone();
   });
   const bounds=normalizeRealModel(group);
-  const texture=fabricTexture(current.name,current.number,current.color,current.logo,current.category,current.categoryLogo,current.accentColor,current.pattern);
+  const texture=fabricTexture(current.name,current.number,current.color,current.logo,current.category,current.categoryLogo,current.accentColor,current.pattern,current.leagueLogo);
   texture.channel=1;
   const bump=makeFabricBump();
   const materials=[];
@@ -419,7 +419,7 @@ async function buildRealJersey(current){
 
 function updateJerseyTexture(jersey,current){
   if(!jersey)return;
-  const next=fabricTexture(current.name,current.number,current.color,current.logo,current.category,current.categoryLogo,current.accentColor,current.pattern);
+  const next=fabricTexture(current.name,current.number,current.color,current.logo,current.category,current.categoryLogo,current.accentColor,current.pattern,current.leagueLogo);
   next.channel=jersey.uvChannel||0;
   jersey.materials.forEach(m=>{m.map=next;m.needsUpdate=true});
   jersey.texture?.dispose?.();
@@ -455,8 +455,8 @@ function createInstance(host,opts={}){
   const rim=new THREE.DirectionalLight(0x52bfff,1.9);rim.position.set(-3.5,2.5,-4.5);scene.add(rim);
   const rear=new THREE.DirectionalLight(0x3156ff,.8);rear.position.set(3,-.2,-4);scene.add(rear);
 
-  let current={name:opts.name||'JAIRO',number:opts.number||'7',color:cleanKitColor(opts.color||'#0b4bd8'),accentColor:cleanKitColor(opts.accentColor||opts.color||'#0b4bd8'),pattern:String(opts.pattern||'plain'),team:opts.team||'',logo:opts.logo||'',category:opts.category||'',categoryLogo:opts.categoryLogo||''};
-  let jersey=buildFallback(fabricTexture(current.name,current.number,current.color,current.logo,current.category,current.categoryLogo,current.accentColor,current.pattern));
+  let current={name:opts.name||'JAIRO',number:opts.number||'7',color:cleanKitColor(opts.color||'#0b4bd8'),accentColor:cleanKitColor(opts.accentColor||opts.color||'#0b4bd8'),pattern:String(opts.pattern||'plain'),team:opts.team||'',logo:opts.logo||'',category:opts.category||'',categoryLogo:opts.categoryLogo||'',leagueLogo:opts.leagueLogo||LEAGUE_LOGO};
+  let jersey=buildFallback(fabricTexture(current.name,current.number,current.color,current.logo,current.category,current.categoryLogo,current.accentColor,current.pattern,current.leagueLogo));
   scene.add(jersey.group);
 
   const floor=new THREE.Mesh(
