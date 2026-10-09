@@ -10,6 +10,10 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const INSTANCES=new WeakMap();
+const COMPACT_3D=window.matchMedia?.('(pointer: coarse)')?.matches||window.innerWidth<=600;
+const FRAME_INTERVAL=1000/(COMPACT_3D?30:45);
+const RENDER_DPR=Math.min(window.devicePixelRatio||1,COMPACT_3D?1.4:1.75);
+const fabricKey=c=>JSON.stringify([c.name,c.number,c.color,c.accentColor,c.pattern,c.logo,c.categoryLogo,c.category,c.leagueLogo]);
 // V1009 — mismo PNG de las cédulas, azul oficial arriba y abajo;
 // estampado en textura, sin alterar los colores de la camiseta ni del equipo.
 const LEAGUE_LOGO='./assets/branding/escudo-liga-azul-sin-fondo-v1007.png?v=v1009-camisetas-azul';
@@ -430,7 +434,7 @@ function createInstance(host,opts={}){
   const width=Math.max(280,host.clientWidth||360);
   const height=Math.max(390,host.clientHeight||460);
   const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true,powerPreference:'high-performance'});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  renderer.setPixelRatio(RENDER_DPR);
   renderer.setSize(width,height,false);
   renderer.outputColorSpace=THREE.SRGBColorSpace;
   renderer.toneMapping=THREE.ACESFilmicToneMapping;
@@ -465,56 +469,132 @@ function createInstance(host,opts={}){
   );
   floor.rotation.x=-Math.PI/2;floor.position.y=-1.39;floor.receiveShadow=true;scene.add(floor);
 
-  let alive=true,raf=0;
-  const render=()=>{if(!alive)return;controls.update();renderer.render(scene,camera);raf=requestAnimationFrame(render)};
-  render();
+  /* V1013: renderizar únicamente mientras el usuario gira/interactúa y en
+     cambios de textura/cámara. El lienzo preserva el último fotograma. */
+  let alive=true,raf=0,visible=true,lastFrame=0,settleUntil=0,dirty=2;
+  let updateTimer=0;
+  let lastSize=width+'x'+height;
+  const isVisible=()=>alive&&visible&&!document.hidden;
+  function draw(time){
+    raf=0;
+    if(!alive)return;
+    if(!host.isConnected){api.destroy();return}
+    if(!isVisible())return;
+    if(time-lastFrame>=FRAME_INTERVAL || !lastFrame){
+      controls.update();
+      renderer.render(scene,camera);
+      lastFrame=time;
+      if(dirty>0)dirty--;
+    }
+    if(controls.autoRotate||dirty>0||time<settleUntil)raf=requestAnimationFrame(draw);
+  }
+  function wake(ms=400){
+    if(!isVisible())return;
+    dirty=Math.max(dirty,2);
+    settleUntil=Math.max(settleUntil,performance.now()+ms);
+    if(!raf)raf=requestAnimationFrame(draw);
+  }
+  const onControlsStart=()=>wake(1200);
+  const onControlsChange=()=>wake(550);
+  const onControlsEnd=()=>wake(750);
+  controls.addEventListener('start',onControlsStart);
+  controls.addEventListener('change',onControlsChange);
+  controls.addEventListener('end',onControlsEnd);
+  const onVisibility=()=>{
+    if(document.hidden){cancelAnimationFrame(raf);raf=0}
+    else wake(350);
+  };
+  document.addEventListener('visibilitychange',onVisibility,{passive:true});
+  const io=typeof IntersectionObserver==='function'
+    ?new IntersectionObserver(entries=>{
+      const shown=entries.some(e=>e.isIntersecting);
+      visible=shown;
+      if(shown)wake(400);
+      else{cancelAnimationFrame(raf);raf=0}
+    },{threshold:.01,rootMargin:'100px 0px'}):null;
+  io?.observe(host);
+  const onRouteChange=()=>setTimeout(()=>{if(!host.isConnected)api.destroy()},300);
+  window.addEventListener('hashchange',onRouteChange);
 
-  // Decode the local high-detail GLB and replace only the jersey mesh.
-  buildRealJersey(current).then(real=>{
+  /* GLB y textura: crear la variante real una sola vez.
+     Si no cambió ningún dato mientras cargaba, no volver a hornear 2 MP. */
+  const initialStyle={...current},initialKey=fabricKey(initialStyle);
+  buildRealJersey(initialStyle).then(real=>{
     if(!alive){disposeJersey(real);return}
+    clearTimeout(updateTimer);
     const old=jersey;
     scene.remove(old.group);
-    jersey=real;
-    scene.add(real.group);
-    // If the user changed color/team while the GLB was decoding, apply the latest choice.
-    updateJerseyTexture(real,current);
+    jersey=real;scene.add(real.group);
+    if(fabricKey(current)!==initialKey)updateJerseyTexture(real,current);
     disposeJersey(old);
+    wake(600);
   }).catch(err=>console.warn('Jersey 3D realista: se conserva el respaldo local.',err));
 
   const resize=()=>{
     const w=Math.max(280,host.clientWidth||360),h=Math.max(390,host.clientHeight||460);
+    const size=w+'x'+h;
+    if(size===lastSize)return;
+    lastSize=size;
     camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false);
+    wake(200);
   };
-  const ro=new ResizeObserver(resize);ro.observe(host);
-
+  const ro=typeof ResizeObserver==='function'?new ResizeObserver(resize):null;
+  ro?.observe(host);
   const api={
     update(data={}){
-      current={...current,...data,color:cleanKitColor(data.color??current.color),accentColor:cleanKitColor(data.accentColor??current.accentColor??data.color??current.color),pattern:String(data.pattern??current.pattern??'plain')};
-      updateJerseyTexture(jersey,current);
+      const next={...current,...data,color:cleanKitColor(data.color??current.color),accentColor:cleanKitColor(data.accentColor??current.accentColor??data.color??current.color),pattern:String(data.pattern??current.pattern??'plain')};
+      if(fabricKey(next)===fabricKey(current))return;
+      current=next;
+      clearTimeout(updateTimer);
+      // Al escribir nombre/dorsal, un único horneado cuando cesa la escritura.
+      updateTimer=setTimeout(()=>{
+        if(!alive)return;
+        updateJerseyTexture(jersey,current);
+        wake(450);
+      },135);
     },
     front(){
       controls.autoRotate=false;controls.reset();
       camera.position.set(0,.02,4.62);controls.target.set(0,0,0);controls.update();
+      wake(800);
     },
     back(){
       controls.autoRotate=false;controls.reset();
       camera.position.set(0,.02,-4.62);controls.target.set(0,0,0);controls.update();
+      wake(800);
     },
-    toggleSpin(){controls.autoRotate=!controls.autoRotate;return controls.autoRotate},
+    toggleSpin(){
+      controls.autoRotate=!controls.autoRotate;
+      wake(400);
+      return controls.autoRotate;
+    },
     snapshot(){
-      renderer.render(scene,camera);
+      clearTimeout(updateTimer);
+      updateJerseyTexture(jersey,current);
+      controls.update();renderer.render(scene,camera);
       const a=document.createElement('a');
       a.download='camiseta-3d-liga-juventino.png';
       a.href=renderer.domElement.toDataURL('image/png');
       a.click();
+      wake(150);
     },
     destroy(){
-      alive=false;cancelAnimationFrame(raf);ro.disconnect();controls.dispose();
+      if(!alive)return;
+      alive=false;
+      clearTimeout(updateTimer);cancelAnimationFrame(raf);
+      io?.disconnect();ro?.disconnect();
+      document.removeEventListener('visibilitychange',onVisibility);
+      window.removeEventListener('hashchange',onRouteChange);
+      controls.removeEventListener('start',onControlsStart);
+      controls.removeEventListener('change',onControlsChange);
+      controls.removeEventListener('end',onControlsEnd);
+      controls.dispose();
       disposeJersey(jersey);
       floor.geometry.dispose();floor.material.dispose();
       renderer.dispose();host.replaceChildren();INSTANCES.delete(host);
     }
   };
+  wake(750);
   INSTANCES.set(host,api);
   return api;
 }
