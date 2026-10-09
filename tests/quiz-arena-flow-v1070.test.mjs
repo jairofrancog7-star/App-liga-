@@ -58,5 +58,5 @@ test('azul sin franja y modal encima de navegacion, sin cambiar otras rutas',()=
  assert.ok(css.includes('.v531-exit-modal>.no'));
  assert.ok(!css.includes('[data-app-route="moreLess"]'));
  assert.ok(html.includes('v1070-quiz-flow-blue-exit.css'));
- assert.ok(html.includes('v1070-flow-cancel'));
+ assert.match(html,/v531-quiz-moreless-drive-reference\.js\?v=20261009-v\d{4}-[a-z0-9-]+/);
 });
