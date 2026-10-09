@@ -100,6 +100,9 @@ html body #screen .v425-suspension :is(button,a).v1058-action-btn.v1058-action-p
   border-color:rgba(58,218,238,.48)!important;
   color:#f1feff!important;
 }
+html body #screen .v425-suspension .v1058-action-btn :is(svg,.v1058-action-label){
+  pointer-events:none!important;
+}
 html body #screen .v425-suspension .v1058-action-btn svg{
   width:16px!important;
   height:16px!important;
