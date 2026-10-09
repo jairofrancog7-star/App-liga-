@@ -61,12 +61,14 @@ async function syncLocalIndex(){
   status('Preparando índice local de '+rows.length+' jugadores…');
   for(let i=0;i<rows.length;i+=60){
    if(route()!=='credentialBuilder')return;
+   while(Date.now()-lastGesture<650)await sleep(250);
    await d.players.bulkPut(rows.slice(i,i+60));
    await sleep(0);
   }
   const existing=await d.players.toCollection().primaryKeys();
   const removed=existing.filter(k=>!validKeys.has(k));
   for(let i=0;i<removed.length;i+=60){
+   while(Date.now()-lastGesture<650)await sleep(250);
    await d.players.bulkDelete(removed.slice(i,i+60));
    await sleep(0);
   }
