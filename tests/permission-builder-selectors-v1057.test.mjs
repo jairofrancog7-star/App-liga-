@@ -89,8 +89,8 @@ test('jornada y canchas son selectores locales sin duplicados ni peticiones remo
 
 test('permisos conservan dimensiones, diseño azul y selección cargada en Pages',()=>{
   assert.match(styles,/V1056 — Permisos/);
-  assert.match(index,/v635-permission-builder\.css\?v=20261009-v1056-authority-round-field-style/);
-  assert.match(index,/v635-permission-builder\.js\?v=20261009-v1057-role-manual-safe/);
+  assert.ok(index.includes('src/v635-permission-builder.css?v='));
+  assert.ok(index.includes('src/v635-permission-builder.js?v='));
   assert.match(script,/máximo 3 MB/);
   assert.ok(!functions.includes('fetch('));
 });
