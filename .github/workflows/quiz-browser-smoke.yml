@@ -1,0 +1,50 @@
+name: Quiz Arena - prueba real de Android
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'src/v531-quiz-moreless-drive-reference.js'
+      - 'src/v1070-quiz-flow-blue-exit.css'
+      - 'src/v1063-quiz-drive-pixel-perfect.css'
+      - 'tests/quiz-browser-v1071.mjs'
+      - '.github/workflows/quiz-browser-smoke.yml'
+permissions:
+  contents: read
+concurrency:
+  group: quiz-browser-android-smoke
+  cancel-in-progress: true
+jobs:
+  quiz-browser:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Instalar y compilar exactamente para GitHub Pages
+        run: |
+          npm ci --no-audit --no-fund
+          npm run build -- --base=/App-liga-/
+      - name: Preparar navegador móvil
+        run: |
+          npm install --no-save playwright@1.56.1 --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Arrancar web publicada localmente
+        run: |
+          npx vite preview --host 127.0.0.1 --port 4173 > /tmp/quiz-preview.log 2>&1 &
+          for i in $(seq 1 40); do curl --fail --silent http://127.0.0.1:4173/App-liga-/ > /dev/null && exit 0; sleep 1; done
+          cat /tmp/quiz-preview.log
+          exit 1
+      - name: Verificar el recorrido A-D, X, 3-2-1, confirmar salida
+        run: node tests/quiz-browser-v1071.mjs
+      - name: Adjuntar captura si falla
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quiz-arena-error-android
+          path: quiz-test-artifacts
+          if-no-files-found: ignore
