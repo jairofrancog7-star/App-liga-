@@ -138,6 +138,14 @@ function renderHistory(page){
  }
 }
 function moveToScheduler(page){
+ // V1074: bloquear programación desde el acceso antiguo sin revisión/autorización.
+ // La constancia es local, NO valida criptográficamente al presidente.
+ if(window.LJR_SUSPENSION_WORKFLOW?.canSchedule&&!window.LJR_SUSPENSION_WORKFLOW.canSchedule(page)){
+   const flow=$('[data-v1074-flow]',page);
+   if(flow)flow.open=true;
+   say(page,'Antes de programar, completa la revisión y registra la autorización realmente recibida.','review');
+   return;
+ }
  const s=snapshot(page);
  // Transferencia por sesión, NO almacena tokens ni activa la publicación.
  const payload={fields:s,preparedAt:Date.now()};
