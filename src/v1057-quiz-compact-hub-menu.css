@@ -1,0 +1,475 @@
+/* V1057 — Quiz Arena portada compacta de la referencia y menú funcional ⋮.
+   Aplica solo al HUB, no al cronómetro, respuestas, juego ni modal de salida.
+   El scroll vertical se conserva para mostrar la clasificación completa. */
+html body[data-app-route="quizArena"].v537-quiz-secondary-open #v612-quiz-portal{
+  position:fixed!important;
+  inset:0 0 calc(var(--v34-nav-h,69px) + env(safe-area-inset-bottom)) 0!important;
+  width:min(100%,520px)!important;
+  max-width:520px!important;
+  margin:0 auto!important;
+  padding:0!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+  background:#06064b!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal:has(>.v1057-quiz-hub)::before{
+  display:none!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal>.v1057-quiz-hub{
+  box-sizing:border-box!important;
+  display:block!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  width:100%!important;
+  max-width:520px!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  overflow:visible!important;
+  background:linear-gradient(180deg,#070654,#07064a 54%,#060644)!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-head{
+  box-sizing:border-box!important;
+  position:sticky!important;
+  top:0!important;
+  z-index:180!important;
+  width:100%!important;
+  height:103px!important;
+  min-height:103px!important;
+  padding:0 15px!important;
+  border:0!important;
+  display:grid!important;
+  grid-template-columns:42px minmax(0,1fr) 42px!important;
+  grid-template-rows:48px 55px!important;
+  align-items:center!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  background:
+    repeating-linear-gradient(-18deg,transparent 0 25px,rgba(22,200,255,.14) 26px 29px,transparent 30px 50px),
+    linear-gradient(180deg,#0639e3 0%,#071b9a 58%,#070654 100%)!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-head>strong{
+  box-sizing:border-box!important;
+  grid-column:1/4!important;
+  grid-row:2!important;
+  justify-self:start!important;
+  display:block!important;
+  align-self:center!important;
+  font-size:clamp(23px,6.2vw,30px)!important;
+  font-weight:850!important;
+  line-height:1.1!important;
+  color:#fff!important;
+  margin:0 0 0 1px!important;
+  letter-spacing:-.03em!important;
+  visibility:visible!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-head>button{
+  position:relative!important;
+  z-index:3!important;
+  grid-row:1!important;
+  width:39px!important;
+  height:39px!important;
+  min-height:0!important;
+  display:grid!important;
+  place-items:center!important;
+  border:0!important;
+  border-radius:10px!important;
+  padding:0!important;
+  background:transparent!important;
+  color:#fff!important;
+  pointer-events:auto!important;
+  visibility:visible!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-head>button:first-child{grid-column:1!important}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-head>button.v1057-menu-trigger{
+  grid-column:3!important;
+  justify-self:end!important;
+  font-size:0!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-menu-trigger span{
+  font-family:Arial,Roboto,sans-serif!important;
+  font-size:28px!important;
+  line-height:1!important;
+  font-weight:800!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-head>button svg{
+  width:24px!important;height:24px!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-menu[hidden],
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-menu-help[hidden]{
+  display:none!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-menu{
+  box-sizing:border-box!important;
+  position:absolute!important;
+  top:47px!important;
+  right:12px!important;
+  z-index:200!important;
+  display:grid!important;
+  min-width:186px!important;
+  width:min(265px,calc(100vw - 25px))!important;
+  padding:7px!important;
+  gap:1px!important;
+  border:1px solid rgba(215,225,255,.12)!important;
+  border-radius:13px!important;
+  background:#f7f8fe!important;
+  box-shadow:0 12px 30px rgba(0,0,40,.30)!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-menu>button{
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-height:43px!important;
+  display:flex!important;
+  align-items:center!important;
+  padding:8px 12px!important;
+  margin:0!important;
+  text-align:left!important;
+  border:0!important;
+  border-radius:9px!important;
+  background:transparent!important;
+  color:#101236!important;
+  font-size:14px!important;
+  font-weight:650!important;
+  cursor:pointer!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-menu>button:active,
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-menu>button:focus-visible{
+  outline:2px solid #0bd8ec!important;
+  background:#e5eeff!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-menu-help{
+  color:#3c4363!important;
+  background:#e5ebff!important;
+  border-radius:9px!important;
+  padding:9px 11px!important;
+  margin:3px 0!important;
+  font-size:12px!important;
+  line-height:1.35!important;
+}
+/* Las tarjetas se encadenan con espacios regulares, sin bandas vacías. */
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-content{
+  box-sizing:border-box!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:13px!important;
+  width:100%!important;
+  max-width:520px!important;
+  height:auto!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:13px 16px 15px!important;
+  overflow:visible!important;
+  background:#07064d!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-content> *{
+  flex:0 0 auto!important;
+  width:100%!important;
+  min-width:0!important;
+  margin:0!important;
+}
+/* Portada azul con balón grande arriba, información y botón debajo. */
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-content>.v531-quiz-hero{
+  box-sizing:border-box!important;
+  position:relative!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  min-height:0!important;
+  height:clamp(258px,67vw,304px)!important;
+  max-height:304px!important;
+  border:0!important;
+  border-radius:17px!important;
+  background:linear-gradient(180deg,#063bef 0%,#071270 60%,#101167 60%,#101167 100%)!important;
+  box-shadow:none!important;
+  overflow:hidden!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-content>.v531-quiz-hero .v531-hero-ball{
+  box-sizing:border-box!important;
+  position:absolute!important;
+  left:50%!important;
+  top:clamp(-130px,-30vw,-80px)!important;
+  width:clamp(290px,88vw,410px)!important;
+  height:clamp(290px,88vw,410px)!important;
+  transform:translateX(-50%)!important;
+  border:2px solid rgba(153,220,255,.20)!important;
+  border-radius:50%!important;
+  opacity:1!important;
+  pointer-events:none!important;
+  background:
+    repeating-linear-gradient(32deg,transparent 0 45px,rgba(44,253,231,.20) 47px 50px,transparent 52px 72px),
+    repeating-linear-gradient(-31deg,transparent 0 49px,rgba(240,65,174,.19) 51px 53px,transparent 55px 85px),
+    radial-gradient(circle at 40% 28%,#2687ff 0%,#1350df 30%,#0b28a4 65%,#070d63 93%)!important;
+  box-shadow:inset -42px -55px 70px rgba(2,4,67,.62),0 0 23px rgba(12,90,255,.30)!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-content>.v531-quiz-hero .v531-quiz-hero-copy{
+  position:absolute!important;
+  inset:auto 14px 49px 14px!important;
+  display:block!important;
+  z-index:4!important;
+  text-align:left!important;
+  background:transparent!important;
+  padding:0!important;
+  margin:0!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-quiz-hero-copy h2{
+  font-size:16px!important;line-height:1.1!important;
+  font-style:normal!important;color:#fff!important;
+  font-weight:800!important;margin:0 0 3px!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-quiz-hero-copy p{
+  color:#bfc8ed!important;font-size:11px!important;
+  line-height:1.17!important;
+  margin:0!important;
+  max-width:100%!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-quiz-hero .v531-dual-actions{
+  box-sizing:border-box!important;
+  display:flex!important;
+  position:absolute!important;
+  bottom:11px!important;left:14px!important;right:14px!important;
+  z-index:6!important;
+  width:auto!important;
+  margin:0!important;padding:0!important;
+  grid-template-columns:none!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-quiz-hero .v531-dual-actions>button{
+  box-sizing:border-box!important;
+  height:35px!important;min-height:35px!important;
+  width:auto!important;min-width:117px!important;
+  max-width:100%!important;
+  padding:6px 13px!important;
+  border:0!important;border-radius:10px!important;
+  background:#08dff0!important;
+  color:#08225e!important;
+  font-size:12px!important;font-weight:800!important;
+}
+/* Discover: banda compacta azul institucional sin patrocinio ajeno. */
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-content>.v531-discover{
+  min-height:45px!important;height:45px!important;
+  display:grid!important;
+  grid-template-columns:25px minmax(0,1fr) auto!important;
+  gap:7px!important;align-items:center!important;
+  padding:0 11px!important;
+  border-radius:7px!important;
+  overflow:hidden!important;
+  background:linear-gradient(100deg,#082583,#0b1668,#13258c)!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-discover:before{display:none!important}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-discover span{font-size:17px!important}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-discover b{font-size:17px!important;color:#fff!important;white-space:nowrap!important}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-discover em{font-size:8px!important;color:#14dfef!important;white-space:nowrap!important}
+/* Invitar amigos, avatar perfectamente circular y datos sin desbordamiento. */
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-content>.v531-friend-card{
+  box-sizing:border-box!important;
+  display:grid!important;grid-template-columns:minmax(0,1fr) 74px!important;
+  gap:10px!important;align-items:center!important;
+  min-height:98px!important;
+  padding:11px 13px!important;border:0!important;
+  border-radius:15px!important;
+  background:#101066!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-friend-card h2{
+  margin:0 0 11px!important;
+  color:#fff!important;
+  font-size:clamp(13px,3.5vw,16px)!important;line-height:1.2!important;
+  font-weight:800!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-friend-card button{
+  color:#0edfec!important;font-size:12px!important;
+  font-weight:750!important;min-height:27px!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-friend-avatar{
+  width:69px!important;height:69px!important;
+  margin:0!important;
+  display:grid!important;place-items:center!important;
+  border-radius:50%!important;overflow:hidden!important;
+  background:#0843e0!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-friend-avatar>*{
+  width:55px!important;height:55px!important;
+  border-radius:50%!important;
+}
+/* Tarjeta Quiz Aleatorio, arte corto y copy sin el hueco enorme. */
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-content>.v531-quiz-random-card{
+  box-sizing:border-box!important;
+  display:flex!important;flex-direction:column!important;
+  height:auto!important;min-height:0!important;
+  padding:0!important;border-radius:15px!important;
+  background:#101068!important;
+  overflow:hidden!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-random-photo{
+  box-sizing:border-box!important;
+  position:relative!important;
+  flex:0 0 auto!important;
+  height:clamp(132px,35vw,166px)!important;
+  min-height:0!important;
+  display:grid!important;place-items:center!important;
+  padding:0!important;overflow:hidden!important;
+  background:
+    linear-gradient(135deg,transparent 20%,rgba(255,255,255,.055) 21% 23%,transparent 24%),
+    radial-gradient(circle at 45% 25%,#167bff,#062aaa 58%,#061259 96%)!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-random-photo::after{display:none!important}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-football{
+  display:grid!important;place-items:center!important;
+  width:120px!important;height:120px!important;
+  font-size:106px!important;line-height:1!important;
+  transform:rotate(-13deg)!important;
+  filter:drop-shadow(0 11px 11px rgba(0,0,30,.48))!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-random-copy{
+  box-sizing:border-box!important;
+  position:relative!important;
+  flex:0 0 auto!important;
+  padding:11px 14px 13px!important;
+  min-height:104px!important;
+  display:grid!important;align-content:start!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-random-copy h2{
+  margin:0 0 4px!important;
+  font-size:17px!important;font-weight:850!important;
+  color:#fff!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-random-copy p{
+  color:#bfc6e6!important;font-size:11px!important;
+  line-height:1.22!important;margin:0 0 8px!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-random-copy .v531-dual-actions{
+  box-sizing:border-box!important;
+  position:static!important;
+  display:flex!important;
+  width:auto!important;
+  min-height:0!important;
+  padding:0!important;
+  margin:0!important;
+  grid-template-columns:none!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-random-copy .v531-dual-actions button{
+  min-width:103px!important;
+  width:auto!important;
+  height:35px!important;min-height:35px!important;
+  padding:5px 12px!important;
+  background:#08dff0!important;color:#081956!important;
+  font-weight:800!important;font-size:12px!important;
+  border:0!important;border-radius:9px!important;
+}
+/* Clasificaciones en el flujo, sin tarjetas cortadas ni espacios fantasma. */
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-section-title{
+  margin:3px 0 -1px!important;
+  font-size:20px!important;
+  font-weight:850!important;color:#fff!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-content>.v531-rank-card{
+  box-sizing:border-box!important;
+  padding:13px!important;
+  border:0!important;
+  border-radius:15px!important;
+  background:#101063!important;
+  min-height:0!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-rank-card h3{
+  margin:0 0 8px!important;
+  font-size:14px!important;color:#fff!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-rank-row{
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:19px 33px minmax(0,1fr) auto!important;
+  align-items:center!important;
+  min-height:54px!important;
+  gap:6px!important;
+  padding:5px 1px!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-rank-row span{
+  font-size:11px!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-rank-row .v531-crest.rank{
+  width:30px!important;height:30px!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-rank-row b{
+  min-width:0!important;
+  overflow:hidden!important;text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  font-size:12px!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-rank-row strong{
+  font-size:12px!important;white-space:nowrap!important;
+}
+html body[data-app-route="quizArena"] #v612-quiz-portal .v531-rank-card>button{
+  display:block!important;
+  margin:10px 0 0!important;
+  padding:4px 0!important;
+  background:none!important;border:0!important;
+  font-size:12px!important;color:#05dfef!important;
+}
+/* Quitar prompts viejos si otro módulo intenta inyectarlos en la portada. */
+html body[data-app-route="quizArena"] #v612-quiz-portal [data-v531-view="hub"] .v1050-notice-card,
+html body[data-app-route="quizArena"] #v612-quiz-portal [data-v531-view="hub"] .v1050-notify-backdrop{
+  display:none!important;
+}
+/* More or Less: último bloque sin hueco en el fondo ni fotografías recortadas. */
+html body[data-app-route="moreLessGallery"] #screen .v546-inline-gallery>.v551-more-reference{
+  min-height:0!important;
+  height:auto!important;
+}
+html body[data-app-route="moreLessGallery"] #screen .v546-inline-gallery .v551-more-reference .v538-hub-body{
+  min-height:0!important;
+  padding-bottom:14px!important;
+}
+html body[data-app-route="moreLessGallery"] #screen .v546-inline-gallery .v583-more-challenges{
+  margin-bottom:0!important;
+  padding-bottom:0!important;
+}
+html body[data-app-route="moreLessGallery"] #screen .v546-inline-gallery .v583-challenge-art{
+  box-sizing:border-box!important;
+  height:132px!important;
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  place-items:center!important;gap:10px!important;
+  padding:8px 12px!important;
+  overflow:hidden!important;
+}
+html body[data-app-route="moreLessGallery"] #screen .v546-inline-gallery .v583-challenge-art .v538-person{
+  box-sizing:border-box!important;
+  width:min(30vw,107px)!important;
+  height:min(30vw,107px)!important;
+  min-width:0!important;
+  min-height:0!important;
+  aspect-ratio:1/1!important;
+  border-radius:50%!important;overflow:hidden!important;
+}
+html body[data-app-route="moreLessGallery"] #screen .v546-inline-gallery .v583-challenge-art .v538-person img{
+  width:100%!important;height:100%!important;
+  max-width:100%!important;max-height:100%!important;
+  border-radius:50%!important;object-fit:cover!important;
+}
+html body[data-app-route="moreLessGallery"] #screen .v546-inline-gallery .v583-more-challenge{
+  margin-bottom:11px!important;
+  border-radius:14px!important;
+}
+html body[data-app-route="moreLessGallery"] #screen .v546-inline-gallery .v583-challenge-copy{
+  padding:11px 13px 13px!important;
+}
+html body[data-app-route="moreLessGallery"] #screen .v546-inline-gallery .v583-challenge-copy h3{
+  font-size:17px!important;margin:0 0 5px!important;
+}
+html body[data-app-route="moreLessGallery"] #screen .v546-inline-gallery .v583-challenge-copy p{
+  font-size:11px!important;line-height:1.25!important;
+  margin:0 0 9px!important;
+}
+html body[data-app-route="moreLessGallery"] #screen .v546-inline-gallery .v583-challenge-copy button{
+  min-height:40px!important;
+  border-radius:10px!important;
+  font-size:12px!important;
+}
+@media(max-width:360px){
+  html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-content{padding-left:12px!important;padding-right:12px!important;gap:11px!important}
+  html body[data-app-route="quizArena"] #v612-quiz-portal .v531-discover em{font-size:7px!important}
+  html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-content>.v531-quiz-hero{height:258px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  html body[data-app-route="quizArena"] #v612-quiz-portal .v1057-quiz-menu{transition:none!important}
+}
