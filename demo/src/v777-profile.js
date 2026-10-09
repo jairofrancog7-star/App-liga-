@@ -172,6 +172,7 @@ function cleanColor(value){
  return /^#[0-9a-f]{6}$/i.test(v)?v:'#0b4bd8';
 }
 
+const PROFILE_LEAGUE_LOGO='./assets/branding/escudo-liga-azul-sin-fondo-v1007.png?v=v1010-perfil-camiseta-3d';
 function shirtViewer(){
  return '<div class="ljr-shirt-preview v803-shirt-preview" data-shirt-stage aria-label="Camiseta de fútbol 3D editable">'+
    '<div class="v803-shirt-badge">CAMISETA CORTA · 3D</div>'+
@@ -202,7 +203,7 @@ function bindShirtViewer(n){
    const category=String(form?.elements?.shirtCategory?.value||categoryForTeam(team)||'').trim();
    const logo=teamLogo(team);
    const categoryCrest=categoryLogo(category);
-   const viewer=engine.mount(host,{name,number,color,team,logo,category,categoryLogo:categoryCrest});
+   const viewer=engine.mount(host,{name,number,color,team,logo,category,categoryLogo:categoryCrest,leagueLogo:PROFILE_LEAGUE_LOGO});
    n.querySelector('[data-shirt-front]')?.addEventListener('click',()=>viewer?.front?.());
    n.querySelector('[data-shirt-back]')?.addEventListener('click',()=>viewer?.back?.());
    n.querySelector('[data-shirt-spin]')?.addEventListener('click',e=>{
@@ -260,7 +261,7 @@ function open(){
    const logo=teamLogo(shirtTeam);
    const categoryCrest=categoryLogo(shirtCategory);
    const shirtHost=n.querySelector('[data-football-shirt-3d]');
-   window.LJR_FOOTBALL_SHIRT_3D?.update?.(shirtHost,{name:shirtName,number:shirtNumber,color:shirtColor,team:shirtTeam,logo,category:shirtCategory,categoryLogo:categoryCrest});
+   window.LJR_FOOTBALL_SHIRT_3D?.update?.(shirtHost,{name:shirtName,number:shirtNumber,color:shirtColor,team:shirtTeam,logo,category:shirtCategory,categoryLogo:categoryCrest,leagueLogo:PROFILE_LEAGUE_LOGO});
    const colorText=n.querySelector('[data-shirt-color-text]');if(colorText)colorText.textContent=shirtColor.toUpperCase();
    const badge=n.querySelector('[data-shirt-team-preview]');
    if(badge)badge.innerHTML=shirtTeam?(logo?'<img src="'+esc(logo)+'" alt=""><span><b>'+esc(shirtTeam)+'</b><small>Escudo del equipo · frente</small></span>':'<span><b>'+esc(shirtTeam)+'</b><small>Escudo del equipo pendiente</small></span>'):'<span><b>Sin equipo</b><small>Selecciona uno de los 51 clubes</small></span>';
