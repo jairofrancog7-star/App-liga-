@@ -22,7 +22,7 @@
     const status=$('[data-v1062-status]',writer);
     if(status)status.textContent=text;
   };
-  function localDraft(s,tone){
+  function localDraft(s,tone,variant=0){
     const where=['jornada '+(s.jornada||'por confirmar'),s.category].filter(Boolean).join(' de ');
     const type=(s.type||'aviso informativo').toLowerCase();
     const match=isAll(s.match,'Todos los partidos')?'':('Partido considerado: '+s.match+'. ');
@@ -30,9 +30,9 @@
     const why=s.reason?('Motivo indicado: '+s.reason+'. '):'';
     const date=s.date?('Fecha indicada en el formulario: '+s.date+(s.time?' a las '+s.time:'')+'. '):'';
     const scope=s.scope?('Alcance: '+s.scope+'. '):'';
-    const caution='Este aviso es un borrador sujeto a revisión de la Liga; cualquier cambio se confirmará por sus canales oficiales.';
-    if(tone==='breve')return ('Aviso sobre '+type+' para '+where+'. '+scope+match+field+why+caution).trim();
-    if(tone==='urgente')return ('ATENCIÓN, EQUIPOS Y DELEGADOS: se prepara un aviso de '+type+' para '+where+'. '+scope+match+field+why+date+'Antes de trasladarse al campo, consulten los canales oficiales. '+caution).trim();
+    const caution=variant%2?'Se trata de una propuesta para revisar antes de compartir; la Liga confirmará cualquier novedad por sus medios oficiales.':'Este aviso es un borrador sujeto a revisión de la Liga; cualquier cambio se confirmará por sus canales oficiales.';
+    if(tone==='breve')return (variant%2?'Atención: '+where+'. Aviso en preparación sobre '+type+'. '+why+field+match+caution:'Aviso sobre '+type+' para '+where+'. '+scope+match+field+why+caution).trim();
+    if(tone==='urgente')return (variant%2?'IMPORTANTE: para '+where+' se prepara un aviso de '+type+'. '+why+scope+field+match+date+'Consulten la información oficial antes de asistir. '+caution:'ATENCIÓN, EQUIPOS Y DELEGADOS: se prepara un aviso de '+type+' para '+where+'. '+scope+match+field+why+date+'Antes de trasladarse al campo, consulten los canales oficiales. '+caution).trim();
     return ('A los equipos, delegados y participantes de la Liga Municipal de Fútbol Juventino Rosas A. C.:\n\n'+
       'Se prepara un aviso referente a '+type+' para '+where+'. '+scope+match+field+why+date+
       '\n\n'+caution).trim();
@@ -91,6 +91,7 @@
     label.insertAdjacentElement('afterend',writer);
   }
   let running=false;
+  let version=0;
   async function generate(page){
     const writer=$('[data-v1062-writer]',page);
     if(!writer||running)return;
@@ -104,7 +105,7 @@
     try{result=await onDeviceDraft(s,tone)}catch(_){}
     if(!page.isConnected||!writer.isConnected){running=false;return}
     const generatedWithAI=!!result;
-    result=result||localDraft(s,tone);
+    result=result||localDraft(s,tone,version++);
     const output=$('[data-v1062-output]',writer);
     if(output)output.textContent=result;
     const box=$('[data-v1062-result]',writer);
