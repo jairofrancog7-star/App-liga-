@@ -30,18 +30,14 @@ function history(root){
  // The shared History resolver owns crests and damaged-source fallbacks.
  // Reviving them here caused an endless image/monogram mutation cycle.
 }
+/* V1004: Los cinco accesos ahora viven dentro del Centro de publicaciones.
+   No insertar otra tarjeta grande ni repetir herramientas en Más. */
 function studioEntry(root){
- if(!['more','leagueTools','publicationCenter','ligaControl','jrControl','publications'].includes(route()))return;
- if(root.querySelector('[data-v875-studio]'))return;
- const box=document.createElement('section');box.className='v875-studio-entry';
- box.innerHTML='<span>DISEÑOS NUEVOS PARA TU LIGA</span><h2>Generador de publicaciones</h2><p>Comunicados, jornadas, tablas, eliminatorias, felicitaciones, reclutamiento y escudos. Créalo aquí con el editor local: elige un estilo, completa los datos y descarga un PNG HD. También puedes crear notificaciones con fotos y marcador.</p><div><button type="button" data-v875-studio>Crear diseño nuevo</button><button type="button" data-v880-notification>Crear notificación moderna</button><button type="button" data-v875-canva>Canva IA · opción adicional</button><button type="button" data-v875-results>Resultados PNG</button><button type="button" data-v875-bulletins>Boletines y avisos</button></div>';
- const host=root.querySelector('.v726-tools-page,.v105-more-content,.v105-more-page,.v561-league')||root;host.prepend(box);
- box.querySelector('[data-v875-results]').onclick=()=>{localStorage.setItem('v561-publication-kind','results');window.LJR_MAIN_ROUTE?.go('publicationCenter')};
- box.querySelector('[data-v875-bulletins]').onclick=()=>window.LJR_MAIN_ROUTE?.go('publications');
- box.querySelector('[data-v875-studio]').onclick=()=>window.LJR_DESIGN_STUDIO?.open();
- box.querySelector('[data-v880-notification]').onclick=()=>window.LJR_V852_RICH_NOTIFICATIONS?.openAdmin();
- box.querySelector('[data-v875-canva]').onclick=()=>window.LJR_DESIGN_STUDIO?.open('Comunicado');
+ if(route()!=='leagueTools')return;
+ // El acceso oficial a la sección ya existe en Más herramientas.
+ // Mantener este hook sin modificar rutas ni duplicar el editor.
 }
+
 function poll(root){
  const host=root.querySelector('.v105-poll-status')?.parentElement;if(!host||host.querySelector('[data-v875-mailbox]'))return;
  const form=document.createElement('form');form.className='v875-mailbox';form.dataset.v875Mailbox='';

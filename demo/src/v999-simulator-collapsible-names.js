@@ -50,8 +50,13 @@
     if(!button)return;
     button.setAttribute('aria-expanded',String(!hidden));
     button.setAttribute('aria-label',hidden?'Abrir simulador de resultados':'Ocultar simulador de resultados');
-    button.querySelector('.v999-toggle-caption').textContent=hidden?'Abrir simulador':'Ocultar';
-    button.querySelector('.v999-toggle-chevron').textContent=hidden?'⌃':'⌄';
+    const caption=button.querySelector('.v999-toggle-caption');
+    const chevron=button.querySelector('.v999-toggle-chevron');
+    const nextCaption=hidden?'Abrir simulador':'Ocultar';
+    const nextChevron=hidden?'⌃':'⌄';
+    // Avoid a MutationObserver feedback loop: textContent creates child mutations.
+    if(caption&&caption.textContent!==nextCaption)caption.textContent=nextCaption;
+    if(chevron&&chevron.textContent!==nextChevron)chevron.textContent=nextChevron;
   }
   function enhance(){
     if(!isSimulator())return;
