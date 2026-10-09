@@ -335,8 +335,8 @@ function teamLogoUrl(team){
   return '';
 }
 const teamImageCache=new Map();
-async function transparentTeam(src){
-  if(uploadedLogos.team)return loadImage(uploadedLogos.team);
+async function transparentTeam(src,ignoreCustomTeam=false){
+  if(uploadedLogos.team&&!ignoreCustomTeam)return loadImage(uploadedLogos.team);
   if(!teamImageCache.has(src))teamImageCache.set(src,prepareTeam(src));
   return teamImageCache.get(src);
 }
@@ -483,17 +483,17 @@ async function prepareTeam(src){
   return cv;
 }
 
-async function makeCanvas(scale=1){
+async function makeCanvas(scale=1,record=null){
   const cv=document.createElement('canvas');
   cv.width=1011*scale;cv.height=638*scale;
   const x=cv.getContext('2d'),W=1011,H=638;
   x.scale(scale,scale);
 
-  const name=($('[data-v64-cred-name]')?.value||'JUGADOR').trim().toUpperCase();
-  const team=($('[data-v64-cred-team]')?.value||'EQUIPO').trim().toUpperCase();
+  const name=String(record?.name??$('[data-v64-cred-name]')?.value??'JUGADOR').trim().toUpperCase();
+  const team=String(record?.team??$('[data-v64-cred-team]')?.value??'EQUIPO').trim().toUpperCase();
   const teamSel=$('[data-v64-cred-team]');
-  const cat=(teamSel?.selectedOptions?.[0]?.dataset?.category||$('[data-v64-cred-cat]')?.value||'Por confirmar').replace(/^Categoria:?\s*/i,'');
-  const curp=String($('[data-v64-cred-curp]')?.value||'POR CAPTURAR').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,18)||'POR CAPTURAR';
+  const cat=String(record?.category??teamSel?.selectedOptions?.[0]?.dataset?.category??$('[data-v64-cred-cat]')?.value??'Por confirmar').replace(/^Categoria:?\s*/i,'');
+  const curp=String(record?.curp??$('[data-v64-cred-curp]')?.value??'POR CAPTURAR').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,18)||'POR CAPTURAR';
 
   x.clearRect(0,0,W,H);
   x.save();
@@ -518,11 +518,13 @@ async function makeCanvas(scale=1){
   x.textAlign='left';
 
   const teamSrc=teamLogoUrl(team);
-  const tlogo=await transparentTeam(teamSrc);
+  const tlogo=await transparentTeam(teamSrc,!!record);
   if(tlogo)contained(x,tlogo,826,116,165,165);
 
-  const photoFile=playerFile();
-  const photo=await playerImage(photoFile),face=photo?await playerFaceProfileFast(photo,photoFile):null,cx=205,cy=365,r=131;
+  const photoFile=record?record.photoFile:playerFile();
+  const photo=await playerImage(photoFile);
+  const face=photo?(record?await Promise.race([playerFaceProfile(photo,photoFile).catch(()=>null),new Promise(ok=>setTimeout(()=>ok(null),450))]):await playerFaceProfileFast(photo,photoFile)):null;
+  const cx=205,cy=365,r=131;
   x.save();x.beginPath();x.arc(cx,cy,r,0,Math.PI*2);x.clip();
   x.fillStyle='#93a4ad';x.fillRect(cx-r,cy-r,r*2,r*2);
   if(photo)drawFaceCenteredCover(x,photo,cx-r,cy-r,r*2,r*2,face);
@@ -530,6 +532,7 @@ async function makeCanvas(scale=1){
   x.restore();x.textAlign='left';
   x.beginPath();x.arc(cx,cy,r+5,0,Math.PI*2);x.strokeStyle='#075a37';x.lineWidth=9;x.stroke();
   x.beginPath();x.arc(cx,cy,r+11,0,Math.PI*2);x.strokeStyle='#222';x.lineWidth=3;x.stroke();
+  if(record)try{photo?.close?.()}catch(_){}
 
   const tx=392,tw=430,fs=fit(x,name,tw,39,24);
   x.font='900 '+fs+'px Arial,Helvetica,sans-serif';
@@ -664,24 +667,15 @@ async function share(){
   download(b,'Credencial_Liga_Juventino.png');
 }
 async function pdf(){
-  const cv=await makeCanvas(3);
-  let JS=window.jspdf?.jsPDF;
-  if(!JS){
-    await new Promise((resolve,reject)=>{
-      const s=document.createElement('script');
-      s.src='https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js';
-      s.onload=resolve;s.onerror=reject;document.head.appendChild(s);
-    }).catch(()=>{});
-    JS=window.jspdf?.jsPDF;
+  /* V1013: pdf-lib integrado y alojado en GitHub Pages; nunca enviar credenciales a un CDN. */
+  try{
+    const exporter=window.LJR_LOCAL_PDF;
+    if(!exporter?.single)throw Error('El motor PDF local todavía no está listo. Recarga esta sección.');
+    await exporter.single(()=>makeCanvas(2));
+  }catch(error){
+    console.warn('[credencial PDF local]',error?.name||'Error');
+    alert(error?.message||'No se pudo generar la credencial PDF local.');
   }
-  if(!JS){
-    const b=await canvasBlob(cv);
-    if(b)download(b,'Credencial_Liga_Juventino.png');
-    return;
-  }
-  const p=new JS({orientation:'landscape',unit:'mm',format:[85.60,53.98]});
-  p.addImage(cv.toDataURL('image/png'),'PNG',0,0,85.60,53.98,undefined,'FAST');
-  p.save('Credencial_Liga_Juventino_tamano_INE.pdf');
 }
 
 /* V1005: una sola vista previa por cambio, sin redibujar por cada tecla
@@ -732,5 +726,5 @@ if(screen)new MutationObserver(()=>{
 }).observe(screen,{childList:true,subtree:true});
 setTimeout(()=>schedule(240),0);
 
-window.LJR_V480={build:BUILD,render,makeCanvas,png,pdf,share,svg,schedulePreview:schedule};
+window.LJR_V480={build:BUILD,render,makeCanvas,png,pdf,share,svg,schedulePreview:schedule,makeRecordCanvas:(record,scale=1.5)=>makeCanvas(scale,record)};
 })();
