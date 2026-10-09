@@ -47,7 +47,7 @@ html body[data-app-route="quizArena"] #v612-quiz-portal .v1059-splash-stadium{
 /* Las cuatro respuestas tienen la MISMA caja; top responsive no pisa al estadio. */
 html body[data-app-route="quizArena"] #v612-quiz-portal .v1059-answer-art{
   left:50%!important;
-  top:min(58.1%,calc(100% - var(--qa1061-bottom) - 4 * var(--qa1061-row) - 3 * var(--qa1061-gap) - 7px))!important;
+  top:min(58.1%,calc(100% - var(--qa1061-bottom) - var(--qa1061-row) - var(--qa1061-row) - var(--qa1061-row) - var(--qa1061-row) - var(--qa1061-gap) - var(--qa1061-gap) - var(--qa1061-gap) - 7px))!important;
   transform:translateX(-50%)!important;
   box-sizing:border-box!important;
   width:clamp(135px,43.9vw,318px)!important;
@@ -132,7 +132,7 @@ html body[data-app-route="quizArena"] #v612-quiz-portal .v1059-answer:active .v1
     --qa1061-bottom:clamp(102px,18dvh,125px);
   }
   html body[data-app-route="quizArena"] #v612-quiz-portal .v1059-answer-art{
-    top:min(53%,calc(100% - var(--qa1061-bottom) - 4 * var(--qa1061-row) - 3 * var(--qa1061-gap) - 7px))!important;
+    top:min(53%,calc(100% - var(--qa1061-bottom) - var(--qa1061-row) - var(--qa1061-row) - var(--qa1061-row) - var(--qa1061-row) - var(--qa1061-gap) - var(--qa1061-gap) - var(--qa1061-gap) - 7px))!important;
   }
 }
 @media(prefers-reduced-motion:reduce){
