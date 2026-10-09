@@ -285,13 +285,13 @@ html body[data-app-route="quizArena"] #app>.topbar,
 html body[data-app-route="quizArena"] #app>header.topbar,
 html body[data-app-route="quizArena"] .app-shell>.topbar,
 html body[data-app-route="quizArena"] .app-shell>header.topbar,
-html body[data-app-route="quizArena"] .v531-mini-head,
+html body[data-app-route="quizArena"] .v531-mini-head:not(.v1057-quiz-head),
 html body[data-app-route="quizArena"] .ljr-quiz-head,
 html body[data-app-route="quiz"] #app>.topbar,
 html body[data-app-route="quiz"] #app>header.topbar,
 html body[data-app-route="quiz"] .app-shell>.topbar,
 html body[data-app-route="quiz"] .app-shell>header.topbar,
-html body[data-app-route="quiz"] .v531-mini-head,
+html body[data-app-route="quiz"] .v531-mini-head:not(.v1057-quiz-head),
 html body[data-app-route="quiz"] .ljr-quiz-head{
   display:none!important;
   visibility:hidden!important;
