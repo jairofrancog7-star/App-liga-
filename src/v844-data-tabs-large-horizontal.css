@@ -25,3 +25,11 @@
     box-shadow:0 0 8px rgba(0,229,255,.38)!important;
   }
 }
+
+
+/* V845 — bajar primer título debajo de tabs sin tocar tamaños ni tarjetas. */
+@media (max-width:1023px){
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="general"] .v33-general-content > .v33-general-section:first-child{
+    margin-top:24px!important;
+  }
+}
