@@ -53,3 +53,41 @@
   html body[data-app-route="tableExport"] #app>.topbar,
   html body[data-app-route="tableExport"] .app-shell>.topbar{transition:none!important}
 }
+/* V1060 — Paridad PC: cabecera degradada en la misma gama azul del exportador.
+   Se respeta completamente la geometría del encabezado de escritorio. */
+@media (min-width:1024px){
+  html body[data-app-route="tableExport"] #app>.topbar,
+  html body[data-app-route="tableExport"] .app-shell>.topbar{
+    isolation:isolate!important;
+    background-color:#02065f!important;
+    background-image:
+      radial-gradient(ellipse 37% 120% at 11% -48%,rgba(79,188,255,.20),transparent 80%),
+      radial-gradient(ellipse 32% 105% at 92% -38%,rgba(46,136,248,.14),transparent 85%),
+      linear-gradient(150deg,transparent 0 35%,rgba(100,178,255,.08) 35.25%,transparent 35.7% 68%,rgba(59,133,245,.065) 68.2%,transparent 68.7%),
+      linear-gradient(180deg,#0c37a2 0%,#0a278b 34%,#08176f 67%,#02065f 100%)!important;
+    background-repeat:no-repeat!important;
+    background-size:100% 100%!important;
+    background-position:center top!important;
+    border-bottom:0!important;
+    box-shadow:inset 0 1px 0 rgba(170,222,255,.085)!important;
+  }
+  html body[data-app-route="tableExport"] #app>.topbar .wordmark,
+  html body[data-app-route="tableExport"] .app-shell>.topbar .wordmark{
+    pointer-events:none!important;
+    background-color:transparent!important;
+    background-image:linear-gradient(180deg,rgba(23,76,159,.055),rgba(2,6,95,.055))!important;
+  }
+  html body[data-app-route="tableExport"] #screen{
+    background-color:#02065f!important;
+    background-image:linear-gradient(180deg,#02065f,#02065f)!important;
+  }
+  html body[data-app-route="tableExport"] #screen>.v176-table-page{
+    background:transparent!important;
+  }
+}
+/* Respetar siempre el foco del teclado y la funcionalidad de los botones. */
+html body[data-app-route="tableExport"] #app>.topbar :is(.back-button,.profile-button):focus-visible,
+html body[data-app-route="tableExport"] .app-shell>.topbar :is(.back-button,.profile-button):focus-visible{
+  outline:2px solid #79ecf8!important;
+  outline-offset:3px!important;
+}
