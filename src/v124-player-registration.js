@@ -48,7 +48,7 @@ let registryTeam='Todos';
 let registryLetter='Todas';
 let registrySource='Todos';
 /* V1006 · Mostrar el padrón en grupos para no bloquear el scroll móvil. */
-const REGISTRY_PAGE_SIZE=24;
+const REGISTRY_PAGE_SIZE=6;
 let registryVisibleLimit=REGISTRY_PAGE_SIZE;
 
 function toast(msg){
@@ -192,8 +192,8 @@ function registryFilterHtml(list){
   const letters=uniqueSorted(list,r=>norm(r.name).charAt(0).toUpperCase()).filter(x=>/^[A-Z0-9]$/.test(x));
   const filtered=filterRegistry(list);
   const opt=(v,label,current)=>'<option value="'+esc(v)+'" '+(current===v?'selected':'')+'>'+esc(label||v)+'</option>';
-  return '<section class="v161-registry-filters" data-v161-filters>'+
-    '<div class="v161-filter-head"><b>Encontrar jugadores rápido</b><span data-v161-count>'+filtered.length+' de '+list.length+' jugadores</span></div>'+
+  return '<details class="v161-registry-filters" data-v161-filters>'+
+    '<summary class="v161-filter-head"><b>Filtros avanzados · equipo, categoría y letras</b><span data-v161-count>'+filtered.length+' de '+list.length+' jugadores</span></summary>'+
     '<div class="v161-filter-grid">'+
       '<label><span>Orden</span><select data-v161-sort>'+
         opt('newest','Más nuevos primero',registrySort)+opt('oldest','Más antiguos primero',registrySort)+opt('az','Nombre A–Z',registrySort)+opt('za','Nombre Z–A',registrySort)+
@@ -206,7 +206,7 @@ function registryFilterHtml(list){
       '<button type="button" data-v161-letter="Todas" class="'+(registryLetter==='Todas'?'active':'')+'">Todas</button>'+
       letters.map(x=>'<button type="button" data-v161-letter="'+esc(x)+'" class="'+(registryLetter===x?'active':'')+'">'+esc(x)+'</button>').join('')+
     '</div></div>'+
-  '</section>';
+  '</details>';
 }
 function registryPagedHtml(filtered){
   const shown=filtered.slice(0,registryVisibleLimit);
@@ -2569,7 +2569,7 @@ function managerHtml(){
     '<div class="v124-summary"><div><b>'+list.length+'</b><span>Registros</span></div><div><b>'+officialCount+'</b><span>Oficial / coincide</span></div><div><b>'+pending+'</b><span>Por revisar</span></div></div>'+
     fastToolsHtml(list)+
     '<div class="v124-primary-actions"><button class="primary" data-v124-save>'+v202Icon('save')+'<span>Guardar / actualizar jugador</span></button><button data-v124-new>'+v202Icon('plus')+'<span>Nuevo registro</span></button><button data-v124-sync>'+v202Icon('refresh')+'<span>Actualizar padrón</span></button></div>'+
-    '<label class="v124-search"><span>Buscar en esta temporada</span><input type="search" data-v124-search placeholder="Nombre, equipo, origen o quién registró" value="'+esc(registryQuery)+'"></label>'+
+    '<label class="v124-search"><span>Buscar jugador para corregir o generar credencial</span><input type="search" data-v124-search placeholder="Escribe el nombre o equipo del jugador…" value="'+esc(registryQuery)+'" autocomplete="off"><small class="v1007-search-help">Mostramos 6 jugadores al inicio. Escribe para filtrar; usa Mostrar más para consultar el resto.</small></label>'+
     registryFilterHtml(list)+
     '<div class="v124-list" data-v124-list>'+registryPagedHtml(filterRegistry(list))+'</div>'+
     '<p class="v124-privacy">CURP, fecha de nacimiento y localidad capturadas aquí se conservan solo en este dispositivo; no se suben al repositorio público.</p>'+
@@ -2635,7 +2635,12 @@ function bindManager(root){
     renderManager(true);
   });
   const search=$('[data-v124-search]',root);
-  search?.addEventListener('input',()=>{registryQuery=search.value||'';applyRegistryFilters(root)});
+  let searchTimer=0;
+  search?.addEventListener('input',()=>{
+    registryQuery=search.value||'';
+    clearTimeout(searchTimer);
+    searchTimer=setTimeout(()=>{if(root.isConnected)applyRegistryFilters(root)},110);
+  });
   $('[data-v161-sort]',root)?.addEventListener('change',e=>{registrySort=e.target.value||'newest';applyRegistryFilters(root)});
   $('[data-v161-category]',root)?.addEventListener('change',e=>{registryCategory=e.target.value||'Todas';registryTeam='Todos';registryVisibleLimit=REGISTRY_PAGE_SIZE;renderManager(true)});
   $('[data-v161-team]',root)?.addEventListener('change',e=>{registryTeam=e.target.value||'Todos';applyRegistryFilters(root)});
