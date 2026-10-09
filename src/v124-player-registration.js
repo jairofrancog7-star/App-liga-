@@ -1,5 +1,5 @@
 import {validateCurp,extractCurp,completion,rosterNames} from './registration-core.js';
-import {saveAssets,restoreAssets,resetAssets,installCapture} from './registration-capture.js';
+import {saveAssets,restoreAssets,resetAssets,installCapture} from './registration-capture.js?v=20261009-v1008-scroll-patch';
 /* V124 — Registro de jugadores por temporada.
    Complementa credentialBuilder sin publicar CURP/fecha/domicilio en GitHub.
    Los datos capturados se guardan solo en localStorage del dispositivo. */
