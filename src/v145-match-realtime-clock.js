@@ -128,6 +128,16 @@ function score(s){
 function latestGoal(s){
   return confirmed(s).filter(e=>e.type==='goal').sort((a,b)=>Number(b.ts||0)-Number(a.ts||0))[0]||null;
 }
+function officialAwarded(c){
+  const [cat,id]=String(c?.key||'').split(':');
+  const d=window.LJR_OFFICIAL_DATA?.categories?.[cat]?.fixture_decisions?.[id];
+  const winner=norm(d?.winner||'');
+  return !!(winner&&[norm(c.home),norm(c.away)].includes(winner));
+}
+function displayScore(s){
+  if(s.phase==='scheduled'&&!freshFeed(s)&&!confirmed(s).length)return '—';
+  const x=score(s);return x.home+'–'+x.away;
+}
 function statusText(s){
   const u=String(s.source?.feedUrl||'').trim();
   if(freshFeed(s)){
@@ -150,7 +160,7 @@ function cardHtml(c,s){
     '<div class="v145-clock-main">'+
       '<span><small>TIEMPO REAL</small><b data-v145-clock>'+esc(clockText(s))+'</b></span>'+
       '<em data-v145-period>'+esc(p)+'</em>'+
-      '<strong data-v145-score>'+sc.home+'–'+sc.away+'</strong>'+
+      '<strong data-v145-score>'+esc(displayScore(s))+'</strong>'+
     '</div>'+
     '<div class="v145-status"><i class="'+(freshFeed(s)?'on':'')+'"></i><span><b data-v145-status>'+esc(statusText(s))+'</b><small data-v145-source>'+esc(sourceText(s))+'</small></span></div>'+
     '<div class="v145-tech"><span>WebSocket</span><span>SSE</span><span>JSON Live Feed</span><span>Audio IA</span></div>'+
@@ -168,6 +178,12 @@ function mountCard(c,s){
 function patchUi(){
   if(!ROUTES.has(route()))return;
   const c=ctx();if(!c)return;
+  // Una victoria por DEFAULT ya tiene resolución oficial:
+  // no presentar 0–0, minuto o cronómetro de un encuentro no disputado.
+  if(officialAwarded(c)){
+    $('[data-v145-realtime]',c.root)?.remove();
+    return;
+  }
   const s=load(c);if(!s)return;
   mountCard(c,s);
 
@@ -175,7 +191,7 @@ function patchUi(){
   const card=$('[data-v145-realtime]',c.root);
   if(card){
     const a=$('[data-v145-clock]',card),b=$('[data-v145-period]',card),d=$('[data-v145-score]',card),st=$('[data-v145-status]',card),src=$('[data-v145-source]',card);
-    if(a)a.textContent=clock;if(b)b.textContent=period;if(d)d.textContent=sc.home+'–'+sc.away;
+    if(a)a.textContent=clock;if(b)b.textContent=period;if(d)d.textContent=displayScore(s);
     if(st)st.textContent=statusText(s);if(src)src.textContent=sourceText(s);
     const dot=$('.v145-status i',card);dot?.classList.toggle('on',freshFeed(s));
   }
@@ -183,7 +199,7 @@ function patchUi(){
   const center=$('.v92-score-card .v92-center',c.root)||$('.v420-matchup > span',c.root);
   if(center&&(s.phase!=='scheduled'||confirmed(s).length||freshFeed(s))){
     const strong=$('strong',center),small=$('small',center);
-    if(strong)strong.textContent=sc.home+'–'+sc.away;
+    if(strong)strong.textContent=displayScore(s);
     if(small){
       small.textContent=period==='MT'?'MEDIO TIEMPO':period==='FINAL'?'FINAL':clock!=='—'?(clock+' · '+period):period;
       small.classList.add('v144-live-label');
