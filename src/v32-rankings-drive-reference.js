@@ -152,6 +152,7 @@ var filterQuery='';
 var expanded=-1;
 var filterReturnScroll=0;
 var clubOrder=localStorage.getItem('v32-rankings-club-order')==='az'?'az':'points';
+var showAllClubRankings=false;
 
 function route(){return location.hash.replace('#/','')||'home'}
 function esc(value){
@@ -255,7 +256,7 @@ function fedControls(){
 function clubsControls(){
   var selected=categoryByCode(selectedClubCategory);
   return '<div class="v32-controls clubs '+(selected?'has-club-filter':'')+'">'+
-    '<button type="button" class="v32-select v32-coefficient" data-v32-info="club-coefficient"><span>Coeficientes de clubes</span><i class="v32-chevron"></i></button>'+
+    '<button type="button" class="v32-select v32-coefficient" data-v32-info="club-coefficient"><span>Clasificación de clubes</span><i class="v32-chevron"></i></button>'+
     '<button type="button" class="v32-select v32-season-select" data-v32-season><span>'+esc(season)+'</span><i class="v32-chevron"></i></button>'+
     (selected?'<button type="button" class="v32-selected-club" data-v32-clear-club><span>'+esc(selected[1])+'</span><i>×</i></button>':'')+
     '<button type="button" class="v32-filter '+(selected?'active':'')+'" data-v32-filter aria-label="Filtrar por categoría">'+filterIcon()+'</button>'+
@@ -275,11 +276,14 @@ function filteredFederationRows(){
 function fedRows(){
   return filteredFederationRows().map(function(row){
     var originalIndex=federationRows.findIndex(function(r){return r[0]===row[0]});
+    var meta=officialCounts(clubCategoryId(row[0]));
+    var players=meta&&Number(meta['Jugadores']);
+    var teams=meta&&Number(meta['Equipos']);
     return '<button type="button" class="v32-fed-row" data-v32-fed="'+originalIndex+'">'+
       '<span class="v32-pos">'+(originalIndex+1)+'</span>'+logo(row[0],row[1])+
       '<span class="v32-fed-name">'+esc(row[1])+'</span>'+
-      '<span class="v32-fed-points">'+esc(row[2])+'</span>'+
-      '<strong class="v32-fed-average">'+esc(row[3])+'</strong>'+
+      '<span class="v32-fed-points">'+esc(Number.isFinite(players)?players:'—')+'</span>'+
+      '<strong class="v32-fed-average">'+esc(Number.isFinite(teams)?teams:'—')+'</strong>'+
     '</button>';
   }).join('');
 }
@@ -313,13 +317,13 @@ function filteredCategoryTable(){
 }
 function fedView(){
   if(selectedFederation){
-    return fedControls()+filteredCategoryTable();
+    return fedControls()+filteredCategoryTable()+rankingsFooter();
   }
   return fedControls()+
     '<section class="v32-card v32-fed-card">'+
       '<div class="v32-fed-head"><span>Categoría</span><span>Jugadores</span><span>Equipos</span></div>'+
       '<div class="v32-fed-group">Liga Municipal de Fútbol Juventino Rosas</div>'+fedRows()+
-    '</section>';
+    '</section>'+rankingsFooter();
 }
 function filteredClubRows(){
   var rows=rankingClubRows().slice();
@@ -327,7 +331,7 @@ function filteredClubRows(){
   return rows;
 }
 function clubItems(){
-  var rows=filteredClubRows(),selectedCategory=categoryByCode(selectedClubCategory||'CAT3');
+  var allRows=filteredClubRows(),rows=showAllClubRankings?allRows:allRows.slice(0,10),selectedCategory=categoryByCode(selectedClubCategory||'CAT3');
   if(!rows.length){
     return '<div class="v32-empty-state">No hay clasificación disponible para '+esc(selectedCategory?selectedCategory[1]:'esta categoría')+'.</div>';
   }
@@ -343,13 +347,53 @@ function clubItems(){
     '</div>';
   }).join('');
 }
+function rankingsStamp(){
+  var db=officialDb(),utc=db&&db.captured_at_utc;
+  if(!utc)return 'Fecha de actualización pendiente de sincronización';
+  var date=new Date(utc);
+  if(!Number.isFinite(date.getTime()))return 'Fecha de actualización no disponible';
+  var datePart=new Intl.DateTimeFormat('es-MX',{day:'2-digit',month:'2-digit',year:'numeric',timeZone:'UTC'}).format(date);
+  var timePart=new Intl.DateTimeFormat('es-MX',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'UTC'}).format(date);
+  return 'Última actualización registrada: '+datePart+' · '+timePart+' UTC';
+}
+function officialCounts(id){
+  var entry=officialDb()?.categories?.[id];
+  return entry&&entry.counts||entry&&entry.dashboard&&entry.dashboard.counts||null;
+}
+function rankingsSummary(){
+  return '<aside class="v994-about-rankings" aria-label="Sobre los rankings">'+
+    '<h2>Sobre los rankings</h2>'+
+    '<p>Los rankings de la Liga Municipal de Fútbol Juventino Rosas A. C. muestran la clasificación de los equipos por categoría, con base en los resultados y las estadísticas oficiales registrados durante la temporada.</p>'+
+    '<p>El reglamento 2026–2027 establece <strong>3 puntos por victoria, 1 por empate y 0 por derrota</strong> (artículo 116). Los partidos perdidos por <strong>default</strong> implican, además de no obtener los puntos en disputa, <strong>descontar 3 puntos</strong> acumulados o futuros (artículo 106).</p>'+
+    '<p>En la tabla puedes consultar partidos jugados, ganados, empatados y perdidos, goles a favor y en contra, diferencia de goles y puntos. Las sanciones y rectificaciones corresponden a los registros oficiales de la Liga.</p>'+
+    '<button type="button" class="v994-rulebook-link" data-v32-rulebook>Consultar reglamento de la Liga <span aria-hidden="true">↗</span></button>'+
+    '<small>Fuente: Reglamento de la Liga Municipal de Fútbol Juventino Rosas A. C., temporada 2026–2027, arts. 34, 81, 106 y 116.</small>'+
+  '</aside>';
+}
+function rankingsFooter(){
+  return '<div class="v994-ranking-footer">'+
+    '<p class="v994-update" data-v32-update>'+esc(rankingsStamp())+'</p>'+
+    rankingsSummary()+
+  '</div>';
+}
+function clubMoreButton(){
+  var count=filteredClubRows().length;
+  if(count<=10)return '';
+  return '<button type="button" data-v32-more-rankings class="v994-show-more" aria-expanded="'+(showAllClubRankings?'true':'false')+'">'+
+    '<span>'+(showAllClubRankings?'Mostrar menos':'Ver rankings completos')+'</span>'+
+    '<svg viewBox="0 0 24 24" aria-hidden="true" class="'+(showAllClubRankings?'up':'')+'"><path d="m6 9 6 6 6-6"/></svg>'+
+    '<small>'+(showAllClubRankings?count+' equipos':'10 de '+count+' equipos')+'</small>'+
+  '</button>';
+}
 function clubsView(){
   return clubsControls()+
     '<section class="v32-card v32-fed-card v32-club-card v190-club-card">'+
       '<div class="v32-fed-head v32-club-head v190-club-head"><span>Club</span><span>Puntos</span><span></span></div>'+
       '<div class="v32-fed-group v190-club-group">Liga Municipal de Fútbol Juventino Rosas</div>'+
       clubItems()+
-    '</section>';
+      clubMoreButton()+
+    '</section>'+
+    rankingsFooter();
 }
 function filterGrid(){
   var q=filterQuery.trim().toLocaleLowerCase('es');
@@ -455,7 +499,7 @@ function beginFilter(){
 function rankingOptions(button){
   if(activeTab==='clubs'){
     menuAt(button,'Coeficientes de clubes',[
-      {label:'Coeficientes de clubes',active:clubOrder==='points',action:function(){clubOrder='points';localStorage.setItem('v32-rankings-club-order',clubOrder);expanded=-1;render()}},
+      {label:'Clasificación por puntos',active:clubOrder==='points',action:function(){clubOrder='points';localStorage.setItem('v32-rankings-club-order',clubOrder);expanded=-1;render()}},
       {label:'Ordenar clubes por nombre (A-Z)',active:clubOrder==='az',action:function(){clubOrder='az';localStorage.setItem('v32-rankings-club-order',clubOrder);expanded=-1;render()}},
       {label:'Filtrar por categoría',active:false,action:beginFilter}
     ]);
@@ -501,6 +545,7 @@ function bindFilterTiles(){
       if(!code)return;
       pendingClubCategory=code;
       selectedClubCategory=code;
+      showAllClubRankings=false;
       activeTab='clubs';
       localStorage.setItem('v32-rankings-tab','clubs');
       localStorage.setItem('v32-rankings-club-category',code);
@@ -556,13 +601,22 @@ function bind(){
     return;
   }
 
+  var showMore=document.querySelector('[data-v32-more-rankings]');
+  if(showMore)showMore.onclick=function(){
+    showAllClubRankings=!showAllClubRankings;
+    var sc=document.querySelector('#screen'),oldY=sc?sc.scrollTop:0;
+    render();
+    if(sc)sc.scrollTop=oldY;
+  };
+  var rulesBtn=document.querySelector('[data-v32-rulebook]');
+  if(rulesBtn)rulesBtn.onclick=function(){closePopover();location.hash='#/rulebook'};
   document.querySelectorAll('[data-v32-tab]').forEach(function(button){
     button.onclick=function(){
       if(activeTab===button.dataset.v32Tab)return;
       activeTab=button.dataset.v32Tab;
       closePopover();
       localStorage.setItem('v32-rankings-tab',activeTab);
-      expanded=-1;render();
+      expanded=-1;showAllClubRankings=false;render();
       var scroll=document.querySelector('#screen');if(scroll)scroll.scrollTop=0;
     };
   });
@@ -574,7 +628,7 @@ function bind(){
   if(filter)filter.onclick=beginFilter;
   var clear=document.querySelector('[data-v32-clear-club]');
   if(clear)clear.onclick=function(){
-    selectedClubCategory='';pendingClubCategory='';localStorage.removeItem('v32-rankings-club-category');expanded=-1;render();
+    selectedClubCategory='';pendingClubCategory='';localStorage.removeItem('v32-rankings-club-category');expanded=-1;showAllClubRankings=false;render();
   };
   document.querySelectorAll('[data-v32-fed]').forEach(function(button){
     button.onclick=function(){var row=federationRows[Number(button.dataset.v32Fed)];if(row)toast(row[1]+' · '+row[2]+' jugadores · '+row[3]+' equipos')};
