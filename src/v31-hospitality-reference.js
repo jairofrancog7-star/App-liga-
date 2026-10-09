@@ -87,9 +87,26 @@ function v31BindHospitality(){
   });
 }
 
+// Only Hospitalidad's original background and Android/PWA upper system bar.
+// Neither the header nor the invitation controls are repositioned.
+const V31_HOSPITALITY_BG='linear-gradient(180deg, #10387F 0%, #050A48 100%)';
+let v31OriginalThemeColor=null;
+function v31SyncHospitalityTheme(active){
+  const theme=document.querySelector('meta[name="theme-color"]');
+  if(!theme)return;
+  if(active){
+    if(v31OriginalThemeColor===null)v31OriginalThemeColor=theme.getAttribute('content')||'#000144';
+    if(theme.content!=='#10387F')theme.setAttribute('content','#10387F');
+  }else if(v31OriginalThemeColor!==null){
+    theme.setAttribute('content',v31OriginalThemeColor);
+    v31OriginalThemeColor=null;
+  }
+}
+
 function v31ApplyHospitality(){
   const isHospitality = location.hash.replace('#/','').split('?')[0] === 'hospitality';
   document.documentElement.classList.toggle('v31-hospitality-active', isHospitality);
+  v31SyncHospitalityTheme(isHospitality);
   if(!isHospitality) return;
 
   const screen = document.querySelector('#screen');
@@ -102,7 +119,7 @@ function v31ApplyHospitality(){
   // Inline !important wins over legacy stylesheets, even if loaded later.
   const hospitalityPage=mount.querySelector('.v31-hospitality-page');
   if(hospitalityPage){
-    hospitalityPage.style.setProperty('background','linear-gradient(180deg, #1689FF 0%, #060950 100%)','important');
+    hospitalityPage.style.setProperty('background',V31_HOSPITALITY_BG,'important');
   }
   v31BindHospitality();
 }
