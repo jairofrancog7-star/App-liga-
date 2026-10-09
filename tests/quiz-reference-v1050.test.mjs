@@ -38,3 +38,21 @@ test('estilo aislado a Quiz Arena y cache de assets actualizado',()=>{
  assert.match(html,/v1050-quiz-modal-reference\.css\?v=/);
  assert.match(html,/v531-quiz-moreless-drive-reference\.js\?v=20261009-v\d+-[a-z0-9-]+/);
 });
+
+test('recordatorio en pantalla principal, sin ocupar la pregunta',()=>{
+ const hub=js.slice(js.indexOf('function quizHub(data)'),js.indexOf('function quizGame(data)'));
+ const game=js.slice(js.indexOf('function quizGame(data)'),js.indexOf('function quizResult(data)'));
+ assert.ok(hub.includes('v1050NotifyCard()'));
+ assert.ok(hub.includes('v1050NotifyModal()'));
+ assert.ok(!game.includes('v1050NotifyCard()'));
+ assert.ok(game.includes('v1050NotifyModal()'));
+});
+test('trabajador de avisos locales requiere permiso y no usa servidores',()=>{
+ const sw=readFileSync(new URL('../src/quiz-local-worker.js',import.meta.url),'utf8');
+ assert.ok(js.includes("navigator.serviceWorker.register('./src/quiz-local-worker.js'"));
+ assert.ok(js.includes('v1055RegisterQuizNotices()'));
+ assert.ok(js.includes('reg.showNotification('));
+ assert.match(sw,/notificationclick/);
+ assert.doesNotMatch(sw,/fetch\(|pushManager|sendBeacon|\/api\//);
+ assert.ok(css.includes('[data-v531-view="hub"] .v1050-notice-card'));
+});
