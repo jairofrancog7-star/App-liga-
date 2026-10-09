@@ -1,0 +1,195 @@
+/* V1064 — CUADRO REAL: tarjetas visibles incluso sin cruces oficiales.
+   Rediseño geométrico limitado a Competición/Cuadro y Simulador/Cuadro. */
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket]){
+  --v1064-ground:#06075b;
+  --v1064-card:#13257c;
+  --v1064-accent:#1edbf3;
+}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference.stage-playoff,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-playoff) .v12-bracket-route{
+  --row-h:50px!important;
+  --row-gap:15px!important;
+}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference.stage-playoff,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-playoff) .v12-bracket-pair{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 10px minmax(0,1fr)!important;
+  align-items:center!important;
+  gap:0!important;
+  min-width:0!important;
+  height:var(--row-h)!important;
+}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+  :is(.v12-bracket-pair,.v12-bracket-seeded,.v12-progress-seeded) > .v12-bracket-team{
+  position:relative!important;
+  display:flex!important;
+  flex-flow:row nowrap!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  box-sizing:border-box!important;
+  min-width:0!important;
+  width:100%!important;
+  min-height:46px!important;
+  height:46px!important;
+  max-height:50px!important;
+  gap:3px!important;
+  margin:0!important;
+  padding:3px 14px 3px 4px!important;
+  border:0!important;
+  border-radius:12px!important;
+  background:linear-gradient(180deg,#172b87 0%,#112274 100%)!important;
+  box-shadow:inset 0 0 0 1px rgba(120,150,255,.13),inset 0 1px 0 rgba(255,255,255,.045)!important;
+  overflow:hidden!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+  :is(.v12-bracket-pair,.v12-bracket-seeded,.v12-progress-seeded) > .v12-bracket-team:last-child{
+  padding:3px 3px 3px 14px!important;
+}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+  .v12-bracket-pair > .v12-bracket-team{
+  min-height:50px!important;
+  height:50px!important;
+  max-height:50px!important;
+}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+  :is(.v12-bracket-pair,.v12-bracket-seeded,.v12-progress-seeded) > .v12-bracket-team:first-child{
+  -webkit-mask-image:radial-gradient(circle 13px at right center,transparent 12px,#000 13px)!important;
+  mask-image:radial-gradient(circle 13px at right center,transparent 12px,#000 13px)!important;
+}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+  :is(.v12-bracket-pair,.v12-bracket-seeded,.v12-progress-seeded) > .v12-bracket-team:last-child{
+  -webkit-mask-image:radial-gradient(circle 13px at left center,transparent 12px,#000 13px)!important;
+  mask-image:radial-gradient(circle 13px at left center,transparent 12px,#000 13px)!important;
+}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+  :is(.v12-bracket-pair,.v12-bracket-seeded,.v12-progress-seeded) > .v12-bracket-team .v12-bracket-seed{
+  display:block!important;
+  position:static!important;
+  top:auto!important;
+  left:auto!important;
+  right:auto!important;
+  bottom:auto!important;
+  transform:none!important;
+  flex:0 0 auto!important;
+  width:auto!important;
+  margin:0!important;
+  padding:0!important;
+  white-space:nowrap!important;
+  color:#fff!important;
+  font:800 clamp(8px,2.2vw,10px)/1 Inter,Roboto,Arial,sans-serif!important;
+}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ .v12-bracket-team .v12-bracket-seed:empty{display:none!important;}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ :is(.v12-bracket-pair,.v12-bracket-seeded,.v12-progress-seeded) > .v12-bracket-team img,
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ :is(.v12-bracket-pair,.v12-bracket-seeded,.v12-progress-seeded) > .v12-bracket-team .v12-bracket-fallback{
+  position:static!important;
+  display:grid!important;
+  place-items:center!important;
+  flex:0 0 17px!important;
+  width:17px!important;
+  min-width:17px!important;
+  max-width:17px!important;
+  height:17px!important;
+  min-height:17px!important;
+  max-height:17px!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  object-fit:contain!important;
+  overflow:hidden!important;
+}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ .v12-bracket-team .v1064-neutral-logo svg{display:block!important;width:15px!important;height:15px!important;color:#a2bbf2!important;}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ :is(.v12-bracket-pair,.v12-bracket-seeded,.v12-progress-seeded) > .v12-bracket-team strong{
+  display:block!important;
+  position:static!important;
+  flex:0 1 auto!important;
+  min-width:0!important;
+  max-width:100%!important;
+  width:auto!important;
+  padding:0!important;
+  margin:0!important;
+  font:850 clamp(9px,2.65vw,12px)/1 Inter,Roboto,Arial,sans-serif!important;
+  color:#fff!important;
+  letter-spacing:0!important;
+  white-space:nowrap!important;
+  word-break:normal!important;
+  overflow-wrap:normal!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+  -webkit-line-clamp:unset!important;
+}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ .v12-bracket-team.v1064-pending{background:linear-gradient(180deg,#122076,#0f1b6c)!important;}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ .v12-bracket-team.v1064-pending strong{font-size:12px!important;color:#bdc9f2!important;}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ .v12-bracket-team.v1051-pending-team{background:linear-gradient(180deg,#122076,#0f1b6c)!important;}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ :is(.v12-bracket-pair,.v12-bracket-seeded) > .v12-bracket-vs,
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ .v12-progress-seeded > .v12-progress-vs{
+  display:grid!important;
+  place-items:center!important;
+  position:relative!important;
+  z-index:8!important;
+  justify-self:center!important;
+  align-self:center!important;
+  width:25px!important;
+  min-width:25px!important;
+  height:25px!important;
+  min-height:25px!important;
+  padding:0!important;
+  margin:0 -7px!important;
+  background:var(--v1064-ground)!important;
+  border:0!important;
+  border-radius:50%!important;
+  box-shadow:none!important;
+  color:var(--v1064-accent)!important;
+  font:850 11px/1 Inter,Roboto,Arial,sans-serif!important;
+  pointer-events:none!important;
+}
+/* Los resultados del play-off ya publicados no se superponen a las siglas.
+   Permanecen consultables en Partidos y resultados. */
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ .v12-bracket-team .v12-bracket-score{display:none!important;}
+:is(html body[data-app-route="competition"] #screen .v12-bracket-reference,
+    html body[data-app-route="simulator"] #screen [data-v512-bracket])
+ .v1064-unpublished{
+  display:block!important;
+  box-sizing:border-box!important;
+  margin:12px 6px 16px!important;
+  padding:10px 12px!important;
+  border:1px solid rgba(73,187,244,.26)!important;
+  border-radius:10px!important;
+  color:#c7d9fa!important;
+  background:rgba(12,37,112,.72)!important;
+  font:650 11px/1.45 Inter,Roboto,Arial,sans-serif!important;
+  text-align:center!important;
+}
+/* No tocar los demás módulos, categorías, barras o tarjetas. */
