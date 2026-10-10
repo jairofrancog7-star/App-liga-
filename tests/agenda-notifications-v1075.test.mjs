@@ -18,7 +18,9 @@ test('calendar link, alarmas ICS y Web Push con consentimiento',()=>{
 test('panel administrador y secretos exclusivos del backend',()=>{
  const js=read('src/v1075-agenda-admin-delivery.js');
  new Function(js);
- assert.match(js,/Authorization.*Bearer/);
+ assert.match(js,/window\.LJR_MEDIA\.notifyAPI/);
+ assert.doesNotMatch(js,/data-ag1075-token/);
+ assert.match(read('public/media-client.js'),/Authorization','Bearer /);
  assert.match(js,/consentAt/);
  assert.match(js,/window\.confirm/);
  assert.match(js,/admin\/notices/);
