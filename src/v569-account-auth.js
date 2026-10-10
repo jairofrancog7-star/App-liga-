@@ -14,7 +14,7 @@ const STORE_KEY='lj-store-v3';
 const RETURN_KEY='ljr-auth-return-v569';
 const DEVICE_KEY='ljr-device-v577';
 const REMEMBER_KEY='ljr-remembered-account-v577';
-const ROUTES=new Set(['accountRegister','accountLogin','accountEdit','accountSecurity','accountPassword','accountDevices']);
+const ROUTES=new Set(['accountRegister','accountLogin','accountEdit','accountSecurity','accountPassword','accountDevices','accountPrivacy','accountPreferences','accountAdvisor','accountCloud']);
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -449,6 +449,55 @@ function openLogin(){
   if(route()==='profile'&&openProfileMode('login'))return;
   go('accountLogin');
 }
+
+/* V1150 — Controles locales de cuenta: exportación sin secretos y datos de actividad real. */
+function privacyPageMarkup(a){
+  const lastSeen=Array.isArray(a.devices)?a.devices.find(d=>d.id===currentDeviceId())?.lastSeenAt:'';
+  const line=(label,value)=>'<div><dt>'+esc(label)+'</dt><dd>'+esc(value)+'</dd></div>';
+  return '<section class="v569-page v1150-privacy-page" data-v569-page="privacy">'+
+    header('MI CUENTA','Datos y privacidad','Consulta tu actividad local y descarga una copia de tu perfil.')+
+    '<section class="v569-card v1150-privacy-card">'+
+      '<div class="v1150-privacy-banner"><span aria-hidden="true">✓</span><div><b>Control de tus datos</b><small>Estos datos pertenecen a la instalación actual. No equivalen a sesiones sincronizadas en internet.</small></div></div>'+
+      '<h2>Actividad de la cuenta</h2>'+
+      '<dl class="v1150-privacy-details">'+
+        line('Cuenta creada',a.createdAt?fmtDate(a.createdAt):'No disponible')+
+        line('Último inicio de sesión',a.lastLoginAt?fmtDate(a.lastLoginAt):'Sin registros')+
+        line('Última actividad del dispositivo',lastSeen?fmtDate(lastSeen):'Sin registros')+
+        line('Biometría',biometricEnabled(a)?'Configurada en este dispositivo':'No configurada')+
+      '</dl>'+
+      '<h2>Mis datos</h2>'+
+      '<p class="v1150-privacy-description">Puedes descargar tu nombre, alias, datos de contacto, personalización y fechas de actividad. El archivo no incluye contraseñas, hashes ni credenciales biométricas.</p>'+
+      '<div class="v1150-privacy-actions">'+
+        '<button type="button" class="v569-primary" data-v1150-export-profile>↓ Descargar mis datos (JSON)</button>'+
+        '<button type="button" class="v569-secondary" data-v1150-copy-alias>Copiar mi alias</button>'+
+        '<button type="button" class="v569-secondary" data-v569-route="accountDevices">Revisar dispositivos</button>'+
+        '<button type="button" class="v569-secondary" data-v569-route="notifications">Ajustar notificaciones</button>'+
+      '</div>'+
+      '<p class="v569-note">Privacidad: tu perfil y contraseñas se gestionan en el almacenamiento de este navegador o app. Para iniciar sesión en varios teléfonos con sesiones revocables hace falta un servicio de cuentas en un servidor.</p>'+
+    '</section></section>';
+}
+function exportLocalProfile(a){
+  if(!a)return toast('Primero inicia sesión');
+  try{
+    const fields=['name','alias','email','phone','avatarPreset','shirtName','shirtNumber','shirtColor','shirtTeam','shirtCategory','createdAt','updatedAt','lastLoginAt'];
+    const profile={};fields.forEach(k=>{if(a[k]!==undefined)profile[k]=a[k]});
+    const devices=(Array.isArray(a.devices)?a.devices:[]).map(d=>({
+      name:d.label||d.name||'Dispositivo',trusted:!!d.trusted,verified:!!d.verified,
+      firstSeenAt:d.firstSeenAt||null,lastSeenAt:d.lastSeenAt||null
+    }));
+    const data={format:'liga-juventino-profile-v1',exportedAt:nowIso(),
+      scope:'Copia de información local; no incluye datos de otros navegadores ni secretos.',
+      profile,devices};
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'});
+    const url=URL.createObjectURL(blob);
+    const link=document.createElement('a');
+    link.href=url;link.download='liga-perfil-'+(cleanAlias(a.alias)||'cuenta')+'.json';
+    document.body.append(link);link.click();link.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),15000);
+    toast('Copia de datos preparada');
+  }catch(_){toast('No se pudo descargar. Revisa los permisos del navegador.')}
+}
+
 function authShell(kind){
   const a=currentAccount();
   if(kind==='accountRegister'){
@@ -516,6 +565,17 @@ function authShell(kind){
         '<p class="v569-note"><b>Privacidad:</b> el escaneo visual no guarda foto ni video. Tampoco identifica quién eres; sólo confirma que hay un rostro centrado. Face ID/Android Biometrics sigue siendo responsabilidad del sistema del teléfono.</p>'+
       '</section></section>';
   }
+  if(kind==='accountPrivacy'){
+    if(!a)return authShell('accountLogin');
+    return privacyPageMarkup(a);
+  }
+  if(['accountPreferences','accountAdvisor','accountCloud'].includes(kind)){
+    if(!a)return authShell('accountLogin');
+    const titles={accountPreferences:['MI CUENTA','Preferencias','Ajustes personales y accesibilidad.'],accountAdvisor:['HERRAMIENTAS','Asistente local','Revisiones automáticas sin enviar datos privados.'],accountCloud:['MI CUENTA','Cuenta en la nube','Sincroniza tu personalización cuando exista un servidor autorizado.']};
+    const headerData=titles[kind];
+    return '<section class="v569-page" data-v569-page="'+kind+'" data-v1300-panel="'+kind+'">'+
+      header(...headerData)+'<section data-v1300-content></section></section>';
+  }
   if(kind==='accountPassword'){
     if(!a)return authShell('accountLogin');
     return '<section class="v569-page" data-v569-page="password">'+
@@ -535,7 +595,7 @@ function authShell(kind){
         '<div class="v577-device-summary '+(isRememberedDevice(a)?'trusted':'')+'"><span>'+(isRememberedDevice(a)?'✓':'!')+'</span><div><b>'+(isRememberedDevice(a)?'Este dispositivo está recordado':'Este dispositivo no está recordado')+'</b><small>ID del dispositivo · '+esc(currentId.slice(0,8).toUpperCase())+'</small></div></div>'+
         '<div class="v569-devices">'+(devices.length?devices.map(d=>'<article class="'+(d.id===currentId?'current':'')+'"><span>📱</span><div><b>'+esc(d.label||d.name||'Dispositivo')+(d.id===currentId?' · Este dispositivo':'')+'</b><small>'+(d.trusted?'Recordado':'No recordado')+(d.verified?' · Identidad verificada':'')+(d.lastSeenAt?' · '+esc(fmtDate(d.lastSeenAt)):'')+'</small><em>ID '+esc(String(d.id||'').slice(0,8).toUpperCase())+'</em></div><i>'+(d.trusted?'✓':'')+'</i></article>').join(''):'<p class="v569-note">Todavía no hay dispositivos recordados.</p>')+'</div>'+
         (isRememberedDevice(a)?'<button class="v569-danger" type="button" data-v577-forget-device>Olvidar este dispositivo</button>':'<button class="v569-primary" type="button" data-v577-remember-current>Recordar este dispositivo</button>')+
-        '<p class="v569-note">Reconocer el dispositivo ayuda a detectar un acceso habitual. La contraseña o biometría siguen siendo las pruebas de identidad.</p>'+
+        '<p class="v569-note">Esta lista se registra en el almacenamiento local de la app. No muestra ni permite cerrar sesiones de otros teléfonos. La contraseña o biometría siguen siendo las pruebas de identidad.</p>'+
       '</section></section>';
   }
   return '';
@@ -656,6 +716,7 @@ function v569ProfileMenuIcon(type){
     password:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="15" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m11 12 8-8 2 2-2 2 1 1-2 2-1-1-2 2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     devices:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.8" width="10" height="18.4" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M10 6h4M11 18.2h2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',
     biometrics:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.2 5.3A6.4 6.4 0 0 1 18 10.7M6 8.1A6.4 6.4 0 0 0 6.2 16M9 3.7A8.8 8.8 0 0 1 20.2 15M4 11.2A8.8 8.8 0 0 0 8.6 20" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/><path d="M9.2 9.4a3.3 3.3 0 0 1 5.6 2.4c0 2.7-.7 5.3-2.2 7.6M9 13.2c.1 2-.3 3.7-1.2 5.2" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/></svg>',
+    privacy:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 8 4v5c0 5.1-3.5 9-8 11-4.5-2-8-5.9-8-11V6l8-4Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',
     fingerprint:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.8 7.4A6 6 0 0 1 18 11.7M6.2 10.4A6 6 0 0 0 7 16.8M9.2 5A8.4 8.4 0 0 1 20.4 14M3.8 12.1A8.4 8.4 0 0 0 8.6 20" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/><path d="M9.4 10.2a3.2 3.2 0 0 1 5.4 2.3c0 3-.8 5.7-2.2 7.6M9.2 14c0 1.8-.3 3.2-1 4.6" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/></svg>',
     logout:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5H5v14h5M14 8l4 4-4 4M18 12H9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     chevron:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>'
@@ -692,7 +753,7 @@ function enhanceProfile(){
         v569ProfileAccountRow('password','Cambiar contraseña','accountPassword')+
         v569ProfileAccountRow('devices','Dispositivos','accountDevices')+
         v569ProfileAccountRow('biometrics','Biometría del teléfono','accountSecurity')+
-        v569ProfileAccountRow('fingerprint','Huella / biometría','accountSecurity');
+        v569ProfileAccountRow('privacy','Datos y privacidad','accountPrivacy');
       menu.insertAdjacentElement('beforebegin',box);
     }
     v569EnsureLogoutLast(menu);
@@ -749,6 +810,13 @@ document.addEventListener('click',async e=>{
   if(profileFinish){e.preventDefault();e.stopPropagation();renderLoggedProfile();return}
   const inlineCopy=e.target.closest('.v569-inline-success [data-v569-copy-alias]');
   if(inlineCopy){e.preventDefault();const a=currentAccount();try{await navigator.clipboard.writeText(a?.alias||'');toast('Alias copiado')}catch(_){toast('@'+(a?.alias||''))}return}
+  if(e.target.closest('[data-v1150-export-profile]')){e.preventDefault();exportLocalProfile(currentAccount());return}
+  if(e.target.closest('[data-v1150-copy-alias]')){
+    e.preventDefault();
+    const a=currentAccount();if(!a)return toast('Primero inicia sesión');
+    try{await navigator.clipboard.writeText('@'+a.alias);toast('Alias copiado')}catch(_){toast('Alias: @'+a.alias)}
+    return;
+  }
   const routeBtn=e.target.closest('[data-v569-route]');
   if(routeBtn){e.preventDefault();e.stopPropagation();go(routeBtn.dataset.v569Route);return}
   const method=e.target.closest('[data-v569-method]');
