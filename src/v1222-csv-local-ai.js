@@ -153,3 +153,38 @@ export function readCsvLearning(storage){
   return value&&typeof value==='object'&&!Array.isArray(value)?value:{};
  }catch(_){return {};}
 }
+
+/* Reconciliación orientativa contra los equipos YA presentes en la aplicación.
+   No envía ni edita datos; las coincidencias aproximadas requieren revisión humana. */
+export function compareCsvTeams(parsed,type,mapping,teams){
+ const fields=type==='equipos'?['nombre']:type==='jugadores'?['equipo']:type==='resultados'?['local','visitante']:[];
+ const directory=Array.isArray(teams)?teams.filter(t=>t&&typeof t.name==='string'&&t.name.trim()).slice(0,1200):[];
+ if(!fields.length||!directory.length)return {available:false,checked:0,exact:0,notFound:0,suggestions:[]};
+ const indexed=new Map();
+ for(const t of directory){const key=norm(t.name);if(key&&!indexed.has(key))indexed.set(key,t);}
+ const unmatched=new Map();let checked=0,exact=0;
+ const position=mapping.categoria;
+ for(const row of parsed.rows.slice(0,12000)){
+  for(const field of fields){
+   const idx=mapping[field];if(!Number.isInteger(idx)||idx<0)continue;
+   const original=String(row[idx]||'').trim();const key=norm(original);if(!key)continue;
+   checked++;
+   if(indexed.has(key)){exact++;continue;}
+   if(!unmatched.has(key)&&unmatched.size<150){
+    unmatched.set(key,{name:original,category:position>=0?standardCategory(row[position]):null});
+   }
+  }
+ }
+ const suggestions=[];
+ for(const entry of unmatched.values()){
+  let best=null,bestScore=0;
+  for(const team of directory){
+   const similarity=dice(entry.name,team.name);
+   if(similarity>bestScore){bestScore=similarity;best=team;}
+  }
+  if(best&&bestScore>=.78)suggestions.push({name:entry.name,suggested:best.name,score:Math.round(bestScore*100)});
+ }
+ suggestions.sort((a,b)=>b.score-a.score);
+ return {available:true,checked,exact,notFound:checked-exact,
+  uniqueMissing:unmatched.size,suggestions:suggestions.slice(0,10)};
+}
