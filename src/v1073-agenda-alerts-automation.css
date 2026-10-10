@@ -27,3 +27,21 @@ body[data-app-route="agendaBuilder"] .ag1073-foot{margin:8px 0 0;font:500 10px/1
 [data-ag1073-toast].show{opacity:1;transform:translate(-50%,0)}
 @media(min-width:768px){body[data-app-route="agendaBuilder"] .ag1073{max-width:900px;margin:12px auto}body[data-app-route="agendaBuilder"] .ag1073-actions{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:360px){body[data-app-route="agendaBuilder"] .ag1073{padding:9px}body[data-app-route="agendaBuilder"] .ag1073-head strong{font-size:15px}body[data-app-route="agendaBuilder"] .ag1073-controls{grid-template-columns:1fr}}
+
+
+/* V1191: iconos nítidos y tamaños uniformes del asistente de jornada */
+body[data-app-route="agendaBuilder"] .ag1073-actions button{
+  min-height:53px;display:flex;align-items:center;justify-content:center;gap:9px;
+  padding:10px 8px;border-radius:14px;font-size:12px;
+  box-shadow:inset 0 1px rgba(255,255,255,.16);transition:transform .15s,border-color .15s
+}
+body[data-app-route="agendaBuilder"] .ag1073-actions button:active{transform:scale(.97);border-color:#79efff}
+body[data-app-route="agendaBuilder"] .ag1073-actions.small button{min-height:47px;font-size:11px}
+body[data-app-route="agendaBuilder"] .ljr-ag-icon{display:block;flex:0 0 20px;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+body[data-app-route="agendaBuilder"] .ljr-ag-label{min-width:0;line-height:1.25}
+body[data-app-route="agendaBuilder"] .ag1073-details summary{gap:8px;justify-content:flex-start}
+body[data-app-route="agendaBuilder"] .ag1073-details summary .ljr-ag-icon{color:#78e9ff}
+body[data-app-route="agendaBuilder"] .ag1073-chevron{margin-left:auto;transition:transform .15s}
+body[data-app-route="agendaBuilder"] .ag1073-details[open] .ag1073-chevron{transform:rotate(180deg)}
+@media(max-width:390px){body[data-app-route="agendaBuilder"] .ag1073-actions button{gap:6px;padding:9px 5px;font-size:11px}body[data-app-route="agendaBuilder"] .ljr-ag-icon{width:19px;height:19px;flex-basis:19px}}
+@media(prefers-reduced-motion:reduce){body[data-app-route="agendaBuilder"] .ag1073-actions button{transition:none}}
