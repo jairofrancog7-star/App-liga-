@@ -9,16 +9,16 @@ const go=r=>{location.hash='#/'+r};
 const clubs=["SAN JOSE FC","JUVENTUS","HERMANOS","LINCES","NAPOLI","FRANCO FC","HERRERAS FC","ABEJAS","LOBOS CDG","TERRICOLAS","GALACTICOS"];
 const menus={
   'Gaming':[
-    ['Todos los juegos','gaming'],['Fantasy Football','fantasy'],['Pronostica Seis','predictor'],['Bracket','bracket'],['Gol del Día','scorers'],['eChampions League','gaming'],['Mi perfil de juegos','profile']
+    ['Todos los juegos','gaming'],['Fantasy Football','fantasy'],['Pronostica Seis','predictor'],['Cuadro de liguilla','bracketBuilder'],['Máximos goleadores','pc-scorers'],['eChampions League','gaming'],['Mi perfil de juegos','profile']
   ],
   'Datos':[
-    ['Estadísticas de equipo','safe-data'],['Estadísticas de jugador','safe-data'],['Máximo goleador','scorers'],['Fase de clasificación','standings'],['Estadísticas históricas','history'],['Performance Zone','safe-performance']
+    ['Estadísticas de equipo','v38Stats'],['Estadísticas de jugador','v38Stats'],['Máximos goleadores','pc-scorers'],['Fase de clasificación','pc-standings'],['Estadísticas históricas','history'],['Performance Zone','safe-performance']
   ],
   'Historia':[
     ['Temporadas','history'],['Estadísticas históricas','history'],['Vídeos','video'],['Equipos','teams'],['Más títulos','history']
   ],
   'Más':[
-    ['Centro de la Liga','more'],['Tienda (clubes)','club-store'],['Calendario de partidos','v4-calendar'],['Credenciales','credentials'],['Fichajes','transfers'],['Notificaciones','safe-notifications']
+    ['Centro de la Liga','more'],['Herramientas PC','pc-tools'],['Centro de Jornada','matchday'],['Canchas y sedes','venues'],['Tienda (clubes)','club-store'],['Calendario de partidos','pc-calendar'],['Credenciales','credentialBuilder'],['Fichajes','transfers'],['Notificaciones','pc-notifications'],['Instalar aplicación','appInstall']
   ]
 };
 function closeMenus(){
