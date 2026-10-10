@@ -125,7 +125,7 @@ if(!list){list=document.createElement('div');list.dataset.md1132List='';bar.quer
 const shown=all.filter(x=>category==='all'||x.catId===category);
 const future=shown.filter(x=>x.time>Date.now()-150*60000);
 const rows=(future.length?future:shown.slice(-8)).slice(0,12);
-list.innerHTML=rows.length?rows.map(x=>'<button type="button" class="md1132-game '+(x.id===current?'selected':'')+'" data-md-select="'+esc(x.id)+'" aria-pressed="'+String(x.id===current)+'"><span class="md1132-game-main">'+crest(x.home)+'<span class="md1132-game-copy"><b>'+esc(x.home)+' vs '+esc(x.away)+'</b><small>'+esc(x.date+' · '+(x.venue||'Campo pendiente'))+'</small><em class="'+status(x).type+'">'+esc(status(x).name)+'</em></span>'+crest(x.away)+'</span></button>').join(''):'<p class="md1132-empty">Sin encuentros oficiales para esta categoría.</p>';
+list.innerHTML=rows.length?rows.map(x=>'<button type="button" class="md1132-game '+(x.id===current?'selected':'')+'" data-md-select="'+esc(x.id)+'" aria-pressed="'+String(x.id===current)+'"><span class="md1132-game-main">'+crest(x.home,x.category)+'<span class="md1132-game-copy"><b>'+esc(x.home)+' vs '+esc(x.away)+'</b><small>'+esc(x.date+' · '+(x.venue||'Campo pendiente'))+'</small><em class="'+status(x).type+'">'+esc(status(x).name)+'</em></span>'+crest(x.away,x.category)+'</span></button>').join(''):'<p class="md1132-empty">Sin encuentros oficiales para esta categoría.</p>';
 host.classList.add('md1132-ready');
 prepareMatchdayCrests(host);
 tick();
