@@ -67,10 +67,14 @@ html body #screen .ljr-knockout .ljr-ko-trophy{
  background-size:475.2px 844.8px;background-position:-239.8px -470.8px;background-repeat:no-repeat;
 }
 @media(min-width:760px){
- html body #screen .ljr-knockout{--ko-column:230px;padding-left:24px;padding-right:24px}
+ html body #screen .ljr-knockout{padding-left:24px;padding-right:24px}
  html body #screen .ljr-knockout .ljr-ko-club strong{font-size:13px}
  html body #screen .ljr-knockout .ljr-ko-club small{font-size:9px}
  html body #screen .ljr-knockout .ljr-ko-winner strong{font-size:13px}
+}
+/* Tablets keep the same two-column proportions as the mobile reference. */
+@media(min-width:1024px){
+ html body #screen .ljr-knockout{--ko-column:230px}
 }
 @media(max-width:359px){
  html body #screen .ljr-knockout{padding-left:12px;padding-right:12px;--ko-column:calc((100% - 18px)/2)}
