@@ -1,0 +1,36 @@
+name: Profile security and mobile build
+on:
+  pull_request:
+    paths:
+      - 'src/profile-smart-v1300.*'
+      - 'src/v569-account-auth.js'
+      - 'src/v7-brand.js'
+      - 'src/desktop-parity-20261008.js'
+      - 'data/account-cloud-config.json'
+      - 'docs/sql/profile-preferences-rls.sql'
+      - 'tests/profile-smart-v1300.test.mjs'
+      - 'package.json'
+      - 'index.html'
+      - 'vite.config.js'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  profile-check:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install
+        run: npm install --no-audit --no-fund
+      - name: Run profile tests
+        run: node --test tests/profile-smart-v1300.test.mjs
+      - name: Build mobile-first app
+        run: npm run build -- --base=/App-liga-/
+      - name: Check cloud configuration ships disabled
+        run: |
+          node -e "const c=require('./data/account-cloud-config.json'); if(c.enabled!==false)process.exit(1)"
+          test -f dist/data/account-cloud-config.json
