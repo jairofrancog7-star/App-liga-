@@ -85,7 +85,7 @@ test('programación global interna y salud real sin secretos visibles',()=>{
  assert.match(backend,/setInterval\(tick,60000\)/);
  assert.match(backend,/app\.listen\(Number\(E\.PORT\)\|\|8080,\(\)=>\{console\.log\('Liga notifier listening'\);activateScheduler\(\)\}\)/);
  assert.match(backend,/const cron=.*!E\.JOB_NOTIFY_TOKEN/);
- assert.match(bootstrap,/notifications-schema-v1084/);
+ assert.match(bootstrap,/notifications-schema-v1150/);
  const ui=read('src/v1081-global-admin-notices.js');
  assert.match(ui,/showSystemStatus\(/);
  assert.match(ui,/Estado del sistema/);
