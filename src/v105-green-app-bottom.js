@@ -600,6 +600,7 @@ function delegates(){
  const opts=(values,selected)=>values.map(v=>'<option value="'+esc(v)+'"'+(String(v)===String(selected)?' selected':'')+'>'+esc(v)+'</option>').join('');
  const phoneDigits=s=>String(s||'').replace(/[^\d]/g,'');
  const whatsappPhone=s=>{const d=phoneDigits(s);return d.length===10?'52'+d:(d.length>=11&&d.length<=15?d:'')};
+ const dialPhone=s=>{const d=phoneDigits(s);return d.length===10?'52'+d:d};
  const clean=s=>String(s||'').trim();
  const download=(txt,filename,type)=>dl(new Blob([txt],{type}),filename);
  const csvCell=value=>{let s=String(value??'');if(/^[\s]*[=+@-]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';};
@@ -664,7 +665,8 @@ function delegates(){
  const personalized=(text,item)=>String(text||'').replace(/\{nombre\}/gi,item.name||'delegado').replace(/\{equipo\}/gi,item.team||'tu equipo');
  const noticeText=()=>clean(q('[data-d-notice]').value);
  q('[data-d-notice]').value=template.jornada;
- q('[data-d-notice-type]').onchange=()=>{q('[data-d-notice]').value=template[q('[data-d-notice-type]').value]||template.general};
+ q('[data-d-notice-type]').onchange=()=>{q('[data-d-notice]').value=template[q('[data-d-notice-type]').value]||template.general;render()};
+ q('[data-d-notice]').oninput=()=>render();
  const render=()=>{
   const term=norm(q('[data-d-search]').value),cat=q('[data-d-category-filter]').value,role=q('[data-d-role-filter]').value;
   const uniqueTeams=new Set(list.map(x=>norm(x.team)).filter(Boolean));
@@ -676,12 +678,12 @@ function delegates(){
     const id=esc(x.id),number=phoneDigits(x.phone),wa=whatsappPhone(x.phone),enabled=!!wa;
     const roleText=x.role||'Delegado titular';
     const approved=x.consent===true;
-    const safePhone=number?'<a class="v1126-link" href="tel:+'+number+'">'+esc(x.phone)+'</a>':esc(x.phone);
+    const safePhone=number?'<a class="v1126-link" href="tel:+'+dialPhone(x.phone)+'">'+esc(x.phone)+'</a>':esc(x.phone);
     return '<article class="v1126-card"><div class="v1126-card-head"><span class="v1126-avatar" aria-hidden="true">'+esc((x.name||'?').slice(0,1).toUpperCase())+'</span><div><b>'+esc(x.name||'Sin nombre')+'</b><small>'+esc(x.team||'Sin equipo')+' · '+esc(roleText)+(x.category?' · '+esc(x.category):'')+'</small><small>'+safePhone+'</small></div></div>'+
     '<div class="v1126-badges"><span>'+(approved?'✓ Avisos autorizados':'Avisos sin autorización registrada')+'</span>'+(x.email?'<span>'+esc(x.email)+'</span>':'')+'</div>'+
     (x.notes?'<p class="v1126-notes">'+esc(x.notes)+'</p>':'')+
     '<div class="v1126-card-actions">'+
-    '<a href="tel:+'+number+'"'+(number?'':' aria-disabled="true"')+' class="v1126-action">☎ Llamar</a>'+
+    (number?'<a href="tel:+'+dialPhone(x.phone)+'" class="v1126-action">☎ Llamar</a>':'<span class="v1126-action is-disabled">☎ Llamar</span>')+
     (enabled?'<a data-d-whatsapp="'+id+'" href="https://wa.me/'+wa+'" target="_blank" rel="noopener noreferrer" class="v1126-action">WhatsApp</a>':'<span class="v1126-action is-disabled">WhatsApp</span>')+
     '<button type="button" data-d-edit="'+id+'">Editar</button>'+
     '<button type="button" data-d-contact-vcf="'+id+'">VCF</button>'+
