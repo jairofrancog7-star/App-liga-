@@ -58,7 +58,7 @@
    '<div class="ag1075-actions"><button data-ag1075-fill type="button">✦ Usar partido seleccionado</button><button data-ag1075-submit type="button">▣ Programar aviso</button></div>'+
    '<details class="ag1075-consents"><summary>Registrar teléfono con consentimiento</summary>'+
    '<p>El teléfono particular del presidente NO es un remitente Twilio automático. Regístralo únicamente como destinatario autorizado después de su consentimiento; no se publica el número.</p>'+
-   '<label>Cargo del contacto<select data-ag1075-contact-role><option value="presidencia">Presidencia de la Liga</option><option value="delegado">Delegado de equipo</option><option value="general">Otro contacto autorizado</option></select></label>'+ 
+   '<label>Cargo del contacto<select data-ag1075-contact-role><option value="general">Otro contacto autorizado</option><option value="presidencia">Presidencia de la Liga</option><option value="delegado">Delegado de equipo</option></select></label>'+ 
    '<label>Teléfono privado del contacto<input data-ag1075-phone type="tel" inputmode="tel" autocomplete="off" placeholder="+52XXXXXXXXXX"></label>'+
    '<p class="ag1075-note">Escribe el número cuando entres como administrador. No está precargado en GitHub ni se usará como remitente sin verificación en Twilio.</p>'+
    '<label>Origen del consentimiento<input data-ag1075-source placeholder="Ej. Formulario firmado, fecha y responsable" maxlength="300"></label>'+
