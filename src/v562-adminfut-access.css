@@ -44,3 +44,160 @@ body[data-app-route="adminFut"] #screen{background:#06065f!important}
   .v562-main-actions{grid-template-columns:1fr}
   .v562-hero h1{font-size:24px}
 }
+
+/* V1102 — Registro y administración: un solo nivel de navegación, tarjetas compactas
+   y geometría consistente. SOLO afecta a Mi app de la Liga (no al modo árbitro). */
+#screen .v562-page[data-v563-control]{
+  width:min(100%,744px)!important;
+  max-width:744px!important;
+  margin:0 auto!important;
+  padding:10px 12px calc(96px + env(safe-area-inset-bottom))!important;
+  color:#f5f8ff;
+}
+#screen .v562-page[data-v563-control] .v562-hero{
+  padding:10px 4px 12px!important;
+}
+#screen .v562-page[data-v563-control] .v562-hero h1{
+  font-size:clamp(22px,4.4vw,27px)!important;
+  line-height:1.13!important;
+}
+#screen .v562-page[data-v563-control] .v562-hero p{
+  font-size:11px!important;line-height:1.35!important;
+}
+#screen .v562-page[data-v563-control] .v562-panel{
+  padding:13px 12px!important;
+  margin:0 0 10px!important;
+  border-radius:18px!important;
+  border:1px solid rgba(94,141,235,.36)!important;
+  background:linear-gradient(165deg,#142781 0%,#10176d 45%,#0b105b 100%)!important;
+}
+#screen .v562-page[data-v563-control] .v562-title{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  min-width:0!important;
+  margin:0 0 9px!important;
+  font-size:inherit!important;
+}
+#screen .v562-page[data-v563-control] .v562-title h2{
+  margin:3px 0 0!important;
+  color:#f5f8ff!important;
+  font-size:18px!important;
+  line-height:1.17!important;
+  letter-spacing:-.02em!important;
+}
+#screen .v562-page[data-v563-control] .v562-list{
+  display:grid!important;grid-template-columns:1fr!important;
+  gap:7px!important;align-items:stretch!important;
+}
+#screen .v562-page[data-v563-control] button.v562-card{
+  -webkit-appearance:none;
+  appearance:none;
+  display:grid!important;
+  grid-template-columns:36px minmax(0,1fr) 16px!important;
+  align-items:center!important;
+  gap:10px!important;
+  width:100%!important;min-width:0!important;
+  height:auto!important;min-height:59px!important;
+  margin:0!important;padding:9px 10px!important;
+  border:1px solid rgba(97,142,234,.30)!important;
+  border-radius:14px!important;
+  background:linear-gradient(105deg,rgba(10,20,101,.98),rgba(8,16,84,.96))!important;
+  color:#f5f8ff!important;
+  font:inherit!important;
+  text-align:left!important;
+  cursor:pointer!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important;
+  transition:border-color .16s,background .16s,transform .16s;
+}
+#screen .v562-page[data-v563-control] button.v562-card .v562-icon{
+  display:grid!important;place-items:center!important;
+  width:36px!important;height:36px!important;
+  min-width:36px!important;min-height:36px!important;
+  margin:0!important;
+  border-radius:11px!important;
+  background:#172782!important;
+  color:#5adff3!important;
+  font-size:20px!important;line-height:1!important;
+}
+#screen .v562-page[data-v563-control] button.v562-card .v562-icon svg{
+  display:block!important;
+  width:21px!important;height:21px!important;
+  stroke:currentColor!important;
+}
+#screen .v562-page[data-v563-control] .v562-card-copy{
+  display:block!important;min-width:0!important;
+  overflow-wrap:break-word!important;
+}
+#screen .v562-page[data-v563-control] .v562-card-copy b{
+  display:block!important;
+  font-size:13.5px!important;
+  line-height:1.2!important;
+  font-weight:760!important;
+  letter-spacing:-.012em!important;
+}
+#screen .v562-page[data-v563-control] .v562-card-copy small{
+  display:block!important;
+  margin:3px 0 0!important;
+  color:#b7c4e5!important;
+  font-size:10.5px!important;
+  line-height:1.32!important;
+  font-weight:450!important;
+}
+#screen .v562-page[data-v563-control] button.v562-card > i{
+  display:block!important;
+  font-size:20px!important;line-height:1!important;
+  color:#44dfea!important;
+  text-align:center!important;
+}
+#screen .v562-page[data-v563-control] button.v562-card:hover{
+  background:#182d86!important;border-color:#55cbeb!important;
+}
+#screen .v562-page[data-v563-control] button.v562-card:active{transform:scale(.988)!important}
+#screen .v562-page[data-v563-control] button.v562-card:focus-visible{
+  outline:2px solid #6cebf5!important;outline-offset:2px!important;
+}
+#screen .v562-page[data-v563-control] .v563-section-help{
+  margin:-2px 0 11px!important;
+  color:#b7c4e5!important;
+  font-size:10.5px!important;line-height:1.35!important;
+}
+#screen .v562-page[data-v563-control] .v563-admin-direct{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid rgba(111,157,250,.24);
+}
+#screen .v562-page[data-v563-control] .v563-admin-direct[hidden]{display:none!important}
+#screen .v562-page[data-v563-control] .v563-admin-direct-title{
+  display:flex;flex-direction:column;gap:3px;margin-bottom:10px;
+}
+#screen .v562-page[data-v563-control] .v563-admin-direct-title small{
+  color:#5be4f2;font-size:9.5px;font-weight:850;letter-spacing:.1em;
+}
+#screen .v562-page[data-v563-control] .v563-admin-direct-title b{
+  font-size:15px;line-height:1.2;
+}
+#screen .v562-page[data-v563-control] .v562-sync-grid{gap:7px!important}
+#screen .v562-page[data-v563-control] .v562-sync-grid article{
+  min-height:59px!important;padding:8px 6px!important;border-radius:11px!important;
+}
+#screen .v562-page[data-v563-control] .v562-sync-grid article b{font-size:17px!important}
+#screen .v562-page[data-v563-control] .v562-sync-grid article span{font-size:10px!important}
+@media(min-width:640px){
+  #screen .v562-page[data-v563-control] .v562-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #screen .v562-page[data-v563-control] .v562-card{min-height:66px!important}
+}
+@media(max-width:390px){
+  #screen .v562-page[data-v563-control]{padding-left:9px!important;padding-right:9px!important}
+  #screen .v562-page[data-v563-control] .v562-panel{padding:11px 10px!important}
+  #screen .v562-page[data-v563-control] button.v562-card{
+    grid-template-columns:34px minmax(0,1fr) 15px!important;
+    gap:9px!important;padding:9px!important;
+  }
+  #screen .v562-page[data-v563-control] button.v562-card .v562-icon{
+    width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  #screen .v562-page[data-v563-control] button.v562-card{transition:none!important}
+}
