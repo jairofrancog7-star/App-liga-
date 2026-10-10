@@ -121,14 +121,14 @@ function open(){
  '<section class="ljr-bc-panel"><div class="ljr-bc-paneltitle"><span class="ljr-bc-num">01</span><div><h3>Crear respaldo</h3><p>Selecciona las secciones que deseas guardar.</p></div></div><div class="ljr-bc-options" data-bc-export-groups></div>'+
  '<label class="ljr-bc-check"><input type="checkbox" data-bc-encrypt checked><span>Cifrar con contraseña (recomendado)</span></label>'+
  '<div class="ljr-bc-password" data-bc-password-area><label>Contraseña del archivo<input type="password" data-bc-password minlength="10" autocomplete="new-password" placeholder="Mínimo 10 caracteres"></label><label>Confirmar contraseña<input type="password" data-bc-confirm autocomplete="new-password" placeholder="Repite la contraseña"></label></div>'+
- '<button type="button" class="ljr-bc-primary" data-bc-export>⇩ Descargar respaldo JSON</button></section>'+
+ '<button type="button" class="ljr-bc-primary" data-bc-export>⇩ Descargar respaldo JSON</button><button type="button" class="ljr-bc-secondary" data-bc-export-folder>Elegir carpeta y guardar JSON</button></section>'+
  '<section class="ljr-bc-panel"><div class="ljr-bc-paneltitle"><span class="ljr-bc-num">02</span><div><h3>Restaurar respaldo</h3><p>Revisa el archivo antes de cambiar datos de este teléfono.</p></div></div>'+
  '<label class="ljr-bc-file">Seleccionar archivo JSON<input type="file" data-bc-file accept=".json,application/json"></label>'+
  '<label class="ljr-bc-import-password" data-bc-import-password-wrap hidden>Contraseña para abrir el archivo<input type="password" data-bc-import-password autocomplete="off" placeholder="Contraseña del respaldo"></label>'+
  '<button type="button" class="ljr-bc-secondary" data-bc-preview>Verificar y mostrar vista previa</button>'+
  '<div class="ljr-bc-preview" data-bc-preview-out hidden></div>'+
  '<div data-bc-restore-controls hidden><div class="ljr-bc-options" data-bc-import-groups></div><label class="ljr-bc-check"><input type="checkbox" data-bc-overwrite><span>Reemplazar registros locales existentes</span></label><button type="button" class="ljr-bc-primary" data-bc-restore>Restaurar secciones seleccionadas</button></div></section>'+
- '<p class="ljr-bc-note">Sólo guarda registros locales seleccionados de este navegador. No incluye resultados oficiales del servidor, fotos, documentos ni archivos IndexedDB. No sincroniza con Google Drive. Guarda el archivo y su contraseña en un lugar privado.</p>'+
+ '<p class="ljr-bc-note">La sección 01 guarda sólo datos locales de herramientas. La sección 03 permite respaldar fotografías y documentos guardados en IndexedDB por separado. Nunca incluye información oficial del servidor ni sincroniza con Google Drive. Guarda las copias y sus contraseñas en un lugar privado.</p>'+
  '</div><footer class="ljr-bc-footer"><p data-bc-status role="status" aria-live="polite">Tus archivos no se envían a ningún servidor.</p><button type="button" data-bc-close>Cerrar</button></footer></section>';
  document.body.appendChild(overlay);
  const status=$('[data-bc-status]',overlay);
@@ -159,7 +159,9 @@ function open(){
   try{await callback()}catch(error){say(error.message||'No se pudo completar la operación.',true)}
   finally{button.disabled=false}
  };
- $('[data-bc-export]',overlay).onclick=()=>run($('[data-bc-export]',overlay),async()=>{
+ const localFolder=$('[data-bc-export-folder]',overlay);
+ localFolder.hidden=typeof window.showDirectoryPicker!=='function';
+ async function exportLocal(folderHandle){
   const groups=selected('data-bc-export-group');
   if(!groups.length)throw Error('Selecciona al menos una sección.');
   const items=collect(groups);
@@ -174,11 +176,25 @@ function open(){
   say('Preparando respaldo local…');
   const data=await encodeBackup(items,password);
   const date=new Date().toISOString().replace(/[:.]/g,'-');
-  download(data,'Liga_Juventino_Respaldo_Local_'+date+'.json');
+  const filename='Liga_Juventino_Respaldo_Local_'+date+'.json';
+  if(folderHandle){
+   const file=await folderHandle.getFileHandle(filename,{create:true}),writer=await file.createWritable();
+   try{await writer.write(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));await writer.close()}
+   catch(error){try{await writer.abort()}catch(_){}throw error}
+  }else download(data,filename);
   localStorage.setItem(META_KEY,new Date().toISOString());
   $('[data-bc-password]',overlay).value='';$('[data-bc-confirm]',overlay).value='';
-  refresh();say('Descarga solicitada: '+Object.keys(items).length+' registros. Comprueba que el archivo se guardó.');
- });
+  refresh();say((folderHandle?'Guardado en carpeta: ':'Descarga solicitada: ')+Object.keys(items).length+' registros. Comprueba que el archivo se guardó.');
+ }
+ const localDownload=$('[data-bc-export]',overlay);
+ localDownload.onclick=()=>run(localDownload,()=>exportLocal(null));
+ localFolder.onclick=()=>{
+  if(localFolder.disabled)return;
+  let picker;
+  try{picker=window.showDirectoryPicker({mode:'readwrite'})}
+  catch(error){say(error.message||'No se pudo abrir el selector de carpeta.',true);return}
+  run(localFolder,async()=>exportLocal(await picker));
+ };
  $('[data-bc-file]',overlay).onchange=()=>{
   preview=null;$('[data-bc-restore-controls]',overlay).hidden=true;$('[data-bc-preview-out]',overlay).hidden=true;
   $('[data-bc-import-password-wrap]',overlay).hidden=true;
@@ -214,6 +230,7 @@ function open(){
   say('Restaurados '+changes.length+' registros locales. Recarga la página para ver la información recuperada.');
   refresh();
  });
+ try{window.LJR_INDEXED_BACKUP?.mount?.(overlay)}catch(error){console.error('[LJR Backup] IndexedDB',error)}
 }
 function takeover(){
  const prev=window.LJR_V105_OPEN_TOOL;
