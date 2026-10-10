@@ -51,7 +51,7 @@ html body.v33-data-active #app .bottom-nav .nav-item .nav-icon svg {width:28px!i
 html body.v33-data-active #app .bottom-nav .nav-item small {font-size:11px!important; line-height:15px!important; font-weight:400!important; letter-spacing:0!important;}
 html body.v33-data-active #app #screen [data-v33-share] svg circle {fill:currentColor!important;}
 }
-html body.v33-data-active #app #screen .v33-stat-card > h3:has(.v33-unpublished) {flex-direction:column!important; align-items:flex-start!important; justify-content:center!important; gap:3px!important;}
+html body.v33-data-active #app #screen .v33-data-page[data-v33-mode][data-v33-data] .v33-stat-card > h3:has(.v33-unpublished) {flex-direction:column!important; align-items:flex-start!important; justify-content:center!important; gap:3px!important;}
 html body.v33-data-active #app #screen .v33-unpublished {font-size:clamp(10px,2.6vw,13px)!important; font-weight:400!important; line-height:1.2!important; color:#b1afd1!important;}
 /* Preserve the existing desktop cards while keeping their content below the header. */
 @media(min-width:700px){
