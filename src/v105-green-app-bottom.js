@@ -1,5 +1,6 @@
 import { calendarEvent, googleCalendarDestination } from './v843-calendar-event.js?v=20261010-v1198';
 import { Capacitor, registerPlugin } from '@capacitor/core';
+import { openCsvImporter } from './v1212-csv-import-pro.js';
 /* V105 — Lleva los cuadros/funciones de Liga_Futbol (verde) a App-liga (azul).
    Principio estricto: TODO se anexa al FINAL de la pantalla correspondiente.
    Nunca inserta arriba ni en medio; no sustituye contenido existente. */
@@ -1432,8 +1433,7 @@ function calendarGenerator(){
  render();
 }
 function csvImport(){
- const m=modal('Importar CSV','Sólo muestra una vista previa local. No escribe equipos, jugadores ni resultados oficiales.','<div class="v105-form"><label style="grid-column:1/-1"><span>Archivo CSV</span><input type="file" accept=".csv,text/csv" data-file></label></div><div class="v105-actions"><button class="v105-btn" data-read>Leer vista previa</button></div><div class="v105-output" data-out></div>');
- $('[data-read]',m).onclick=async()=>{const f=$('[data-file]',m).files?.[0];if(!f)return toast('Selecciona un CSV');const txt=await f.text();write('v105-csv-preview',{name:f.name,text:txt.slice(0,20000),at:new Date().toISOString()});$('[data-out]',m).textContent=txt.slice(0,2500);log('Vista previa CSV local')};
+ return openCsvImporter({modal,toast,log});
 }
 function backupExport(){
  const data={generatedAt:new Date().toISOString(),note:'Respaldo local de herramientas; no contiene datos oficiales descargados.',items:{}};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^(v105-|v100-|v64-|v60-|ljr-)/.test(k))data.items[k]=localStorage.getItem(k)}dl(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'Respaldo_local_Liga_Juventino.json');log('Exportar respaldo local');
