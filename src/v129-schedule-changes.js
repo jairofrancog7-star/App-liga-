@@ -238,7 +238,7 @@ function formNotice(root){
 
 function previewMarkup(n){
   const url=shareUrl(n);
-  const qr='https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data='+encodeURIComponent(url);
+  // V1220: el QR se construye localmente con src/vendor/qrcode-generator-mit.js.
   const homeLogo=teamLogo(n.home),awayLogo=teamLogo(n.away);
   return '<div class="v129-poster" data-v129-poster>'+
     '<div class="v129-poster-head"><small>LIGA MUNICIPAL DE FÚTBOL · JUVENTINO ROSAS</small><strong>'+esc(n.type.toUpperCase())+'</strong></div>'+
@@ -255,7 +255,7 @@ function previewMarkup(n){
   '</div>'+
   '<div class="v129-publish"><button type="button" data-v129-download>Descargar imagen</button><button type="button" data-v129-facebook>Facebook</button><button type="button" data-v129-copy>Copiar URL</button><button type="button" data-v129-qr-toggle>QR</button></div>'+
   '<div class="v129-url"><input readonly value="'+esc(url)+'" data-v129-url><button type="button" data-v129-copy>Copiar</button></div>'+
-  '<div class="v129-qr" data-v129-qr hidden><img src="'+esc(qr)+'" alt="Código QR del aviso"><small>Escanea para abrir este aviso directamente.</small></div>'+
+  '<div class="v129-qr" data-v129-qr hidden><img alt="Código QR generado en este dispositivo"><small>Escanea para abrir este aviso directamente.</small></div>'+
   '<pre class="v129-caption">'+esc(noticeText(n))+'</pre>';
 }
 
