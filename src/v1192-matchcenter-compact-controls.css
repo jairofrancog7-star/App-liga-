@@ -1,0 +1,342 @@
+/* V1192 — Match Center: controles compactos, nombres completos y azul de la Liga.
+   Sólo presentación: conserva data-v196-*, data-v144-*, data-v92-route y sus manejadores. */
+@media (max-width:1023px){
+  html body.v92-match-center-official #screen{
+    --v1192-blue:#173d94;
+    --v1192-light:#4be1f0;
+    --v1192-line:rgba(93,156,245,.42);
+  }
+
+  /* Cinco accesos de transmisión: evitar truncados y mantener áreas táctiles. */
+  html body.v92-match-center-official #screen .v196-toolbar{
+    display:grid!important;
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    align-items:stretch!important;
+    gap:6px!important;
+    width:100%!important;
+    min-width:0!important;
+    margin:8px 0 10px!important;
+  }
+  html body.v92-match-center-official #screen .v196-toolbar>button{
+    box-sizing:border-box!important;
+    min-width:0!important;
+    width:100%!important;
+    min-height:89px!important;
+    height:auto!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    gap:0!important;
+    padding:10px 4px 8px!important;
+    border:1px solid var(--v1192-line)!important;
+    border-radius:14px!important;
+    background:linear-gradient(155deg,#1b3d91 0%,#12256a 100%)!important;
+    color:#fff!important;
+    text-align:center!important;
+    white-space:normal!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 4px 10px rgba(0,9,49,.1)!important;
+    cursor:pointer;
+  }
+  html body.v92-match-center-official #screen .v196-toolbar>button.active{
+    background:linear-gradient(150deg,#2255ae,#16347f)!important;
+    border-color:var(--v1192-light)!important;
+    box-shadow:inset 0 0 0 1px rgba(75,225,240,.23),0 0 0 1px rgba(75,225,240,.12)!important;
+  }
+  html body.v92-match-center-official #screen .v196-toolbar>button.unsupported{
+    opacity:.7!important;
+  }
+  html body.v92-match-center-official #screen .v196-toolbar>button>span{
+    box-sizing:border-box!important;
+    display:grid!important;
+    place-items:center!important;
+    width:29px!important;
+    height:29px!important;
+    min-height:29px!important;
+    flex:0 0 29px!important;
+    margin:0 0 5px!important;
+    border-radius:9px!important;
+    background:linear-gradient(145deg,#2453ae,#142c7b)!important;
+    color:#54e8f5!important;
+    font-size:19px!important;
+    line-height:1!important;
+    font-weight:850!important;
+  }
+  html body.v92-match-center-official #screen .v196-toolbar>button>b{
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+    margin:0!important;
+    font-size:clamp(9px,2.6vw,11px)!important;
+    font-weight:800!important;
+    line-height:1.16!important;
+    letter-spacing:-.02em!important;
+    white-space:normal!important;
+    overflow-wrap:anywhere!important;
+    text-overflow:clip!important;
+  }
+  html body.v92-match-center-official #screen .v196-toolbar>button>small{
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+    margin:4px 0 0!important;
+    color:#bdceec!important;
+    font-size:clamp(8px,2.15vw,9.5px)!important;
+    line-height:1.15!important;
+    font-weight:600!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    overflow-wrap:anywhere!important;
+    word-break:normal!important;
+  }
+
+  /* Pestañas Facebook / YouTube / TikTok / Local. */
+  html body.v92-match-center-official #screen .v612-platform-modes{
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:6px!important;
+    margin:7px 0 10px!important;
+    width:100%!important;
+  }
+  html body.v92-match-center-official #screen .v612-platform-modes button{
+    min-width:0!important;
+    min-height:43px!important;
+    height:auto!important;
+    padding:7px 3px!important;
+    border-radius:12px!important;
+    border:1px solid var(--v1192-line)!important;
+    background:linear-gradient(160deg,#1b3a8c,#132872)!important;
+    color:#fff!important;
+    font-size:clamp(10px,2.8vw,12px)!important;
+    font-weight:750!important;
+    line-height:1.2!important;
+    text-align:center!important;
+    white-space:normal!important;
+    overflow-wrap:anywhere!important;
+  }
+  html body.v92-match-center-official #screen .v612-platform-modes button.active{
+    border-color:var(--v1192-light)!important;
+    background:linear-gradient(160deg,#2757aa,#1b438e)!important;
+    color:#fff!important;
+    box-shadow:inset 0 0 0 1px rgba(75,225,240,.18)!important;
+  }
+
+  /* Canales con icono separado arriba y rótulo completo debajo. */
+  html body.v92-match-center-official #screen .v144-platforms{
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:6px!important;
+    min-width:0!important;
+  }
+  html body.v92-match-center-official #screen .v144-platforms>button{
+    box-sizing:border-box!important;
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:center!important;
+    align-items:center!important;
+    gap:0!important;
+    min-width:0!important;
+    min-height:85px!important;
+    height:auto!important;
+    padding:8px 3px!important;
+    border-radius:14px!important;
+    border:1px solid var(--v1192-line)!important;
+    background:linear-gradient(155deg,#1b3989,#12256d)!important;
+    color:#fff!important;
+    text-align:center!important;
+  }
+  html body.v92-match-center-official #screen .v144-platforms>button.active{
+    background:linear-gradient(155deg,#2455a8,#173b86)!important;
+    border-color:var(--v1192-light)!important;
+    box-shadow:inset 0 0 0 1px rgba(75,225,240,.24)!important;
+  }
+  html body.v92-match-center-official #screen .v144-platforms>button em{
+    box-sizing:border-box!important;
+    display:grid!important;
+    place-items:center!important;
+    width:32px!important;
+    height:32px!important;
+    min-height:32px!important;
+    margin:0 auto 5px!important;
+    border-radius:10px!important;
+    background:linear-gradient(150deg,#234cab,#14277b)!important;
+    color:#fff!important;
+    font-size:19px!important;
+    font-style:normal!important;
+    font-weight:900!important;
+    line-height:1!important;
+  }
+  html body.v92-match-center-official #screen .v144-platforms>button>span{
+    box-sizing:border-box!important;
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+    text-align:center!important;
+  }
+  html body.v92-match-center-official #screen .v144-platforms>button b{
+    display:block!important;
+    width:100%!important;
+    color:#fff!important;
+    font-size:clamp(9.5px,2.7vw,11px)!important;
+    line-height:1.2!important;
+    font-weight:850!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    overflow-wrap:anywhere!important;
+    text-overflow:clip!important;
+  }
+  html body.v92-match-center-official #screen .v144-platforms>button small{
+    display:block!important;
+    margin-top:3px!important;
+    color:#4be1f0!important;
+    font-size:9px!important;
+    font-weight:850!important;
+    line-height:1.15!important;
+    white-space:normal!important;
+  }
+
+  /* Botón de pantalla/TV: dos líneas siempre legibles. */
+  html body.v92-match-center-official #screen .v144-tv-cast{
+    box-sizing:border-box!important;
+    width:100%!important;
+    min-width:0!important;
+    min-height:67px!important;
+    height:auto!important;
+    grid-template-columns:39px minmax(0,1fr) 18px!important;
+    gap:10px!important;
+    padding:10px 12px!important;
+    border:1px solid rgba(75,225,240,.45)!important;
+    border-radius:15px!important;
+    background:linear-gradient(155deg,#1d448f,#102869)!important;
+    text-align:left!important;
+  }
+  html body.v92-match-center-official #screen .v144-tv-cast-icon{
+    width:38px!important;
+    height:38px!important;
+    border-radius:11px!important;
+    background:#224fa4!important;
+  }
+  html body.v92-match-center-official #screen .v144-tv-cast b{
+    font-size:clamp(11px,3.1vw,13px)!important;
+    line-height:1.22!important;
+    overflow-wrap:break-word!important;
+    white-space:normal!important;
+  }
+  html body.v92-match-center-official #screen .v144-tv-cast small{
+    font-size:clamp(9px,2.5vw,11px)!important;
+    line-height:1.24!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    overflow-wrap:break-word!important;
+    text-overflow:clip!important;
+  }
+
+  /* Acciones rápidas oficiales: cuatro botones, sus rutas originales intactas. */
+  html body.v92-match-center-official #screen .v92-actions{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+  html body.v92-match-center-official #screen .v92-actions>button{
+    box-sizing:border-box!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:9px!important;
+    width:100%!important;
+    min-width:0!important;
+    min-height:58px!important;
+    height:auto!important;
+    padding:10px 8px!important;
+    border:1px solid var(--v1192-line)!important;
+    border-radius:15px!important;
+    background:linear-gradient(155deg,#1a3c91,#10266b)!important;
+    color:#fff!important;
+    font-size:clamp(11px,3.1vw,13px)!important;
+    line-height:1.24!important;
+    font-weight:800!important;
+    white-space:normal!important;
+    overflow-wrap:break-word!important;
+    text-align:center!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.07)!important;
+  }
+  html body.v92-match-center-official #screen .v92-actions>button::before{
+    content:"";
+    box-sizing:border-box;
+    display:block;
+    flex:0 0 28px;
+    width:28px;
+    height:28px;
+    border-radius:9px;
+    background:#2451a7 center/18px 18px no-repeat;
+  }
+  html body.v92-match-center-official #screen .v92-actions>button[data-v92-route="competition"]::before{
+    background-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23eefaff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Crect x="3" y="5" width="18" height="16" rx="2"/%3E%3Cpath d="M16 3v4M8 3v4M3 10h18M8 14h3m3 0h2M8 18h4"/%3E%3C/svg%3E');
+  }
+  html body.v92-match-center-official #screen .v92-actions>button[data-v92-route="v4-calendar"]::before{
+    background-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23eefaff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Crect x="3" y="5" width="18" height="16" rx="2"/%3E%3Cpath d="M8 3v4M16 3v4M3 10h18m-11 5 2 2 4-4"/%3E%3C/svg%3E');
+  }
+  html body.v92-match-center-official #screen .v92-actions>button[data-v92-route="leagueData"]::before{
+    background-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23eefaff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M4 20V4h16M8 17v-6m5 6V7m5 10v-4"/%3E%3C/svg%3E');
+  }
+  html body.v92-match-center-official #screen .v92-actions>button[data-v92-route="venues"]::before{
+    background-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23eefaff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/%3E%3Ccircle cx="12" cy="10" r="2.5"/%3E%3C/svg%3E');
+  }
+
+  /* Selector de categoría: no cortar el título en móviles estrechos. */
+  html body.v92-match-center-official #screen .v423-filters{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+    padding:9px!important;
+  }
+  html body.v92-match-center-official #screen .v423-filters select{
+    box-sizing:border-box!important;
+    min-width:0!important;
+    width:100%!important;
+    min-height:47px!important;
+    padding:8px 29px 8px 11px!important;
+    border-radius:14px!important;
+    border-color:var(--v1192-line)!important;
+    background:#152f79!important;
+    color:#fff!important;
+    font-size:11px!important;
+    line-height:1.25!important;
+    font-weight:750!important;
+    text-overflow:clip!important;
+  }
+  html body.v92-match-center-official #screen .v92-match-picker select{
+    box-sizing:border-box!important;
+    max-width:100%!important;
+    min-width:0!important;
+    font-size:11px!important;
+    padding-right:30px!important;
+  }
+
+  html body.v92-match-center-official #screen :is(.v196-toolbar,.v612-platform-modes,.v144-platforms,.v92-actions) button:focus-visible,
+  html body.v92-match-center-official #screen .v144-tv-cast:focus-visible{
+    outline:2px solid #78ebff!important;
+    outline-offset:2px!important;
+  }
+  html body.v92-match-center-official #screen :is(.v196-toolbar,.v612-platform-modes,.v144-platforms,.v92-actions) button:active,
+  html body.v92-match-center-official #screen .v144-tv-cast:active{
+    transform:scale(.98);
+  }
+}
+@media (max-width:370px){
+  html body.v92-match-center-official #screen .v196-toolbar{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+  html body.v92-match-center-official #screen .v196-toolbar>button{
+    min-height:78px!important;
+  }
+  html body.v92-match-center-official #screen .v423-filters{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  html body.v92-match-center-official #screen .v92-actions>button{
+    gap:6px!important;
+    padding:9px 5px!important;
+  }
+}
