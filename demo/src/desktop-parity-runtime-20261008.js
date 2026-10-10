@@ -8,27 +8,379 @@ const mode=()=>new URLSearchParams(location.search).get('mode')||'';
 const desktop=()=>!['mobile','apk'].includes(mode())&&(mode()==='desktop'||document.body.classList.contains('lj-desktop')||innerWidth>=1024);
 const go=r=>{location.hash='#/'+r};
 const toolGroups=[
- ['Competiciones y resultados',[
-  ['⚽','Partidos oficiales','pc-fixtures'],['🏆','Clasificación','pc-standings'],
-  ['🥅','Goleadores','pc-scorers'],['📆','Calendario','pc-calendar'],
-  ['🧩','Cuadro eliminatorio','bracketBuilder'],['📊','Exportar tablas','tableExport']]],
- ['Gaming y comunidad',[
-  ['🎯','Quiniela','quiniela'],['🔮','Pronostica 6','predictorSix'],
-  ['👕','Fantasy','fantasy'],['🧠','Quiz Arena','quizArena'],
-  ['⚖️','Más o Menos','moreLess'],['⭐','Jugador de la semana','vote']]],
- ['Equipos, jugadores y fichajes',[
-  ['🛡️','Mis equipos','following'],['↔️','Comparar jugadores','playerCompare'],
-  ['🛒','Fichajes','transfers'],['🛍️','Tienda de clubes','club-store'],['📋','Jugadores','players'],
-  ['📈','Estadísticas','stats'],['⚡','Performance Zone','safe-performance'],['🔎','Buscar','search']]],
- ['Sedes, multimedia y avisos',[
-  ['🌦️','Clima y campos','weatherFields'],['🎬','Momentos','moments'],
-  ['🔔','Notificaciones','pc-notifications'],['📣','Avisos','notices'],
-  ['📖','Reglamento','rulebook'],['🗓️','Agenda','agendaBuilder']]],
- ['Gestión de la liga',[
-  ['📋','Centro administrativo','adminFut'],['👤','Mi cuenta','profile'],['🪪','Credenciales','credentialBuilder'],
-  ['🧾','Cédulas','cedulaBuilder'],['🗂️','Publicaciones','publicationCenter'],
-  ['🚦','Disciplina','discipline'],['🛠️','JR Control','jrControl']]]
+  [
+    "Partidos, jornadas y estadísticas",
+    [
+      [
+        "⚽",
+        "Partidos y resultados",
+        "pc-fixtures",
+        "Jornadas de las cinco categorías"
+      ],
+      [
+        "🏆",
+        "Clasificación",
+        "pc-standings",
+        "Tablas oficiales por categoría"
+      ],
+      [
+        "🥅",
+        "Máximos goleadores",
+        "pc-scorers",
+        "Ranking de jugadores"
+      ],
+      [
+        "📅",
+        "Calendario PC",
+        "pc-calendar",
+        "Partidos, Google Calendar y compartir"
+      ],
+      [
+        "🌐",
+        "Reporte semanal",
+        "v38Weekly",
+        "Horarios, sedes y descarga"
+      ],
+      [
+        "🏟️",
+        "Centro de Jornada",
+        "matchday",
+        "Partidos destacados y sedes oficiales"
+      ],
+      [
+        "🎥",
+        "Match Center",
+        "v4-matchcenter",
+        "Ficha e información del partido"
+      ],
+      [
+        "🧩",
+        "Cuadro de liguilla",
+        "bracketBuilder",
+        "Crear y exportar cuadros"
+      ],
+      [
+        "📊",
+        "Descargar tablas",
+        "tableExport",
+        "Exportaciones de competición"
+      ],
+      [
+        "🗺️",
+        "Sedes y cómo llegar",
+        "venues",
+        "Campos reales y enlaces de Maps"
+      ]
+    ]
+  ],
+  [
+    "Equipos, jugadores y comunidad",
+    [
+      [
+        "🛡️",
+        "Equipos de la liga",
+        "teams",
+        "Clubes y escudos"
+      ],
+      [
+        "⭐",
+        "Equipos seguidos",
+        "following",
+        "Favoritos de equipos"
+      ],
+      [
+        "👤",
+        "Jugadores",
+        "players",
+        "Plantillas y perfiles"
+      ],
+      [
+        "⚖️",
+        "Comparar jugadores",
+        "playerCompare",
+        "Estadísticas de dos jugadores"
+      ],
+      [
+        "↔️",
+        "Comparar equipos",
+        "compareTeams",
+        "Análisis entre clubes"
+      ],
+      [
+        "🔄",
+        "Fichajes",
+        "transfers",
+        "Altas y movimientos"
+      ],
+      [
+        "📋",
+        "Reclutamiento",
+        "recruitment",
+        "Registro y selección de equipos"
+      ],
+      [
+        "📈",
+        "Estadísticas oficiales",
+        "v38Stats",
+        "Datos de la temporada"
+      ],
+      [
+        "📰",
+        "Noticias y avisos",
+        "notices",
+        "Avisos disponibles públicamente"
+      ],
+      [
+        "📚",
+        "Historia de la liga",
+        "history",
+        "Campeones y temporadas"
+      ]
+    ]
+  ],
+  [
+    "Multimedia, predicciones y herramientas",
+    [
+      [
+        "📺",
+        "Liga TV",
+        "video",
+        "Transmisiones y vídeos"
+      ],
+      [
+        "🎬",
+        "Momentos",
+        "moments",
+        "Galería de fútbol"
+      ],
+      [
+        "🎮",
+        "Fantasy",
+        "fantasy",
+        "Arma tu equipo"
+      ],
+      [
+        "🎯",
+        "Quiniela",
+        "quiniela",
+        "Pronostica partidos"
+      ],
+      [
+        "🔮",
+        "Pronostica seis",
+        "predictorSix",
+        "Predicciones de la jornada"
+      ],
+      [
+        "🧠",
+        "Quiz Arena",
+        "quizArena",
+        "Preguntas y competición"
+      ],
+      [
+        "⚖️",
+        "Más o Menos",
+        "moreLess",
+        "Juego de comparaciones"
+      ],
+      [
+        "⭐",
+        "Jugador de la semana",
+        "vote",
+        "Participación de la comunidad"
+      ],
+      [
+        "🌦️",
+        "Clima y canchas",
+        "weatherFields",
+        "Pronóstico y campos"
+      ],
+      [
+        "☁️",
+        "Avisos de clima",
+        "v38Weather",
+        "Información meteorológica"
+      ],
+      [
+        "🔔",
+        "Notificaciones",
+        "pc-notifications",
+        "Preferencias de avisos"
+      ],
+      [
+        "📖",
+        "Reglamento",
+        "rulebook",
+        "Consultar las reglas"
+      ],
+      [
+        "📲",
+        "Instalar la aplicación",
+        "appInstall",
+        "Acceso directo, Android e iPhone"
+      ],
+      [
+        "🛍️",
+        "Tienda de clubes",
+        "club-store",
+        "Productos y clubes"
+      ]
+    ]
+  ],
+  [
+    "Administración y documentos · acceso autorizado",
+    [
+      [
+        "🛠️",
+        "JR Control",
+        "jrControl",
+        "Panel de administración"
+      ],
+      [
+        "📋",
+        "Administración de Liga",
+        "ligaControl",
+        "Controles de la liga"
+      ],
+      [
+        "📑",
+        "Cédulas oficiales",
+        "cedulas",
+        "Consultar documentos y partidos"
+      ],
+      [
+        "🪪",
+        "Constructor de credenciales",
+        "credentialBuilder",
+        "Vista previa y exportación"
+      ],
+      [
+        "🧾",
+        "Crear cédula",
+        "cedulaBuilder",
+        "Herramienta de cédulas"
+      ],
+      [
+        "📚",
+        "Archivo arbitral",
+        "refereeOffline",
+        "Cédulas sin conexión"
+      ],
+      [
+        "👥",
+        "Juntas y acuerdos",
+        "tool:meeting",
+        "Asistencia, votaciones y seguimiento"
+      ],
+      [
+        "🤝",
+        "Patrocinadores",
+        "tool:sponsors",
+        "Contratos y administración local"
+      ],
+      [
+        "🚩",
+        "Incidencias",
+        "tool:incidents",
+        "Bitácora por partido"
+      ],
+      [
+        "👨‍⚖️",
+        "Árbitros y oficiales",
+        "tool:officials",
+        "Designaciones y directorio"
+      ],
+      [
+        "🟥",
+        "Sanciones y expedientes",
+        "tool:new-sanction",
+        "Borradores disciplinarios"
+      ],
+      [
+        "🏅",
+        "Estudio de MVP",
+        "tool:motm",
+        "Jugador del partido"
+      ],
+      [
+        "🧑‍💼",
+        "Delegados",
+        "tool:delegates",
+        "Encargados de equipos"
+      ],
+      [
+        "🗓️",
+        "Cambios de jornada",
+        "scheduleChanges",
+        "Horarios y sedes"
+      ],
+      [
+        "🔔",
+        "Avisos oficiales",
+        "publicationCenter",
+        "Publicaciones con permisos"
+      ],
+      [
+        "📁",
+        "Permisos y archivos",
+        "permissionBuilder",
+        "Gestión documentaria"
+      ],
+      [
+        "📅",
+        "Agenda administrativa",
+        "agendaBuilder",
+        "Juntas y recordatorios"
+      ],
+      [
+        "🗳️",
+        "Encuestas",
+        "tool:poll",
+        "Participación y acuerdos"
+      ],
+      [
+        "💾",
+        "Respaldo de registros",
+        "tool:backup-export",
+        "Descarga manual autorizada"
+      ],
+      [
+        "🔎",
+        "Auditoría",
+        "tool:audit",
+        "Revisión de cambios"
+      ],
+      [
+        "👤",
+        "Mi cuenta",
+        "accountLogin",
+        "Acceso real a la cuenta"
+      ]
+    ]
+  ]
 ];
+const ADMIN_PC_TOOLS=new Set(['meeting','sponsors','incidents','officials','new-sanction','motm','delegates','poll','backup-export','audit']);
+function openPCAdminTool(name){
+ if(!ADMIN_PC_TOOLS.has(name))return;
+ const media=window.LJR_MEDIA;
+ const open=()=>{
+  if(!window.LJR_MEDIA?.admin)return;
+  try{
+   if(typeof window.LJR_V105_OPEN_TOOL==='function'&&window.LJR_V105_OPEN_TOOL(name))return;
+   const fallback={incidents:()=>window.LJR_INCIDENTS_PRO?.open?.(),motm:()=>window.LJR_MOTM_STUDIO?.open?.(),'new-sanction':()=>window.LJR_V1130_SANCTIONS_OPEN?.()};
+   if(typeof fallback[name]==='function' && (
+    (name==='incidents'&&typeof window.LJR_INCIDENTS_PRO?.open==='function')||
+    (name==='motm'&&typeof window.LJR_MOTM_STUDIO?.open==='function')||
+    (name==='new-sanction'&&typeof window.LJR_V1130_SANCTIONS_OPEN==='function'))){fallback[name]();return}
+  }catch(err){console.error('[PC tools] No se pudo abrir la herramienta',name,err)}
+  // El panel JR Control conserva la ruta autorizada y su propia implementación.
+  go('ligaControl');
+ };
+ if(media?.admin){open();return}
+ if(typeof media?.login==='function')media.login(()=>{if(window.LJR_MEDIA?.admin)open()});
+ else go('ligaControl');
+}
+
 function renderTools(){
  const screen=document.getElementById('screen');if(!screen)return;
  let page=screen.querySelector(':scope > .ds-page');
@@ -37,10 +389,10 @@ function renderTools(){
  if(!host)return;
  if(host.querySelector('[data-pc-tools-hub]'))return;
  const h=page.querySelector('.ds-pagehead h1');if(h)h.textContent='Herramientas PC';
- const p=page.querySelector('.ds-pagehead p');if(p)p.textContent='Las mismas funciones reales de la app azul, adaptadas al navegador de computadora.';
- host.innerHTML='<div class="ljpc-toolhub" data-pc-tools-hub><div class="ljpc-hub-head"><span>🖥️ CENTRO DE ESCRITORIO</span><p>Abre las herramientas originales y conserva sus datos, categorías y preferencias. Algunas funciones administrativas requieren inicio de sesión.</p></div><div class="ljpc-hub-controls"><label for="ljpc-tools-find">Buscar funciones de la liga</label><input id="ljpc-tools-find" data-ljpc-tools-find type="search" autocomplete="off" placeholder="Buscar calendario, equipos, quiniela, credenciales…" aria-controls="ljpc-tool-list"><span data-ljpc-tools-counter></span></div><div id="ljpc-tool-list">'+
+ const p=page.querySelector('.ds-pagehead p');if(p)p.textContent='Funciones actualizadas de móvil y PC, con permisos y datos oficiales compartidos.';
+ host.innerHTML='<div class="ljpc-toolhub" data-pc-tools-hub><div class="ljpc-hub-head"><span>🖥️ CENTRO DE ESCRITORIO</span><p>Accede a las funciones reales de la liga en computadora. Las herramientas de administración requieren sesión; los borradores locales no se publican automáticamente.</p></div><div class="ljpc-hub-controls"><label for="ljpc-tools-find">Buscar funciones de la liga</label><input id="ljpc-tools-find" data-ljpc-tools-find type="search" autocomplete="off" placeholder="Buscar calendario, equipos, quiniela, credenciales…" aria-controls="ljpc-tool-list"><span data-ljpc-tools-counter></span></div><div id="ljpc-tool-list">'+
  toolGroups.map(([title,tools])=>'<section class="ljpc-hub-group"><h2>'+title+'</h2><div class="ljpc-hub-grid">'+
- tools.map(([symbol,label,r])=>'<button class="ljpc-hub-btn" type="button" data-ljpc-hub-route="'+r+'"><span aria-hidden="true">'+symbol+'</span><b>'+label+'</b><i aria-hidden="true">›</i></button>').join('')+'</div></section>').join('')+'</div><p class="ljpc-hub-empty" data-ljpc-tools-empty hidden>No hay herramientas con ese nombre. Prueba otro término.</p></div>';
+ tools.map(([symbol,label,r,desc])=>'<button class="ljpc-hub-btn" type="button" data-ljpc-hub-route="'+r+'" title="'+desc+'"><span aria-hidden="true">'+symbol+'</span><span class="ljpc-hub-copy"><b>'+label+'</b><small>'+desc+'</small></span><i aria-hidden="true">›</i></button>').join('')+'</div></section>').join('')+'</div><p class="ljpc-hub-empty" data-ljpc-tools-empty hidden>No hay herramientas con ese nombre. Prueba otro término.</p></div>';
  const field=host.querySelector('[data-ljpc-tools-find]');
  const buttons=[...host.querySelectorAll('[data-ljpc-hub-route]')];
  const counter=host.querySelector('[data-ljpc-tools-counter]');
@@ -90,7 +442,7 @@ body.lj-desktop .ds-menu>[data-ljpc-desktop-tools],body.lj-desktop .desk-menu>[d
 .ljpc-hub-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
 .ljpc-hub-btn{display:flex;gap:10px;align-items:center;min-height:57px;width:100%;padding:11px 13px!important;border:1px solid #cfdeed!important;border-radius:10px!important;background:#fff!important;color:#10294a!important;text-align:left!important;cursor:pointer!important;box-shadow:0 4px 14px #0b2f5610}
 .ljpc-hub-btn:hover{background:#f0f8ff!important;border-color:#438fce!important}
-.ljpc-hub-btn span{font-size:20px}.ljpc-hub-btn b{font-size:12px;flex:1}.ljpc-hub-btn i{font-size:22px;font-style:normal;color:#2674bf}
+.ljpc-hub-btn>span:first-child{font-size:20px;flex:0 0 28px}.ljpc-hub-btn .ljpc-hub-copy{display:flex;flex-direction:column;min-width:0;flex:1;gap:4px}.ljpc-hub-btn b{font-size:12px;line-height:1.25}.ljpc-hub-btn small{font-size:10px;line-height:1.3;color:#567498;font-style:normal;overflow-wrap:anywhere}.ljpc-hub-btn i{font-size:22px;font-style:normal;color:#2674bf}
 .ljpc-hub-controls{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:0 0 18px;padding:12px 14px;border:1px solid #c9def0;border-radius:12px;background:#edf6ff}
 .ljpc-hub-controls label{font:800 12px system-ui;color:#134677}
 .ljpc-hub-controls input{flex:1 1 240px;min-width:0;padding:11px 12px;border:1px solid #b5cfe8;border-radius:9px;color:#0a235c;background:#fff;font:500 13px system-ui}
@@ -119,7 +471,10 @@ document.addEventListener('click',e=>{
  const hit=e.target instanceof Element?e.target.closest('[data-ljpc-hub-route]'):null;
  if(!hit||!desktop())return;
  e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
- go(hit.dataset.ljpcHubRoute);
+ const destination=String(hit.dataset.ljpcHubRoute||'');
+ if(destination.startsWith('tool:'))openPCAdminTool(destination.slice(5));
+ else if(destination==='accountLogin')go('accountLogin');
+ else go(destination);
 },true);
 let scheduled=false;
 function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;sync()})}
