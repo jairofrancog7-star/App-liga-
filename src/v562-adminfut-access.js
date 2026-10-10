@@ -71,7 +71,9 @@ function v563Icon(icon){
  return path?'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+path+'</svg>':esc(icon);
 }
 function card(icon,title,sub,attrs=''){
- return '<button type="button" class="v562-card" '+attrs+' aria-label="'+esc(title)+': '+esc(sub)+'"><span class="v562-icon" aria-hidden="true">'+v563Icon(icon)+'</span><span class="v562-card-copy"><b>'+esc(title)+'</b><small>'+esc(sub)+'</small></span><i aria-hidden="true">›</i></button>';
+ /* Respaldo del enrutador principal: incluso si se reinicializa el módulo, el cuadro conserva destino. */
+ const attributes=attrs.replace(/data-v563-route="([^"]+)"/,(_,route)=>'data-v563-route="'+route+'" data-route="'+route+'"');
+ return '<button type="button" class="v562-card" '+attributes+' aria-label="'+esc(title)+': '+esc(sub)+'"><span class="v562-icon" aria-hidden="true">'+v563Icon(icon)+'</span><span class="v562-card-copy"><b>'+esc(title)+'</b><small>'+esc(sub)+'</small></span><i aria-hidden="true">›</i></button>';
 }
 function controlMarkup(){
  const s=allSummary();
