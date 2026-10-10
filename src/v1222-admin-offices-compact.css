@@ -113,6 +113,9 @@ html body .liga-media-modal button.v1222-open-dir{
  color:#fff;border:1px solid #638bd4;background:#17438c;
  font:700 12px/1.4 system-ui,sans-serif;
 }
+
+/* Los árbitros no pertenecen a un equipo: ocultar selector de club al elegir oficiales. */
+html body .liga-media-modal .v1222-form-grid label[hidden]{display:none!important;}
 @media(max-width:570px){
  html body .liga-media-modal .ljr-editor-two{grid-template-columns:1fr!important;}
 }
