@@ -4,6 +4,7 @@
 'use strict';
 if(window.__LJR_V1211_RECURRING__)return;
 window.__LJR_V1211_RECURRING__=true;
+window.__LJR_V1211_CANCEL_SERIES_ENABLED__=true;
 const KEY='ljr-v713-auto-notices',PREF='ljr-v1211-recurrence';
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
