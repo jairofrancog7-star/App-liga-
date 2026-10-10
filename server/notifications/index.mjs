@@ -198,7 +198,7 @@ app.get('/notices',async(req,res)=>{
  try{
   const cat=category(String(req.query.category||'Todas'));
   const r=await pool.query(`SELECT id,title,body,category,channels,published_at
-  FROM ljr_scheduled_notices WHERE status='done' AND published_at IS NOT NULL
+  FROM ljr_scheduled_notices WHERE status='done' AND 'app'=ANY(channels) AND published_at IS NOT NULL
   AND published_at>=now()-interval '30 days' AND (category=$1 OR category='Todas' OR $1='Todas')
   ORDER BY published_at DESC LIMIT 60`,[cat]);
   res.json({items:r.rows,source:'servidor_oficial'});
