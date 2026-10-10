@@ -207,6 +207,10 @@ function adminMount(){
   b.innerHTML='<b aria-hidden="true">'+esc(icon)+'</b><span>'+esc(title)+'<small>'+esc(sub)+'</small></span>';
   b.onclick=()=>{if(!active())return;key==='global'?makeAdminForm():key==='roles'?showRoles():showAudit()};
   grid.append(b);
+  server().then(url=>{
+   if(url||!b.isConnected)return;
+   const hint=b.querySelector('small');if(hint)hint.textContent='Pendiente conectar servidor HTTPS';
+  }).catch(()=>{});
  }
 }
 let publicLast=0,publicRunning=false;
