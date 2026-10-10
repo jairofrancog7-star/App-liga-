@@ -44,7 +44,7 @@ function begin(scope,route,label){
  '<div class="ljr-studio-fields"><label>Texto seleccionado<input data-studio-text maxlength="250" placeholder="Selecciona un texto para editar"></label><label>Tamaño del texto<select data-studio-size><option value="">Sin cambio</option><option value="12px">12 px</option><option value="14px">14 px</option><option value="16px">16 px</option><option value="18px">18 px</option><option value="22px">22 px</option></select></label></div>'+
  '<div class="ljr-studio-actions"><button type="button" data-studio-apply>Aplicar texto</button><button type="button" data-studio-color>Texto legible</button><button type="button" data-studio-blue>Fondo azul</button><button type="button" data-studio-touch>Botón 44 px</button></div>'+
  '<div class="ljr-studio-actions"><button type="button" data-studio-undo>↶ Deshacer</button><button type="button" data-studio-redo>↷ Rehacer</button><button type="button" data-studio-reset>Restablecer</button></div>'+
- '<div class="ljr-studio-actions"><button type="button" data-studio-save>Guardar borrador local</button><button type="button" data-studio-restore>Recuperar borrador</button><button type="button" data-studio-cms>Guardado oficial</button></div>'+
+ '<div class="ljr-studio-actions"><button type="button" data-studio-save>Guardar borrador local</button><button type="button" data-studio-restore>Recuperar borrador</button><button type="button" data-studio-cms>Abrir editor oficial</button></div>'+
  '<small class="ljr-studio-disclaimer">Los borradores se guardan solamente en esta pestaña. Al salir se revierte la vista previa; para publicar se necesita el editor oficial y una sesión verificada.</small>';
  document.body.append(panel);
  let selected=null,history=[],position=0,closing=false;
