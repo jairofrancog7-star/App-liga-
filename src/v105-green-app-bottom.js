@@ -1682,8 +1682,13 @@ function registerAlerts(){
  };
  const inputName=$('[data-r-name]',m),inputEmail=$('[data-r-email]',m);
  inputName.maxLength=70;inputEmail.maxLength=140;
- team.addEventListener('change',updateSummary);
- cat.addEventListener('change',()=>setTimeout(updateSummary,0));
+ const syncPushSelection=()=>{
+   const slot=$('[data-r-push-slot]',m);
+   if(!slot||slot.hidden)return;
+   window.LJR_V1082_PUSH_PANEL?.syncSelection?.(slot,{category:cat.value,team:team.value});
+ };
+ team.addEventListener('change',()=>{updateSummary();syncPushSelection();});
+ cat.addEventListener('change',()=>setTimeout(()=>{updateSummary();syncPushSelection();},0));
  updateSummary();
  $('[data-r-push]',m).onclick=async()=>{
    const button=$('[data-r-push]',m),slot=$('[data-r-push-slot]',m);
@@ -1717,7 +1722,7 @@ function registerAlerts(){
  $('[data-r-news]',m).onclick=()=>{m.remove();location.hash='#/notifications';};
 
  const fill=()=>{const list=v160Teams(cat.value);team.innerHTML=list.map(n=>'<option '+(norm(n)===norm(old.team)?'selected':'')+'>'+esc(n)+'</option>').join('')||'<option>Sin equipos publicados</option>'};fill();updateSummary();
- cat.onchange=()=>{old.team='';fill()};
+ cat.onchange=()=>{old.team='';fill();updateSummary();syncPushSelection();};
  $('[data-r-save]',m).onclick=()=>{
    const name=inputName.value.trim(),email=inputEmail.value.trim();
    if(!name){setNotice('Escribe tu nombre para guardar las preferencias.');inputName.focus();return;}
