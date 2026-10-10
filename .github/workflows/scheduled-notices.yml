@@ -26,7 +26,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Probar la automatización (sin credenciales reales)
-        run: python -m unittest discover -s .github/scripts -p 'test_process_scheduled_notices.py'
+        run: python -m unittest discover -s .github/scripts -p 'test_*.py'
       # Los avisos del servidor privado los atiende dispatch-notifications.yml;
       # ese ejecutor verifica que la versión del servidor exija aprobación.
       # No hacer llamadas directas desde este flujo.
