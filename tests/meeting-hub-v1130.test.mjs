@@ -46,7 +46,8 @@ function fixture(){
    querySelector:k=>k==='[data-mh-status]'?{textContent:''}:k in fields?{value:fields[k]}:null
   })
  };
- const window={LJR_MEDIA:{admin:{role:'secretario'}}};
+ const opened=[];
+ const window={LJR_MEDIA:{admin:{role:'secretario'}},LJR_GOOGLE_CALENDAR_GLOBAL:{open:event=>{opened.push(event);return true}}};
  const localStorage={getItem:k=>data[k]||null,setItem:(k,v)=>{data[k]=v}};
  class MutationObserver{observe(){}}
  runInNewContext(src,{window,document,localStorage,navigator:{},MutationObserver,setTimeout:()=>0});
@@ -55,7 +56,7 @@ function fixture(){
   const button={dataset:{mhAction:action,...extra},closest:sel=>sel==='[data-mh-action]'?button:voteContainer};
   panel.events.click({target:button,preventDefault(){}});
  }
- return {window,form,click,get panel(){return panel},saved:()=>JSON.parse(data['ljr-meeting-hub-v1130']||'{}')};
+ return {window,form,click,opened,get panel(){return panel},saved:()=>JSON.parse(data['ljr-meeting-hub-v1130']||'{}')};
 }
 
 test('production and demo load the same scoped meeting hub',()=>{
@@ -92,4 +93,20 @@ test('first attendance, task and team ballot persist by meeting date',()=>{
  assert.equal(record.votes[0].ballots['boavista fc'].vote,'Sí');
  x.window.LJR_MEETING_HUB_V1130.mount();
  assert.match(x.panel.innerHTML,/Control de delegados/);
+});
+
+test('el botón Calendario prepara la junta en Google sin descargar .ics',()=>{
+ const x=fixture();
+ x.click('tab',{tab:'calendar'});
+ assert.match(x.panel.innerHTML,/Guardar en Google Calendar/);
+ assert.doesNotMatch(x.panel.innerHTML,/Descargar invitación \.ics/);
+ x.click('google');
+ assert.equal(x.opened.length,1);
+ assert.equal(x.opened[0].title,'Junta de la Liga Juventino Rosas');
+ assert.equal(x.opened[0].iso,'2026-10-13');
+ assert.equal(x.opened[0].time,'19:00');
+ assert.equal(x.opened[0].venue,'Juventino Rosas');
+ x.click('ics'); // Compatibilidad con botones guardados en una versión anterior.
+ assert.equal(x.opened.length,2);
+ assert.doesNotMatch(src,/download\('convocatoria-junta-/);
 });
