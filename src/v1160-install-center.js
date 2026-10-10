@@ -93,7 +93,7 @@ async function diagnose(root){
  try{
    if('serviceWorker' in navigator){
      const reg=await navigator.serviceWorker.getRegistration(location.href);
-     worker=reg?.active?'Servicio sin conexión disponible':'Servicio sin conexión no detectado';
+     worker=reg?.active?'Servicio de actualización activo (sin garantía de acceso sin conexión)':'Servicio de actualización no detectado';
    }else worker='Tu navegador no admite servicio sin conexión';
  }catch(_){worker='Servicio sin conexión: estado desconocido'}
  if(!root.isConnected)return;
@@ -111,7 +111,7 @@ async function diagnose(root){
  const primary=root.querySelector('[data-ljr-diagnostic-status]');
  const secondary=root.querySelector('[data-ljr-diagnostic-details]');
  if(primary)primary.textContent=recommendation;
- if(secondary)secondary.textContent=(isOffline?'Posible falta de conexión · ':'Conexión detectada · ')+worker+'. Diagnóstico orientativo, no confirma instalación ni acceso a Internet.';
+ if(secondary)secondary.textContent=(isOffline?'El dispositivo informa que no hay conexión · ':'El dispositivo informa conexión · ')+worker+'. Diagnóstico orientativo, no confirma instalación ni acceso a Internet.';
 }
 async function checkUpdates(root){
  const target=root?.querySelector('[data-ljr-update-note]');
