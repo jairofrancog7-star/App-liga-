@@ -466,8 +466,19 @@ function v512FinalCard(){
  '</section>';
 }
 
+function simulationCategory(){
+ const source=cat(),state=simState();
+ return {...source,fixtures:(source.fixtures||[]).map((block,gi)=>({...block,rows:(block.rows||[]).map(r=>{
+  if(!Array.isArray(r)||num(r[3])!==null&&num(r[5])!==null)return r;
+  const journey=String(r[1]??block.title??block.name??(gi+1)).trim()||String(gi+1);
+  const id=catId()+':fixture:'+JSON.stringify([journey,norm(r[2]),norm(r[6]),String(r[8]||'')]);
+  const score=scoreOf({id},state);if(!score)return r;
+  const copy=r.slice();copy[3]=score.home;copy[5]=score.away;return copy;
+ })}))};
+}
 function bracketView(){
- return window.LJR_KNOCKOUT.render({category:cat(),rows:simulatedStandings(),simulate:true,
+function bracketView(){
+ return window.LJR_KNOCKOUT.render({category:simulationCategory(),rows:simulatedStandings(),simulate:true,
    categoryId:catId(),logoFor,stage:bracketStage()});
 }
 function scoreControl(f,side){

@@ -54,3 +54,16 @@ test('invalid stored scores never become simulated draws or negative goals',()=>
  for(const value of [{home:null,away:null},{home:'2',away:0},{home:-1,away:0},{home:1.2,away:0},{home:100,away:0}])assert.equal(score({id:'x'},{x:value}),null);
  assert.deepEqual(score({id:'x'},{x:{home:0,away:0}}),{home:0,away:0});
 });
+
+test('simulated knockout scores appear in the bracket without changing published results',()=>{
+ const fixture=['','Octavos de final','Abejas','-','vs','-','Lobos','','11/10/2026'];
+ const official=category([{rows:[fixture]}]);
+ const f=fixtures(official)[0];
+ const source=extract('function simulationCategory(){','function bracketView(){');
+ const scoring=extract('function scoreOf(', 'function alterScore(');
+ const result=new Function('cat','simState','num','norm','catId',scoring+source+';return simulationCategory()')(()=>official,()=>({[f.id]:{home:2,away:1}}),x=>/^\d+$/.test(String(x))?Number(x):null,s=>String(s).toLowerCase(),()=>3);
+ assert.equal(result.fixtures[0].rows[0][3],2);assert.equal(result.fixtures[0].rows[0][5],1);
+ assert.equal(fixture[3],'-');assert.equal(fixture[5],'-');
+ const html=api.render({category:result,simulate:true});
+ assert.match(html,/ljr-ko-score">2/);assert.match(html,/ljr-ko-score">1/);
+});

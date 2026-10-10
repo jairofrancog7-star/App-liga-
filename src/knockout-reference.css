@@ -127,3 +127,6 @@ html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-t
 html body #screen .ljr-knockout .ljr-ko-board{position:relative}
 html body #screen .ljr-knockout .ljr-ko-routes{position:absolute;top:43px;left:0;height:710px;pointer-events:none;z-index:2}
 html body #screen .ljr-knockout[data-ko-stage="final"] .ljr-ko-routes{display:none}
+
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-top > .v501-icon{position:absolute!important;left:16px!important;top:10px!important}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-top .v774-sim-icons{position:absolute!important;inset:10px 16px auto auto!important;display:flex!important;gap:12px!important}

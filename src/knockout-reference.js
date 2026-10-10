@@ -82,7 +82,7 @@
    if(s==='playoff')content=ys.playoff.map((y,i)=>pair(playoff[i],y,logoFor)).join('');
    if(s==='octavos')content=ys.octavos.map((y,i)=>{
     if(m.projection||!m.games.octavos.length)return i%2===0?card(null,y,logoFor,'winner'):pair(m.projection?projectedSeedPair(Math.floor(i/2)):null,y,logoFor);
-    return card(m.games.octavos[i],y,logoFor);
+    return pair(m.games.octavos[i],y,logoFor);
    }).join('');
    if(s==='cuartos'||s==='semifinal')content=ys[s].map((y,i)=>card(m.games[s][i],y,logoFor)).join('');
    if(s==='final')content=card(m.games.final[0],ys.final[0],logoFor)+'<div class="ljr-ko-trophy" role="img" aria-label="Trofeo de la final"></div>';
