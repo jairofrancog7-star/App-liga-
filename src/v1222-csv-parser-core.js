@@ -22,7 +22,13 @@ export function parseDelimited(input,separator=',',cap=CAP_ROWS){
   }else {cell+=c;started=true;}
  }
  if(quote)warnings.push('Hay comillas sin cerrar en el archivo.');
- if(started||cell!==''||row.length){row.push(cell);if(row.some(s=>s.trim()!==''))rows.push(row);}
+ if(started||cell!==''||row.length){
+  row.push(cell);
+  if(row.some(s=>s.trim()!=='')){
+   rows.push(row);
+   if(rows.length>cap+1)throw Error('El archivo supera '+cap+' registros. Divídelo antes de analizarlo.');
+  }
+ }
  const headers=rows.shift()||[];
  const length=headers.length;
  if(length===0)warnings.push('Archivo vacío o sin encabezados.');
