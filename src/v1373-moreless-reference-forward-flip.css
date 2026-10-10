@@ -14,7 +14,7 @@ html body #v543-moreless-portal .v551-more-reference-game .v1067-flip-card .v106
   transform-style:preserve-3d!important;
   -webkit-transform-style:preserve-3d!important;
   backface-visibility:visible!important;
-  transform:rotateY(0deg)!important;
+  transform:rotateY(0deg);
   animation:none!important;
 }
 html body #v543-moreless-portal .v551-more-reference-game .v1067-flip-card.is-revealing .v1067-flip-inner{
