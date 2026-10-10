@@ -25,6 +25,12 @@ try{
     await client.query(await readFile(new URL('./cedula-schema.sql',import.meta.url),'utf8'));
     await client.query('INSERT INTO ljr_schema_migrations(name) VALUES($1)',[c]);
   }
+  const principalsMigration='co-principals-v1208';
+  const principalsDone=await client.query('SELECT name FROM ljr_schema_migrations WHERE name=$1',[principalsMigration]);
+  if(!principalsDone.rowCount){
+    await client.query(await readFile(new URL('./principals-schema.sql',import.meta.url),'utf8'));
+    await client.query('INSERT INTO ljr_schema_migrations(name) VALUES($1)',[principalsMigration]);
+  }
   await client.query('COMMIT');
   console.log('Esquema de avisos verificado.');
 }catch(error){
