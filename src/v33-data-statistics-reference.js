@@ -93,9 +93,10 @@ function metricLabel(index,value){
  if(index===8&&num(v)>0)return '+'+num(v);
  return v;
 }
-function teamMetricRow(r,index,metricIndex){
+function teamMetricRow(r,index,metricIndex,rows){
+ const rank=rows?rows.findIndex(x=>num(x[metricIndex])===num(r[metricIndex]))+1:index+1;
  return '<button type="button" class="v33-stat-row" data-v33-team="'+esc(r[1])+'">'+
-   '<span class="v33-rank">'+(index+1)+'</span>'+teamLogo(r[1])+
+   '<span class="v33-rank">'+rank+'</span>'+teamLogo(r[1])+
    '<span class="v33-row-copy"><b>'+esc(r[1])+'</b><small>Primera Fuerza</small></span>'+
    '<strong>'+esc(metricLabel(metricIndex,r[metricIndex]))+'</strong>'+
  '</button>';
@@ -103,7 +104,7 @@ function teamMetricRow(r,index,metricIndex){
 function teamStatCard(title,metricIndex,order='desc',limit=5){
  const rs=metricRows(metricIndex,order,limit);
  return '<article class="v33-stat-card"><h3>'+esc(title)+'</h3><div class="v33-stat-list">'+
-   rs.map((r,i)=>teamMetricRow(r,i,metricIndex)).join('')+
+   rs.map((r,i)=>teamMetricRow(r,i,metricIndex,rs)).join('')+
    '</div><button type="button" class="v33-see-all" data-v33-expand-team="'+metricIndex+'" data-v33-order="'+order+'" aria-expanded="false">Ver todos los equipos <span>›</span></button></article>';
 }
 function rosterEntries(){
@@ -113,11 +114,20 @@ function rosterEntries(){
  }
  return out;
 }
+function playerProfile(name,team){
+ const entry=Object.entries(current()?.player_profiles||{}).find(([t])=>same(t,team));
+ return (Array.isArray(entry?.[1])?entry[1]:[]).find(p=>same(p.name,name));
+}
 function playerRow(p,index){
- return '<button type="button" class="v33-stat-row player" data-v33-player="'+esc(p.name)+'" data-v33-player-team="'+esc(p.team)+'">'+
+ const profile=playerProfile(p.name,p.team);
+ const position=profile?.position&&profile.position!=='No especificada'?profile.position:'';
+ const scorer=scorerEntries().find(r=>same(r.name,p.name)&&same(r.team,p.team));
+ const goals=p.goals??scorer?.goals;
+ const detail=p.team+(position?' · '+position:'');
+ return '<button type="button" class="v33-stat-row player" data-v33-player="'+esc(p.name)+'" data-v33-player-team="'+esc(p.team)+'" title="'+esc(p.name+' · '+detail+' · '+(goals==null?'Goles no publicados':goals+' goles'))+'">'+
    '<span class="v33-rank">'+esc(p.rank??(index+1))+'</span>'+playerAvatar(p.name,p.team,'v33-player-team-logo v576-player-avatar')+
-   '<span class="v33-row-copy"><b>'+esc(p.name)+'</b><small>'+teamLogo(p.team,'v33-inline-team-logo')+esc(p.team)+(p.goals==null?' · Jugador registrado':'')+'</small></span>'+
-   '<strong>'+esc(p.goals??'✓')+'</strong>'+
+   '<span class="v33-row-copy"><b>'+esc(p.name)+'</b><small data-v33-player-detail>'+teamLogo(p.team,'v33-inline-team-logo')+esc(detail)+'</small></span>'+
+   '<strong aria-label="'+(goals==null?'Goles no publicados':esc(goals)+' goles')+'">'+esc(goals??'—')+'</strong>'+
  '</button>';
 }
 function scorerEntries(){
@@ -126,7 +136,7 @@ function scorerEntries(){
 function playerStatCard(title,players,goals=false){
  return '<article class="v33-stat-card"><h3>'+esc(title)+'</h3><div class="v33-stat-list">'+
    players.slice(0,5).map((p,i)=>playerRow(p,i)).join('')+
-   '</div><button type="button" class="v33-see-all" '+(goals?'data-v33-expand-goals':'data-v33-expand-player="'+esc(title)+'"')+' aria-expanded="false">Ver todos los jugadores <span>›</span></button></article>';
+   '</div><button type="button" class="v33-see-all" '+(goals?'data-v33-expand-goals':'data-v33-expand-player="'+esc(players[0]?.team||title)+'"')+' aria-expanded="false">Ver todos los jugadores <span>›</span></button></article>';
 }
 function teamSections(){
  return [
@@ -180,15 +190,16 @@ function playerDetailedView(){
  if(!groups.length){
    return '<main class="v33-data-content v33-detailed v593-detail-horizontal"><section class="v33-general-section v593-detail-section"><div class="v33-general-title"><h2>Jugadores registrados</h2></div><div class="v33-carousel v593-detail-carousel"><article class="v33-stat-card"><div class="v33-stat-list"><div class="v33-stat-row"><span class="v33-row-copy"><b>No hay jugadores publicados</b><small>Liga Juventino Rosas no expone una plantilla pública para esta categoría.</small></span></div></div></article></div></section></main>';
  }
- /* V593: las plantillas también comparten el mismo carrusel/tamaño de General. */
+ // Show published numerical statistics first; roster cards use the same metric
+ // and leave unpublished values unknown rather than inventing goal totals.
  return '<main class="v33-data-content v33-detailed v593-detail-horizontal">'+
    '<section class="v33-general-section v593-detail-section">'+
-     '<div class="v33-general-title"><h2>Jugadores registrados</h2></div>'+
+     '<div class="v33-general-title"><h2>Goles</h2></div>'+
      '<div class="v33-carousel v593-detail-carousel">'+
-       groups.map(g=>playerStatCard(g.team,g.players)).join('')+
+       (scorerEntries().length?playerStatCard('Goles',scorerEntries(),true):'')+
+       groups.map(g=>playerStatCard(g.team+' · Goles',g.players)).join('')+
      '</div>'+
    '</section>'+
-   (scorerEntries().length?'<section class="v33-general-section v593-detail-section"><div class="v33-general-title"><h2>Goles</h2></div><div class="v33-carousel v593-detail-carousel">'+playerStatCard('Goles',scorerEntries(),true)+'</div></section>':'')+
  '</main>';
 }
 function generalView(){
@@ -206,9 +217,10 @@ function generalView(){
      '</div>'+
    '</section>'+
    '<section class="v33-general-section">'+
-     '<div class="v33-general-title"><h2>Estadísticas de jugadores</h2><button type="button" data-v33-tab="player">Ver todo</button></div>'+
+     '<div class="v33-general-title"><h2>Estadísticas de jugador</h2><button type="button" data-v33-tab="player">Ver todo</button></div>'+
      '<div class="v33-carousel">'+
-       firstTeams.map(g=>playerStatCard(g.team,g.players)).join('')+
+       (scorerEntries().length?playerStatCard('Goles',scorerEntries(),true):'')+
+       firstTeams.map(g=>playerStatCard(g.team+' · Goles',g.players)).join('')+
        (!firstTeams.length?playerStatCard('Jugadores registrados',entries):'')+
      '</div>'+
    '</section>'+
@@ -301,13 +313,31 @@ function goRoute(r){
  if(window.LJR_APP_ROUTER?.go)window.LJR_APP_ROUTER.go(next);
  else location.hash='#/'+next;
 }
+function fitRowText(){
+ const page=document.querySelector('[data-v33-data]');
+ if(!page||window.innerWidth>=700)return;
+ const width=window.innerWidth;
+ // Retain the reference font for short names; fit full long names into two
+ // lines inside the same row instead of changing any card's geometry.
+ page.querySelectorAll('.v33-row-copy > b,.v33-row-copy > small').forEach(e=>{
+   const name=e.tagName==='B';
+   let size=width*(name ? .04 : .03);
+   const minimum=width*(name ? .028 : .022);
+   const property=name?'--v33-name-size':'--v33-detail-size';
+   e.style.setProperty(property,size+'px');
+   while(size>minimum&&(name?e.scrollHeight>width*.094+1:e.scrollWidth>e.clientWidth+1)){
+     size=Math.max(minimum,size-.5);
+     e.style.setProperty(property,size+'px');
+   }
+ });
+}
 function bind(){
  document.querySelectorAll('[data-v33-expand-team],[data-v33-expand-player],[data-v33-expand-goals]').forEach(b=>b.onclick=()=>{
    const expanded=b.getAttribute('aria-expanded')!=='true';
    const list=b.closest('.v33-stat-card').querySelector('.v33-stat-list');
    if(b.hasAttribute('data-v33-expand-team')){
      const metric=Number(b.dataset.v33ExpandTeam);
-     list.innerHTML=metricRows(metric,b.dataset.v33Order,expanded?Infinity:5).map((r,i)=>teamMetricRow(r,i,metric)).join('');
+     list.innerHTML=metricRows(metric,b.dataset.v33Order,expanded?Infinity:5).map((r,i,rows)=>teamMetricRow(r,i,metric,rows)).join('');
    }else if(b.hasAttribute('data-v33-expand-goals')){
      list.innerHTML=scorerEntries().slice(0,expanded?Infinity:5).map(playerRow).join('');
    }else{
@@ -316,8 +346,8 @@ function bind(){
      list.innerHTML=players.slice(0,expanded?Infinity:5).map(playerRow).join('');
    }
    b.setAttribute('aria-expanded',String(expanded));
-   b.textContent=expanded?'Ver menos':'Ver todos';
-   bind();
+   b.innerHTML=expanded?'Ver menos <span>‹</span>':b.hasAttribute('data-v33-expand-team')?'Ver todos los equipos <span>›</span>':'Ver todos los jugadores <span>›</span>';
+   bind();fitRowText();
  });
 
  document.querySelectorAll('[data-v33-tab]').forEach(b=>b.onclick=e=>{e.preventDefault();setTab(b.dataset.v33Tab)});
@@ -391,12 +421,12 @@ function applyHeaderScroll(){
 }
 let tick=0;function onScroll(){if(tick)return;tick=requestAnimationFrame(()=>{tick=0;applyHeaderScroll()})}
 window.addEventListener('scroll',onScroll,{passive:true});
-window.addEventListener('resize',onScroll,{passive:true});
+window.addEventListener('resize',()=>{onScroll();requestAnimationFrame(fitRowText)},{passive:true});
 document.addEventListener('scroll',onScroll,{passive:true,capture:true});
 async function render(){
  const active=isDataRoute();document.body.classList.toggle('v33-data-active',active);if(!active)return;
  await load();if(!db||!isDataRoute())return;
- const screen=document.querySelector('#screen');if(!screen)return;screen.innerHTML=markup();setBottomNav();bind();applyHeaderScroll();
+ const screen=document.querySelector('#screen');if(!screen)return;screen.innerHTML=markup();setBottomNav();bind();applyHeaderScroll();fitRowText();
  // Keep the active label visible without changing vertical scroll position.
  const tabsNode=screen.querySelector('.v33-tabs');
  const selected=tabsNode?.querySelector('.active');
