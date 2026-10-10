@@ -31,7 +31,7 @@ test('All matchday category chips reuse the same safe grid',()=>{
 
 test('The jornada layout never changes team photos, source data, or score logic',()=>{
  assert.doesNotMatch(css,/mix-blend-mode:(?:multiply|screen|darken)/);
- assert.match(renderer,/const src=logo\(name\)/);
+ assert.match(renderer,/const src=logo\(name,category\)/);
  assert.match(renderer,/window\.LJR_TEAM_LOGOS\?\.get\?\.\(name\)/);
  assert.match(renderer,/function status\(g\)/);
  assert.doesNotMatch(css,/clip-path:/);

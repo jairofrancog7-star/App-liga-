@@ -1,66 +1,57 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 
 const source=readFileSync(new URL('../src/v1132-matchday-premium.js',import.meta.url),'utf8');
-const start=source.indexOf('const crestImageCache=new Map();');
-const end=source.indexOf('function crest(name){',start);
+const start=source.indexOf('function prepareMatchdayCrests(root){');
+const end=source.indexOf('function crest(name,category){',start);
 
-function runOnPixels(pixels,width,height,src='https://liga.test/escudos/prueba.webp'){
- assert.ok(start>=0&&end>start,'Debe existir un saneador de fondos antes del componente de escudos');
- let output=null;
- const ctx={
-  drawImage(){},
-  getImageData(){return {data:pixels}},
-  putImageData(result){output=result.data},
- };
- const canvas={width,height,getContext(){return ctx},toDataURL(){return 'data:image/png;base64,transparente'}};
- const sandbox={
-  URL,
-  location:{origin:'https://liga.test'},
-  document:{baseURI:'https://liga.test/',createElement(tag){assert.equal(tag,'canvas');return canvas}},
- };
- vm.runInNewContext(source.slice(start,end)+'\nglobalThis.run=crestWithoutSolidBackground;',sandbox);
- const img={naturalWidth:width,naturalHeight:height,currentSrc:src,src};
- return {result:sandbox.run(img),pixels:output||pixels};
+function prepare(images){
+ assert.ok(start>=0&&end>start,'La preparación de escudos debe existir antes del componente');
+ const sandbox={};
+ vm.runInNewContext(source.slice(start,end)+';globalThis.prepareMatchdayCrests=prepareMatchdayCrests;',sandbox);
+ sandbox.prepareMatchdayCrests({querySelectorAll:selector=>{
+  assert.equal(selector,'.md1132-crest img');
+  return images;
+ }});
 }
-function rgba(width,height,color=[255,255,255,255]){
- const data=new Uint8ClampedArray(width*height*4);
- for(let i=0;i<width*height;i++)data.set(color,i*4);
- return data;
-}
-function pixelAlpha(data,w,x,y){return data[(y*w+x)*4+3]}
 
-test('Centro de Jornada usa el registro de Equipos en todas las categorias',()=>{
- assert.match(source,/window\.LJR_TEAM_LOGOS\?\.get\?\.\(name\)/);
+test('Centro de Jornada usa los escudos de Equipos con categoría en vez de alterar imágenes',()=>{
+ assert.match(source,/window\.LJR_TEAMS_CURRENT_LOGO\?\.get\?\.\(name,category\)/);
  assert.match(source,/Object\.entries\(db\.categories\|\|\{\}\)/);
  assert.match(source,/prepareMatchdayCrests\(host\)/);
+ assert.doesNotMatch(source,/crestWithoutSolidBackground|crestImageCache|canvas\.getContext\('2d'/);
 });
-test('quita fondo blanco exterior sin borrar detalles blancos encerrados',()=>{
- const w=20,h=20,data=rgba(w,h);
- for(let y=5;y<15;y++)for(let x=5;x<15;x++)data.set([10,38,110,255],(y*w+x)*4);
- // Detalle blanco encerrado dentro del escudo azul.
- data.set([255,255,255,255],(10*w+10)*4);
- const {result,pixels}=runOnPixels(data,w,h);
- assert.match(result,/^data:image\/png/);
- assert.equal(pixelAlpha(pixels,w,0,0),0,'esquina blanca exterior transparente');
- assert.equal(pixelAlpha(pixels,w,6,6),255,'contorno azul intacto');
- assert.equal(pixelAlpha(pixels,w,10,10),255,'detalle blanco interior intacto');
+
+test('un escudo válido mantiene su fuente, píxeles, color, opacidad y tamaño original',()=>{
+ const listeners={};
+ const image={complete:true,naturalWidth:256,src:'./assets/season-2026/boavista-v774.webp',isConnected:true,
+  addEventListener(type,fn){listeners[type]=fn},remove(){throw Error('No eliminar una imagen válida')}};
+ prepare([image]);
+ assert.equal(image.src,'./assets/season-2026/boavista-v774.webp');
+ assert.equal(image.style,undefined);
+ assert.equal(image.naturalWidth,256);
+ assert.equal(typeof listeners.error,'function');
 });
-test('quita el negro exterior y conserva el escudo',()=>{
- const w=20,h=20,data=rgba(w,h,[10,10,10,255]);
- for(let y=5;y<15;y++)for(let x=5;x<15;x++)data.set([10,164,62,255],(y*w+x)*4);
- const {result,pixels}=runOnPixels(data,w,h,'https://liga.test/escudos/linces.webp');
- assert.match(result,/^data:image\/png/);
- assert.equal(pixelAlpha(pixels,w,0,0),0);
- assert.equal(pixelAlpha(pixels,w,6,6),255);
+
+test('un escudo roto retira solamente la imagen y deja visibles las iniciales',()=>{
+ let removed=0;
+ const img={complete:true,naturalWidth:0,isConnected:true,addEventListener(){},remove(){removed++}};
+ prepare([img]);
+ assert.equal(removed,1);
+ const second={complete:false,naturalWidth:0,isConnected:true,
+  addEventListener(type,cb){assert.equal(type,'error');this.onerror=cb},
+  remove(){removed++}};
+ prepare([second]);
+ second.onerror();
+ assert.equal(removed,2);
 });
-test('no cambia imagenes ya transparentes o fondos de color propios del escudo',()=>{
- const w=20,h=20,alpha=rgba(w,h,[255,255,255,0]);
- const a=runOnPixels(alpha,w,h);
- assert.equal(a.result,'https://liga.test/escudos/prueba.webp');
- const red=rgba(w,h,[160,10,10,255]);
- const b=runOnPixels(red,w,h);
- assert.equal(b.result,'https://liga.test/escudos/prueba.webp');
+
+test('todas las categorías usan la misma ruta de imagen sin filtros visuales',()=>{
+ const css=readFileSync(new URL('../src/v1167-matchday-centered-official-crests.css',import.meta.url),'utf8');
+ assert.match(source,/crest\(g\.home,g\.category\)/);
+ assert.match(source,/crest\(x\.away,x\.category\)/);
+ assert.match(css,/filter:none!important/);
+ assert.match(css,/object-fit:contain!important/);
 });
