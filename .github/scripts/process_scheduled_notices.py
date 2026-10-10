@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import json, os, sys, re
+import json, os, sys, re, hmac, hashlib
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -72,14 +72,25 @@ def post_facebook(item,png_path):
         return 'sent' if r.ok else f'error:{r.status_code}'
     except Exception as e:return 'error:'+str(e)[:120]
 
+def approval_signature(item, secret):
+    """Firma todos los campos del aviso menos la autorización y el estado local."""
+    payload={key:item.get(key) for key in
+        ('id','title','body','message','category','channels','publish_at','publishAt','type')}
+    msg=json.dumps(payload,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode('utf-8')
+    return hmac.new(secret.encode('utf-8'),msg,hashlib.sha256).hexdigest()
+
 def approved(item):
-    """Solo los registros con revisión explícita pueden salir del repositorio.
-    La identidad real del aprobador debe validarse mediante revisión de PR en GitHub.
+    """Fallar cerrado sin clave HMAC privada configurada en GitHub Secrets.
+    Una etiqueta JSON 'approved' por sí sola no autoriza la publicación.
     """
+    secret=os.getenv('LJR_OFFICIAL_NOTICE_APPROVAL_SECRET','')
     a=item.get('approval')
-    return (isinstance(a,dict) and a.get('status')=='approved'
-            and isinstance(a.get('by'),str) and bool(a['by'].strip())
-            and parse_dt(a.get('at')) is not None)
+    if len(secret)<32 or not isinstance(a,dict) or a.get('status')!='approved':
+        return False
+    if not isinstance(a.get('by'),str) or not a['by'].strip() or not parse_dt(a.get('at')):
+        return False
+    signature=str(a.get('signature') or '')
+    return len(signature)==64 and hmac.compare_digest(signature,approval_signature(item,secret))
 
 def main():
     now=datetime.now(timezone.utc)
