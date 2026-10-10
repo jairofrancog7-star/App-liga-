@@ -79,32 +79,54 @@ async function audit(req,action,target,detail={}){
 const cron=(req,res,next)=>secretEquals(req.get('X-Job-Token'),E.JOB_NOTIFY_TOKEN)?next():res.status(401).json({error:'Token del programador incorrecto'});
 const hash=x=>crypto.createHash('sha256').update(x).digest('hex');
 const phone=x=>/^\+[1-9]\d{7,14}$/.test(String(x||''))?x:null;
-const category=x=>['Todas','Primera','Intermedia','Segunda','Veteranos 35+','Veteranos 50+'].includes(x)?x:'Todas';
+const catAliases={all:'Todas','3':'Primera','5':'Intermedia','4':'Segunda','2':'Veteranos 35+','1':'Veteranos 50+'};
+const catOptions=['Todas','Primera','Intermedia','Segunda','Veteranos 35+','Veteranos 50+'];
+const category=x=>catOptions.includes(x)?x:(catAliases[String(x||'')]||'Todas');
+const noticeTypes=['general','suspension','cancha','horario','jornada','partido','resultados','junta','registro','clima'];
 const text=(x,max)=>String(x||'').trim().slice(0,max);
 const isPush=s=>s&&typeof s.endpoint==='string'&&s.endpoint.startsWith('https://')&&s.endpoint.length<2100&&
  s.keys&&typeof s.keys.auth==='string'&&s.keys.auth.length<500&&typeof s.keys.p256dh==='string'&&s.keys.p256dh.length<500;
-const matchCat=(cat,from)=>from==='Todas'||cat==='Todas'||cat===from;
+const matchCat=(cat,from)=>from==='Todas'||category(cat)==='Todas'||category(cat)===category(from);
+function matchPreferences(rec,job){
+ const prefs=rec.preferences||{};
+ if(!matchCat(rec.category,job.category))return false;
+ const types=Array.isArray(prefs.types)?prefs.types:[];
+ if(types.length&&job.notice_type&&job.notice_type!=='general'&&!types.includes(job.notice_type))return false;
+ const targetTeam=String(job.team||'').trim().toLocaleLowerCase('es-MX'),
+       targetField=String(job.field||'').trim().toLocaleLowerCase('es-MX');
+ if(prefs.team&&targetTeam&&String(prefs.team).trim().toLocaleLowerCase('es-MX')!==targetTeam)return false;
+ if(prefs.field&&targetField&&String(prefs.field).trim().toLocaleLowerCase('es-MX')!==targetField)return false;
+ return true;
+}
 const apiError=(err,res)=>{console.error('Notifier error',err?.message);if(!res.headersSent)res.status(500).json({error:'No se pudo completar la operación'})};
 app.get('/health',(_q,res)=>res.json({ok:true,service:'Liga Juventino Rosas · notificaciones'}));
+app.get('/api/push/public-key',(_q,res)=>vapidReady?res.json({publicKey:E.VAPID_PUBLIC_KEY}):res.status(503).json({error:'Push sin configurar'}));
 app.get('/config',(_q,res)=>res.json({pushEnabled:vapidReady,twilioEnabled:Boolean(smsReady||whatsappReady),
  vapidPublicKey:vapidReady?E.VAPID_PUBLIC_KEY:null,smsEnabled:smsReady,whatsappEnabled:whatsappReady,channels:['push','sms','whatsapp']}));
 const lastRequest=new Map();
 function throttle(req,res,next){const key=hash(req.ip||'unknown'),now=Date.now(),value=lastRequest.get(key)||[];
  const recent=value.filter(t=>now-t<60000);if(recent.length>=12)return res.status(429).json({error:'Demasiadas solicitudes; espera un minuto'});
  recent.push(now);lastRequest.set(key,recent);if(lastRequest.size>8000)lastRequest.clear();next();}
-app.post('/push/subscribe',throttle,async(req,res)=>{
+async function subscribe(req,res){
  if(!vapidReady)return res.status(503).json({error:'Push todavía no configurado'});
- const subscription=req.body?.subscription,cat=category(req.body?.category);
+ const subscription=req.body?.subscription,pref=req.body?.preferences||{};
+ const cat=category(pref.category??req.body?.category);
+ const types=Array.isArray(pref.types)?pref.types.filter(t=>noticeTypes.includes(t)).slice(0,12):[];
+ const preferences={category:cat,team:text(pref.team,90),field:text(pref.field,100),types};
  if(!isPush(subscription))return res.status(400).json({error:'Suscripción no válida'});
- try{await pool.query(`INSERT INTO ljr_push_subscriptions(endpoint,subscription,category) VALUES($1,$2,$3)
- ON CONFLICT(endpoint) DO UPDATE SET subscription=EXCLUDED.subscription, category=EXCLUDED.category`,
- [subscription.endpoint,subscription,cat]);res.status(201).json({ok:true});
+ try{await pool.query(`INSERT INTO ljr_push_subscriptions(endpoint,subscription,category,preferences) VALUES($1,$2,$3,$4)
+ ON CONFLICT(endpoint) DO UPDATE SET subscription=EXCLUDED.subscription, category=EXCLUDED.category,preferences=EXCLUDED.preferences`,
+ [subscription.endpoint,subscription,cat,JSON.stringify(preferences)]);res.status(201).json({ok:true,active:true});
  }catch(e){apiError(e,res)}
-});
-app.post('/push/unsubscribe',throttle,async(req,res)=>{
- const endpoint=req.body?.endpoint;if(typeof endpoint!=='string'||endpoint.length>2100)return res.status(400).json({error:'Endpoint inválido'});
+}
+app.post('/push/subscribe',throttle,subscribe);
+app.post('/api/push/subscribe',throttle,subscribe);
+async function unsubscribe(req,res){
+ const endpoint=req.body?.endpoint||req.body?.subscription?.endpoint;if(typeof endpoint!=='string'||endpoint.length>2100)return res.status(400).json({error:'Endpoint inválido'});
  try{await pool.query('DELETE FROM ljr_push_subscriptions WHERE endpoint=$1',[endpoint]);res.json({ok:true})}catch(e){apiError(e,res)}
-});
+}
+app.post('/push/unsubscribe',throttle,unsubscribe);
+app.post('/api/push/unsubscribe',throttle,unsubscribe);
 app.post('/admin/recipients',admin,requirePermission('recipients:write'),async(req,res)=>{
  const {number,channel,consentAt,consentSource,category:cat}=req.body||{};
  if(!phone(number)||!['sms','whatsapp'].includes(channel)||!consentSource||!consentAt||!Number.isFinite(Date.parse(consentAt)))
@@ -122,18 +144,18 @@ app.post('/admin/optout',admin,requirePermission('recipients:write'),async(req,r
  try{await pool.query('UPDATE ljr_message_consent SET opted_out_at=now() WHERE phone=$1 AND channel=$2',[number,channel]);await audit(req,'recipients:optout',hash(number),{channel});res.json({ok:true})}catch(e){apiError(e,res)}
 });
 app.post('/admin/notices',admin,requirePermission('notices:write'),async(req,res)=>{
- const {title,body,sendAt,category:cat,channels}=req.body||{};
+ const {title,body,sendAt,category:cat,channels,type='general',team='',field=''}=req.body||{};
  const allowed=['app','push','sms','whatsapp'];const selected=Array.isArray(channels)?[...new Set(channels)]:[];
  const when=Date.parse(sendAt||'');
  if(!title||!body||title.length>120||body.length>700||!Number.isFinite(when)||when<Date.now()-120000||
- selected.length===0||selected.some(x=>!allowed.includes(x)))return res.status(400).json({error:'Aviso inválido; define título, mensaje, canales y hora futura'});
+ selected.length===0||selected.some(x=>!allowed.includes(x))||!noticeTypes.includes(type))return res.status(400).json({error:'Aviso inválido; define título, mensaje, canales, tipo y hora futura'});
  if(selected.includes('push')&&!vapidReady||selected.includes('sms')&&!smsReady||
  selected.includes('whatsapp')&&!whatsappReady)
  return res.status(503).json({error:'Hay canales sin configurar'});
  const id=crypto.randomUUID();
  try{
- await pool.query('INSERT INTO ljr_scheduled_notices(id,title,body,category,channels,send_at,created_by) VALUES($1,$2,$3,$4,$5,$6,$7)',
- [id,text(title,120),text(body,700),category(cat),selected,new Date(when).toISOString(),req.actor.subject]);
+ await pool.query('INSERT INTO ljr_scheduled_notices(id,title,body,category,channels,send_at,created_by,notice_type,team,field) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)',
+ [id,text(title,120),text(body,700),category(cat),selected,new Date(when).toISOString(),req.actor.subject,type,text(team,90),text(field,100)]);
  await audit(req,'notices:create',id,{category:category(cat),channels:selected});
  res.status(201).json({ok:true,id,sendAt:new Date(when).toISOString(),status:'queued',revision:1});
  }catch(e){apiError(e,res)}
@@ -161,24 +183,24 @@ app.get('/admin/audit',admin,requirePermission('audit:read'),async(req,res)=>{
  catch(e){apiError(e,res)}
 });
 app.get('/admin/notices',admin,requirePermission('notices:read'),async(req,res)=>{
- try{const r=await pool.query(`SELECT id,title,body,category,channels,send_at,status,revision,created_by,created_at,published_at
+ try{const r=await pool.query(`SELECT id,title,body,category,channels,send_at,status,revision,created_by,created_at,published_at,notice_type,team,field
  FROM ljr_scheduled_notices ORDER BY created_at DESC LIMIT 120`);res.json({items:r.rows})}
  catch(e){apiError(e,res)}
 });
 app.put('/admin/notices/:id',admin,requirePermission('notices:write'),async(req,res)=>{
- const {title,body,sendAt,category:cat,channels,revision}=req.body||{};
+ const {title,body,sendAt,category:cat,channels,revision,type='general',team='',field=''}=req.body||{};
  const allowed=['app','push','sms','whatsapp'],when=Date.parse(sendAt||'');
  const selected=Array.isArray(channels)?[...new Set(channels)]:[];
  if(!Number.isInteger(revision)||revision<1||!title||!body||title.length>120||body.length>700||
- !Number.isFinite(when)||when<Date.now()||!selected.length||selected.some(x=>!allowed.includes(x)))
+ !Number.isFinite(when)||when<Date.now()||!selected.length||selected.some(x=>!allowed.includes(x))||!noticeTypes.includes(type))
  return res.status(400).json({error:'Datos de edición no válidos'});
  if((selected.includes('push')&&!vapidReady)||(selected.includes('sms')&&!smsReady)||(selected.includes('whatsapp')&&!whatsappReady))
  return res.status(503).json({error:'Hay canales aún no configurados'});
  try{
   const r=await pool.query(`UPDATE ljr_scheduled_notices
- SET title=$2,body=$3,send_at=$4,category=$5,channels=$6,revision=revision+1
+ SET title=$2,body=$3,send_at=$4,category=$5,channels=$6,revision=revision+1,notice_type=$8,team=$9,field=$10
  WHERE id=$1 AND revision=$7 AND status='queued' RETURNING revision`,
- [req.params.id,text(title,120),text(body,700),new Date(when).toISOString(),category(cat),selected,revision]);
+ [req.params.id,text(title,120),text(body,700),new Date(when).toISOString(),category(cat),selected,revision,type,text(team,90),text(field,100)]);
   if(!r.rowCount)return res.status(409).json({error:'El aviso cambió, se canceló o ya se publicó. Actualiza la lista.'});
   await audit(req,'notices:update',req.params.id,{category:category(cat),revision:r.rows[0].revision});
   res.json({ok:true,revision:r.rows[0].revision});
@@ -197,7 +219,7 @@ app.delete('/admin/notices/:id',admin,requirePermission('notices:write'),async(r
 app.get('/notices',async(req,res)=>{
  try{
   const cat=category(String(req.query.category||'Todas'));
-  const r=await pool.query(`SELECT id,title,body,category,channels,published_at
+  const r=await pool.query(`SELECT id,title,body,category,channels,published_at,notice_type,team,field
   FROM ljr_scheduled_notices WHERE status='done' AND 'app'=ANY(channels) AND published_at IS NOT NULL
   AND published_at>=now()-interval '30 days' AND (category=$1 OR category='Todas' OR $1='Todas')
   ORDER BY published_at DESC LIMIT 60`,[cat]);
@@ -245,16 +267,16 @@ app.post('/jobs/dispatch',cron,async(req,res)=>{
  ,processing_at=now() WHERE id IN(SELECT id FROM ljr_scheduled_notices
  WHERE (status='queued' OR (status='processing' AND processing_at<now()-interval '30 minutes'))
  AND send_at<=now() ORDER BY send_at LIMIT 10 FOR UPDATE SKIP LOCKED)
- RETURNING id,title,body,category,channels`);
+ RETURNING id,title,body,category,channels,notice_type,team,field`);
   let count=0;
   for(const job of jobs.rows){
    for(const channel of job.channels){
     if(channel==='app')continue;
     const sql=channel==='push'
-     ?'SELECT endpoint,subscription,category FROM ljr_push_subscriptions ORDER BY created_at LIMIT 1000'
+     ?'SELECT endpoint,subscription,category,preferences FROM ljr_push_subscriptions ORDER BY created_at LIMIT 1000'
      :'SELECT phone,category FROM ljr_message_consent WHERE channel=$1 AND opted_out_at IS NULL ORDER BY phone LIMIT 1000';
     const result=await pool.query(sql,channel==='push'?[]:[channel]);
-    for(const rec of result.rows){if(matchCat(rec.category,job.category)){await deliver(job,channel,rec);count++}}
+    for(const rec of result.rows){if(channel==='push'?matchPreferences(rec,job):matchCat(rec.category,job.category)){await deliver(job,channel,rec);count++}}
    }
    await pool.query("UPDATE ljr_scheduled_notices SET status='done',published_at=COALESCE(published_at,now()) WHERE id=$1",[job.id]);
   }
