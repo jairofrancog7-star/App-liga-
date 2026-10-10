@@ -121,9 +121,13 @@ html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-qa li
 html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-actions button:focus-visible{
  outline:2px solid #9cc6ff;outline-offset:2px;
 }
+/* Pantallas compactas: dos acciones arriba y Copiar revisión a ancho completo.
+   Evita dejar un botón aislado de media anchura a 360px. */
 @media(max-width:365px){
  html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+ html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-actions button:last-child{grid-column:1 / -1}
 }
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-actions button{min-height:44px}
 @media(prefers-reduced-motion:reduce){
  html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-qa *{scroll-behavior:auto!important}
 }
