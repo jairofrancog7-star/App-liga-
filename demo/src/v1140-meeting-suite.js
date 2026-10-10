@@ -121,9 +121,9 @@ function alarmCalendar(ctx){
  const x=clock(ctx);if(!x)return ctx.msg('Introduce una fecha válida de junta.');
  const hours=Number($('[data-mh-advanced="hours"]',ctx.host)?.value)||24;
  const weekly=!!$('[data-mh-advanced="weekly"]',ctx.host)?.checked;
- const endLocal=new Date(x.d+'T'+x.t+':00-06:00');endLocal.setUTCHours(endLocal.getUTCHours()+1);
+ const endDate=x.end.toLocaleDateString('sv-SE',{timeZone:'America/Mexico_City'});
  const localEnd=x.end.toLocaleString('sv-SE',{timeZone:'America/Mexico_City',hour:'2-digit',minute:'2-digit',hour12:false}).replace(':','');
- const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Liga Juventino Rosas//Junta Semanal//ES','CALSCALE:GREGORIAN','BEGIN:VEVENT','UID:ljr-junta-'+x.d+'@juventinorosasliga.local','DTSTAMP:'+stamp(),'DTSTART;TZID=America/Mexico_City:'+x.local(x.d),'DTEND;TZID=America/Mexico_City:'+x.d.replace(/-/g,'')+'T'+localEnd+'00','SUMMARY:Junta de la Liga Juventino Rosas','LOCATION:'+icsEsc(x.m.place),'DESCRIPTION:'+icsEsc(x.m.agenda)];
+ const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Liga Juventino Rosas//Junta Semanal//ES','CALSCALE:GREGORIAN','BEGIN:VEVENT','UID:ljr-junta-'+x.d+'@juventinorosasliga.local','DTSTAMP:'+stamp(),'DTSTART;TZID=America/Mexico_City:'+x.local(x.d),'DTEND;TZID=America/Mexico_City:'+endDate.replace(/-/g,'')+'T'+localEnd+'00','SUMMARY:Junta de la Liga Juventino Rosas','LOCATION:'+icsEsc(x.m.place),'DESCRIPTION:'+icsEsc(x.m.agenda)];
  if(weekly)lines.push('RRULE:FREQ=WEEKLY;BYDAY=TU');
  lines.push('BEGIN:VALARM','TRIGGER:-PT'+hours+'H','ACTION:DISPLAY','DESCRIPTION:Recordatorio de junta de la Liga','END:VALARM','END:VEVENT','END:VCALENDAR');
  ctx.download('junta-recordatorios-'+x.d+'.ics',lines.join('\r\n'),'text/calendar;charset=utf-8');
@@ -193,6 +193,7 @@ async function restore(file,ctx){
  }catch(e){ctx.msg('No se importó el respaldo: '+e.message)}
 }
 function onChange(e,ctx){
+ if(!window.LJR_MEDIA?.admin){ctx.msg('Inicia sesión de administración.');return true}
  if(e.target?.matches?.('[data-mh-file="evidence"]')){addFile(e.target.files?.[0],ctx);return true}
  if(e.target?.matches?.('[data-mh-file="restore"]')){restore(e.target.files?.[0],ctx);return true}
  return false;
