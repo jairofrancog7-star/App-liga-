@@ -384,26 +384,29 @@ function renderFeed(){
   else host.insertAdjacentHTML('afterbegin',markup);
   const root=host.querySelector('[data-v840-feed]');
   if(root)root.dataset.v840Signature=signature;
-  root?.querySelector('[data-v840-permission]')?.addEventListener('click',async e=>{
+  root?.querySelector('[data-v840-permission]')?.addEventListener('click',async event=>{
+    const button=event.currentTarget;
     if(!Capacitor.isNativePlatform()&&'Notification'in window&&Notification.permission==='denied'){
       const message=root.querySelector('.v840-permission-status');
       if(message)message.textContent='En Chrome: icono junto a la dirección → Permisos → Notificaciones → Permitir.';
       return;
     }
-    e.currentTarget.disabled=true;
+    button.disabled=true;
     const ok=await requestPermission();
-    e.currentTarget.disabled=false;
+    if(button.isConnected)button.disabled=false;
     if(ok){
       const latest=inbox()[0];
       if(latest)await systemNotify({...latest,id:'test-'+Date.now(),type:'test',status:'Avisos activados'});
     }
   });
-  root?.querySelector('[data-v851-rich-test]')?.addEventListener('click',async e=>{
-    e.currentTarget.disabled=true;
+  root?.querySelector('[data-v851-rich-test]')?.addEventListener('click',async event=>{
+    const button=event.currentTarget;
+    button.disabled=true;
     const ok=await sendSampleRich();
-    e.currentTarget.disabled=false;
-    e.currentTarget.textContent=ok?'Aviso de prueba enviado':'Revisa los permisos';
-    setTimeout(()=>{if(e.currentTarget)e.currentTarget.textContent='Probar aviso con imagen'},1800);
+    if(!button.isConnected)return;
+    button.disabled=false;
+    button.textContent=ok?'Aviso de prueba enviado':'Revisa los permisos';
+    setTimeout(()=>{if(button.isConnected)button.textContent='Probar aviso'},1800);
   });
   root?.querySelectorAll('[data-v840-type]').forEach(b=>b.addEventListener('click',()=>{
     view.type=b.dataset.v840Type||'all';view.more=false;saveView();renderFeed();
