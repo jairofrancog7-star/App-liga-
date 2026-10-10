@@ -11,7 +11,7 @@ window.__LJR_MATCHDAY_PRO_1132__=true;
   if(document.querySelector('link[href*="'+file+'"]'))continue;
   const link=document.createElement('link');
   link.rel='stylesheet';
-  link.href='./src/'+file+'?v=20261010-v1167';
+  link.href='./src/'+file+'?v=20261010-v1180';
   link.dataset.md1167Style='';
   document.head.appendChild(link);
  }
@@ -57,50 +57,23 @@ items.push({id,catId,category:String(cat.name||'Categoría'),round:String(r?.[1]
 }}
 return items.sort((a,b)=>a.time-b.time||a.id.localeCompare(b.id));
 }
-// V1167: usar los PNG oficiales ya publicados en el repositorio hermano
-// que utiliza Equipos / Siguiendo. No convertir fondos, no aplicar filtros ni canvas.
-const OFFICIAL_CREST_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/';
-const OFFICIAL_CREST_SLUGS=new Set('abejas aguilares aldama-fc america atl-galeana barza boavista capibaras celticos cuenda dep-la-luz dep-maravillas dep-nopalero dep-zapata dynamo franco-fc franco-tavera-jr galeana hermanos herreras-fc huracan juventus la-canchita-deportes la-cuadrilla la-esperanza la-huerta la-trinidad leyendas-fc linces lobos-cdg malvinas manchester mazacotes-fc napoli osasuna pachangas-fc populares promesas-fc psv san-antonio-fc san-antonio-jrs san-jose-fc san-jose-jrs san-juan-fc san-julian tapatio tavera-fc terricolas toros-de-cuenda'.split(' '));
-const OFFICIAL_CREST_ALIASES={
- 'herrera-fc':'herreras-fc',
- 'herreras':'herreras-fc',
- 'san-jose':'san-jose-fc',
- 'san-jose-jr':'san-jose-jrs',
- 'san-antonio':'san-antonio-fc',
- 'mazacotes':'mazacotes-fc',
- 'promesas':'promesas-fc',
- 'tavera':'tavera-fc',
- 'pachangas':'pachangas-fc',
- 'dep-hermanos':'hermanos',
- 'atl-galeana-fc':'atl-galeana',
- 'atletico-galeana':'atl-galeana',
- 'la-canchita':'la-canchita-deportes',
- 'franco':'franco-fc',
- 'san-julian-fc':'san-julian'
-};
-function officialCrest(name){
- const key=norm(name).normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-   .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
- const candidates=[OFFICIAL_CREST_ALIASES[key],key,
-  key.replace(/-f-c$/,'-fc'),key.replace(/-fc$/,''),
-  key+'-fc'];
- const found=candidates.find(x=>x&&OFFICIAL_CREST_SLUGS.has(x));
- return found?OFFICIAL_CREST_ROOT+found+'.png':'';
-}
-function legacyLogo(name){
+// V1180 — usar exactamente el registro que alimenta Equipos y Siguiendo.
+// No imponer el antiguo catálogo fijo: el registro conoce escudos, alias y ajustes.
+function logo(name){
  let src='';
- try{src=window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||window.V66_OFFICIAL_DIRECTORY?.logoFor?.(name)||'';}catch(_){}
+ try{src=window.LJR_TEAM_LOGOS?.get?.(name)||'';}catch(_){}
+ if(!src)try{src=window.LJR_SEASON_LOGOS?.get?.(name)||'';}catch(_){}
+ if(!src)try{src=window.LJR_OFFICIAL_API?.getLogo?.(name)||'';}catch(_){}
+ if(!src)try{src=window.V66_OFFICIAL_DIRECTORY?.logoFor?.(name)||'';}catch(_){}
  src=String(src||'').trim();
  return /^(https?:\/\/|data:image\/|\.?\.?\/|assets\/)/i.test(src)?src:'';
 }
-function logo(name){return officialCrest(name)||legacyLogo(name);}
 function crest(name){
  const initials=String(name).split(/\s+/).filter(Boolean).slice(0,2).map(v=>v[0]).join('').toUpperCase();
- const original=officialCrest(name);
- const src=original||legacyLogo(name);
- const backup=original?legacyLogo(name):'';
- return '<span class="md1132-crest"><span class="md1132-crest-fallback">'+esc(initials||'EQ')+'</span>'+
- (src?'<img src="'+esc(src)+'" data-md-fallback-src="'+esc(backup)+'" alt="Escudo de '+esc(name)+'" loading="lazy" decoding="async">':'')+'</span>';
+ const src=logo(name);
+ // Missing image -> initials only; never fall back to an outdated crest.
+ return '<span class="md1132-crest" data-md1132-team="'+esc(name)+'"><span class="md1132-crest-fallback">'+esc(initials||'EQ')+'</span>'+
+  (src?'<img src="'+esc(src)+'" alt="Escudo de '+esc(name)+'" loading="lazy" decoding="async">':'')+'</span>';
 }
 function status(g){
 if(!g)return {name:'Sin partidos',type:'pending'};
@@ -144,11 +117,7 @@ const rows=(future.length?future:shown.slice(-8)).slice(0,12);
 list.innerHTML=rows.length?rows.map(x=>'<button type="button" class="md1132-game '+(x.id===current?'selected':'')+'" data-md-select="'+esc(x.id)+'" aria-pressed="'+String(x.id===current)+'"><span class="md1132-game-main">'+crest(x.home)+'<span class="md1132-game-copy"><b>'+esc(x.home)+' vs '+esc(x.away)+'</b><small>'+esc(x.date+' · '+(x.venue||'Campo pendiente'))+'</small><em class="'+status(x).type+'">'+esc(status(x).name)+'</em></span>'+crest(x.away)+'</span></button>').join(''):'<p class="md1132-empty">Sin encuentros oficiales para esta categoría.</p>';
 host.classList.add('md1132-ready');
 host.querySelectorAll('.md1132-crest img').forEach(img=>{
- img.addEventListener('error',()=>{
-  const fallback=img.dataset.mdFallbackSrc||'';
-  if(fallback&&fallback!==img.src){img.dataset.mdFallbackSrc='';img.src=fallback;return;}
-  img.remove();
- });
+ img.addEventListener('error',()=>{img.remove();},{once:true});
 });
 tick();
 }
@@ -228,7 +197,7 @@ window.addEventListener('ljr:official-data',()=>activate(true));
 function start(){
 const screen=$('#screen');
 if(screen)new MutationObserver(()=>activate()).observe(screen,{childList:true,subtree:true});
-activate();setTimeout(()=>activate(true),400);setTimeout(()=>activate(true),1300);
+activate();setTimeout(()=>activate(true),400);setTimeout(()=>activate(true),1300);setTimeout(()=>activate(true),3000);
 setInterval(tick,1000);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
