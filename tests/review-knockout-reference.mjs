@@ -16,8 +16,8 @@ try{
  for(const [name,width,height] of [['mobile',390,844],['small-mobile',320,740],['desktop',1280,900]]){
   const page=await browser.newPage({viewport:{width,height}});
   await page.goto('http://127.0.0.1:4173/#/simulator',{waitUntil:'domcontentloaded'});
-  await page.locator('[data-v501-view="bracket"]').waitFor();
-  await page.locator('[data-v501-view="bracket"]').click();
+  await page.locator('.v501-tabs [data-v501-view="bracket"]').waitFor();
+  await page.locator('.v501-tabs [data-v501-view="bracket"]').click();
   await page.locator('.ljr-knockout').waitFor();
   const root=page.locator('.ljr-knockout');
   for(const stage of ['playoff','octavos','cuartos','semifinal','final']){
@@ -53,4 +53,10 @@ try{
  }
  writeFileSync(`${folder}/report.json`,JSON.stringify(report,null,2));
  console.log('Verified both brackets and score controls at 320, 390 and 1280 pixels.');
+}catch(error){
+ for(const [index,page] of (browser?.contexts().flatMap(c=>c.pages())||[]).entries()){
+  await page.screenshot({path:`${folder}/failure-${index}.png`}).catch(()=>{});
+  writeFileSync(`${folder}/failure-${index}.html`,await page.content());
+ }
+ throw error;
 }finally{await browser?.close();server.kill();}
