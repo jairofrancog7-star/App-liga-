@@ -1,19 +1,25 @@
-/* V1111 — Máximo goleador: rostros completos y foto original siempre centrada.
-   Solo apunta a tarjetas de goleador; no modifica credenciales, logos ni rankings. */
+/* V1211 — Rostros completos en tarjetas de Máximo goleador; todas las categorías.
+   La foto original se ve entera; laterales sobrantes usan el fondo difuminado.
+   No cambia tamaños, información, logos ni otras fotos de la aplicación. */
 #screen .v391-feature-photo,
-#screen .v390-scorer-photo {
+#screen .v390-scorer-photo{
   position:relative!important;
   overflow:hidden!important;
   isolation:isolate;
   background-color:#101b72!important;
 }
+/* El fondo de versiones antiguas usaba cover y podía mostrar una cara gigante. */
+html body[data-app-route="scorers"] #screen .v391-feature-photo.ljr-v1211-face-present,
+html body[data-app-route="scorers"] #screen .v390-scorer-photo.ljr-v1211-face-present{
+  background-image:none!important;
+}
 #screen .v391-feature-photo::before,
-#screen .v390-scorer-photo::before {
+#screen .v390-scorer-photo::before{
   content:"";
   position:absolute;
   inset:-18px;
   z-index:0;
-  background-image:var(--v1102-scorer-image, none);
+  background-image:var(--v1102-scorer-image,none);
   background-repeat:no-repeat;
   background-position:center center;
   background-size:cover;
@@ -22,7 +28,7 @@
   pointer-events:none;
 }
 html body #screen .v391-feature-photo > img:is(.v576-scorer-hero-photo,.v576-hero-player-photo,.v971-hero-image),
-html body #screen .v390-scorer-photo > img:is(.v576-scorer-hero-photo,.v576-hero-player-photo,.v971-hero-image) {
+html body #screen .v390-scorer-photo > img:is(.v576-scorer-hero-photo,.v576-hero-player-photo,.v971-hero-image){
   position:absolute!important;
   inset:0!important;
   left:0!important;
@@ -41,6 +47,7 @@ html body #screen .v390-scorer-photo > img:is(.v576-scorer-hero-photo,.v576-hero
   object-fit:contain!important;
   object-position:center center!important;
   transform:none!important;
+  scale:1!important;
   filter:none!important;
   clip-path:none!important;
   border:0!important;
@@ -49,9 +56,8 @@ html body #screen .v390-scorer-photo > img:is(.v576-scorer-hero-photo,.v576-hero
   padding:0!important;
   z-index:1!important;
 }
-/* Protect labels and play affordances from the softly blurred backdrop. */
-html body #screen .v391-feature-photo::after {z-index:2!important;pointer-events:none!important}
+html body #screen .v391-feature-photo::after{z-index:2!important;pointer-events:none!important}
 html body #screen .v391-feature-photo > .v391-feature-kicker,
-html body #screen .v390-scorer-photo > .v390-scorer-label {z-index:3!important}
+html body #screen .v390-scorer-photo > .v390-scorer-label{z-index:3!important}
 html body #screen .v391-feature-photo > .v391-feature-media,
-html body #screen .v390-scorer-photo > .v390-scorer-media {z-index:4!important}
+html body #screen .v390-scorer-photo > .v390-scorer-media{z-index:4!important}
