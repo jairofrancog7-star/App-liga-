@@ -19,6 +19,11 @@
     'filter':'none','clip-path':'none',
     'border':'0','border-radius':'0','margin':'0','padding':'0','z-index':'1'
   };
+  // Normalize CSSOM values (for example 0 becomes 0px) before comparing styles.
+  // Otherwise an image's style observer could continuously rewrite the same values.
+  const probe=document.createElement('img');
+  for(const [prop,value] of Object.entries(safeStyles))probe.style.setProperty(prop,value,'important');
+  const normalizedStyles=Object.fromEntries(Object.keys(safeStyles).map(prop=>[prop,probe.style.getPropertyValue(prop)]));
   let pending=false;
 
   function enforce(img){
@@ -26,7 +31,7 @@
     // Reapply only when a value actually differs, avoiding observer loops.
     if(img.hasAttribute('data-ljr-hero-face-crop'))img.removeAttribute('data-ljr-hero-face-crop');
     for(const [prop,value] of Object.entries(safeStyles)){
-      if(img.style.getPropertyValue(prop)!==value||img.style.getPropertyPriority(prop)!=='important'){
+      if(img.style.getPropertyValue(prop)!==normalizedStyles[prop]||img.style.getPropertyPriority(prop)!=='important'){
         img.style.setProperty(prop,value,'important');
       }
     }
