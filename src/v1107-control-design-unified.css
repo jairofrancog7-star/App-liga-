@@ -466,7 +466,7 @@ html body > .v105-modal.v1126-delegate-modal :is(.v1126-toolbar input,.v1126-too
   box-sizing:border-box!important;max-width:100%;width:100%;min-width:0;
   min-height:39px;padding:8px 10px;border-radius:10px;
   border:1px solid #658ae575;background:#0d226f;color:#f7faff;
-  font:500 12px/1.4 inherit;outline:none;
+  font-size:12px;font-weight:500;line-height:1.4;font-family:inherit;outline:none;
 }
 html body > .v105-modal.v1126-delegate-modal :is(input,select,textarea):focus-visible{
   outline:2px solid #5beaf9!important;outline-offset:1px;
@@ -573,7 +573,7 @@ html body > .v105-modal.v1126-delegate-modal .v1126-card-actions :is(a,button,sp
   display:flex;align-items:center;justify-content:center;min-width:0;min-height:34px;
   padding:6px 4px!important;border-radius:8px!important;border:1px solid #7293d65b!important;
   background:#173785!important;color:#eef8ff!important;text-decoration:none;
-  font:750 10px/1.2 inherit!important;text-align:center;cursor:pointer;
+  font-size:10px!important;font-weight:750!important;line-height:1.2!important;font-family:inherit!important;text-align:center;cursor:pointer;
 }
 html body > .v105-modal.v1126-delegate-modal .v1126-card-actions .v1126-delete{
   color:#ffd7dc!important;border-color:#df828055!important
