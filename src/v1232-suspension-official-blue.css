@@ -1,0 +1,129 @@
+/* V1232 · Azul oficial LJR para Aviso de suspensión.
+   Hereda la familia visual del CMS: #060c46, #0b1c66, #123583, #205cba.
+   No cambia ni cabecera global ni el resto de rutas. */
+html body[data-app-route="suspensionTool"] #screen .v425-suspension{
+ --susp-night:#060c46;--susp-base:#0b1c66;--susp-card:#123583;
+ --susp-button:#17428f;--susp-hover:#205cba;--susp-line:rgba(99,150,242,.48);
+ --susp-ink:#f4f8ff;--susp-muted:#bed2f5;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension :is(.v425-panel,.v425-summary,.v1062-writer,details.v1066-automation,details.v1074-flow){
+ box-sizing:border-box!important;
+ background-color:var(--susp-base)!important;
+ background-image:linear-gradient(165deg,#102e7c 0%,#0b2067 52%,#070f49 100%)!important;
+ border-color:var(--susp-line)!important;
+ color:var(--susp-ink)!important;
+ box-shadow:inset 0 1px 0 rgba(172,205,255,.07)!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension :is(.v1074-content,.v1074-group,.v1066-inner,.v1062-result,.v1062-heading){
+ border-color:rgba(102,153,239,.35)!important;
+ color:var(--susp-ink)!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1074-group{
+ background:linear-gradient(150deg,rgba(18,53,131,.8),rgba(8,26,82,.85))!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1074-flow .v1074-progress button.v1074-step{
+ min-height:39px!important;
+ background:#0b205f!important;border-color:#345aa4!important;
+ color:#cbdaf5!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1074-flow .v1074-progress button.v1074-step.is-done{
+ background:linear-gradient(145deg,#2056ad,#143981)!important;
+ color:#fff!important;border-color:#739fe8!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1074-flow .v1074-progress button.v1074-step.is-current{
+ border-color:#a2c7ff!important;box-shadow:inset 0 0 0 1px #739fe8!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension :is(.v1074-flow,.v1066-automation,.v1062-writer) button:not(:disabled),
+html body[data-app-route="suspensionTool"] #screen .v425-suspension :is(button,a).v1058-action-btn:not(:disabled){
+ background:linear-gradient(145deg,#17428f 0%,#102d74 100%)!important;
+ border-color:rgba(107,158,239,.53)!important;
+ color:#f4f8ff!important;
+ text-shadow:none!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension :is(.v1074-flow,.v1066-automation,.v1062-writer) button:not(:disabled):active,
+html body[data-app-route="suspensionTool"] #screen .v425-suspension :is(button,a).v1058-action-btn:not(:disabled):active{
+ background:#205cba!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension :is(.v1074-flow,.v1066-automation,.v1062-writer) :is(input:not([type=checkbox]),select,textarea){
+ background:#0b205f!important;color:#fff!important;
+ border-color:#507cc9!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension :is(.v1074-group p,.v1074-disclaimer,.v1062-heading small,.v1074-flow summary small){
+ color:var(--susp-muted)!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension :is(.v1074-group>b,.v1062-heading b,.v1074-flow .v1074-mark){
+ color:#cce1ff!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1074-team{
+ background:rgba(11,32,95,.86)!important;
+ border-color:rgba(103,151,227,.4)!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1074-mark{
+ background:#17428f!important;border-color:#739fe8!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1074-alert{
+ background:#102f76!important;border-color:#5d89d8!important;color:#f2f8ff!important;
+}
+/* Diagnostico local compacto, sin introducir otro tono de azul. */
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-qa{
+ box-sizing:border-box;display:grid;gap:9px;min-width:0;width:100%;
+ padding:11px;border-radius:11px;border:1px solid rgba(105,153,233,.43);
+ background:linear-gradient(158deg,#10307b,#0a1d5d);color:#f4f8ff;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-head{
+ display:flex;align-items:center;gap:9px;min-width:0;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-head>span{
+ display:grid;place-items:center;flex:0 0 29px;width:29px;height:29px;
+ border:1px solid #739fe8;border-radius:9px;color:#cde1ff;background:#17428f;font-size:17px;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-head>div{
+ display:grid;gap:3px;min-width:0;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-head strong{
+ color:#fff;font:800 12px/1.25 Inter,Roboto,Arial,sans-serif;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-head small,
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-foot{
+ color:#c2d6f6;font:550 10px/1.35 Inter,Roboto,Arial,sans-serif;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-qa [data-v1232-status]{
+ margin:0;color:#f3f8ff;font:700 11px/1.4 Inter,Roboto,Arial,sans-serif;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-qa [data-v1232-tone="ready"]{color:#d3e7ff}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-qa [data-v1232-tone="error"]{color:#ffd7d7}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-actions{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-actions button{
+ box-sizing:border-box;min-width:0;min-height:38px;padding:7px 5px;
+ border-radius:9px;border:1px solid #739fe8;
+ background:linear-gradient(145deg,#17428f,#102d74);
+ color:#fff;font:700 10px/1.22 Inter,Roboto,Arial,sans-serif;white-space:normal;
+ overflow-wrap:anywhere;cursor:pointer;touch-action:manipulation;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-toggle{
+ display:flex;align-items:center;gap:8px;color:#d2e2fb;font:600 10px/1.32 Inter,Roboto,Arial,sans-serif;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-toggle input{
+ width:17px;height:17px;min-width:17px;accent-color:#477fe0;margin:0;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-qa ul{
+ display:grid;gap:5px;margin:0;padding:0;list-style:none;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-qa li{
+ margin:0;min-width:0;padding:6px 8px;border-radius:7px;
+ background:rgba(6,12,70,.44);border:1px solid rgba(116,164,242,.22);
+ color:#d5e4fa;font:550 10px/1.35 Inter,Roboto,Arial,sans-serif;overflow-wrap:anywhere;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-qa li[data-v1232-level="error"]{border-left:3px solid #f0abab}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-qa li[data-v1232-level="warning"]{border-left:3px solid #e9c37f}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-actions button:focus-visible{
+ outline:2px solid #9cc6ff;outline-offset:2px;
+}
+@media(max-width:365px){
+ html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(prefers-reduced-motion:reduce){
+ html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-qa *{scroll-behavior:auto!important}
+}
