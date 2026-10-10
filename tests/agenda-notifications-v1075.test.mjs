@@ -31,7 +31,7 @@ test('panel administrador y secretos exclusivos del backend',()=>{
 test('la configuración pública no guarda claves ni finge servidor activo',()=>{
  for(const path of ['data/notifications-client.json','public/data/notifications-client.json','demo/data/notifications-client.json']){
   const config=JSON.parse(read(path));
-  assert.equal(config.apiBaseUrl,'');
+  assert.ok(config.apiBaseUrl==='' || /^https:\/\/[a-z0-9.-]+\/?$/i.test(config.apiBaseUrl), 'La URL pública debe ser HTTPS, sin credenciales ni parámetros');
   assert.equal('TWILIO_API_SECRET' in config,false);
  }
 });
