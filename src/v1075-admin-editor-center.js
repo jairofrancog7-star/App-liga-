@@ -679,8 +679,9 @@ function openPages(){
    setTimeout(()=>{
     if(!admin())return;
     if(mode==='analyze'){showEditorAudit(item);return}
-    if(typeof window.LJR_CMS?.editPage==='function')window.LJR_CMS.editPage();
-    else media()?.modal?.('Edición visual','La herramienta de edición visual no está disponible en este momento.');
+    if(typeof window.LJR_EDITOR_STUDIO?.open==='function')window.LJR_EDITOR_STUDIO.open(item);
+    else if(typeof window.LJR_CMS?.editPage==='function')window.LJR_CMS.editPage();
+    else media()?.modal?.('Edición visual','El editor visual todavía no está disponible.');
    },850);
   }catch(err){status(modal,'No se puede abrir: '+(err?.message||'Error de sesión'))}
  }
