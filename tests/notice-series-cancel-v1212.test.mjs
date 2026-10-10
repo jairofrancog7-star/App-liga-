@@ -42,10 +42,19 @@ function fixture(admin=true){
 test('producción y demo tienen el mismo código, enlazado solo en avisos',()=>{
  assert.equal(original,read('demo/src/v1212-notice-series-cancel.js'));
  assert.doesNotThrow(()=>new Function(original));
+ const sourceCss=read('src/v1212-notice-series-cancel.css');
+ assert.match(sourceCss,/data-v1212-cancel/);
  for(const page of ['index.html','demo/index.html']){
    const html=read(page);
    assert.match(html,/v1212-notice-series-cancel\.js/);
-   assert.match(html,/v1212-notice-series-cancel\.css/);
+   if(page==='index.html'){
+     assert.match(html,/v1212-notice-series-cancel\.css/);
+   }else{
+     // Vite agrupa los estilos en assets/index-*.css para la demo publicada.
+     const cssHref=html.match(/href="\.\/assets\/([^"]+\.css)"/)?.[1];
+     assert.ok(cssHref,'La demo debe cargar los estilos empaquetados');
+     assert.doesNotThrow(()=>read('demo/assets/'+cssHref));
+   }
  }
 });
 test('cancelar serie exige administrador y confirmación',async()=>{
