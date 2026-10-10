@@ -15,10 +15,15 @@ test('calendar link, alarmas ICS y Web Push con consentimiento',()=>{
  assert.match(js,/pushManager\.subscribe/);
  assert.match(js,/push\/unsubscribe/);
 });
-test('panel administrador y secretos exclusivos del backend',()=>{
+test('panel administrador y secretos exclusivos del backend',async()=>{
  const js=read('src/v1075-agenda-admin-delivery.js');
  new Function(js);
- assert.match(js,/Authorization.*Bearer/);
+ assert.match(js,/await window\.LJR_MEDIA\.notifyAPI\(endpoint/);
+ const client=read('public/media-client.js');
+ const notifySource=client.slice(client.indexOf('async function notifyAPI('),client.indexOf('window.LJR_MEDIA='));
+ assert.match(notifySource,/headers\.set\('Authorization','Bearer '\+token\)/);
+ const publicNotify=new Function('admin','token',notifySource+';return notifyAPI')(null,'');
+ await assert.rejects(publicNotify('/admin/notices'),/Inicia sesión de administración/);
  assert.match(js,/consentAt/);
  assert.match(js,/window\.confirm/);
  assert.match(js,/admin\/notices/);
