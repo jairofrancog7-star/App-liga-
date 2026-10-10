@@ -57,3 +57,7 @@ html body > .v105-modal.v1126-sanction-modal .v1126-results>button:focus-visible
 html body > .v105-modal.v1126-sanction-modal .v1126-history button:focus-visible,
 html body > .v105-modal.v1126-sanction-modal .v1126-actions button:focus-visible{outline:2px solid #7aeefa;outline-offset:2px}
 @media(max-width:360px){html body > .v105-modal.v1126-sanction-modal .v1126-backup-actions{grid-template-columns:1fr}html body > .v105-modal.v1126-sanction-modal .v1126-history article{grid-template-columns:minmax(0,1fr) auto;row-gap:5px}}
+
+/* V1126.2 — recordatorio externo, sin datos de jugadores. */
+html body > .v105-modal.v1126-sanction-modal .v1126-calendar{min-height:44px;width:100%;padding:9px 12px;color:#fff;border-radius:11px;border:1px solid #69b5ee;background:linear-gradient(130deg,#1956aa,#164080);font-size:12px;font-weight:850;text-align:center}
+html body > .v105-modal.v1126-sanction-modal .v1126-calendar:focus-visible{outline:2px solid #7aeefa;outline-offset:2px}
