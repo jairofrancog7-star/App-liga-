@@ -104,9 +104,24 @@ function dataUriDownload(blob,name){
 const loadImage=src=>new Promise(resolve=>{
  if(!src)return resolve(null);
  const img=new Image();
+ let done=false;
+ const finish=value=>{if(done)return;done=true;clearTimeout(watchdog);img.onload=null;img.onerror=null;resolve(value)};
+ const watchdog=setTimeout(()=>finish(null),12000);
  if(!src.startsWith('data:'))img.crossOrigin='anonymous';
- img.onload=()=>resolve(img);img.onerror=()=>resolve(null);img.src=src;
+ img.onload=()=>finish(img);img.onerror=()=>finish(null);img.src=src;
 });
+// Diagnóstico de carga real, incluyendo compatibilidad CORS necesaria para exportar PNG.
+async function inspectMedia(r){
+ const sources={
+  liga:LEAGUE_CREST,categoria:categoryCrest(r.catId),equipo:crest(r.team),
+  jugador:r.photo||avatar({name:r.player,team:r.team,cat:r.catId})
+ };
+ const entries=await Promise.all(Object.entries(sources).map(async([name,src])=>{
+  const img=await loadImage(src);
+  return {name,ok:!!img,source:src||'',width:img?.naturalWidth||0,height:img?.naturalHeight||0};
+ }));
+ return entries;
+}
 function contain(ctx,img,x,y,w,h){
  if(!img)return;
  const k=Math.min(w/img.naturalWidth,h/img.naturalHeight);
@@ -288,7 +303,15 @@ function open(options={}){
   const btn=e.target.closest('button');if(!btn)return;
   if(btn.hasAttribute('data-mvp-team')){state.team=btn.dataset.mvpTeam;state.player='';state.filter='';state.notice='';render()}
   else if(btn.hasAttribute('data-mvp-save'))recordSave();
-  else if(btn.hasAttribute('data-mvp-preview')){state.view=state.view==='preview'?'':'preview';state.notice='';render()}
+  else if(btn.hasAttribute('data-mvp-preview')){
+   state.view=state.view==='preview'?'':'preview';state.notice='';render();
+   if(state.view==='preview'){
+    const d=draft();const report=await inspectMedia(d);
+    if(!modal.isConnected||state.view!=='preview'||state.player!==d.player||state.team!==d.team)return;
+    const missing=report.filter(x=>!x.ok).map(x=>({liga:'logo de Liga',categoria:'logo de categoría',equipo:'logo de equipo',jugador:'foto del jugador'}[x.name]));
+    setNotice(missing.length?'Revisar imágenes: falta cargar '+missing.join(', ')+'. Comprueba la conexión o la foto registrada.':'✓ Comprobación completada: fotografía y los tres logos cargan para el PNG.');
+   }
+  }
   else if(btn.hasAttribute('data-mvp-view')){state.view=state.view===btn.dataset.mvpView?'':btn.dataset.mvpView;state.notice='';render()}
   else if(btn.hasAttribute('data-mvp-png')){try{dataUriDownload(await png(draft()),'MVP-'+safeFile(state.player)+'.png');setNotice('Imagen PNG descargada.')}catch(_){setNotice('No se pudo descargar la imagen.')}}
   else if(btn.hasAttribute('data-mvp-share'))await share();
@@ -346,5 +369,5 @@ function open(options={}){
  modal.addEventListener('keydown',e=>{if(e.key==='Escape')modal.remove()});
  render();$('.v1126-x',modal)?.focus();return modal;
 }
-window.LJR_MOTM_STUDIO={open,records:allRecords,fixtureKey:m=>m?.key||''};
+window.LJR_MOTM_STUDIO={open,records:allRecords,fixtureKey:m=>m?.key||'',inspectMedia};
 })();
