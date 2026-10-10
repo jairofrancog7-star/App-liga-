@@ -17,7 +17,7 @@ test('V1310 cubre todas las ventanas administrativas sin tocar el backend',()=>{
   '.ljr-admin-friendly','.ljr-admin-studio','.ljr-editor-dialog','.v1081-dialog'
  ])assert.ok(css.includes(cls),'Falta '+cls);
  assert.match(css,/#[0-9a-f]{6}/i);
- assert.match(css,/--ljr1310-bg:#091849/);
+ assert.match(css,/--ljr1310-bg:#071338/);
  assert.match(css,/\.ljr-review-filters/);
  assert.match(css,/\.ljr-admin-tile-icon/);
  assert.match(css,/input\[type="file"\]::file-selector-button/);
