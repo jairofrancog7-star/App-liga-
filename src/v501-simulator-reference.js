@@ -587,7 +587,7 @@ function v515InitSheet(){
 }
 function v515SheetPointerDown(e){
  if(route()!=='simulator'||!(e.target instanceof Element))return;
- if(e.target.closest('button,a,input,select,textarea'))return;
+ if(e.target.closest('button,a,input,select,textarea')&&!e.target.closest('[data-v501-sheet-toggle]'))return;
  const handle=e.target.closest('.v501-grabber,.v501-sheet-head');
  if(!handle)return;
  const sheet=handle.closest('.v501-sheet');
@@ -619,6 +619,8 @@ function v515SheetPointerUp(e){
  const y=v515SheetTop(d.sheet);
  d.sheet.classList.remove('v515-dragging');
  document.body.classList.remove('v515-sheet-dragging');
+ if(!d.moved&&e.target instanceof Element&&e.target.closest('[data-v501-sheet-toggle]')){V515_SHEET_DRAG=null;return;}
+ if(d.moved)d.sheet.dataset.v515IgnoreClickUntil=String(Date.now()+400);
  let snap;
  if(!d.moved&&e.target instanceof Element&&e.target.closest('.v501-grabber')){
    const current=d.sheet.dataset.v515Snap||localStorage.getItem(V515_SHEET_KEY)||'collapsed';
@@ -672,7 +674,7 @@ async function share(){
 }
 function click(e){
  if(route()!=='simulator'||!(e.target instanceof Element))return;
- const toggle=e.target.closest('[data-v501-sheet-toggle]');if(toggle){e.preventDefault();e.stopPropagation();v515ApplySheetSnap(toggle.closest('.v501-sheet')?.dataset.v515Snap==='collapsed'?'mid':'collapsed');return}
+ const toggle=e.target.closest('[data-v501-sheet-toggle]');if(toggle){e.preventDefault();e.stopPropagation();const sheet=toggle.closest('.v501-sheet');if(Number(sheet?.dataset.v515IgnoreClickUntil||0)>Date.now())return;v515ApplySheetSnap(sheet?.dataset.v515Snap==='collapsed'?'mid':'collapsed');return}
  const v=e.target.closest('[data-v501-view]');if(v){e.preventDefault();setView(v.dataset.v501View);return}
  const st=e.target.closest('[data-v512-stage]');if(st){e.preventDefault();e.stopPropagation();setBracketStage(st.dataset.v512Stage);return}
  const score=e.target.closest('[data-v501-score]');if(score){e.preventDefault();e.stopPropagation();alterScore(score.dataset.v501Score,score.dataset.side,Number(score.dataset.delta||0));return}

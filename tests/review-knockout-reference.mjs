@@ -48,6 +48,13 @@ try{
    await page.locator('[data-v501-clear]').click();assert.equal(await progress.textContent(),before);
   }
   await page.screenshot({path:`${folder}/${name}-controls.png`});
+  const grip=await page.locator('[data-v501-sheet-toggle]').boundingBox();
+  await page.mouse.move(grip.x+grip.width/2,grip.y+grip.height/2);await page.mouse.down();
+  await page.mouse.move(grip.x+grip.width/2,height-50,{steps:12});await page.mouse.up();
+  await page.locator('[data-v501-sheet-toggle][aria-expanded="false"]').waitFor();
+  await page.waitForTimeout(450);
+  await page.locator('[data-v501-sheet-toggle]').click();
+  await page.locator('[data-v501-sheet-toggle][aria-expanded="true"]').waitFor();
   await page.goto('http://127.0.0.1:4173/#/competition',{waitUntil:'domcontentloaded'});
   if(width>=1024)await page.locator('[data-ljpc-bracket]').click();
   else await page.locator('#screen > .tabs .tab').filter({hasText:/^Cuadro$/}).click();
