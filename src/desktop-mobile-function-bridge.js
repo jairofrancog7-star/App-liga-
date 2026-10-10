@@ -110,7 +110,9 @@ function fixtures(catId=calendarCat){
     if(!Array.isArray(r)||!r[2]||!r[6])continue;
     const d=parseDate(r[8]);if(!d)continue;
     const hs=String(r[3]??'').trim(),as=String(r[5]??'').trim(),played=/^\d+$/.test(hs)&&/^\d+$/.test(as);
-    out.push({id:String(r[0]||''),round:String(r[1]||''),home:String(r[2]||'').trim(),away:String(r[6]||'').trim(),homeScore:hs,awayScore:as,played,venue:String(r[7]||'').trim(),rawDate:String(r[8]||''),date:d,cat:String(catId)});
+    const decision=cat.fixture_decisions?.[String(r[0])];
+    const awarded=!played&&decision?.type==='administrative'&&!!decision.winner;
+    out.push({id:String(r[0]||''),round:String(r[1]||''),home:String(r[2]||'').trim(),away:String(r[6]||'').trim(),homeScore:hs,awayScore:as,played,awarded,decision:awarded?decision:null,venue:String(r[7]||'').trim(),rawDate:String(r[8]||''),date:d,cat:String(catId)});
   }
   return out.sort((a,b)=>a.date-b.date);
 }
@@ -137,7 +139,7 @@ function googleCalendarUrl(m){
   return 'https://calendar.google.com/calendar/render?'+q.toString();
 }
 async function shareMatch(m){
-  const text=m.home+' vs '+m.away+' · '+formatDate(m.date)+' · '+(m.venue||'Sede por confirmar');
+  const text=m.home+' vs '+m.away+' · '+formatDate(m.date)+' · '+(m.venue||'Sede por confirmar')+(m.awarded?' · GANA '+m.decision.winner+' por DEFAULT':'');
   try{if(navigator.share){await navigator.share({title:'Liga Juventino Rosas',text});return}}catch(_){}
   try{await navigator.clipboard.writeText(text);alert('Partido copiado para compartir.')}catch(_){alert(text)}
 }
@@ -153,7 +155,7 @@ function renderCalendar(){
     // Mostrar primero el próximo partido del mes, no una jornada ya pasada.
     const today=iso(new Date());
     const inMonth=list.filter(x=>x.date.getFullYear()===y&&x.date.getMonth()===m);
-    const hit=inMonth.find(x=>!x.played&&iso(x.date)>=today)||inMonth.find(x=>iso(x.date)===today)||inMonth[0];
+    const hit=inMonth.find(x=>!x.played&&!x.awarded&&iso(x.date)>=today)||inMonth.find(x=>iso(x.date)===today)||inMonth[0];
     selectedDate=hit?iso(hit.date):iso(new Date(y,m,1));
   }
   const cells=[];
@@ -163,7 +165,7 @@ function renderCalendar(){
     cells.push('<button class="ljpc-day '+(selectedDate===key?'active':'')+'" data-ljpc-date="'+key+'"><b>'+d+'</b>'+(count?'<i>'+count+'</i>':'')+'</button>');
   }
   const dayMatches=list.filter(x=>iso(x.date)===selectedDate);
-  const matchHtml=dayMatches.length?dayMatches.map((x,i)=>'<div class="ljpc-match" data-ljpc-match="'+i+'"><div class="ljpc-team">'+crest(x.home)+'<span>'+esc(pretty(x.home))+'</span></div><div class="ljpc-score"><b>'+(x.played?esc(x.homeScore+' – '+x.awayScore):esc(x.rawDate.match(/\s(\d{1,2}:\d{2})/)?.[1]||'Por confirmar'))+'</b><small>J'+esc(x.round||'—')+'</small></div><div class="ljpc-team">'+crest(x.away)+'<span>'+esc(pretty(x.away))+'</span></div><div class="ljpc-actions"><button class="ljpc-btn" data-ljpc-cal="'+i+'">Google Calendar</button><button class="ljpc-btn" data-ljpc-share="'+i+'">Compartir</button></div></div>').join(''):'<p class="ljpc-muted">No hay partidos oficiales publicados para esta fecha.</p>';
+  const matchHtml=dayMatches.length?dayMatches.map((x,i)=>'<div class="ljpc-match" data-ljpc-match="'+i+'"><div class="ljpc-team">'+crest(x.home)+'<span>'+esc(pretty(x.home))+'</span></div><div class="ljpc-score"><b>'+(x.played?esc(x.homeScore+' – '+x.awayScore):x.awarded?esc('GANA '+x.decision.winner+' · DEFAULT'):esc(x.rawDate.match(/\s(\d{1,2}:\d{2})/)?.[1]||'Por confirmar'))+'</b><small>J'+esc(x.round||'—')+'</small></div><div class="ljpc-team">'+crest(x.away)+'<span>'+esc(pretty(x.away))+'</span></div><div class="ljpc-actions">'+(x.awarded?'':'<button class="ljpc-btn" data-ljpc-cal="'+i+'">Google Calendar</button>')+'<button class="ljpc-btn" data-ljpc-share="'+i+'">Compartir</button></div></div>').join(''):'<p class="ljpc-muted">No hay partidos oficiales publicados para esta fecha.</p>';
   wrap.innerHTML='<div class="ljpc-function-root" data-ljpc-function-route="pc-calendar"><div class="ljpc-toolbar"><div class="ljpc-toolbar-group"><select class="ljpc-select" data-ljpc-cat>'+CAT_ORDER.map(id=>'<option value="'+id+'" '+(id===calendarCat?'selected':'')+'>'+esc(categoryName(id))+'</option>').join('')+'</select><button class="ljpc-btn" data-ljpc-prev>‹ Mes anterior</button><button class="ljpc-btn" data-ljpc-today>Hoy</button><button class="ljpc-btn" data-ljpc-next>Mes siguiente ›</button></div><button class="ljpc-btn primary" data-ljpc-back-more>Más herramientas</button></div><section class="ljpc-panel"><h2>'+esc(new Intl.DateTimeFormat('es-MX',{month:'long',year:'numeric'}).format(base))+'</h2><div class="ljpc-grid">'+['L','M','X','J','V','S','D'].map(x=>'<div class="ljpc-week">'+x+'</div>').join('')+cells.join('')+'</div></section><section class="ljpc-panel"><h3>Partidos · '+esc(selectedDate)+'</h3>'+matchHtml+'</section></div>';
   wrap.querySelector('[data-ljpc-cat]')?.addEventListener('change',e=>{rememberCat(e.target.value);selectedDate='';renderCalendar()});
   wrap.querySelector('[data-ljpc-prev]')?.addEventListener('click',()=>{monthShift--;selectedDate='';renderCalendar()});
@@ -229,8 +231,8 @@ function renderStandings(catId=activeCat){
 function desktopFixtureRows(catId,view='upcoming',referenceDate=new Date()){
  const all=fixtures(catId);
  const today=new Date(referenceDate.getFullYear(),referenceDate.getMonth(),referenceDate.getDate());
- if(view==='upcoming')return all.filter(x=>!x.played&&x.date>=today).slice(0,100);
- if(view==='results')return all.filter(x=>x.played).reverse().slice(0,100);
+ if(view==='upcoming')return all.filter(x=>!x.played&&!x.awarded&&x.date>=today).slice(0,100);
+ if(view==='results')return all.filter(x=>x.played||x.awarded).reverse().slice(0,100);
  return all.slice().reverse().slice(0,100);
 }
 function renderFixtures(catId=activeCat,bracket=false){
@@ -241,8 +243,8 @@ function renderFixtures(catId=activeCat,bracket=false){
  const source='https://www.juventinorosasliga.com/reporte-semanal/';
  const rowHtml=matches.map(x=>{
    const time=x.rawDate.match(/\s(\d{2}:\d{2})$/)?.[1]||'Hora por confirmar';
-   const label=x.played?x.homeScore+' – '+x.awayScore:time;
-   const kind=x.played?'Resultado':'Programado / pendiente de resultado';
+   const label=x.played?x.homeScore+' – '+x.awayScore:x.awarded?'GANA '+x.decision.winner:time;
+   const kind=x.played?'Resultado':x.awarded?'Resolución administrativa · DEFAULT':'Programado / pendiente de resultado';
    return '<div class="ljpc-match" data-ljpc-match-round="'+esc(x.round)+'" data-ljpc-match-date="'+esc(x.rawDate)+'">'+
      '<div class="ljpc-team">'+crest(x.home)+'<span>'+esc(pretty(x.home))+'</span></div>'+
      '<div class="ljpc-score"><b>'+esc(label)+'</b><small>'+esc(formatDate(x.date))+' · Jornada '+esc(x.round)+'</small><small>'+kind+'</small></div>'+
