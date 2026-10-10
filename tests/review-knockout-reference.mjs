@@ -45,11 +45,16 @@ try{
   }
   await page.screenshot({path:`${folder}/${name}-controls.png`});
   await page.goto('http://127.0.0.1:4173/#/competition',{waitUntil:'domcontentloaded'});
-  await page.locator('#screen > .tabs .tab').filter({hasText:/^Cuadro$/}).click();
+  if(width>=1024)await page.locator('[data-ljpc-bracket]').click();
+  else await page.locator('#screen > .tabs .tab').filter({hasText:/^Cuadro$/}).click();
   await page.locator('.ljr-knockout[data-ko-mode="competition"]').waitFor();
   assert.equal(await page.locator('.ljr-knockout[data-ko-mode="competition"]').count(),1);
   assert.equal(await page.locator('.ljr-ko-note').textContent(),'Cruces oficiales por definir');
-  await page.screenshot({path:`${folder}/${name}-competition.png`});
+  for(const stage of ['playoff','octavos','cuartos','semifinal','final']){
+   await page.locator(`.ljr-ko-tabs [data-ko-stage="${stage}"]`).click();
+   await page.waitForFunction(s=>{const root=document.querySelector('.ljr-knockout'),sc=root?.querySelector('.ljr-ko-scroll'),col=root?.querySelector(`[data-ko-column="${s}"]`);return root?.dataset.koStage===s&&sc&&col&&Math.abs(sc.scrollLeft-col.offsetLeft)<2;},stage);
+   await page.screenshot({path:`${folder}/${name}-competition-${stage}.png`});
+  }
   report.push({name,layout,simulationControls:'passed',competition:'passed'});
   await page.close();
  }
