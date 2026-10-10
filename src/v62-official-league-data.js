@@ -674,21 +674,17 @@ function summaryView(){
   '</div>';
 }
 function v62CalendarDownload(){
-  const rs=(block('fixtures')?.rows||[]).filter(r=>parseDate(r[8]));
-  if(!rs.length)return;
-  const stamp=d=>d.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}Z$/,'Z');
-  const clean=s=>String(s??'').replace(/\\/g,'\\\\').replace(/\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');
-  const events=rs.map((r,i)=>{
-    const start=parseDate(r[8]),end=new Date(start.getTime()+2*60*60*1000);
-    return ['BEGIN:VEVENT','UID:ljr-'+categoryId+'-'+i+'-'+start.getTime()+'@liga-juventino','DTSTAMP:'+stamp(new Date()),
-      'DTSTART:'+stamp(start),'DTEND:'+stamp(end),'SUMMARY:'+clean((r[2]||'Equipo')+' vs '+(r[6]||'Equipo')),
-      'LOCATION:'+clean(r[7]||'Campo por confirmar'),'DESCRIPTION:'+clean((cat()?.name||'Liga Juventino Rosas')+' · Jornada '+(r[1]||'')),'END:VEVENT'].join('\r\n');
-  }).join('\r\n');
-  const body='BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Liga Juventino Rosas//Jornadas//ES\r\n'+events+'\r\nEND:VCALENDAR\r\n';
-  const blob=new Blob([body],{type:'text/calendar;charset=utf-8'});
-  const url=URL.createObjectURL(blob),a=document.createElement('a');
-  a.href=url;a.download='Liga_Juventino_'+String(cat()?.name||'Jornadas').replace(/[^a-z0-9]+/gi,'_')+'.ics';
-  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ const rs=(block('fixtures')?.rows||[]).filter(r=>parseDate(r[8]));
+ const games=rs.map(r=>{
+  const raw=String(r[8]||''),m=raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})/);
+  if(!m)return null;
+  const pad=n=>String(n).padStart(2,'0');
+  return {title:String(r[2]||'Equipo')+' - '+String(r[6]||'Equipo'),
+   iso:m[3]+'-'+pad(m[2])+'-'+pad(m[1]),time:pad(m[4])+':'+m[5],
+   duration:120,venue:String(r[7]||''),
+   description:'Liga Juventino Rosas · '+(cat()?.name||'Categoría')+' · Jornada '+(r[1]||'')};
+ }).filter(Boolean);
+ window.LJR_GOOGLE_CALENDAR_GLOBAL.choose(games,'Elige el partido del rol oficial');
 }
 function applyPlayerFilters(){
   const input=document.querySelector('[data-v62-player-search]'),q=norm(input?.value||'');
