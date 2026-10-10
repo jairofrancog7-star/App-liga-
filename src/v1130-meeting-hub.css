@@ -1,5 +1,5 @@
 /* V1130 - isolated compact blue controls for Junta de la Liga */
-.v875-meeting-modal .ljr-meeting-hub{color:#f5f9ff;box-sizing:border-box;width:100%;min-width:0;margin:12px 0 15px;padding:12px;border:1px solid #3163bb;border-radius:18px;background:linear-gradient(145deg,#123878,#0a184b);font-family:inherit}
+.v875-meeting-modal .ljr-meeting-hub{grid-column:1/-1;color:#f5f9ff;box-sizing:border-box;width:100%;min-width:0;margin:12px 0 15px;padding:12px;border:1px solid #3163bb;border-radius:18px;background:linear-gradient(145deg,#123878,#0a184b);font-family:inherit}
 .v875-meeting-modal .ljr-meeting-hub *{box-sizing:border-box}
 .ljr-meeting-hub .mh-header{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .ljr-meeting-hub .mh-header small{font-size:9px;letter-spacing:.13em;color:#54e7f4;font-weight:800}
