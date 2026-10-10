@@ -225,8 +225,8 @@ function setup(root){
     if(cal){
       const item=rows().find(x=>x.id===cal.dataset.v1210Calendar),url=item&&calendarUrl(item);
       if(!url){notify('No hay una fecha válida para crear el evento.');return}
-      const opened=window.open(url,'_blank','noopener,noreferrer');
-      if(!opened)notify('Permite ventanas nuevas para abrir Google Calendar.');
+      window.open(url,'_blank','noopener,noreferrer');
+      notify('Revisa Google Calendar en una pestaña nueva. Si no aparece, permite ventanas emergentes.');
     }
   });
   redraw();
