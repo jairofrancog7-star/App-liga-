@@ -14,7 +14,8 @@ const HEADER_TITLES = {
   accountEdit:'Editar perfil',
   accountSecurity:'Seguridad',
   accountPassword:'Contraseña',
-  accountDevices:'Dispositivos'
+  accountDevices:'Dispositivos',
+  accountPrivacy:'Datos y privacidad'
 };
 
 function routeFromLocation(){
