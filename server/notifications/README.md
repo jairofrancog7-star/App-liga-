@@ -93,3 +93,11 @@ El backend no confía en `owner` o `role` entregados por el cliente: el rol pres
 ## Pruebas
 
 `node --test tests/notifications-security.test.mjs` (en la raíz de App-liga-) y `npm run check` en `server/notifications`. En producción comprueba conexiones y permisos contra una base de pruebas con roles ficticios antes de usar avisos de la Liga.
+
+## Archivo de juntas privadas · v1150
+
+Además de los avisos se incluye `meeting-store.mjs` con tres rutas privadas: `GET /admin/meetings`, `GET /admin/meetings/:date` y `PUT /admin/meetings/:date`. Requieren el mismo token de sesión de la Liga, comprobado remotamente por `admin`, y permisos `meetings:read` / `meetings:write` del servidor. Solo presidencia y secretaría cuentan con estos permisos. Todas las escrituras actualizan una revisión atómica y dejan auditoría sin publicar datos de delegados.
+
+La migración `notifications-schema-v1150` crea `ljr_meeting_minutes` automáticamente en PostgreSQL al desplegar la única instancia elegida. El acceso a las minutas es mediante la pestaña **Servidor** de la app y es manual, con confirmación. El botón de recuperación descarga antes una copia del registro local. Las firmas manuscritas y adjuntos no se transmiten en el JSON remoto.
+
+**Railway sigue STAGED:** no ejecutar `accept_deploy` sin la autorización explícita del dueño para iniciar servicios y facturación. Después del despliegue, probar `/health/ready` con la base y verificar permisos con cuentas de presidente, secretario y lector. Registrar en privado la URL HTTPS real en `data/notifications-client.json` (nunca tokens ni contraseñas).
