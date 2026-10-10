@@ -97,6 +97,7 @@
       '<div class="v1223-toolbar"><label class="v1223-toggle"><input type="checkbox" data-smart-auto checked><span>Revisar automáticamente al abrir</span></label>'+
       '<button type="button" data-smart-run>Analizar ahora</button></div>'+
       '<div class="v1223-overview" data-smart-summary role="status" aria-live="polite"></div>'+
+      '<p class="v1223-run-status" data-smart-status role="status" aria-live="polite"></p>'+
       '<div class="v1223-chart" data-smart-chart aria-label="Actividad diaria de los últimos siete días"></div>'+
       '<div class="v1223-tags" data-smart-top></div>'+
       '<div class="v1223-notices" data-smart-notes></div>'+
@@ -109,7 +110,13 @@
     let cached=null;
     function run(force){
       if(!root.isConnected||(!force&&!input.checked))return;
-      cached=analyze(entries());
+      const info=panel.querySelector('[data-smart-status]');
+      const button=panel.querySelector('[data-smart-run]');
+      info.textContent='Revisando movimientos guardados en este dispositivo…';
+      try{cached=analyze(entries());}catch(error){
+        info.textContent='No fue posible actualizar el análisis local. Inténtalo de nuevo.';
+        return;
+      }
       panel.querySelector('[data-smart-summary]').textContent=cached.summary;
       const max=Math.max(1,...cached.daily.map(d=>d.count));
       panel.querySelector('[data-smart-chart]').innerHTML=cached.daily.map(d=>
@@ -122,7 +129,8 @@
         '<span>Aún no hay categorías recientes para comparar.</span>';
       panel.querySelector('[data-smart-notes]').innerHTML=cached.notes.map(n=>
         '<div class="v1223-notice" data-tone="'+n.level+'"><span aria-hidden="true">'+(n.level==='warning'?'!':'i')+'</span><p>'+esc(n.text)+'</p></div>').join('');
-      panel.querySelector('[data-smart-run]').textContent='Actualizar análisis';
+      button.textContent='Actualizar análisis';
+      info.textContent='✓ Análisis actualizado a las '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit',second:'2-digit'})+'. '+cached.total+' movimientos revisados.';
     }
     const button=panel.querySelector('[data-smart-run]');
     button.addEventListener('click',()=>run(true));
@@ -130,6 +138,7 @@
       try{localStorage.setItem(SETTINGS,String(input.checked));}catch(_){}
       panel.querySelector('[data-smart-run]').textContent='Analizar ahora';
       if(input.checked)run(true);
+      else panel.querySelector('[data-smart-status]').textContent='Análisis automático pausado. El botón «Analizar ahora» sigue disponible.';
     });
     const copyButton=panel.querySelector('[data-smart-copy]');
     copyButton.addEventListener('click',()=>{
@@ -153,7 +162,10 @@
     });
     cleanup.observe(document.body,{childList:true});
     if(input.checked)run(true);
-    else panel.querySelector('[data-smart-summary]').textContent='Análisis automático pausado. Pulsa «Analizar ahora» cuando lo necesites.';
+    else {
+      panel.querySelector('[data-smart-summary]').textContent='Análisis automático pausado. Pulsa «Analizar ahora» cuando lo necesites.';
+      panel.querySelector('[data-smart-status]').textContent='Pulsa el botón para revisar los movimientos guardados.';
+    }
   }
   function scan(){
     document.querySelectorAll('body > .v105-modal.v1212-audit-modal .v1212-audit').forEach(setup);
