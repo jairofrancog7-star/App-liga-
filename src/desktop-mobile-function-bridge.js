@@ -139,10 +139,11 @@ function ensureOwnHost(title,desc){
 }
 function formatDate(d){return new Intl.DateTimeFormat('es-MX',{weekday:'short',day:'2-digit',month:'short',year:'numeric'}).format(d)}
 function googleCalendarUrl(m){
-  const start=new Date(m.date),end=new Date(start.getTime()+2*60*60*1000);
-  const stamp=d=>d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'T'+pad(d.getHours())+pad(d.getMinutes())+'00';
-  const q=new URLSearchParams({action:'TEMPLATE',text:m.home+' vs '+m.away,dates:stamp(start)+'/'+stamp(end),details:'Liga Juventino Rosas · '+categoryName(m.cat)+' · Jornada '+m.round,location:m.venue||'Juventino Rosas, Guanajuato'});
-  return 'https://calendar.google.com/calendar/render?'+q.toString();
+ const start=new Date(m.date).getTime();
+ return window.LJR_GOOGLE_CALENDAR_GLOBAL.build({
+  title:m.home+' - '+m.away,startMs:start,duration:120,venue:m.venue||'',
+  description:'Liga Juventino Rosas · '+categoryName(m.cat)+' · Jornada '+m.round
+ });
 }
 async function shareMatch(m){
   const text=m.home+' vs '+m.away+' · '+formatDate(m.date)+' · '+(m.venue||'Sede por confirmar')+(m.awarded?' · GANA '+m.decision.winner+' por DEFAULT':'');
