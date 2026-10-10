@@ -17,6 +17,7 @@ on:
       - 'server/notifications/bootstrap.mjs'
       - 'tests/meeting-private-sync-v1150.test.mjs'
       - 'tests/meeting-access-regression-v1151.test.mjs'
+      - 'tests/meeting-admin-session-v1152.test.mjs'
       - 'scripts/smoke-juntas-live.mjs'
       - 'index.html'
       - 'tests/meeting-hub-v1130.test.mjs'
@@ -37,7 +38,7 @@ jobs:
         with:
           node-version: '22'
       - name: Verificar flujos y permisos de juntas
-        run: node --test tests/meeting-hub-v1130.test.mjs tests/meeting-suite-v1140.test.mjs tests/meeting-private-sync-v1150.test.mjs tests/meeting-access-regression-v1151.test.mjs
+        run: node --test tests/meeting-hub-v1130.test.mjs tests/meeting-suite-v1140.test.mjs tests/meeting-private-sync-v1150.test.mjs tests/meeting-access-regression-v1151.test.mjs tests/meeting-admin-session-v1152.test.mjs
       - name: Comprobar servidor Railway en vivo (sin credenciales)
         continue-on-error: true
         run: node scripts/smoke-juntas-live.mjs
