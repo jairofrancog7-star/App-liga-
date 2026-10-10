@@ -1,0 +1,55 @@
+/* V1102 — Máximo goleador: retratos completos, centrados y sin recortes de frente/mentón.
+   Se conserva la foto ORIGINAL; el fondo desenfocado usa esa misma imagen. */
+@media (max-width: 1023px) {
+  html body[data-app-route="scorers"] #screen .v391-feature-photo,
+  html body[data-app-route="scorers"] #screen .v390-scorer-photo {
+    position:relative!important;
+    overflow:hidden!important;
+    isolation:isolate;
+    background:#101b72!important;
+  }
+  html body[data-app-route="scorers"] #screen .v391-feature-photo::before,
+  html body[data-app-route="scorers"] #screen .v390-scorer-photo::before {
+    content:"";
+    position:absolute;
+    inset:-16px;
+    z-index:0;
+    background-image:var(--v1102-scorer-image,none);
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size:cover;
+    filter:blur(16px) brightness(.65);
+    opacity:.9;
+    pointer-events:none;
+  }
+  html body[data-app-route="scorers"] #screen .v391-feature-photo > img:is(.v576-scorer-hero-photo,.v576-hero-player-photo,.v971-hero-image),
+  html body[data-app-route="scorers"] #screen .v390-scorer-photo > img:is(.v576-scorer-hero-photo,.v576-hero-player-photo,.v971-hero-image) {
+    position:absolute!important;
+    inset:0!important;
+    display:block!important;
+    width:100%!important;
+    height:100%!important;
+    min-width:0!important;
+    min-height:0!important;
+    max-width:100%!important;
+    max-height:100%!important;
+    object-fit:contain!important;
+    object-position:50% 50%!important;
+    transform:none!important;
+    filter:none!important;
+    border-radius:0!important;
+    z-index:2!important;
+  }
+  html body[data-app-route="scorers"] #screen .v391-feature-photo::after {
+    pointer-events:none;
+    z-index:2!important;
+  }
+  html body[data-app-route="scorers"] #screen .v391-feature-kicker,
+  html body[data-app-route="scorers"] #screen .v390-scorer-label {
+    z-index:3!important;
+  }
+  html body[data-app-route="scorers"] #screen .v391-feature-media,
+  html body[data-app-route="scorers"] #screen .v390-scorer-media {
+    z-index:4!important;
+  }
+}
