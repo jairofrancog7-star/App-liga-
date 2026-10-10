@@ -1,0 +1,16 @@
+/* V1152 · Escudos recortados, sin recuadros blancos/negros, SOLO en Barra de jornada. */
+html body[data-app-route="matchday"] #v160-matchday-extra .md1132-crest{
+  background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important;
+  overflow:visible!important;
+}
+html body[data-app-route="matchday"] #v160-matchday-extra .md1132-crest img{
+  display:block!important;background:transparent!important;background-color:transparent!important;
+  background-image:none!important;border:0!important;border-radius:0!important;
+  padding:0!important;margin:0!important;box-shadow:none!important;mix-blend-mode:normal!important;
+  object-fit:contain!important;object-position:center!important;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.24))!important;
+}
+/* El círculo genérico de respaldo no debe verse debajo de un escudo real. */
+html body[data-app-route="matchday"] #v160-matchday-extra .md1132-crest:has(img) .md1132-crest-fallback{
+  visibility:hidden!important;
+}
