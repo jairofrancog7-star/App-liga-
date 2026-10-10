@@ -2177,29 +2177,34 @@ function v190RecruitTeamOptions(selected=''){
   return html;
 }
 function v190RecruitCommunityOptions(selected=''){
-  const places=[
-    'Santa Cruz de Juventino Rosas',
-    'Cerrito de Gasca',
-    'Franco Tavera',
-    'Tavera',
-    'San Juan de la Cruz',
-    'Santiago de Cuenda',
-    'San Antonio de Romerillo',
-    'Fraccionamiento Comontuoso',
-    'Comontuoso',
-    'Pozos',
-    'San José de la Montaña',
-    'San Julián Tierra Blanca',
-    'Emiliano Zapata',
-    'La Huerta de Cuenda',
-    'Celaya',
-    'Villagrán',
-    'Comonfort',
-    'Cortazar',
-    'Salamanca'
+  // Son nombres de comunidades/localidades, NO los nombres de los campos deportivos.
+  // Se conservan los valores anteriores para no alterar registros guardados.
+  const groups=[
+    {label:'Cabecera municipal',places:['Santa Cruz de Juventino Rosas']},
+    {label:'Comunidades y localidades',places:[
+      'Cerrito de Gasca',
+      'Franco Tavera',
+      'Tavera',
+      'San Juan de la Cruz',
+      'Santiago de Cuenda',
+      'San Antonio de Romerillo',
+      'Fraccionamiento Comontuoso',
+      'Comontuoso',
+      'Pozos',
+      'Rincón de Centeno',
+      'San José de la Montaña',
+      'San Julián Tierra Blanca',
+      'Emiliano Zapata',
+      'La Huerta de Cuenda'
+    ]},
+    {label:'Ciudades cercanas',places:['Celaya','Villagrán','Comonfort','Cortazar','Salamanca']}
   ];
-  return '<option value="">Selecciona comunidad o ciudad</option>'+
-    places.map(x=>'<option value="'+esc(x)+'" '+(selected===x?'selected':'')+'>'+esc(x)+'</option>').join('');
+  const selectedInList=groups.some(g=>g.places.includes(selected));
+  return '<option value="" '+(!selected?'selected':'')+'>Selecciona la comunidad o localidad</option>'+
+    groups.map(g=>'<optgroup label="'+esc(g.label)+'">'+
+      g.places.map(x=>'<option value="'+esc(x)+'" '+(selected===x?'selected':'')+'>'+esc(x)+'</option>').join('')+
+      '</optgroup>').join('')+
+    (selected&&!selectedInList?'<option value="'+esc(selected)+'" selected>'+esc(selected)+'</option>':'');
 }
 function v190RecruitPositionOptions(selected=''){
   const positions=[
@@ -2365,7 +2370,10 @@ function v190RecruitPage(){
         '<header><span>＋</span><div><b>Nuevo equipo</b><small>Equipo interesado en entrar a la Liga</small></div></header>'+
         '<label><span>Nombre del equipo</span><input required data-v190-team-name placeholder="Nombre del equipo" autocomplete="off"></label>'+
         '<label><span>Categoría</span><select data-v190-team-category>'+v190RecruitCategoryOptions()+'</select></label>'+
-        '<label><span>Comunidad / localidad</span><select data-v190-team-community>'+v190RecruitCommunityOptions()+'</select></label>'+
+        '<label class="v190-community-label"><span>Comunidad / localidad de origen</span><span class="v190-community-select">'+
+          '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 5.2-8 12-8 12S4 15.2 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>'+
+          '<select data-v190-team-community aria-label="Comunidad o localidad de origen">'+v190RecruitCommunityOptions()+'</select></span>'+
+          '<small class="v190-community-help">Elige de dónde es el equipo, no la cancha donde juega.</small></label>'+
         '<label><span>Contacto / referencia</span><input data-v190-team-contact placeholder="Opcional · se guarda en este dispositivo" autocomplete="off"></label>'+
         '<button type="submit">Guardar equipo nuevo</button>'+
       '</form>'+
