@@ -9,6 +9,9 @@
  const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0];
  const val=s=>$(s)?.value?.trim()||'';
  const tz='America/Mexico_City';
+ const AG_ICONS={"google":"<rect x=\"3\" y=\"5\" width=\"18\" height=\"16\" rx=\"2\"/><path d=\"M7 3v4m10-4v4M3 10h18m-12 5h6\"/>","ics":"<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 7v5l3 2\"/>","push":"<path d=\"M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9m-11 12h4\"/>","off":"<path d=\"m3 3 18 18M18 8a6 6 0 0 0-9.4-4.9M6.1 6.4C6 7 6 7.4 6 8c0 7-3 7-3 9h14M10 21h4\"/>","message":"<path d=\"M20 11a8 8 0 0 1-11.5 7L3 21l2.5-6.5A8 8 0 1 1 20 11Z\"/><path d=\"m9 10 2 2 4-3\"/>"};
+ const agAction=(name,label)=>'<svg class="ljr-ag-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+AG_ICONS[name]+'</svg><span class="ljr-ag-label">'+label+'</span>';
+
  function parseDateTime(raw){
   const m=/^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d)$/.exec(String(raw||''));if(!m)return NaN;
   const [y,mon,day,h,min]=m.slice(1).map(Number);
@@ -109,7 +112,7 @@
   const state=await config(),enabled=Boolean(state?.pushEnabled);
   const push=$('[data-ag1074="push"]'),off=$('[data-ag1074="off"]');
   if(push){push.title=enabled?'Activar avisos push de fondo':'Se necesita publicar y configurar el servidor de notificaciones';push.dataset.available=String(enabled)}
-  if(off)off.hidden=!enabled;
+  if(off){let subscribed=false;try{const reg=await navigator.serviceWorker?.getRegistration?.('./');subscribed=!!(await reg?.pushManager?.getSubscription?.())}catch(_){}off.hidden=!enabled||!subscribed;}
   const s=$('[data-ag1074-backend-status]');if(s){
    s.textContent=state?.pushEnabled?'Servicio Web Push conectado'+(state.twilioEnabled?' · Twilio conectado':' · Twilio sin configurar'):
     'Push de fondo y Twilio: servidor pendiente de configurar. Calendario, avisos locales y compartir sí están disponibles.';
@@ -121,13 +124,13 @@
   const box=document.createElement('div');box.className='ag1074';box.dataset.ag1074='';
   box.innerHTML='<div class="ag1074-title"><b>Calendario y notificaciones</b><small>Integraciones</small></div>'+
    '<div class="ag1074-actions">'+
-   '<button type="button" data-ag1074="google" aria-label="Guardar partido en Google Calendar">▣ Google Calendar</button>'+
-   '<button type="button" data-ag1074="ics">◷ Agenda con alertas</button>'+
-   '<button type="button" data-ag1074="push">♧ Activar push</button>'+
-   '<button type="button" data-ag1074="off" hidden>× Desactivar push</button></div>'+
+   '<button type="button" data-ag1074="google" aria-label="Guardar partido en Google Calendar">'+agAction('google','Google Calendar')+'</button>'+
+   '<button type="button" data-ag1074="ics">'+agAction('ics','Agenda con alertas')+'</button>'+
+   '<button type="button" data-ag1074="push">'+agAction('push','Activar push')+'</button>'+
+   '<button type="button" data-ag1074="off" hidden>'+agAction('off','Desactivar push')+'</button></div>'+
    '<p data-ag1074-backend-status class="ag1074-backend">Consultando disponibilidad de notificaciones…</p>'+
    '<p data-ag1074-status class="ag1074-status" role="status" aria-live="polite"></p>'+
-   '<details class="ag1074-twilio"><summary>SMS y WhatsApp mediante Twilio <span>▾</span></summary>'+
+   '<details class="ag1074-twilio"><summary>'+agAction('message','SMS y WhatsApp mediante Twilio')+'<span class="ag1074-chevron" aria-hidden="true">▾</span></summary>'+
    '<p>El servidor admite programación automática, registro de destinatarios con consentimiento y seguimiento de entregas. Requiere cuenta Twilio, remitente aprobado, base de datos y despliegue del servidor. Nunca se envía desde el navegador ni sin autorización.</p></details>';
   const actions=$('.ag1073-actions',panel);if(actions)actions.insertAdjacentElement('beforebegin',box);else panel.append(box);
   box.addEventListener('click',e=>{const b=e.target.closest('button[data-ag1074]');if(!b)return;
