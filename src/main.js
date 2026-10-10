@@ -6581,7 +6581,7 @@ function moreView(){
       v19MoreButton('info','Reglamento','rulebook')+
       v19MoreButton('data','Más herramientas','leagueTools')+
     '</div>'+
-    '<div class="v19-more-label">INSTALAR LA APLICACIÓN</div>'+ 
+    '<div class="v19-more-label">Instalar la aplicación</div>'+ 
     '<div class="v19-more-menu">'+v19MoreButton('qr','Instalar app / acceso directo','appInstall')+'</div>'+ 
     '<div class="v19-more-label explore">Explorar</div>'+
     '<div class="v19-more-menu">'+
