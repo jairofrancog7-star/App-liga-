@@ -1,3 +1,5 @@
+import { calendarEvent, googleCalendarDestination } from './v843-calendar-event.js?v=20261010-v1198';
+import { Capacitor, registerPlugin } from '@capacitor/core';
 /* V105 — Lleva los cuadros/funciones de Liga_Futbol (verde) a App-liga (azul).
    Principio estricto: TODO se anexa al FINAL de la pantalla correspondiente.
    Nunca inserta arriba ni en medio; no sustituye contenido existente. */
@@ -1176,15 +1178,17 @@ function calendarGenerator(){
    '<div class="v1130-summary" data-summary role="status" aria-live="polite"></div>'+
    '<div class="v1130-source"><span data-source></span><div class="v1130-source-actions"><button type="button" data-alerts title="Configurar avisos por categoría y equipo">Avisos</button><button type="button" data-refresh title="Releer datos publicados en esta página">Actualizar</button></div></div>'+
    '<div class="v105-output" data-out></div>'+
+   '<div class="v1130-local-source" data-local-source hidden></div>'+ 
    '<div class="v105-actions v1130-exports">'+
-     '<button type="button" class="v105-btn" data-open>Abrir oficial ↗</button>'+
+     '<button type="button" class="v105-btn" data-open aria-pressed="false">Abrir rol oficial aquí</button>'+
      '<button type="button" class="v105-btn alt" data-pdf>Descargar PDF</button>'+
      '<button type="button" class="v105-btn alt" data-img>Descargar PNG</button>'+
      '<button type="button" class="v105-btn alt" data-ics>Calendario .ics</button>'+
    '</div>'+
    '<p class="v1130-notice">Descargas y recordatorios usan los filtros elegidos. Las fechas sin hora confirmada no se exportan al calendario. Los avisos de cambios dependen de las publicaciones oficiales.</p>');
  m.classList.add('v1130-calendar-pro');
- let view='list',filtered=[];
+ let view='list',filtered=[],officialOpen=false,lastView='list';
+ const nativeCalendar=registerPlugin('LigaCalendar');
  const current=()=>cats.find(c=>c.id===$('[data-cat]',m)?.value)||cats[0];
  const normalizeSelected=(selector,values)=>{
    const el=$(selector,m),old=el.value;
@@ -1213,6 +1217,29 @@ function calendarGenerator(){
        '<span class="v1130-crest v1130-crest-fallback" aria-hidden="true">'+esc(String(name||'?').trim().slice(0,1).toUpperCase())+'</span>';
  };
  const knownField=f=>f&&!/^(?:-|---|por confirmar|campo por confirmar|sin campo|pendiente|no asignad)/i.test(f);
+ const userLinks={'pozos':'https://goo.gl/maps/BF9dnqf5SaBfu41PA','san-julian':'https://maps.app.goo.gl/5yfZH7nGMtw2Cqqf7','fraccionamiento':'https://maps.app.goo.gl/Y1ZGLTpGJ7XmGCKT7','san-juan':'https://maps.app.goo.gl/mcc7DpevkPW5mW4M9','tavera':'https://maps.app.goo.gl/yBhVkMrXzL3Npv3WA'};
+ let fieldsCache;
+ async function calendarFieldLink(venue){
+   if(!knownField(venue))return '';
+   if(!fieldsCache){
+     try{const response=await fetch('./data/fields-v38-22.json?v=20261009-v1171',{cache:'no-store'});
+       if(response.ok)fieldsCache=(await response.json()).fields||[];}catch(_){}
+   }
+   const name=norm(venue),fields=fieldsCache||[];
+   const aliases=f=>[f.name,...(f.aliases||[])].map(norm);
+   const field=fields.find(f=>aliases(f).includes(name))||fields.find(f=>aliases(f).some(a=>a.length>4&&name.length>4&&(name.includes(a)||a.includes(name))));
+   if(!field)return '';
+   const url=userLinks[field.id]||field.mapsQuery||'';
+   if(/^https:\/\/(maps\.app\.goo\.gl|goo\.gl\/maps|www\.google\.com\/maps)/i.test(url))return url;
+   return url?'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(url):'';
+ }
+ function fixtureEvent(f){
+   const p=String(f.when||'').match(/^(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2})/);
+   if(!p||!f.date?.hasTime)return null;
+   return calendarEvent({id:'liga-'+current().id+'-'+f.round+'-'+norm(f.home)+'-'+norm(f.away)+'-'+p[3]+p[2]+p[1],
+      iso:p[3]+'-'+p[2]+'-'+p[1],time:p[4]+':'+p[5],category:current().name,round:f.round,
+      home:f.home,away:f.away,venue:f.field});
+ }
  const statusOf=f=>f.score?'Con marcador':f.date?.date>=new Date()?'Programado':'Marcador pendiente';
  const labelRow=r=>{
    const f=fixture(r);return 'J'+f.round+' · '+f.when+' · '+f.home+' vs '+f.away+
@@ -1224,12 +1251,12 @@ function calendarGenerator(){
    const today=new Date();
    return c.rows.filter(r=>{
      const f=fixture(r);
-     if(round&&f.round!==round)return false;
-     if(team&&f.home!==team&&f.away!==team)return false;
-     if(status==='pending'&&f.score)return false;
-     if(status==='scored'&&!f.score)return false;
-     if(search&&!norm([f.home,f.away,f.field,f.round,f.when].join(' ')).includes(search))return false;
-     if(view==='upcoming'&&(!f.date?.date||f.date.date<today||f.score))return false;
+     if(!officialOpen&&round&&f.round!==round)return false;
+     if(!officialOpen&&team&&f.home!==team&&f.away!==team)return false;
+     if(!officialOpen&&status==='pending'&&f.score)return false;
+     if(!officialOpen&&status==='scored'&&!f.score)return false;
+     if(!officialOpen&&search&&!norm([f.home,f.away,f.field,f.round,f.when].join(' ')).includes(search))return false;
+     if(!officialOpen&&view==='upcoming'&&(!f.date?.date||f.date.date<today||f.score))return false;
      return true;
    }).sort((a,b)=>{
      const da=dateParts(a)?.date?.getTime()??Number.MAX_SAFE_INTEGER,dbb=dateParts(b)?.date?.getTime()??Number.MAX_SAFE_INTEGER;
@@ -1259,6 +1286,11 @@ function calendarGenerator(){
  const render=()=>{
    const c=current(),out=$('[data-out]',m);
    filtered=listRows();
+   m.classList.toggle('v1130-official-open',officialOpen);
+   const banner=$('[data-local-source]',m);banner.hidden=!officialOpen;
+   if(officialOpen)banner.textContent='Rol oficial · '+c.name+' · Todos los partidos publicados por la Liga, sin filtros.';
+   const button=$('[data-open]',m);button.textContent=officialOpen?'Volver a mis filtros':'Abrir rol oficial aquí';
+   button.setAttribute('aria-pressed',String(officialOpen));
    const all=c.rows,scored=all.filter(r=>scoreOf(r)).length,pending=all.length-scored;
    const upcoming=all.filter(r=>{const d=dateParts(r);return !!d?.date&&d.date>=new Date()&&!scoreOf(r)}).length;
    $('[data-summary]',m).innerHTML='<span><b>'+all.length+'</b> partidos</span><span><b>'+pending+'</b> sin marcador</span><span><b>'+upcoming+'</b> próximos</span><span><b>'+filtered.length+'</b> visibles</span>';
@@ -1275,9 +1307,9 @@ function calendarGenerator(){
    ['[data-pdf]','[data-img]','[data-ics]'].forEach(selector=>$(selector,m).disabled=!filtered.length);
  };
  $('[data-cat]',m).onchange=()=>{fillOptions();render()};
- ['[data-round]','[data-team]','[data-status]'].forEach(selector=>$(selector,m).onchange=render);
- $('[data-search]',m).oninput=render;
- $$('[data-view]',m).forEach(b=>b.onclick=()=>{view=b.dataset.view;render()});
+ ['[data-round]','[data-team]','[data-status]'].forEach(selector=>$(selector,m).onchange=()=>{officialOpen=false;render()});
+ $('[data-search]',m).oninput=()=>{officialOpen=false;render()};
+ $$('[data-view]',m).forEach(b=>b.onclick=()=>{officialOpen=false;view=b.dataset.view;render()});
  const goExternal=url=>{const w=window.open(url,'_blank','noopener,noreferrer');if(!w)toast('Permite abrir pestañas para continuar')};
  const selectedFixture=i=>filtered[Number(i)]?fixture(filtered[Number(i)]):null;
  const eventDates=f=>{
@@ -1302,16 +1334,25 @@ function calendarGenerator(){
        else {goExternal('https://wa.me/?text='+encodeURIComponent(share.text))}}
        catch(err){if(err?.name!=='AbortError')goExternal('https://wa.me/?text='+encodeURIComponent(share.text))}
      }else if(button.hasAttribute('data-google')){
-       const ds=eventDates(f);if(!ds)return toast('Falta confirmar la hora del partido');
-       goExternal('https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(f.home+' vs '+f.away+' · Liga Juventino Rosas')+
-       '&dates='+ds[0]+'/'+ds[1]+'&details='+encodeURIComponent('Jornada '+f.round+' · '+current().name+'\nConsulta posibles cambios en '+officialUrl(current()))+
-       '&location='+encodeURIComponent(f.field||'Juventino Rosas, Guanajuato')+'&ctz=America%2FMexico_City');
-     }else if(button.hasAttribute('data-map')&&knownField(f.field)){
-       goExternal('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(f.field+' Juventino Rosas Guanajuato'));
+       let event;try{event=fixtureEvent(f)}catch(_){return toast('Fecha u hora inválidas')}
+       if(!event)return toast('Falta confirmar la hora del partido');
+       if(Capacitor.isNativePlatform()&&Capacitor.isPluginAvailable('LigaCalendar')){
+         try{await nativeCalendar.openEvent(event);return}catch(_){}
+       }
+       goExternal(googleCalendarDestination(event));
+       toast('Revisa y pulsa Guardar en Google Calendar.');
+     }else if(button.hasAttribute('data-map')){
+       const link=await calendarFieldLink(f.field);
+       if(!link)return toast('Esta cancha no tiene dirección confirmada en Campos y sedes.');
+       goExternal(link);
      }
    });
  }
- $('[data-open]',m).onclick=()=>{log('Abrir calendario oficial '+current().name);goExternal(officialUrl(current()))};
+ $('[data-open]',m).onclick=()=>{
+   officialOpen=!officialOpen;
+   if(officialOpen){lastView=view;view='dates';log('Consulta del rol oficial interno · '+current().name)}else view=lastView;
+   render();$('[data-local-source]',m)?.scrollIntoView({behavior:reduced?'auto':'smooth',block:'nearest'});
+ };
  $('[data-alerts]',m).onclick=()=>registerAlerts();
  $('[data-refresh]',m).onclick=async()=>{
    const btn=$('[data-refresh]',m);btn.disabled=true;btn.textContent='Actualizando…';
