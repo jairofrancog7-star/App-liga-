@@ -586,10 +586,270 @@ function fanzone(){
 }
 
 function delegates(){
- const list=read('v105-delegates',[]);
- const m=modal('Delegados / encargados','Contactos privados sólo en este dispositivo; no se publican en GitHub.','<div class="v105-form"><label><span>Nombre</span><input data-n></label><label><span>Equipo</span><input data-t></label><label><span>Teléfono</span><input data-p inputmode="tel"></label></div><div class="v105-actions"><button class="v105-btn" data-add>Agregar</button></div><div class="v105-list" data-list></div>');
- const render=()=>{const h=$('[data-list]',m);h.innerHTML=list.length?list.map((d,i)=>'<article><b>'+esc(d.name)+' · '+esc(d.team)+'</b><small>'+esc(d.phone)+'</small><button class="v105-btn alt" data-del="'+i+'">Quitar</button></article>').join(''):'<p class="v105-footnote">Todavía no hay delegados guardados.</p>';$$('[data-del]',h).forEach(b=>b.onclick=()=>{list.splice(Number(b.dataset.del),1);write('v105-delegates',list);render()})};render();
- $('[data-add]',m).onclick=()=>{const name=$('[data-n]',m).value.trim(),team=$('[data-t]',m).value.trim(),phone=$('[data-p]',m).value.trim();if(!name||!phone)return toast('Agrega nombre y teléfono');list.push({name,team,phone});write('v105-delegates',list);log('Agregar delegado local');render()};
+ const key='v105-delegates';
+ let list=read(key,[]);
+ if(!Array.isArray(list))list=[];
+ let modified=false;
+ const makeId=()=>Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10);
+ list.forEach(item=>{if(!item.id){item.id=makeId();modified=true}});
+ if(modified)write(key,list);
+ const roleNames=['Delegado titular','Subdelegado','Entrenador','Encargado de equipo','Presidente','Representante','Otro'];
+ const categoryNames=['Primera','Intermedia','Segunda','Veteranos 35+','Veteranos 50+'];
+ try{v160Categories().forEach(c=>{if(c.name&&!categoryNames.includes(c.name))categoryNames.push(c.name)})}catch(_){}
+ const teamNames=()=>{try{return v160Teams()}catch(_){return []}};
+ const opts=(values,selected)=>values.map(v=>'<option value="'+esc(v)+'"'+(String(v)===String(selected)?' selected':'')+'>'+esc(v)+'</option>').join('');
+ const phoneDigits=s=>String(s||'').replace(/[^\d]/g,'');
+ const whatsappPhone=s=>{const d=phoneDigits(s);return d.length===10?'52'+d:(d.length>=11&&d.length<=15?d:'')};
+ const clean=s=>String(s||'').trim();
+ const download=(txt,filename,type)=>dl(new Blob([txt],{type}),filename);
+ const csvCell=value=>{let s=String(value??'');if(/^[\s]*[=+@-]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';};
+ const csvLine=cells=>cells.map(csvCell).join(',');
+ const header='<div class="v1126-metrics" data-d-stats></div>'+
+ '<div class="v1126-toolbar"><input type="search" data-d-search placeholder="Buscar nombre, equipo o teléfono…" aria-label="Buscar delegados">'+
+ '<select data-d-category-filter aria-label="Filtrar categoría"><option value="">Todas las categorías</option>'+opts(categoryNames,'')+'</select>'+
+ '<select data-d-role-filter aria-label="Filtrar cargo"><option value="">Todos los cargos</option>'+opts(roleNames,'')+'</select></div>'+
+ '<div class="v1126-tools"><button type="button" class="v105-btn" data-d-new>+ Nuevo contacto</button>'+
+ '<button type="button" class="v105-btn alt" data-d-csv>Exportar CSV</button>'+
+ '<button type="button" class="v105-btn alt" data-d-vcf>Contactos VCF</button></div>'+
+ '<details class="v1126-editor" data-d-editor>'+
+ '<summary><span data-d-edit-title>Agregar representante</span><small>Nombre, equipo, categoría y contacto</small></summary>'+
+ '<div class="v105-form v1126-form">'+
+ '<label><span>Nombre completo *</span><input data-d-name autocomplete="name" maxlength="100" placeholder="Nombre del delegado"></label>'+
+ '<label><span>Categoría</span><select data-d-category><option value="">Sin categoría</option>'+opts(categoryNames,'')+'</select></label>'+
+ '<label><span>Equipo *</span><input data-d-team list="v1126-team-list" maxlength="100" placeholder="Escribe o elige equipo"></label>'+
+ '<label><span>Cargo</span><select data-d-role>'+opts(roleNames,'Delegado titular')+'</select></label>'+
+ '<label><span>Teléfono *</span><input data-d-phone type="tel" inputmode="tel" autocomplete="tel" maxlength="24" placeholder="10 dígitos o +52…"></label>'+
+ '<label><span>Correo (opcional)</span><input data-d-email type="email" autocomplete="email" maxlength="150" placeholder="correo@ejemplo.com"></label>'+
+ '<label class="v1126-wide"><span>Notas internas (opcionales)</span><textarea data-d-notes rows="2" maxlength="500" placeholder="Horario, suplente o indicaciones…"></textarea></label>'+
+ '<label class="v1126-consent v1126-wide"><input type="checkbox" data-d-consent><span>Autorizó recibir avisos por WhatsApp</span></label></div>'+
+ '<datalist id="v1126-team-list">'+teamNames().map(t=>'<option value="'+esc(t)+'"></option>').join('')+'</datalist>'+
+ '<div class="v105-actions v1126-save"><button type="button" class="v105-btn" data-d-save>Guardar contacto</button>'+
+ '<button type="button" class="v105-btn alt" data-d-cancel>Cancelar</button></div></details>'+
+ '<div class="v1126-directory-title"><b>Representantes registrados</b><span data-d-count></span></div>'+
+ '<div class="v105-list v1126-directory" data-d-list></div>'+
+ '<details class="v1126-extra"><summary>Preparar avisos y juntas</summary>'+
+ '<label class="v1126-small-label">Tipo de aviso<select data-d-notice-type><option value="jornada">Próxima jornada</option><option value="junta">Junta de delegados</option><option value="sede">Cambio de cancha u horario</option><option value="suspension">Suspensión</option><option value="general">Comunicado general</option></select></label>'+
+ '<label class="v1126-small-label">Mensaje para revisar<textarea data-d-notice rows="3" maxlength="1200"></textarea></label>'+
+ '<div class="v1126-tools"><button type="button" class="v105-btn alt" data-d-copy>Abrir para copiar aviso</button></div>'+
+ '<label class="v1126-small-label">Fecha y hora de junta (opcional)<input type="datetime-local" data-d-meeting-date></label>'+
+ '<div class="v1126-tools"><button type="button" class="v105-btn alt" data-d-calendar>Crear en Google Calendar</button></div>'+
+ '<small>Los mensajes se abren individualmente en WhatsApp para revisarlos y enviarlos manualmente. No se envían automáticamente.</small></details>'+
+ '<details class="v1126-extra"><summary>Importar y respaldo privado</summary>'+
+ '<p>Archivo local CSV, JSON o VCF. Comprueba los datos antes de confirmar la importación. No se suben a GitHub.</p>'+
+ '<div class="v1126-tools"><button type="button" class="v105-btn alt" data-d-import>Importar archivo</button>'+
+ '<button type="button" class="v105-btn alt" data-d-json>Descargar respaldo JSON</button></div>'+
+ '<input type="file" data-d-file accept=".csv,.json,.vcf,text/csv,application/json,text/vcard" hidden>'+
+ '<small>Estos contactos permanecen en este navegador. El respaldo contiene datos personales: guárdalo en un lugar privado.</small></details>';
+ const m=modal('Delegados / encargados','Directorio privado en este dispositivo. Llama, edita o prepara avisos sin publicar teléfonos.',header);
+ m.classList.add('v1107-admin-modal','v1126-delegate-modal');
+ let editingId=null;
+ const q=s=>$(s,m);
+ const persist=action=>{write(key,list);log(action)};
+ const reset=()=>{
+  editingId=null;
+  ['name','team','phone','email','notes'].forEach(k=>q('[data-d-'+k+']').value='');
+  q('[data-d-category]').value='';
+  q('[data-d-role]').value='Delegado titular';
+  q('[data-d-consent]').checked=false;
+  q('[data-d-edit-title]').textContent='Agregar representante';
+  q('[data-d-save]').textContent='Guardar contacto';
+ };
+ const template={
+  jornada:'Hola {nombre}, la Liga Juventino Rosas informa sobre la próxima jornada de {equipo}. Consulta los horarios y campos oficiales antes de asistir.',
+  junta:'Hola {nombre}, se prepara una junta de delegados de la Liga Juventino Rosas. Por favor confirma tu asistencia cuando recibas la convocatoria oficial.',
+  sede:'Hola {nombre}, hay información sobre un posible cambio de cancha u horario para {equipo}. Verifica el aviso oficial antes de trasladarte.',
+  suspension:'Hola {nombre}, hay información de una posible suspensión. Confirma el estado oficial del partido de {equipo} antes de asistir.',
+  general:'Hola {nombre}, este es un comunicado de la Liga Juventino Rosas para {equipo}. Consulta la información oficial.'
+ };
+ const personalized=(text,item)=>String(text||'').replace(/\{nombre\}/gi,item.name||'delegado').replace(/\{equipo\}/gi,item.team||'tu equipo');
+ const noticeText=()=>clean(q('[data-d-notice]').value);
+ q('[data-d-notice]').value=template.jornada;
+ q('[data-d-notice-type]').onchange=()=>{q('[data-d-notice]').value=template[q('[data-d-notice-type]').value]||template.general};
+ const render=()=>{
+  const term=norm(q('[data-d-search]').value),cat=q('[data-d-category-filter]').value,role=q('[data-d-role-filter]').value;
+  const uniqueTeams=new Set(list.map(x=>norm(x.team)).filter(Boolean));
+  const consented=list.filter(x=>x.consent===true).length;
+  q('[data-d-stats]').innerHTML='<span><b>'+list.length+'</b><small>Contactos</small></span><span><b>'+uniqueTeams.size+'</b><small>Equipos</small></span><span><b>'+consented+'</b><small>Avisos autorizados</small></span>';
+  const filtered=list.filter(x=>(!cat||x.category===cat)&&(!role||(x.role||'Delegado titular')===role)&&(!term||norm([x.name,x.team,x.phone,x.role,x.category].join(' ')).includes(term)));
+  q('[data-d-count]').textContent=filtered.length+' de '+list.length;
+  q('[data-d-list]').innerHTML=filtered.length?filtered.map(x=>{
+    const id=esc(x.id),number=phoneDigits(x.phone),wa=whatsappPhone(x.phone),enabled=!!wa;
+    const roleText=x.role||'Delegado titular';
+    const approved=x.consent===true;
+    const safePhone=number?'<a class="v1126-link" href="tel:+'+number+'">'+esc(x.phone)+'</a>':esc(x.phone);
+    return '<article class="v1126-card"><div class="v1126-card-head"><span class="v1126-avatar" aria-hidden="true">'+esc((x.name||'?').slice(0,1).toUpperCase())+'</span><div><b>'+esc(x.name||'Sin nombre')+'</b><small>'+esc(x.team||'Sin equipo')+' · '+esc(roleText)+(x.category?' · '+esc(x.category):'')+'</small><small>'+safePhone+'</small></div></div>'+
+    '<div class="v1126-badges"><span>'+(approved?'✓ Avisos autorizados':'Avisos sin autorización registrada')+'</span>'+(x.email?'<span>'+esc(x.email)+'</span>':'')+'</div>'+
+    (x.notes?'<p class="v1126-notes">'+esc(x.notes)+'</p>':'')+
+    '<div class="v1126-card-actions">'+
+    '<a href="tel:+'+number+'"'+(number?'':' aria-disabled="true"')+' class="v1126-action">☎ Llamar</a>'+
+    (enabled?'<a data-d-whatsapp="'+id+'" href="https://wa.me/'+wa+'" target="_blank" rel="noopener noreferrer" class="v1126-action">WhatsApp</a>':'<span class="v1126-action is-disabled">WhatsApp</span>')+
+    '<button type="button" data-d-edit="'+id+'">Editar</button>'+
+    '<button type="button" data-d-contact-vcf="'+id+'">VCF</button>'+
+    '<button type="button" class="v1126-delete" data-d-delete="'+id+'">Quitar</button></div></article>';
+  }).join(''):'<p class="v105-footnote">'+(list.length?'No hay contactos con estos filtros.':'Todavía no hay delegados guardados. Agrega el primero arriba.')+'</p>';
+  $$('[data-d-whatsapp]',m).forEach(a=>{
+    const item=list.find(x=>x.id===a.dataset.dWhatsapp);
+    if(!item)return;
+    a.href='https://wa.me/'+whatsappPhone(item.phone)+'?text='+encodeURIComponent(personalized(noticeText(),item));
+    a.title=item.consent===true?'Abrir conversación':'Revisa primero si tienes autorización para enviar avisos';
+    a.onclick=e=>{if(item.consent!==true&&!confirm('No hay autorización para enviar avisos registrada. ¿Quieres abrir WhatsApp sin enviar nada automáticamente?'))e.preventDefault()};
+  });
+  $$('[data-d-edit]',m).forEach(btn=>btn.onclick=()=>{
+    const x=list.find(d=>d.id===btn.dataset.dEdit);if(!x)return;
+    editingId=x.id;
+    ['name','team','phone','email','notes'].forEach(k=>{q('[data-d-'+k+']').value=x[k]||''});
+    const category=q('[data-d-category]');
+    if(x.category&&!Array.from(category.options).some(o=>o.value===x.category))category.add(new Option(x.category,x.category));
+    category.value=x.category||'';
+    const role=q('[data-d-role]');
+    if(x.role&&!Array.from(role.options).some(o=>o.value===x.role))role.add(new Option(x.role,x.role));
+    role.value=x.role||'Delegado titular';
+    q('[data-d-consent]').checked=x.consent===true;
+    q('[data-d-edit-title]').textContent='Editar representante';
+    q('[data-d-save]').textContent='Guardar cambios';
+    q('[data-d-editor]').open=true;
+    q('[data-d-editor]').scrollIntoView({behavior:'smooth',block:'nearest'});
+  });
+  $$('[data-d-delete]',m).forEach(btn=>btn.onclick=()=>{
+    const i=list.findIndex(d=>d.id===btn.dataset.dDelete);if(i<0)return;
+    if(!confirm('¿Quitar a '+list[i].name+' del directorio de este dispositivo?'))return;
+    if(editingId===list[i].id){reset();q('[data-d-editor]').open=false}
+    list.splice(i,1);persist('Eliminar delegado local');render();
+  });
+  $$('[data-d-contact-vcf]',m).forEach(btn=>btn.onclick=()=>{
+    const item=list.find(x=>x.id===btn.dataset.dContactVcf);if(!item)return;
+    download(vcard(item),'Delegado_'+(item.name||'contacto').replace(/[^\w-]+/g,'_')+'.vcf','text/vcard;charset=utf-8');
+  });
+ };
+ const vcard=(item)=>{
+  const escapeV=v=>String(v||'').replace(/\\/g,'\\\\').replace(/\r?\n/g,'\\n').replace(/[;,]/g,c=>'\\'+c);
+  const rows=['BEGIN:VCARD','VERSION:3.0','FN:'+escapeV(item.name),'ORG:'+escapeV(item.team)];
+  if(item.phone)rows.push('TEL;TYPE=CELL:'+escapeV(item.phone));
+  if(item.email)rows.push('EMAIL:'+escapeV(item.email));
+  if(item.notes)rows.push('NOTE:'+escapeV(item.notes));
+  rows.push('END:VCARD');return rows.join('\r\n')+'\r\n';
+ };
+ q('[data-d-new]').onclick=()=>{reset();q('[data-d-editor]').open=true;q('[data-d-editor]').scrollIntoView({behavior:'smooth',block:'nearest'})};
+ q('[data-d-cancel]').onclick=()=>{reset();q('[data-d-editor]').open=false};
+ q('[data-d-search]').oninput=render;
+ q('[data-d-category-filter]').onchange=render;
+ q('[data-d-role-filter]').onchange=render;
+ q('[data-d-save]').onclick=()=>{
+  const name=clean(q('[data-d-name]').value),team=clean(q('[data-d-team]').value),phone=clean(q('[data-d-phone]').value),digits=phoneDigits(phone);
+  if(!name||!team||!phone)return toast('Completa nombre, equipo y teléfono');
+  if(digits.length<10||digits.length>15)return toast('Revisa el teléfono: entre 10 y 15 dígitos');
+  const email=clean(q('[data-d-email]').value);
+  if(email&&!q('[data-d-email]').checkValidity())return toast('Revisa el correo electrónico');
+  const duplicate=list.find(x=>x.id!==editingId&&phoneDigits(x.phone)===digits);
+  if(duplicate&&!confirm('El teléfono ya está registrado para '+duplicate.name+' ('+(duplicate.team||'sin equipo')+'). ¿Guardar otro contacto con el mismo número?'))return;
+  const old=list.find(x=>x.id===editingId)||{};
+  const item={...old,id:old.id||makeId(),name,team,phone,
+   role:q('[data-d-role]').value,category:q('[data-d-category]').value,
+   email,notes:clean(q('[data-d-notes]').value),consent:q('[data-d-consent]').checked,
+   updatedAt:new Date().toISOString()};
+  const idx=list.findIndex(x=>x.id===editingId);
+  if(idx>=0)list[idx]=item;else list.push(item);
+  persist(idx>=0?'Editar delegado local':'Agregar delegado local');
+  reset();q('[data-d-editor]').open=false;render();toast(idx>=0?'Cambios guardados':'Contacto guardado');
+ };
+ q('[data-d-csv]').onclick=()=>{
+  if(!list.length)return toast('No hay contactos para exportar');
+  if(!confirm('El CSV contiene teléfonos y datos personales. ¿Descargarlo a este dispositivo?'))return;
+  const cols=['nombre','equipo','categoria','cargo','telefono','correo','notas','avisos_autorizados'];
+  const text='\ufeff'+csvLine(cols)+'\r\n'+list.map(x=>csvLine([x.name,x.team,x.category,x.role,x.phone,x.email,x.notes,x.consent?'si':'no'])).join('\r\n');
+  download(text,'Delegados_Liga_Juventino_Rosas.csv','text/csv;charset=utf-8');
+ };
+ q('[data-d-vcf]').onclick=()=>{
+  if(!list.length)return toast('No hay contactos para exportar');
+  if(!confirm('Se exportarán nombres y teléfonos privados. ¿Descargar el archivo VCF?'))return;
+  download(list.map(vcard).join(''),'Delegados_Liga_Juventino_Rosas.vcf','text/vcard;charset=utf-8');
+ };
+ q('[data-d-json]').onclick=()=>{
+  if(!list.length)return toast('No hay contactos para respaldar');
+  if(!confirm('El respaldo JSON contiene teléfonos y notas privadas. ¿Descargarlo?'))return;
+  download(JSON.stringify({version:1,app:'Liga Juventino Rosas',contacts:list,exportedAt:new Date().toISOString()},null,2),'Respaldo_privado_delegados.json','application/json;charset=utf-8');
+ };
+ q('[data-d-copy]').onclick=async()=>{
+  const t=noticeText();
+  if(!t)return toast('Escribe un mensaje primero');
+  try{await navigator.clipboard.writeText(t);toast('Borrador copiado; revisa antes de enviar')}
+  catch(_){q('[data-d-notice]').select();toast('Selecciona y copia el aviso')}
+ };
+ q('[data-d-calendar]').onclick=()=>{
+  const value=q('[data-d-meeting-date]').value;
+  if(!value)return toast('Elige primero la fecha y hora');
+  const start=new Date(value);
+  if(Number.isNaN(start.getTime()))return toast('Revisa la fecha');
+  const end=new Date(start.getTime()+60*60*1000);
+  const stamp=d=>d.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
+  const url='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Junta de delegados · Liga Juventino Rosas')+'&dates='+stamp(start)+'/'+stamp(end)+'&details='+encodeURIComponent('Convocatoria en preparación. Confirmar sede, horario y acuerdos con la Liga.');
+  window.open(url,'_blank','noopener,noreferrer');
+ };
+ const parseCSV=input=>{
+  const txt=input.replace(/^\ufeff/,'');
+  const firstLine=txt.split(/\r?\n/,1)[0]||'';
+  const delimiter=firstLine.includes(';')&&!firstLine.includes(',')?';':',';
+  const rows=[];let row=[],cell='',quoted=false;
+  for(let i=0;i<txt.length;i++){
+   const ch=txt[i];
+   if(ch==='"'){if(quoted&&txt[i+1]==='"'){cell+='"';i++}else quoted=!quoted}
+   else if(!quoted&&ch===delimiter){row.push(cell);cell=''}
+   else if(!quoted&&(ch==='\n'||ch==='\r')){if(ch==='\r'&&txt[i+1]==='\n')i++;row.push(cell);if(row.some(Boolean))rows.push(row);row=[];cell=''}
+   else cell+=ch;
+  }
+  row.push(cell);if(row.some(Boolean))rows.push(row);
+  if(!rows.length)return [];
+  const normal=s=>norm(s).replace(/\s+/g,'');
+  const aliases={name:['nombre','name','nombrecompleto'],team:['equipo','team','club'],phone:['telefono','tel','celular','phone','movil'],role:['cargo','role','funcion'],category:['categoria','category'],email:['correo','email'],notes:['notas','notes'],consent:['avisosautorizados','autorizacion','consent']};
+  const names=rows.shift().map(normal);
+  const index=field=>names.findIndex(x=>aliases[field].includes(x));
+  if(index('name')<0||index('phone')<0)throw Error('El CSV necesita las columnas nombre y telefono.');
+  return rows.map(row=>{
+   const value=field=>{const j=index(field);return j>=0?row[j]||'':''};
+   return {name:value('name'),team:value('team'),phone:value('phone'),role:value('role'),category:value('category'),email:value('email'),notes:value('notes'),consent:/^(si|sí|true|1)$/i.test(value('consent'))};
+  });
+ };
+ const parseVcf=txt=>{
+  const cards=txt.replace(/\r?\n[ \t]/g,'').split(/BEGIN:VCARD/i).slice(1);
+  return cards.map(card=>{
+   const get=k=>{const line=card.split(/\r?\n/).find(x=>x.split(':')[0].split(';')[0].toUpperCase()===k);return line?line.slice(line.indexOf(':')+1).replace(/\\n/gi,'\n').replace(/\\([,;\\])/g,'$1'):''};
+   return {name:get('FN'),team:get('ORG'),phone:get('TEL'),email:get('EMAIL'),notes:get('NOTE')};
+  });
+ };
+ q('[data-d-import]').onclick=()=>q('[data-d-file]').click();
+ q('[data-d-file]').onchange=async()=>{
+  const input=q('[data-d-file]'),file=input.files&&input.files[0];
+  if(!file)return;
+  try{
+   if(file.size>2000000)throw Error('El archivo supera 2 MB.');
+   const txt=await file.text(),name=file.name.toLowerCase();
+   let items;
+   if(name.endsWith('.json')){const doc=JSON.parse(txt);items=Array.isArray(doc)?doc:doc.contacts}
+   else if(name.endsWith('.vcf'))items=parseVcf(txt);
+   else if(name.endsWith('.csv'))items=parseCSV(txt);
+   else throw Error('Usa un archivo CSV, JSON o VCF.');
+   if(!Array.isArray(items)||items.length>5000)throw Error('Archivo inválido o demasiado grande.');
+   const existing=new Set(list.map(x=>phoneDigits(x.phone)+'|'+norm(x.team)+'|'+norm(x.name)));
+   const valid=[];
+   items.forEach(item=>{
+    if(!item||typeof item!=='object')return;
+    const name=clean(item.name).slice(0,100),phone=clean(item.phone).slice(0,24),team=clean(item.team).slice(0,100),digits=phoneDigits(phone);
+    if(!name||digits.length<10||digits.length>15)return;
+    const tag=digits+'|'+norm(team)+'|'+norm(name);if(existing.has(tag))return;
+    existing.add(tag);
+    valid.push({id:makeId(),name,phone,team,category:clean(item.category).slice(0,90),
+     role:clean(item.role).slice(0,90)||'Delegado titular',email:clean(item.email).slice(0,150),
+     notes:clean(item.notes).slice(0,500),consent:item.consent===true,
+     updatedAt:new Date().toISOString()});
+   });
+   if(!valid.length)return toast('No hay contactos nuevos válidos');
+   if(!confirm('Se agregarán '+valid.length+' contactos privados en este dispositivo. Los existentes se conservarán. ¿Continuar?'))return;
+   list.push(...valid);persist('Importar delegados privados');render();toast(valid.length+' contactos importados');
+  }catch(err){toast(err.message||'No se pudo leer el archivo')}
+  finally{input.value=''}
+ };
+ q('[data-d-editor]').open=!list.length;
+ render();
 }
 function officials(){
  const roles=['Árbitro','Árbitro central','Árbitro asistente','Cuarto árbitro','Asistente','Responsable de campo','Delegado','Supervisor'];
