@@ -3,18 +3,35 @@
  */
 import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import {dirname} from 'node:path';
-import {createHash} from 'node:crypto';
+import {createHash,createHmac,timingSafeEqual} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 const ROOT=new URL('../../',import.meta.url);
 const read=(path)=>JSON.parse(readFileSync(new URL(path,ROOT),'utf8'));
 const sha=v=>createHash('sha256').update(JSON.stringify(v)).digest('hex');
 const CATS=['1','2','3','4','5'];
-function approved(notice){
- const a=notice?.approval;
- return !!(a&&a.status==='approved'&&typeof a.by==='string'&&a.by.trim().length>0&&
- typeof a.at==='string'&&Number.isFinite(Date.parse(a.at)));
+// Igual que el publicador Python: JSON compacto, UTF-8 y claves ordenadas
+// recursivamente; nunca se imprime ni se guarda el secreto HMAC.
+function canonical(value){
+ if(Array.isArray(value))return value.map(canonical);
+ if(value!==null&&typeof value==='object')
+  return Object.fromEntries(Object.keys(value).sort().map(k=>[k,canonical(value[k])]));
+ return value;
 }
-export function audit(files,now=new Date()){
+export function verifiedNoticeApproval(item,secret){
+ const a=item?.approval;
+ if(typeof secret!=='string'||secret.length<32||!a||a.status!=='approved'||
+    typeof a.by!=='string'||!a.by.trim()||
+    typeof a.at!=='string'||!Number.isFinite(Date.parse(a.at))||
+    !/^[a-f0-9]{64}$/i.test(String(a.signature||'')))return false;
+ const payload={};
+ for(const k of ['id','title','body','message','category','channels','publish_at','publishAt','type'])
+  payload[k]=item[k]===undefined?null:item[k];
+ payload.approval={status:a.status,by:a.by,at:a.at};
+ const expected=createHmac('sha256',secret).update(JSON.stringify(canonical(payload)),'utf8').digest();
+ const actual=Buffer.from(a.signature,'hex');
+ return actual.length===expected.length&&timingSafeEqual(actual,expected);
+}
+export function audit(files,now=new Date(),secret=process.env.LJR_OFFICIAL_NOTICE_APPROVAL_SECRET||''){
  const warnings=[],review=[],checks=[];
  const raw=files.official,publicCopy=files.publicOfficial;
  if(!raw||!publicCopy||typeof raw!=='object'){
@@ -38,11 +55,13 @@ export function audit(files,now=new Date()){
   const when=Date.parse(item.publish_at||item.publishAt||'');
   if(!Number.isFinite(when)){warnings.push('Hay una fecha de aviso programado inválida.');continue}
   if(item.published_at||item.app_published)continue;
-  if(!approved(item))waiting++;
+  if(!verifiedNoticeApproval(item,secret))waiting++;
   else eligible++;
  }
  if(waiting)review.push(waiting+' aviso(s) pendientes de aprobación explícita. No deben publicarse.');
- checks.push(eligible+' aviso(s) elegibles con aprobación en el archivo de programación.');
+ checks.push(eligible+' aviso(s) con firma HMAC válida en el archivo de programación.');
+ if(waiting&&notices.some(item=>item?.approval?.status==='approved'))
+  review.push('Hay aprobaciones declaradas que no pudieron verificarse con la clave privada de GitHub Actions. No son elegibles para publicar.');
  const differences=Array.isArray(files.adminfut?.cedulaScoreDifferences)?files.adminfut.cedulaScoreDifferences.length:0;
  if(differences)review.push(differences+' diferencias de marcador entre fichas públicas y cédulas para comprobación humana (no aplicar automáticamente).');
  return {generatedAt:now.toISOString(),status:warnings.length?'needs_attention':review.length?'review':'ok',
