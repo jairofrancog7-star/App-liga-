@@ -16,7 +16,7 @@ html body .ljr-gcal-chooser{
   min-height:0!important;
   padding:calc(12px + env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px))!important;
   margin:0!important;
-  background:rgba(2,9,25,.82)!important;
+  background:rgba(2,5,43,.86)!important;
   overflow:hidden!important;
   overscroll-behavior:contain;
   -webkit-text-size-adjust:100%;
@@ -35,8 +35,8 @@ html body .ljr-gcal-chooser .ljr-gcal-dialog{
   gap:10px!important;
   overflow:hidden!important;
   color:#f5f9ff!important;
-  background:linear-gradient(160deg,#153b91 0%,#101f70 36%,#090e53 100%)!important;
-  border:1px solid #3677c1!important;
+  background:linear-gradient(165deg,var(--surface2,#18278F) 0%,var(--surface,#111A73) 36%,var(--deep,#050B61) 100%)!important;
+  border:1px solid rgba(62,99,221,.64)!important;
   border-radius:17px!important;
   box-shadow:0 16px 55px rgba(0,5,21,.65)!important;
   font-family:inherit!important;
@@ -80,8 +80,8 @@ html body .ljr-gcal-chooser button.ljr-gcal-close{
   max-height:32px!important;
   padding:0 11px!important;
   margin:0!important;
-  background:#19367e!important;
-  border:1px solid #3e73b6!important;
+  background:var(--surface2,#18278F)!important;
+  border:1px solid rgba(62,99,221,.58)!important;
   border-radius:9px!important;
   color:#eaf4ff!important;
   font-family:inherit!important;font-size:11px!important;font-weight:600!important;line-height:1.15!important;
@@ -102,7 +102,7 @@ html body .ljr-gcal-chooser .ljr-gcal-note{
   font-size:11px!important;
   font-weight:450!important;
   line-height:1.4!important;
-  color:#afcbed!important;
+  color:var(--soft,#C6C9E3)!important;
   white-space:normal!important;
   overflow-wrap:anywhere!important;
   text-align:left!important;
@@ -118,9 +118,9 @@ html body .ljr-gcal-chooser input.ljr-gcal-search{
   margin:0!important;
   padding:0 12px!important;
   outline:0!important;
-  border:1px solid #3a6dad!important;
+  border:1px solid rgba(62,99,221,.62)!important;
   border-radius:9px!important;
-  background:#0d1a60!important;
+  background:var(--deep,#050B61)!important;
   color:#fff!important;
   font-family:inherit!important;font-size:12px!important;font-weight:500!important;line-height:1.25!important;
   text-align:left!important;
@@ -133,7 +133,7 @@ html body .ljr-gcal-chooser input.ljr-gcal-search::placeholder{
 }
 html body .ljr-gcal-chooser input.ljr-gcal-search:focus-visible,
 html body .ljr-gcal-chooser button:focus-visible{
-  outline:2px solid #6fc6ff!important;
+  outline:2px solid var(--cyan,#00D7EA)!important;
   outline-offset:2px!important;
 }
 html body .ljr-gcal-chooser .ljr-gcal-list{
@@ -155,7 +155,7 @@ html body .ljr-gcal-chooser .ljr-gcal-list{
   overscroll-behavior:contain!important;
   -webkit-overflow-scrolling:touch;
   scrollbar-width:thin;
-  scrollbar-color:#326bb0 transparent;
+  scrollbar-color:var(--primary,#3E63DD) transparent;
 }
 html body .ljr-gcal-chooser button.ljr-gcal-event{
   appearance:none!important;
@@ -174,9 +174,9 @@ html body .ljr-gcal-chooser button.ljr-gcal-event{
   margin:0!important;
   padding:9px 11px!important;
   overflow:visible!important;
-  border:1px solid #3567a8!important;
+  border:1px solid rgba(62,99,221,.48)!important;
   border-radius:11px!important;
-  background:#122670!important;
+  background:linear-gradient(155deg,var(--surface,#111A73),var(--base,#07117E) 60%,var(--deep,#050B61))!important;
   color:#f3f8ff!important;
   text-align:left!important;
   text-transform:none!important;
@@ -188,8 +188,8 @@ html body .ljr-gcal-chooser button.ljr-gcal-event{
 }
 html body .ljr-gcal-chooser button.ljr-gcal-event:hover,
 html body .ljr-gcal-chooser button.ljr-gcal-event:active{
-  background:#1c3984!important;
-  border-color:#61a3ec!important;
+  background:var(--surface2,#18278F)!important;
+  border-color:var(--cyan,#00D7EA)!important;
 }
 html body .ljr-gcal-chooser .ljr-gcal-event-title{
   display:block!important;
@@ -213,7 +213,7 @@ html body .ljr-gcal-chooser .ljr-gcal-event-details{
   margin:0!important;
   padding:0!important;
   font-family:inherit!important;font-size:11px!important;font-weight:450!important;line-height:1.35!important;
-  color:#b7d3f5!important;
+  color:var(--soft,#C6C9E3)!important;
   text-align:left!important;
   letter-spacing:0!important;
   white-space:normal!important;
