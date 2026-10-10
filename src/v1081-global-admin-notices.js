@@ -226,41 +226,10 @@ async function publicMount(force=false){
    const body=document.createElement('p');body.textContent=item.body||'';
    card.append(badge,title,body);panel.append(card);
   }
-  const config=await publicCall('/config').catch(()=>null);
-  if(config?.pushEnabled&&'Notification'in window&&'serviceWorker'in navigator&&'PushManager'in window){
-   const controls=document.createElement('div');controls.className='v1081-public-actions';
-   const select=document.createElement('select');select.setAttribute('aria-label','Categoría de notificaciones');
-   for(const [v,label] of cats){const option=document.createElement('option');option.value=v;option.textContent=label;select.append(option)}
-   const toggle=document.createElement('button');toggle.type='button';toggle.textContent='Activar avisos Push';
-   const small=document.createElement('small');small.textContent='Solo con permiso del usuario.';
-   toggle.onclick=async()=>{
-    toggle.disabled=true;small.textContent='Procesando permiso…';
-    try{
-     const reg=await navigator.serviceWorker.register('./sw.js');
-     const existing=await reg.pushManager.getSubscription();
-     if(existing){
-      await publicCall('/push/unsubscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({endpoint:existing.endpoint})});
-      await existing.unsubscribe();toggle.textContent='Activar avisos Push';small.textContent='Notificaciones desactivadas.';
-     }else{
-      const permission=await Notification.requestPermission();
-      if(permission!=='granted')throw Error('No concediste permiso para notificaciones.');
-      const key=String(config.vapidPublicKey||'');
-      if(!key)throw Error('No está configurada la clave pública Push.');
-      const base64=(key+'='.repeat((4-key.length%4)%4)).replace(/-/g,'+').replace(/_/g,'/');
-      const raw=atob(base64),bytes=Uint8Array.from(raw,c=>c.charCodeAt(0));
-      const subscription=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:bytes});
-      try{await publicCall('/push/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},
-       body:JSON.stringify({subscription:subscription.toJSON(),category:select.value})})}
-      catch(err){await subscription.unsubscribe();throw err}
-      toggle.textContent='Desactivar avisos Push';small.textContent='Suscripción activa para '+select.value+'.';
-     }
-    }catch(err){small.textContent=err.message}
-    finally{toggle.disabled=false}
-   };
-   navigator.serviceWorker.getRegistration().then(r=>r?.pushManager.getSubscription()).then(sub=>{if(sub)toggle.textContent='Desactivar avisos Push'}).catch(()=>{});
-   controls.append(select,toggle,small);panel.append(controls);
-  }
-  if(!shown.length&&!config?.pushEnabled)panel.remove(); // No tarjetas vacías ni controles inútiles.
+  // La suscripción Push se administra exclusivamente en el módulo v1082 existente.
+  // Aquí solo se muestran los comunicados globales, evitando paneles y botones duplicados.
+  if(!shown.length)panel.remove();
+
  }catch(err){const panel=$('[data-v1081-public]',main);if(panel)panel.remove();}
  finally{publicRunning=false}
 }
