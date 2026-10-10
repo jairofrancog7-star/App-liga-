@@ -42,3 +42,18 @@ html body > .v105-modal.v1126-sanction-modal .v1126-history article strong,html 
 html body > .v105-modal.v1126-sanction-modal .v1126-history article small{font-size:10px;color:#bcd0ea;margin-top:4px}
 html body > .v105-modal.v1126-sanction-modal .v1126-history article button{background:#163778;color:#fff;border:1px solid #557fc7;border-radius:8px;min-height:34px;font-size:11px;padding:6px}
 @media(max-width:440px){html body > .v105-modal.v1126-sanction-modal .v1126-grid{grid-template-columns:minmax(0,1fr)}html body > .v105-modal.v1126-sanction-modal .v1126-stage{padding:11px}html body > .v105-modal.v1126-sanction-modal .v1126-history article{grid-template-columns:minmax(0,1fr) auto auto}}
+
+/* V1126.1 — búsqueda, respaldo y nuevo borrador; controles táctiles accesibles. */
+html body > .v105-modal.v1126-sanction-modal .v1126-history-filter{display:grid;gap:9px;background:rgba(9,33,93,.65);border:1px solid rgba(99,179,240,.36);border-radius:14px;padding:12px}
+html body > .v105-modal.v1126-sanction-modal .v1126-backup-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+html body > .v105-modal.v1126-sanction-modal .v1126-backup-actions button{min-height:42px;min-width:0;padding:8px;border-radius:10px;border:1px solid #5985c9;background:#163978;color:white;font-size:11px;font-weight:800;overflow-wrap:anywhere}
+html body > .v105-modal.v1126-sanction-modal .v1126-footer{justify-content:flex-start;gap:10px 15px}
+html body > .v105-modal.v1126-sanction-modal .v1126-footer button{min-height:40px}
+html body > .v105-modal.v1126-sanction-modal .v1126-footer [data-new]{color:#fff;background:#1d509d;border:1px solid #6dbedb;border-radius:10px;padding:9px 12px;text-decoration:none}
+html body > .v105-modal.v1126-sanction-modal .v1126-history article{min-width:0}
+html body > .v105-modal.v1126-sanction-modal .v1126-history article>div{min-width:0}
+html body > .v105-modal.v1126-sanction-modal .v1126-history article button{touch-action:manipulation}
+html body > .v105-modal.v1126-sanction-modal .v1126-results>button:focus-visible,
+html body > .v105-modal.v1126-sanction-modal .v1126-history button:focus-visible,
+html body > .v105-modal.v1126-sanction-modal .v1126-actions button:focus-visible{outline:2px solid #7aeefa;outline-offset:2px}
+@media(max-width:360px){html body > .v105-modal.v1126-sanction-modal .v1126-backup-actions{grid-template-columns:1fr}html body > .v105-modal.v1126-sanction-modal .v1126-history article{grid-template-columns:minmax(0,1fr) auto;row-gap:5px}}
