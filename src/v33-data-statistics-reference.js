@@ -381,13 +381,29 @@ function applyHeaderScroll(){
 
  head.classList.toggle('is-collapsed',p>.82);
 }
+/* V1188: medir el hueco real visible en el móvil.
+   Los estilos históricos dejan un offset extra de hasta ~150px por debajo de
+   la línea blanca. Eliminar únicamente el excedente, no la altura del header. */
+function alignFirstStatsHeading(screen){
+ if(!isDataRoute())return;
+ if((screen?.scrollTop||0)>4 || (window.scrollY||0)>4)return;
+ const page=screen?.querySelector('[data-v33-data]');
+ const head=page?.querySelector('[data-v33-head]');
+ const main=page?.querySelector('.v33-data-content');
+ const first=main?.querySelector('.v33-general-title');
+ if(!page||!head||!main||!first||!head.getBoundingClientRect||!first.getBoundingClientRect)return;
+ // En cada render se crea un nuevo elemento sin compensaciones anteriores.
+ const gap=first.getBoundingClientRect().top-head.getBoundingClientRect().bottom;
+ const excess=Math.max(0,Math.min(320,Math.round(gap-8)));
+ page.style.setProperty('--v33-visible-gap-fix',excess+'px');
+}
 let tick=0;function onScroll(){if(tick)return;tick=requestAnimationFrame(()=>{tick=0;applyHeaderScroll()})}
 window.addEventListener('scroll',onScroll,{passive:true});
 document.addEventListener('scroll',onScroll,{passive:true,capture:true});
 async function render(){
  const active=isDataRoute();document.body.classList.toggle('v33-data-active',active);if(!active)return;
  await load();if(!db||!isDataRoute())return;
- const screen=document.querySelector('#screen');if(!screen)return;screen.innerHTML=markup();setBottomNav();bind();applyHeaderScroll();
+ const screen=document.querySelector('#screen');if(!screen)return;screen.innerHTML=markup();setBottomNav();bind();applyHeaderScroll();requestAnimationFrame(()=>alignFirstStatsHeading(screen));
 }
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}
 window.addEventListener('hashchange',schedule);
