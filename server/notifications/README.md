@@ -1,3 +1,13 @@
+## WhatsApp normal — modo activo en la interfaz (sin API ni automatización)
+
+La Liga confirmó que el número del presidente utiliza **WhatsApp personal (normal)**, no un remitente de WhatsApp Business registrado en Twilio. **No es posible enviar mensajes automáticos con la API oficial de Twilio usando directamente esa cuenta personal.**
+
+- **GitHub Pages:** `src/v1074-suspension-approval-workflow.js` ofrece **WhatsApp normal · compartir aviso** después de revisar y registrar la autorización. Solo prepara texto y abre WhatsApp para que una persona seleccione el chat y pulse Enviar. `src/v1081-global-admin-notices.js` ofrece el mismo modo manual desde Avisos globales sin exigir que se active Twilio.
+- **Avisos por equipo:** la app prepara el texto individual; las anotaciones `Enviado`/`Recibido` son **manuales**, nunca confirmaciones de WhatsApp.
+- **Railway:** el proyecto de avisos permanece **STAGED**, con `TWILIO_WHATSAPP_SENDER` vacío y `TWILIO_WHATSAPP_ACTIVATED=false`. La cuenta personal no se registró como remitente Twilio y no habrá envío por ese canal.
+- **Contacto del presidente:** el centro global de archivos de la aplicación (`src/v161-whatsapp-admin.js`) ya mostraba públicamente el teléfono del presidente y permitía abrir su chat. Esto es independiente del backend; el teléfono no se debe copiar a variables públicas nuevas. Si se decide dejar de mostrarlo públicamente, habrá que cambiar ese módulo existente también.
+- **Futuro:** para enviar automáticamente habría que registrar un remitente WhatsApp Business oficialmente aprobado, configurar credenciales/plantillas en privado y obtener consentimiento de destinatarios. No se deben usar bots no oficiales sobre WhatsApp normal por riesgo de bloqueos y privacidad.
+
 ## Remitente WhatsApp México — pendiente de autorización
 
 El responsable de la Liga confirmó que desea usar un número mexicano como **remitente oficial**. Se cargó el candidato **solo como variable privada y STAGED de Railway** (nunca en GitHub Pages, este README ni los archivos públicos), con el prefijo E.164 `whatsapp:+52`.
