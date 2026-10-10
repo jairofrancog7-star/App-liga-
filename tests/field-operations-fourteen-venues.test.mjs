@@ -34,3 +34,10 @@ test('La lista alternativa de permisos también incluye las cinco sedes',()=>{
   assert.ok(list);
   for(const name of newVenues.values())assert.ok(list[1].includes("'"+name+"'"));
 });
+
+test('El normalizador conserva los identificadores de las canchas al guardar',()=>{
+  const normalizer=readFileSync(new URL('../src/v881-global-field-normalizer.js',import.meta.url),'utf8');
+  assert.equal((src.match(/data-v668-stable-field/g)||[]).length,2);
+  assert.match(normalizer,/preserveFieldIds=el\.hasAttribute\('data-v668-stable-field'\)/);
+  assert.match(normalizer,/!preserveFieldIds &&/);
+});
