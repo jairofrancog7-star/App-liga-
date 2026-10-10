@@ -61,7 +61,7 @@ test('Push: permisos denegados muestran bloqueo y desactivan alta',async()=>{
 
 test('Push: mantiene compatibilidad y cache bust en HTML',()=>{
  assert.doesNotThrow(()=>new Function(source));
- assert.match(html,/v1082-push-notifications\.js\?v=20261010-v1226-push-confirmed/);
+ assert.match(html,/v1082-push-notifications\.js\?v=20261010-v1227-self-test/);
  assert.match(extracted,/server\('public-key'\)/);
  assert.match(extracted,/Notification\.permission==='denied'/);
 });
