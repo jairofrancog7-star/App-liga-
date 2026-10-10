@@ -110,7 +110,7 @@ function homeMarkup(){
  const views=[['all','Todos'],['upcoming','Próximos'],['drafts','Borradores'],['queue','En cola'],['finished','Resultados'],['mine','Asignados']];
  const shortcut=(icon,name,key)=>'<button class="v1130-shortcut" type="button" data-v562-quick="'+key+'"><span aria-hidden="true">'+icon+'</span><b>'+name+'</b></button>';
  return '<section class="v562-page v1130-referee" data-v562-page>'+
- '<header class="v562-head"><button type="button" data-v562-back aria-label="Volver">←</button><div><small>JR CONTROL · LIGA JUVENTINO ROSAS</small><h1>Centro arbitral</h1><p>Modo árbitro · partidos y cédulas sin señal</p></div><span class="v562-net '+(navigator.onLine?'on':'off')+'" data-v562-net>'+(navigator.onLine?'EN LÍNEA':'SIN SEÑAL')+'</span></header>'+
+ '<header class="v562-head"><div><small>JR CONTROL · LIGA JUVENTINO ROSAS</small><h1>Centro arbitral</h1><p>Modo árbitro · partidos y cédulas sin señal</p></div><span class="v562-net '+(navigator.onLine?'on':'off')+'" data-v562-net>'+(navigator.onLine?'EN LÍNEA':'SIN SEÑAL')+'</span></header>'+
  '<div class="v562-kpis"><span><b>'+drafts+'</b><small>Borradores</small></span><span><b>'+pending+'</b><small>En cola</small></span><span><b>'+matches.length+'</b><small>Partidos visibles</small></span></div>'+
  '<nav class="v1130-shortcuts" aria-label="Herramientas de arbitraje">'+shortcut('⚽','Mis partidos','all')+shortcut('📋','Mis cédulas','drafts')+shortcut('⏱','Cronómetro','timer')+shortcut('📶','Preparar sin señal','offline')+'</nav>'+
  '<article class="v562-info"><div><small>DATOS OFICIALES · PRIMERA</small><b>'+esc(sum.teams)+' equipos · '+esc(sum.played)+' jugados · '+esc(sum.pending)+' pendientes</b><em>'+esc(sum.players)+' jugadores · verificación '+esc(sum.verified||'pendiente')+'</em></div><button type="button" data-v562-refresh>Actualizar</button></article>'+
@@ -409,8 +409,7 @@ function render(){
   window.scrollTo(0,0);
 }
 function bind(root,m){
- root.querySelector('[data-v562-back]')?.addEventListener('click',()=>{location.hash='#/ligaControl'});
- root.querySelector('[data-v562-list]')?.addEventListener('click',()=>{if(m&&!autoSave(m)){toast('No se guardó. Exporta un respaldo antes de salir');return}currentMatchKey='';render()});
+ // Navegación centralizada en la flecha global de la barra superior.
  root.addEventListener('click',event=>{
   const b=event.target.closest('button');if(!b||!root.contains(b))return;
   if(b.hasAttribute('data-v562-open')){currentMatchKey=b.dataset.v562Open||'';render();return}
@@ -452,6 +451,22 @@ function bind(root,m){
 }
 function net(){document.querySelectorAll('[data-v562-net]').forEach(el=>{el.classList.toggle('on',navigator.onLine);el.classList.toggle('off',!navigator.onLine);el.textContent=navigator.onLine?'EN LÍNEA':'SIN SEÑAL'})}
 window.addEventListener('online',net);window.addEventListener('offline',net);
+/* V1168: la flecha superior vuelve a la lista sin perder la cédula.
+   En esta ruta no debe aparecer ninguna flecha de vuelta dentro del contenido. */
+document.addEventListener('click',function(e){
+ if(route()!==ROUTE||!currentMatchKey)return;
+ if(!e.target.closest?.('#backButton'))return;
+ e.preventDefault();
+ e.stopImmediatePropagation();
+ const match=findMatch(currentMatchKey);
+ if(match&&!autoSave(match)){
+  toast('No se guardó. Exporta un respaldo antes de salir');
+  return;
+ }
+ currentMatchKey='';
+ clearTimeout(autoSaveTimer);
+ render();
+},true);
 window.addEventListener('hashchange',()=>{if(route()===ROUTE){currentMatchKey='';setTimeout(render,20)}else if(currentMatchKey){const m=findMatch(currentMatchKey);if(m)autoSave(m);currentMatchKey='';clearInterval(clockInterval)}});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&currentMatchKey){const m=findMatch(currentMatchKey);if(m)autoSave(m)}});
 window.addEventListener('beforeunload',()=>{if(currentMatchKey){const m=findMatch(currentMatchKey);if(m)autoSave(m)}});
