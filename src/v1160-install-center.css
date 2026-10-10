@@ -169,3 +169,143 @@ body[data-app-route="appInstall"] #screen .ljr-install-page .ljr-install-shell,
     border-radius:15px!important;
   }
 }
+
+
+/* V1162 — Más altura útil sin hueco inferior, icono Apple grande en iPhone/iPad.
+   Excluye el resto de páginas y no altera sus botones ni las acciones JS. */
+body[data-app-route="appInstall"] #screen .ljr-install-page.v562-page{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  min-height:calc(100dvh - 192px)!important;
+  padding:5px 5px calc(78px + env(safe-area-inset-bottom))!important;
+}
+body[data-app-route="appInstall"] #screen .ljr-install-page .ljr-install-shell{
+  flex:1 0 auto!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:8px!important;
+}
+.ljr-install-page .ljr-install-shell,
+.ljr-install-overlay .ljr-install-shell{
+  padding:clamp(12px,2.8vw,19px)!important;
+}
+.ljr-install-page .ljr-install-current,
+.ljr-install-overlay .ljr-install-current{
+  min-height:63px!important;
+  margin:4px 0!important;
+}
+.ljr-install-page .ljr-install-choices,
+.ljr-install-overlay .ljr-install-choices{
+  gap:9px!important;
+  margin:3px 0!important;
+}
+.ljr-install-page .ljr-install-choice,
+.ljr-install-overlay .ljr-install-choice{
+  min-height:74px!important;
+  grid-template-columns:41px minmax(0,1fr)!important;
+  gap:9px!important;
+  padding:10px!important;
+}
+.ljr-install-page .ljr-install-choice-icon,
+.ljr-install-overlay .ljr-install-choice-icon{
+  width:41px!important;height:41px!important;
+  border-radius:12px!important;
+}
+.ljr-install-page .ljr-install-choice-icon svg,
+.ljr-install-overlay .ljr-install-choice-icon svg{
+  width:23px!important;height:23px!important;flex-shrink:0;
+}
+.ljr-install-page .ljr-install-choice[data-ljr-mode="ios"] .ljr-install-choice-icon svg,
+.ljr-install-overlay .ljr-install-choice[data-ljr-mode="ios"] .ljr-install-choice-icon svg{
+  width:28px!important;height:28px!important;
+  fill:#fff!important;stroke:none!important;
+}
+.ljr-install-page svg.ljr-install-apple-symbol,
+.ljr-install-overlay svg.ljr-install-apple-symbol{
+  display:block!important;
+  fill:#fff!important;stroke:none!important;
+  color:#fff!important;
+}
+.ljr-install-page .ljr-install-guide-icon,
+.ljr-install-overlay .ljr-install-guide-icon{
+  width:42px!important;height:42px!important;
+}
+.ljr-install-page .ljr-install-guide-icon svg,
+.ljr-install-overlay .ljr-install-guide-icon svg{
+  width:25px!important;height:25px!important;
+}
+.ljr-install-page .ljr-install-guide-icon svg.ljr-install-apple-symbol,
+.ljr-install-overlay .ljr-install-guide-icon svg.ljr-install-apple-symbol{
+  width:30px!important;height:30px!important;
+}
+.ljr-install-page .ljr-install-choice b,
+.ljr-install-overlay .ljr-install-choice b{
+  font-size:12px!important;
+}
+.ljr-install-page .ljr-install-choice small,
+.ljr-install-overlay .ljr-install-choice small{
+  font-size:10px!important;
+}
+.ljr-install-page .ljr-install-guide,
+.ljr-install-overlay .ljr-install-guide{
+  flex:1 0 auto;
+  gap:12px!important;
+  padding:14px!important;
+}
+.ljr-install-page .ljr-install-steps,
+.ljr-install-overlay .ljr-install-steps{gap:9px!important}
+.ljr-install-page .ljr-install-steps li,
+.ljr-install-overlay .ljr-install-steps li{
+  min-height:42px;
+  padding:9px 10px!important;
+  font-size:11px!important;
+}
+.ljr-install-page .ljr-install-primary,
+.ljr-install-overlay .ljr-install-primary{
+  min-height:50px!important;
+  font-size:13px!important;
+}
+.ljr-install-page .ljr-install-secondary,
+.ljr-install-overlay .ljr-install-secondary{
+  min-height:39px!important;
+}
+.ljr-install-page .ljr-install-utilities,
+.ljr-install-overlay .ljr-install-utilities{
+  margin:4px 0!important;
+}
+.ljr-install-page .ljr-install-utilities :is(a,button),
+.ljr-install-overlay .ljr-install-utilities :is(a,button){
+  min-height:42px!important;
+}
+.ljr-install-page .ljr-install-smallprint,
+.ljr-install-overlay .ljr-install-smallprint{
+  margin:0!important;
+}
+@media(max-width:520px){
+  body[data-app-route="appInstall"] #screen .ljr-install-page.v562-page{
+    min-height:calc(100dvh - 178px)!important;
+    padding:4px 5px calc(78px + env(safe-area-inset-bottom))!important;
+  }
+  .ljr-install-page .ljr-install-shell,
+  .ljr-install-overlay .ljr-install-shell{padding:12px!important}
+  .ljr-install-page .ljr-install-choices,
+  .ljr-install-overlay .ljr-install-choices{gap:7px!important}
+  .ljr-install-page .ljr-install-choice,
+  .ljr-install-overlay .ljr-install-choice{
+    min-height:71px!important;
+    grid-template-columns:37px minmax(0,1fr)!important;
+    padding:9px!important;
+    gap:8px!important;
+  }
+  .ljr-install-page .ljr-install-choice-icon,
+  .ljr-install-overlay .ljr-install-choice-icon{width:37px!important;height:37px!important}
+  .ljr-install-page .ljr-install-guide,
+  .ljr-install-overlay .ljr-install-guide{padding:12px!important}
+}
+@media(max-width:355px){
+  .ljr-install-page .ljr-install-choice,
+  .ljr-install-overlay .ljr-install-choice{
+    grid-template-columns:37px minmax(0,1fr)!important;
+  }
+}
