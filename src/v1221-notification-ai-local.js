@@ -271,7 +271,15 @@ function mount(modal){
  const tools=element('div','v1221-ai-tools');
  const scan=button('Analizar avisos oficiales','v1221-ai-secondary');
  scan.addEventListener('click',()=>refresh(true));
- tools.append(scan);
+ const reset=button('Borrar aprendizaje local','v1221-ai-reset');
+ reset.addEventListener('click',()=>{
+  if(!settings().feedback.length){status('La IA local todavía no tiene preferencias aprendidas.');return;}
+  saveOptions({feedback:[]});
+  entries=rank(rawItems,context(modal),[]);
+  status('✓ Se borraron las elecciones usadas para entrenar la IA local. Tus filtros y avisos Push no cambiaron.');
+  render();
+ });
+ tools.append(scan,reset);
  const options=element('div','v1221-ai-options');
  const s=settings();
  const auto=element('label','v1221-ai-check');
