@@ -1339,7 +1339,7 @@ function act(a){
 }
 /* Acceso directo para Liga Control: reutiliza exactamente las herramientas existentes.
    Lista explícita: no publica datos oficiales ni concede privilegios. */
-const V1104_CONTROL_TOOLS=new Set(['sponsors','meeting','delegates','officials','incidents','calendar-generator','csv-import','backup-export','audit','poll']);
+const V1104_CONTROL_TOOLS=new Set(['sponsors','meeting','delegates','officials','incidents','calendar-generator','csv-import','backup-export','audit','poll','schedule-match','new-sanction','motm','register-alerts']);
 window.LJR_V105_OPEN_TOOL=function(name){
  if(!V1104_CONTROL_TOOLS.has(name))return false;
  try{log('Herramienta de Liga Control: '+name);act(name);return true}
