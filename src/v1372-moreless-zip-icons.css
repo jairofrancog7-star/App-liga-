@@ -1,0 +1,93 @@
+/* V1372 · Íconos vectoriales extraídos del ZIP original.
+   Únicamente el portal Más o menos. Respeta tamaños de cartas, fotografías
+   de jugadores, volteo 3D, botones, cuenta regresiva y barra inferior. */
+html body #v543-moreless-portal .v551-more-reference-game .v531-more-buttons button.v1372-zip-choice::after{
+  content:none!important;display:none!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v531-more-buttons button.v1372-zip-choice{
+  display:grid!important;place-items:center!important;
+  text-align:center!important;line-height:1!important;
+  -webkit-tap-highlight-color:transparent;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v531-more-buttons button.v1372-zip-choice .v1372-zip-icon{
+  display:block!important;flex:none!important;
+  width:clamp(34px,8vw,43px)!important;
+  height:clamp(34px,8vw,43px)!important;
+  min-width:0!important;max-width:100%!important;
+  margin:auto!important;fill:none!important;
+  filter:drop-shadow(0 1px 2px rgba(0,5,58,.2));
+}
+html body #v543-moreless-portal .v551-more-reference-game .v531-more-buttons>span.v1372-zip-or{
+  display:grid!important;place-items:center!important;
+  width:clamp(20px,5vw,32px)!important;
+  min-width:20px!important;
+  font-size:0!important;line-height:0!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v1372-zip-or>.v1372-zip-icon{
+  display:block!important;width:clamp(20px,5vw,29px)!important;
+  height:clamp(21px,5vw,30px)!important;overflow:visible!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-score-strip .v1372-zip-attempts{
+  box-sizing:border-box!important;
+  display:flex!important;flex-direction:row!important;
+  align-items:center!important;justify-content:flex-start!important;
+  gap:clamp(4px,1.4vw,9px)!important;
+  min-height:24px!important;
+  white-space:nowrap!important;
+  font-size:0!important;line-height:0!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v538-score-strip .v1372-zip-attempts>.v1372-zip-icon{
+  display:block!important;
+  width:clamp(21px,5vw,28px)!important;
+  height:clamp(21px,5vw,28px)!important;
+  min-width:0!important;max-width:none!important;
+  flex:0 0 auto!important;overflow:visible!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v539-result-mark.v1372-zip-result-icon{
+  display:grid!important;place-items:center!important;
+  background:none!important;border:0!important;box-shadow:none!important;
+  font-size:0!important;line-height:0!important;
+}
+html body #v543-moreless-portal .v551-more-reference-game .v539-result-mark>.v1372-zip-icon{
+  width:clamp(28px,8vw,46px)!important;
+  height:clamp(28px,8vw,46px)!important;
+  max-width:100%!important;max-height:100%!important;
+  display:block!important;
+}
+html body #v543-moreless-portal .v551-more-reference .v551-more-ranking .v531-crest.rank.v1372-zip-ranking-icon{
+  box-sizing:border-box!important;display:grid!important;
+  place-items:center!important;flex:none!important;
+  width:clamp(25px,7vw,36px)!important;
+  height:clamp(25px,7vw,36px)!important;
+  padding:0!important;margin:0!important;
+  background:transparent!important;border:0!important;
+  overflow:visible!important;box-shadow:none!important;
+  font-size:0!important;line-height:0!important;
+}
+html body #v543-moreless-portal .v551-more-reference .v1372-zip-ranking-icon>.v1372-zip-icon{
+  box-sizing:border-box!important;width:100%!important;height:100%!important;
+  display:block!important;overflow:visible!important;
+}
+html body #v543-moreless-portal .v551-more-reference .v538-friend-bubble.v1372-zip-invite{
+  display:grid!important;place-items:center!important;
+  border-radius:50%!important;overflow:hidden!important;
+  padding:0!important;aspect-ratio:1!important;
+}
+html body #v543-moreless-portal .v551-more-reference .v538-friend-bubble.v1372-zip-invite>.v1372-zip-icon{
+  display:block!important;width:100%!important;height:100%!important;
+  min-width:100%!important;min-height:100%!important;
+  max-width:100%!important;max-height:100%!important;
+  object-fit:contain!important;margin:0!important;
+}
+/* Los SVG no son overlays, por lo que jamás tapan el área táctil. */
+html body #v543-moreless-portal .v1372-zip-icon{
+  pointer-events:none!important;
+}
+@media(max-width:360px){
+ html body #v543-moreless-portal .v551-more-reference-game .v531-more-buttons button.v1372-zip-choice .v1372-zip-icon{
+   width:33px!important;height:33px!important;
+ }
+ html body #v543-moreless-portal .v551-more-reference-game .v538-score-strip .v1372-zip-attempts>.v1372-zip-icon{
+   width:21px!important;height:21px!important;
+ }
+}
