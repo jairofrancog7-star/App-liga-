@@ -985,3 +985,71 @@ html body > .v105-modal.v875-meeting-modal .v919-action:disabled{
 .v875-meeting-options .v1166-meeting-other[hidden]{display:none!important}
 .v875-meeting-options :is(.v1166-meeting-select,[data-meeting-field="place"]):focus-visible{outline:2px solid #64e5ff;outline-offset:2px}
 @media(max-width:560px){.v875-meeting-options .v1166-meeting-roles{grid-template-columns:minmax(0,1fr)}.v875-meeting-options .v1166-meeting-role{padding:10px}}
+
+
+/* V1194 — Programar partido: cabecera y pie siempre alcanzables en móvil. */
+/* El antiguo place-items:center recortaba ambas puntas del diálogo alto.
+   Anclar al inicio y limitar la altura al espacio real entre las barras. */
+html body > .v105-modal.v105-schedule-modal {
+  box-sizing:border-box!important;
+  position:fixed!important;
+  top:0!important;
+  right:0!important;
+  bottom:calc(var(--v34-nav-h,69px) + env(safe-area-inset-bottom,0px))!important;
+  left:0!important;
+  height:auto!important;
+  min-height:0!important;
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  place-items:unset!important;
+  overflow:hidden!important;
+  padding:max(12px, env(safe-area-inset-top,0px)) 10px 12px!important;
+}
+html body > .v105-modal.v105-schedule-modal > .v105-dialog {
+  box-sizing:border-box!important;
+  position:relative!important;
+  flex:0 1 630px!important;
+  min-width:0!important;
+  min-height:0!important;
+  width:min(630px,100%)!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  height:auto!important;
+  align-self:flex-start!important;
+  margin:0!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior-y:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+  scroll-padding-top:14px!important;
+  scroll-padding-bottom:24px!important;
+  padding-bottom:24px!important;
+}
+/* Los botones permanecen en el flujo normal: se llega a ellos desplazando
+   el cuadro, sin solaparse con el menú inferior. */
+html body > .v105-modal.v105-schedule-modal .v105-actions {
+  position:static!important;
+  inset:auto!important;
+  transform:none!important;
+  margin-bottom:0!important;
+  padding-bottom:8px!important;
+}
+@media (max-width:520px) {
+  html body > .v105-modal.v105-schedule-modal {
+    padding:max(10px, env(safe-area-inset-top,0px)) 9px 10px!important;
+  }
+  html body > .v105-modal.v105-schedule-modal > .v105-dialog {
+    width:100%!important;
+    max-height:100%!important;
+    padding-top:16px!important;
+    padding-bottom:20px!important;
+  }
+}
+@media (max-height:550px) {
+  html body > .v105-modal.v105-schedule-modal {
+    padding-top:8px!important;
+    padding-bottom:8px!important;
+  }
+}
