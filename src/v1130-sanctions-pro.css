@@ -48,7 +48,7 @@ html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-form .v113
  grid-column:1/-1!important;
 }
 html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-form label {
- min-width:0!important;display:grid!important;gap:5px!important;margin:0!important;
+ min-width:0!important;display:grid!important;grid-column:auto!important;gap:5px!important;margin:0!important;
 }
 html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-form label[hidden] {display:none!important}
 html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-form label > span {
