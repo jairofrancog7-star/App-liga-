@@ -765,3 +765,8 @@ html body > .v105-modal.v1130-calendar-pro .v1130-notice{
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
 }
+
+/* Acceso a avisos existentes y actualización de la fuente publicada. */
+html body > .v105-modal.v1130-calendar-pro .v1130-source-actions{display:flex;align-items:center;justify-content:flex-end;gap:5px;flex-shrink:0}
+html body > .v105-modal.v1130-calendar-pro .v1130-source-actions button{padding:7px 9px!important;min-height:31px}
+@media(max-width:360px){html body > .v105-modal.v1130-calendar-pro .v1130-source{align-items:flex-start;flex-direction:column}html body > .v105-modal.v1130-calendar-pro .v1130-source-actions{width:100%;justify-content:flex-end}}
