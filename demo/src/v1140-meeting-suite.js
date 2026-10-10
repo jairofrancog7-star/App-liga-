@@ -20,6 +20,8 @@ function summaryText(ctx){
   'BORRADOR DE RESUMEN · Junta de la Liga Juventino Rosas',
   'Fecha: '+fmt(ctx.date())+' · Hora: '+(m.time||'Sin definir')+' · Lugar: '+(m.place||'Sin definir'),
   'Responsable: '+(m.owner||'Sin registrar'),
+  'Presidente de la Liga (registrado): '+(m.president||'Sin asignar'),
+  'Secretario de la Liga (registrado): '+(m.secretary||'Sin asignar'),
   'Asistencia: '+a.length+' equipos registrados ('+statuses.Presente+' presentes, '+statuses.Tarde+' tarde, '+statuses.Ausente+' ausentes).',
   'Temas detectados: '+(detected.join(', ')||'Sin temas clasificables todavía')+'.',
   'Orden del día: '+(m.agenda||'No se registró orden del día.'),
