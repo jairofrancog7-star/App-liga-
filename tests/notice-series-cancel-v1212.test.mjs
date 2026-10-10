@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
+import {readFileSync,existsSync} from 'node:fs';
 import {runInNewContext} from 'node:vm';
 import {resolve} from 'node:path';
 const base=resolve(import.meta.dirname,'..');
@@ -41,7 +41,9 @@ function fixture(admin=true){
 }
 test('producción y demo tienen el mismo código, enlazado solo en avisos',()=>{
  assert.equal(original,read('demo/src/v1212-notice-series-cancel.js'));
- assert.equal(read('src/v1212-notice-series-cancel.css'),read('demo/src/v1212-notice-series-cancel.css'));
+ // La demo se regenera con Vite: el CSS puede quedar en assets/index-*.css.
+ const standalone='demo/src/v1212-notice-series-cancel.css';
+ if(existsSync(resolve(base,standalone)))assert.equal(read('src/v1212-notice-series-cancel.css'),read(standalone));
  assert.doesNotThrow(()=>new Function(original));
  const sourceCss=read('src/v1212-notice-series-cancel.css');
  assert.match(sourceCss,/data-v1212-cancel/);
@@ -54,7 +56,8 @@ test('producción y demo tienen el mismo código, enlazado solo en avisos',()=>{
      // Vite agrupa los estilos en assets/index-*.css para la demo publicada.
      const cssHref=html.match(/href="\.\/assets\/([^"]+\.css)"/)?.[1];
      assert.ok(cssHref,'La demo debe cargar los estilos empaquetados');
-     assert.doesNotThrow(()=>read('demo/assets/'+cssHref));
+     const bundled=read('demo/assets/'+cssHref);
+     if(!existsSync(resolve(base,standalone)))assert.match(bundled,/data-v1212-cancel/);
    }
  }
 });
