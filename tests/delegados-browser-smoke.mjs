@@ -61,6 +61,7 @@ try{
  assert.ok(vcfDownload.suggestedFilename().endsWith('.vcf'));
  assert.match(fs.readFileSync(await vcfDownload.path(),'utf8'),/BEGIN:VCARD/);
  checks.push('Exportación VCF');
+ await modal.locator('.v1126-extra').last().locator('summary').click();
  const jsonEvent=page.waitForEvent('download');
  await modal.locator('[data-d-json]').click();
  const jsonDownload=await jsonEvent;
