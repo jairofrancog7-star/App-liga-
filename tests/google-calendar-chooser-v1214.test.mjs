@@ -19,16 +19,16 @@ test('Google Calendar selector uses the unified compact blue design in app and d
   assert.doesNotMatch(js,/search\.focus\(\)/,'Android keyboard must not hide first card');
  }
  assert.match(css,/flex-direction:column/);
- assert.match(css,/max-height:min\\(72dvh,530px\\)/);
+ assert.match(css,/max-height:min\(72dvh,530px\)/);
  assert.match(css,/max-width:420px/);
  assert.match(css,/overflow-y:auto/);
  assert.match(css,/button\.ljr-gcal-event\[hidden\]/);
  assert.match(css,/overflow-wrap:anywhere/);
  // La demo se regenera con Vite: sus CSS quedan dentro de assets, no como src/*.css.
- assert.match(html,/v1214-google-calendar-chooser\\.css/);
+ assert.match(html,/v1214-google-calendar-chooser\.css/);
  assert.ok(html.indexOf('v1214-google-calendar-chooser.css')<html.indexOf('v1207-google-calendar-global.js'));
- assert.match(demoHtml,/assets\\/index-[^" ]+\\.css/);
- assert.match(demoHtml,/v1207-google-calendar-global\\.js/);
+ assert.match(demoHtml,/assets\/index-[^" ]+\.css/);
+ assert.match(demoHtml,/v1207-google-calendar-global\.js/);
 });
 
 function fixture(){
