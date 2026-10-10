@@ -157,22 +157,17 @@ function applyNativePrompt(prompt){
   const root=document.querySelector('[data-v164-history-log]');if(!root)return;
   const all=entries(),cat=findCategory(prompt,all),team=findTeam(prompt,all);
   const year=norm(prompt).match(/\b(?:19|20)\d{2}\b/)?.[0]||'';
-  if(!cat&&!team&&!year)return;
   const change=selector=>{
     const el=root.querySelector(selector);if(el)el.dispatchEvent(new Event('change',{bubbles:true}));
   };
   const catSelect=root.querySelector('[data-v164-category]');
-  if(cat&&catSelect?.querySelector('option[value="'+cat+'"]')){
-    catSelect.value=cat;change('[data-v164-category]');
-  }
+  if(catSelect){catSelect.value=cat&&catSelect.querySelector('option[value="'+cat+'"]')?cat:'all';change('[data-v164-category]')}
   const yearSelect=root.querySelector('[data-v164-year]');
-  if(year&&yearSelect?.querySelector('option[value="'+year+'"]')){
-    yearSelect.value=year;change('[data-v164-year]');
-  }
+  if(yearSelect){yearSelect.value=year&&yearSelect.querySelector('option[value="'+year+'"]')?year:'all';change('[data-v164-year]')}
   const teamSelect=root.querySelector('[data-v164-team]');
-  if(team&&teamSelect){
-    const option=[...teamSelect.options].find(o=>o.value===team);
-    if(option){teamSelect.value=option.value;change('[data-v164-team]')}
+  if(teamSelect){
+    const option=team&&[...teamSelect.options].find(o=>o.value===team);
+    teamSelect.value=option?option.value:'all';change('[data-v164-team]');
   }
   const search=root.querySelector('[data-v164-search]');
   if(search&&search.value){
