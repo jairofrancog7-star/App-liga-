@@ -133,7 +133,7 @@ function controlMarkup(){
    card('book','Historial de la Liga','Temporadas, resultados y eventos','data-v563-route="historyLog"')+
    card('account','Mi cuenta','Perfil y configuración','data-v563-route="profile"')+
    card('import','Importar CSV','Leer archivo y revisar vista previa','data-v563-tool="csv-import"')+
-   card('backup','Respaldo local','Descargar copia de herramientas','data-v563-tool="backup-export"')+
+   card('backup','Respaldo local','Crear, proteger y restaurar copias','data-v563-tool="backup-export"')+
    card('audit','Auditoría local','Ver actividades guardadas','data-v563-tool="audit"')+
    '</div>'+
    '<div class="v563-admin-direct" data-v563-admin-direct hidden>'+
