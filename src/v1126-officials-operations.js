@@ -84,20 +84,10 @@ function fillFixture(root){
  label.textContent=fixtures.length?'Partidos próximos sin marcador final. Verifica siempre el horario antes de designar.':'Actualiza los datos oficiales de la Liga y vuelve a abrir este apartado.';
 }
 function sendCalendar(a,off){
- const start=dateTime(a.date,a.time);if(!start){toast('Este partido no tiene fecha y hora válidas.');return}
- const end=new Date(start.getTime()+120*60*1000);
- const stamp=d=>String(d.getFullYear())+pad(d.getMonth()+1)+pad(d.getDate())+'T'+pad(d.getHours())+pad(d.getMinutes())+'00';
- const safe=t=>String(t||'').replace(/\\/g,'\\\\').replace(/\r?\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');
- const uid=String(a.id||a.date+a.time).replace(/[^a-zA-Z0-9-]/g,'');
- const content=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Liga Juventino Rosas//Arbitraje privado//ES','BEGIN:VEVENT',
- 'UID:ljr-ops-'+uid+'@local','DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,''),
- 'DTSTART:'+stamp(start),'DTEND:'+stamp(end),'SUMMARY:'+safe('Arbitraje: '+a.game),
- 'LOCATION:'+safe(a.field),'DESCRIPTION:'+safe('Designación local: '+(off?.name||a.officialName)+' · '+(a.category||'')),
- 'BEGIN:VALARM','TRIGGER:-P1D','ACTION:DISPLAY','DESCRIPTION:Tu partido de arbitraje es mañana','END:VALARM',
- 'BEGIN:VALARM','TRIGGER:-PT2H','ACTION:DISPLAY','DESCRIPTION:Tu partido de arbitraje es en dos horas','END:VALARM',
- 'END:VEVENT','END:VCALENDAR'].join('\r\n')+'\r\n';
- download('arbitraje-avisos-'+a.date+'.ics',content,'text/calendar;charset=utf-8');
- toast('Importa el archivo en tu calendario para activar dos recordatorios (24 h y 2 h).');
+ window.LJR_GOOGLE_CALENDAR_GLOBAL.open({
+  title:'Arbitraje · '+a.game,iso:a.date,time:a.time,duration:120,venue:a.field,
+  description:'Liga Juventino Rosas · Oficial: '+(off?.name||a.officialName)+' · '+(a.category||'')+' · Designación local. Configura recordatorios en Google Calendar.'
+ });
 }
 function renderOperations(root){
  const assignments=getAssignments(),officials=getOfficials(),records=getOperations();
