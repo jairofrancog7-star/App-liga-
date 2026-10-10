@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {audit,markdown} from '../.github/scripts/review-official-data.mjs';
+import {audit,markdown,verifiedNoticeApproval} from '../.github/scripts/review-official-data.mjs';
 import {ROLE_PERMS,can} from '../server/notifications/authorization.mjs';
 
 const code=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
@@ -54,6 +54,33 @@ test('Revisión automática detecta discrepancias sin modificar información ofi
  assert.match(markdown(invalid),/No se publicaron cambios oficiales/);
 });
 
+test('La auditoría solo reconoce firmas HMAC verificadas contra el formato real de Python',()=>{
+ const key='test-key-only-not-production-0123456789-ABCDEFGHIJKLMNOP';
+ const approved={
+  id:'test-jornada-1',title:'Revisión manual de aviso',
+  body:'Aviso de prueba sin publicación real',
+  channels:{app:true,facebook:false},publishAt:'2026-11-10T18:00:00Z',
+  approval:{status:'approved',by:'jairofrancog7-star',at:'2026-10-10T16:00:00+00:00',
+  signature:'034ed01da2d5285bcaefe6e6b52d7f3ddb234f7e85b99557317af1a93c547957'}
+ };
+ assert.equal(verifiedNoticeApproval(approved,key),true,'firma generada por el código Python');
+ assert.equal(verifiedNoticeApproval(approved,''),false);
+ assert.equal(verifiedNoticeApproval({...approved,title:'texto editado'},key),false);
+ assert.equal(verifiedNoticeApproval({...approved,approval:{...approved.approval,by:'otro'}},key),false);
+ const withNotice=fixture();
+ withNotice.scheduled=[approved];
+ assert.equal(audit(withNotice,new Date('2026-10-10T16:00:00Z'),key).counts.unapprovedNotices,0);
+ assert.equal(audit(withNotice,new Date('2026-10-10T16:00:00Z'),'').counts.unapprovedNotices,1);
+});
+
+test('El Estado del sistema verifica aprobación del servidor y cargo en solo lectura',()=>{
+ const ui=code('src/v1081-global-admin-notices.js');
+ assert.match(ui,/health\?\.approvalRequired===true/);
+ assert.match(ui,/me\.actor\.permissions\.includes\('notices:approve'\)/);
+ assert.match(ui,/No se ha aprobado ningún aviso en esta comprobación/);
+ assert.doesNotThrow(()=>new Function(ui));
+});
+
 test('Borradores sin autorización se incluyen como pendientes, nunca elegibles',()=>{
  const data=fixture();
  data.scheduled=[
@@ -64,7 +91,7 @@ test('Borradores sin autorización se incluyen como pendientes, nunca elegibles'
  const res=audit(data,new Date('2026-10-10T16:00:00Z'));
  assert.equal(res.counts.unapprovedNotices,1);
  assert.ok(res.review.some(v=>v.includes('pendientes de aprobación')));
- assert.ok(res.checks.some(v=>v.includes('1 aviso(s) elegibles')));
+ assert.ok(res.checks.some(v=>v.includes('0 aviso(s) con firma HMAC válida')));
 });
 
 test('La revisión de cron es sólo lectura y no toca ni datos ni sitio',()=>{
@@ -74,4 +101,5 @@ test('La revisión de cron es sólo lectura y no toca ni datos ni sitio',()=>{
  assert.match(code('.github/scripts/process_scheduled_notices.py'),/not approved\(item\)/);
  assert.match(code('.github/scripts/process_scheduled_notices.py'),/hmac\.compare_digest/);
  assert.match(code('.github/workflows/scheduled-notices.yml'),/LJR_OFFICIAL_NOTICE_APPROVAL_SECRET/);
+ assert.match(code('.github/workflows/official-review-approval.yml'),/LJR_OFFICIAL_NOTICE_APPROVAL_SECRET/);
 });
