@@ -1,0 +1,64 @@
+/* Importar CSV PRO — responsive, azul Liga Juventino Rosas */
+.v105-modal.v1212-csv-modal{padding:14px!important;align-items:center;justify-items:center;overflow:hidden;background:rgba(2,9,37,.83)}
+.v105-modal.v1212-csv-modal .v105-dialog{box-sizing:border-box!important;width:min(760px,100%)!important;max-height:calc(100dvh - 30px)!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;padding:22px!important;background:linear-gradient(168deg,#123c99 0%,#0b2474 38%,#081746 100%)!important;border:1px solid #367be3!important;box-shadow:0 22px 80px rgba(0,4,29,.56);scrollbar-color:#417ee6 #0a1c52}
+.v1212-csv-modal .v105-dialog>h3{font-size:clamp(21px,3vw,27px)!important;letter-spacing:-.025em;padding-bottom:4px}
+.v1212-csv-modal .v105-dialog>p{font-size:13px!important;color:#d0defc!important;line-height:1.5!important;max-width:590px}
+.v1212-csv-modal .v105-close{border-radius:13px!important;top:13px!important;right:13px!important;width:42px!important;height:42px!important;background:#183c84!important;border-color:#387acb!important}
+.v1212-csv-modal .csvpro{display:grid;gap:14px;min-width:0;color:#f8fbff;font-size:13px}
+.v1212-csv-modal .csvpro-head,.v1212-csv-modal .csvpro-line,.v1212-csv-modal .csvpro-actions,.v1212-csv-modal .csvpro-page,.v1212-csv-modal .csvpro-filters{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0;flex-wrap:wrap}
+.v1212-csv-modal .csvpro-step{font-size:12px;font-weight:900;display:inline-flex;align-items:center;gap:10px;color:#fff}
+.v1212-csv-modal .csvpro-step>span{font-size:11px;letter-spacing:.08em;color:#cadcfe}
+.v1212-csv-modal .csvpro-section{margin-top:8px;padding-top:12px;border-top:1px solid #3a5f9e}
+.v1212-csv-modal .csvpro-privacy{font-size:11px;font-weight:800;color:#e1ebff;background:#183f89;border:1px solid #3c69bb;border-radius:30px;padding:8px 10px}
+.v1212-csv-modal .csvpro-field{display:grid;gap:7px;flex:1;min-width:145px}
+.v1212-csv-modal .csvpro-field>span,.v1212-csv-modal .csvpro-map-item>span{color:#d4e4ff;font-size:12px;font-weight:800}
+.v1212-csv-modal select,.v1212-csv-modal .csvpro-filters input{appearance:auto;min-width:0;width:100%;min-height:43px;box-sizing:border-box;border:1px solid #4b79c6;border-radius:12px;background:#091e55!important;color:#fff!important;padding:9px 11px;font-family:inherit;font-size:13px;outline-offset:2px}
+.v1212-csv-modal select option{background:#091e55;color:#fff}
+.v1212-csv-modal .csvpro-drop{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:7px;min-height:118px;padding:18px 12px;border:2px dashed #428df1;background:linear-gradient(155deg,#194ca3,#0a2768);border-radius:18px;cursor:pointer;transition:border-color .2s,background .2s}
+.v1212-csv-modal .csvpro-drop:hover,.v1212-csv-modal .csvpro-drop.csvpro-drag{border-color:#9dc7ff;background:#174a9e}
+.v1212-csv-modal .csvpro-upload{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:#2e79e4;font-size:26px;font-weight:800;line-height:1}
+.v1212-csv-modal .csvpro-drop>b{font-size:15px;line-height:1.25}
+.v1212-csv-modal .csvpro-drop>small{font-size:11px;line-height:1.3;color:#d5e3ff;max-width:100%;overflow-wrap:anywhere}
+.v1212-csv-modal .csvpro-drop input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.v1212-csv-modal .csvpro-button{min-height:43px;border-radius:12px;border:1px solid #4c83d3;padding:10px 15px;font:800 12px/1.25 inherit;white-space:normal;cursor:pointer;flex:1}
+.v1212-csv-modal .csvpro-button.csvpro-primary{background:linear-gradient(105deg,#2775db,#55b7ff);border-color:#69b4ff;color:#051737}
+.v1212-csv-modal .csvpro-button.csvpro-ghost{background:#183e87;color:#f5f9ff}
+.v1212-csv-modal .csvpro-button:disabled{cursor:not-allowed;opacity:.46}
+.v1212-csv-modal .csvpro-line>.csvpro-ghost{align-self:end;flex:0 0 auto}
+.v1212-csv-modal .csvpro-status{color:#c9deff;background:#0c2b6a;border:1px solid #365f9f;padding:10px 12px;border-radius:11px;margin:0!important;line-height:1.45;font-size:12px}
+.v1212-csv-modal .csvpro-status.csvpro-error{border-color:#ff9aa5;color:#ffe9ed;background:#632341}
+.v1212-csv-modal [data-csv-result]{display:grid;gap:12px;min-width:0}
+.v1212-csv-modal .csvpro-map{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.v1212-csv-modal .csvpro-map-item{display:grid;gap:6px;min-width:0}
+.v1212-csv-modal .csvpro-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.v1212-csv-modal .csvpro-summary>div{text-align:center;background:#10377e;border:1px solid #3b6bbc;border-radius:12px;padding:12px 4px}
+.v1212-csv-modal .csvpro-summary b{display:block;font-size:23px;color:#fff;font-variant-numeric:tabular-nums}
+.v1212-csv-modal .csvpro-summary small{display:block;font-size:10px;color:#d0e2ff}
+.v1212-csv-modal .csvpro-warnings{border:1px solid #729bdc;border-radius:11px;padding:11px;background:#0a2a68;color:#fff;overflow-wrap:anywhere}
+.v1212-csv-modal .csvpro-warnings summary{font-size:12px;font-weight:800;cursor:pointer}
+.v1212-csv-modal .csvpro-warnings ul{padding:0 0 0 19px;max-height:140px;overflow-y:auto;line-height:1.6}
+.v1212-csv-modal .csvpro-filters input{flex:2;min-width:155px}
+.v1212-csv-modal .csvpro-filters select{flex:1;min-width:125px;width:auto}
+.v1212-csv-modal .csvpro-tablewrap{max-width:100%;overflow:auto;border-radius:12px;border:1px solid #4e77b9;scrollbar-color:#4d85d8 #0a225a}
+.v1212-csv-modal .csvpro-table{width:100%;min-width:520px;border-collapse:collapse;font-size:12px;text-align:left;line-height:1.45}
+.v1212-csv-modal .csvpro-table th{position:sticky;top:0;background:#1b57ac;color:white;white-space:nowrap;padding:12px 10px;font-weight:900}
+.v1212-csv-modal .csvpro-table td{background:#102c68;border-top:1px solid #2d5190;padding:11px 10px;max-width:280px;overflow-wrap:anywhere;vertical-align:top}
+.v1212-csv-modal .csvpro-table tr:nth-child(even) td{background:#0b245a}
+.v1212-csv-modal .csvpro-chip{display:inline-block;padding:5px 8px;font-size:10px;font-weight:800;border-radius:8px;background:#245c96;color:#e6faff}
+.v1212-csv-modal .csvpro-chip.bad{background:#7b3150;color:#fff1f3}
+.v1212-csv-modal .csvpro-rowerrors{display:block;min-width:120px;margin-top:5px;color:#ffd7df;line-height:1.4}
+.v1212-csv-modal .csvpro-page small,.v1212-csv-modal .csvpro-note{color:#c1d3f6;font-size:11px;line-height:1.5}
+.v1212-csv-modal .csvpro-page button{flex:0 0 auto}
+.v1212-csv-modal .csvpro-empty{padding:22px;text-align:center;border:1px dashed #5083d1;border-radius:12px;color:#cfe0ff}
+.v1212-csv-modal .csvpro-note{margin:0}
+@media(max-width:540px){
+ .v105-modal.v1212-csv-modal{padding:9px!important}
+ .v105-modal.v1212-csv-modal .v105-dialog{padding:16px 13px!important;max-height:calc(100dvh - 18px)!important;border-radius:18px!important}
+ .v1212-csv-modal .csvpro{gap:11px}
+ .v1212-csv-modal .csvpro-map{grid-template-columns:1fr}
+ .v1212-csv-modal .csvpro-line{align-items:stretch}
+ .v1212-csv-modal .csvpro-line>.csvpro-ghost{align-self:stretch}
+ .v1212-csv-modal .csvpro-filters input{flex-basis:100%}
+ .v1212-csv-modal .csvpro-actions>*{flex-basis:calc(50% - 5px)}
+ .v1212-csv-modal .csvpro-downloads>*{flex-basis:100%}
+}
