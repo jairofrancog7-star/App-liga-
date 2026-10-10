@@ -31,9 +31,6 @@ const ITEMS=[
  {icon:'≣',title:'Reglamento',sub:'Reglamento dentro de la app',route:'rulebook'},
  {icon:'↗',title:'Publicaciones',sub:'PNG, jornadas, goleo y sanciones',route:'publicationCenter'},
  {icon:'☁',title:'Campos y clima',sub:'Pronóstico y estado de campos',route:'weatherFields'},
- {icon:'⌂',title:'Instalar acceso',sub:'Agregar la Liga al teléfono',action:'install'},
- {icon:'↓',title:'APK Android',sub:'Generar o descargar compilación',route:'appInstall'},
- {icon:'⇧',title:'Compartir app',sub:'Enviar acceso de Liga Juventino',action:'share'},
  {icon:'○',title:'Mi cuenta',sub:'Perfil y configuración',route:'profile'}
 ];
 
@@ -61,11 +58,11 @@ function itemRoute(btn){
 }
 function compactOldEntries(page){
  const grid=$('.v60-tool-grid',page);if(!grid)return;
- const moved=new Set(['jrControl','credentialBuilder','appInstall','recruitment','ligaControl','adminFut']);
+ const moved=new Set(['jrControl','credentialBuilder','appInstall','install-app','recruitment','ligaControl','adminFut']);
  $$('button',grid).forEach(btn=>{
    const r=itemRoute(btn);
    const txt=String(btn.textContent||'').toLowerCase();
-   if(moved.has(r)||/\bjr control\b|\bregistro de jugadores\b|\bcredenciales\b|\binstalar app\b/.test(txt)){
+   if(moved.has(r)||/\bjr control\b|\bregistro de jugadores\b|\bcredenciales\b|\binstalar app\b|\bdescargar app\b|\bapk android\b/.test(txt)){
      btn.dataset.v606Moved='1';
      btn.hidden=true;
    }
