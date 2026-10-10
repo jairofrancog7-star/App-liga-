@@ -30,6 +30,6 @@ test('IA en dispositivo sin API remota, acciones protegidas',()=>{
 });
 test('la página usa las versiones nuevas de JS y CSS',()=>{
  const html=root('index.html');
- assert.match(html,/v1075-admin-editor-center\.js\?v=v=20261010-v1205/);
- assert.match(html,/v1075-admin-editor-center\.css\?v=v=20261010-v1205/);
+ assert.match(html,/v1075-admin-editor-center\.js\?v=20261010-v1205/);
+ assert.match(html,/v1075-admin-editor-center\.css\?v=20261010-v1205/);
 });
