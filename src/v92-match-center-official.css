@@ -332,3 +332,9 @@
     margin-top:0!important;
   }
 }
+
+
+/* V1191: dirección verificada cuando el partido corresponde a la Deportiva Sur. */
+body.v92-match-center-official .v1191-venue-address{display:block;margin-top:5px;color:#c0e4ff;font-size:11px;line-height:1.4}
+body.v92-match-center-official .v1191-venue-map{display:inline-flex;align-items:center;gap:5px;margin-top:8px;color:#64eaff;text-decoration:none;font-size:11px;font-weight:750}
+body.v92-match-center-official .v1191-venue-map:focus-visible{outline:2px solid #6ef2ff;outline-offset:3px}
