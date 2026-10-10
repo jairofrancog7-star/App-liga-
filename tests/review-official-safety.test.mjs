@@ -30,6 +30,7 @@ test('Los nuevos avisos se crean como borradores; la programación necesita apro
  const migration=code('server/notifications/approval-schema.sql');
  assert.match(migration,/SET status='draft'/);
  assert.match(migration,/approved_at IS NULL/);
+ assert.match(code('server/notifications/Dockerfile'),/approval-schema\.sql/);
 });
 
 test('El móvil nunca ofrece aprobación sin permiso real del servidor',()=>{
