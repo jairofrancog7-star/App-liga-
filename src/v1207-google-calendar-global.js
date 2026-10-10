@@ -82,10 +82,10 @@
     close.addEventListener('click', () => overlay.remove());
     top.append(title, close);
     const note = document.createElement('p');
-    note.textContent = 'Selecciona un evento. Google Calendar abrirá con sus datos; pulsa Guardar para añadirlo a tu cuenta.';
+    note.textContent = 'Elige un partido y pulsa Guardar en Google Calendar.';
     note.className = 'ljr-gcal-note';
     const search = document.createElement('input');
-    search.type = 'search'; search.placeholder = 'Buscar equipo, junta, fecha o cancha';
+    search.type = 'search'; search.placeholder = 'Buscar equipo, fecha o cancha';
     search.setAttribute('aria-label', 'Buscar evento');
     search.className = 'ljr-gcal-search';
     const list = document.createElement('div');
@@ -114,7 +114,8 @@
     overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
     overlay.addEventListener('keydown', e => { if (e.key === 'Escape') overlay.remove(); });
     document.body.appendChild(overlay);
-    search.focus();
+    // No forzar foco: en Android abría el teclado y desplazaba/cortaba la primera ficha.
+    list.scrollTop = 0;
     return true;
   }
   window.LJR_GOOGLE_CALENDAR_GLOBAL = Object.freeze({ build, open, choose, zone: ZONE });
