@@ -315,7 +315,7 @@ function openPages(){
  const buttons=[...modal.querySelectorAll('[data-page-content],[data-page-visual],[data-page-preview],[data-page-analyze],[data-page-copy]')];
  const fold=t=>String(t).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
  function describe(){
-  const item=SECTIONS[Number(select.value)];
+  const item=select.options.length?SECTIONS[Number(select.value)]:null;
   detail.textContent=item?'Pantalla: '+item[0]+' · '+item[1]+' · '+(item[2]==='fixture'?'Partidos y jornadas':item[2]==='team'?'Equipos':item[2]==='player'?'Jugadores':'Contenido de la Liga'):'No se encontraron secciones. Prueba con otra palabra.';
   buttons.forEach(b=>b.disabled=!item);
  }
@@ -328,7 +328,7 @@ function openPages(){
  function remember(){picked=Number(select.value);try{localStorage.setItem('ljr-editor-last-section-v1',String(picked))}catch(_){}describe()}
  select.addEventListener('change',remember);search.addEventListener('input',paint);paint();
  async function execute(mode){
-  const item=SECTIONS[Number(select.value)];if(!item||!select.options.length)return;
+  const item=select.options.length?SECTIONS[Number(select.value)]:null;if(!item||!select.options.length)return;
   try{
    await verified();remember();
    if(mode==='content'){
@@ -351,7 +351,7 @@ function openPages(){
  $('[data-page-preview]',modal).onclick=()=>execute('preview');
  $('[data-page-analyze]',modal).onclick=()=>execute('analyze');
  $('[data-page-copy]',modal).onclick=async()=>{
-  const item=SECTIONS[Number(select.value)];if(!item||!select.options.length)return;
+  const item=select.options.length?SECTIONS[Number(select.value)]:null;if(!item||!select.options.length)return;
   try{await verified();const url=new URL(location.href);url.hash='#/'+item[1];await navigator.clipboard.writeText(url.href);remember();status(modal,'Enlace de la sección copiado.')}
   catch(err){status(modal,'No se pudo copiar el enlace: '+(err?.message||'Permiso denegado'))}
  };
