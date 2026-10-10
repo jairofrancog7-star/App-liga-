@@ -2,8 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
-import {RRule} from 'rrule';
-import * as chrono from 'chrono-node';
+import rruleModule from 'rrule';
+const {RRule}=rruleModule;
+import chrono from 'chrono-node';
 
 const root=resolve(import.meta.dirname,'..');
 const load=p=>readFileSync(resolve(root,p),'utf8');
