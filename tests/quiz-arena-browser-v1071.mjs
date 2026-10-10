@@ -30,9 +30,11 @@ try{
  await answers.nth(0).click({timeout:10000});
  await page.waitForSelector('#v612-quiz-portal [data-v531-view="hub"]',{timeout:6000});
  await page.screenshot({path:'quiz-debug/02-hub.png'});
- const close=page.locator('#v612-quiz-portal [data-v1070-quiz-hub-close]');
- assert.ok(await close.isVisible(),'Hub X visible');
- await close.click();
+ const duplicateClose=page.locator('#v612-quiz-portal [data-v1070-quiz-hub-close]');
+ assert.equal(await duplicateClose.isVisible(),false,'No mostrar X redundante en Quiz Arena');
+ const back=page.locator('#v612-quiz-portal [data-v531-view="hub"] [data-v531-quiz-back]');
+ assert.ok(await back.isVisible(),'Flecha Volver visible');
+ await back.click();
  await page.waitForSelector('#v612-quiz-portal [data-v531-view="splash"]',{timeout:5000});
  await page.locator('#v612-quiz-portal [data-v531-view="splash"] .v1059-answer').nth(2).click();
  await page.waitForSelector('#v612-quiz-portal [data-v531-view="hub"]',{timeout:5000});
@@ -53,7 +55,7 @@ try{
  await page.getByRole('button',{name:'Sí, salir'}).click();
  await page.waitForSelector('#v612-quiz-portal [data-v531-view="hub"]',{timeout:5000});
  assert.deepEqual(errors,[],'No JavaScript runtime errors');
- console.log('PASS: A-D -> hub -> X -> hub -> 3/2/1 -> exit sheet -> No -> question -> exit sheet -> Si.');
+ console.log('PASS: A-D -> hub -> Flecha Volver -> hub -> 3/2/1 -> exit sheet -> No -> question -> exit sheet -> Si.');
 }catch(e){
  console.error('QUIZ BROWSER TEST FAILURE',String(e));console.log('Runtime JS errors:',JSON.stringify(errors.slice(0,18)));console.log('Failed requests:',JSON.stringify(notFound.slice(0,30)));
  
