@@ -1,0 +1,79 @@
+/* V1218 — Estadísticas / General, Equipo y Jugadores.
+   Mantener títulos y tarjetas justo bajo la línea blanca de las pestañas.
+   Eliminar el espacio doble de las cabeceras históricas; carruseles sin
+   recortes ni bandas laterales en móviles. No modificar fuentes de datos. */
+@media (max-width:1023px) {
+  /* Un solo espaciador: la altura REAL de la cabecera fija, incluso al deslizar. */
+  html body.v33-data-active #app #screen .v33-data-page[data-v33-data][data-v33-mode] {
+    padding-top:var(--v33-actual-head-h,clamp(184px,50.12vw,258px))!important;
+    --v33-visible-gap-fix:0px!important;
+    overflow-x:clip!important;
+  }
+  html body.v33-data-active #app #screen .v33-data-page[data-v33-mode="general"] > .v33-data-content.v33-general-content,
+  html body.v33-data-active #app #screen .v33-data-page[data-v33-mode="team"] > .v33-data-content.v593-detail-horizontal,
+  html body.v33-data-active #app #screen .v33-data-page[data-v33-mode="player"] > .v33-data-content.v593-detail-horizontal {
+    margin:0!important;
+    padding:8px 10px 24px!important;
+    transform:none!important;
+    position:relative!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+  }
+  html body.v33-data-active #app #screen .v33-data-page[data-v33-mode] .v33-data-content > .v33-general-section:first-child {
+    margin-top:0!important;
+    padding-top:0!important;
+    transform:none!important;
+  }
+  html body.v33-data-active #app #screen .v33-data-page[data-v33-mode] .v33-data-content > .v33-general-section:first-child > .v33-general-title {
+    margin:0 8px 10px!important;
+    min-height:0!important;
+    padding:0!important;
+    align-items:center!important;
+    transform:none!important;
+  }
+  html body.v33-data-active #app #screen .v33-data-page[data-v33-mode] .v33-general-title h2 {
+    min-width:0!important;
+    height:auto!important;
+    line-height:1.16!important;
+    overflow-wrap:break-word!important;
+  }
+
+  /* A la derecha no hay máscara azul: cada cuadro cabe entero al desplazarse. */
+  html body.v33-data-active #app #screen .v33-data-page[data-v33-mode] .v33-carousel {
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    gap:12px!important;
+    margin:0!important;
+    padding:0 12px 12px!important;
+    box-sizing:border-box!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scroll-snap-type:x mandatory!important;
+    scroll-padding-inline:12px!important;
+    scrollbar-width:none!important;
+    mask-image:none!important;
+    -webkit-mask-image:none!important;
+    clip-path:none!important;
+    background-image:none!important;
+    overscroll-behavior-inline:contain!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  html body.v33-data-active #app #screen .v33-data-page[data-v33-mode] .v33-carousel::before,
+  html body.v33-data-active #app #screen .v33-data-page[data-v33-mode] .v33-carousel::after {
+    content:none!important;
+    display:none!important;
+  }
+  html body.v33-data-active #app #screen .v33-data-page[data-v33-mode] .v33-carousel > .v33-stat-card {
+    flex:0 0 100%!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    box-sizing:border-box!important;
+    margin:0!important;
+    scroll-snap-align:start!important;
+    scroll-snap-stop:always!important;
+  }
+}
