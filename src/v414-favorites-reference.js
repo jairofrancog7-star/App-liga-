@@ -170,6 +170,7 @@ function copyFor(active){
  return ['No te pierdas ni un instante','Marca a tus equipos como favoritos para no perderte la acción.','Busca un equipo'];
 }
 function refIcon(kind){
+ const original=window.LJR_ICONS?.svg(kind==='bell'?'notification':'user');if(original)return original;
  if(kind==='bell')return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg>';
  return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21c.8-4.2 3.2-6.2 7.5-6.2s6.7 2 7.5 6.2"></path></svg>';
 }

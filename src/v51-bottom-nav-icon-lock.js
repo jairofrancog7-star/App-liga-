@@ -12,6 +12,14 @@
 for(const name of Object.keys(ICONS)) ICONS[name]=window.LJR_ICONS?.svg(name) || ICONS[name];
 
 
+  // Compare the DOM's canonical serialization, so unchanged vectors do not
+  // trigger the app's mutation observers again on every animation frame.
+  const canonicalIcons={};
+  for(const [name,markup] of Object.entries(ICONS)){
+    const holder=document.createElement('div');holder.innerHTML=markup;
+    canonicalIcons[name]=holder.innerHTML;
+  }
+
   let queued=false;
 
   function lockIcons(){
@@ -21,7 +29,7 @@ for(const name of Object.keys(ICONS)) ICONS[name]=window.LJR_ICONS?.svg(name) ||
     nav.querySelectorAll('.nav-item[data-route]').forEach(item=>{
       const route=item.dataset.route;
       const icon=item.querySelector('.nav-icon');
-      const desired=ICONS[route];
+      const desired=canonicalIcons[route];
       if(!icon||!desired)return;
       if(icon.innerHTML!==desired){
         icon.innerHTML=desired;

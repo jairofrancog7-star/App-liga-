@@ -214,3 +214,9 @@ html body #screen .ljr-knockout[data-ko-mode="competition"]{
  width:calc(100% + var(--ko-bleed-left,0px) + var(--ko-bleed-right,0px));
  margin-left:calc(-1 * var(--ko-bleed-left,0px));margin-right:calc(-1 * var(--ko-bleed-right,0px));
 }
+
+/* On touch layouts the vertical scrollbar does not reserve a side strip. */
+@media(max-width:1023px){
+ html body #screen:has(.ljr-knockout){scrollbar-width:none}
+ html body #screen:has(.ljr-knockout)::-webkit-scrollbar{width:0;display:none}
+}

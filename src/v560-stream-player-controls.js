@@ -79,7 +79,7 @@ export function attachPlayerControls(card,{pip,settings,cast,notify,changeSource
    loop:'<path d="m17 2 4 4-4 4M3 11V8a2 2 0 0 1 2-2h16M7 22l-4-4 4-4m14-1v3a2 2 0 0 1-2 2H3"/>',
    shot:'<path d="M14 4H9L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-4z"/><circle cx="12" cy="13" r="3"/>'
   };
-  const icon=key=>'<svg viewBox="0 0 24 24" aria-hidden="true">'+symbols[key]+'</svg>';
+  const icon=key=>window.LJR_ICONS?.svg(({back:'replay10',next:'forward10',loop:'repeat'})[key]||key)||'<svg viewBox="0 0 24 24" aria-hidden="true">'+symbols[key]+'</svg>';
   const btn=(action,label,body)=>'<button type="button" data-action="'+action+'" aria-label="'+label+'" title="'+label+'">'+body+'</button>';
   const bar=document.createElement('div');bar.className='v560-player-controls v919-stream-controls v919-shown';
   bar.innerHTML='<div class="v919-stream-quick">'+
