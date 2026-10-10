@@ -247,6 +247,8 @@
     // V948: this emblem is controlled by the dedicated comparator resolver.
     // Do not overwrite its working source with a different category/logo.
     if(img.closest('.v944-crest'))return;
+    // Jornada explicitly calls LJR_TEAM_LOGOS.get(); never replace its images later.
+    if(img.closest('.md1132-crest'))return;
     if(img.closest('[data-player-portrait],.v123-avatar,.v123-option-avatar,.v66-player-avatar,.v42-avatar,.v576-player-avatar,.v379-related-avatar,.v562-avatar,.v124-avatar')||img.matches('.v379-player-photo,.v610-generic-player,.v576-player-photo,.v576-hero-player-photo'))return;
     if(img.closest('.v27-league-badge,.v35-logo-wrap,.v31-hospitality-page'))return;
     const oldCategory={'primera-fuerza-hd.png':'3','intermedia.webp':'5','segunda-fuerza.webp':'4','veteranos-35-user.png':'2','veteranos-50.webp':'1'};
