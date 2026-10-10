@@ -1,0 +1,116 @@
+/* V1124 — Reclutamiento. Un solo chevron en Comunidad y escudos reales
+   en el selector de equipo destino; sin modificar selects de otras pantallas. */
+html body[data-app-route="recruitment"] #v190-recruitment-page .v190-community-select::after,
+html body[data-app-route="recruitment"] #v190-recruitment-page .v190-community-select::before,
+html body[data-app-route="recruitment"] #v190-recruitment-page .v190-community-label::before,
+html body[data-app-route="recruitment"] #v190-recruitment-page .v190-community-label::after{
+  content:none!important;display:none!important;
+}
+html body[data-app-route="recruitment"] #v190-recruitment-page .v190-community-select{
+  isolation:isolate!important;
+}
+html body[data-app-route="recruitment"] #v190-recruitment-page .v190-community-select>svg{
+  left:12px!important;width:20px!important;height:20px!important;
+  stroke:#69eaf4!important;stroke-width:1.8px!important;fill:none!important;
+  background:transparent!important;box-shadow:none!important;filter:none!important;
+}
+html body[data-app-route="recruitment"] #v190-recruitment-page .v190-recruit-card .v190-community-select>select[data-v190-team-community]{
+  appearance:auto!important;-webkit-appearance:menulist!important;
+  padding-right:9px!important;padding-left:42px!important;
+  background-image:none!important;
+}
+html body[data-app-route="recruitment"] #v190-recruitment-page .v190-community-select>*:not(svg):not(select){
+  display:none!important;
+}
+/* El valor real se queda en el select original para guardado, categorías,
+   detección de cambios y compatibilidad con otros componentes. */
+html body[data-app-route="recruitment"] #v190-recruitment-page select[data-v190-player-team][data-v1124-team-enhanced]{
+  position:absolute!important;width:1px!important;height:1px!important;
+  max-width:1px!important;min-height:1px!important;
+  margin:0!important;padding:0!important;border:0!important;
+  opacity:0!important;pointer-events:none!important;
+  clip-path:inset(50%)!important;overflow:hidden!important;
+}
+html body[data-app-route="recruitment"] #v190-recruitment-page .v1124-team-field{position:relative!important}
+html body[data-app-route="recruitment"] #v190-recruitment-page button.v1124-team-open{
+  box-sizing:border-box!important;display:grid!important;
+  grid-template-columns:37px minmax(0,1fr) 13px!important;
+  align-items:center!important;gap:10px!important;
+  width:100%!important;min-width:0!important;min-height:54px!important;
+  padding:7px 11px!important;margin:0!important;
+  background:#101e69!important;border:1px solid rgba(97,154,234,.48)!important;
+  border-radius:13px!important;color:#fff!important;text-align:left!important;
+  font-family:inherit!important;cursor:pointer!important;
+}
+html body[data-app-route="recruitment"] #v190-recruitment-page button.v1124-team-open:focus-visible{
+  outline:2px solid #54e9f5!important;outline-offset:2px!important;
+}
+.v1124-crest{
+  flex:0 0 37px;display:grid;place-items:center;
+  width:37px;height:37px;min-width:37px;min-height:37px;
+  box-sizing:border-box;overflow:hidden;border-radius:9px;
+  background:rgba(50,113,202,.12);color:#66e6f5;
+}
+.v1124-crest img{display:block;width:100%!important;height:100%!important;max-width:100%!important;object-fit:contain!important;background:transparent!important}
+.v1124-crest svg{display:block;width:23px;height:23px}
+.v1124-team-current{min-width:0;display:grid;gap:3px}
+.v1124-team-current b{color:#fff!important;font-size:12px!important;line-height:1.24!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.v1124-team-current small{font-size:9px!important;line-height:1.2!important;color:#87ddef!important}
+.v1124-chevron{width:9px;height:9px;justify-self:center;border-right:2px solid #c6d7fa;border-bottom:2px solid #c6d7fa;transform:rotate(45deg) translateY(-2px)}
+body.v1124-team-picker-open{overflow:hidden!important}
+.v1124-picker-layer{
+  position:fixed!important;inset:0!important;
+  display:grid!important;place-items:center!important;
+  padding:max(12px,env(safe-area-inset-top)) 13px max(12px,env(safe-area-inset-bottom))!important;
+  box-sizing:border-box!important;z-index:2147483647!important;
+}
+.v1124-picker-backdrop{position:absolute!important;inset:0!important;border:0!important;background:rgba(1,5,36,.73)!important}
+.v1124-picker-sheet{
+  position:relative!important;z-index:1!important;
+  box-sizing:border-box!important;width:min(100%,510px)!important;
+  max-height:min(78dvh,700px)!important;min-height:0!important;
+  display:flex!important;flex-direction:column!important;gap:12px!important;
+  padding:20px 17px 16px!important;overflow:hidden!important;
+  border:1px solid #4b77bf!important;border-radius:21px!important;
+  background:#0d175c!important;color:#fff!important;
+  box-shadow:0 20px 55px rgba(0,0,25,.45)!important;
+  font-family:Inter,Roboto,Arial,system-ui,sans-serif!important;
+}
+.v1124-picker-sheet>header{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important}
+.v1124-picker-sheet>header h2{margin:0!important;font-size:22px!important;line-height:1.2!important;color:#fff!important;font-weight:850!important}
+.v1124-picker-x{
+  flex:0 0 36px;width:36px;height:36px;
+  display:grid;place-items:center;border:1px solid rgba(117,181,245,.35);
+  border-radius:11px;background:#13216b;color:#6fe7f7;
+  font-size:25px;cursor:pointer;
+}
+.v1124-search-label{display:grid;gap:6px;min-width:0;color:#d9e9ff;font-size:12px}
+.v1124-search-label input{
+  width:100%!important;min-width:0!important;height:43px!important;min-height:43px!important;
+  background:#08134d!important;border:1px solid #6f8abf!important;
+  border-radius:11px!important;padding:0 12px!important;
+  color:#fff!important;font:500 13px Inter,Roboto,Arial,sans-serif!important;
+  outline:none;
+}
+.v1124-search-label input:focus{border-color:#5de7f5!important;box-shadow:0 0 0 2px rgba(93,231,245,.13)!important}
+.v1124-team-list{display:grid!important;align-content:start!important;gap:7px!important;min-height:0!important;overflow-y:auto!important;overscroll-behavior:contain!important;padding:1px 3px 4px 0!important;scrollbar-width:thin}
+.v1124-option{
+  display:grid!important;grid-template-columns:37px minmax(0,1fr) 18px!important;align-items:center!important;gap:11px!important;
+  width:100%!important;min-height:56px!important;box-sizing:border-box!important;
+  margin:0!important;padding:9px 11px!important;
+  border:1px solid #394a87!important;border-radius:13px!important;
+  background:#151f60!important;color:#d5e9ff!important;text-align:left!important;
+  cursor:pointer!important;
+}
+.v1124-option.selected{border-color:#23cde9!important;background:#1b398a!important}
+.v1124-option:focus-visible{outline:2px solid #77f5f9!important;outline-offset:1px}
+.v1124-team-copy{display:grid;gap:3px;min-width:0}
+.v1124-team-copy b{min-width:0;font-size:13px;font-weight:740;color:#e1f4ff;overflow-wrap:break-word;line-height:1.24}
+.v1124-team-copy small{font-size:10px;color:#a7c3ee;line-height:1.2}
+.v1124-option-check{color:#55ecf6;font-size:18px;font-weight:850;text-align:right}
+.v1124-no-results{padding:18px 10px;text-align:center;color:#b9ccea;font-size:12px}
+@media(max-width:360px){
+  .v1124-picker-sheet{padding:15px 11px 12px!important;border-radius:17px!important}
+  .v1124-picker-sheet>header h2{font-size:19px!important}
+  .v1124-option{gap:8px!important;padding:7px 8px!important}
+}
