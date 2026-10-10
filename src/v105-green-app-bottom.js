@@ -2273,6 +2273,14 @@ document.addEventListener('click',e=>{
  e.stopImmediatePropagation();
  openTvSafe();
 },true);
+/* V1302: ruta fiable desde la tarjeta Notificaciones de Más, aun tras remontajes. */
+document.addEventListener('click',e=>{
+ const button=e.target?.closest?.('#v105-bottom[data-v105-route="more"] [data-v105-route="notifications"]');
+ if(!button)return;
+ e.preventDefault();
+ e.stopImmediatePropagation();
+ if(location.hash!=='#/notifications')location.hash='#/notifications';
+},true);
 function schedule(ms=80){clearTimeout(timer);timer=setTimeout(mount,ms)}
 window.addEventListener('hashchange',()=>schedule(100));
 window.addEventListener('load',()=>schedule(200));
