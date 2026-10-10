@@ -2,6 +2,7 @@
 """Pruebas sin credenciales de automatización de avisos públicos."""
 import importlib.util
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
@@ -17,15 +18,27 @@ class ScheduledNoticeTests(unittest.TestCase):
         self.addCleanup(self.tmp.cleanup)
         root=Path(self.tmp.name)
         self.old=(module.SCHEDULE,module.ACTIVE,module.OUT)
+        self.prev_secret=os.environ.get("LJR_OFFICIAL_NOTICE_APPROVAL_SECRET")
+        os.environ["LJR_OFFICIAL_NOTICE_APPROVAL_SECRET"]="test-secret-for-approved-notices-not-for-production"
+        self.addCleanup(self.restore_secret)
         module.SCHEDULE=root/"scheduled.json"
         module.ACTIVE=root/"active.json"
         module.OUT=root/"generated"
         self.addCleanup(self.restore)
     def restore(self):
         module.SCHEDULE,module.ACTIVE,module.OUT=self.old
+    def restore_secret(self):
+        if self.prev_secret is None:
+            os.environ.pop("LJR_OFFICIAL_NOTICE_APPROVAL_SECRET",None)
+        else:
+            os.environ["LJR_OFFICIAL_NOTICE_APPROVAL_SECRET"]=self.prev_secret
     def load(self,file):
         return json.loads(file.read_text(encoding="utf8"))
     def write(self,file,items):
+        for item in items:
+            a=item.get("approval") or {}
+            if a.get("status")=="approved" and a.get("by") and "signature" not in a:
+                a["signature"]=module.approval_signature(item,os.environ["LJR_OFFICIAL_NOTICE_APPROVAL_SECRET"])
         file.write_text(json.dumps(items,ensure_ascii=False),encoding="utf8")
     def test_only_due_announcements_and_idempotent_publishing(self):
         self.write(module.SCHEDULE,[
@@ -53,6 +66,27 @@ class ScheduledNoticeTests(unittest.TestCase):
         self.assertEqual(self.load(module.ACTIVE),[])
         self.assertFalse(module.OUT.exists())
         self.assertFalse(self.load(module.SCHEDULE)[0].get("published_at"))
+
+    def test_modified_notice_invalidates_previous_approval_signature(self):
+        item={"id":"signed-1","title":"Aviso aprobado","body":"Texto validado",
+              "publishAt":"2000-01-01T00:00:00Z","channels":{"app":True},
+              "approval":{"status":"approved","by":"presidencia","at":"2026-10-10T12:00:00Z"}}
+        self.write(module.SCHEDULE,[item])
+        stored=self.load(module.SCHEDULE)
+        stored[0]["title"]="Texto manipulado"
+        module.SCHEDULE.write_text(json.dumps(stored),encoding="utf8")
+        self.write(module.ACTIVE,[])
+        module.main()
+        self.assertEqual(self.load(module.ACTIVE),[])
+
+    def test_without_private_key_no_publication(self):
+        self.write(module.SCHEDULE,[{"id":"valid-signed","title":"Aviso validado",
+             "publishAt":"2000-01-01T00:00:00Z","channels":{"app":True},
+             "approval":{"status":"approved","by":"presidencia","at":"2026-10-10T12:00:00Z"}}])
+        self.write(module.ACTIVE,[])
+        os.environ.pop("LJR_OFFICIAL_NOTICE_APPROVAL_SECRET",None)
+        module.main()
+        self.assertEqual(self.load(module.ACTIVE),[])
 
     def test_prunes_expired_even_if_there_are_no_due_announcements(self):
         self.write(module.SCHEDULE,[])
