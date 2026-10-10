@@ -20,8 +20,8 @@ try{
   step = 'A abre segunda pantalla';
   await page.locator('#v612-quiz-portal .v1059-answer').first().click();
   await page.locator('#v612-quiz-portal [data-v531-view="hub"] .v1057-quiz-head').waitFor({state:'visible',timeout:15000});
-  step = 'X vuelve a inicio';
-  await page.locator('#v612-quiz-portal [data-v1070-quiz-hub-close]').click();
+  step = 'Flecha visible vuelve a inicio';
+  await page.locator('#v612-quiz-portal [data-v531-view="hub"] [data-v531-quiz-back]').click();
   await page.locator('#v612-quiz-portal [data-v531-view="splash"]').waitFor({state:'visible',timeout:15000});
   step = 'B vuelve a abrir portada';
   await page.locator('#v612-quiz-portal .v1059-answer').nth(1).click();
