@@ -12,6 +12,7 @@ const AUTO_LAST_KEY='ljr-backup-auto-last-v1213';
 const HISTORY_LIMIT=14;
 const REVIEW_MS=24*60*60*1000;
 let automaticReviewInFlight=false;
+let automaticLastRuntime=0; // Cuando localStorage está bloqueado, evita repetir la consulta en la misma sesión.
 const MAX_PLAIN=32*1024*1024;
 const MAX_FILE=48*1024*1024;
 const ITERATIONS=310000;
@@ -99,8 +100,9 @@ function inspect(rows){
  return {count:rows.length,duplicates,missing,invalid,fall,previous,model:trendModel(rows.length,history)};
 }
 function shouldAutoReview(last,now=Date.now()){
- const time=Date.parse(last||'');
- return !Number.isFinite(time)||now-time>=REVIEW_MS;
+ const saved=Date.parse(last||'');
+ const time=Math.max(Number.isFinite(saved)?saved:0,automaticLastRuntime);
+ return !time||now-time>=REVIEW_MS;
 }
 function recordHistory(count){
  const history=read(SUMMARY_KEY,[]),series=Array.isArray(history)?history.slice(-HISTORY_LIMIT):[];
@@ -175,7 +177,11 @@ function open(){
   say(automatic?'Revisión local automática autorizada…':'Analizando registros privados…');
   const rows=await records(),stats=renderDiagnosis(rows);
   recordHistory(stats.count);
-  if(automatic)write(AUTO_LAST_KEY,new Date().toISOString());
+  if(automatic){
+   const now=new Date().toISOString();
+   automaticLastRuntime=Date.parse(now);
+   write(AUTO_LAST_KEY,now);
+  }
   say('Análisis local completo. '+(stats.model.ready?'Modelo estadístico actualizado.':'Aprendizaje en curso.')+' Sin cambios en datos oficiales.');
  }
  const analyzeButton=$('[data-backup-analyze]',root);
