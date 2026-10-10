@@ -104,26 +104,55 @@ async function syncState(root){
  const label=$('[data-v1082-state]',root),toggle=$('[data-v1082-toggle]',root);
  if(!label||!toggle)return;
  toggle.disabled=false;
- if(!supported()){label.textContent='No compatible con este navegador';toggle.disabled=true;return;}
+ if(!supported()){
+  label.textContent='Web Push no compatible con este navegador';
+  toggle.disabled=true;
+  status(root,'Puedes consultar los avisos en la página. Para notificaciones con la app cerrada se requiere un navegador compatible y permiso del dispositivo.');
+  return;
+ }
  const base=await apiBase();
- if(!base){label.textContent='Falta conectar el servidor de envío';toggle.disabled=true;
-  status(root,'Los avisos locales siguen disponibles. Para recibirlos con la app cerrada, falta configurar el servidor Web Push.');return;}
+ if(!base){
+  label.textContent='Servidor de envío no configurado';toggle.disabled=true;
+  status(root,'Los avisos locales siguen disponibles. Las notificaciones con la app cerrada requieren un servidor Web Push.');
+  return;
+ }
+ // Verificar primero el backend aunque este navegador todavía no esté suscrito.
+ // Una suscripción local nunca prueba por sí sola que el servidor pueda entregar avisos.
+ let config;
+ try{
+  config=await server('public-key');
+  if(!config?.publicKey)throw Error('Sin clave pública VAPID');
+ }catch(_){
+  label.textContent='Servidor Push no disponible';
+  toggle.disabled=true;
+  status(root,'No se pudo conectar al servidor de notificaciones. Revisa tu conexión y vuelve a intentarlo. Los avisos de la página siguen disponibles.');
+  return;
+ }
  try{
   const sub=await subscription();
-  if(sub){
-   const config=await server('public-key');
-   if(!keyMatches(sub,config.publicKey)){
-    label.textContent='Otra suscripción Web Push activa';
-    status(root,'El navegador ya usa una clave de otro servicio de avisos. Para evitar perder alertas, no se modificará automáticamente.');
-    toggle.disabled=true;return;
-   }
+  if(sub&&!keyMatches(sub,config.publicKey)){
+   label.textContent='Suscripción de otro servicio detectada';
+   status(root,'El navegador ya tiene una suscripción con otra clave. No se cambiará ni eliminará sin tu autorización.');
+   toggle.disabled=true;return;
   }
   const enabled=!!sub;
   toggle.dataset.active=String(enabled);
   toggle.textContent=enabled?'Desactivar avisos':'Activar avisos';
-  label.textContent=enabled?'Suscripción de este dispositivo activada':'Disponible para activar';
-  if(enabled)status(root,'Al publicar un aviso oficial, este dispositivo podrá recibirlo incluso si la app está cerrada (según permisos y conectividad).');
- }catch(_){label.textContent='No fue posible comprobar la suscripción';toggle.disabled=true;}
+  if(Notification.permission==='denied'){
+   label.textContent='Notificaciones bloqueadas en el navegador';
+   status(root,'Abre los permisos de este sitio en Chrome o Android y permite las notificaciones. La suscripción guardada no garantiza recepción.');
+   if(!enabled)toggle.disabled=true;
+  }else{
+   label.textContent=enabled?'Servidor disponible · suscripción en este navegador':'Servidor Push disponible · falta activar este dispositivo';
+   status(root,enabled
+    ?'Hay una suscripción del navegador y el servidor responde. La entrega con la app cerrada aún requiere una prueba real en este teléfono y un aviso oficial publicado.'
+    :'El servidor está accesible. Activa avisos para autorizar este dispositivo; no se enviará ningún mensaje de prueba automáticamente.');
+  }
+ }catch(_){
+  label.textContent='No fue posible comprobar la suscripción';
+  toggle.disabled=true;
+  status(root,'Comprueba tu conexión y permisos de Chrome antes de volver a intentar.');
+ }
 }
 async function enable(root){
  if(!getValues(root).types.length)throw Error('Selecciona al menos un tipo de aviso.');
