@@ -212,10 +212,10 @@ function open(options={}){
     (!matchChoices().length?'<option value="">Sin encuentros publicados</option>':'<option value="">Sin partido · borrador local</option>')+
     matchChoices().map(m=>'<option value="'+esc(m.key)+'"'+(state.matchKey===m.key?' selected':'')+'>J'+esc(m.round||'—')+' · '+esc(m.home)+' vs '+esc(m.away)+'</option>').join('')+
    '</select></label></div>';
-  html+='<div class="v1126-match"><small>'+(match?'PARTIDO PUBLICADO · '+esc(match.date||'Fecha por confirmar'):'BORRADOR SIN PARTIDO')+'</small><div>'+
+  html+='<div class="v1126-match"><small>'+iconImage(categoryCrest(state.catId),'Logo de categoría','v1126-match-category')+'<span>'+(match?'PARTIDO PUBLICADO · '+esc(match.date||'Fecha por confirmar'):'BORRADOR SIN PARTIDO')+'</span></small><div>'+
    '<span>'+iconImage(crest(match?.home||state.team),'Escudo local','v1126-crest')+esc(match?.home||state.team||'Sin equipo')+'</span><strong>'+(match?'VS':'★')+'</strong>'+
    '<span>'+iconImage(crest(match?.away||''),'Escudo visitante','v1126-crest')+esc(match?.away||'Selección local')+'</span></div></div>';
-  html+='<label class="v1126-label">Equipo</label><div class="v1126-team-rail">'+teams.map((team,i)=>'<button type="button" class="'+(norm(state.team)===norm(team)?'active':'')+'" data-mvp-team="'+esc(team)+'">'+esc(team)+'</button>').join('')+'</div>';
+  html+='<label class="v1126-label">Equipo</label><div class="v1126-team-rail">'+teams.map((team,i)=>'<button type="button" class="'+(norm(state.team)===norm(team)?'active':'')+'" data-mvp-team="'+esc(team)+'">'+iconImage(crest(team),team,'v1126-team-pick-logo')+'<span>'+esc(team)+'</span></button>').join('')+'</div>';
   html+='<label class="v1126-label">Buscar jugador</label><input type="search" data-mvp-search placeholder="Nombre o dorsal" value="'+esc(state.filter)+'" autocomplete="off">'+
     '<label class="v1126-label">Jugador registrado ('+filtered.length+')</label><select data-mvp-player>'+
     (filtered.length?filtered.map(p=>'<option value="'+esc(p.name)+'"'+(state.player===p.name?' selected':'')+'>'+esc(p.name)+(p.dorsal?' · #'+esc(p.dorsal):'')+'</option>').join(''):'<option value="">Sin coincidencias</option>')+
