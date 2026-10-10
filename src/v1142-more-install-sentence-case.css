@@ -1,0 +1,8 @@
+/* Más: título de instalación en mayúscula inicial y minúsculas restantes.
+   Neutraliza transformaciones de texto heredadas o reglas antiguas. */
+html body[data-app-route="more"] #screen .v19-more-page > .v19-more-label,
+html body[data-app-route="more"] #screen .v19-more-page .v1142-install-sentence-case,
+html body #screen .v19-more-page .v1142-install-sentence-case {
+  text-transform: none !important;
+  font-variant: normal !important;
+}
