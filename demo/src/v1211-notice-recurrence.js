@@ -154,6 +154,77 @@ function display(root){
   if(info.dates.length>6){const e=document.createElement('li');e.textContent='… y '+(info.dates.length-6)+' fechas más.';p.append(e)}
   $('[data-v1211-engine]',root).textContent=window.LJR_NOTICE_DATE_LIBS?.plan?'RRule local':'Regla local compatible con RRule';
 }
+
+/* V1212: cancela exclusivamente las ocurrencias futuras pendientes de UNA serie local.
+   No modifica los avisos ya procesados ni otros grupos o avisos individuales. */
+function cancelFutureSeries(items,recurrenceId,now=Date.now()){
+  if(!recurrenceId||!Array.isArray(items))return {remaining:Array.isArray(items)?items:[],cancelled:0};
+  let cancelled=0;
+  const remaining=items.filter(item=>{
+    if(!item||item.recurrenceId!==recurrenceId||item.published||item.status==='published')return true;
+    const due=Date.parse(item.publishAt||'');
+    if(!Number.isFinite(due)||due<=now)return true;
+    cancelled++;
+    return false;
+  });
+  return {remaining,cancelled};
+}
+function mountSeriesCancellation(root){
+  const list=$('[data-v713-list]',root);
+  if(!list)return;
+  const refreshButtons=()=>{
+    const now=Date.now(),items=readItems();
+    const eligible=new Map();
+    items.forEach(item=>{
+      if(!item?.recurrenceId||item.published||item.status==='published')return;
+      const due=Date.parse(item.publishAt||'');
+      if(!Number.isFinite(due)||due<=now)return;
+      const group=eligible.get(item.recurrenceId);
+      if(!group)eligible.set(item.recurrenceId,{id:item.id,at:due,count:1});
+      else {group.count++;if(due<group.at){group.id=item.id;group.at=due}}
+    });
+    $('[data-v713-id]',list).forEach(card=>{
+      const item=items.find(x=>x?.id===card.dataset.v713Id);
+      const actions=$('.v713-item-actions',card);
+      if(!actions)return;
+      const group=item?.recurrenceId&&eligible.get(item.recurrenceId);
+      const shown=!!group&&group.id===item.id;
+      const old=$('[data-v1212-cancel-series]',actions);
+      if(!shown){old?.remove();return}
+      const label='Cancelar serie ('+group.count+' pendientes)';
+      if(old){if(old.textContent!==label)old.textContent=label;return}
+      const button=document.createElement('button');
+      button.type='button';
+      button.dataset.v1212CancelSeries=item.recurrenceId;
+      button.className='v1212-cancel-series';
+      button.textContent=label;
+      button.title='Eliminar recordatorios futuros de esta serie en este dispositivo';
+      actions.append(button);
+    });
+  };
+  new MutationObserver(refreshButtons).observe(list,{childList:true,subtree:true});
+  root.addEventListener('click',async event=>{
+    const button=event.target.closest?.('[data-v1212-cancel-series]');
+    if(!button||!list.contains(button))return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if(!await authorized()){setNotice(root,'Solo administración autorizada puede cancelar avisos.');return}
+    const groupId=button.dataset.v1212CancelSeries;
+    const snapshot=cancelFutureSeries(readItems(),groupId,Date.now());
+    if(!snapshot.cancelled){refreshButtons();setNotice(root,'Esta serie ya no tiene avisos futuros pendientes.');return}
+    if(!window.confirm('¿Cancelar los '+snapshot.cancelled+' avisos FUTUROS de esta serie en este teléfono? No se eliminarán los avisos ya procesados ni los de otras series.'))return;
+    // Lectura nueva después de la confirmación, para no borrar cambios simultáneos.
+    const latest=cancelFutureSeries(readItems(),groupId,Date.now());
+    if(!latest.cancelled){refreshButtons();setNotice(root,'Ya no quedan avisos futuros pendientes.');return}
+    try{localStorage.setItem(KEY,JSON.stringify(latest.remaining))}
+    catch(_){setNotice(root,'No se pudo guardar la cancelación. No se eliminó ningún aviso.');return}
+    window.LJR_V713_NOTICE_SCHEDULER_REFRESH?.();
+    refreshButtons();
+    setNotice(root,'Cancelados '+latest.cancelled+' avisos futuros locales de esta serie. Los avisos ya procesados permanecen.');
+  },true);
+  refreshButtons();
+}
+
 function attach(root){
   if(root.dataset.v1211Ready)return;
   root.dataset.v1211Ready='1';
@@ -232,6 +303,7 @@ function attach(root){
     setNotice(root,'Programados '+prepared.length+' avisos locales. '+(skipped?'Omitidos '+skipped+' duplicados.':'Puedes editar cada fecha desde la lista.'));
   },true);
   root.addEventListener('click',e=>{if(e.target.closest('[data-v1210-edit]')){rec.value='none';update();setNotice(root,'Edición de una fecha: no cambia las demás fechas de la serie.')}}); 
+  mountSeriesCancellation(root);
   update();
 }
 function mount(){$$('.v713-auto[data-v713-auto]').forEach(attach)}
