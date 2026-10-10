@@ -18,9 +18,11 @@ body.v414-favorites-active .v414-logo-tile>img{
   max-width:58px!important;max-height:58px!important;object-fit:contain!important;
   background:transparent!important;filter:none!important;border:0!important;
 }
-body.v414-favorites-active .v414-logo-tile>img[style*="display: none"]{display:none!important}
-body.v414-favorites-active .v414-logo-tile>img+.v414-fallback[style*="display: none"]{display:none!important}
-body.v414-favorites-active .v414-logo-tile>.v414-fallback:not([style*="display: none"]){
+body.v414-favorites-active .v414-logo-tile>img[style*="display: none"],
+body.v414-favorites-active .v414-logo-tile>img[style*="display:none"]{display:none!important}
+body.v414-favorites-active .v414-logo-tile>img+.v414-fallback[style*="display: none"],
+body.v414-favorites-active .v414-logo-tile>img+.v414-fallback[style*="display:none"]{display:none!important}
+body.v414-favorites-active .v414-logo-tile>.v414-fallback:not([style*="display: none"]):not([style*="display:none"]){
   position:relative;z-index:1;background:transparent!important;border-radius:8px!important
 }
 body.v414-favorites-active .v414-match-logo-pair img{background:transparent!important;border-radius:0!important;object-fit:contain!important}
