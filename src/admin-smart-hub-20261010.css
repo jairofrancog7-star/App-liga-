@@ -207,3 +207,9 @@ html body .liga-media-modal .ljr-smart-task span.is-complete{
 @media (prefers-reduced-motion:reduce){
   html body .liga-media-modal>section.ljr-admin-manage * {transition:none!important}
 }
+
+/* El atributo hidden prevalece sobre los componentes flex, incluidos los resultados vacíos. */
+html body .liga-media-modal .ljr-smart-recommendation[hidden],
+html body .liga-media-modal .ljr-smart-recommendation button[hidden]{
+  display:none!important;
+}
