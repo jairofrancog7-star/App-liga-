@@ -1,0 +1,251 @@
+/* V1381 — Liga Juventino Rosas: color oficial para los cuatro flujos del CMS.
+   Una sola capa FINAL frente a V1075/V1174/V1212/V1310/V1335/V1340.
+   SOLO estilos: sin modificar eventos, permisos, estado, datos o imágenes.
+   Paleta de la aplicación: #05045f / #0a235c / #0d47a1 / #1c69d4. */
+html body .liga-media-modal > section:is(
+  .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,
+  .ljr-admin-studio,.ljr-editor-dialog,.v1081-dialog
+){
+  --ljr1310-bg:#06065f;
+  --ljr1310-surface:#0a235c;
+  --ljr1310-card:#10377b;
+  --ljr1310-input:#081e55;
+  --ljr1310-edge:#527fc9;
+  --ljr1310-ink:#f5f9ff;
+  --ljr1310-muted:#c8d8f1;
+  --ljr1310-focus:#96c3ff;
+  --ljr-admin-night:#06065f;
+  --ljr-admin-surface:#0a235c;
+  --ljr-admin-card:#10377b;
+  --ljr-admin-control:#081e55;
+  --ljr-admin-line:#527fc9;
+  background:#06065f!important;
+  background-image:linear-gradient(163deg,#0d3688 0%,#0a235c 49%,#06065f 100%)!important;
+  border-color:#527fc9!important;
+  color:#f5f9ff!important;
+  color-scheme:dark!important;
+}
+html body .liga-media-modal > section:is(
+  .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,
+  .ljr-admin-studio,.ljr-editor-dialog,.v1081-dialog
+)>header{
+  background:#0d47a1!important;
+  background-image:linear-gradient(135deg,#1459b4,#0d47a1 45%,#0a235c)!important;
+  border-bottom-color:#4b81d1!important;
+  color:#fff!important;
+}
+html body .liga-media-modal > section:is(
+  .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,
+  .ljr-admin-studio,.ljr-editor-dialog,.v1081-dialog
+)>header [data-close]{
+  background:#10377b!important;
+  background-image:none!important;
+  border-color:#5b8dd8!important;
+  color:#fff!important;
+}
+/* Cuadros internos, ayuda, resultados y vista previa no personalizada. */
+html body .liga-media-modal :is(
+ .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,
+ .ljr-admin-studio,.ljr-editor-dialog,.v1081-dialog
+) :is(
+ .ljr-admin-area,.ljr-simple-intro,.ljr-guide,.ljr-smart-hub,
+ .ljr-editor-hub,.ljr-editor-section-info,.ljr-editor-preview,
+ .ljr-editor-autofill,.ljr-editor-row,.ljr-editor-empty,
+ .ljr-review-stats>div,.ljr-review-card,.ljr-review-insights,
+ .ljr-review-empty,.ljr-review-device-results,.ljr-review-feedback,
+ .v1081-note,.v1081-item,.v1081-preview,.v1081-role,
+ .ljr-smart-tasks,.ljr-review-body
+){
+  background:#10377b!important;
+  background-image:linear-gradient(150deg,#123d86 0%,#0a2868 100%)!important;
+  border-color:#527fc9!important;
+  color:#f4f9ff!important;
+  box-shadow:none!important;
+}
+/* No pintar por encima de imágenes, escudos, canvas o diseños finales. */
+html body .liga-media-modal :is(.ljr-admin-manage,.ljr-admin-cms,.ljr-admin-friendly,.ljr-editor-dialog)
+:is(
+  .ljr-admin-tile:not(.ljr-admin-tile-danger),
+  .cms-kind-grid>button:not(.is-danger),.ljr-editor-hub-grid>button,
+  .ljr-editor-two-choice>button,.ljr-editor-extra-actions>button,
+  .ljr-editor-tools>button,.ljr-editor-bottom>button,
+  .ljr-editor-smart-tools>button,.ljr-review-tabs>button,
+  .ljr-review-automation>button,.ljr-review-device-controls>button,
+  .ljr-review-footer>button
+){
+  background:#10377b!important;
+  background-image:linear-gradient(145deg,#174b98,#0e3374)!important;
+  border-color:#5b89d2!important;
+  color:#f5faff!important;
+  text-shadow:none!important;
+}
+html body .liga-media-modal .ljr-editor-dialog :is(
+ .ljr-review-tabs button[aria-pressed=true],
+ .ljr-editor-tools button[aria-pressed=true],
+ .ljr-editor-bottom [data-editor-publish],
+ .ljr-review-actions .ljr-review-publish
+){
+  background:#1c69d4!important;
+  background-image:linear-gradient(135deg,#1c69d4,#0d47a1)!important;
+  border-color:#86b5f2!important;
+  color:#fff!important;
+}
+html body .liga-media-modal .ljr-editor-dialog .ljr-review-tabs button span{
+  background:#091d5a!important;
+  color:#f9fbff!important;
+}
+html body .liga-media-modal :is(.ljr-admin-manage,.ljr-admin-cms,.ljr-admin-friendly)
+:is(.ljr-admin-tile-icon,.ljr-simple-icon,.ljr-editor-hub-grid>button>b){
+  background:#16428c!important;
+  background-image:none!important;
+  border-color:#6a97d6!important;
+  color:#e0edff!important;
+}
+/* Controles: no se cambian tipos, selectores, opciones, valores ni eventos. */
+html body .liga-media-modal > section:is(
+  .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,
+  .ljr-admin-studio,.ljr-editor-dialog,.v1081-dialog
+) :is(input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=color]),select,textarea){
+  background:#081e55!important;
+  background-image:none!important;
+  border-color:#5686d0!important;
+  color:#f7fbff!important;
+  color-scheme:dark!important;
+}
+html body .liga-media-modal :is(.ljr-admin-manage,.ljr-admin-cms,.ljr-admin-friendly,.ljr-editor-dialog)
+:is(input,textarea)::placeholder{
+  color:#c0d2ed!important;
+  opacity:1!important;
+}
+html body .liga-media-modal > section:is(
+  .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,
+  .ljr-admin-studio,.ljr-editor-dialog,.v1081-dialog
+) :is(input,select,textarea,button,summary):focus-visible{
+  outline:2px solid #a4c8ff!important;
+  outline-offset:2px!important;
+}
+html body .liga-media-modal :is(.ljr-admin-manage,.ljr-admin-cms,.ljr-admin-friendly,.ljr-editor-dialog)
+:is(.ljr-editor-note,.ljr-editor-security,.ljr-admin-greeting,.ljr-admin-section-sub,.ljr-review-meta,.ljr-review-stats small,.ljr-smart-count,.ljr-simple-intro p){
+  color:#cbdcf4!important;
+}
+/* Crear aviso: incluso su encabezado, pie fijo y acciones se integran. */
+html body .liga-media-modal > section.ljr-editor-dialog.ljr-notice-1212{
+  --notice-blue:#1c69d4;--notice-deep:#0a235c;--notice-mid:#0d47a1;
+  background:#06065f!important;
+  background-image:linear-gradient(163deg,#0d3688,#0a235c 48%,#06065f)!important;
+  border-color:#527fc9!important;
+}
+html body .liga-media-modal > section.ljr-editor-dialog.ljr-notice-1212 > header{
+  background:#0d47a1!important;
+  background-image:linear-gradient(135deg,#1459b4,#0d47a1 65%,#0a235c)!important;
+  border-bottom-color:#527fc9!important;
+}
+html body .liga-media-modal .ljr-notice-1212 .ljr-editor-bottom{
+  background:#0a235c!important;
+  background-image:linear-gradient(180deg,rgba(10,35,92,.97),#070d58)!important;
+  border-top-color:#527fc9!important;
+}
+html body .liga-media-modal .ljr-notice-1212 .ljr-editor-bottom button{
+  background:#13418b!important;
+  background-image:linear-gradient(145deg,#174b98,#0e3374)!important;
+  border-color:#5b89d2!important;
+  color:#fff!important;
+}
+html body .liga-media-modal .ljr-notice-1212 .ljr-editor-bottom [data-editor-publish]{
+  background:#1c69d4!important;
+  background-image:linear-gradient(130deg,#1c69d4,#0d47a1)!important;
+  border-color:#86b5f2!important;
+}
+html body .liga-media-modal .ljr-notice-1212 .ljr-editor-form :is(input,select,textarea){
+  background:#081e55!important;
+  background-image:none!important;
+  border-color:#5686d0!important;
+  color:#fff!important;
+}
+html body .liga-media-modal .ljr-notice-1212 :is(.ljr-editor-preview,.ljr-editor-progress){
+  border-color:#527fc9!important;
+}
+/* Revisión inteligente, filtros y contadores: azul coherente entre vistas. */
+html body .liga-media-modal .ljr-review-smart :is(
+  .ljr-review-tabs button,.ljr-review-automation button,
+  .ljr-review-device-controls button,.ljr-review-footer button
+){
+  background:#123b82!important;
+  background-image:linear-gradient(145deg,#174b98,#0e3374)!important;
+  border-color:#5b89d2!important;
+  color:#fff!important;
+}
+html body .liga-media-modal .ljr-review-smart .ljr-review-tabs button[aria-pressed=true]{
+  background:#1c69d4!important;
+  background-image:linear-gradient(135deg,#1c69d4,#0d47a1)!important;
+  border-color:#86b5f2!important;
+}
+html body .liga-media-modal .ljr-review-smart .ljr-review-tabs button span{
+  background:#091d5a!important;
+}
+html body .liga-media-modal .ljr-review-smart :is(.ljr-review-filters input,.ljr-review-filters select){
+  background:#081e55!important;
+  background-image:none!important;
+  border-color:#5686d0!important;
+  color:#fff!important;
+}
+/* Búsqueda inteligente, accesos y plan del día: sin cyan ni azules ajenos. */
+html body .liga-media-modal .ljr-admin-manage :is(
+ .ljr-smart-hub,.ljr-smart-tasks,.ljr-admin-area,.ljr-guide,.ljr-simple-intro
+){
+  background:#10377b!important;
+  background-image:linear-gradient(150deg,#123d86,#0a2868)!important;
+  border-color:#527fc9!important;
+}
+html body .liga-media-modal .ljr-admin-manage :is(
+ .ljr-smart-actions button,.ljr-smart-recommendation button,.ljr-smart-tasks button
+){
+  background:#154990!important;
+  background-image:linear-gradient(140deg,#17519d,#10377b)!important;
+  border-color:#6493dc!important;
+  color:#fff!important;
+}
+html body .liga-media-modal .ljr-admin-manage .ljr-smart-actions button[aria-pressed=true]{
+  background:#1c69d4!important;
+  background-image:linear-gradient(140deg,#1c69d4,#0d47a1)!important;
+}
+html body .liga-media-modal .ljr-admin-manage .ljr-smart-search{
+  background:#081e55!important;
+  background-image:none!important;
+  border-color:#5686d0!important;
+  color:#fff!important;
+}
+html body .liga-media-modal .ljr-admin-manage :is(.ljr-guide>summary,.ljr-smart-tasks>summary){
+  color:#d7e8ff!important;
+}
+/* Acciones destructivas conservan color de alerta, nunca azul de acción. */
+html body .liga-media-modal :is(.ljr-admin-manage,.ljr-admin-child,.ljr-admin-cms,.ljr-editor-dialog)
+:is(.ljr-admin-tile-danger,.ljr-review-danger,[data-logout],[data-revoke]){
+  background:#40253e!important;
+  background-image:none!important;
+  border-color:#a56e8b!important;
+  color:#ffe3ee!important;
+}
+/* El editor visual móvil conserva su estado, solo utiliza esta paleta. */
+html body .ljr-studio{
+  background:#06065f!important;
+  background-image:linear-gradient(160deg,#0d3688,#0a235c,#06065f)!important;
+  border-color:#527fc9!important;
+  color:#f5f9ff!important;
+}
+html body .ljr-studio :is(.ljr-studio-actions button,.ljr-studio-head button){
+  background:#123b82!important;
+  background-image:linear-gradient(145deg,#174b98,#0e3374)!important;
+  border-color:#5b89d2!important;
+  color:#fff!important;
+}
+html body .ljr-studio :is(input,select,textarea){
+  background:#081e55!important;
+  border-color:#5686d0!important;
+  color:#fff!important;
+}
+/* Mantener la semántica HTML de ocultación y los permisos existentes. */
+html body .liga-media-modal :is(.ljr-review-smart,.ljr-notice-1212) [hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){
+ html body .liga-media-modal > section:is(.ljr-admin-manage,.ljr-editor-dialog) *{transition:none!important}
+}
