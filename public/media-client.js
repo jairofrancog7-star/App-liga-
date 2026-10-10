@@ -60,8 +60,8 @@ async function login(after){
  const bio=window.LJR_ADMIN_BIOMETRIC;
  let localAccount=null;try{localAccount=window.LJR_V569_AUTH?.currentAccount?.()||null}catch{}
  const phone=String(localAccount?.phone||'').replace(/\D/g,'').replace(/^52(?=\d{10}$)/,'');
- const preferredUser=phone||'presidente';
- const n=modal('Administración','<p>Entra con tu teléfono autorizado o con tu usuario de administración.</p><form><label>Usuario o teléfono<input name="username" required autocomplete="username" inputmode="tel" value="'+e(preferredUser)+'"></label><label>Contraseña<input name="password" type="password" required autocomplete="current-password"></label><label class="liga-remember"><input type="checkbox" name="remember" checked> Recordar este dispositivo · 30 días</label><button type="submit">Entrar</button></form><button type="button" data-bio '+(bio?'hidden':'')+'>Entrar con huella</button><p><a href="'+e(base)+'/admin-setup" target="_blank" rel="noopener">Configurar acceso del presidente</a></p><small data-login-hint>'+(phone?'Teléfono detectado de tu cuenta.':'Usuario administrativo sugerido: presidente.')+'</small>');
+ const preferredUser=phone||'';
+ const n=modal('Administración','<p>Entra con tu usuario, correo o teléfono autorizado de la administración.</p><form><label>Usuario, correo o teléfono<input name="username" required autocomplete="username" value="'+e(preferredUser)+'"></label><label>Contraseña<input name="password" type="password" required autocomplete="current-password"></label><label class="liga-remember"><input type="checkbox" name="remember" checked> Recordar este dispositivo · 30 días</label><button type="submit">Entrar</button></form><button type="button" data-bio '+(bio?'hidden':'')+'>Entrar con huella</button><p><a href="'+e(base)+'/admin-setup" target="_blank" rel="noopener">Configurar acceso del presidente</a></p><small data-login-hint>'+(phone?'Teléfono local sugerido; el servidor verificará la identidad.':'Introduce el usuario, correo o teléfono registrado en el CMS oficial.')+'</small>');
  n.pendingAction=after;const finish=()=>n.pendingAction?n.pendingAction():manage();
  const status=n.querySelector('[data-status]'),user=n.querySelector('input[name="username"]');
  const bioButton=n.querySelector('[data-bio]');
@@ -76,9 +76,9 @@ async function login(after){
  }catch(err){token='';status.textContent=err.message||'Vuelve a entrar con tu contraseña.'}});
  n.querySelector('form').onsubmit=async ev=>{ev.preventDefault();const b=Object.fromEntries(new FormData(ev.target));b.remember=b.remember==='on';
    const raw=String(b.username||'').trim();
-   const localEmail=String(localAccount?.email||'').trim().toLowerCase();
-   if(raw.includes('@')&&localEmail&&raw.toLowerCase()===localEmail)b.username=phone||'presidente';
-   else if(/^\+?[\d\s()-]{8,}$/.test(raw)){const p=raw.replace(/\D/g,'').replace(/^52(?=\d{10}$)/,'');b.username=p||raw}
+   // La identidad local NO concede privilegios ni se convierte en «presidente».
+   // El servidor valida cada identificador con su propia contraseña.
+   if(/^\+?[\d\s()-]{8,}$/.test(raw)){const p=raw.replace(/\D/g,'').replace(/^52(?=\d{10}$)/,'');b.username=p||raw}
    Object.assign(b,deviceInfo());try{
  const r=await api('login',{method:'POST',body:b});
  saveSession(r.token,b.remember);
@@ -90,7 +90,7 @@ async function login(after){
  n.querySelector('[data-close]').click();finish();
  }catch(err){
    status.textContent=err.message==='Usuario o contraseña incorrectos.'
-     ?'Usuario o contraseña incorrectos. Usa tu teléfono autorizado o tu usuario de administración.'
+     ?'Usuario o contraseña incorrectos. Introduce las credenciales oficiales de tu propia cuenta administrativa.'
      :err.message
  }}
 }
