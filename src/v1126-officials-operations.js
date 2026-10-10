@@ -212,6 +212,7 @@ function bindOperations(root){
    const value=$('[data-op-fixture]',root).value;
    const f=root.__ljrOpsFixtures?.[Number(value)];
    if(value===''||!f){toast('Selecciona primero un partido del calendario.');return}
+   if(!getOfficials().some(o=>(o.status||'Activo')==='Activo')){toast('Primero registra un árbitro activo en Directorio.');return}
    $('[data-o-tab="assignments"]',root).click();
    $('[data-o-action="new-assignment"]',root).click();
    const name=$('[data-o-game]',root),d=$('[data-o-date]',root),t=$('[data-o-time]',root),field=$('[data-o-game-field]',root),category=$('[data-o-game-cat]',root);
