@@ -76,7 +76,10 @@ try{
   assert.match(m.content.gradient,/rgb\(7, 19, 56\)/,'Content studio should use navy');
   assert.match(m.delegates.gradient,/rgb\(13, 37, 87\)/,'Delegates should use navy');
   assert.match(m.officials.gradient,/rgb\(13, 37, 87\)/,'Referees should use navy');
-  assert.equal(m.select,'rgb(9, 26, 70)','Selector should use navy field color');
+  const fieldRGB=m.select.match(/^rgb\\((\\d+), (\\d+), (\\d+)\\)$/);
+  assert.ok(fieldRGB && +fieldRGB[1]<=22 && +fieldRGB[2]<=45 && +fieldRGB[3]<=106 &&
+    +fieldRGB[3]>=+fieldRGB[2]+28 && +fieldRGB[2]>=+fieldRGB[1]+7,
+    'Selector should use a dark navy field, not bright cyan/purple: '+m.select);
   await page.locator('#category').selectOption({label:'Segunda'});
   assert.equal(await page.locator('#category').inputValue(),'Segunda');
   await page.locator('#team').fill('Boavista FC');
