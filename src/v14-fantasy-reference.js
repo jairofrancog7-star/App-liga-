@@ -271,8 +271,14 @@ async function patchV23Fantasy(){
   if(!screen.querySelector('[data-v23-fantasy]')) screen.innerHTML=v23LandingMarkup();
   v24ApplyTransparentFantasyLogo(screen);
   const bg=screen.querySelector('.v22-fantasy-bg');
-  if(bg&&!bg.src){
-    try{bg.src=await v23FantasyBg()}catch(e){console.warn('Fantasy background',e)}
+  if(bg&&!bg.getAttribute('src')){
+    /* Original HD del usuario: exactamente el mismo encuadre y zonas táctiles.
+       Si no carga, se conserva como respaldo el WebP anterior. */
+    bg.onerror=async()=>{
+      bg.onerror=null;
+      try{bg.src=await v23FantasyBg()}catch(e){console.warn('Fantasy background fallback',e)}
+    };
+    bg.src='./fantasy-original-hd.webp?v=20261010-exact-source-1688x3654';
   }
   screen.querySelectorAll('.v22-shirt-hit').forEach(btn=>{
     btn.onclick=(e)=>{
