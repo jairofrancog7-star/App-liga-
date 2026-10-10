@@ -133,3 +133,26 @@ test('selector muestra categorías, permite buscar y conserva clubes duplicados 
  assert.equal(x.teamSelect.options.filter(o=>o.value.includes('Manchester')).length,1);
  assert.match(x.teamCounter.textContent,/4 equipos/);
 });
+
+test('filtros de categoría y búsqueda cambian el selector sin mezclar asistencia de Veteranos',()=>{
+ const x=fixture();
+ const change=(name,value)=>x.panel.events.change({target:{value,matches:selector=>selector==='[data-mh-input="'+name+'"]'}});
+ const input=(name,value)=>x.panel.events.input({target:{value,matches:selector=>selector==='[data-mh-input="'+name+'"]'}});
+ change('team-category','2');
+ assert.deepEqual(x.teamSelect.options.filter(o=>o.value).map(o=>o.value),['2|Boavista FC']);
+ input('team-filter','JUVENTUS');
+ assert.equal(x.teamSelect.options.filter(o=>o.value).length,0);
+ assert.match(x.teamCounter.textContent,/0 equipos/);
+ change('team-category','3');
+ assert.deepEqual(x.teamSelect.options.filter(o=>o.value).map(o=>o.value),['3|Juventus']);
+ input('team-filter','boavista');
+ assert.deepEqual(x.teamSelect.options.filter(o=>o.value).map(o=>o.value),['3|Boavista FC']);
+ change('team-category','2');
+ x.teamSelect.value='2|Boavista FC';
+ change('team','2|Boavista FC');
+ x.click('add-attendee');
+ const record=x.saved()['2026-10-13'];
+ assert.equal(record.attendance.length,1);
+ assert.equal(record.attendance[0].team,'Boavista FC');
+ assert.equal(record.attendance[0].category,'2');
+});
