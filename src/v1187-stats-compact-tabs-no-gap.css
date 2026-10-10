@@ -64,15 +64,16 @@
   }
   html body.v33-data-active #screen .v33-data-page .v33-tabs button.active::after {
     content:""!important;
-    left:50%!important;
-    right:auto!important;
-    width:72px!important;
+    /* El subrayado ocupa solo el ancho del TEXTO, no toda la pestaña. */
+    left:15px!important;
+    right:15px!important;
+    width:auto!important;
     min-width:0!important;
-    max-width:72px!important;
+    max-width:none!important;
     height:3px!important;
     min-height:3px!important;
     bottom:0!important;
-    transform:translateX(-50%)!important;
+    transform:none!important;
     border-radius:3px 3px 0 0!important;
     background:#16d7f4!important;
     box-shadow:none!important;
@@ -89,5 +90,18 @@
   html body.v33-data-active #screen .v33-data-head.is-collapsed .v33-tabs button {
     padding-inline:11px!important;
     font-size:11px!important;
+  }
+}
+
+/* V1188 — El espacio real del primer título se calibra tras montar la vista.
+   A diferencia del antiguo padding estático, esto elimina la banda vacía
+   sin afectar a los encabezados, pestañas ni datos de otras pantallas. */
+html body.v33-data-active #screen .v33-data-page[data-v33-data] > .v33-data-content {
+  margin-top:calc(-1 * var(--v33-visible-gap-fix,0px))!important;
+}
+@media(max-width:360px){
+  html body.v33-data-active #screen .v33-data-page .v33-tabs button.active::after{
+    left:11px!important;
+    right:11px!important;
   }
 }
