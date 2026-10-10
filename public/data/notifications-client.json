@@ -1,4 +1,4 @@
 {
-  "apiBaseUrl": "",
-  "note": "Configura la URL HTTPS de tu servidor privado; nunca añadas claves ni credenciales."
+  "apiBaseUrl": "https://liga-avisos-api-production.up.railway.app",
+  "note": "Servicio privado Railway activo para avisos y juntas; requiere inicio de sesión autorizado. WhatsApp y SMS no configurados."
 }
