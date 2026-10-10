@@ -20,7 +20,7 @@
 .v1212-csv-modal .csvpro-drop>b{font-size:15px;line-height:1.25}
 .v1212-csv-modal .csvpro-drop>small{font-size:11px;line-height:1.3;color:#d5e3ff;max-width:100%;overflow-wrap:anywhere}
 .v1212-csv-modal .csvpro-drop input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
-.v1212-csv-modal .csvpro-button{min-height:43px;border-radius:12px;border:1px solid #4c83d3;padding:10px 15px;font:800 12px/1.25 inherit;white-space:normal;cursor:pointer;flex:1}
+.v1212-csv-modal .csvpro-button{min-height:43px;border-radius:12px;border:1px solid #4c83d3;padding:10px 15px;font-family:inherit;font-size:12px;font-weight:800;line-height:1.25;white-space:normal;cursor:pointer;flex:1}
 .v1212-csv-modal .csvpro-button.csvpro-primary{background:linear-gradient(105deg,#2775db,#55b7ff);border-color:#69b4ff;color:#051737}
 .v1212-csv-modal .csvpro-button.csvpro-ghost{background:#183e87;color:#f5f9ff}
 .v1212-csv-modal .csvpro-button:disabled{cursor:not-allowed;opacity:.46}
