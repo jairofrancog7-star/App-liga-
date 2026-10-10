@@ -5,7 +5,11 @@
   window.__LJR_V1102_SCORER_FACES__=true;
   const frames='.v391-feature-photo,.v390-scorer-photo';
   const images=':scope > img.v576-scorer-hero-photo,:scope > img.v576-hero-player-photo,:scope > img.v971-hero-image';
-  const route=()=>String(location.hash||'').replace(/^#\\/?/,'').split('?')[0]||String(document.body?.dataset?.appRoute||'');
+  const route=()=>{
+    const hash=String(location.hash||'');
+    const path=hash.startsWith('#/')?hash.slice(2):hash.startsWith('#')?hash.slice(1):hash;
+    return path.split('?')[0]||String(document.body?.dataset?.appRoute||'');
+  };
   let pending=false;
   function scan(){
     pending=false;
