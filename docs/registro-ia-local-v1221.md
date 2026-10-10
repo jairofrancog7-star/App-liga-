@@ -47,3 +47,20 @@ Prueba manual Android:
 6. Para avisos con la página cerrada, activar **Notificaciones Push** por separado, aceptar permisos y verificar la suscripción en backend.
 
 > Los resultados de clasificación son sugerencias locales, no comunicación ni decisión oficial de la Liga.
+
+
+## Continuación V1222 (10 octubre 2026)
+- Mejor reconocimiento de categorías oficiales, incluso si el feed contiene IDs numéricos, «Primera Fuerza» o «Segunda Fuerza».
+- Se excluyen avisos en borrador, sin publicar o programados para el futuro.
+- IDs locales estables de comunicados sin ID: cambiar el orden de las publicaciones ya no las considera nuevas.
+- Al cambiar categoría o equipo dentro del formulario, se actualiza también **la selección visible** en el panel Web Push; la suscripción remota NO cambia hasta que el usuario pulse «Guardar filtros».
+- Corrección de texto: la revisión periódica puede funcionar mientras la aplicación está abierta y visible, aun si se cerró el formulario.
+- Nuevo botón «Borrar aprendizaje local» que limpia solamente los ejemplos de entrenamiento; conserva otras preferencias, perfil y Push.
+- Botones del panel IA adaptados al mismo azul oscuro, dimensiones compactas y versión de recursos V1222 en `index.html`.
+
+### Verificación técnica V1222
+- Sintaxis del JavaScript en los tres módulos modificados validada.
+- Prueba simulada de automatización con feed oficial: al iniciar no envía avisos; al recibir un comunicado oficial nuevo relevante genera **una** notificación; al consultar nuevamente no la duplica.
+- Filtros por categoría, IDs estables, borradores y avisos futuros verificados mediante pruebas aisladas.
+- Prueba real en navegador Android, entrega Push desde el servidor y despliegue GitHub Pages: deben comprobarse aparte. La mera presencia del código en GitHub no confirma estos puntos.
+
