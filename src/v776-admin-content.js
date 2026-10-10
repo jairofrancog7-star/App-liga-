@@ -95,17 +95,17 @@
    const round=String(n.querySelector('[data-round]')?.value||'').trim();
    const date=n.querySelector('[data-date]')?.value||'';
    const status=n.querySelector('[data-status]');
-   if(!/^[1-9]\\d*$/.test(round)||!/^\\d{4}-\\d{2}-\\d{2}$/.test(date)){
+   if(!/^[1-9]\d*$/.test(round)||!/^\d{4}-\d{2}-\d{2}$/.test(date)){
      status.textContent='Escribe el número de jornada y selecciona una fecha válida.';return;
    }
-   const dateColumn=headers.findIndex(h=>/fecha|\\bd[ií]a\\b/i.test(String(h)));
+   const dateColumn=headers.findIndex(h=>/fecha|\bd[ií]a\b/i.test(String(h)));
    const index=dateColumn>=0?dateColumn:8;
    const matching=rows.filter(r=>String(r[1]??'').trim()===round);
    if(!matching.length){status.textContent='No se encontraron partidos de la jornada '+round+' en esta categoría. Revisa el número.';return}
    if(!confirm('¿Aplicar la nueva fecha a '+matching.length+' partido(s) de la jornada '+round+'? Todavía deberás guardar para publicar.'))return;
    const [y,m,d]=date.split('-');
    matching.forEach(r=>{
-     const time=String(r[index]||'').match(/\\b([01]\\d|2[0-3]):[0-5]\\d\\b/)?.[0]||'';
+     const time=String(r[index]||'').match(/\b([01]\d|2[0-3]):[0-5]\d\b/)?.[0]||'';
      r[index]=d+'/'+m+'/'+y+(time?' '+time:'');
    });
    status.textContent='Fecha aplicada a '+matching.length+' partido(s) en la vista previa. Pulsa Guardar tabla para todos para publicar.';
