@@ -3,6 +3,19 @@
 'use strict';
 if(window.__LJR_MATCHDAY_PRO_1132__)return;
 window.__LJR_MATCHDAY_PRO_1132__=true;
+// V1167: demo pages are rebuilt automatically; load scoped layout styles
+// if the demo generator did not retain their <link> tags.
+(function ensureMatchdayStyles(){
+ if(!document.head?.appendChild||!document.createElement)return;
+ for(const file of ['v1153-matchday-fullwidth-safe-crests.css','v1167-matchday-centered-official-crests.css']){
+  if(document.querySelector('link[href*="'+file+'"]'))continue;
+  const link=document.createElement('link');
+  link.rel='stylesheet';
+  link.href='./src/'+file+'?v=20261010-v1167';
+  link.dataset.md1167Style='';
+  document.head.appendChild(link);
+ }
+})();
 const $=(s,r=document)=>r.querySelector(s);
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLowerCase();
