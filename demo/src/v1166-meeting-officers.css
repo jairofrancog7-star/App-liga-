@@ -1,0 +1,10 @@
+
+/* V1166: solo formulario Junta de la Liga, mantiene el tema azul neón */
+.v875-meeting-options .v1166-meeting-roles{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;min-width:0}
+.v875-meeting-options .v1166-meeting-role{min-width:0;display:grid;align-content:start;gap:6px;padding:11px;border-radius:13px;border:1px solid rgba(101,194,255,.38);background:linear-gradient(150deg,#102b76,#091950);color:#fff}
+.v875-meeting-options .v1166-meeting-select{box-sizing:border-box;width:100%;min-width:0;max-width:100%;min-height:43px;border:1px solid #3f82bd;border-radius:11px;padding:8px 10px;color:#edf7ff;background:#0a235b;font:700 12px/1.35 Inter,Arial,sans-serif;color-scheme:dark}
+.v875-meeting-options .v1166-meeting-hint{font:500 10px/1.4 Inter,Arial,sans-serif;color:#bdd7f9}
+.v875-meeting-options .v1166-meeting-other{box-sizing:border-box;width:100%;min-height:40px}
+.v875-meeting-options .v1166-meeting-other[hidden]{display:none!important}
+.v875-meeting-options .v1166-meeting-select:focus-visible{outline:2px solid #77e8ff;outline-offset:2px}
+@media(max-width:560px){.v875-meeting-options .v1166-meeting-roles{grid-template-columns:minmax(0,1fr)}}
