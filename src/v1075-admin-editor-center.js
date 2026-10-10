@@ -132,75 +132,213 @@ function showComposer(prefill){
 }
 function openReview(){
  if(!admin())return media()?.login?.(openReview);
- const modal=createModal('Revisar avisos','<div class="ljr-editor-review">'+
-  '<p class="ljr-editor-note">Avisos guardados en el servidor de la Liga. Solo los administradores pueden editar, publicar o retirar.</p>'+
-  '<div class="ljr-editor-tools"><button type="button" data-state="all" aria-pressed="true">Todos</button><button type="button" data-state="draft">Borradores</button><button type="button" data-state="published">Publicados</button></div>'+
+ const modal=createModal('Revisar avisos','<div class="ljr-editor-review ljr-review-smart">'+
+  '<p class="ljr-editor-note">Comunicados guardados en el servidor de la Liga. Solo la administración autorizada puede publicar, editar o retirar.</p>'+
+  '<div class="ljr-review-stats" data-review-stats aria-label="Resumen de avisos"></div>'+
+  '<div class="ljr-editor-tools ljr-review-tabs" role="group" aria-label="Estado">'+
+  '<button type="button" data-state="all" aria-pressed="true">Todos <span data-count="all">0</span></button>'+
+  '<button type="button" data-state="draft" aria-pressed="false">Borradores <span data-count="draft">0</span></button>'+
+  '<button type="button" data-state="published" aria-pressed="false">Publicados <span data-count="published">0</span></button></div>'+
+  '<div class="ljr-review-filters" role="search" aria-label="Buscar avisos">'+
+  '<label class="ljr-review-search"><span>Buscar aviso</span><input type="search" data-review-query placeholder="Título, equipo, sede, contenido…" autocomplete="off"></label>'+
+  '<label><span>Categoría</span><select data-review-category>'+CATS.map(x=>'<option value="'+x[0]+'">'+esc(x[1])+'</option>').join('')+'</select></label>'+
+  '<label><span>Orden</span><select data-review-order><option value="recent">Más recientes</option><option value="old">Más antiguos</option><option value="title">Título A–Z</option></select></label></div>'+
+  '<div class="ljr-review-automation"><button type="button" data-review-audit>✓ Revisar calidad</button>'+
+  '<button type="button" data-review-ai>✦ IA en el dispositivo</button>'+
+  '<label><input type="checkbox" data-review-auto> Actualizar cada minuto</label></div>'+
+  '<div class="ljr-review-insights" data-review-insights hidden role="status" aria-live="polite"></div>'+
+  '<div class="ljr-review-meta" data-review-meta role="status" aria-live="polite">Consultando avisos…</div>'+
   '<div data-editor-list aria-live="polite">Cargando avisos…</div>'+
-  '<button type="button" data-reload>Actualizar lista</button>'+
+  '<button type="button" data-review-more hidden>Ver más avisos</button>'+
+  '<div class="ljr-review-footer"><button type="button" data-reload>↻ Actualizar lista</button>'+
+  '<button type="button" data-review-new>＋ Crear aviso</button>'+
+  '<button type="button" data-review-csv>↓ CSV privado</button></div>'+
   '</div>','ljr-editor-review-dialog');
- let records=[],filter='all',loading=false;
- const list=$('[data-editor-list]',modal);
+ let records=[],filter='all',query='',category='all',order='recent',loading=false,ready=false,limit=40,interval=null,aiAvailability='unavailable';
+ const list=$('[data-editor-list]',modal),meta=$('[data-review-meta]',modal),insights=$('[data-review-insights]',modal);
+ const clean=s=>String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+ const timestamp=r=>String(r.updated||r.updatedAt||r.created||r.createdAt||'');
+ const niceDate=d=>{const n=new Date(d);return d&&!Number.isNaN(n.getTime())?n.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}):'Sin fecha'};
+ const entryText=r=>{const p=r.payload||{};return [p.title,p.body,p.team,p.field,p.category,p.type,p.date].join(' ')};
+ const makeButton=(text,click,cls)=>{const b=document.createElement('button');b.type='button';b.textContent=text;if(cls)b.className=cls;b.addEventListener('click',click);return b};
+ const allCounts=()=>{
+  const counts={all:records.length,draft:records.filter(r=>!r.published).length,published:records.filter(r=>!!r.published).length};
+  modal.querySelectorAll('[data-count]').forEach(e=>{e.textContent=String(counts[e.dataset.count]||0)});
+  const stats=$('[data-review-stats]',modal);
+  stats.replaceChildren();
+  [['Total',counts.all],['Borradores',counts.draft],['Publicados',counts.published]].forEach(([name,count])=>{
+   const x=document.createElement('div');const n=document.createElement('strong');n.textContent=String(count);
+   const t=document.createElement('small');t.textContent=name;x.append(n,t);stats.append(x);
+  });
+ };
  function paint(){
-  list.replaceChildren();
-  const shown=records.filter(x=>filter==='all'||(filter==='published'?!!x.published:!x.published));
-  if(!shown.length){const p=document.createElement('p');p.className='ljr-editor-empty';p.textContent='No hay avisos en este filtro.';list.append(p);return}
-  shown.slice(0,40).forEach(record=>{
-   const card=document.createElement('article');card.className='ljr-editor-row';
-   const info=document.createElement('div'),label=document.createElement('strong'),sub=document.createElement('small');
-   label.textContent=record.payload?.title||'Aviso sin título';
-   sub.textContent=(record.published?'Publicado':'Borrador')+' · '+catName(String(record.payload?.category||'all'));
-   info.append(label,sub);card.append(info);
-   const actions=document.createElement('div');actions.className='ljr-editor-row-actions';
-   const edit=document.createElement('button');edit.type='button';edit.textContent='Editar';
-   edit.onclick=()=>window.LJR_CMS?.editor?.('news',record);
-   actions.append(edit);
+  if(!modal.isConnected)return;
+  list.replaceChildren();allCounts();
+  if(!ready){meta.textContent='Consultando el servidor de la Liga…';return}
+  const shown=records.filter(r=>{
+   const p=r.payload||{};
+   return (filter==='all'||(filter==='published'?!!r.published:!r.published))&&
+    (category==='all'||String(p.category??'all')===category)&&
+    (!query||clean(entryText(r)).includes(clean(query)));
+  }).sort((a,b)=>order==='title'?
+   String(a.payload?.title||'').localeCompare(String(b.payload?.title||''),'es',{sensitivity:'base'}):
+   order==='old'?timestamp(a).localeCompare(timestamp(b)):timestamp(b).localeCompare(timestamp(a)));
+  meta.textContent=shown.length+' de '+records.length+' avisos · Solo administración · '+(interval?'Actualización automática activa':'Actualización manual');
+  $('[data-review-more]',modal).hidden=shown.length<=limit;
+  if(!shown.length){
+   const p=document.createElement('div');p.className='ljr-editor-empty ljr-review-empty';
+   const title=document.createElement('strong');title.textContent=records.length?'No hay resultados para estos filtros.':'Todavía no hay avisos guardados.';
+   const hint=document.createElement('p');hint.textContent=records.length?'Prueba con otra categoría, búsqueda o estado.':'Puedes crear el primer aviso, guardarlo como borrador y publicarlo después de revisarlo.';
+   p.append(title,hint);list.append(p);return;
+  }
+  shown.slice(0,limit).forEach(record=>{
+   const p=record.payload||{},card=document.createElement('article');
+   card.className='ljr-editor-row ljr-review-card';
+   const top=document.createElement('div');top.className='ljr-review-card-top';
+   const badge=document.createElement('span');badge.className='ljr-review-badge '+(record.published?'is-published':'is-draft');badge.textContent=record.published?'✓ Publicado':'◷ Borrador';
+   const date=document.createElement('small');date.textContent=niceDate(timestamp(record));
+   top.append(badge,date);card.append(top);
+   const h=document.createElement('strong');h.className='ljr-review-heading';h.textContent=p.title||'Aviso sin título';card.append(h);
+   const details=document.createElement('div');details.className='ljr-review-chips';
+   [catName(String(p.category||'all')),TYPES[p.type]?.[0]||'General',p.team?('Equipo: '+p.team):'',p.field?('Sede: '+p.field):'']
+    .filter(Boolean).forEach(value=>{const tag=document.createElement('span');tag.textContent=value;details.append(tag)});
+   card.append(details);
+   const body=document.createElement('p');body.className='ljr-review-body';body.textContent=p.body||'Sin contenido';
+   body.hidden=true;card.append(body);
+   const actions=document.createElement('div');actions.className='ljr-editor-row-actions ljr-review-actions';
+   actions.append(makeButton('Ver',()=>{body.hidden=!body.hidden;preview.textContent=body.hidden?'Ver':'Ocultar'},'ljr-review-view'));
+   const preview=actions.lastElementChild;
+   actions.append(makeButton('Editar',()=>{window.LJR_CMS?.editor?.('news',record)},'ljr-review-edit'));
+   actions.append(makeButton('Compartir',async()=>{
+    const txt=(p.title||'Aviso oficial')+'\n\n'+(p.body||'')+'\n\nLiga Juventino Rosas';
+    try{
+     if(navigator.share){await navigator.share({title:p.title||'Aviso oficial',text:txt});status(modal,'Se abrió la opción para compartir.')}
+     else if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(txt);status(modal,'Aviso copiado. Puedes pegarlo en WhatsApp.')}
+     else status(modal,'Tu navegador no permite compartir o copiar directamente.');
+    }catch(e){if(e?.name!=='AbortError')status(modal,'No se pudo compartir: '+(e?.message||'Error'))}
+   },'ljr-review-share'));
    if(!record.published){
-    const publish=document.createElement('button');publish.type='button';publish.textContent='Publicar';
-    publish.onclick=async()=>{
-     if(!confirm('¿Publicar este aviso para todos los visitantes?'))return;
-     publish.disabled=true;status(modal,'Guardando publicación…');
+    actions.append(makeButton('Publicar',async ev=>{
+     if(!confirm('¿Publicar este aviso en Noticias para todos los visitantes? Revisa antes fechas y datos oficiales.'))return;
+     const btn=ev.currentTarget;btn.disabled=true;
      try{
       await verified();
-      await media().api('content/'+encodeURIComponent(record.id),{method:'PUT',body:{
-       kind:'news',payload:record.payload,revision:record.revision,published:true}});
-      await window.LJR_CMS?.refresh?.();await reload();
+      await media().api('content/'+encodeURIComponent(record.id),{method:'PUT',body:{kind:'news',payload:record.payload,revision:record.revision,published:true}});
+      await window.LJR_CMS?.refresh?.();await reload();window.dispatchEvent(new Event('liga:content'));
       status(modal,'Aviso publicado en Noticias.');
-     }catch(err){status(modal,'No se pudo publicar: '+(err?.message||'Error'));publish.disabled=false}
-    };actions.append(publish);
+     }catch(err){status(modal,'No se pudo publicar: '+(err?.message||'Error'));btn.disabled=false}
+    },'ljr-review-publish'));
    }
-   const remove=document.createElement('button');remove.type='button';
-   remove.textContent=record.published?'Retirar':'Eliminar';
-   remove.title=record.published?'Ocultar esta publicación en toda la Liga':'Eliminar borrador';
-   remove.onclick=async()=>{
-    if(!confirm(record.published?'¿Retirar este aviso de Noticias para todos los visitantes?':'¿Eliminar este borrador?'))return;
-    remove.disabled=true;status(modal,'Retirando aviso…');
+   actions.append(makeButton(record.published?'Retirar':'Eliminar',async ev=>{
+    if(!confirm(record.published?'¿Retirar este aviso de Noticias para todos los visitantes?':'¿Eliminar este borrador permanentemente?'))return;
+    const btn=ev.currentTarget;btn.disabled=true;
     try{
      await verified();
      await media().api('content/'+encodeURIComponent(record.id),{method:'DELETE',body:{revision:record.revision}});
-     await window.LJR_CMS?.refresh?.();await reload();
+     await window.LJR_CMS?.refresh?.();await reload();window.dispatchEvent(new Event('liga:content'));
      status(modal,'Aviso retirado correctamente.');
-    }catch(err){status(modal,'No se pudo retirar: '+(err?.message||'Error'));remove.disabled=false}
-   };
-   actions.append(remove);
+    }catch(err){status(modal,'No se pudo retirar: '+(err?.message||'Error'));btn.disabled=false}
+   },'ljr-review-danger'));
    card.append(actions);list.append(card);
   });
  }
+ function audit(){
+  const findings=[],seen=new Map(),urgent=['horario','cancha','suspension','junta','jornada'];
+  records.forEach(r=>{
+   const p=r.payload||{},name=p.title||'Sin título',key=clean([name,p.category,p.date].join('|'));
+   if(key&&seen.has(key))findings.push('Posible duplicado: '+name);
+   else if(key)seen.set(key,true);
+   if(!p.title?.trim())findings.push('Falta título en un aviso.');
+   if(!p.body||p.body.trim().length<35)findings.push('Texto demasiado corto: '+name);
+   if(urgent.includes(p.type)&&!p.date) findings.push('Revisar fecha del aviso: '+name);
+   if(p.type==='cancha'&&!p.field) findings.push('Revisar sede del aviso: '+name);
+   if(p.type==='horario'&&!p.time) findings.push('Revisar horario del aviso: '+name);
+  });
+  insights.hidden=false;insights.replaceChildren();
+  const heading=document.createElement('strong');heading.textContent=findings.length?'Revisión local · '+findings.length+' observaciones':'Revisión local · Sin observaciones básicas';
+  const hint=document.createElement('p');hint.textContent='Análisis automático por reglas en este dispositivo. No confirma datos oficiales ni modifica publicaciones.';
+  insights.append(heading,hint);
+  const ul=document.createElement('ul');
+  (findings.length?[...new Set(findings)].slice(0,8):['Los avisos revisados no tienen advertencias básicas.']).forEach(x=>{const li=document.createElement('li');li.textContent=x;ul.append(li)});
+  insights.append(ul);return findings;
+ }
  async function reload(){
-  if(loading)return;loading=true;list.textContent='Consultando avisos…';
+  if(loading||!modal.isConnected)return;
+  loading=true;const btn=$('[data-reload]',modal);btn.disabled=true;
+  if(!ready){list.textContent='Consultando avisos…';meta.textContent='Conectando…'}
   try{
    await verified();
    const result=await media().api('content?admin=1');
-   if(!Array.isArray(result.items))throw Error('El servidor no devolvió un listado válido.');
-   records=result.items.filter(x=>x.kind==='news').sort((a,b)=>
-    String(b.updated||b.updatedAt||b.created||'').localeCompare(String(a.updated||a.updatedAt||a.created||'')));
-   paint();
-  }catch(err){list.textContent='No se pueden consultar los avisos: '+(err?.message||'Error de conexión')}
-  finally{loading=false}
+   if(!Array.isArray(result?.items))throw Error('El servidor no devolvió un listado válido.');
+   records=result.items.filter(x=>x?.kind==='news');ready=true;paint();
+  }catch(err){
+   const message='No se pueden consultar los avisos: '+(err?.message||'Error de conexión');
+   meta.textContent=message;
+   if(!ready){list.replaceChildren();const error=document.createElement('p');error.className='ljr-editor-empty';error.textContent=message;list.append(error)}
+   status(modal,'La lista anterior, si existe, se conserva. '+message);
+   if([401,403].includes(err?.status))media()?.login?.();
+  }finally{loading=false;btn.disabled=false}
  }
- $('[data-reload]',modal).onclick=reload;
  modal.querySelectorAll('[data-state]').forEach(b=>b.onclick=()=>{
-  filter=b.dataset.state;modal.querySelectorAll('[data-state]').forEach(v=>v.setAttribute('aria-pressed',String(v===b)));paint();
+  filter=b.dataset.state;limit=40;
+  modal.querySelectorAll('[data-state]').forEach(v=>v.setAttribute('aria-pressed',String(v===b)));paint()
  });
+ $('[data-review-query]',modal).addEventListener('input',e=>{query=e.target.value;limit=40;paint()});
+ $('[data-review-category]',modal).addEventListener('change',e=>{category=e.target.value;limit=40;paint()});
+ $('[data-review-order]',modal).addEventListener('change',e=>{order=e.target.value;paint()});
+ $('[data-review-more]',modal).onclick=()=>{limit+=40;paint()};
+ $('[data-reload]',modal).onclick=reload;
+ $('[data-review-new]',modal).onclick=()=>showComposer();
+ $('[data-review-audit]',modal).onclick=()=>{if(!ready)return status(modal,'Espera a que carguen los avisos.');audit()};
+ $('[data-review-auto]',modal).onchange=e=>{
+  if(interval){clearInterval(interval);interval=null}
+  if(e.target.checked)interval=setInterval(()=>{
+   if(!modal.isConnected){clearInterval(interval);interval=null;return}
+   if(document.visibilityState==='visible')reload();
+  },60000);
+  if(ready)paint();
+ };
+ $('[data-review-ai]',modal).onclick=async e=>{
+  if(!ready)return status(modal,'Espera a que carguen los avisos.');
+  audit();
+  if(!records.length)return;
+  if(aiAvailability!=='available'||typeof window.LanguageModel?.create!=='function'){
+   return status(modal,'IA del navegador no disponible aquí; se usó la revisión local por reglas sin enviar datos.');
+  }
+  const button=e.currentTarget;button.disabled=true;
+  let session;
+  try{
+   // Crear la sesión al tocar el botón; ningún modelo externo recibe los borradores.
+   const pending=window.LanguageModel.create();
+   status(modal,'Analizando avisos con el modelo local del navegador…');
+   session=await pending;
+   const sample=records.slice(0,8).map(r=>({
+    estado:r.published?'publicado':'borrador',titulo:String(r.payload?.title||'').slice(0,120),
+    texto:String(r.payload?.body||'').slice(0,320),tipo:r.payload?.type||'',fecha:r.payload?.date||''
+   }));
+   const reply=await session.prompt('Revisa la claridad de estos comunicados de una liga de fútbol. Responde en español con máximo 5 sugerencias breves y concretas. No inventes datos, resultados ni fechas. No publiques nada. Datos: '+JSON.stringify(sample));
+   const result=document.createElement('p');result.className='ljr-review-ai-response';result.textContent=String(reply).slice(0,2000);
+   insights.hidden=false;insights.append(result);status(modal,'Análisis local terminado. Revisa las sugerencias antes de usarlas.');
+  }catch(err){status(modal,'IA local no disponible: '+(err?.message||'Error')+'. Se conserva la revisión por reglas.')}
+  finally{try{session?.destroy?.()}catch(_){}button.disabled=false}
+ };
+ if(typeof window.LanguageModel?.availability==='function'){
+  window.LanguageModel.availability().then(x=>{aiAvailability=x;
+   const button=$('[data-review-ai]',modal);
+   if(button)button.title=x==='available'?'Modelo de IA disponible en este navegador':'Modelo local no instalado. El botón utilizará revisión por reglas.';
+  }).catch(()=>{aiAvailability='unavailable'});
+ }
+ $('[data-review-csv]',modal).onclick=()=>{
+  if(!ready||!records.length)return status(modal,'No hay avisos para exportar.');
+  if(!confirm('Se descargará un CSV privado que podría contener borradores no publicados. No lo compartas sin autorización. ¿Continuar?'))return;
+  const safe=x=>{let s=String(x??'').replace(/\r?\n/g,' ');if(/^[\s]*[=+\-@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'};
+  const lines=[['Estado','Título','Categoría','Tipo','Fecha','Equipo','Cancha','Mensaje'].map(safe).join(',')];
+  records.forEach(r=>{const p=r.payload||{};lines.push([r.published?'Publicado':'Borrador',p.title,catName(String(p.category||'all')),p.type,p.date,p.team,p.field,p.body].map(safe).join(','))});
+  const url=URL.createObjectURL(new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'}));
+  const a=document.createElement('a');a.href=url;a.download='avisos-liga-privado-'+new Date().toISOString().slice(0,10)+'.csv';
+  document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  status(modal,'CSV privado descargado en este dispositivo.');
+ };
  reload();
 }
 
