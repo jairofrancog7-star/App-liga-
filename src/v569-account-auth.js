@@ -14,7 +14,7 @@ const STORE_KEY='lj-store-v3';
 const RETURN_KEY='ljr-auth-return-v569';
 const DEVICE_KEY='ljr-device-v577';
 const REMEMBER_KEY='ljr-remembered-account-v577';
-const ROUTES=new Set(['accountRegister','accountLogin','accountEdit','accountSecurity','accountPassword','accountDevices','accountPrivacy']);
+const ROUTES=new Set(['accountRegister','accountLogin','accountEdit','accountSecurity','accountPassword','accountDevices','accountPrivacy','accountPreferences','accountAdvisor','accountCloud']);
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -568,6 +568,13 @@ function authShell(kind){
   if(kind==='accountPrivacy'){
     if(!a)return authShell('accountLogin');
     return privacyPageMarkup(a);
+  }
+  if(['accountPreferences','accountAdvisor','accountCloud'].includes(kind)){
+    if(!a)return authShell('accountLogin');
+    const titles={accountPreferences:['MI CUENTA','Preferencias','Ajustes personales y accesibilidad.'],accountAdvisor:['HERRAMIENTAS','Asistente local','Revisiones automáticas sin enviar datos privados.'],accountCloud:['MI CUENTA','Cuenta en la nube','Sincroniza tu personalización cuando exista un servidor autorizado.']};
+    const headerData=titles[kind];
+    return '<section class="v569-page" data-v569-page="'+kind+'" data-v1300-panel="'+kind+'">'+
+      header(...headerData)+'<section data-v1300-content></section></section>';
   }
   if(kind==='accountPassword'){
     if(!a)return authShell('accountLogin');
