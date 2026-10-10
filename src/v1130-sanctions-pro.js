@@ -50,11 +50,11 @@ function open(){
  '<label><span>Equipo</span><select data-f="team"><option value="">Todos los equipos</option></select></label>'+
  '<label class="full"><span>Jugador registrado</span><select data-f="player"><option value="">Selecciona un jugador</option></select><small class="v1130-count" data-count></small></label>'+
  '<div class="v1130-step">02 · Datos del partido</div>'+
- '<label><span>Jornada / fase</span><input data-f="round" maxlength="80" placeholder="Jornada 5"></label>'+
+ '<label><span>Jornada / fase</span><select data-f="round"><option value="">Selecciona jornada o fase</option></select></label>'+
  '<label><span>Fecha</span><input type="date" data-f="date"></label>'+
  '<label class="full"><span>Buscar partido en el rol</span><select data-f="fixture"><option value="">Opcional · Elige partido</option></select></label>'+
- '<label><span>Rival</span><input data-f="rival" maxlength="100" placeholder="Equipo rival"></label>'+
- '<label><span>Cancha</span><input data-f="field" maxlength="110" placeholder="Campo / sede"></label>'+
+ '<label><span>Equipo rival</span><select data-f="rival"><option value="">Elige categoría y rival</option></select></label>'+
+ '<label><span>Cancha</span><select data-f="field"><option value="">Selecciona una cancha</option></select></label>'+
  '<label class="full"><span>Árbitro o responsable del informe</span><input data-f="referee" maxlength="120" placeholder="Nombre del árbitro"></label>'+
  '<div class="v1130-step">03 · Sanción propuesta</div>'+
  '<label class="full"><span>Tipo de sanción</span><select data-f="type">'+options(types,'Selecciona el tipo')+'</select></label>'+
@@ -85,6 +85,85 @@ function open(){
  const field=n=>$('[data-f="'+n+'"]',root);
  const updateCaseData=()=>{const p=players[Number(chosen)];return chosen!==''&&p?p:null};
  const saveDB=x=>{try{localStorage.setItem(KEY,JSON.stringify(x));return true}catch(_){notify('No se pudo guardar. Revisa el espacio del navegador.');return false}};
+
+ // Reutiliza las inscripciones activas que ya emplea la sección Equipos/Tienda.
+ function categoryTeams(id){
+  id=String(id||'');if(!id)return [];
+  const out=[],add=value=>{
+   const name=String(value||'').trim();
+   if(name&&!out.some(x=>norm(x)===norm(name)))out.push(name);
+  };
+  const active=window.LJR_V812_TEAM_CATALOG?.registrations?.();
+  if(Array.isArray(active)&&active.some(t=>String(t.cat)===id)){
+   active.filter(t=>String(t.cat)===id).forEach(t=>add(t.name));
+  }else{
+   try{(window.V66_OFFICIAL_DIRECTORY?.teamList?.()||[]).filter(t=>String(t.cat)===id).forEach(t=>add(t.name))}catch(_){}
+   const c=db.categories?.[id]||{};
+   Object.keys(c.rosters||{}).forEach(add);
+   (c.standings||[]).forEach(g=>(g.rows||[]).forEach(r=>add(r?.[1])));
+   (c.fixtures||[]).forEach(g=>(g.rows||[]).forEach(r=>{add(r?.[2]);add(r?.[6])}));
+   players.filter(p=>p.cat===id).forEach(p=>add(p.team));
+  }
+  return out.sort((a,b)=>a.localeCompare(b,'es'));
+ }
+ function rounds(){
+  const previous=field('round').value,values=[];
+  const add=value=>{
+   const v=String(value||'').trim().slice(0,80);
+   if(v&&!values.some(x=>norm(x)===norm(v)))values.push(v);
+  };
+  for(let i=1;i<=40;i++)add('Jornada '+i);
+  const c=field('cat').value||updateCaseData()?.cat;
+  (db.categories?.[c]?.fixtures||[]).forEach(group=>{
+   const g=String(group.label||'').trim();
+   if(g&&!/^(?:jornada\s*\d+|j\s*\d+)$/i.test(g))add(g);
+   (group.rows||[]).forEach(r=>{
+    const n=String(r?.[1]||'').trim();
+    if(/^\d+$/.test(n))add('Jornada '+Number(n));
+    else add(n);
+   });
+  });
+  ['Repechaje','Octavos de final','Cuartos de final','Semifinal','Final','Campeón de Campeones','Partido pendiente'].forEach(add);
+  field('round').innerHTML=options(values.map(x=>[x,x]),'Selecciona jornada o fase');
+  field('round').value=values.find(x=>norm(x)===norm(previous))||'';
+ }
+ function fields(){
+  const previous=field('field').value,names=[];
+  const add=value=>{
+   const raw=String(value||'').trim();
+   if(!raw||/^(?:---?|por (?:confirmar|definir)|campo por confirmar|sin campo|pendiente)$/i.test(raw))return;
+   const canonical=window.LJR_FIELDS?.canonical?.(raw)||raw;
+   if(!names.some(x=>norm(x)===norm(canonical)))names.push(canonical);
+  };
+  (window.LJR_FIELDS?.catalog||[]).forEach(x=>add(x.name));
+  Object.values(db.categories||{}).forEach(c=>{
+   (c.fixtures||[]).forEach(g=>(g.rows||[]).forEach(r=>add(r?.[7])));
+   (c.cedulas||[]).forEach(ced=>add(ced?.field||ced?.campo));
+  });
+  field('field').innerHTML=options(names.map(x=>[x,x]),'Selecciona una cancha');
+  field('field').value=names.find(x=>norm(x)===norm(previous))||'';
+  field('field').disabled=!names.length;
+ }
+ function rivals(){
+  const previous=field('rival').value,p=updateCaseData();
+  const cat=field('cat').value||p?.cat||'',own=p?.team||field('team').value;
+  const names=categoryTeams(cat).filter(x=>!own||norm(x)!==norm(own));
+  field('rival').innerHTML=options(names.map(x=>[x,x]),cat?'Selecciona el equipo rival':'Primero elige una categoría');
+  field('rival').value=names.find(x=>norm(x)===norm(previous))||'';
+  field('rival').disabled=!cat||!names.length;
+ }
+ // Recupera datos previos sin convertir los selectores nuevos en campos libres.
+ function selectExistingOrRestore(name,value,restore){
+  const el=field(name),raw=String(value||'').trim();
+  const canonical=name==='field'?(window.LJR_FIELDS?.canonical?.(raw)||raw):raw;
+  const found=Array.from(el.options).find(o=>norm(o.value)===norm(canonical));
+  if(found){el.value=found.value;return true}
+  if(canonical&&restore){
+   const opt=document.createElement('option');opt.value=canonical;opt.textContent=canonical;
+   el.append(opt);el.value=canonical;return true;
+  }
+  el.value='';return false;
+ }
  function teams(){
   const old=field('team').value;
   const names=[...new Set(players.filter(p=>!field('cat').value||p.cat===field('cat').value).map(p=>p.team).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
@@ -101,7 +180,7 @@ function open(){
   else{chosen='';field('player').value=''}
   field('player').disabled=!shown.length;
   $('[data-count]',root).textContent=list.length+' coincidencia'+(list.length===1?'':'s')+(list.length>80?' · Escribe más para filtrar':'');
-  fixtures();summary();
+  fixtures();rivals();summary();
  }
  function fixtures(){
   const p=updateCaseData(),c=field('cat').value||p?.cat;
@@ -132,6 +211,8 @@ function open(){
  function collect(){
   const p=updateCaseData();
   if(!p){notify('Selecciona expresamente un jugador');return null}
+  const rival=field('rival').value.trim();
+  if(rival&&(!categoryTeams(p.cat).some(x=>norm(x)===norm(rival))||norm(rival)===norm(p.team))){notify('El rival debe pertenecer a la misma categoría y ser otro equipo');return null}
   const type=field('type').value,reason=field('reason').value;
   if(!type||!reason){notify('Selecciona el tipo y motivo');return null}
   if(reason==='other'&&!field('reasonDetail').value.trim()){notify('Describe el motivo');return null}
@@ -170,10 +251,13 @@ function open(){
   field('search').value='';
   const p=players.find(p=>p.key===(v.playerKey||norm(v.player)+'|'+norm(v.team)+'|'+String(v.cat||'')));
   chosen=p?p.id:'';
-  ['round','rival','field','referee','evidence','notes','reasonDetail','until'].forEach(k=>field(k).value=v[k]||'');
+  rounds();fields();rivals();
+  ['referee','evidence','notes','reasonDetail','until'].forEach(k=>field(k).value=v[k]||'');
+  selectExistingOrRestore('round',v.round,true);
+  selectExistingOrRestore('field',v.field,true);
   field('date').value=v.matchDate||'';field('type').value=v.sanctionType||'matches';
   field('reason').value=v.reason||'';field('matches').value=v.matches||1;field('served').value=v.served||0;
-  playersList();duration();
+  playersList();rivals();selectExistingOrRestore('rival',v.rival,false);duration();
   if([...field('fixture').options].some(o=>o.value===v.matchRef))field('fixture').value=v.matchRef;
  }
  function renderHistory(){
@@ -238,10 +322,18 @@ function open(){
  }
  $('[data-close]',root).onclick=()=>root.remove();
  root.addEventListener('click',e=>{if(e.target===root)root.remove()});
- field('cat').onchange=()=>{chosen='';field('team').value='';teams();playersList()};
- field('team').onchange=()=>{chosen='';playersList()};
+ field('cat').onchange=()=>{chosen='';field('team').value='';field('fixture').value='';field('round').value='';field('rival').value='';teams();rounds();playersList()};
+ field('team').onchange=()=>{chosen='';field('fixture').value='';field('rival').value='';playersList()};
  field('search').oninput=()=>{chosen='';playersList()};
- field('player').onchange=()=>{chosen=field('player').value;fixtures();summary()};
+ field('player').onchange=()=>{
+  chosen=field('player').value;const p=updateCaseData();
+  if(p){
+   field('cat').value=p.cat;teams();
+   const t=Array.from(field('team').options).find(o=>norm(o.value)===norm(p.team));
+   field('team').value=t?.value||'';rounds();
+  }
+  fixtures();rivals();summary();
+ };
  field('type').onchange=duration;
  field('matches').oninput=summary;field('served').oninput=summary;
  field('fixture').onchange=()=>{
@@ -249,10 +341,16 @@ function open(){
   const [gi,ri]=field('fixture').value.split(':').map(Number),p=updateCaseData(),cat=field('cat').value||p?.cat;
   const r=db.categories?.[cat]?.fixtures?.[gi]?.rows?.[ri];if(!r)return;
   const home=String(r[2]||''),away=String(r[6]||'');
-  if(p)field('rival').value=norm(p.team)===norm(home)?away:home;
+  const own=p?.team||field('team').value;
+  if(own&&(norm(own)===norm(home)||norm(own)===norm(away))){
+   selectExistingOrRestore('rival',norm(own)===norm(home)?away:home,false);
+  }
   const m=String(r[8]||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
   if(m)field('date').value=m[3]+'-'+m[2].padStart(2,'0')+'-'+m[1].padStart(2,'0');
-  if(!field('round').value)field('round').value=String(db.categories?.[cat]?.fixtures?.[gi]?.label||'').slice(0,80);
+  const n=String(r[1]||'').trim(),roundLabel=/^\d+$/.test(n)?'Jornada '+Number(n):n;
+  if(roundLabel)selectExistingOrRestore('round',roundLabel,true);
+  const venue=String(r[7]||'').trim();
+  if(venue&&!/^(?:---?|por confirmar|pendiente)$/i.test(venue))selectExistingOrRestore('field',venue,true);
  };
  $('[data-act="save"]',root).onclick=()=>save('Borrador local');
  $('[data-act="review"]',root).onclick=()=>{if(confirm('¿Marcar para REVISIÓN LOCAL? No envía ni publica datos oficiales.'))save('En revisión local')};
@@ -263,7 +361,7 @@ function open(){
  $('[data-act="history"]',root).onclick=()=>{showHistory=!showHistory;$('[data-history]',root).hidden=!showHistory;$('[data-act="history"]',root).setAttribute('aria-expanded',String(showHistory));renderHistory()};
  $('[data-history-search]',root).oninput=renderHistory;
  $('[data-act="backup"]',root).onclick=()=>history.length?download(new Blob([JSON.stringify({tipo:'BORRADORES NO OFICIALES',cases:history},null,2)],{type:'application/json'}),'liga-sanciones-respaldo-local.json'):notify('No hay expedientes para respaldar');
- teams();playersList();field('type').value='matches';duration();
+ teams();rounds();fields();playersList();field('type').value='matches';duration();
  if(legacy?.player&&legacy?.team&&legacy?.cat)load(legacy);
  $('[data-total]',root).textContent=history.length;
 }
