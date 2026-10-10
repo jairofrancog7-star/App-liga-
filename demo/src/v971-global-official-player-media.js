@@ -72,6 +72,8 @@ function meta(row,p,target){
  if(!detail)return;
  // Se incorpora en la linea existente, sin aumentar la altura de los cuadros.
  const line=target.querySelector('small')||target;
+ // V33 already renders the official position in its compact, fitted line.
+ if(line.hasAttribute('data-v33-player-detail'))return;
  let mini=line.querySelector(':scope > .v971-player-meta');
  if(!mini){mini=document.createElement('span');mini.className='v971-player-meta';line.append(mini)}
  if(mini.textContent!==detail)mini.textContent=detail;
