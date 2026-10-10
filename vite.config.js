@@ -12,6 +12,7 @@ function copyStaticReferences() {
         // Fuentes CSS de la barra de jornada: deben sobrevivir al build demo/APK.
         ['src/v1153-matchday-fullwidth-safe-crests.css', 'dist/src/v1153-matchday-fullwidth-safe-crests.css'],
         ['src/v1167-matchday-centered-official-crests.css', 'dist/src/v1167-matchday-centered-official-crests.css'],
+        ['src/v1166-meeting-officers.css', 'dist/src/v1166-meeting-officers.css'],
         ['src/vendor/QRCODE-LICENSE.txt', 'dist/src/vendor/QRCODE-LICENSE.txt'],
         ['assets/liga-logo-original.webp', 'dist/assets/liga-logo-original.webp'],
         ['assets/liga-logo.webp', 'dist/assets/liga-logo.webp'],
@@ -82,6 +83,17 @@ function copyStaticReferences() {
         const target = resolve('dist/assets/history/archive-v224/la-esperanza-campeon-copa-veteranos50-08-nov-2025.webp');
         mkdirSync(dirname(target), { recursive: true });
         writeFileSync(target, bytes);
+      }
+
+      // La suite de juntas y el demo necesitan una ruta CSS literal además
+      // del CSS que Vite agrupa: el demo se regenera automáticamente.
+      const indexBuilt = resolve('dist/index.html');
+      if (existsSync(indexBuilt)) {
+        let html = readFileSync(indexBuilt, 'utf8');
+        if (!html.includes('v1166-meeting-officers.css')) {
+          html = html.replace('</head>', '  <link rel="stylesheet" href="./src/v1166-meeting-officers.css" />\n</head>');
+          writeFileSync(indexBuilt, html);
+        }
       }
     },
   };
