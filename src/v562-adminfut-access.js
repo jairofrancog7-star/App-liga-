@@ -103,6 +103,7 @@ function controlMarkup(){
    card('meeting','Juntas y acuerdos','Registro de reuniones y pendientes','data-v563-tool="meeting"')+
    card('referee','Modo árbitro offline','Mis partidos y cédulas sin señal','data-v563-route="refereeOffline"')+
    card('document','Cédulas arbitrales','Plantillas y exportación PDF','data-v563-route="cedulaBuilder"')+
+   card('document','Archivo de cédulas','Consultar documentos de partidos','data-v563-route="cedulas"')+
    card('officials','Árbitros y oficiales','Directorio operativo local','data-v563-tool="officials"')+
    card('incidents','Incidencias','Anotar hechos y dar seguimiento','data-v563-tool="incidents"')+
    card('alertShield','Nueva sanción','Preparar sanción sin publicarla','data-v563-tool="new-sanction"')+
@@ -124,6 +125,7 @@ function controlMarkup(){
    card('export','Exportar tablas','Descargar clasificaciones PNG o PDF','data-v563-route="tableExport"')+
    card('tactic','Tácticas 2D y 3D','Pizarra y formaciones interactivas','data-v563-route="tactics"')+
    card('notice','Notificaciones','Preferencias y avisos de la Liga','data-v563-route="notifications"')+
+   card('notice','Registro para recibir avisos','Elegir categoría y equipo de interés','data-v563-tool="register-alerts"')+
    card('book','Historial de la Liga','Temporadas, resultados y eventos','data-v563-route="historyLog"')+
    card('account','Mi cuenta','Perfil y configuración','data-v563-route="profile"')+
    card('import','Importar CSV','Leer archivo y revisar vista previa','data-v563-tool="csv-import"')+
@@ -140,7 +142,7 @@ function controlMarkup(){
     card('review','Revisar avisos','Consultar borradores y publicaciones','data-v563-cms="review"')+
     card('editPage','Editar páginas','Modificar información y diseño sin programar','data-v563-cms="pages"')+
     card('manage','Administrar accesos','Gestionar administradores autorizados','data-v563-cms="manage"')+
-    (window.LJR_MEDIA?.admin?.owner?card('backup','Respaldo oficial','Exportación privada solo del presidente','data-v563-cms="backup"'):'')+
+    card('backup','Respaldo oficial','Exportación privada solo del presidente','data-v563-cms="backup"')+
     '</div></div>'+
    '</section>'+
  '</section>';
@@ -178,7 +180,12 @@ async function share(){
  try{if(navigator.share){await navigator.share({title:'Liga Juventino',text:'App de la Liga Municipal de Fútbol Juventino Rosas',url:href});return}await navigator.clipboard.writeText(href);toast('Enlace copiado')}catch(_){}
 }
 function bind(root){
- function syncAdmin(){const section=$('[data-v563-admin-direct]',root);if(section)section.hidden=!Boolean(window.LJR_MEDIA?.admin)}
+ function syncAdmin(){
+   const section=$('[data-v563-admin-direct]',root);
+   if(section)section.hidden=!Boolean(window.LJR_MEDIA?.admin);
+   const backup=$('[data-v563-cms="backup"]',root);
+   if(backup)backup.hidden=!Boolean(window.LJR_MEDIA?.admin?.owner);
+ }
  syncAdmin();window.addEventListener('liga:admin',syncAdmin,{signal:root.v563Controller?.signal});
  $('[data-v563-route]',root).forEach(b=>b.addEventListener('click',()=>go(b.dataset.v563Route)));
  const search=$('[data-v563-tool-search]',root);
@@ -211,20 +218,20 @@ function bind(root){
    openTool(name);
  }));
  const cmsActions={
-   compose:()=>window.LJR_EDITOR_CENTER?.openNotice?.(),
-   review:()=>window.LJR_EDITOR_CENTER?.openReview?.(),
-   pages:()=>window.LJR_EDITOR_CENTER?.openPages?.(),
-   manage:()=>window.LJR_MEDIA?.manage?.(),
-   backup:()=>window.LJR_EDITOR_CENTER?.exportBackup?.()
+   compose:()=>window.LJR_EDITOR_CENTER?.openNotice,
+   review:()=>window.LJR_EDITOR_CENTER?.openReview,
+   pages:()=>window.LJR_EDITOR_CENTER?.openPages,
+   manage:()=>window.LJR_MEDIA?.manage,
+   backup:()=>window.LJR_EDITOR_CENTER?.exportBackup
  };
  $('[data-v563-cms]',root).forEach(b=>b.addEventListener('click',()=>{
    if(!window.LJR_MEDIA?.admin){toast('Inicia sesión como administrador para continuar');return}
    const name=b.dataset.v563Cms;
    if(name==='backup'&&!window.LJR_MEDIA.admin.owner){toast('Solo el presidente puede exportar el respaldo oficial');return}
    try{
-     const handler=cmsActions[name];
+     const handler=cmsActions[name]?.();
      if(typeof handler!=='function'){toast('Opción no disponible; recarga la aplicación');return}
-     handler();
+     handler.call(name==='manage'?window.LJR_MEDIA:window.LJR_EDITOR_CENTER);
    }catch(error){console.error('[JR Control] Acción administrativa',error);toast('No fue posible abrir esta función')}
  }));
  $('[data-v563-action]',root).forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.v563Action;if(a==='positions')openPositions();else if(a==='fixtures')openFixtures();else if(a==='cards')openDiscipline('cards');else if(a==='suspensions')openDiscipline('suspensions')}));
