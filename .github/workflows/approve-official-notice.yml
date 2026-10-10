@@ -39,7 +39,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Verificar validaciones y firmas de ejemplo
-        run: python -m unittest discover -s .github/scripts -p 'test_process_scheduled_notices.py'
+        run: python -m unittest discover -s .github/scripts -p 'test_*.py'
       - name: Firmar el borrador aprobado, sin publicar mensajes
         env:
           NOTICE_ID: ${{ inputs.notice_id }}
