@@ -137,3 +137,23 @@
     letter-spacing:-.03em!important;
   }
 }
+
+/* V1164: los ::after/::before heredados tapaban el indicador en 2 de 3 pestañas.
+   Se reemplazan por tres indicadores DOM idénticos que conserva el runtime. */
+html body.v1164-tabs-ready[data-app-route="competition"] #screen > .tabs > button.tab[data-comp-tab]::after,
+html body.v1164-tabs-ready[data-app-route="competition"] #screen > .tabs > button.tab[data-comp-tab]::before,
+html body.v40-standings-master.v1164-tabs-ready[data-app-route="competition"] #screen > .tabs > button.tab[data-comp-tab]::after,
+html body.v40-standings-master.v1164-tabs-ready[data-app-route="competition"] #screen > .tabs > button.tab[data-comp-tab]::before {
+  content:none!important;
+  display:none!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+html body.v1164-tabs-ready[data-app-route="competition"] #screen > .tabs > button.tab[data-comp-tab] .v86-tab-line {
+  display:none!important;
+}
+html body.v1164-tabs-ready[data-app-route="competition"] #screen > .tabs > button.tab[data-comp-tab] .v1164-tab-indicator {
+  position:absolute!important;
+  pointer-events:none!important;
+  z-index:100!important;
+}
