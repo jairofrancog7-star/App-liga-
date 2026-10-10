@@ -356,3 +356,233 @@
     padding:9px 5px!important;
   }
 }
+
+
+/* V1196 — Ultimo ajuste móvil basado en capturas: selectores iguales y LIVE legible.
+   Sobrescribe las reglas legacy v777 sin cambiar listeners ni navegación. */
+@media (max-width:1023px) {
+  /* Un mismo diseño para ambos selectores de categoría / estado. */
+  html body.v92-match-center-official #app #screen .v423-filters {
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    align-items:stretch!important;
+    gap:10px!important;
+    padding:10px!important;
+    background:#0a1237!important;
+  }
+  html body.v92-match-center-official #app #screen .v423-filters>label {
+    position:relative!important;
+    display:flex!important;
+    align-items:center!important;
+    box-sizing:border-box!important;
+    min-width:0!important;
+    width:100%!important;
+    min-height:52px!important;
+    margin:0!important;
+    padding:0!important;
+    border:1.5px solid #446bb9!important;
+    border-radius:16px!important;
+    background:linear-gradient(155deg,#1c408c,#17357e)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.07)!important;
+    overflow:hidden!important;
+  }
+  html body.v92-match-center-official #app #screen .v423-filters>label>select {
+    display:block!important;
+    flex:1 1 auto!important;
+    box-sizing:border-box!important;
+    min-width:0!important;
+    width:100%!important;
+    min-height:52px!important;
+    height:auto!important;
+    margin:0!important;
+    padding:10px 34px 10px 14px!important;
+    border:0!important;
+    border-radius:16px!important;
+    background:transparent!important;
+    color:#fff!important;
+    font-family:inherit!important;
+    font-size:clamp(11px,2.8vw,13px)!important;
+    font-weight:800!important;
+    line-height:1.25!important;
+    letter-spacing:0!important;
+    white-space:normal!important;
+    outline-offset:-2px!important;
+    -webkit-appearance:none!important;
+    appearance:none!important;
+    color-scheme:dark!important;
+  }
+  html body.v92-match-center-official #app #screen .v423-filters>label::after {
+    content:""!important;
+    position:absolute!important;
+    right:15px!important;
+    top:50%!important;
+    display:block!important;
+    width:8px!important;
+    height:8px!important;
+    border:solid #eaf2ff!important;
+    border-width:0 2px 2px 0!important;
+    transform:translateY(-65%) rotate(45deg)!important;
+    pointer-events:none!important;
+  }
+  html body.v92-match-center-official #app #screen .v423-filters>label::before{
+    content:none!important;
+    display:none!important;
+  }
+
+  /* Tarjetas LIVE: dos columnas anchas, 2 filas, texto nunca partido. */
+  html body.ljr-v777.v92-match-center-official #app #screen .v144-platforms,
+  html body.v92-match-center-official #app #screen .v144-platforms {
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+    width:100%!important;
+    min-width:0!important;
+    margin:10px 0!important;
+  }
+  html body.ljr-v777.v92-match-center-official #app #screen .v144-platforms>button,
+  html body.v92-match-center-official #app #screen .v144-platforms>button {
+    display:grid!important;
+    grid-template-columns:38px minmax(0,1fr)!important;
+    grid-template-rows:auto!important;
+    justify-content:stretch!important;
+    justify-items:stretch!important;
+    align-content:center!important;
+    align-items:center!important;
+    box-sizing:border-box!important;
+    gap:9px!important;
+    width:100%!important;
+    min-width:0!important;
+    min-height:67px!important;
+    height:auto!important;
+    padding:10px 10px!important;
+    border:1px solid #416bbb!important;
+    border-radius:17px!important;
+    background:linear-gradient(155deg,#1d438f 0%,#153276 100%)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.07)!important;
+    text-align:left!important;
+    touch-action:manipulation!important;
+  }
+  html body.ljr-v777.v92-match-center-official #app #screen .v144-platforms>button.active,
+  html body.v92-match-center-official #app #screen .v144-platforms>button.active {
+    background:linear-gradient(160deg,#2458ad,#174186)!important;
+    border-color:#50d9f0!important;
+    box-shadow:inset 0 0 0 1px rgba(80,217,240,.18),0 0 0 1px rgba(80,217,240,.12)!important;
+  }
+  html body.ljr-v777.v92-match-center-official #app #screen .v144-platforms>button>em,
+  html body.v92-match-center-official #app #screen .v144-platforms>button>em {
+    display:grid!important;
+    grid-column:1!important;
+    place-items:center!important;
+    box-sizing:border-box!important;
+    width:38px!important;
+    height:38px!important;
+    min-width:38px!important;
+    min-height:38px!important;
+    margin:0!important;
+    padding:0!important;
+    border-radius:12px!important;
+    background:linear-gradient(145deg,#2759b1,#1b3885)!important;
+    color:transparent!important;
+    font-size:0!important;
+    line-height:0!important;
+  }
+  html body.v92-match-center-official #app #screen .v144-platforms>button>em::before {
+    content:""!important;
+    display:block!important;
+    width:23px!important;
+    height:23px!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+    background-size:contain!important;
+  }
+  html body.v92-match-center-official #app #screen .v144-platforms>button[data-v144-platform="facebook"]>em::before{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%221.9%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M14.6%2021v-8h2.8l.4-3.5h-3.2V7.3c0-1.1.4-1.7%201.9-1.7h1.6V2.4c-.8-.2-1.9-.4-3-.4-3.4%200-5.3%202-5.3%205.3v2.2H7V13h2.8v8z%22%20fill%3D%22%23fff%22%20stroke%3D%22none%22%2F%3E%3C%2Fsvg%3E")!important;}
+  html body.v92-match-center-official #app #screen .v144-platforms>button[data-v144-platform="youtube"]>em::before{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%221.9%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%222.2%22%20y%3D%225%22%20width%3D%2219.6%22%20height%3D%2214%22%20rx%3D%224.2%22%2F%3E%3Cpath%20d%3D%22m10%209%205%203-5%203z%22%20fill%3D%22%23fff%22%20stroke%3D%22none%22%2F%3E%3C%2Fsvg%3E")!important;}
+  html body.v92-match-center-official #app #screen .v144-platforms>button[data-v144-platform="tiktok"]>em::before{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%221.9%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M14%203v11.7a4.8%204.8%200%201%201-4.8-4.8c.5%200%201%20.1%201.5.25%22%2F%3E%3Cpath%20d%3D%22M14%203c.6%203.2%202.2%204.8%205.5%205v3.5c-2.1-.05-4-.8-5.5-2.2%22%2F%3E%3C%2Fsvg%3E")!important;}
+  html body.v92-match-center-official #app #screen .v144-platforms>button[data-v144-local]>em::before{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%221.9%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%222.5%22%20y%3D%224%22%20width%3D%2219%22%20height%3D%2213%22%20rx%3D%222.2%22%2F%3E%3Cpath%20d%3D%22M8.5%2020h7M12%2017v3M7%209h10v4H7z%22%2F%3E%3C%2Fsvg%3E")!important;}
+  html body.ljr-v777.v92-match-center-official #app #screen .v144-platforms>button>span,
+  html body.v92-match-center-official #app #screen .v144-platforms>button>span {
+    grid-column:2!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:flex-start!important;
+    justify-content:center!important;
+    box-sizing:border-box!important;
+    min-width:0!important;
+    width:100%!important;
+    margin:0!important;
+    text-align:left!important;
+  }
+  html body.ljr-v777.v92-match-center-official #app #screen .v144-platforms>button>span>b,
+  html body.v92-match-center-official #app #screen .v144-platforms>button>span>b {
+    display:block!important;
+    width:auto!important;
+    min-width:0!important;
+    max-width:100%!important;
+    margin:0!important;
+    padding:0!important;
+    color:#fff!important;
+    font-size:clamp(11px,2.75vw,13px)!important;
+    font-weight:850!important;
+    line-height:1.25!important;
+    letter-spacing:-.02em!important;
+    word-break:keep-all!important;
+    overflow-wrap:normal!important;
+    white-space:nowrap!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+  }
+  html body.ljr-v777.v92-match-center-official #app #screen .v144-platforms>button>span>small,
+  html body.v92-match-center-official #app #screen .v144-platforms>button>span>small {
+    display:block!important;
+    margin:4px 0 0!important;
+    padding:0!important;
+    color:#64e4f2!important;
+    font-size:10px!important;
+    line-height:1.1!important;
+    font-weight:850!important;
+    white-space:nowrap!important;
+    text-align:left!important;
+  }
+
+  /* Televisión: icono de TV/vector blanco adaptado al mismo tema. */
+  html body.v92-match-center-official #app #screen .v144-tv-cast-icon {
+    font-size:0!important;
+    color:transparent!important;
+    background:#224b9d!important;
+  }
+  html body.v92-match-center-official #app #screen .v144-tv-cast-icon::before{
+    content:""!important;
+    display:block!important;
+    width:22px!important;
+    height:22px!important;
+    background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%221.9%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%223%22%20y%3D%225%22%20width%3D%2218%22%20height%3D%2213%22%20rx%3D%222.5%22%2F%3E%3Cpath%20d%3D%22M8%2021h8M12%2018v3M6.5%208.5a3%203%200%200%201%203%203M6.5%2012h.01%22%2F%3E%3C%2Fsvg%3E")!important;
+    background-repeat:no-repeat!important;
+    background-size:contain!important;
+    background-position:center!important;
+  }
+}
+@media (max-width:480px){
+  html body.v92-match-center-official #app #screen .v423-filters {
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  html body.v92-match-center-official #app #screen .v423-filters>label,
+  html body.v92-match-center-official #app #screen .v423-filters>label>select{
+    min-height:54px!important;
+  }
+}
+@media (max-width:340px){
+  html body.v92-match-center-official #app #screen .v144-platforms>button{
+    grid-template-columns:32px minmax(0,1fr)!important;
+    gap:6px!important;
+    padding:9px 7px!important;
+  }
+  html body.v92-match-center-official #app #screen .v144-platforms>button>em{
+    width:32px!important;
+    height:32px!important;
+    min-width:32px!important;
+    min-height:32px!important;
+  }
+  html body.v92-match-center-official #app #screen .v144-platforms>button>span>b{
+    font-size:10px!important;
+  }
+}
