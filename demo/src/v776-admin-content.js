@@ -81,6 +81,14 @@
   const progress=document.createElement('p');progress.className='cms-load-feedback';progress.setAttribute('role','status');
   progress.textContent='Cargando registros existentes… Puedes abrir el editor desde el botón de arriba.';
   list.append(progress);
+  // The new CMS layout places results below a long grid. Bring the chosen
+  // section into view so tapping a tile never appears to do nothing.
+  requestAnimationFrame(()=>{
+    if(n.isConnected&&list.dataset.cmsRequest===token){
+      const panel=list.closest('.ljr-admin-results')||list;
+      panel.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  });
   try{
     const response=await api('content?admin=1');
     if(!n.isConnected||list.dataset.cmsRequest!==token)return;
