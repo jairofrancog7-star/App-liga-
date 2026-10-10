@@ -248,20 +248,32 @@ function openPages(){
  $('[data-page-content]',modal).onclick=()=>execute('content');
  $('[data-page-visual]',modal).onclick=()=>execute('visual');
 }
-/* Exportación voluntaria de respaldo, nunca a una dirección externa. */
+/* Respaldo oficial V1212: un panel cifrado sustituye a la descarga JSON abierta.
+   El servidor debe imponer autorización también en la petición de contenido. */
 async function exportBackup(){
  if(!admin())return media()?.login?.(exportBackup);
- if(!confirm('Se descargará un archivo JSON con contenido de administración que podría incluir datos personales de jugadores. Guárdalo en un lugar privado. ¿Continuar?'))return;
  try{
   const who=await verified();
-  if(!who.owner)throw Error('El respaldo completo solo pueden exportarlo las cuentas principales autorizadas por el servidor.');
-  const data=await media().api('content?admin=1');
-  if(!Array.isArray(data.items))throw Error('El servidor no devolvió los registros esperados.');
-  const dump={schema:'ljr-admin-backup-v1',exportedAt:new Date().toISOString(),records:data.items};
-  const url=URL.createObjectURL(new Blob([JSON.stringify(dump,null,2)],{type:'application/json'}));
-  const link=document.createElement('a');link.href=url;link.download='liga-juventino-respaldo-'+new Date().toISOString().slice(0,10)+'.json';
-  document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
- }catch(err){alert('No se pudo descargar el respaldo: '+(err?.message||'Error'))}
+  if(who.owner!==true)throw Error('Solo las cuentas principales autorizadas por el servidor pueden consultar este respaldo.');
+  if(!document.querySelector('[data-ljr-backup-v1212-css]')){
+   const css=document.createElement('link');css.rel='stylesheet';
+   css.href=new URL('./src/v1212-official-backup-center.css?v=20261010-v1212',document.baseURI).href;
+   css.setAttribute('data-ljr-backup-v1212-css','');document.head.append(css);
+  }
+  if(!window.LJR_BACKUP_CENTER?.open){
+   if(!window.__LJR_BACKUP_CENTER_LOADING){
+    window.__LJR_BACKUP_CENTER_LOADING=new Promise((resolve,reject)=>{
+     const script=document.createElement('script');script.async=true;
+     script.src=new URL('./src/v1212-official-backup-center.js?v=20261010-v1212',document.baseURI).href;
+     script.onload=()=>window.LJR_BACKUP_CENTER?.open?resolve():reject(Error('El módulo de respaldo no pudo iniciarse.'));
+     script.onerror=()=>reject(Error('No se pudo cargar el respaldo protegido.'));
+     document.head.append(script);
+    }).catch(error=>{window.__LJR_BACKUP_CENTER_LOADING=null;throw error});
+   }
+   await window.__LJR_BACKUP_CENTER_LOADING;
+  }
+  await window.LJR_BACKUP_CENTER.open();
+ }catch(err){alert('Respaldo oficial: '+(err?.message||'No se pudo abrir.'))}
 }
 
 function openScheduler(origin){
