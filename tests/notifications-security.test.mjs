@@ -47,3 +47,28 @@ test('No se incluyen claves de publicación en la aplicación pública',()=>{
  assert.match(html,/src\/v1081-global-admin-notices\.js/);
  assert.doesNotMatch(client,/ADMIN_NOTIFY_TOKEN/);
 });
+
+
+test('Seguimiento de entregas limitado a administración y sin datos de contacto',()=>{
+ const src=read('server/notifications/index.mjs');
+ assert.match(src,/app\.get\('\/admin\/notices\/:id\/deliveries',admin,requirePermission\('notices:read'\)/);
+ assert.match(src,/FROM ljr_delivery_log WHERE notice_id=\$1 GROUP BY channel,status/);
+ assert.match(src,/twilio\.validateRequest\(E\.TWILIO_AUTH_TOKEN,signature,url,req\.body\)/);
+ assert.match(src,/opted_out_at IS NULL/);
+});
+test('El remitente de WhatsApp exige el formato internacional y una plantilla aprobada',()=>{
+ const src=read('server/notifications/index.mjs');
+ assert.match(src,/const whatsappReady=twilioReady/);
+ assert.match(src,/\^whatsapp:/);
+ assert.match(src,/TWILIO_WHATSAPP_CONTENT_SID/);
+ assert.match(src,/\^HX\[0-9a-f\]\{32\}/);
+ const match=/^whatsapp:\+[1-9]\d{7,14}$/;
+ assert.equal(match.test('whatsapp:+524121234567'),true);
+ assert.equal(match.test('whatsapp:4121234567'),false);
+});
+test('La vista compacta consulta estados y no muestra teléfonos',()=>{
+ const src=read('src/v1081-global-admin-notices.js');
+ assert.match(src,/Estado de entregas/);
+ assert.match(src,/deliveryStates/);
+ assert.doesNotMatch(src,/rec\.phone|rec\.endpoint/);
+});
