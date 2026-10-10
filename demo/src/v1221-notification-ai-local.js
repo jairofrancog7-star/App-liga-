@@ -7,7 +7,7 @@ if(window.__LJR_V1221_LOCAL_ALERT_AI__)return;
 window.__LJR_V1221_LOCAL_ALERT_AI__=true;
 const SETTINGS='ljr-notification-ai-v1221', FEED='./data/active-notices.json';
 const PROFILE='v160-alert-profile',STORE='lj-store-v3';
-const DEFAULT={enabled:false,auto:false,notify:false,interval:5,known:[],feedback:[]};
+const DEFAULT={enabled:false,auto:false,notify:false,interval:5,known:[],baselined:false,feedback:[]};
 const CATEGORIES={'3':'Primera','5':'Intermedia','4':'Segunda','2':'Veteranos 35+','1':'Veteranos 50+'};
 const TRAINING=[
  ['important','Partido suspendido por lluvia y cancha en mal estado'],
@@ -185,9 +185,11 @@ function render(){
 }
 let rawItems=[];
 async function refresh(force=false){
- if(pending||!currentModal||!currentModal.isConnected)return;
+ if(pending)return;
  const opts=settings();
  if(!force&&lastRead&&Date.now()-lastRead<opts.interval*60000)return;
+ const modal=currentModal?.isConnected?currentModal:null;
+ const profile=modal?context(modal):read(PROFILE,{});
  pending=true;
  status('Consultando únicamente el archivo oficial de la Liga…');
  try{
@@ -197,13 +199,13 @@ async function refresh(force=false){
   const rows=Array.isArray(data)?data:Array.isArray(data?.items)?data.items:null;
   if(!rows)throw Error('Formato oficial no reconocido');
   rawItems=rows.slice(0,500);
-  const next=rank(rawItems,context(currentModal),opts.feedback);
+  const next=rank(rawItems,profile,opts.feedback);
   const ids=rawItems.map((x,i)=>String(x?.id||i)).slice(0,160);
-  const hasBaseline=opts.known.length>0;
+  const hasBaseline=!!opts.baselined;
   const unseen=next.filter(x=>!opts.known.includes(x.id)&&x.importance>=72);
   entries=next;
   lastSuccessful=true;
-  if(opts.auto)saveOptions({known:ids});
+  if(opts.auto)saveOptions({known:ids,baselined:true});
   if(opts.auto&&opts.notify&&hasBaseline&&unseen.length&&'Notification'in window&&Notification.permission==='granted'){
    const selected=unseen[0];
    try{
@@ -267,7 +269,7 @@ function mount(modal){
  for(const n of [5,15,30]){const op=document.createElement('option');op.value=String(n);op.textContent=n+' min';select.append(op)}
  select.value=String(s.interval);frequency.append(select);
  autoInput.addEventListener('change',()=>{
-  const next=saveOptions({auto:autoInput.checked,known:autoInput.checked?rawItems.map((x,i)=>String(x?.id||i)).slice(0,160):settings().known});
+  const next=saveOptions({auto:autoInput.checked,baselined:autoInput.checked?false:settings().baselined,known:autoInput.checked?[]:settings().known});
   status(next.auto?'Automatización activa solo mientras la sección esté abierta.':'Consulta automática desactivada.');
   if(next.auto)refresh(true);
  });
@@ -282,7 +284,7 @@ function mount(modal){
  currentStatus.dataset.aiStatus='';
  currentStatus.setAttribute('aria-live','polite');root.append(currentStatus);
  const resultBox=element('div','v1221-ai-results');resultBox.dataset.aiResults='';root.append(resultBox);
- root.append(element('p','v1221-ai-footnote','La IA sugiere prioridades; no crea noticias, no publica decisiones de la Liga y no activa Push por sí sola.'));
+ root.append(element('p','v1221-ai-footnote','La IA sugiere prioridades; no crea noticias ni decisiones oficiales. Con la automatización activada revisa avisos mientras la app esté abierta; para recibirlos cerrada se necesita Push.'));
  const anchor=$('[data-r-inline-notif]',modal)||$('[data-r-push-slot]',modal);
  if(anchor)anchor.after(root);else modal.querySelector('.v105-dialog')?.append(root);
  modal.addEventListener('change',e=>{
@@ -304,7 +306,9 @@ function init(){
  if(!document.body)return;
  new MutationObserver(discover).observe(document.body,{childList:true});
  discover();
- timer=setInterval(()=>{if(!document.hidden&&settings().auto&&currentModal?.isConnected)refresh(false);},60000);
+ timer=setInterval(()=>{if(!document.hidden&&settings().auto)refresh(false);},60000);
+ if(settings().auto&&!document.hidden)refresh(true);
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&settings().auto)refresh(false);});
 }
 window.LJR_V1221_LOCAL_AI={terms,classify,rank,recommended,applyRecommendation,settings};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});
