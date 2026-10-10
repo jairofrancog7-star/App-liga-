@@ -31,7 +31,9 @@ function collect(groupIds){
   if(total>MAX_DATA)throw Error('Los datos exceden el límite de 8 MB para este respaldo. Exporta menos secciones.');
   out[key]=value;
  }
- return Object.fromEntries(Object.entries(out).sort(([a],[b])=>a.localeCompare(b)));
+ const sorted=Object.fromEntries(Object.entries(out).sort(([a],[b])=>a.localeCompare(b)));
+ if(sizeOf(JSON.stringify(sorted))>MAX_DATA)throw Error('La copia supera 8 MB. Selecciona menos secciones.');
+ return sorted;
 }
 function sizeOf(text){return new Blob([text]).size}
 function digest(text){
