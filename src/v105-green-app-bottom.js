@@ -49,6 +49,10 @@ function icon(name){
   field:'<rect x="3" y="5" width="18" height="14"/><path d="M12 5v14"/><circle cx="12" cy="12" r="3"/>',
   poll:'<path d="M5 19V9m7 10V5m7 14v-6"/>',
   sponsor:'<path d="M4 7h16v10H4zM7 10h10m-8 4h6"/>',
+  save:'<path d="M5 3h12l4 4v14H3V3h2Zm2 0v7h10V3M7 21v-8h10v8"/>',
+  copy:'<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/>',
+  clear:'<path d="M4 7h16M9 7V4h6v3m3 0-1 14H7L6 7m4 4v6m4-6v6"/>',
+  edit:'<path d="M12 20h9M4 20l4.2-1 11-11a2.8 2.8 0 0 0-4-4l-11 11L4 20Z"/>',
   alert:'<path d="m12 3 10 18H2L12 3Z"/><path d="M12 9v5m0 3h.01"/>',
   share:'<circle cx="18" cy="5" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="19" r="2"/><path d="m8 11 8-5m-8 7 8 5"/>'
  };
@@ -698,7 +702,7 @@ function sponsors(){
  const body=
   '<div class="v105-sponsor-hero">'+
     '<div class="v105-sponsor-badge">'+icon('sponsor')+'</div>'+
-    '<div><small>GESTIÓN COMERCIAL</small><b>Control de patrocinadores</b><span>Organiza acuerdos, vigencias, espacios y contactos sin publicar nada automáticamente.</span></div>'+
+    '<div><small>GESTIÓN COMERCIAL</small><b>Control de patrocinadores</b><span>Acuerdos, vigencias y contactos en un solo lugar.</span></div>'+
   '</div>'+
   '<div class="v105-sponsor-stats">'+
     '<span><b data-sp-total>0</b><small>registrados</small></span>'+
@@ -708,15 +712,15 @@ function sponsors(){
   '<div class="v105-sponsor-card">'+
     '<div class="v105-sponsor-section-title"><b>Información del patrocinador</b><small>Completa sólo los datos que necesites.</small></div>'+
     '<div class="v105-form v105-sponsor-form">'+
-      '<label><span>Marca / negocio *</span><input data-sp-brand placeholder="Ej. Negocio local"></label>'+
+      '<label class="v105-sponsor-wide"><span>Marca / negocio *</span><input data-sp-brand placeholder="Ej. Negocio local" autocomplete="organization"></label>'+
       '<label><span>Tipo</span><select data-sp-type><option>Patrocinador oficial</option><option>Patrocinador de jornada</option><option>Colaborador</option><option>Proveedor</option><option>Apoyo local</option></select></label>'+
       '<label><span>Categoría / alcance</span><select data-sp-scope><option>Toda la liga</option><option>Primera</option><option>Intermedia</option><option>Segunda</option><option>Veteranos 35+</option><option>Veteranos 50+</option><option>Evento especial</option></select></label>'+
-      '<label><span>Estado</span><select data-sp-status><option>Activo</option><option>En negociación</option><option>Pendiente</option><option>Finalizado</option></select></label>'+
+      '<label class="v105-sponsor-wide"><span>Estado</span><select data-sp-status><option>Activo</option><option>En negociación</option><option>Pendiente</option><option>Finalizado</option></select></label>'+
       '<label><span>Vigencia desde</span><input data-sp-from type="date"></label>'+
       '<label><span>Vigencia hasta</span><input data-sp-to type="date"></label>'+
-      '<label><span>Contacto responsable</span><input data-sp-contact placeholder="Nombre de contacto"></label>'+
-      '<label><span>Teléfono / WhatsApp</span><input data-sp-phone inputmode="tel" placeholder="Opcional"></label>'+
-      '<label style="grid-column:1/-1"><span>Aportación / beneficio acordado</span><input data-sp-deal placeholder="Ej. uniformes, premio, efectivo, servicio, difusión..."></label>'+
+      '<label><span>Contacto responsable</span><input data-sp-contact placeholder="Nombre de contacto" autocomplete="name"></label>'+
+      '<label><span>Teléfono / WhatsApp</span><input data-sp-phone type="tel" inputmode="tel" autocomplete="tel" placeholder="Opcional"></label>'+
+      '<label class="v105-sponsor-wide"><span>Aportación / beneficio</span><input data-sp-deal placeholder="Ej. uniformes, premio, difusión..."></label>'+
     '</div>'+
   '</div>'+
   '<div class="v105-sponsor-card">'+
@@ -732,16 +736,16 @@ function sponsors(){
     '<label class="v105-sponsor-notes"><span>Notas / acuerdos especiales</span><textarea data-sp-notes placeholder="Condiciones, tamaños de logo, fechas, restricciones, pendientes...">'+esc(legacy)+'</textarea></label>'+
   '</div>'+
   '<div class="v105-sponsor-actions">'+
-    '<button class="v105-btn v105-sponsor-primary" data-sp-save>Guardar patrocinador</button>'+
-    '<button class="v105-btn alt" data-sp-copy>Copiar resumen</button>'+
-    '<button class="v105-btn alt" data-sp-clear>Limpiar</button>'+
+    '<button type="button" class="v105-btn v105-sponsor-primary" data-sp-save>'+icon('save')+'<span>Guardar patrocinador</span></button>'+
+    '<button type="button" class="v105-btn alt" data-sp-copy>'+icon('copy')+'<span>Copiar resumen</span></button>'+
+    '<button type="button" class="v105-btn alt" data-sp-clear>'+icon('clear')+'<span>Limpiar</span></button>'+
   '</div>'+
   '<div class="v105-sponsor-saved">'+
     '<div class="v105-sponsor-section-title"><b>Patrocinadores guardados</b><small>Se conservan sólo en este dispositivo.</small></div>'+
     '<div class="v105-sponsor-list" data-sp-list></div>'+
   '</div>';
 
- const m=modal('Patrocinadores','Centro privado para registrar y organizar acuerdos de patrocinio. Nada se publica por sí solo.',body);
+ const m=modal('Patrocinadores','Gestión privada de acuerdos. Nada se publica automáticamente.',body);
  m.classList.add('v105-sponsors-modal');
 
  const get=(s)=>$(s,m);
@@ -795,7 +799,7 @@ function sponsors(){
          (x.from||x.to?'<small>Vigencia: '+esc(x.from||'—')+' → '+esc(x.to||'—')+'</small>':'<small>Sin vigencia definida</small>')+
          (x.contact?'<small>'+esc(x.contact)+(x.phone?' · '+esc(x.phone):'')+'</small>':'')+
        '</div>'+
-       '<div class="v105-sponsor-item-actions"><button class="v105-btn alt" data-sp-edit="'+i+'">Editar</button><button class="v105-btn alt danger" data-sp-del="'+i+'">Eliminar</button></div>'+
+       '<div class="v105-sponsor-item-actions"><button type="button" class="v105-btn alt" data-sp-edit="'+i+'" aria-label="Editar '+esc(x.brand)+'">'+icon('edit')+'<span>Editar</span></button><button type="button" class="v105-btn alt danger" data-sp-del="'+i+'" aria-label="Eliminar '+esc(x.brand)+'">'+icon('clear')+'<span>Eliminar</span></button></div>'+
      '</article>'
    ).join(''):'<div class="v105-sponsor-empty"><b>Aún no hay patrocinadores registrados</b><small>Agrega el primero con el formulario de arriba.</small></div>';
 
