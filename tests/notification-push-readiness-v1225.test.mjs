@@ -9,11 +9,11 @@ const end=source.indexOf('async function enable(root){',begin);
 assert.ok(begin!==-1&&end>begin,'Debe existir el diagnóstico Web Push');
 const extracted=source.slice(begin,end);
 
-function setup({supported=true,sub=null,serverError=false,permission='granted'}={}){
+function setup({supported=true,sub=null,serverError=false,permission='granted',native=false}={}){
  const label={textContent:''},toggle={disabled:false,textContent:'',dataset:{}};
  const messages=[];
  let queriedServer=0,queriedSubscription=0;
- const fn=new Function('$','supported','apiBase','server','subscription','keyMatches','status','Notification',
+ const fn=new Function('$','supported','apiBase','server','subscription','keyMatches','status','Notification','window',
     extracted+'\nreturn syncState;')(
     s=>s==='[data-v1082-state]'?label:toggle,
     ()=>supported,
@@ -22,7 +22,8 @@ function setup({supported=true,sub=null,serverError=false,permission='granted'}=
     async()=>{queriedSubscription++;return sub;},
     ()=>true,
     (_root,message)=>messages.push(message),
-    {permission}
+    {permission},
+    {Capacitor:{isNativePlatform:()=>native}}
  );
  return {check:()=>fn({}),label,toggle,messages,get requests(){return {server:queriedServer,subscription:queriedSubscription}}};
 }
@@ -59,9 +60,19 @@ test('Push: permisos denegados muestran bloqueo y desactivan alta',async()=>{
  assert.equal(x.toggle.disabled,true);
 });
 
+test('APK Android: no confundir avisos locales y Push remoto FCM',async()=>{
+ const x=setup({supported:false,native:true});
+ await x.check();
+ assert.match(x.label.textContent,/APK Android/);
+ assert.match(x.messages.join(' '),/Firebase Cloud Messaging/);
+ assert.match(x.messages.join(' '),/Una prueba local no demuestra entrega/);
+ assert.equal(x.toggle.disabled,true);
+ assert.equal(x.requests.server,0);
+});
+
 test('Push: mantiene compatibilidad y cache bust en HTML',()=>{
  assert.doesNotThrow(()=>new Function(source));
- assert.match(html,/v1082-push-notifications\.js\?v=20261010-v1227-self-test/);
+ assert.match(html,/v1082-push-notifications\.js\?v=20261010-v1330-native-push-diagnostic/);
  assert.match(extracted,/server\('public-key'\)/);
  assert.match(extracted,/Notification\.permission==='denied'/);
 });
