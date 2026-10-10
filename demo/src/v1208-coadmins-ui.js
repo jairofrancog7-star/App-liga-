@@ -24,7 +24,7 @@ async function open(){
   const cmsStatus=document.createElement('p');
   cmsStatus.textContent='CMS principal de la Liga: '+(cmsAdmin.owner===true
    ? 'Acceso principal confirmado por su servidor.'
-   : 'Cuenta administrativa sin rol principal confirmado. El CMS aún debe autorizarla para editar toda la página.');
+   : 'Cuenta administrativa sin rol principal confirmado. El CMS principal todavía debe autorizarla para editar toda la página.');
   host.append(cmsStatus);
   const isPrincipal=me?.actor?.permissions?.includes('roles:write')===true;
   const notificationsStatus=document.createElement('p');
@@ -44,7 +44,7 @@ async function open(){
   const count=document.createElement('div');count.className='v1208-count';
   count.innerHTML='<b>'+Number(principals.current||1)+' / 2</b><span>cuentas principales para Avisos y Juntas</span>';
   host.append(count);
-  const owner=document.createElement('p');owner.textContent='Cuenta original: conservada en el servidor de la Liga.';
+  const owner=document.createElement('p');owner.textContent='Cuenta principal actual del CMS: conservada sin modificaciones.';
   host.append(owner);
   const secondary=principals.secondary;
   if(secondary){
@@ -66,7 +66,12 @@ async function open(){
    host.append(info);
    const a=await media().api('admins');
    const available=(a.admins||[]).filter(x=>x.active===true&&x.owner!==true&&/^[A-Za-z0-9:_-]{1,128}$/.test(String(x.id||'')));
-   if(!available.length){const note=document.createElement('p');note.textContent='Todavía no hay otra cuenta administrativa válida para seleccionar.';host.append(note);}
+   if(!available.length){
+    const note=document.createElement('p');note.textContent='Todavía no hay otra cuenta administrativa válida para seleccionar.';host.append(note);
+    const create=document.createElement('button');create.type='button';create.textContent='Abrir administración para registrar la segunda cuenta';
+    create.onclick=()=>{d.querySelector('[data-close]')?.click();media().manage()};
+    host.append(create);
+   }
    else{
     const select=document.createElement('select');select.setAttribute('aria-label','Seleccionar segunda cuenta principal');
     for(const x of available){const option=document.createElement('option');option.value=String(x.id);option.textContent=String(x.name||x.username||x.id);select.append(option)}
@@ -81,7 +86,7 @@ async function open(){
     host.append(select,button);
    }
   }else{
-   const note=document.createElement('p');note.textContent='Solo el propietario original puede autorizar otra cuenta principal.';
+   const note=document.createElement('p');note.textContent='Solo la cuenta principal reconocida por el CMS puede autorizar otra cuenta para Avisos y Juntas.';
    host.append(note);
   }
   const note=document.createElement('small');
