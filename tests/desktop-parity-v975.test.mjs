@@ -26,7 +26,7 @@ test('Desktop feature parity leaves mobile and APK modes untouched',()=>{
 
 test('Important new PC features are linked to functional routes',()=>{
  for(const route of ['quiniela','predictorSix','fantasy','playerCompare','weatherFields','credentialBuilder','cedulaBuilder','bracketBuilder','publicationCenter']){
-  assert.ok(runtime.includes("'"+route+"'"),'missing PC link '+route);
+  assert.ok(runtime.includes("'"+route+"'") || runtime.includes('"'+route+'"'),'missing PC link '+route);
   assert.ok(bridge.includes("'"+route+"'"),'missing native route '+route);
  }
  assert.match(runtime,/data-pc-tools-hub/);
