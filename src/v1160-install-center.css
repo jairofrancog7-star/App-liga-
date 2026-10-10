@@ -1,0 +1,74 @@
+/* V1160 — Pantalla y ventana de instalación. Azul original, controles compactos y SVG homogéneos. */
+.ljr-install-page,.ljr-install-overlay{--ljr-install-blue:#102d85;--ljr-install-dark:#07164f;--ljr-install-cyan:#54dff0;--ljr-install-line:rgba(105,170,244,.32);font-family:Inter,Roboto,Arial,sans-serif;color:#fff}
+.ljr-install-page *,.ljr-install-overlay *{box-sizing:border-box}
+.ljr-install-page.v562-page{width:min(100%,760px);max-width:100%;margin:0 auto;padding:12px 12px calc(100px + env(safe-area-inset-bottom))}
+.ljr-install-shell{width:100%;max-width:710px;margin:0 auto;padding:15px;border:1px solid rgba(74,170,248,.44);border-radius:22px;background:radial-gradient(100% 55% at 90% -18%,rgba(35,126,239,.24),transparent 85%),linear-gradient(165deg,#122e89 0%,#0d1e71 40%,#07154e 100%);box-shadow:0 16px 38px rgba(0,3,38,.26),inset 0 1px 0 rgba(255,255,255,.07)}
+.ljr-install-head{display:grid;grid-template-columns:53px minmax(0,1fr) auto;align-items:center;gap:11px;min-width:0}
+.ljr-install-logo{display:block;width:51px;height:51px;object-fit:contain;border-radius:13px;filter:drop-shadow(0 2px 8px rgba(34,199,250,.19))}
+.ljr-install-logo[hidden]{display:none}
+.ljr-install-head-copy{min-width:0}
+.ljr-install-eyebrow{display:block;color:var(--ljr-install-cyan);font-weight:900;font-size:10px;letter-spacing:.12em;line-height:1.3}
+.ljr-install-head h2{margin:4px 0 5px!important;font-size:clamp(20px,4.6vw,27px)!important;line-height:1.12!important;color:#fff!important;letter-spacing:-.02em}
+.ljr-install-head p{color:#c1d4f2!important;font-size:11px!important;line-height:1.5!important;margin:0!important}
+.ljr-install-close{width:37px;height:37px;min-width:37px;display:grid;place-items:center;align-self:start;border:1px solid rgba(115,183,247,.34);border-radius:11px;background:#183579;color:#fff;cursor:pointer}
+.ljr-install-current{display:flex;gap:10px;align-items:center;margin:13px 0 12px;padding:10px 11px;border:1px solid rgba(76,207,240,.27);border-radius:12px;background:rgba(27,98,182,.28)}
+.ljr-install-current-mark{flex:0 0 31px;width:31px;height:31px;border-radius:10px;display:grid;place-items:center;color:#08215b;background:linear-gradient(145deg,#70eaf4,#2dc8eb)}
+.ljr-install-current div{display:grid;gap:3px;min-width:0}
+.ljr-install-current b{font-size:11px;color:#fff;font-weight:850;line-height:1.3}
+.ljr-install-current small{font-size:10px;color:#c3d5f1;line-height:1.4}
+.ljr-install-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 0 11px}
+.ljr-install-choice{min-width:0;width:100%;min-height:60px;display:grid;grid-template-columns:34px minmax(0,1fr);gap:9px;align-items:center;text-align:left;padding:9px!important;border:1px solid var(--ljr-install-line);border-radius:12px;color:#f3faff;background:linear-gradient(155deg,#193a89,#101e66);cursor:pointer}
+.ljr-install-choice.is-active{border-color:#5ee7f5;background:linear-gradient(145deg,#1950a5,#11317b);box-shadow:inset 0 0 0 1px rgba(83,218,244,.2)}
+.ljr-install-choice-icon{display:grid;place-items:center;height:33px;width:33px;color:#68e8f5;border-radius:10px;background:#0c276b}
+.ljr-install-choice b{display:block;font-size:11px;font-weight:800;line-height:1.24;overflow-wrap:anywhere}
+.ljr-install-choice small{display:block;margin-top:4px;font-size:9px;color:#bbd1eb;line-height:1.3}
+.ljr-install-guide{display:grid;gap:10px;padding:12px;border:1px solid rgba(95,158,241,.34);border-radius:15px;background:linear-gradient(155deg,rgba(22,52,132,.79),rgba(9,30,90,.88))}
+.ljr-install-guide-heading{display:grid;grid-template-columns:35px minmax(0,1fr);gap:9px;align-items:start}
+.ljr-install-guide-icon{width:35px;height:35px;display:grid;place-items:center;border:1px solid rgba(87,202,234,.23);border-radius:11px;background:rgba(61,202,238,.14);color:#5ce4f2}
+.ljr-install-guide-heading small{font-size:9px;letter-spacing:.1em;font-weight:900;color:#64e5f1}
+.ljr-install-guide h3{font-size:14px!important;line-height:1.25!important;margin:2px 0 4px!important;color:#fff!important}
+.ljr-install-guide-heading p{margin:0!important;color:#bdcfee!important;font-size:10px!important;line-height:1.42!important}
+.ljr-install-steps{display:grid;gap:6px;list-style:none;margin:0!important;padding:0!important}
+.ljr-install-steps li{display:grid;grid-template-columns:27px minmax(0,1fr);gap:8px;align-items:center;border:1px solid rgba(113,172,241,.16);border-radius:9px;padding:7px 8px;background:rgba(5,18,67,.36);color:#e0eafb;font-size:10px;line-height:1.4}
+.ljr-install-step-num{display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:#244d9c;color:#72edfa;font-weight:900}
+.ljr-install-cta{display:grid;grid-template-columns:1fr;gap:7px}
+.ljr-install-primary,.ljr-install-secondary{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:43px;padding:9px 10px!important;border-radius:11px;border:1px solid rgba(113,237,251,.7);font:850 12px/1.25 Inter,Roboto,Arial,sans-serif;text-decoration:none!important;text-align:center;cursor:pointer}
+.ljr-install-primary{color:#062255!important;background:linear-gradient(100deg,#72ebf1,#2dc8e7);border-color:#76ecf2;box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+.ljr-install-primary span{flex:0 1 auto}
+.ljr-install-secondary{min-height:35px;background:#133479;color:#e2f3ff!important;border-color:rgba(113,182,247,.44);font-size:10px}
+.ljr-install-feedback{margin:0!important;min-height:0;color:#a1f0f7!important;font-size:10px!important;line-height:1.4!important}
+.ljr-install-feedback:empty{display:none}
+.ljr-install-utilities{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:11px 0 9px}
+.ljr-install-utilities :is(a,button){width:100%;display:flex;align-items:center;justify-content:center;gap:5px;min-width:0;min-height:36px;padding:6px!important;border-radius:9px;border:1px solid var(--ljr-install-line);background:rgba(25,64,136,.55);color:#dcecff!important;text-decoration:none!important;text-align:center;font:750 10px/1.25 Inter,Roboto,Arial,sans-serif;cursor:pointer;overflow-wrap:anywhere}
+.ljr-install-utilities svg{flex:0 0 16px}
+.ljr-install-smallprint{margin:0!important;color:#adbfdb!important;font-size:9px!important;line-height:1.48!important}
+.ljr-install-page .ljr-install-shell{margin-bottom:8px}
+/* Modal accesible y con scroll interno independiente de la barra inferior de la app. */
+.ljr-install-overlay{position:fixed;inset:0;z-index:2147483645;display:flex;align-items:flex-start;justify-content:center;padding:max(10px,env(safe-area-inset-top)) 10px max(12px,env(safe-area-inset-bottom));overflow:auto;overscroll-behavior:contain;background:rgba(1,6,36,.86);backdrop-filter:blur(8px)}
+.ljr-install-overlay .ljr-install-shell{width:min(100%,710px);max-height:calc(100dvh - 25px - env(safe-area-inset-top) - env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#4380c4 transparent}
+.ljr-install-overlay .ljr-install-shell :is(button,a):focus-visible,.ljr-install-page .ljr-install-shell :is(button,a):focus-visible{outline:2px solid #99f5ff;outline-offset:2px}
+.ljr-install-overlay .ljr-install-choice:active,.ljr-install-page .ljr-install-choice:active{transform:scale(.992)}
+@media(max-width:520px){
+ .ljr-install-page.v562-page{padding:9px 9px calc(100px + env(safe-area-inset-bottom))}
+ .ljr-install-shell{padding:12px;border-radius:18px}
+ .ljr-install-overlay{padding:max(7px,env(safe-area-inset-top)) 7px max(8px,env(safe-area-inset-bottom))}
+ .ljr-install-overlay .ljr-install-shell{max-height:calc(100dvh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom))}
+ .ljr-install-head{grid-template-columns:42px minmax(0,1fr) auto;gap:9px}
+ .ljr-install-logo{width:41px;height:41px}
+ .ljr-install-head h2{font-size:20px!important}
+ .ljr-install-choices{gap:6px}
+ .ljr-install-choice{grid-template-columns:28px minmax(0,1fr);gap:7px;min-height:57px;padding:7px!important}
+ .ljr-install-choice-icon{width:28px;height:29px}
+ .ljr-install-choice-icon svg{width:18px;height:18px}
+ .ljr-install-choice b{font-size:10.5px}
+ .ljr-install-choice small{font-size:8.5px}
+ .ljr-install-guide{padding:10px}
+ .ljr-install-utilities{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .ljr-install-utilities :last-child{grid-column:1/-1}
+}
+@media(max-width:340px){
+ .ljr-install-choices{grid-template-columns:minmax(0,1fr)}
+ .ljr-install-utilities{grid-template-columns:minmax(0,1fr)}
+ .ljr-install-utilities :last-child{grid-column:auto}
+}
+@media(prefers-reduced-motion:reduce){.ljr-install-page *,.ljr-install-overlay *{transition:none!important;animation:none!important}}
