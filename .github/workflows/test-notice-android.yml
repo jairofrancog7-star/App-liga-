@@ -1,0 +1,46 @@
+name: Comprobar avisos en Android simulado
+on:
+  pull_request:
+    paths:
+      - 'src/v1230-notice-device-check.*'
+      - 'demo/src/v1230-notice-device-check.*'
+      - 'src/v1212-notice-compose-enhance.*'
+      - 'src/v1075-admin-editor-center.*'
+      - 'tests/review-avisos-android.mjs'
+      - '.github/workflows/test-notice-android.yml'
+      - 'index.html'
+      - 'demo/index.html'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mobile:
+    name: Interfaz avisos 360 / 390 / 412
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar aplicación
+        run: npm install --no-audit --no-fund
+      - name: Comprobar sintaxis y seguridad
+        run: node --test tests/notice-android-diagnostics.test.mjs
+      - name: Construir aplicación
+        run: npm run build -- --base=/App-liga-/
+      - name: Instalar navegador solo para pruebas
+        run: |
+          npm install --no-save playwright@1.55.0 --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Verificar formulario en pantallas Android
+        run: node tests/review-avisos-android.mjs
+      - name: Adjuntar capturas de revisión
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: avisos-android-capturas
+          path: artifacts/notices-android
+          if-no-files-found: ignore
