@@ -1,0 +1,30 @@
+name: Respaldo oficial - pruebas de seguridad y móvil
+on:
+  pull_request:
+    paths:
+      - 'src/v1212-official-backup-center.js'
+      - 'src/v1212-official-backup-center.css'
+      - 'tests/official-backup-v1214.test.mjs'
+      - '.github/workflows/official-backup-qa.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/v1212-official-backup-center.js'
+      - 'src/v1212-official-backup-center.css'
+      - 'tests/official-backup-v1214.test.mjs'
+      - '.github/workflows/official-backup-qa.yml'
+permissions:
+  contents: read
+jobs:
+  check-backup:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate JavaScript syntax
+        run: node --check src/v1212-official-backup-center.js
+      - name: Test encryption, permissions, anomalies, scheduling and colors
+        run: node --test tests/official-backup-v1214.test.mjs

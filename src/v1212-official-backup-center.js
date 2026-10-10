@@ -10,6 +10,8 @@ const SUMMARY_KEY='ljr-official-backup-summaries-v1212';
 const AUTO_KEY='ljr-backup-auto-v1213';
 const AUTO_LAST_KEY='ljr-backup-auto-last-v1213';
 const HISTORY_LIMIT=14;
+const REVIEW_MS=24*60*60*1000;
+let automaticReviewInFlight=false;
 const MAX_PLAIN=32*1024*1024;
 const MAX_FILE=48*1024*1024;
 const ITERATIONS=310000;
@@ -72,7 +74,12 @@ async function records(){
 /* Modelo estadistico adaptativo sin paquetes pesados ni datos personales. */
 function median(values){const x=values.slice().sort((a,b)=>a-b),mid=Math.floor(x.length/2);return x.length%2?x[mid]:(x[mid-1]+x[mid])/2}
 function trendModel(count,history){
- const samples=(Array.isArray(history)?history:[]).slice(-HISTORY_LIMIT).map(x=>Number(x?.count)).filter(x=>Number.isSafeInteger(x)&&x>=0);
+ const days=new Map();
+ for(const entry of Array.isArray(history)?history:[]){
+  const day=String(entry?.at||'').slice(0,10),count=Number(entry?.count);
+  if(/^\d{4}-\d{2}-\d{2}$/.test(day)&&Number.isSafeInteger(count)&&count>=0)days.set(day,count);
+ }
+ const samples=[...days.entries()].sort(([a],[b])=>a.localeCompare(b)).slice(-HISTORY_LIMIT).map(x=>x[1]);
  if(samples.length<4)return {ready:false,samples:samples.length};
  const baseline=median(samples),mad=median(samples.map(x=>Math.abs(x-baseline)));
  return {ready:true,samples:samples.length,baseline,abnormal:Math.abs(count-baseline)>Math.max(3,baseline*.18,mad*3.5)};
@@ -90,6 +97,10 @@ function inspect(rows){
  const previous=Array.isArray(history)&&history.length?history[history.length-1]:null;
  const fall=previous&&previous.count>0&&rows.length<previous.count*.75;
  return {count:rows.length,duplicates,missing,invalid,fall,previous,model:trendModel(rows.length,history)};
+}
+function shouldAutoReview(last,now=Date.now()){
+ const time=Date.parse(last||'');
+ return !Number.isFinite(time)||now-time>=REVIEW_MS;
 }
 function recordHistory(count){
  const history=read(SUMMARY_KEY,[]),series=Array.isArray(history)?history.slice(-HISTORY_LIMIT):[];
@@ -169,15 +180,18 @@ function open(){
  }
  const analyzeButton=$('[data-backup-analyze]',root);
  analyzeButton.onclick=e=>perform(e.currentTarget,()=>analyze(false));
+ async function runAutoOnce(){
+  if(!auto.checked||automaticReviewInFlight||!shouldAutoReview(read(AUTO_LAST_KEY,'')))return;
+  automaticReviewInFlight=true;
+  try{await perform(analyzeButton,()=>analyze(true))}
+  finally{automaticReviewInFlight=false}
+ }
  auto.onchange=()=>{
   write(AUTO_KEY,auto.checked);
-  if(auto.checked)perform(analyzeButton,()=>analyze(true));
+  if(auto.checked)runAutoOnce();
   else say('Análisis automático desactivado. La revisión manual sigue disponible.');
  };
- const lastAuto=Date.parse(read(AUTO_LAST_KEY,''));
- if(auto.checked&&(!Number.isFinite(lastAuto)||Date.now()-lastAuto>=86400000)){
-  perform(analyzeButton,()=>analyze(true));
- }
+ runAutoOnce();
  $('[data-backup-export]',root).onsubmit=e=>{
   e.preventDefault();
   const button=$('button[type="submit"]',e.currentTarget);
