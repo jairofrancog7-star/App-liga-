@@ -105,3 +105,29 @@ html body.v33-data-active #screen .v33-data-page[data-v33-data] > .v33-data-cont
     right:11px!important;
   }
 }
+
+/* V1188b — superar los selectores históricos V844 para CADA pestaña.
+   Si no se iguala esta especificidad, el subrayado vuelve a medir 96–132px. */
+html body.v33-data-active #screen .v33-data-page[data-v33-mode="general"] .v33-tabs button[data-v33-tab="general"].active::after,
+html body.v33-data-active #screen .v33-data-page[data-v33-mode="team"] .v33-tabs button[data-v33-tab="team"].active::after,
+html body.v33-data-active #screen .v33-data-page[data-v33-mode="player"] .v33-tabs button[data-v33-tab="player"].active::after{
+  left:15px!important;
+  right:15px!important;
+  width:auto!important;
+  min-width:0!important;
+  max-width:none!important;
+  height:3px!important;
+  min-height:3px!important;
+  transform:none!important;
+  border-radius:3px 3px 0 0!important;
+  background:#16d7f4!important;
+  box-shadow:none!important;
+}
+@media(max-width:360px){
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="general"] .v33-tabs button[data-v33-tab="general"].active::after,
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="team"] .v33-tabs button[data-v33-tab="team"].active::after,
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="player"] .v33-tabs button[data-v33-tab="player"].active::after{
+    left:11px!important;
+    right:11px!important;
+  }
+}
