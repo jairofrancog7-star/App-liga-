@@ -105,7 +105,7 @@
     });
     search.addEventListener('input', () => {
       const q = search.value.trim().toLocaleLowerCase('es-MX');
-      buttons.forEach(btn => { btn.hidden = !btn.textContent.toLocaleLowerCase('es-MX').includes(q); });
+      buttons.forEach(btn => { btn.style.display = btn.textContent.toLocaleLowerCase('es-MX').includes(q) ? 'grid' : 'none'; });
     });
     card.append(top, note, search, list);
     overlay.appendChild(card);
