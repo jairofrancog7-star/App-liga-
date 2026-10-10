@@ -29,7 +29,7 @@ jobs:
         run: |
           node --check src/v1082-push-notifications.js
           node --check server/notifications/index.mjs
-          node --test tests/notification-push-readiness-v1225.test.mjs
+          node --test tests/notification-push-readiness-v1225.test.mjs tests/notification-push-confirmation-v1226.test.mjs tests/notification-push-self-test-v1227.test.mjs
       - name: Probar API Web Push real (sin enviar avisos ni exponer claves)
         env:
           PUSH_API_URL: https://liga-avisos-api-production.up.railway.app
