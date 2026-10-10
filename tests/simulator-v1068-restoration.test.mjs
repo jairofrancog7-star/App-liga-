@@ -36,8 +36,8 @@ test('simulator preview uses only real rows, no invented clubs, and labels proje
   .concat(...actual.left.winners,...actual.right.winners).filter(Boolean);
  assert.ok(all.every(c=>names.includes(c.name)));
  const seen=all.map(c=>c.name);assert.equal(seen.length,new Set(seen).size);
- assert.ok(js.includes('PROYECCIÓN DEL SIMULADOR'));
- assert.ok(js.includes('No son cruces oficiales'));
+ assert.ok(read('../src/knockout-reference.js').includes('Proyección del simulador'));
+ assert.ok(read('../src/knockout-reference.js').includes('No son cruces oficiales'));
 });
 test('official playoff results take precedence over a possible simulator projection',()=>{
  const src=js.slice(js.indexOf('function v512BuildRoutes('),js.indexOf('function v512BracketRoute('));
