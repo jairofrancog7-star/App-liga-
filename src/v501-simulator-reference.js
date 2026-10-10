@@ -3,64 +3,12 @@
 'use strict';
 if(window.__LJR_V501_SIMULATOR__)return;
 window.__LJR_V501_SIMULATOR__=true;
-window.LJR_SIMULATOR_V502={version:'519'};
+window.LJR_SIMULATOR_V502={version:'1083'};
 
 const CAT_NAMES={'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'};
 const VIEW_KEY='v501-simulator-view';
 let rendering=false,timer=0;
 
-function v514MirrorCompetitionBracketCss(){
- const old=document.getElementById('v513-simulator-bracket-critical');
- if(old)old.remove();
- const prev=document.getElementById('v514-simulator-competition-mirror');
- if(prev)prev.remove();
-
- const keep=/v12-(?:bracket|progress|final|semifinal)/;
- const swap=s=>String(s||'').replaceAll('data-app-route="competition"','data-app-route="simulator"');
-
- function one(rule){
-   try{
-     if(rule.type===CSSRule.STYLE_RULE){
-       const sel=rule.selectorText||'';
-       if(sel.includes('data-app-route="competition"')&&keep.test(sel)) return swap(rule.cssText);
-       return '';
-     }
-     if(rule.type===CSSRule.MEDIA_RULE){
-       const inner=[...rule.cssRules].map(one).filter(Boolean).join('\n');
-       return inner?'@media '+rule.conditionText+'{\n'+inner+'\n}':'';
-     }
-     if(typeof CSSSupportsRule!=='undefined'&&rule instanceof CSSSupportsRule){
-       const inner=[...rule.cssRules].map(one).filter(Boolean).join('\n');
-       return inner?'@supports '+rule.conditionText+'{\n'+inner+'\n}':'';
-     }
-   }catch(_){ }
-   return '';
- }
-
- let copied='';
- [...document.styleSheets].forEach(sheet=>{
-   try{copied += [...sheet.cssRules].map(one).filter(Boolean).join('\n')+'\n';}catch(_){ }
- });
-
- const tail=[
- 'html body[data-app-route="simulator"] #screen [data-v512-bracket].v12-bracket-reference,',
- 'html body[data-app-route="simulator"] #screen [data-v512-bracket].v12-bracket-reference.stage-playoff,',
- 'html body[data-app-route="simulator"] #screen [data-v512-bracket].v12-bracket-reference.stage-octavos,',
- 'html body[data-app-route="simulator"] #screen [data-v512-bracket].v12-bracket-reference.stage-cuartos,',
- 'html body[data-app-route="simulator"] #screen [data-v512-bracket].v12-bracket-reference.stage-semifinal,',
- 'html body[data-app-route="simulator"] #screen [data-v512-bracket].v12-bracket-reference.stage-final{background:#06075f!important;}',
- 'html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-final-reference{background:#06075f!important;}',
- 'html body[data-app-route="simulator"] #screen [data-v512-bracket] img{max-width:100%!important;object-fit:contain;}',
- 'html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-final .v12-final-reference{display:block!important;visibility:visible!important;opacity:1!important;background:#06075f!important;}',
- 'html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-final .v12-final-trophy-wrap{display:grid!important;visibility:visible!important;opacity:1!important;pointer-events:none!important;}',
- 'html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-final .v12-final-trophy-new,html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-final .v12-final-trophy-new img{display:block!important;visibility:visible!important;opacity:1!important;}',
- 'html body[data-app-route="simulator"] .bottom-nav{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;height:0!important;min-height:0!important;max-height:0!important;padding:0!important;margin:0!important;overflow:hidden!important;}'
- ].join('\n');
- const s=document.createElement('style');
- s.id='v514-simulator-competition-mirror';
- s.textContent=copied+'\n'+tail;
- document.head.appendChild(s);
-}
 function route(){return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home'}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function norm(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
@@ -150,7 +98,7 @@ function fixturesAll(){
      if(!Array.isArray(r)||!r[2]||!r[6])return;
      const h=num(r[3]),a=num(r[5]),j=String(r[1]??block?.title??block?.name??(gi+1)).trim()||String(gi+1);
      out.push({
-       id:catId()+':'+gi+':'+ri,
+       id:catId()+':fixture:'+JSON.stringify([j,norm(r[2]),norm(r[6]),String(r[8]||'')]),
        journey:j,
        home:String(r[2]).trim(),away:String(r[6]).trim(),
        hs:h,as:a,field:String(r[7]||''),date:String(r[8]||''),played:h!==null&&a!==null,
@@ -158,7 +106,7 @@ function fixturesAll(){
      });
    });
  });
- return out;
+ const seen=new Set();return out.filter(f=>{if(seen.has(f.id))return false;seen.add(f.id);return true});
 }
 function simFixtures(){
  const all=fixturesAll(),future=all.filter(f=>!f.played);
@@ -185,19 +133,20 @@ function setJourney(i){
  render();
 }
 function simKey(){return 'v501-sim-results:'+catId()}
-function simState(){try{return JSON.parse(localStorage.getItem(simKey())||'{}')||{}}catch(_){return {}}}
+function simState(){try{const value=JSON.parse(localStorage.getItem(simKey())||'{}');return value&&typeof value==='object'&&!Array.isArray(value)?value:{}}catch(_){return {}}}
 function saveSim(s){localStorage.setItem(simKey(),JSON.stringify(s))}
 function scoreOf(f,s){
  const x=s[f.id];
- if(!x||!Number.isFinite(Number(x.home))||!Number.isFinite(Number(x.away)))return null;
+ if(!x||!Number.isInteger(x.home)||!Number.isInteger(x.away)||x.home<0||x.away<0||x.home>99||x.away>99)return null;
  return {home:Number(x.home),away:Number(x.away)};
 }
 function alterScore(id,side,delta){
+ if(!['home','away'].includes(side)||![-1,1].includes(delta)||!simFixtures().some(f=>f.id===id))return;
  const s=simState(),existing=s[id];
  if(!existing&&delta<0)return;
  const x=existing||{home:0,away:0};
  x.home=Math.max(0,Number(x.home)||0);x.away=Math.max(0,Number(x.away)||0);
- x[side]=Math.max(0,x[side]+delta);
+ x[side]=Math.min(99,Math.max(0,x[side]+delta));
  s[id]=x;saveSim(s);render(true);
 }
 function resetMatch(id){
@@ -517,24 +466,19 @@ function v512FinalCard(){
  '</section>';
 }
 
+function simulationCategory(){
+ const source=cat(),state=simState();
+ return {...source,fixtures:(source.fixtures||[]).map((block,gi)=>({...block,rows:(block.rows||[]).map(r=>{
+  if(!Array.isArray(r)||num(r[3])!==null&&num(r[5])!==null)return r;
+  const journey=String(r[1]??block.title??block.name??(gi+1)).trim()||String(gi+1);
+  const id=catId()+':fixture:'+JSON.stringify([journey,norm(r[2]),norm(r[6]),String(r[8]||'')]);
+  const score=scoreOf({id},state);if(!score)return r;
+  const copy=r.slice();copy[3]=score.home;copy[5]=score.away;return copy;
+ })}))};
+}
 function bracketView(){
- const rows=simulatedStandings(),stage=bracketStage(),routes=v512BuildRoutes(rows);
- v514MirrorCompetitionBracketCss();
- return '<section class="v501-board v501-bracket v12-bracket-reference stage-'+stage+'" data-v12-bracket data-v512-bracket>'+
-   '<div class="v12-bracket-stage-tabs" role="tablist" aria-label="Etapas del cuadro">'+
-     [['playoff','Play-off'],['octavos','Octavos de final'],['cuartos','Cuartos de final'],['semifinal','Semifinales'],['final','Final']].map(x=>
-       '<button type="button" class="'+(stage===x[0]?'active':'')+'" data-v12-bracket-stage="'+x[0]+'" data-v512-stage="'+x[0]+'">'+x[1]+'</button>'
-     ).join('')+
-   '</div>'+
-   '<p class="v1068-bracket-mode" role="note">'+(routes.projection?'PROYECCIÓN DEL SIMULADOR · No son cruces oficiales':'CRUCES PUBLICADOS POR LA LIGA · Otros por definir')+'</p>'+
-   '<div class="v12-bracket-dates"><span>Por confirmar</span><span>Por confirmar</span></div>'+
-   '<div class="v12-bracket-board">'+
-     v512BracketRoute(routes.left)+
-     v512BracketRoute(routes.right)+
-   '</div>'+
-   v512StagePanels(rows)+
-   v512FinalCard()+
- '</section>';
+ return window.LJR_KNOCKOUT.render({category:simulationCategory(),rows:simulatedStandings(),simulate:true,
+   categoryId:catId(),logoFor,stage:bracketStage()});
 }
 function scoreControl(f,side){
  return '<div class="v501-score-control">'+
@@ -560,7 +504,7 @@ function simulatorSheet(){
  const posNow=name=>rank.find(x=>norm(x.name)===norm(name))?.pos||'–';
  const posBefore=name=>official.find(x=>norm(x.name)===norm(name))?.pos||posNow(name);
  return '<section class="v501-sheet">'+
-   '<div class="v501-grabber"></div>'+
+   '<button type="button" class="v501-grabber" data-v501-sheet-toggle aria-label="Abrir o cerrar simulador de resultados" aria-expanded="false"></button>'+
    '<div class="v501-sheet-head"><div><h2>Simulador de resultados</h2><p>'+count+'/'+total+' partidos simulados</p></div>'+
      (count?'<button type="button" data-v501-clear>Borrar todo</button>':'')+
    '</div>'+
@@ -621,6 +565,7 @@ function v515ApplySheetSnap(name){
  const snap=(name||localStorage.getItem(V515_SHEET_KEY)||'collapsed');
  const key=Object.prototype.hasOwnProperty.call(snaps,snap)?snap:'collapsed';
  sheet.dataset.v515Snap=key;
+ sheet.querySelector('[data-v501-sheet-toggle]')?.setAttribute('aria-expanded',String(key!=='collapsed'));
  localStorage.setItem(V515_SHEET_KEY,key);
  v515SetSheet(snaps[key],true);
 }
@@ -642,7 +587,7 @@ function v515InitSheet(){
 }
 function v515SheetPointerDown(e){
  if(route()!=='simulator'||!(e.target instanceof Element))return;
- if(e.target.closest('button,a,input,select,textarea'))return;
+ if(e.target.closest('button,a,input,select,textarea')&&!e.target.closest('[data-v501-sheet-toggle]'))return;
  const handle=e.target.closest('.v501-grabber,.v501-sheet-head');
  if(!handle)return;
  const sheet=handle.closest('.v501-sheet');
@@ -674,6 +619,8 @@ function v515SheetPointerUp(e){
  const y=v515SheetTop(d.sheet);
  d.sheet.classList.remove('v515-dragging');
  document.body.classList.remove('v515-sheet-dragging');
+ if(!d.moved&&e.target instanceof Element&&e.target.closest('[data-v501-sheet-toggle]')){V515_SHEET_DRAG=null;return;}
+ if(d.moved)d.sheet.dataset.v515IgnoreClickUntil=String(Date.now()+400);
  let snap;
  if(!d.moved&&e.target instanceof Element&&e.target.closest('.v501-grabber')){
    const current=d.sheet.dataset.v515Snap||localStorage.getItem(V515_SHEET_KEY)||'collapsed';
@@ -700,6 +647,7 @@ function mount(){
    screen.innerHTML=page();
    const root=screen.querySelector('[data-v501-simulator]');if(root)root.dataset.sig=sig;
    v515InitSheet();
+   window.LJR_KNOCKOUT.init(root?.querySelector('.ljr-knockout'));
    /* Tras un remonte, la fase guardada permanece visible sin desplazar toda la página. */
    const stages=root?.querySelector('[data-v512-bracket] .v12-bracket-stage-tabs');
    if(stages)requestAnimationFrame(()=>{
@@ -711,8 +659,9 @@ function mount(){
 }
 function render(preserve=false){
  const y=preserve?document.querySelector('#screen')?.scrollTop:null;
+ const listY=preserve?document.querySelector('.v501-match-list')?.scrollTop:null;
  mount();
- if(y!=null)requestAnimationFrame(()=>{const screen=document.querySelector('#screen');if(screen)screen.scrollTop=y;});
+ if(y!=null)requestAnimationFrame(()=>{const screen=document.querySelector('#screen');if(screen)screen.scrollTop=y;const list=document.querySelector('.v501-match-list');if(list&&listY!=null)list.scrollTop=listY;});
 }
 function schedule(ms=20){clearTimeout(timer);timer=setTimeout(mount,ms)}
 async function share(){
@@ -725,6 +674,7 @@ async function share(){
 }
 function click(e){
  if(route()!=='simulator'||!(e.target instanceof Element))return;
+ const toggle=e.target.closest('[data-v501-sheet-toggle]');if(toggle){e.preventDefault();e.stopPropagation();const sheet=toggle.closest('.v501-sheet');if(Number(sheet?.dataset.v515IgnoreClickUntil||0)>Date.now())return;v515ApplySheetSnap(sheet?.dataset.v515Snap==='collapsed'?'mid':'collapsed');return}
  const v=e.target.closest('[data-v501-view]');if(v){e.preventDefault();setView(v.dataset.v501View);return}
  const st=e.target.closest('[data-v512-stage]');if(st){e.preventDefault();e.stopPropagation();setBracketStage(st.dataset.v512Stage);return}
  const score=e.target.closest('[data-v501-score]');if(score){e.preventDefault();e.stopPropagation();alterScore(score.dataset.v501Score,score.dataset.side,Number(score.dataset.delta||0));return}

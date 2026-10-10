@@ -803,22 +803,10 @@ function v12StagePanels(routes){
 
 
 function v12BracketMarkup(){
-  const routes=v12BracketRoutes(),category=v12StoredCat(),db=v12FixtureDb();
-  const total=Object.values(routes.matches).reduce((n,x)=>n+x.length,0);
-  const sig=String(db?.captured_at_utc||'')+':'+Object.values(routes.matches).map(x=>x.length).join(',');
-  return '<section class="v12-bracket-reference stage-playoff" data-v12-bracket data-v1064-cat="'+v12Esc(category)+'" data-v1064-sig="'+v12Esc(sig)+'">'+
-    '<div class="v12-bracket-stage-tabs" role="tablist" aria-label="Etapas del cuadro">'+
-      '<button class="active" data-v12-bracket-stage="playoff">Play-off</button>'+
-      '<button data-v12-bracket-stage="octavos">Octavos de final</button>'+
-      '<button data-v12-bracket-stage="cuartos">Cuartos de final</button>'+
-      '<button data-v12-bracket-stage="semifinal">Semifinales</button>'+
-      '<button data-v12-bracket-stage="final">Final</button>'+
-    '</div>'+
-    '<div class="v12-bracket-dates"><span>'+V12_STAGE_DATES.playoff[0]+'</span><span>'+V12_STAGE_DATES.playoff[1]+'</span></div>'+
-    '<div class="v12-bracket-board">'+v12BracketRoute(routes.silver)+v12BracketRoute(routes.blue)+'</div>'+
-    (total?'':'<p class="v1064-unpublished" role="status">Aún no hay cruces oficiales publicados para esta categoría. Plazas por definir.</p>')+
-    v12StagePanels(routes)+v12FinalCard()+
-  '</section>';
+ const routes=v12BracketRoutes(),category=v12StoredCat(),db=v12FixtureDb();
+ const sig=String(db?.captured_at_utc||'')+':'+Object.values(routes.matches).map(x=>x.length).join(',');
+ return window.LJR_KNOCKOUT.render({category:db?.categories?.[category],categoryId:category,signature:sig,
+   logoFor:name=>{try{return window.LJR_SEASON_LOGOS?.get?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||''}catch(_){return ''}}});
 }
 
 function patchBracketReference(){
@@ -832,13 +820,15 @@ function patchBracketReference(){
   if(existing){
     const routes=v12BracketRoutes();
     const sig=String(v12FixtureDb()?.captured_at_utc||'')+':'+Object.values(routes.matches).map(x=>x.length).join(',');
-    if(existing.dataset.v1064Cat===v12StoredCat()&&existing.dataset.v1064Sig===sig)return;
+    if(existing.dataset.v1064Cat===v12StoredCat()&&existing.dataset.v1064Sig===sig){window.LJR_KNOCKOUT.init(existing);return;}
     existing.outerHTML=v12BracketMarkup();
+    window.LJR_KNOCKOUT.init(screen.querySelector('.ljr-knockout'));
     return;
   }
   let node=tabs.nextSibling;
   while(node){const next=node.nextSibling;node.remove();node=next}
   tabs.insertAdjacentHTML('afterend',v12BracketMarkup());
+  window.LJR_KNOCKOUT.init(screen.querySelector('.ljr-knockout'));
 }
 
 function v12NavBrand(){

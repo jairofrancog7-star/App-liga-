@@ -1,0 +1,32 @@
+name: Review bracket reference on mobile and desktop
+on:
+  pull_request:
+    paths:
+      - 'src/knockout-reference.*'
+      - 'src/v501-simulator-reference.js'
+      - 'src/v12-reference-parts.js'
+      - 'tests/*knockout*'
+      - '.github/workflows/knockout-reference-review.yml'
+permissions:
+  contents: read
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --prefer-offline --no-audit --no-fund
+      - run: node --test tests/knockout-reference.test.mjs tests/simulator-v1068-restoration.test.mjs tests/competition-data.test.mjs tests/reference-repairs-v1065.test.mjs
+      - run: npm run build
+      - run: npm install --no-save playwright --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - run: node tests/review-knockout-reference.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bracket-mobile-desktop-review
+          path: tmp/knockout-review
+          retention-days: 7

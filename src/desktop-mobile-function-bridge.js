@@ -222,13 +222,18 @@ function renderStandings(catId=activeCat){
  wrap.querySelectorAll('[data-ljpc-standing-cat]').forEach(b=>b.addEventListener('click',()=>renderStandings(rememberCat(b.dataset.ljpcStandingCat))));
  wrap.querySelector('[data-ljpc-fixtures]')?.addEventListener('click',()=>go('pc-fixtures'));
 }
-function renderFixtures(catId=activeCat){
+function renderFixtures(catId=activeCat,bracket=false){
  rememberCat(catId);
  const wrap=ensureOwnHost('Partidos y resultados','Rol y marcadores oficiales de la Liga Juventino Rosas.');
  if(!wrap)return;
  const matches=fixtures(catId);
- wrap.innerHTML='<div class="ljpc-function-root" data-ljpc-function-route="pc-fixtures"><div class="ljpc-toolbar"><div class="ljpc-cat-tabs">'+CAT_ORDER.map(id=>'<button class="ljpc-chip '+(id===catId?'active':'')+'" data-ljpc-fixture-cat="'+id+'">'+esc(categoryName(id))+'</button>').join('')+'</div><div class="ljpc-toolbar-group"><button class="ljpc-btn" data-ljpc-to-calendar>Calendario</button><button class="ljpc-btn primary" data-ljpc-to-standings>Clasificación</button></div></div><section class="ljpc-panel">'+(matches.length?matches.slice(-100).reverse().map(x=>'<div class="ljpc-match"><div class="ljpc-team">'+crest(x.home)+'<span>'+esc(pretty(x.home))+'</span></div><div class="ljpc-score"><b>'+esc(x.played?x.homeScore+' – '+x.awayScore:x.rawDate.match(/\\s(\\d{1,2}:\\d{2})/)?.[1]||'Por confirmar')+'</b><small>'+esc(formatDate(x.date))+' · J'+esc(x.round)+'</small></div><div class="ljpc-team">'+crest(x.away)+'<span>'+esc(pretty(x.away))+'</span></div><div class="ljpc-muted">'+esc(x.venue||'Sede por confirmar')+'</div></div>').join(''):'<p class="ljpc-muted">Sin partidos oficiales publicados.</p>')+'</section></div>';
- wrap.querySelectorAll('[data-ljpc-fixture-cat]').forEach(b=>b.addEventListener('click',()=>renderFixtures(rememberCat(b.dataset.ljpcFixtureCat))));
+ wrap.innerHTML='<div class="ljpc-function-root" data-ljpc-function-route="pc-fixtures"><div class="ljpc-toolbar"><div class="ljpc-cat-tabs">'+CAT_ORDER.map(id=>'<button class="ljpc-chip '+(id===catId?'active':'')+'" data-ljpc-fixture-cat="'+id+'">'+esc(categoryName(id))+'</button>').join('')+'</div><div class="ljpc-toolbar-group"><button class="ljpc-btn" data-ljpc-to-calendar>Calendario</button><button class="ljpc-btn primary" data-ljpc-to-standings>Clasificación</button><button class="ljpc-btn" data-ljpc-bracket>Cuadro</button></div></div><section class="ljpc-panel">'+(matches.length?matches.slice(-100).reverse().map(x=>'<div class="ljpc-match"><div class="ljpc-team">'+crest(x.home)+'<span>'+esc(pretty(x.home))+'</span></div><div class="ljpc-score"><b>'+esc(x.played?x.homeScore+' – '+x.awayScore:x.rawDate.match(/\\s(\\d{1,2}:\\d{2})/)?.[1]||'Por confirmar')+'</b><small>'+esc(formatDate(x.date))+' · J'+esc(x.round)+'</small></div><div class="ljpc-team">'+crest(x.away)+'<span>'+esc(pretty(x.away))+'</span></div><div class="ljpc-muted">'+esc(x.venue||'Sede por confirmar')+'</div></div>').join(''):'<p class="ljpc-muted">Sin partidos oficiales publicados.</p>')+'</section></div>';
+ wrap.querySelectorAll('[data-ljpc-fixture-cat]').forEach(b=>b.addEventListener('click',()=>renderFixtures(rememberCat(b.dataset.ljpcFixtureCat),bracket)));
+ if(bracket&&window.LJR_KNOCKOUT){
+  wrap.querySelector('.ljpc-panel').outerHTML=window.LJR_KNOCKOUT.render({category:db?.categories?.[catId],categoryId:catId,logoFor:logoUrl});
+  window.LJR_KNOCKOUT.init(wrap.querySelector('.ljr-knockout'));
+ }
+ wrap.querySelector('[data-ljpc-bracket]')?.addEventListener('click',()=>renderFixtures(catId,!bracket));
  wrap.querySelector('[data-ljpc-to-calendar]')?.addEventListener('click',()=>go('pc-calendar'));
  wrap.querySelector('[data-ljpc-to-standings]')?.addEventListener('click',()=>go('pc-standings'));
 }
