@@ -1,0 +1,441 @@
+/* V1107 — Unidad visual azul para herramientas de Registro y administración.
+   No altera datos, descargas, botones de cierre ni permisos.
+   Alcance: modales administrativos V105, Registro de jugadores, y acceso JR. */
+
+html body > .v105-modal.v1107-admin-modal {
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior:contain;
+  padding:clamp(8px,2vw,14px)!important;
+  background:rgba(2,6,39,.86)!important;
+  backdrop-filter:blur(8px);
+}
+html body > .v105-modal.v1107-admin-modal *,
+html body > .v105-modal.v1107-admin-modal *::before,
+html body > .v105-modal.v1107-admin-modal *::after {box-sizing:border-box!important}
+html body > .v105-modal.v1107-admin-modal > .v105-dialog {
+  box-sizing:border-box!important;
+  position:relative!important;
+  display:block!important;
+  flex:0 1 680px!important;
+  width:min(100%,680px)!important;
+  max-width:680px!important;
+  min-width:0!important;
+  height:auto!important;
+  max-height:calc(100dvh - 28px)!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain;
+  padding:clamp(12px,2.8vw,18px)!important;
+  margin:0 auto!important;
+  border:1px solid rgba(75,174,245,.4)!important;
+  border-radius:20px!important;
+  color:#f5faff!important;
+  background:
+    radial-gradient(72% 30% at 90% -7%,rgba(30,121,235,.24),transparent 80%),
+    linear-gradient(165deg,#122b87 0%,#0c1c6e 40%,#08124f 100%)!important;
+  box-shadow:0 18px 45px rgba(0,3,31,.45),inset 0 1px 0 rgba(255,255,255,.07)!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
+  scrollbar-width:thin;
+  scrollbar-color:#3369be transparent;
+}
+html body > .v105-modal.v1107-admin-modal .v105-dialog > h3 {
+  margin:0 46px 5px 0!important;
+  font-size:clamp(18px,4.1vw,22px)!important;
+  line-height:1.2!important;
+  font-weight:850!important;
+  letter-spacing:-.025em!important;
+  overflow-wrap:anywhere!important;
+  color:#fff!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-dialog > p {
+  margin:0 42px 13px 0!important;
+  max-width:100%!important;
+  color:#b8cbed!important;
+  font-size:11.5px!important;
+  line-height:1.43!important;
+  font-weight:450!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-close {
+  position:absolute!important;right:12px!important;top:12px!important;
+  display:grid!important;place-items:center!important;
+  width:36px!important;height:36px!important;
+  min-width:36px!important;min-height:36px!important;
+  border:1px solid rgba(120,172,245,.31)!important;
+  border-radius:11px!important;
+  background:#173482!important;color:#f6fbff!important;
+  font:400 24px/1 Inter,Arial,sans-serif!important;
+  z-index:2!important;
+  cursor:pointer!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-form {
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:9px!important;
+  margin:0 0 9px!important;
+  padding:11px!important;
+  width:100%!important;
+  min-width:0!important;
+  border:1px solid rgba(91,156,241,.30)!important;
+  border-radius:15px!important;
+  background:linear-gradient(145deg,rgba(25,55,144,.63),rgba(12,28,105,.86))!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-form > label {
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  min-width:0!important;
+  gap:5px!important;
+  margin:0!important;
+  color:#e4efff!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-form label:only-child {
+  grid-column:1/-1!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-form label > span {
+  display:block!important;
+  font-size:10.5px!important;
+  line-height:1.3!important;
+  font-weight:800!important;
+  color:#a5e9f6!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-form :is(input,select,textarea) {
+  -webkit-appearance:auto;
+  appearance:auto;
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  min-height:42px!important;
+  height:42px!important;
+  padding:8px 11px!important;
+  margin:0!important;
+  border:1px solid rgba(106,157,237,.39)!important;
+  border-radius:11px!important;
+  background:#0b185f!important;
+  background-color:#0b185f!important;
+  color:#f9fcff!important;
+  color-scheme:dark!important;
+  font:550 13px/1.3 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:0!important;
+  box-shadow:inset 0 1px 1px rgba(0,0,0,.12)!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-form select {
+  cursor:pointer!important;
+  padding-right:26px!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-form :is(input,textarea)::placeholder {
+  color:#9aaed7!important;opacity:1!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-form textarea {
+  min-height:82px!important;
+  height:auto!important;
+  line-height:1.45!important;
+  resize:vertical!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-form :is(input,select,textarea):focus-visible,
+html body > .v105-modal.v1107-admin-modal button:focus-visible {
+  outline:2px solid #6ceafb!important;
+  outline-offset:2px!important;
+  border-color:#5ae5f4!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-form input[type="file"] {
+  display:block!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  padding:5px!important;
+  height:auto!important;
+  min-height:46px!important;
+  font-size:11px!important;
+  line-height:1.5!important;
+  white-space:nowrap!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-form input[type="file"]::file-selector-button {
+  display:inline-block!important;
+  max-width:57%!important;
+  overflow:hidden!important;
+  margin:0 9px 0 0!important;
+  padding:7px 10px!important;
+  border:1px solid rgba(111,215,247,.45)!important;
+  border-radius:8px!important;
+  background:#2456ad!important;
+  color:#fff!important;
+  font:750 11px/1.4 Inter,Roboto,Arial,sans-serif!important;
+  white-space:nowrap!important;
+  cursor:pointer!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-actions {
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  align-items:stretch!important;
+  justify-items:stretch!important;
+  gap:8px!important;
+  margin:10px 0!important;
+  padding:0!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-actions .v105-btn {
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  width:100%!important;min-width:0!important;
+  min-height:42px!important;height:auto!important;
+  padding:9px 10px!important;margin:0!important;
+  border:1px solid transparent!important;border-radius:11px!important;
+  background:linear-gradient(115deg,#64eaf4,#31c9ea)!important;
+  color:#052058!important;
+  font:800 11.5px/1.2 Inter,Roboto,Arial,sans-serif!important;
+  text-align:center!important;
+  white-space:normal!important;
+  cursor:pointer!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-actions .v105-btn.alt {
+  border-color:rgba(109,168,248,.37)!important;
+  background:linear-gradient(160deg,#1a378b,#14246b)!important;
+  color:#fff!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-actions .v105-btn:disabled {
+  opacity:.5!important;cursor:not-allowed!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-actions .v105-btn:not(:disabled):active {
+  transform:scale(.985)!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-output {
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  margin:9px 0 0!important;
+  padding:10px!important;
+  border:1px solid rgba(80,137,222,.22)!important;
+  border-radius:13px!important;
+  background:rgba(3,13,71,.68)!important;
+  font-size:11px!important;line-height:1.45!important;
+  color:#eaf3ff!important;
+  white-space:pre-wrap!important;
+  overflow-wrap:anywhere!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-output:empty {
+  display:none!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-list {
+  display:grid!important;
+  gap:7px!important;
+  margin:10px 0 0!important;
+  max-height:min(55dvh,480px)!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain;
+}
+html body > .v105-modal.v1107-admin-modal .v105-list article {
+  min-width:0!important;
+  padding:10px 12px!important;
+  border:1px solid rgba(85,141,228,.29)!important;
+  border-radius:12px!important;
+  background:linear-gradient(120deg,#11246e,#0b195c)!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-list article b {
+  display:block!important;
+  color:#fff!important;
+  font-size:12px!important;
+  font-weight:750!important;
+  line-height:1.34!important;
+  overflow-wrap:anywhere!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-list article small {
+  display:block!important;
+  margin-top:4px!important;
+  color:#a9c3ea!important;
+  font-size:10px!important;line-height:1.3!important;
+}
+html body > .v105-modal.v1107-admin-modal .v105-footnote {
+  color:#aebfe0!important;
+  font-size:10.5px!important;
+  line-height:1.4!important;
+}
+html body > .v105-modal.v1107-admin-modal .v1107-calendar-output {
+  padding:8px!important;
+  white-space:normal!important;
+  max-height:min(52dvh,520px)!important;
+  overflow:auto!important;
+  overscroll-behavior:contain;
+}
+html body > .v105-modal.v1107-admin-modal .v1107-fixtures {
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:7px!important;
+}
+html body > .v105-modal.v1107-admin-modal .v1107-fixture {
+  min-width:0!important;
+  display:grid!important;
+  gap:6px!important;
+  padding:10px!important;
+  border:1px solid rgba(87,139,229,.31)!important;
+  border-radius:11px!important;
+  background:linear-gradient(145deg,#132a7e,#0d1a60)!important;
+}
+html body > .v105-modal.v1107-admin-modal .v1107-fixture-top {
+  display:flex!important;
+  justify-content:space-between!important;
+  align-items:center!important;
+  flex-wrap:wrap!important;
+  gap:6px!important;
+}
+html body > .v105-modal.v1107-admin-modal .v1107-fixture-top strong {
+  color:#45dfef!important;font-size:10px!important;font-weight:900!important;
+  padding:3px 6px!important;background:#163a87!important;border-radius:5px!important;
+}
+html body > .v105-modal.v1107-admin-modal .v1107-fixture-top span {
+  font-size:10px!important;color:#b9cbed!important;line-height:1.3!important;
+}
+html body > .v105-modal.v1107-admin-modal .v1107-fixture-teams {
+  display:grid!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;
+  align-items:center!important;gap:7px!important;
+}
+html body > .v105-modal.v1107-admin-modal .v1107-fixture-teams b {
+  min-width:0!important;color:#fff!important;
+  font-size:11px!important;line-height:1.28!important;font-weight:770!important;
+  overflow-wrap:anywhere!important;
+}
+html body > .v105-modal.v1107-admin-modal .v1107-fixture-teams b:last-child {
+  text-align:right!important;
+}
+html body > .v105-modal.v1107-admin-modal .v1107-fixture-teams em {
+  font:900 11px/1.2 Inter,Arial,sans-serif!important;
+  font-style:normal!important;
+  color:#61e8f7!important;
+  white-space:nowrap!important;
+}
+html body > .v105-modal.v1107-admin-modal .v1107-fixture-field {
+  color:#b8cbeb!important;font-size:10px!important;line-height:1.3!important;
+}
+
+/* JR Control: conservar todo el ancho visible, cajas y pictogramas uniformes. */
+html body:is([data-app-route="ligaControl"],[data-app-route="adminFut"])
+ #screen .v562-page[data-v563-control] .v562-list {gap:7px!important}
+html body:is([data-app-route="ligaControl"],[data-app-route="adminFut"])
+ #screen .v562-page[data-v563-control] .v562-card {
+  min-height:60px!important;
+  border-radius:13px!important;
+  padding:8px 10px!important;
+}
+html body:is([data-app-route="ligaControl"],[data-app-route="adminFut"])
+ #screen .v562-page[data-v563-control] .v562-icon {
+  width:36px!important;height:36px!important;border-radius:10px!important;
+}
+html body:is([data-app-route="ligaControl"],[data-app-route="adminFut"])
+ #screen .v562-page[data-v563-control] .v562-card-copy b {
+  font-size:12.5px!important;line-height:1.22!important;font-weight:760!important;
+}
+html body:is([data-app-route="ligaControl"],[data-app-route="adminFut"])
+ #screen .v562-page[data-v563-control] .v562-card-copy small {
+  font-size:10px!important;line-height:1.25!important;
+}
+
+/* Los cuatro controles del editor también son tarjetas iguales en Jugadores. */
+html body.liga-editor[data-app-route="players"] #screen > .ljr-cms-entry {
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-auto-rows:minmax(60px,auto)!important;
+  gap:7px!important;
+  width:calc(100% - 22px)!important;
+  max-width:692px!important;
+  min-height:0!important;
+  height:auto!important;
+  margin:10px auto 10px!important;
+  padding:9px!important;
+  border:1px solid rgba(96,151,246,.38)!important;
+  border-radius:15px!important;
+  background:linear-gradient(160deg,#142d86,#0c175e)!important;
+}
+html body.liga-editor[data-app-route="players"] #screen > .ljr-cms-entry > button.ljr-cms-quick-button {
+  display:grid!important;grid-template-columns:28px minmax(0,1fr) 12px!important;
+  align-items:center!important;gap:7px!important;
+  width:100%!important;min-width:0!important;min-height:60px!important;height:100%!important;
+  padding:8px!important;margin:0!important;
+  border:1px solid rgba(108,156,239,.32)!important;
+  border-radius:11px!important;
+  background:linear-gradient(145deg,#173781,#10236b)!important;
+  color:#f7faff!important;
+  font:750 11px/1.23 Inter,Roboto,Arial,sans-serif!important;
+  text-align:left!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  cursor:pointer!important;
+}
+html body.liga-editor[data-app-route="players"] #screen > .ljr-cms-entry .ljr-cms-quick-icon {
+  display:grid!important;place-items:center!important;
+  width:28px!important;height:28px!important;min-width:28px!important;
+  border-radius:9px!important;background:#142879!important;color:#5ce8f4!important;
+}
+html body.liga-editor[data-app-route="players"] #screen > .ljr-cms-entry .ljr-cms-quick-icon svg {
+  display:block!important;width:18px!important;height:18px!important;
+}
+html body.liga-editor[data-app-route="players"] #screen > .ljr-cms-entry .ljr-cms-quick-title {
+  min-width:0!important;color:#f9fcff!important;
+  font-size:11px!important;line-height:1.23!important;overflow-wrap:anywhere!important;
+}
+html body.liga-editor[data-app-route="players"] #screen > .ljr-cms-entry .ljr-cms-quick-arrow {
+  color:#5ce8f4!important;font-size:19px!important;
+}
+html body[data-app-route="players"] #screen .v66-directory[data-v66-directory="players"] {
+  background:transparent!important;
+  width:min(100%,744px)!important;
+  max-width:744px!important;
+  padding:10px 12px calc(94px + env(safe-area-inset-bottom))!important;
+}
+html body[data-app-route="players"] #screen .v66-directory[data-v66-directory="players"] :is(.v66-category-rail,.v66-team-filter-rail) {
+  gap:7px!important;margin-bottom:9px!important;
+}
+html body[data-app-route="players"] #screen .v66-directory[data-v66-directory="players"] :is(.v66-category-rail button,.v66-team-filter-rail button) {
+  min-height:39px!important;
+  border-radius:10px!important;
+  font-size:11px!important;
+}
+html body[data-app-route="players"] #screen .v66-directory[data-v66-directory="players"] .v66-search {
+  height:43px!important;
+  min-height:43px!important;
+  padding:0 9px!important;
+  border:1px solid rgba(100,157,238,.42)!important;
+  border-radius:11px!important;
+  background:#101d6a!important;
+}
+html body[data-app-route="players"] #screen .v66-directory[data-v66-directory="players"] .v66-player-row {
+  min-height:61px!important;
+  border-radius:12px!important;
+  background:linear-gradient(140deg,#152777,#0b155e)!important;
+  border-color:rgba(104,158,237,.3)!important;
+}
+
+/* Mobile: all modal controls fit without collisions or phantom vertical gaps. */
+@media(max-width:550px) {
+  html body > .v105-modal.v1107-admin-modal {
+    padding:8px!important;
+  }
+  html body > .v105-modal.v1107-admin-modal > .v105-dialog {
+    width:100%!important;
+    max-height:calc(100dvh - 16px - env(safe-area-inset-bottom,0px))!important;
+    padding:12px!important;
+    border-radius:17px!important;
+  }
+  html body > .v105-modal.v1107-admin-modal .v105-form {
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:9px!important;padding:10px!important;
+  }
+  html body > .v105-modal.v1107-admin-modal .v105-actions:has(> :nth-child(3)) {
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  html body > .v105-modal.v1107-admin-modal .v105-list {max-height:49dvh!important}
+  html body > .v105-modal.v1107-admin-modal .v1107-calendar-output {max-height:49dvh!important}
+  html body[data-app-route="players"] #screen .v66-directory[data-v66-directory="players"]{
+    padding-left:10px!important;padding-right:10px!important;
+  }
+}
+@media(max-width:350px){
+  html body.liga-editor[data-app-route="players"] #screen > .ljr-cms-entry{
+    grid-template-columns:1fr!important;
+  }
+  html body > .v105-modal.v1107-admin-modal .v105-actions{grid-template-columns:1fr!important}
+}
+@media(prefers-reduced-motion:reduce){
+  html body > .v105-modal.v1107-admin-modal :is(button,input,select,textarea){transition:none!important}
+}
