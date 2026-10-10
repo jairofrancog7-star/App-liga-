@@ -1,0 +1,36 @@
+name: Verificar Junta de la Liga
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/v105-green-app-bottom.js'
+      - 'src/v1130-meeting-hub.js'
+      - 'src/v1140-meeting-suite.js'
+      - 'src/v1130-meeting-hub.css'
+      - 'src/v1140-meeting-suite.css'
+      - 'index.html'
+      - 'tests/meeting-hub-v1130.test.mjs'
+      - 'tests/meeting-suite-v1140.test.mjs'
+      - '.github/workflows/meeting-juntas.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  meeting-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verificar flujos y permisos de juntas
+        run: node --test tests/meeting-hub-v1130.test.mjs tests/meeting-suite-v1140.test.mjs
+      - name: Comprobar sintaxis JS
+        run: |
+          node --check src/v1130-meeting-hub.js
+          node --check src/v1140-meeting-suite.js
+          node --check src/v105-green-app-bottom.js
