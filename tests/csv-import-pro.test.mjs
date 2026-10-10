@@ -38,3 +38,19 @@ test('CSV: no autoriza escritura oficial y exige campos esenciales',()=>{
  assert.deepEqual(a.missing,['Nombre del equipo']);
  assert.equal(a.valid.length,0);
 });
+
+test('CSV: rechaza fechas imposibles y admite años bisiestos',()=>{
+ const p=parseDelimited('fecha,local,visitante\n2026-02-31,A,B\n2026-13-10,C,D\n2024-02-29,E,F\n29/02/2025,G,H\n10/10/2026,I,J');
+ const r=analyzeCsv(p,'resultados',guessMapping(p.headers,'resultados'));
+ assert.equal(r.invalid.length,3);
+ assert.equal(r.valid.length,2);
+ assert.match(r.invalid[0].errors.join(' '),/Fecha incorrecta/);
+ assert.match(r.invalid[1].errors.join(' '),/Fecha incorrecta/);
+ assert.match(r.invalid[2].errors.join(' '),/Fecha incorrecta/);
+});
+
+test('CSV: máximo de filas también se aplica sin salto final',()=>{
+ const csv='nombre,categoria\nA,Primera\nB,Segunda';
+ assert.throws(()=>parseDelimited(csv,',',1),/supera 1 registros/);
+ assert.equal(parseDelimited(csv,',',2).rows.length,2);
+});
