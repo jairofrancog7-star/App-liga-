@@ -75,6 +75,8 @@ const quiz={mode:'splash',answered:false,selected:'',points:0,step:1,exit:false,
 const more={mode:'legacy',answered:false,selected:'',points:0,attempts:2,exit:false,phase:'intro',countdown:15,roundToken:0,round:0,roundsPlayed:0,finished:false,scoreSaved:false};
 let v538MoreTimers=[];
 let v538MoreInterval=null;
+let v538ActivePair=null;
+const v538UnavailablePhotos=new Set();
 let v614QuizCountdownTimer=null;
 let v1050NotifyOpen=false;
 const V1050_NOTIFY_KEY='ljr-quiz-notice-dismissed';
@@ -179,6 +181,8 @@ function morePair(data){
     if(pairs.length>=36)break;
   }
   if(pairs.length){
+    // Dar preferencia a comparaciones con retratos REALES registrados; no generar caras ni cambiar los goles.
+    pairs.sort((x,y)=>v538PhotoScore(y,data)-v538PhotoScore(x,data));
     const round=Math.abs(Number(more.round)||0);
     const chosen=pairs[round%pairs.length];
     // Mezclar dirección sin cambiar goles ni jugadores oficiales.
@@ -215,7 +219,7 @@ function moreSaveScore(){
 }
 function moreNewGame(){
  v538ClearTimers();more.points=0;more.attempts=2;more.round=0;more.roundsPlayed=0;
- more.finished=false;more.scoreSaved=false;more.answered=false;more.selected='';more.exit=false;more.phase='intro';
+ more.finished=false;more.scoreSaved=false;more.answered=false;more.selected='';more.exit=false;more.phase='intro';v538ActivePair=null;
 }
 function v583PairAt(data,offset){
   const saved=more.round;
@@ -416,27 +420,61 @@ function quizResult(data){
     '<button type="button" class="v531-next-btn" data-v531-quiz-next>Siguiente pregunta</button>'+
   '</section>';
 }
-function v538PlayerPhoto(name,team){
+/* Retratos verificados del mismo jugador y equipo, nunca un escudo disfrazado de fotografía. */
+function v538PlayerPhoto(name,team,data){
   try{
-    if(window.LJR_PLAYER_MEDIA&&typeof window.LJR_PLAYER_MEDIA.photo==='function'){
-      const x=window.LJR_PLAYER_MEDIA.photo(name,team);
-      if(x)return String(x);
-    }
+    const snapshot=data||db||window.LJR_OFFICIAL_DATA||null;
+    const profiles=category(snapshot)?.player_profiles||{};
+    const entry=Object.entries(profiles).find(([club])=>norm(club)===norm(team));
+    const rec=(Array.isArray(entry?.[1])?entry[1]:[]).find(p=>norm(p?.name)===norm(name));
+    const direct=String(rec?.photo||'').trim();
+    if(direct&&!v538UnavailablePhotos.has(direct))return direct;
+    const media=window.LJR_PLAYER_MEDIA?.photo?.(name,team,catId(snapshot));
+    if(typeof media==='string'&&media.trim()&&!v538UnavailablePhotos.has(media.trim()))return media.trim();
     const pub=window.LJR_PLAYER_PHOTOS;
     if(pub){
-      if(typeof pub.get==='function'){const x=pub.get(name,team);if(x)return String(x)}
-      const x=pub[norm(name)+'|'+norm(team)]||pub[norm(name)]||pub[name];
-      if(x)return String(x);
+      const found=typeof pub.get==='function'?pub.get(name,team,catId(snapshot)):(pub[norm(name)+'|'+norm(team)]||pub[norm(name)]||pub[name]);
+      if(typeof found==='string'&&found.trim()&&!v538UnavailablePhotos.has(found.trim()))return found.trim();
     }
   }catch(_){}
   return '';
 }
+function v538PhotoScore(pair,data){
+  return Number(!!v538PlayerPhoto(pair.a.name,pair.a.team,data))+Number(!!v538PlayerPhoto(pair.b.name,pair.b.team,data));
+}
 function v538Person(p,data,cls){
-  const photo=v538PlayerPhoto(p.name,p.team);
-  if(photo)return '<span class="v538-person '+esc(cls||'')+' has-photo"><img src="'+esc(photo)+'" alt="'+esc(p.name)+'" loading="eager" decoding="async" referrerpolicy="no-referrer"></span>';
-  const teamLogo=logo(p.team||p.name,data);
-  if(teamLogo)return '<span class="v538-person '+esc(cls||'')+' has-team-logo"><span class="v584-circle-photo"><img src="'+esc(teamLogo)+'" alt="'+esc(p.team||p.name)+'" loading="eager" decoding="async"></span></span>';
-  return '<span class="v538-person '+esc(cls||'')+' is-fallback">'+v535AvatarSvg('#b9b9b9')+'</span>';
+  const photo=v538PlayerPhoto(p.name,p.team,data);
+  const attrs=' data-v538-player-name="'+esc(p.name)+'" data-v538-player-team="'+esc(p.team)+'"';
+  const classes='v538-person '+esc(cls||'');
+  return '<span class="'+classes+(photo?' has-photo':' is-fallback')+'"'+attrs+'>'+
+    (photo?'<img src="'+esc(photo)+'" alt="'+esc(p.name)+'" loading="eager" decoding="async" referrerpolicy="no-referrer">':v535AvatarSvg('#b9b9b9'))+
+    '</span>';
+}
+/* Las fotografías oficiales pueden terminar de cargarse DESPUÉS de iniciar el juego.
+   Hidratar solo el retrato, sin reconstruir ni reiniciar la animación de la carta. */
+function v538HydratePortraits(root){
+  if(!root)return;
+  root.querySelectorAll('.v538-person[data-v538-player-name]').forEach(el=>{
+    const name=el.dataset.v538PlayerName||'',team=el.dataset.v538PlayerTeam||'';
+    const src=v538PlayerPhoto(name,team);
+    if(!src)return;
+    let img=el.querySelector(':scope > img');
+    if(!img||img.getAttribute('src')!==src){
+      img=document.createElement('img');
+      img.src=src;img.alt=name;img.loading='eager';img.decoding='async';img.referrerPolicy='no-referrer';
+      el.replaceChildren(img);
+      el.classList.remove('is-fallback');el.classList.add('has-photo');
+    }
+    if(img.dataset.v538Checked)return;
+    img.dataset.v538Checked='1';
+    img.addEventListener('error',()=>{
+      v538UnavailablePhotos.add(src);
+      if(img.parentElement!==el)return;
+      el.innerHTML=v535AvatarSvg('#b9b9b9');
+      el.classList.remove('has-photo');el.classList.add('is-fallback');
+    },{once:true});
+    if(img.complete&&!img.naturalWidth)img.dispatchEvent(new Event('error'));
+  });
 }
 function v545MoreScreenCards(pair,data){
   return '<section class="v545-more-screens" aria-label="Otros diseños de Más o menos">'+
@@ -556,6 +594,7 @@ function v538StartMoreRound(){
   more.roundToken++;
   const token=more.roundToken;
   more.round=Math.max(0,Number(more.round)||0)+1;
+  v538ActivePair=morePair(db||window.LJR_OFFICIAL_DATA||{});
   more.mode='game';more.phase='intro';more.answered=false;more.selected='';more.exit=false;more.countdown=15;more.finished=false;
   document.body.classList.add('v543-more-portal-open');
   v543RenderMorePortal();
@@ -578,7 +617,7 @@ function v538StartMoreRound(){
   v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken||more.mode!=='game')return;more.phase='ready';v543RenderMorePortal()},4450));
 }
 function moreGame(data){
-  const pair=morePair(data);
+  const pair=v538ActivePair||morePair(data);
   const question=pair.kind==='player'
     ?'¿Ha marcado '+esc(pair.b.name)+' más o menos?'
     :'¿Tiene '+esc(pair.b.name)+' más o menos goles?';
@@ -739,7 +778,10 @@ function v543RenderMorePortal(){
   portal.innerHTML=more.mode==='hub'?moreHub(data):moreGame(data);
   document.body.classList.add('v543-more-portal-open');
   setGamesNav();
-  requestAnimationFrame(function(){portal.scrollTop=0});
+  requestAnimationFrame(function(){portal.scrollTop=0;v538HydratePortraits(portal)});
+  [700,1800,3600,6500].forEach(delay=>setTimeout(()=>{
+    if(portal.isConnected&&!portal.hidden)v538HydratePortraits(portal);
+  },delay));
 }
 function v543CloseMorePortal(){
   v538ClearTimers();
@@ -1117,7 +1159,7 @@ document.addEventListener('click',function(e){
   if(t.matches('[data-v531-more-close]')){v538ClearTimers();more.exit=true;v543RenderMorePortal();return}
   if(t.matches('[data-v531-more-choice]')){
     if(more.answered||more.phase!=='ready'||more.exit)return;
-    const data=db||window.LJR_OFFICIAL_DATA||{},pair=morePair(data);
+    const data=db||window.LJR_OFFICIAL_DATA||{},pair=v538ActivePair||morePair(data);
     const actual=pair.b.goals>pair.a.goals?'more':'less';
     const picked=t.dataset.v531MoreChoice||'less';
     more.selected=picked===actual?'correct':'wrong';
