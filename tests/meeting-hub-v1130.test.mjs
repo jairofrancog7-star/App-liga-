@@ -33,6 +33,8 @@ function fixture(){
   '[data-mh-vote="team"]':'Boavista FC',
   '[data-mh-vote="vote"]':'Sí'
  };
+ const teamSelect={value:'',options:[],replaceChildren(...options){this.options=[...options];this.value=''},add(option){this.options.push(option)}};
+ const teamCounter={textContent:''};
  const voteContainer={querySelector:k=>k in fields?{value:fields[k]}:null};
  const form={dataset:{},querySelector:k=>k==='[data-v875-meeting]'?{
   insertAdjacentElement(_where,newPanel){panel=newPanel}
@@ -43,20 +45,30 @@ function fixture(){
   createElement:()=>({
    dataset:{},isConnected:true,innerHTML:'',events:{},
    setAttribute(){},addEventListener(k,f){this.events[k]=f},
-   querySelector:k=>k==='[data-mh-status]'?{textContent:''}:k in fields?{value:fields[k]}:null
+   querySelector:k=>k==='[data-mh-status]'?{textContent:''}:k==='[data-mh-team-counter]'?teamCounter:k==='[data-mh-input="team"]'?teamSelect:k in fields?{value:fields[k]}:null
   })
  };
  const opened=[];
- const window={LJR_MEDIA:{admin:{role:'secretario'}},LJR_GOOGLE_CALENDAR_GLOBAL:{open:event=>{opened.push(event);return true}}};
+ const window={
+  LJR_MEDIA:{admin:{role:'secretario'}},
+  LJR_V812_TEAM_CATALOG:{registrations:()=>[
+   {name:'Boavista FC',cat:'3',category:'Primera Fuerza'},
+   {name:'Boavista FC',cat:'2',category:'Veteranos 35+'},
+   {name:'Juventus',cat:'3',category:'Primera Fuerza'},
+   {name:'Manchester',cat:'1',category:'Veteranos 50+'}
+  ]},
+  LJR_GOOGLE_CALENDAR_GLOBAL:{open:event=>{opened.push(event);return true}}
+ };
  const localStorage={getItem:k=>data[k]||null,setItem:(k,v)=>{data[k]=v}};
  class MutationObserver{observe(){}}
  runInNewContext(src,{window,document,localStorage,navigator:{},MutationObserver,setTimeout:()=>0});
  window.LJR_MEETING_HUB_V1130.mount();
+ teamSelect.value='3|Boavista FC';
  function click(action,extra={}){
   const button={dataset:{mhAction:action,...extra},closest:sel=>sel==='[data-mh-action]'?button:voteContainer};
   panel.events.click({target:button,preventDefault(){}});
  }
- return {window,form,click,opened,get panel(){return panel},saved:()=>JSON.parse(data['ljr-meeting-hub-v1130']||'{}')};
+ return {window,form,click,opened,teamSelect,teamCounter,get panel(){return panel},saved:()=>JSON.parse(data['ljr-meeting-hub-v1130']||'{}')};
 }
 
 test('production and demo load the same scoped meeting hub',()=>{
@@ -71,7 +83,8 @@ test('production and demo load the same scoped meeting hub',()=>{
 
 test('QR encodes a Tuesday and rejects incorrect dates',()=>{
  const x=fixture();
- assert.deepEqual(JSON.parse(JSON.stringify(x.window.LJR_MEETING_HUB_V1130.parseCode('LJR-JUNTA|2026-10-13|Boavista%20FC|Ana'))),{date:'2026-10-13',team:'Boavista FC',delegate:'Ana'});
+ assert.deepEqual(JSON.parse(JSON.stringify(x.window.LJR_MEETING_HUB_V1130.parseCode('LJR-JUNTA|2026-10-13|Boavista%20FC|Ana'))),{date:'2026-10-13',team:'Boavista FC',delegate:'Ana',category:''});
+ assert.deepEqual(JSON.parse(JSON.stringify(x.window.LJR_MEETING_HUB_V1130.parseCode('LJR-JUNTA|2026-10-13|Boavista%20FC|Ana|2'))),{date:'2026-10-13',team:'Boavista FC',delegate:'Ana',category:'2'});
  assert.equal(x.window.LJR_MEETING_HUB_V1130.parseCode('LJR-JUNTA|2026-10-14|Boavista|Ana'),null);
  assert.equal(x.window.LJR_MEETING_HUB_V1130.parseCode('other'),null);
 });
@@ -89,6 +102,7 @@ test('first attendance, task and team ballot persist by meeting date',()=>{
  x.click('cast-vote',{id:record.votes[0].id});
  record=x.saved()['2026-10-13'];
  assert.equal(record.attendance[0].team,'Boavista FC');
+ assert.equal(record.attendance[0].category,'3');
  assert.equal(record.tasks[0].status,'Pendiente');
  assert.equal(record.votes[0].ballots['boavista fc'].vote,'Sí');
  x.window.LJR_MEETING_HUB_V1130.mount();
@@ -109,4 +123,13 @@ test('el botón Calendario prepara la junta en Google sin descargar .ics',()=>{
  x.click('ics'); // Compatibilidad con botones guardados en una versión anterior.
  assert.equal(x.opened.length,2);
  assert.doesNotMatch(src,/download\('convocatoria-junta-/);
+});
+
+test('selector muestra categorías, permite buscar y conserva clubes duplicados por división',()=>{
+ const x=fixture();
+ assert.match(x.panel.innerHTML,/data-mh-input="team-category"/);
+ assert.match(x.panel.innerHTML,/data-mh-input="team-filter"/);
+ assert.equal(x.teamSelect.options.filter(o=>o.value.includes('Boavista FC')).length,2);
+ assert.equal(x.teamSelect.options.filter(o=>o.value.includes('Manchester')).length,1);
+ assert.match(x.teamCounter.textContent,/4 equipos/);
 });
