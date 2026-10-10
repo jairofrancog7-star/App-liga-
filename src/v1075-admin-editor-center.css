@@ -270,3 +270,60 @@ html body .liga-media-modal .ljr-review-smart button:focus-visible,html body .li
  line-height:1.35!important;overflow-wrap:anywhere!important
 }
 .liga-media-modal .ljr-editor-compose .ljr-editor-progress:empty{display:none!important}
+
+
+/* V1213 · Unificar "Crear aviso" con el azul oficial y optimizar Android. */
+html body .liga-media-modal:has(>section.ljr-editor-compose){background:#000724db!important;padding:7px!important}
+html body .liga-media-modal>section.ljr-editor-compose{
+ width:min(100%,680px)!important;max-height:calc(100dvh - 14px)!important;
+ margin:auto!important;padding:12px!important;overflow-x:hidden!important;overflow-y:auto!important;
+ border:1px solid #397fd0!important;border-radius:17px!important;
+ background:linear-gradient(160deg,#0d47a1 0%,#0a3074 22%,#0a235c 60%,#06183e 100%)!important;
+ scroll-padding-top:65px;scroll-padding-bottom:75px;overscroll-behavior:contain;
+}
+html body .liga-media-modal>section.ljr-editor-compose>header{
+ position:sticky!important;top:-12px!important;z-index:6!important;
+ margin:-12px -12px 12px!important;padding:10px 12px!important;
+ background:linear-gradient(90deg,#1266c1,#0055a5 70%,#0a397f)!important;
+ border-color:#528ce0!important;border-radius:16px 16px 0 0!important;
+}
+html body .liga-media-modal>section.ljr-editor-compose>header [data-close]{background:#0a397c!important;border-color:#74a8ef!important;color:#fff!important}
+html body .liga-media-modal .ljr-editor-compose .ljr-editor-form label{font-size:13px!important;color:#eaf3ff!important}
+html body .liga-media-modal .ljr-editor-compose .ljr-editor-form :is(input,select,textarea){
+ width:100%!important;max-width:100%!important;min-width:0!important;min-height:46px!important;
+ padding:10px 12px!important;border:1px solid #4e82c6!important;border-radius:11px!important;
+ background:#0a235c!important;color:#f7fbff!important;font:600 14px/1.35 system-ui,sans-serif!important;
+}
+html body .liga-media-modal .ljr-editor-compose .ljr-editor-form select{
+ appearance:auto!important;-webkit-appearance:menulist!important;cursor:pointer!important
+}
+html body .liga-media-modal .ljr-editor-compose .ljr-editor-form :is(input,select,textarea):focus{
+ border-color:#82bcff!important;outline:2px solid #72b6ff!important;background:#0c2c70!important
+}
+html body .liga-media-modal .ljr-editor-compose .ljr-editor-autofill{
+ display:grid!important;grid-template-columns:minmax(0,auto) 1fr!important;
+ gap:9px!important;align-items:center!important;padding:9px!important;
+ background:#071d49!important;border:1px solid #346bad!important;border-radius:12px!important
+}
+html body .liga-media-modal .ljr-editor-compose .ljr-editor-autofill button{
+ margin:0!important;padding:9px 11px!important;min-height:42px!important;
+ color:white!important;background:#0055a5!important;border:1px solid #6da8eb!important;
+ border-radius:10px!important;font:750 12px/1.3 system-ui,sans-serif!important
+}
+html body .liga-media-modal .ljr-editor-compose .ljr-editor-autofill small{
+ color:#c5dcfa!important;font:500 11px/1.45 system-ui,sans-serif!important;overflow-wrap:anywhere
+}
+html body .liga-media-modal .ljr-editor-compose .ljr-editor-tools button,
+html body .liga-media-modal .ljr-editor-compose .ljr-editor-smart-tools button{
+ background:#0d47a1!important;border-color:#568fd7!important;color:#fff!important
+}
+html body .liga-media-modal .ljr-editor-compose .ljr-editor-tools button:first-child{background:#0055a5!important}
+html body .liga-media-modal .ljr-editor-compose .ljr-editor-preview{background:linear-gradient(145deg,#0b377f,#071c48)!important}
+html body .liga-media-modal .ljr-editor-compose .ljr-editor-bottom{background:linear-gradient(180deg,#091f4af2,#07183e)!important}
+html body .liga-media-modal .ljr-editor-compose .ljr-editor-bottom [data-editor-publish]{background:linear-gradient(115deg,#1c69d4,#0055a5)!important}
+@media(max-width:600px){
+ html body .liga-media-modal .ljr-editor-compose .ljr-editor-two{grid-template-columns:minmax(0,1fr)!important;gap:9px!important}
+ html body .liga-media-modal .ljr-editor-compose .ljr-editor-two>label{grid-column:1/-1!important}
+ html body .liga-media-modal .ljr-editor-compose .ljr-editor-autofill{grid-template-columns:minmax(0,1fr)!important;gap:6px!important}
+ html body .liga-media-modal .ljr-editor-compose .ljr-editor-autofill button{width:100%!important}
+}
