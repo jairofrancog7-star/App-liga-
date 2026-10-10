@@ -107,7 +107,7 @@ return '<div class="md1132-cardtop"><span class="md1132-caption">PARTIDO DE LA J
 '<p class="md1132-meta">'+esc([g.round?'Jornada '+g.round:'',g.venue||'Campo por confirmar',g.date].filter(Boolean).join(' · '))+'</p>'+
 '<div class="md1132-actions">'+
 [['bell','Avisos','alerts'],['calendar','Agenda','calendar'],['map','Campo','map'],['share','Compartir','share']].map(x=>'<button type="button" data-md-action="'+x[2]+'">'+icon(x[0])+'<span>'+x[1]+'</span></button>').join('')+
-'</div><div class="md1132-alerts" data-md-alerts hidden><p>Guarda un recordatorio en el calendario del teléfono o configura avisos de jornada. Los avisos automáticos requieren un servidor activo.</p><div><button type="button" data-md-action="ics">Descargar recordatorio</button><button type="button" data-md-action="agenda">Configurar avisos</button></div></div>'+
+'</div><div class="md1132-alerts" data-md-alerts hidden><p>Guarda un recordatorio en el calendario del teléfono o configura avisos de jornada. Los avisos automáticos requieren un servidor activo.</p><div><button type="button" data-md-action="ics">Google Calendar</button><button type="button" data-md-action="agenda">Configurar avisos</button></div></div>'+
 '<div class="md1132-more"><button type="button" data-md-action="weather">'+icon('cloud')+'Clima</button><button type="button" data-md-action="venues">'+icon('map')+'Sedes</button><button type="button" data-md-action="post">'+icon('news')+'Publicaciones</button></div>';
 }
 function render(){
@@ -138,18 +138,13 @@ if(remaining>0){const sec=Math.floor(remaining/1000),days=Math.floor(sec/86400),
 else clock.textContent=status(g).type==='final'?'MARCADOR PUBLICADO':'HORARIO PROGRAMADO';
 }
 function toast(value){let el=$('[data-md1132-toast]');if(!el){el=document.createElement('div');el.dataset.md1132Toast='';document.body.append(el);}el.textContent=value;el.hidden=false;clearTimeout(el._t);el._t=setTimeout(()=>el.hidden=true,3600);}
-function ics(g){
-const dt=v=>new Date(v).toISOString().replace(/[-:]/g,'').replace(/\.\d{3}Z$/,'Z');
-const clean=v=>String(v||'').replace(/\\/g,'\\\\').replace(/\r?\n/g,'\\n').replace(/;/g,'\\;').replace(/,/g,'\\,');
-const lines=['BEGIN:VCALENDAR','VERSION:2.0','CALSCALE:GREGORIAN','PRODID:-//Liga Juventino Rosas//Centro de Jornada//ES','BEGIN:VEVENT','UID:'+encodeURIComponent(g.id)+'@juventinorosasliga.com','DTSTAMP:'+dt(Date.now()),'DTSTART:'+dt(g.time),'DTEND:'+dt(g.time+7200000),'SUMMARY:'+clean(g.home+' vs '+g.away),'LOCATION:'+clean(g.venue),'DESCRIPTION:'+clean('Jornada '+g.round+' · '+g.category+' · Consulta el rol oficial antes de acudir.'),'BEGIN:VALARM','TRIGGER:-PT2H','ACTION:DISPLAY','DESCRIPTION:Recordatorio de partido','END:VALARM','END:VEVENT','END:VCALENDAR',''];
-const blob=new Blob([lines.join('\r\n')],{type:'text/calendar;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Liga_Juventino_Partido.ics';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);toast('Recordatorio descargado. Importa el archivo en tu calendario.');
-}
 function calendar(g){
-const dt=v=>new Date(v).toISOString().replace(/[-:]/g,'').replace(/\.\d{3}Z$/,'Z');
-const qs=new URLSearchParams({action:'TEMPLATE',text:g.home+' vs '+g.away,dates:dt(g.time)+'/'+dt(g.time+7200000),ctz:TZ,stz:TZ,etz:TZ,details:g.category+' · Jornada '+g.round+' · Confirma con el rol oficial.',location:g.venue||''});
-window.open('https://calendar.google.com/calendar/render?'+qs.toString(),'_blank','noopener,noreferrer');
-toast('Revisa el partido y pulsa Guardar en Google Calendar.');
+ window.LJR_GOOGLE_CALENDAR_GLOBAL.open({
+  title:g.home+' - '+g.away,startMs:g.time,duration:120,venue:g.venue||'',
+  description:'Liga Juventino Rosas · '+g.category+' · Jornada '+g.round+' · Consulta el rol oficial antes de acudir.'
+ });
 }
+function ics(g){calendar(g);}
 async function share(g){
 const text='⚽ '+g.home+' vs '+g.away+'\n'+g.category+' · Jornada '+g.round+'\n📅 '+g.date+'\n📍 '+(g.venue||'Campo por confirmar'),url=deepLink(g);
 try{if(navigator.share){await navigator.share({title:'Liga Juventino Rosas · Partido',text,url});return;}if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(text+'\n'+url);toast('Partido copiado para compartir.');return;}window.open('https://wa.me/?text='+encodeURIComponent(text+'\n'+url),'_blank','noopener,noreferrer');}
