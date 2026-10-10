@@ -3,16 +3,16 @@ html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro {
  position:fixed!important;inset:0 0 var(--v922-sanction-nav-gap,var(--v34-nav-h,69px)) 0!important;
  box-sizing:border-box!important;padding:8px 8px 0!important;display:flex!important;
  justify-content:center!important;align-items:stretch!important;overflow:hidden!important;
- background:linear-gradient(180deg,#040d45,#030833)!important;z-index:2147482500!important;
+ background:linear-gradient(180deg,#070b66,#030443)!important;z-index:2147482500!important;
 }
 html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro > .v105-dialog {
  position:relative!important;box-sizing:border-box!important;width:min(100%,760px)!important;
  min-width:0!important;max-width:760px!important;height:100%!important;max-height:100%!important;
  overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain!important;
  padding:20px clamp(14px,4vw,26px) 55px!important;margin:0 auto!important;
- border:1px solid rgba(99,172,255,.42)!important;border-bottom:0!important;
+ border:1px solid rgba(72,128,228,.38)!important;border-bottom:0!important;
  border-radius:20px 20px 0 0!important;
- background:linear-gradient(162deg,#122782 0%,#0b1e70 38%,#071346 100%)!important;
+ background:linear-gradient(160deg,#081c69 0%,#080f58 56%,#060944 100%)!important;
  -webkit-overflow-scrolling:touch!important;scrollbar-width:thin;
 }
 html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro h3 {
@@ -25,23 +25,23 @@ html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro > .v105-dialog > 
 html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v105-close {
  position:sticky!important;float:right!important;top:5px!important;
  width:43px!important;height:43px!important;min-width:43px!important;
- border:1px solid #659ce1!important;background:#163984!important;border-radius:13px!important;
+ border:1px solid #416cbe!important;background:#102466!important;border-radius:13px!important;
  color:#fff!important;font-size:29px!important;z-index:30!important;margin:0 0 -44px 5px!important;
 }
 html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-banner {
  display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:6px 11px!important;
  border-radius:13px!important;padding:10px 12px!important;margin:0 0 11px!important;
- background:rgba(19,84,165,.34)!important;border:1px solid rgba(96,198,246,.3)!important;
+ background:rgba(8,19,89,.78)!important;border:1px solid rgba(75,126,221,.38)!important;
 }
 .v1130-sanction-pro .v1130-banner b {
- font-size:10px!important;color:#ffe1aa!important;letter-spacing:.07em!important;white-space:nowrap!important;
+ font-size:10px!important;color:#dce9ff!important;letter-spacing:.07em!important;white-space:nowrap!important;
 }
 .v1130-sanction-pro .v1130-banner small {font-size:11px!important;line-height:1.4!important;color:#cedbf4!important;flex:1 1 200px!important}
 html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v105-form.v1130-form {
  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
  gap:11px!important;padding:14px!important;margin:0!important;
- border-radius:17px!important;background:linear-gradient(145deg,rgba(37,79,169,.42),rgba(11,29,93,.6))!important;
- border:1px solid rgba(101,159,249,.3)!important;
+ border-radius:17px!important;background:linear-gradient(165deg,#101e78 0%,#0b145f 70%,#080d51 100%)!important;
+ border:1px solid rgba(72,128,228,.38)!important;
 }
 html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-form .full,
 html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-form .v1130-step {
@@ -56,8 +56,8 @@ html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-form label
 }
 html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-form :is(input,select,textarea) {
  box-sizing:border-box!important;display:block!important;width:100%!important;min-width:0!important;max-width:100%!important;
- margin:0!important;border-radius:11px!important;border:1px solid #4f74bd!important;
- background:#081952!important;color:#f5f9ff!important;font:500 13px/1.3 Inter,Arial,sans-serif!important;
+ margin:0!important;border-radius:11px!important;border:1px solid #3c66ba!important;
+ background:#060c49!important;color:#f5f9ff!important;font:500 13px/1.3 Inter,Arial,sans-serif!important;
  outline:none!important;box-shadow:none!important;
 }
 html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-form :is(input,select) {
@@ -67,7 +67,7 @@ html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-form texta
  height:auto!important;min-height:66px!important;resize:vertical!important;padding:10px!important;
 }
 html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-form :is(input,select,textarea):focus {
- border-color:#3ce2eb!important;box-shadow:0 0 0 2px rgba(60,226,235,.18)!important;
+ border-color:#65abf7!important;box-shadow:0 0 0 2px rgba(63,126,230,.20)!important;
 }
 html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-form input::placeholder,
 html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-form textarea::placeholder {
@@ -75,19 +75,19 @@ html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-form texta
 }
 .v1130-sanction-pro .v1130-step {
  margin:5px 0 1px!important;padding:7px 9px!important;
- border-left:3px solid #3adfeb!important;border-radius:4px 9px 9px 4px!important;
+ border-left:3px solid #4b91ff!important;border-radius:4px 9px 9px 4px!important;
  color:#fff!important;font-size:12px!important;font-weight:850!important;
- background:linear-gradient(90deg,rgba(46,118,216,.29),rgba(12,33,98,.05))!important;
+ background:linear-gradient(90deg,rgba(28,105,212,.25),rgba(8,18,85,.07))!important;
 }
 .v1130-sanction-pro .v1130-count {
- color:#a2e5f5!important;font-size:10px!important;font-weight:750!important;margin:0!important;
+ color:#bed8ff!important;font-size:10px!important;font-weight:750!important;margin:0!important;
 }
 .v1130-sanction-pro .v1130-hint,.v1130-sanction-pro .v1130-summary {
- border:1px solid rgba(85,159,240,.32)!important;border-radius:11px!important;
- padding:10px!important;background:rgba(4,28,84,.35)!important;
- font-size:11px!important;line-height:1.5!important;color:#bfdbf3!important;
+ border:1px solid rgba(72,128,228,.35)!important;border-radius:11px!important;
+ padding:10px!important;background:rgba(5,14,77,.75)!important;
+ font-size:11px!important;line-height:1.5!important;color:#d4e2fa!important;
 }
-.v1130-sanction-pro .v1130-summary {color:#d7faff!important;border-color:rgba(67,215,225,.44)!important}
+.v1130-sanction-pro .v1130-summary {color:#eef7ff!important;border-color:#477de0!important}
 html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v105-actions.v1130-actions {
  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
  margin:12px 0 13px!important;gap:8px!important;padding:0!important;
@@ -98,24 +98,24 @@ html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-actions .v
  font-size:11px!important;line-height:1.25!important;text-wrap:balance!important;white-space:normal!important;
 }
 html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-actions .v105-btn:first-child {
- color:#071853!important;background:linear-gradient(180deg,#54e7f0,#20cadf)!important;font-weight:850!important;
+ color:#fff!important;background:linear-gradient(180deg,#1c69d4,#0d47a1)!important;border:1px solid #477de0!important;font-weight:850!important;
 }
 .v1130-sanction-pro .v1130-history {margin-top:10px!important}
 .v1130-sanction-pro .v1130-history > button {
  cursor:pointer!important;display:flex!important;align-items:center!important;justify-content:space-between!important;
- width:100%!important;padding:12px!important;background:#17377e!important;
- border:1px solid #5587ca!important;border-radius:12px!important;color:#fff!important;
+ width:100%!important;padding:12px!important;background:#0b1c60!important;
+ border:1px solid #416cbe!important;border-radius:12px!important;color:#fff!important;
  font-size:13px!important;font-weight:800!important;
 }
 .v1130-sanction-pro [data-history] {padding:9px 0!important}
 .v1130-sanction-pro [data-history] input {
  width:100%!important;min-height:42px!important;box-sizing:border-box!important;padding:9px!important;
- background:#081952!important;border:1px solid #6087bc!important;color:#fff!important;border-radius:10px!important;
+ background:#060c49!important;border:1px solid #3c66ba!important;color:#fff!important;border-radius:10px!important;
 }
 .v1130-sanction-pro .v1130-record {
  display:flex!important;align-items:center!important;justify-content:space-between!important;
- flex-wrap:wrap!important;gap:10px!important;background:rgba(30,68,146,.45)!important;
- border:1px solid rgba(91,161,230,.3)!important;border-radius:11px!important;
+ flex-wrap:wrap!important;gap:10px!important;background:rgba(12,28,96,.72)!important;
+ border:1px solid rgba(72,128,228,.35)!important;border-radius:11px!important;
  padding:11px!important;margin-top:8px!important;
 }
 .v1130-sanction-pro .v1130-record > div:first-child {display:grid!important;gap:4px!important}
@@ -123,8 +123,8 @@ html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-actions .v
 .v1130-sanction-pro .v1130-record small {font-size:10px!important;color:#b7d1f1!important}
 .v1130-sanction-pro .v1130-record > div:last-child {display:flex!important;gap:7px!important}
 .v1130-sanction-pro .v1130-record button {
- border:1px solid #729ad1!important;border-radius:9px!important;padding:8px!important;
- color:#fff!important;background:#204987!important;font-size:11px!important;
+ border:1px solid #416cbe!important;border-radius:9px!important;padding:8px!important;
+ color:#fff!important;background:#102466!important;font-size:11px!important;
 }
 .v1130-sanction-pro [data-act="backup"] {margin-top:10px!important;min-height:42px!important;width:100%!important}
 @media(max-width:600px){
@@ -144,3 +144,13 @@ html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-actions .v
 @media(prefers-reduced-motion:reduce){
  .v1130-sanction-pro *{scroll-behavior:auto!important;transition:none!important}
 }
+
+/* V1211: Colores oficiales azules de Nueva sanción. Solo estética, sin modificar funciones. */
+html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-form :is(input,select,textarea){color-scheme:dark!important}
+html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-form select :is(option,optgroup){background:#080f58!important;color:#fff!important}
+html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-actions .v105-btn.alt{
+ background:linear-gradient(180deg,#183582,#102466)!important;
+ border:1px solid #416cbe!important;color:#f5f9ff!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.06)!important
+}
+html body > .v105-modal.v639-sanction-modal.v1130-sanction-pro .v1130-form label > span{color:#d5e2ff!important}
