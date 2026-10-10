@@ -285,6 +285,7 @@ function bind(root){
     const del=e.target.closest('[data-v713-delete]');if(del){if(window.confirm('¿Eliminar este recordatorio LOCAL de este teléfono?')){write(read().filter(x=>x.id!==del.dataset.v713Delete));renderLists()}return}
   });
 }
+window.LJR_V713_NOTICE_SCHEDULER_REFRESH=()=>{renderLists();processDue()};
 function mount(){
   const page=document.querySelector('.v63-alerts-page');if(!page)return;
   const old=page.querySelector('[data-v713-auto]');
