@@ -247,7 +247,7 @@ window.addEventListener('click',event=>{
  const target=event.target;
  if(!target||typeof target.closest!=='function')return;
  const button=target.closest('button[data-v563-route],button[data-v563-tool],button[data-v563-cms],button[data-v563-action],button[data-v563-install],button[data-v563-share],button[data-v563-builds],button[data-v563-apk],button[data-v563-ios],button[data-v563-appmode]');
- if(!button||button.disabled||button.hidden)return;
+ if(!button||button.disabled||button.hidden||button.closest('[hidden]'))return;
  const root=button.closest('[data-v563-control],[data-v563-install-page]');
  if(!root)return;
  event.preventDefault();
@@ -277,70 +277,7 @@ function bind(root){
      });
    });
  }
- /* V1109: keep every visible JR Control tile operable. Delegation survives
-    later DOM changes and never changes the original Más menu. */
- const privateTools=new Set(['sponsors','meeting','delegates','officials','incidents','csv-import','backup-export','audit','schedule-match','new-sanction','motm']);
- const cmsActions={
-   compose:()=>window.LJR_EDITOR_CENTER?.openNotice,
-   review:()=>window.LJR_EDITOR_CENTER?.openReview,
-   pages:()=>window.LJR_EDITOR_CENTER?.openPages,
-   manage:()=>window.LJR_MEDIA?.manage,
-   backup:()=>window.LJR_EDITOR_CENTER?.exportBackup
- };
- const openTool=(name)=>{
-   try{
-     if(window.LJR_V105_OPEN_TOOL?.(name))return;
-     toast('No se pudo abrir la herramienta. Actualiza la aplicación.');
-   }catch(error){console.error('[JR Control] Error de herramienta',error);toast('No se pudo abrir la herramienta')}
- };
- root.addEventListener('click',event=>{
-   const button=event.target.closest('button');
-   if(!button||!root.contains(button)||button.disabled||button.hidden||button.closest('[hidden]'))return;
-   if(button.hasAttribute('data-v563-route')){
-     go(button.dataset.v563Route);
-     return;
-   }
-   if(button.hasAttribute('data-v563-tool')){
-     const name=button.dataset.v563Tool;
-     if(privateTools.has(name)&&!window.LJR_MEDIA?.admin){
-       const login=window.LJR_MEDIA?.login;
-       if(typeof login==='function'){
-         login(()=>{if(window.LJR_MEDIA?.admin)openTool(name);else toast('Se requiere autorización')});
-       }else toast('Inicia sesión como administrador para continuar');
-       return;
-     }
-     openTool(name);
-     return;
-   }
-   if(button.hasAttribute('data-v563-cms')){
-     if(!window.LJR_MEDIA?.admin){toast('Inicia sesión como administrador para continuar');return}
-     const name=button.dataset.v563Cms;
-     if(name==='backup'&&!window.LJR_MEDIA?.admin?.owner){toast('El respaldo oficial solo está disponible para el presidente');return}
-     try{
-       const handler=cmsActions[name]?.();
-       if(typeof handler!=='function'){toast('Esta herramienta todavía no está disponible');return}
-       handler.call(name==='manage'?window.LJR_MEDIA:window.LJR_EDITOR_CENTER);
-     }catch(error){console.error('[JR Control] Error administrativo',error);toast('No se pudo abrir esta sección')}
-     return;
-   }
-   const action=button.dataset.v563Action;
-   if(action==='positions')openPositions();
-   else if(action==='fixtures')openFixtures();
-   else if(action==='cards')openDiscipline('cards');
-   else if(action==='suspensions')openDiscipline('suspensions');
-   else if(button.hasAttribute('data-v563-install'))install();
-   else if(button.hasAttribute('data-v563-apk'))window.open(APK,'_blank','noopener,noreferrer');
-   else if(button.hasAttribute('data-v563-builds'))window.open(ACTIONS,'_blank','noopener,noreferrer');
-   else if(button.hasAttribute('data-v563-appmode'))location.href=location.origin+location.pathname+'?mode=apk#/home';
-   else if(button.hasAttribute('data-v563-ios')){
-     try{
-       if(window.LJR_V100?.installIosShortcut){window.LJR_V100.installIosShortcut();return}
-       const url=location.origin+location.pathname+'?source=ios-home#/home';
-       if(navigator.share)navigator.share({title:'Liga Juventino',text:'Liga Juventino',url}).catch(()=>{});
-       else location.href=url;
-     }catch(_){}
-   }
- });
+ /* Los clics de tarjetas se procesan sólo con delegación global V1108. */
 }
 function mount(){
  const r=route();
