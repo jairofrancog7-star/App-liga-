@@ -439,3 +439,180 @@ html body[data-app-route="players"] #screen .v66-directory[data-v66-directory="p
 @media(prefers-reduced-motion:reduce){
   html body > .v105-modal.v1107-admin-modal :is(button,input,select,textarea){transition:none!important}
 }
+
+/* V1126 — Directorio privado de delegados: compacto, uniforme y exclusivo de este modal. */
+html body > .v105-modal.v1126-delegate-modal > .v105-dialog{
+  width:min(100%,700px)!important;max-width:700px!important;
+  padding:clamp(12px,2.4vw,18px)!important;
+  background:linear-gradient(155deg,#091d72 0%,#09175d 57%,#050e47 100%)!important;
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-metrics{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:12px 0;
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-metrics > span{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-width:0;padding:9px 4px;border-radius:11px;border:1px solid #4267b64d;
+  background:#112b81;text-align:center;
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-metrics b{font-size:20px;line-height:1.2;color:#50e4f0}
+html body > .v105-modal.v1126-delegate-modal .v1126-metrics small{
+  color:#c4d1ed;font-size:10px;line-height:1.25;margin-top:3px;overflow-wrap:anywhere
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-toolbar{
+  display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr);
+  gap:7px;margin:0 0 9px;
+}
+html body > .v105-modal.v1126-delegate-modal :is(.v1126-toolbar input,.v1126-toolbar select,.v1126-extra input,.v1126-extra select,.v1126-extra textarea){
+  box-sizing:border-box!important;max-width:100%;width:100%;min-width:0;
+  min-height:39px;padding:8px 10px;border-radius:10px;
+  border:1px solid #658ae575;background:#0d226f;color:#f7faff;
+  font:500 12px/1.4 inherit;outline:none;
+}
+html body > .v105-modal.v1126-delegate-modal :is(input,select,textarea):focus-visible{
+  outline:2px solid #5beaf9!important;outline-offset:1px;
+}
+html body > .v105-modal.v1126-delegate-modal ::placeholder{color:#a9bbde;opacity:1}
+html body > .v105-modal.v1126-delegate-modal .v1126-tools{
+  display:flex;flex-wrap:wrap;align-items:stretch;gap:7px;margin:8px 0 12px;
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-tools .v105-btn{
+  min-height:36px!important;height:auto!important;min-width:0!important;
+  padding:8px 11px!important;font-size:11px!important;border-radius:10px!important;
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-editor,
+html body > .v105-modal.v1126-delegate-modal .v1126-extra{
+  min-width:0;margin:10px 0;border:1px solid #5685db5a;border-radius:13px;
+  padding:9px;background:linear-gradient(145deg,#12277a,#0b1d68);
+}
+html body > .v105-modal.v1126-delegate-modal :is(.v1126-editor,.v1126-extra) > summary{
+  display:flex;flex-wrap:wrap;align-items:center;gap:4px 9px;cursor:pointer;
+  padding:4px 5px;font-size:12px;font-weight:800;color:#fff;list-style:none;
+}
+html body > .v105-modal.v1126-delegate-modal :is(.v1126-editor,.v1126-extra) > summary::-webkit-details-marker{display:none}
+html body > .v105-modal.v1126-delegate-modal :is(.v1126-editor,.v1126-extra) > summary:after{
+  content:"⌄";margin-left:auto;font-size:17px;color:#56e8f3;line-height:1
+}
+html body > .v105-modal.v1126-delegate-modal :is(.v1126-editor,.v1126-extra)[open] > summary:after{content:"⌃"}
+html body > .v105-modal.v1126-delegate-modal .v1126-editor > summary small{
+  color:#b5c8eb;font-size:10px;font-weight:500
+}
+html body > .v105-modal.v1126-delegate-modal .v105-form.v1126-form{
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:9px!important;padding:11px!important;margin:9px 0 5px!important;
+  border:1px solid #648de844!important;border-radius:11px!important;background:#111f68!important;
+}
+html body > .v105-modal.v1126-delegate-modal .v105-form.v1126-form > label{
+  min-width:0!important;gap:4px!important
+}
+html body > .v105-modal.v1126-delegate-modal .v105-form.v1126-form .v1126-wide{
+  grid-column:1/-1!important;
+}
+html body > .v105-modal.v1126-delegate-modal .v105-form.v1126-form :is(input:not([type="checkbox"]),select){
+  min-height:41px!important;height:41px!important;
+  border-radius:10px!important;font-size:12px!important;padding:8px 10px!important
+}
+html body > .v105-modal.v1126-delegate-modal .v105-form.v1126-form textarea{
+  min-height:65px!important;font-size:12px!important;resize:vertical!important
+}
+html body > .v105-modal.v1126-delegate-modal .v105-form.v1126-form label.v1126-consent{
+  display:flex!important;flex-direction:row!important;gap:8px!important;
+  align-items:center!important;padding:4px 0;
+}
+html body > .v105-modal.v1126-delegate-modal .v105-form.v1126-form .v1126-consent input[type="checkbox"]{
+  flex:0 0 18px!important;width:18px!important;height:18px!important;min-height:18px!important;
+  margin:0!important;accent-color:#42d9e9
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-save{
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  margin:8px 0 0!important;gap:7px!important
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-directory-title{
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  margin:13px 1px 4px;font-size:12px;color:#fff
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-directory-title span{
+  font-size:10px;color:#8ce8f3
+}
+html body > .v105-modal.v1126-delegate-modal .v105-list.v1126-directory{
+  display:grid!important;gap:8px!important;max-height:min(44dvh,430px)!important;
+  overflow-y:auto!important;overflow-x:hidden!important;margin:6px 0 9px!important;padding:2px;
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-directory article.v1126-card{
+  padding:10px!important;border-radius:12px!important;background:linear-gradient(145deg,#142f89,#0b1d66)!important;
+  border:1px solid #6e95e04d!important;
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-card-head{
+  display:grid;grid-template-columns:38px minmax(0,1fr);align-items:center;gap:9px
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-avatar{
+  display:grid;place-items:center;width:38px;height:38px;border-radius:12px;
+  background:#244eb4;border:1px solid #71e4f65c;font-weight:800;color:#91f0f8;
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-card-head > div{min-width:0}
+html body > .v105-modal.v1126-delegate-modal .v1126-card-head b{
+  font-size:13px!important;line-height:1.2!important;overflow-wrap:anywhere
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-card-head small{
+  font-size:10px!important;margin-top:2px!important;overflow-wrap:anywhere;
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-link{color:#9eeefa;text-decoration:none}
+html body > .v105-modal.v1126-delegate-modal .v1126-badges{
+  display:flex;flex-wrap:wrap;gap:5px;margin-top:8px
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-badges span{
+  font-size:9px;color:#c4d5f2;background:#1e3c91;
+  padding:3px 7px;border-radius:999px;overflow-wrap:anywhere
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-notes{
+  font-size:10px;line-height:1.4;margin:8px 0;color:#c4d4f2;overflow-wrap:anywhere
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-card-actions{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin-top:9px
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-card-actions :is(a,button,span){
+  display:flex;align-items:center;justify-content:center;min-width:0;min-height:34px;
+  padding:6px 4px!important;border-radius:8px!important;border:1px solid #7293d65b!important;
+  background:#173785!important;color:#eef8ff!important;text-decoration:none;
+  font:750 10px/1.2 inherit!important;text-align:center;cursor:pointer;
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-card-actions .v1126-delete{
+  color:#ffd7dc!important;border-color:#df828055!important
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-card-actions .is-disabled{
+  opacity:.45!important;cursor:default!important
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-extra > p,
+html body > .v105-modal.v1126-delegate-modal .v1126-extra > small{
+  display:block;font-size:10px;line-height:1.45;color:#b9c9ec;margin:7px 3px;
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-small-label{
+  display:block;font-size:10px;font-weight:800;color:#d8e8ff;margin:10px 2px 5px;
+}
+html body > .v105-modal.v1126-delegate-modal .v1126-small-label :is(input,textarea,select){
+  display:block;margin-top:5px;font-size:12px;min-height:40px
+}
+@media(max-width:550px){
+  html body > .v105-modal.v1126-delegate-modal .v1126-toolbar{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important
+  }
+  html body > .v105-modal.v1126-delegate-modal .v1126-toolbar input{
+    grid-column:1/-1!important
+  }
+  html body > .v105-modal.v1126-delegate-modal .v105-form.v1126-form{
+    grid-template-columns:minmax(0,1fr)!important;padding:9px!important;gap:8px!important
+  }
+  html body > .v105-modal.v1126-delegate-modal .v105-list.v1126-directory{
+    max-height:40dvh!important
+  }
+  html body > .v105-modal.v1126-delegate-modal .v1126-tools .v105-btn{
+    flex:1 1 calc(50% - 8px)
+  }
+}
+@media(max-width:360px){
+  html body > .v105-modal.v1126-delegate-modal .v1126-card-actions{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  html body > .v105-modal.v1126-delegate-modal *{scroll-behavior:auto!important}
+}
