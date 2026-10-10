@@ -41,6 +41,7 @@ function fixture(admin=true){
 }
 test('producción y demo tienen el mismo código, enlazado solo en avisos',()=>{
  assert.equal(original,read('demo/src/v1212-notice-series-cancel.js'));
+ assert.equal(read('src/v1212-notice-series-cancel.css'),read('demo/src/v1212-notice-series-cancel.css'));
  assert.doesNotThrow(()=>new Function(original));
  const sourceCss=read('src/v1212-notice-series-cancel.css');
  assert.match(sourceCss,/data-v1212-cancel/);
