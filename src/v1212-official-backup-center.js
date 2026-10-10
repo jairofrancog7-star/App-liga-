@@ -28,15 +28,14 @@ async function keyFor(password,salt,iterations){
  const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(password),'PBKDF2',false,['deriveKey']);
  return crypto.subtle.deriveKey({name:'PBKDF2',hash:'SHA-256',salt,iterations},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
 }
-async function encrypt(rows){
+async function encrypt(rows,password){
  if(!crypto?.subtle)throw Error('El navegador no dispone de cifrado seguro. Usa HTTPS.');
  const payload={schema:'ljr-admin-backup-v1',exportedAt:new Date().toISOString(),records:rows};
  const raw=new TextEncoder().encode(JSON.stringify(payload));
  if(raw.byteLength>MAX_PLAIN)throw Error('La copia supera 32 MB. Se necesita exportación por bloques desde el servidor.');
  const salt=crypto.getRandomValues(new Uint8Array(16));
  const iv=crypto.getRandomValues(new Uint8Array(12));
- const pass=encrypt.password;
- const key=await keyFor(pass,salt,ITERATIONS);
+ const key=await keyFor(password,salt,ITERATIONS);
  const encrypted=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},key,raw));
  return {format:FORMAT,createdAt:payload.exportedAt,algorithm:'AES-256-GCM',kdf:{name:'PBKDF2',hash:'SHA-256',iterations:ITERATIONS,salt:b64(salt)},iv:b64(iv),ciphertext:b64(encrypted)};
 }
@@ -160,10 +159,13 @@ function open(){
    say('Generando copia cifrada en este dispositivo…');
    const rows=await records();
    renderDiagnosis(rows);
-   encrypt.password=pass.value;
    let encrypted;
-   try{encrypted=await encrypt(rows)}finally{encrypt.password='';pass.value='';confirm.value=''}
-   // Se comprueba el cifrado en memoria antes de ofrecer la descarga.
+   try{
+    encrypted=await encrypt(rows,pass.value);
+    const verified=await decrypt(encrypted,pass.value);
+    if(verified.records.length!==rows.length)throw Error('La comprobación interna del respaldo no coincide.');
+   }finally{pass.value='';confirm.value=''}
+   // Cifrado y descifrado verificados en memoria antes de ofrecer la descarga.
    const name='liga-juventino-respaldo-cifrado-'+new Date().toISOString().slice(0,10)+'.json';
    download(encrypted,name);
    write(META_KEY,{at:new Date().toISOString(),count:rows.length});
