@@ -13,7 +13,7 @@ test('matchday uses the exact same dynamic registry as Equipos and Siguiendo',()
  assert.match(js,/window\.LJR_TEAM_LOGOS\?\.get\?\.\(name\)/);
  assert.doesNotMatch(js,/OFFICIAL_CREST_ROOT|OFFICIAL_CREST_SLUGS/);
  assert.doesNotMatch(js,/data-md-fallback-src/);
- assert.match(js,/const src=logo\(name\)/);
+ assert.match(js,/const src=logo\(name,category\)/);
  assert.match(js,/data-md1132-team/);
  assert.doesNotMatch(mainHtml,/src\/v1152-matchday-clear-crests\.js/);
  const registry=load('src/v67-team-logo-registry.js');
@@ -22,7 +22,7 @@ test('matchday uses the exact same dynamic registry as Equipos and Siguiendo',()
 
 test('centered matchday copy has its own column and never overlaps team crests',()=>{
  assert.match(js,/class="md1132-game-copy"/);
- assert.match(js,/\+crest\(x\.away\)/);
+ assert.match(js,/\+crest\(x\.away,x\.category\)/);
  assert.match(css,/grid-template-columns:56px minmax\(0,1fr\) 56px!important/);
  assert.match(css,/text-align:center!important/);
  assert.match(css,/height:auto!important/);
