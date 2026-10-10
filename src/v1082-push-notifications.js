@@ -168,6 +168,17 @@ async function saveFilters(root){
 /* Reutilizar el panel Push existente dentro del registro, sin segundo proveedor
    ni solicitar permiso del navegador automáticamente. */
 window.LJR_V1082_PUSH_PANEL={
+ // Cambiar selección visual no activa Push ni envía preferencias al servidor.
+ syncSelection(host,profile={}){
+  const panel=host?.querySelector?.('[data-v1082-push]');
+  if(!panel)return false;
+  const cat=$('[data-v1082-category]',panel),team=$('[data-v1082-team]',panel);
+  if(cat&&CATEGORIES.some(([id])=>id===String(profile.category||'')))cat.value=String(profile.category);
+  if(team&&profile.team!==undefined)team.value=String(profile.team||'').slice(0,90);
+  const note=$('[data-v1082-status]',panel);
+  if(note)note.textContent='Selección sincronizada con tu formulario. Pulsa “Guardar filtros” para actualizar una suscripción Push existente.';
+  return true;
+ },
  async mountInto(host,profile={}){
   if(!host)return false;
   let panel=host.querySelector('[data-v1082-push]');
@@ -177,10 +188,8 @@ window.LJR_V1082_PUSH_PANEL={
    panel=fragment.firstElementChild;
    host.replaceChildren(panel);
   }
-  const cat=$('[data-v1082-category]',panel),team=$('[data-v1082-team]',panel);
-  if(cat&&CATEGORIES.some(([id])=>id===String(profile.category||'')))cat.value=String(profile.category);
-  if(team&&profile.team!==undefined)team.value=String(profile.team||'').slice(0,90);
   await syncState(panel);
+  this.syncSelection(host,profile);
   return true;
  }
 };
