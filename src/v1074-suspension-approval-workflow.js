@@ -443,10 +443,13 @@ function boot(){
  // Para pedir aprobación existe el botón "Solicitar visto bueno".
  screen.addEventListener('click',e=>{
   if(route()!=='suspensionTool')return;
-  const btn=e.target.closest('button');
-  if(!btn?.matches('[data-v64-susp-whatsapp],[data-v1066-share]'))return;
+  const btn=e.target.closest('button,a');
+  if(!btn)return;
+  const label=String(btn.textContent||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim().toLowerCase();
+  const toPresident=btn.matches('[data-v64-susp-whatsapp]')||/^whatsapp\s*[·-]\s*presidente$/.test(label);
+  if(!toPresident&&!btn.matches('[data-v1066-share]'))return;
   const page=btn.closest('.v425-suspension');if(!page)return;
-  if(btn.matches('[data-v64-susp-whatsapp]')){
+  if(toPresident){
    // Captura también el manejador antiguo {once:true}. Nunca abrir dos chats.
    e.preventDefault();e.stopImmediatePropagation();
    verifyAdminSession().then(ok=>{
