@@ -5,7 +5,7 @@ ENV NODE_ENV=production
 WORKDIR /app
 COPY package*.json ./
 RUN npm install --omit=dev --no-audit --no-fund && npm cache clean --force
-COPY index.mjs authorization.mjs bootstrap.mjs meeting-store.mjs schema.sql ./
+COPY index.mjs authorization.mjs bootstrap.mjs meeting-store.mjs cedula-store.mjs schema.sql cedula-schema.sql ./
 USER node
 EXPOSE 8080
 CMD ["sh", "-c", "node bootstrap.mjs && exec node index.mjs"]

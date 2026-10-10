@@ -3,15 +3,18 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "start": "node bootstrap.mjs && node index.mjs",
-    "check": "node --check bootstrap.mjs && node --check index.mjs"
+    "check": "node --check bootstrap.mjs && node --check index.mjs && node --check cedula-store.mjs"
   },
   "dependencies": {
     "express": "^4.21.2",
     "pg": "^8.13.3",
     "twilio": "^5.4.3",
-    "web-push": "^3.6.7"
+    "web-push": "^3.6.7",
+    "qrcode": "^1.5.4"
   }
 }
