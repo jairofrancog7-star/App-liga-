@@ -95,7 +95,7 @@ window.LJR_SANCTION_ENHANCE=function(api){
     '<button type="button" class="v1126-secondary" data-png>Descargar PNG</button>'+
     '<button type="button" class="v1126-secondary" data-share>Compartir borrador</button>'+
   '</div>'+
-  '<div class="v1126-footer"><button type="button" data-history-toggle>Mis borradores locales (<span data-draft-count>0</span>)</button>'+
+  '<div class="v1126-footer"><button type="button" data-new>+ Nuevo borrador</button><button type="button" data-history-toggle>Mis borradores locales (<span data-draft-count>0</span>)</button>'+
     '<button type="button" data-discipline>Ver disciplina oficial</button></div>'+
   '<div class="v1126-history-filter" data-history-filter hidden><label class="v1126-field"><span>Buscar en mis borradores</span><input data-history-search type="search" placeholder="Jugador, equipo, categoría o motivo"></label>'+
     '<div class="v1126-backup-actions"><button type="button" data-backup>Descargar respaldo JSON</button><button type="button" data-import>Importar respaldo JSON</button></div>'+
@@ -128,7 +128,7 @@ window.LJR_SANCTION_ENHANCE=function(api){
   box.innerHTML=selected?
    '<strong>Jugador seleccionado</strong><span>'+esc(selected.name)+' · '+esc(selected.team||'Sin equipo')+' · '+esc(catName(selected.cat))+'</span><button type="button" data-clear>Quitar selección</button>':
    'Selecciona expresamente un jugador. No se asignará al primero de la lista.';
-  $('[data-clear]')?.addEventListener('click',()=>{selected=null;selectedHtml();listPlayers()});
+  $('[data-clear]')?.addEventListener('click',()=>{selected=null;syncOfficialMatches();selectedHtml();listPlayers()});
  }
  function listPlayers(){
   const search=norm(value('[data-search]')),cat=value('[data-cat]'),team=value('[data-team]');
@@ -333,6 +333,15 @@ window.LJR_SANCTION_ENHANCE=function(api){
    if(navigator.share)await navigator.share({title:'Borrador disciplinario',text:content});
    else window.open('https://wa.me/?text='+encodeURIComponent(content),'_blank','noopener,noreferrer');
   }catch(e){if(e?.name!=='AbortError')feedback('No se pudo abrir Compartir. Puedes descargar el PNG.')}
+ };
+ $('[data-new]').onclick=()=>{
+  if(!window.confirm('¿Empezar un nuevo borrador? Los cambios no guardados se perderán.'))return;
+  activeId='';selected=null;
+  $('[data-search]').value='';$('[data-cat]').value='';teams();$('[data-team]').value='';
+  for(const sel of ['[data-incident-date]','[data-round]','[data-match]','[data-venue]','[data-referee]','[data-report]','[data-reason]','[data-detail]','[data-until]','[data-evidence]','[data-notes]'])$(sel).value='';
+  $('[data-type]').value='matches';$('[data-matches]').value='1';$('[data-served]').value='0';
+  syncOfficialMatches();selectedHtml();listPlayers();duration();view(0);
+  toast('Formulario listo para un nuevo borrador');
  };
  $('[data-history-toggle]').onclick=()=>{showHistory=!showHistory;renderHistory()};
  $('[data-history-search]').addEventListener('input',renderHistory);
