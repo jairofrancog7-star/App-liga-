@@ -106,11 +106,11 @@ function meeting(root){
  if(meetingModal){
   meetingModal.classList.add('v875-meeting-modal');
   meetingModal.style.setProperty('inset','0 0 calc(var(--v34-nav-h,69px) + env(safe-area-inset-bottom,0px)) 0','important');
-  meetingModal.style.setProperty('padding','14px','important');
+  meetingModal.style.setProperty('padding','max(9px, env(safe-area-inset-top, 0px)) 9px 10px','important');
   meetingModal.style.setProperty('box-sizing','border-box','important');
   const meetingDialog=meetingModal.querySelector('.v105-dialog');
   if(meetingDialog){
-   meetingDialog.style.setProperty('max-height','calc(100dvh - var(--v34-nav-h,69px) - env(safe-area-inset-bottom,0px) - 28px)','important');
+   meetingDialog.style.setProperty('max-height','100%','important');
    meetingDialog.style.setProperty('scroll-padding-bottom','28px','important');
    meetingDialog.style.setProperty('margin-bottom','0','important');
   }
