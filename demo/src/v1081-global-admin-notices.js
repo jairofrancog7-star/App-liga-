@@ -65,7 +65,7 @@ function mexicoInput(value){
 }
 function makeAdminForm(prefill){
  const modal=dialog('Avisos globales programados',
-  '<div class="v1081"><p class="v1081-note">Los avisos se publican en el servidor aunque el teléfono esté apagado. Requiere que el servicio HTTPS esté desplegado y configurado. Todo cambio se verifica con tu sesión.</p>'+
+  '<div class="v1081"><p class="v1081-note">Los avisos se guardan como borradores. Presidencia debe revisar y aprobar cada aviso antes de su envío en la fecha programada. Requiere servicio HTTPS y sesión verificada.</p>'+
   '<form data-v1081-form>'+
   '<label>Título<input name="title" required maxlength="120" placeholder="Ej. Cambio de cancha"></label>'+
   '<label>Mensaje oficial<textarea name="body" required minlength="15" maxlength="700" rows="3" placeholder="Escribe solo datos confirmados"></textarea></label>'+
@@ -82,12 +82,12 @@ function makeAdminForm(prefill){
   '</div><small class="v1081-channel-note" data-v1091-channel-status>Consultando canales disponibles…</small>'+
   '<a class="v1093-wa-personal" data-v1093-wa-personal target="_blank" rel="noopener noreferrer" href="https://api.whatsapp.com/send">WhatsApp normal · preparar mensaje manual</a>'+
   '<small class="v1081-channel-note">Se abrirá WhatsApp para elegir el contacto y pulsar Enviar. No programa ni envía automáticamente.</small>'+
-  '<p class="v1081-preview">Se publicará en Noticias; los mensajes externos requieren canal aprobado y consentimiento individual. Nada se envía al guardar.</p>'+
-  '<div class="v1081-actions"><button type="button" data-v1081-reset>Limpiar</button><button type="submit" data-v1081-save>Programar publicación</button></div>'+
-  '</form><div class="v1081-list"><div class="v1081-list-head"><strong>Publicaciones programadas</strong><button type="button" data-v1081-refresh>Actualizar</button></div><div data-v1081-items>Cargando...</div></div>'+
+  '<p class="v1081-preview">Se guardará como borrador. No se publica ni se envía nada hasta la autorización explícita de Presidencia; después se respetará la fecha programada y el consentimiento.</p>'+
+  '<div class="v1081-actions"><button type="button" data-v1081-reset>Limpiar</button><button type="submit" data-v1081-save>Guardar borrador</button></div>'+
+  '</form><div class="v1081-list"><div class="v1081-list-head"><strong>Borradores y publicaciones programadas</strong><button type="button" data-v1081-refresh>Actualizar</button></div><div data-v1081-items>Cargando...</div></div>'+
   '<p class="v1081-status" data-v1081-status role="status" aria-live="polite"></p></div>');
  const form=$('[data-v1081-form]',modal),list=$('[data-v1081-items]',modal),save=$('[data-v1081-save]',modal);
- let editing=null,rows=[],busy=false;
+ let editing=null,rows=[],busy=false,canApprove=false;
  // Los canales se habilitan únicamente cuando el backend responde que están
  // preparados: claves privadas, remitente aprobado, plantilla y base de datos.
  async function loadChannels(){
@@ -106,7 +106,7 @@ function makeAdminForm(prefill){
    'Push, SMS y WhatsApp pendientes de configurar en el servidor. Puedes preparar el aviso sin enviarlo.';
  }
  function clear(){
-  editing=null;form.reset();save.textContent='Programar publicación';
+  editing=null;form.reset();save.textContent='Guardar borrador';
   form.elements.when.value=mexicoInput(Date.now()+3600000).slice(0,16);
  }
  clear();
@@ -126,17 +126,21 @@ function makeAdminForm(prefill){
  async function refresh(){
   list.textContent='Consultando avisos…';
   try{
-   const r=await call('/admin/notices');rows=Array.isArray(r.items)?r.items:[];
+   const [r,me]=await Promise.all([call('/admin/notices'),call('/admin/me')]);
+   canApprove=Array.isArray(me?.actor?.permissions)&&me.actor.permissions.includes('notices:approve');
+   rows=Array.isArray(r.items)?r.items:[];
    list.replaceChildren();
    if(!rows.length){list.textContent='Todavía no se han programado avisos en el servidor.';return}
    for(const item of rows.slice(0,80)){
     const card=document.createElement('article');card.className='v1081-item';
     const info=document.createElement('div'),h=document.createElement('strong'),small=document.createElement('small');
     h.textContent=item.title||'Aviso';
-    const labels={queued:'Pendiente',processing:'Publicando',done:'Publicado',cancelled:'Cancelado'};
+    const labels={draft:'Borrador · necesita aprobación',queued:'Aprobado · programado',processing:'Publicando',done:'Publicado',cancelled:'Cancelado'};
     small.textContent=(labels[item.status]||item.status)+' · '+(item.category||'Todas')+' · '+fmt(item.send_at);
-    info.append(h,small);card.append(info);
-    if(item.status==='queued'){
+    const description=document.createElement('p');description.textContent=item.body||'';
+    const channels=document.createElement('small');channels.textContent='Canales: '+(Array.isArray(item.channels)?item.channels.join(', '):'app');
+    info.append(h,small,description,channels);card.append(info);
+    if(item.status==='draft'||item.status==='queued'){
      const buttons=document.createElement('div');buttons.className='v1081-item-actions';
      const edit=document.createElement('button');edit.textContent='Editar';
      edit.onclick=()=>{
@@ -147,7 +151,7 @@ function makeAdminForm(prefill){
       for(const ch of ['push','sms','whatsapp']){
        if(!form.elements[ch]?.disabled)form.elements[ch].checked=Array.isArray(item.channels)&&item.channels.includes(ch);
       }
-      save.textContent='Guardar cambios';form.scrollIntoView({block:'nearest',behavior:'smooth'});
+      save.textContent='Guardar para nueva revisión';form.scrollIntoView({block:'nearest',behavior:'smooth'});
      };
      const cancel=document.createElement('button');cancel.textContent='Cancelar';cancel.className='is-danger';
      cancel.onclick=async()=>{
@@ -158,6 +162,18 @@ function makeAdminForm(prefill){
        message(modal,'Publicación cancelada.');await refresh();
       }catch(err){message(modal,'No se pudo cancelar: '+err.message);cancel.disabled=false}
      };
+     if(item.status==='draft'&&canApprove){
+      const approve=document.createElement('button');approve.type='button';approve.textContent='Revisar y aprobar';
+      approve.onclick=async()=>{
+       const detail='Título: '+(item.title||'')+'\nCategoría: '+(item.category||'Todas')+'\nCanales: '+(item.channels||[]).join(', ')+'\nFecha: '+fmt(item.send_at)+'\n\n'+(item.body||'');
+       if(!confirm('¿Autorizar esta publicación oficial con los datos completos?\n\n'+detail+'\n\nPuede haber cargos por SMS o WhatsApp.'))return;
+       approve.disabled=true;
+       try{await call('/admin/notices/'+encodeURIComponent(item.id)+'/approve',{method:'POST',body:{revision:item.revision}});
+        message(modal,'Aviso autorizado y programado; todavía no se ha enviado.');await refresh();}
+       catch(err){message(modal,'No se pudo aprobar: '+err.message);approve.disabled=false}
+      };
+      buttons.append(approve);
+     }
      buttons.append(edit,cancel);card.append(buttons);
     }
     // Sólo la administración autenticada consulta los estados del proveedor.
@@ -214,14 +230,14 @@ function makeAdminForm(prefill){
   if(payload.body.length<15){message(modal,'Escribe al menos 15 caracteres con datos oficiales.');return}
   const external=payload.channels.filter(ch=>ch==='sms'||ch==='whatsapp');
   if(!confirm(external.length?
-   '¿Programar el aviso oficial con envío por '+external.join(' y ')+'? Solo debe llegar a destinatarios con consentimiento y puede generar cargos en Twilio.':
-   '¿Guardar la programación oficial? No se publicará hasta la fecha indicada.'))return;
+   '¿Guardar el borrador del aviso con canales '+external.join(' y ')+'? Solo debe llegar a destinatarios con consentimiento y puede generar cargos en Twilio.':
+   '¿Guardar el borrador? Presidencia debe aprobarlo antes de publicarlo en la fecha indicada.'))return;
   busy=true;save.disabled=true;
   try{
    const item=editing;
    await call(item?'/admin/notices/'+encodeURIComponent(item.id):'/admin/notices',
     {method:item?'PUT':'POST',body:item?{...payload,revision:item.revision}:payload});
-   message(modal,item?'Aviso actualizado.':'Aviso programado en servidor.');
+   message(modal,item?'Aviso actualizado; necesita nueva revisión.':'Borrador guardado. Falta autorización de Presidencia.');
    clear();await refresh();
   }catch(err){message(modal,'No se guardó: '+err.message)}
   finally{busy=false;save.disabled=false}
