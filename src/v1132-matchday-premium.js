@@ -177,6 +177,20 @@ const text='⚽ '+g.home+' vs '+g.away+'\n'+g.category+' · Jornada '+g.round+'\
 try{if(navigator.share){await navigator.share({title:'Liga Juventino Rosas · Partido',text,url});return;}if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(text+'\n'+url);toast('Partido copiado para compartir.');return;}window.open('https://wa.me/?text='+encodeURIComponent(text+'\n'+url),'_blank','noopener,noreferrer');}
 catch(e){if(e?.name!=='AbortError')toast('No fue posible compartir desde este navegador.');}
 }
+function v1171MatchdayMaps(venue){
+ const v=norm(venue);
+ const exact=[
+  ['san julian','https://maps.app.goo.gl/5yfZH7nGMtw2Cqqf7'],
+  ['fraccionamiento','https://maps.app.goo.gl/Y1ZGLTpGJ7XmGCKT7'],
+  ['comontuoso','https://maps.app.goo.gl/Y1ZGLTpGJ7XmGCKT7'],
+  ['san juan de la cruz','https://maps.app.goo.gl/mcc7DpevkPW5mW4M9'],
+  ['franco tavera','https://maps.app.goo.gl/yBhVkMrXzL3Npv3WA'],
+  ['tavera','https://maps.app.goo.gl/yBhVkMrXzL3Npv3WA'],
+  ['pozos','https://goo.gl/maps/BF9dnqf5SaBfu41PA']
+ ];
+ const match=exact.find(([key])=>v.includes(key));
+ return match?.[1]||'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent((venue||'Campo')+', Juventino Rosas, Guanajuato');
+}
 function onClick(e){
 if(route()!=='matchday'||!host?.contains(e.target))return;
 const team=e.target.closest('[data-md-team]');if(team){const name=team.dataset.mdTeam;localStorage.setItem('v62-team-name',name);localStorage.setItem('v42-team-tab','summary');if(window.LJR_OFFICIAL_API?.openTeam)window.LJR_OFFICIAL_API.openTeam(name);else go('teamDetail');return;}
@@ -189,7 +203,7 @@ case 'alerts':{const panel=$('[data-md-alerts]',host);if(panel)panel.hidden=!pan
 case 'calendar':calendar(g);break;
 case 'ics':ics(g);break;
 case 'agenda':go('agendaBuilder');break;
-case 'map':window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent((g.venue||'Campo')+', Juventino Rosas, Guanajuato'),'_blank','noopener,noreferrer');break;
+case 'map':window.open(v1171MatchdayMaps(g.venue),'_blank','noopener,noreferrer');break;
 case 'share':share(g);break;
 case 'weather':go('weatherFields');break;
 case 'venues':go('venues');break;
