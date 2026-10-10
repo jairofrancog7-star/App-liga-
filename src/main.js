@@ -5272,15 +5272,6 @@ function bindV553Weekly(){
         const away=v567WeekLogo(t[4]);
         return '<tr><td>'+t[0]+'</td><td>'+t[1]+'</td><td><span class="v567-pdf-team">'+(home?'<img src="'+home+'" alt="">':'')+'<span>'+t[2]+'</span></span></td><td>'+t[3]+'</td><td><span class="v567-pdf-team">'+(away?'<img src="'+away+'" alt="">':'')+'<span>'+t[4]+'</span></span></td><td>'+t[5]+'</td><td>'+t[6]+'</td></tr>';
       }).join('');
-      return '<section class="v559-pdf-group"><div class="v559-pdf-grouphead"><h2><img class="v567-pdf-cat" src="'+v567WeekCategoryLogo(g.dataset.weekGroup||'')+'" alt="">'+title+'</h2><span>'+badge+'</span></div><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th>const groupsHtml=visibleGroups.map(g=>{
-      const title=g.querySelector('.v553-week-title span')?.textContent?.replace('🏆 ','')||'';
-      const badge=g.querySelector('.v553-week-title b')?.textContent||'';
-      const rows=[...g.querySelectorAll('tbody tr')].filter(tr=>tr.style.display!=='none').map(tr=>{
-        const t=[...tr.children].map(td=>td.textContent.trim());
-        const home=v567WeekLogo(t[2]);
-        const away=v567WeekLogo(t[4]);
-        return '<tr><td>'+t[0]+'</td><td>'+t[1]+'</td><td><span class="v567-pdf-team">'+(home?'<img src="'+home+'" alt="">':'')+'<span>'+t[2]+'</span></span></td><td>'+t[3]+'</td><td><span class="v567-pdf-team">'+(away?'<img src="'+away+'" alt="">':'')+'<span>'+t[4]+'</span></span></td><td>'+t[5]+'</td><td>'+t[6]+'</td></tr>';
-      }).join('');
       return '<section class="v559-pdf-group"><div class="v559-pdf-grouphead"><h2><img class="v567-pdf-cat" src="'+v567WeekCategoryLogo(g.dataset.weekGroup||'')+'" alt="">'+title+'</h2><span>'+badge+'</span></div><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Campo</th><th>Jornada</th></tr></thead><tbody>'+rows+'</tbody></table></section>';
     }).join('');
     const html='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reporte Semanal - Liga Juventino</title><style>'+
