@@ -1679,6 +1679,12 @@ function scheduleMatch(){
  $('[data-s-agenda]',m).onclick=()=>{m.remove();go('agendaBuilder')};
 }
 function newSanction(){
+ // V1126 — formulario mejorado: conservar el editor anterior como respaldo.
+ if(typeof window.LJR_SANCTION_ENHANCE==='function'){
+  try{return window.LJR_SANCTION_ENHANCE({cats:v160Categories(),players:v160Players(),modal,esc,norm,read,write,toast,log,dl,go})}
+  catch(error){console.error('[Sanciones V1126] Error al abrir el gestor',error);toast('Se abrió el formulario anterior como respaldo')}
+ }
+
  const cats=v160Categories(),rawPlayers=v160Players(),old=read('v160-sanction-draft',{player:'',reason:'',reasonDetail:'',matches:1,cat:'',team:'',sanctionType:'matches',until:''});
  const seen=new Set();
  const players=rawPlayers.filter(p=>{
