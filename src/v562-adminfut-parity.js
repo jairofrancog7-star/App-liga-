@@ -205,7 +205,7 @@ function render(){
   screen.innerHTML=m?editorMarkup(m):homeMarkup();bind(screen,m||null);window.scrollTo(0,0);
 }
 function bind(root,m){
-  root.querySelector('[data-v562-back]')?.addEventListener('click',()=>{location.hash='#/jrControl'});
+  root.querySelector('[data-v562-back]')?.addEventListener('click',()=>{location.hash='#/ligaControl'});
   root.querySelector('[data-v562-list]')?.addEventListener('click',()=>{if(m)saveDraft(m,false,false);currentMatchKey='';render()});
   root.querySelectorAll('[data-v562-open]').forEach(b=>b.addEventListener('click',()=>{currentMatchKey=b.dataset.v562Open||'';render()}));
   root.querySelector('[data-v562-filter]')?.addEventListener('change',e=>{const s=readState();s.filter=e.target.value;writeState(s);render()});
