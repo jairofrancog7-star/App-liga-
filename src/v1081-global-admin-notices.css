@@ -49,3 +49,24 @@ body[data-app-route="notifications"] #screen .v1081-public,
 @media(max-width:430px){.liga-media-modal .v1081-item{align-items:stretch;flex-direction:column}.liga-media-modal .v1081-role{grid-template-columns:1fr 1fr}.liga-media-modal .v1081-role button{grid-column:1/-1}}
 @media(max-width:360px){.liga-media-modal .v1081-two{grid-template-columns:1fr}#screen .v1081-public-actions{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.liga-media-modal .v1081 button{transition:none!important}}
+/* V1090 - seguimiento bajo demanda: sólo ocupa espacio al desplegarse. */
+.liga-media-modal .v1081-item .v1081-deliveries{
+ box-sizing:border-box; width:100%; margin:4px 0 0;
+ border:1px solid rgba(94,190,247,.32);border-radius:9px;
+ background:rgba(10,32,111,.46); overflow:hidden;
+}
+.liga-media-modal .v1081-deliveries>summary{
+ list-style:none;cursor:pointer;min-height:36px;
+ display:flex;align-items:center;padding:8px 10px;color:#8cecff;
+ font-size:11px;font-weight:750;
+}
+.liga-media-modal .v1081-deliveries>summary::-webkit-details-marker{display:none}
+.liga-media-modal .v1081-deliveries>summary:after{content:'⌄';margin-left:auto;font-size:17px}
+.liga-media-modal .v1081-deliveries[open]>summary:after{transform:rotate(180deg)}
+.liga-media-modal .v1081-deliveries:not([open])>.v1081-delivery-data{display:none!important}
+.liga-media-modal .v1081-delivery-data{
+ display:grid;gap:5px;padding:8px 10px 10px;border-top:1px solid rgba(94,190,247,.19);
+ color:#d4e9f8;font-size:11px;line-height:1.4;
+}
+.liga-media-modal .v1081-delivery-data p{margin:0}
+.liga-media-modal .v1081-delivery-data small{font-size:10px;color:#abd1e5}
