@@ -207,3 +207,8 @@ body[data-app-route="refereeOffline"] .v1130-referee button:focus-visible,body[d
  body[data-app-route="refereeOffline"] .v1130-card-actions button{font-size:9.5px}
  body[data-app-route="refereeOffline"] .v1130-referee .v562-head h1{font-size:19px}
 }
+
+/* V1162: Cédula offline uses the existing global top-bar back arrow. */
+body[data-app-route="refereeOffline"] .v562-page.v562-editor .v562-head{grid-template-columns:minmax(0,1fr) auto!important;gap:10px!important}
+body[data-app-route="refereeOffline"] .v562-page.v562-editor .v562-head>div{grid-column:1;min-width:0!important}
+body[data-app-route="refereeOffline"] .v562-page.v562-editor .v562-head>.v562-net{grid-column:2}
