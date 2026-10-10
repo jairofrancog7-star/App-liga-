@@ -32,7 +32,10 @@ async function apiBase(){
    return u.origin+u.pathname.replace(/\/+$/,'');
   }catch{return ''}
  })();
- return basePromise;
+ const base=await basePromise;
+ // Un fallo de red no debe bloquear los intentos posteriores hasta reiniciar la página.
+ if(!base)basePromise=null;
+ return base;
 }
 async function server(path,opts={}){
  const base=await apiBase();if(!base)throw Error('El servidor de notificaciones todavía no está configurado.');
@@ -185,13 +188,20 @@ async function disable(root){
  status(root,'Avisos desactivados en este dispositivo.');
 }
 async function saveFilters(root){
- if(!getValues(root).types.length)throw Error('Selecciona al menos un tipo de aviso.');
- const next=getValues(root);save(next);
+ const next=getValues(root);
+ if(!next.types.length)throw Error('Selecciona al menos un tipo de aviso.');
  const sub=await subscription();
  if(sub){
-  await server('subscribe',{method:'POST',body:JSON.stringify({subscription:sub.toJSON(),preferences:next})});
-  status(root,'Filtros actualizados. Solo recibirás las categorías seleccionadas.');
- }else status(root,'Filtros guardados en este dispositivo. Activa avisos cuando el servidor esté disponible.');
+  const config=await server('public-key');
+  if(!config?.publicKey||!keyMatches(sub,config.publicKey))throw Error('La suscripción utiliza otra clave Push. No se guardaron cambios en el servidor.');
+  const ack=await server('subscribe',{method:'POST',body:JSON.stringify({subscription:sub.toJSON(),preferences:next})});
+  if(!ack?.active)throw Error('El servidor no confirmó la actualización de filtros Push.');
+  save(next);
+  status(root,'✓ Filtros Push confirmados por el servidor para este dispositivo. La entrega real aún requiere un aviso oficial.');
+ }else{
+  save(next);
+  status(root,'Filtros guardados solo en este dispositivo. Pulsa Activar avisos para sincronizarlos con el servidor.');
+ }
 }
 
 /* Reutilizar el panel Push existente dentro del registro, sin segundo proveedor
@@ -230,16 +240,23 @@ document.addEventListener('click',async event=>{
  event.preventDefault();working=true;
  root.querySelectorAll('button').forEach(b=>b.disabled=true);
  status(root,'Guardando preferencias…');
+ let message='',failed=false;
  try{
   if(button.hasAttribute('data-v1082-save'))await saveFilters(root);
   else{
    const sub=await subscription();
    if(sub)await disable(root);else await enable(root);
   }
- }catch(err){status(root,'⚠ '+String(err.message||'No se pudo activar. Revisa conexión y permisos.'));}
+  message=$('[data-v1082-status]',root)?.textContent||'';
+ }catch(err){
+  failed=true;
+  message='⚠ '+String(err?.message||'No se pudo completar. Revisa conexión y permisos.');
+ }
  finally{
   working=false;root.querySelectorAll('button').forEach(b=>b.disabled=false);
-  await syncState(root);
+  try{await syncState(root)}catch(_){}
+  // Mostrar al usuario el resultado de SU acción; la consulta de estado no lo borra.
+  if(failed||(message&&!$('[data-v1082-toggle]',root)?.disabled))status(root,message);
  }
 });
 function mount(){
