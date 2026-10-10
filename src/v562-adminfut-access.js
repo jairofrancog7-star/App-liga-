@@ -146,7 +146,7 @@ function controlMarkup(){
     card('review','Revisar avisos','Consultar borradores y publicaciones','data-v563-cms="review"')+
     card('editPage','Editar páginas','Modificar información y diseño sin programar','data-v563-cms="pages"')+
     card('manage','Administrar accesos','Gestionar administradores autorizados','data-v563-cms="manage"')+
-    card('backup','Respaldo oficial','Exportación privada solo del presidente','data-v563-cms="backup"')+
+    card('backup','Respaldo oficial','Exportación privada para cuentas principales verificadas','data-v563-cms="backup"')+
     '</div></div>'+
    '</section>'+
  '</section>';
@@ -211,7 +211,7 @@ function v1108AuthorizeTool(name){
 function v1108Cms(name){
  const media=window.LJR_MEDIA;
  if(!media?.admin){toast('Inicia sesión como administrador para continuar');media?.login?.();return}
- if(name==='backup'&&!media.admin.owner){toast('Solo el presidente puede exportar el respaldo oficial');return}
+ if(name==='backup'&&!media.admin.owner){toast('Solo una cuenta principal autorizada puede exportar el respaldo oficial');return}
  const center=window.LJR_EDITOR_CENTER;
  const entries={compose:[center,'openNotice'],review:[center,'openReview'],pages:[center,'openPages'],manage:[media,'manage'],backup:[center,'exportBackup']};
  const [owner,method]=entries[name]||[];
