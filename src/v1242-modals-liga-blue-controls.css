@@ -1,0 +1,152 @@
+/* V1242 · Paleta de Liga Juventino Rosas: avisos, respaldos y auditoría.
+   Exclusiva de los tres paneles de las capturas. No toca resultados oficiales. */
+html body > .v105-modal.v168-account-modal.v920-registration-modal {
+  --ljr-reg-bg:#05045f;
+  --ljr-reg-surface:#090879;
+  --ljr-reg-header:#090879;
+  --ljr-reg-divider:#03034f;
+  --ljr-reg-action:#1c69d4;
+  --ljr-reg-action-dark:#0d47a1;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v1221-local-ai,
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v1221-ai-recommendation,
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v1221-ai-result {
+  background:#090879!important;
+  background-image:none!important;
+  border:1px solid #2c49a4!important;
+  box-shadow:none!important;
+  color:#f7f7ff!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal :is(.v1221-ai-icon,.v1221-ai-secondary,.v1221-ai-reset,.v1221-ai-feedback button) {
+  background:#090879!important;
+  background-image:none!important;
+  color:#f7f7ff!important;
+  border-color:#3654ad!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v1221-ai-primary{
+  background:linear-gradient(180deg,#1c69d4,#0d47a1)!important;
+  border-color:#568fea!important;
+  color:#fff!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v1221-ai-frequency select{
+  background:#05045f!important;
+  border-color:#3654ad!important;
+  color:#fff!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v1221-ai-status{
+  border-top-color:#2c49a4!important;
+}
+.ljr-bc-overlay .ljr-bc-dialog {
+  background:#05045f!important;
+  background-image:none!important;
+  border-color:#3654ad!important;
+  box-shadow:0 20px 56px rgba(0,0,22,.45)!important;
+}
+.ljr-bc-overlay :is(.ljr-bc-head,.ljr-bc-footer){
+  background:#090879!important;
+  background-image:none!important;
+  border-color:#2c49a4!important;
+}
+.ljr-bc-overlay .ljr-bc-scroll{
+  background:#05045f!important;
+  scrollbar-color:#3654ad #05045f;
+}
+.ljr-bc-overlay :is(.ljr-bc-summary>div,.ljr-bc-panel,.ljr-bc-group,.ljr-bc-preview){
+  background:#090879!important;
+  background-image:none!important;
+  border-color:#3654ad!important;
+  box-shadow:none!important;
+}
+.ljr-bc-overlay :is(.ljr-bc-symbol,.ljr-bc-num,.ljr-bc-close,.ljr-bc-secondary,.ljr-bc-footer button){
+  background:#0a096f!important;
+  color:#fff!important;
+  border-color:#3654ad!important;
+}
+.ljr-bc-overlay :is(input[type="password"],input[type="file"]){
+  background:#05045f!important;
+  border-color:#3654ad!important;
+  color:#fff!important;
+}
+.ljr-bc-overlay .ljr-bc-primary{
+  background:linear-gradient(180deg,#1c69d4,#0d47a1)!important;
+  border-color:#568fea!important;
+  box-shadow:none!important;
+}
+.ljr-bc-overlay input[type="checkbox"]{accent-color:#1c69d4!important}
+html body > .v105-modal.v1212-audit-modal > .v105-dialog{
+  background:#05045f!important;
+  background-image:none!important;
+  background-color:#05045f!important;
+  border-color:#3654ad!important;
+}
+html body > .v105-modal.v1212-audit-modal :is(
+  .v1212-filters,.v1212-metrics>div,.v1212-item,.v1212-details,
+  .v1212-disclaimer,.v1212-empty,.v1223-insight,.v1223-chart,.v1223-notice,
+  .v1223-tags>span,.v1223-bar-area
+){
+  background:#090879!important;
+  background-image:none!important;
+  background-color:#090879!important;
+  border-color:#3654ad!important;
+  box-shadow:none!important;
+}
+html body > .v105-modal.v1212-audit-modal .v1212-filters :is(input,select){
+  background:#05045f!important;
+  border-color:#3654ad!important;
+}
+html body > .v105-modal.v1212-audit-modal :is(
+  .v1212-presets button,.v1212-more,.v1212-export button,
+  .v1212-details button,.v1223-insight button
+){
+  background:#0a096f!important;
+  background-image:none!important;
+  border:1px solid #3654ad!important;
+  color:#fff!important;
+  position:relative;
+  touch-action:manipulation;
+  pointer-events:auto!important;
+}
+html body > .v105-modal.v1212-audit-modal :is(
+  .v1212-presets button[aria-pressed="true"],
+  .v1212-export button:first-child,.v1223-toolbar button
+){
+  background:linear-gradient(180deg,#1c69d4,#0d47a1)!important;
+  border-color:#568fea!important;
+  color:#fff!important;
+}
+html body > .v105-modal.v1212-audit-modal .v1212-presets button{
+  min-height:42px!important;
+  padding:9px 11px!important;
+  font-size:clamp(11px,2.6vw,12px)!important;
+  flex:1 1 auto;
+}
+html body > .v105-modal.v1212-audit-modal .v1212-presets [data-a-reset]{
+  margin-left:0!important;
+}
+html body > .v105-modal.v1212-audit-modal .v1212-feedback,
+html body > .v105-modal.v1212-audit-modal .v1223-run-status{
+  color:#dbeaff!important;
+  font-size:11px!important;
+  line-height:1.5!important;
+  overflow-wrap:anywhere;
+}
+html body > .v105-modal.v1212-audit-modal .v1212-feedback:not(:empty),
+html body > .v105-modal.v1212-audit-modal .v1223-run-status:not(:empty){
+  padding:8px 10px;
+  border:1px solid #3654ad;
+  border-radius:9px;
+  background:#090879;
+}
+html body > .v105-modal.v1212-audit-modal .v1223-insight .v1223-run-status{
+  margin:8px 0 2px;
+}
+@media(max-width:380px){
+  html body > .v105-modal.v1212-audit-modal .v1212-presets{gap:7px}
+  html body > .v105-modal.v1212-audit-modal .v1212-presets button{
+    flex:1 1 calc(50% - 7px);
+    white-space:normal!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .ljr-bc-overlay *,html body > .v105-modal.v1212-audit-modal .v1212-audit button{transition:none!important}
+}
