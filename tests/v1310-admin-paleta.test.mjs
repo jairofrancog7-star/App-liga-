@@ -7,7 +7,7 @@ test('V1310 paleta administrativa igual en producción y demo',()=>{
  assert.equal(css,read('demo/src/v1310-admin-paleta-unificada.css'));
  for(const html of ['index.html','demo/index.html']){
   const src=read(html);
-  assert.match(src,/src\/v1310-admin-paleta-unificada\.css\?v=20261010-v1310-admin-navy/);
+  assert.match(src,/src\/v1310-admin-paleta-unificada\.css\?v=20261010-v1311-navy-exact/);
   assert.ok(src.indexOf('src/v1310-admin-paleta-unificada.css')>src.indexOf('src/v1242-modals-liga-blue-controls.css')||html==='demo/index.html');
  }
 });
@@ -32,4 +32,24 @@ test('V1310 mantiene botones destructivos identificados y controles audiovisuale
  assert.match(adminJs,/function improveManage/);
  const notices=read('src/v1081-global-admin-notices.js');
  assert.match(notices,/data-v1081-save/);
+});
+
+test('V1311 confirma fondo azul marino real de todas las ventanas y tonos oscuros en tarjetas',()=>{
+ assert.match(css,/V1311 · corrección real de fondos/);
+ assert.match(css,/--ljr1310-bg:#071338/);
+ assert.match(css,/background-image:linear-gradient\(180deg,#0b1e4e 0%,#07173f 50%,#060f32 100%\)!important/);
+ assert.match(css,/\.cms-kind-grid>button/);
+ assert.match(css,/\.ljr-review-stats>div/);
+ assert.match(css,/\.ljr-review-device-results/);
+ for(const name of ['index.html','demo/index.html']){
+  assert.match(read(name),/v1310-admin-paleta-unificada\.css\?v=20261010-v1311-navy-exact/);
+ }
+});
+test('V1311 cubre al asistente local de Suspensión, que no usa el modal de Administración',()=>{
+ const suspension=read('src/v1232-suspension-official-blue.css');
+ assert.match(suspension,/V1311 · aviso de suspensión igual al azul marino/);
+ assert.match(suspension,/\.v1232-qa\{/);
+ assert.match(suspension,/background:#081940!important/);
+ assert.match(suspension,/\.v1232-actions button\{/);
+ assert.match(read('index.html'),/v1232-suspension-official-blue\.css\?v=20261010-v1311-suspension-navy/);
 });
