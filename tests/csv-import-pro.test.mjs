@@ -28,7 +28,7 @@ test('CSV: detecta duplicados, goles inválidos y rivales iguales',()=>{
 });
 test('CSV: protege exportación contra fórmulas y conserva las comillas',()=>{
  const csv=csvExport([['texto'],['=HYPERLINK("https://ejemplo")'],['Hola "liga"']]);
- assert.match(csv,/^\\uFEFF/);
+ assert.ok(csv.startsWith('\uFEFF'));
  assert.ok(csv.includes("'\u003dHYPERLINK"));
  assert.ok(csv.includes('Hola ""liga""'));
 });
