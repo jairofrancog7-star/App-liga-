@@ -20,7 +20,7 @@ function createHarness(admin={owner:true}){
   LJR_ADMIN_ROUTE:{routes:adminRoutes,open(route){calls.push(['route',route])}},
   LJR_V105_OPEN_TOOL(tool){calls.push(['tool',tool]);return true}
  };
- const document={querySelector(){return null}};
+ const document={querySelector(){return null},createElement(){return {textContent:'',remove(){}}},body:{appendChild(){}}};
  const ctx={window,document,location,navigator:{},localStorage:{setItem(){}},
    console,setTimeout(){return 0},clearTimeout(){},alert(){}};
  vm.runInNewContext(source,ctx,{filename:'v562-adminfut-access.js'});
