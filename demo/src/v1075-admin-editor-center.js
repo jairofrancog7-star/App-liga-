@@ -254,7 +254,7 @@ async function exportBackup(){
  if(!confirm('Se descargará un archivo JSON con contenido de administración que podría incluir datos personales de jugadores. Guárdalo en un lugar privado. ¿Continuar?'))return;
  try{
   const who=await verified();
-  if(!who.owner)throw Error('El respaldo completo solo puede exportarlo el presidente.');
+  if(!who.owner)throw Error('El respaldo completo solo pueden exportarlo las cuentas principales autorizadas por el servidor.');
   const data=await media().api('content?admin=1');
   if(!Array.isArray(data.items))throw Error('El servidor no devolvió los registros esperados.');
   const dump={schema:'ljr-admin-backup-v1',exportedAt:new Date().toISOString(),records:data.items};
@@ -282,7 +282,7 @@ function addPanel(dialog){
   '<button type="button" data-editor-open="review"><b>✓</b><span>Revisar avisos<small>Borradores y publicados</small></span></button>'+
   '<button type="button" data-editor-open="schedule"><b>◷</b><span>Programar avisos<small>Recordatorios en este teléfono</small></span></button>'+ 
   '<button type="button" data-editor-open="page"><b>▣</b><span>Editar páginas<small>Texto, fotos y secciones</small></span></button>'+ 
-  (media()?.admin?.owner?'<button type="button" data-editor-open="backup"><b>↓</b><span>Respaldo privado<small>Solo presidente</small></span></button>':'')+'</div>'+
+  (media()?.admin?.owner?'<button type="button" data-editor-open="backup"><b>↓</b><span>Respaldo privado<small>Solo acceso total verificado</small></span></button>':'')+'</div>'+
   '<p class="ljr-editor-security">🔒 Los visitantes solo consultan información. Editar y publicar requiere una sesión autorizada y permiso del servidor.</p>';
  home.after(box);
  box.addEventListener('click',event=>{

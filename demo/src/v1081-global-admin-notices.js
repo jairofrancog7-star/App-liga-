@@ -259,7 +259,7 @@ function makeAdminForm(prefill){
 async function showRoles(){
  if(!media()?.admin?.owner)return;
  const modal=dialog('Permisos de administradores',
- '<div class="v1081"><p class="v1081-note">Solo el presidente asigna cargos. El servidor valida cada modificación de avisos; los permisos del editor de otras secciones necesitan conectarse al mismo sistema de roles.</p>'+
+ '<div class="v1081"><p class="v1081-note">Solo las cuentas principales verificadas pueden asignar cargos. El servidor valida cada modificación de avisos; los permisos del editor de otras secciones necesitan conectarse al mismo sistema de roles.</p>'+
  '<div data-v1081-roles>Consultando...</div><p data-v1081-status class="v1081-status" role="status"></p></div>');
  const box=$('[data-v1081-roles]',modal);
  try{
