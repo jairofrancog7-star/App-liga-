@@ -127,8 +127,10 @@ function scoreOf(r){
 
 /* V1213: consultas de archivo, filtros y tarjetas adaptadas para móvil.
    Todos los marcadores provienen de fixtures oficiales; no se crean resultados. */
-const historyState={category:'all',year:'all',team:'all',query:'',sort:'newest',page:1,pageSize:12};
+const historyState={category:'all',year:'all',team:'all',query:'',sort:'newest',page:1,pageSize:10};
+let cachedOfficial=null,cachedOfficialRows=null,searchTimer=null;
 function rows(){
+  if(db&&db===cachedOfficial&&cachedOfficialRows)return cachedOfficialRows;
   const out=[];
   for(const [catId,cat] of Object.entries(db?.categories||{})){
     for(const block of cat?.fixtures||[]){
@@ -147,7 +149,9 @@ function rows(){
       }
     }
   }
-  return out.sort((a,b)=>b.stamp-a.stamp);
+  out.sort((a,b)=>b.stamp-a.stamp);
+  if(db){cachedOfficial=db;cachedOfficialRows=out;}
+  return out;
 }
 function filtered(all){
   const q=norm(historyState.query);
@@ -221,14 +225,22 @@ function cardMarkup(x,index){
   '</article>';
 }
 function resultsMarkup(all,list){
-  const shown=list.slice(0,historyState.page*historyState.pageSize);
+  const totalPages=Math.max(1,Math.ceil(list.length/historyState.pageSize));
+  historyState.page=Math.min(Math.max(1,historyState.page),totalPages);
+  const from=(historyState.page-1)*historyState.pageSize;
+  const shown=list.slice(from,from+historyState.pageSize);
   return '<section class="v164-history-results" aria-label="Resultados históricos">'+
     '<div class="v164-history-section-head"><h2>Partidos anteriores</h2><span>'+list.length+' resultado'+(list.length===1?'':'s')+'</span></div>'+
-    (shown.length?shown.map((x,i)=>cardMarkup(x,i)).join(''):
+    (shown.length?shown.map((x,i)=>cardMarkup(x,from+i)).join(''):
       '<div class="v164-history-empty"><b>'+(all.length?'Sin coincidencias':'Sin resultados publicados')+'</b><span>'+
       (all.length?'Prueba con otra categoría, equipo o año.':'Cuando la Liga publique marcadores oficiales aparecerán aquí.')+'</span></div>')+
-    (shown.length<list.length?'<button type="button" class="v164-history-more" data-v164-more>Ver más partidos ('+(list.length-shown.length)+' restantes)</button>':'')+
-    (list.length?'<p class="v164-history-showing">Mostrando '+shown.length+' de '+list.length+' resultados</p>':'')+
+    (list.length>historyState.pageSize?
+      '<div class="v164-history-pagination">'+
+        '<button type="button" data-v164-prev '+(historyState.page===1?'disabled':'')+'>Anterior</button>'+
+        '<span aria-live="polite">Página '+historyState.page+' de '+totalPages+'</span>'+
+        '<button type="button" data-v164-next '+(historyState.page===totalPages?'disabled':'')+'>Siguiente</button>'+
+      '</div>':'')+
+    (list.length?'<p class="v164-history-showing">Mostrando '+(from+1)+'–'+(from+shown.length)+' de '+list.length+' resultados</p>':'')+
   '</section>';
 }
 function markup(){
@@ -272,7 +284,9 @@ function bind(root){
   root.dataset.v164Bound='1';
   root.addEventListener('input',e=>{
     if(!e.target.matches('[data-v164-search]'))return;
-    historyState.query=e.target.value;historyState.page=1;updateResults();
+    historyState.query=e.target.value;historyState.page=1;
+    clearTimeout(searchTimer);
+    searchTimer=setTimeout(()=>{if(route()==='historyLog')updateResults()},180);
   });
   root.addEventListener('change',e=>{
     const t=e.target;
@@ -293,7 +307,8 @@ function bind(root){
       Object.assign(historyState,{category:'all',year:'all',team:'all',query:'',sort:'newest',page:1});
       render();return;
     }
-    if(t.hasAttribute('data-v164-more')){historyState.page++;updateResults();return}
+    if(t.hasAttribute('data-v164-next')){historyState.page++;updateResults();return}
+    if(t.hasAttribute('data-v164-prev')){historyState.page=Math.max(1,historyState.page-1);updateResults();return}
     if(t.hasAttribute('data-v164-copy')||t.hasAttribute('data-v164-share')){
       const idx=Number(t.getAttribute('data-v164-copy')??t.getAttribute('data-v164-share'));
       const match=filtered(rows())[idx];if(!match)return;
@@ -318,12 +333,14 @@ function render(){
 }
 
 async function load(){
+  const shared=window.LJR_OFFICIAL_DATA;
+  if(shared?.categories){db=shared;render();return db;}
   if(db){render();return db}
   if(loading)return loading;
   loading=(async()=>{
     for(const u of [LOCAL,REMOTE]){
       try{
-        const r=await fetch(u,{cache:'no-store'});
+        const r=await fetch(u,{cache:'default'});
         if(r.ok){db=await r.json();window.LJR_OFFICIAL_DATA=db;break}
       }catch(_){}
     }
@@ -337,7 +354,7 @@ function sync(){
   render();
   load();
 }
-window.addEventListener('hashchange',()=>requestAnimationFrame(sync));
+window.addEventListener('hashchange',()=>{clearTimeout(searchTimer);requestAnimationFrame(sync)});
 window.addEventListener('ljr:official-data',()=>{db=window.LJR_OFFICIAL_DATA||db;if(route()==='historyLog')render()});
 const screen=document.querySelector('#screen');
 if(screen)new MutationObserver(()=>{if(route()==='historyLog'&&!screen.querySelector('.v164-history-page'))requestAnimationFrame(sync)}).observe(screen,{childList:true,subtree:false});
