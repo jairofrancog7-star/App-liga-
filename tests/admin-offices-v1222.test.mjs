@@ -65,3 +65,27 @@ test('V1222 controles de árbitro: categoría sí, equipo no',()=>{
  assert.match(script,/team\.disabled=referee/);
  assert.match(script,/person\.value=''/);
 });
+
+test('V1222 conserva Administración abierta si el directorio falla o no hay permiso',()=>{
+ const cases=[
+  {overrides:{LJR_V105_OPEN_TOOL:()=>false},expected:'No fue posible'},
+  {overrides:{LJR_V105_OPEN_TOOL:()=>{throw Error('fallo')}},expected:'Error al abrir'},
+  {overrides:{LJR_MEDIA:{admin:null}},expected:'Inicia sesión'},
+  {overrides:{LJR_V105_OPEN_TOOL:undefined},expected:'aún no terminó'}
+ ];
+ for(const x of cases){
+  const {api}=harness(x.overrides);let closed=false;
+  const dialog={querySelector(){return {click(){closed=true}}}},feedback={textContent:''};
+  assert.equal(api.openDirectory('delegates',dialog,feedback),false);
+  assert.equal(closed,false);
+  assert.match(feedback.textContent,new RegExp(x.expected,'i'));
+ }
+});
+test('V1222 no abre rutas ajenas a los dos directorios autorizados',()=>{
+ const {api,calls}=harness();let closed=false;
+ const dialog={querySelector(){return {click(){closed=true}}}},feedback={textContent:''};
+ assert.equal(api.openDirectory('backup-export',dialog,feedback),false);
+ assert.equal(closed,false);
+ assert.deepEqual(calls,[]);
+ assert.match(feedback.textContent,/no reconocido/i);
+});
