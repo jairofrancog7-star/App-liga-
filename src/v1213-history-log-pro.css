@@ -68,3 +68,35 @@ body[data-app-route="historyLog"] .v164-history-feedback{margin:0 16px;min-heigh
 
 /* Respetar las iniciales cuando un escudo no carga. */
 body[data-app-route="historyLog"] .v164-history-logo img[style*="display: none"]{display:none!important}
+
+/* V1217 — sólo diez partidos en memoria visual por página, controles táctiles cómodos. */
+body[data-app-route="historyLog"] .v164-history-pagination{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 0 12px;width:100%;
+}
+body[data-app-route="historyLog"] .v164-history-pagination button{
+  min-height:42px;min-width:0;flex:1 1 35%;padding:10px 12px;
+  border:1px solid #2d61ab;border-radius:11px;
+  background:#103985;color:#e8f6ff;font-size:12px;font-weight:800;
+}
+body[data-app-route="historyLog"] .v164-history-pagination button:disabled{
+  opacity:.38;cursor:default;
+}
+body[data-app-route="historyLog"] .v164-history-pagination>span{
+  flex:0 0 auto;color:#bfd7f7;font-size:11px;text-align:center;
+}
+body[data-app-route="historyLog"] .v164-history-match{
+  content-visibility:auto;contain-intrinsic-size:auto 195px;
+}
+@media (max-width:365px){
+  body[data-app-route="historyLog"] .v164-history-pagination{gap:6px}
+  body[data-app-route="historyLog"] .v164-history-pagination button{padding:10px 6px;font-size:11px}
+  body[data-app-route="historyLog"] .v164-history-pagination>span{font-size:10px}
+}
+@media (prefers-reduced-motion:reduce){
+  body[data-app-route="historyLog"] .v164-history-page *,
+  body[data-app-route="historyLog"] .v164-history-page *::before,
+  body[data-app-route="historyLog"] .v164-history-page *::after{
+    animation-duration:.01ms!important;transition-duration:.01ms!important;
+  }
+}
