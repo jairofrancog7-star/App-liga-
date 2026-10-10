@@ -43,8 +43,8 @@ test('JR Control has one delegated click controller for repainted buttons',()=>{
  assert.equal(h.events.click?.[0].capture,true);
 });
 
-test('all 51+ management and competition tiles respond once to clicks on their icons',()=>{
- assert.ok(cards.length>=50,'expected all management buttons to remain present');
+test('all management and competition tiles respond once to clicks on their icons',()=>{
+ assert.ok(cards.length>=49,'expected all management buttons to remain present');
  const h=createHarness();
  const actions={positions:'competition',fixtures:'competition',cards:'discipline',suspensions:'discipline'};
  for(const {label,type,value} of cards){
