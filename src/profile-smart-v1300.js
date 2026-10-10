@@ -30,7 +30,9 @@ function enhanceMenu(){
   row('Cuenta en la nube','accountCloud','cloud'));
 }
 function status(msg,isError=false){
- const target=$('[data-v1300-status]');if(target){target.textContent=msg;target.dataset.error=String(isError);}
+ let target=$('[data-v1300-status]');
+ if(!target){const host=$('[data-v1300-panel]')||$('[data-v569-page="password"]');if(host){target=document.createElement('div');target.dataset.v1300Status='';target.setAttribute('role','status');target.className='v1300-message';host.append(target)}}
+ if(target){target.textContent=msg;target.dataset.error=String(isError);}
 }
 const part=(title,contents)=>'<section class="v1300-panel"><h2>'+title+'</h2>'+contents+'</section>';
 const detail=(title,body,icon='shield')=>'<div class="v1300-detail"><span class="v1300-mark">'+ic[icon]+'</span><div><strong>'+title+'</strong><p>'+body+'</p></div></div>';
@@ -62,7 +64,8 @@ function applyPrefs(){
  const hero=$('[data-v569-owned] .v569-profile-copy p');
  if(hero){
   if(!hero.dataset.v1300Original)hero.dataset.v1300Original=hero.textContent||'';
-  hero.textContent=p.privateContact?'Contacto oculto':hero.dataset.v1300Original;
+  const masked=p.privateContact?'Contacto oculto':hero.dataset.v1300Original;
+  if(hero.textContent!==masked)hero.textContent=masked;
  }
 }
 function signals(a){
@@ -219,7 +222,7 @@ async function cloudAction(action,btn){
   }[action]||'Operación terminada.');
   if(['signup','login','logout','others','passkey-login','passkey-register'].includes(action))await cloudState();
  }catch(err){cloudOutput(err?.message||'No se pudo completar la operación.',true)}
- finally{if(root?.isConnected)btn.disabled=previous}
+ finally{if(root?.isConnected){btn.disabled=previous;if(['signup','login','logout','others','passkey-login','passkey-register'].includes(action))void cloudState();}}
 }
 async function localAI(){
  const button=$('[data-v1300-ai-run]'),statusEl=$('[data-v1300-ai-state]'),output=$('[data-v1300-ai-answer]');
@@ -253,7 +256,7 @@ function mountPasswordHelper(){
  const root=$('[data-v569-page="password"]');if(!root||root.querySelector('[data-v1300-password-help]'))return;
  const field=$('[data-v569-new-pass]',root);if(!field)return;
  const panel=document.createElement('div');panel.className='v1300-pass-help';panel.dataset.v1300PasswordHelp='';
- panel.innerHTML='<div data-v1300-pass-info aria-live="polite">Tu contraseña se analiza únicamente en el dispositivo.</div><button type="button" data-v1300-password-create>Generar contraseña fuerte</button>';
+ panel.innerHTML='<div data-v1300-pass-info aria-live="polite">Tu contraseña se analiza únicamente en el dispositivo.</div><button type="button" data-v1300-password-create>Generar contraseña fuerte</button><button type="button" data-v1300-password-copy>Copiar contraseña</button>'; 
  field.closest('.v569-field')?.after(panel);
  function update(){const sc=scorePassword(field.value);panel.querySelector('[data-v1300-pass-info]').textContent='Fortaleza local '+sc.score+'/4 · '+sc.msg;}
  field.addEventListener('input',update,{passive:true});update();
@@ -284,7 +287,7 @@ document.addEventListener('change',e=>{
  if(savePrefs(a,p)){applyPrefs();status('Preferencia guardada')}
 });
 document.addEventListener('click',async e=>{
- const target=e.target.closest?.('[data-v1300-ai-run],[data-v1300-cloud-action],[data-v1300-permission-request],[data-v1300-password-create]');
+ const target=e.target.closest?.('[data-v1300-ai-run],[data-v1300-cloud-action],[data-v1300-permission-request],[data-v1300-password-create],[data-v1300-password-copy]');
  if(!target)return;
  if(target.matches('[data-v1300-ai-run]')){e.preventDefault();await localAI();return;}
  if(target.matches('[data-v1300-cloud-action]')){e.preventDefault();await cloudAction(target.dataset.v1300CloudAction,target);return;}
@@ -294,6 +297,13 @@ document.addEventListener('click',async e=>{
    const el=$('[data-v1300-permission]');if(el)el.textContent=permissionText(res);
    target.disabled=res==='granted';
   }catch{status('No se pudo cambiar el permiso. Revisa la configuración de Chrome.',true);}
+  return;
+ }
+ if(target.matches('[data-v1300-password-copy]')){
+  e.preventDefault();
+  const root=target.closest('[data-v569-page]'),input=$('[data-v569-new-pass]',root);
+  if(!input?.value)return status('Primero escribe o genera una contraseña.',true);
+  try{await navigator.clipboard.writeText(input.value);status('Contraseña copiada. Guárdala en un gestor de contraseñas.')}catch{status('No se pudo copiar. Usa el gestor de contraseñas del teléfono.',true)}
   return;
  }
  if(target.matches('[data-v1300-password-create]')){
@@ -307,7 +317,8 @@ document.addEventListener('click',async e=>{
 });
 window.addEventListener('hashchange',()=>setTimeout(mount,80));
 const observer=new MutationObserver(()=>{if(route()==='profile'||validRoutes.has(route())||route()==='accountPassword')queueMicrotask(mount)});
-document.addEventListener('DOMContentLoaded',()=>{const sc=$('#screen');if(sc)observer.observe(sc,{childList:true,subtree:false});void mount()},{once:true});
-if(document.readyState!=='loading'){const sc=$('#screen');if(sc)observer.observe(sc,{childList:true,subtree:false});void mount();}
+window.addEventListener('ljr:profile-updated',()=>setTimeout(mount,60));
+document.addEventListener('DOMContentLoaded',()=>{const sc=$('#screen');if(sc)observer.observe(sc,{childList:true,subtree:true});void mount()},{once:true});
+if(document.readyState!=='loading'){const sc=$('#screen');if(sc)observer.observe(sc,{childList:true,subtree:true});void mount();}
 window.LJR_PROFILE_V1300={signals,readPrefs,scorePassword,cloudConfig};
 })();
