@@ -38,8 +38,8 @@ jobs:
             exit 0
           fi
           case "$NOTICE_API" in https://*) ;; *) echo "URL del servidor debe comenzar con https://" >&2; exit 1;; esac
-          curl --fail-with-body --silent --show-error --max-time 240 \\
-            -X POST -H "X-Job-Token: $NOTICE_JOB_TOKEN" \\
+          curl --fail-with-body --silent --show-error --max-time 240 \
+            -X POST -H "X-Job-Token: $NOTICE_JOB_TOKEN" \
             "${NOTICE_API%/}/jobs/dispatch" >/dev/null
           echo "Programaciones del backend procesadas; el feed público se sirve desde ese backend."
       - name: Instalar generador PNG y cliente HTTP
