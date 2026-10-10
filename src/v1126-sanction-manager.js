@@ -17,7 +17,7 @@ window.LJR_SANCTION_ENHANCE=function(api){
  const safeRead=()=>{const a=read(KEY,[]);return Array.isArray(a)?a.filter(x=>x&&typeof x==='object'&&typeof x.player==='string').slice(0,100):[]};
  let drafts=safeRead();
  const legacy=read('v160-sanction-draft',null);
- if(legacy?.player&&!drafts.some(x=>x.id==='legacy-local-sanction')){
+ if(legacy?.player&&!drafts.some(x=>x.id==='legacy-local-sanction'||(legacy.id&&x.id===legacy.id)||(x.player===legacy.player&&x.team===legacy.team&&String(x.cat||'')===String(legacy.cat||'')&&x.updatedAt===legacy.updatedAt))){
   drafts.unshift({...legacy,id:'legacy-local-sanction',status:'Borrador local',createdAt:legacy.updatedAt||new Date().toISOString()});
   write(KEY,drafts);
  }
@@ -167,7 +167,10 @@ window.LJR_SANCTION_ENHANCE=function(api){
  }
  function saveDraft(){
   const x=getDraft(false);if(!x)return null;
-  if(x.matches&&(x.served>x.matches||x.served<0)){feedback('Revisa el número de partidos cumplidos.');return null}
+  if(x.sanctionType==='matches'||x.sanctionType==='red'){
+   const total=Number(value('[data-matches]')),served=Number(value('[data-served]'));
+   if(!Number.isInteger(total)||total<1||total>999||!Number.isInteger(served)||served<0||served>total){feedback('Revisa los partidos de suspensión y cumplidos.');return null}
+  }
   activeId=x.id;
   drafts=[x,...drafts.filter(v=>v.id!==x.id)].slice(0,100);
   write(KEY,drafts);
