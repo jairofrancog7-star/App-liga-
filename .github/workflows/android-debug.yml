@@ -62,7 +62,12 @@ jobs:
         run: npx cap sync android
 
       - name: Validate native APK features
-        run: node --test tests/calendar-event.test.mjs tests/android-video-capture.test.mjs
+        run: node --test tests/calendar-event.test.mjs tests/android-video-capture.test.mjs tests/android-fcm-preflight.test.mjs
+
+      - name: Check Firebase Android readiness without exposing credentials
+        env:
+          FIREBASE_ANDROID_CONFIG_B64: ${{ secrets.FIREBASE_ANDROID_CONFIG_B64 }}
+        run: node scripts/android-fcm-preflight.mjs
 
       - name: Configure native APK features and version
         env:
@@ -90,7 +95,7 @@ jobs:
         run: |
           cp android/app/build/outputs/apk/debug/app-debug.apk Liga-Juventino.apk
           APP_BUILD=$(sed -n 's/.*<meta name="app-build" content="\([^"]*\)".*/\1/p' index.html | head -n1)
-          NOTES="APK Android de Liga Juventino actualizado automáticamente desde main. Build: ${APP_BUILD:-desconocido}. Commit: ${GITHUB_SHA}. Incluye las funciones nativas actuales, entre ellas creación automática de partidos en Google Calendar."
+          NOTES="APK Android de Liga Juventino actualizado automáticamente desde main. Build: ${APP_BUILD:-desconocido}. Commit: ${GITHUB_SHA}. Incluye las funciones nativas actuales, entre ellas creación automática de partidos en Google Calendar. Estado de Push remoto APK: ${LJR_APK_FCM_STATUS:-pendiente de configuración y prueba en Android}."
           if gh release view android-latest >/dev/null 2>&1; then
             gh release upload android-latest Liga-Juventino.apk --clobber
             gh release edit android-latest --title "Liga Juventino Android" --notes "$NOTES"
