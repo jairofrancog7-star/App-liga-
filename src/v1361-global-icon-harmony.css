@@ -1,0 +1,248 @@
+/* V1361 — Sistema global de iconos. Solo presentación.
+   No modifica la geometría de tarjetas/tablas, los escudos, las fotos,
+   las rutas, los listeners ni las acciones de los controles.
+   Reglas deliberadamente acotadas para no alterar gráficas, canchas ni logos. */
+:root{
+  --ljr-glyph-gold:#f9d177;
+  --ljr-glyph-mint:#77e1b3;
+  --ljr-glyph-coral:#ff9a9b;
+  --ljr-glyph-violet:#c4afff;
+  --ljr-glyph-sky:#afcdfb;
+  --ljr-glyph-ink:#f2f5ff;
+}
+
+/* Una caja consistente para los cinco símbolos de navegación.
+   V51 determina el espacio de 25px; se conserva sin ensanchar la barra. */
+html body .bottom-nav .nav-item .nav-icon{
+  display:grid!important;
+  place-items:center!important;
+  line-height:1!important;
+  vertical-align:middle!important;
+  flex-shrink:0!important;
+}
+html body .bottom-nav .nav-item .nav-icon svg{
+  display:block!important;
+  box-sizing:border-box!important;
+  margin:0 auto!important;
+  vertical-align:middle!important;
+  overflow:hidden!important;
+}
+html body .bottom-nav .nav-item[data-route="home"] .nav-icon{color:var(--ljr-glyph-violet)!important}
+html body .bottom-nav .nav-item[data-route="competition"] .nav-icon{color:var(--ljr-glyph-gold)!important}
+html body .bottom-nav .nav-item[data-route="video"] .nav-icon{color:var(--ljr-glyph-coral)!important}
+html body .bottom-nav .nav-item[data-route="fantasy"] .nav-icon{color:var(--ljr-glyph-mint)!important}
+html body .bottom-nav .nav-item[data-route="more"] .nav-icon{color:var(--ljr-glyph-sky)!important}
+html body .bottom-nav .nav-item:not(.active) .nav-icon{opacity:.86!important}
+html body .bottom-nav .nav-item.active .nav-icon{opacity:1!important}
+html body .bottom-nav .nav-item .nav-icon svg.ljr-icon{color:inherit!important}
+
+/* Iconos vectoriales que son HIJOS DIRECTOS de controles, no ilustraciones
+   en tarjetas. Solo pictogramas con viewBox estándar; nunca fotos o logos. */
+html body :is(#screen,.liga-media-modal,.v105-modal,.ljr-install-page,.ljr-install-overlay)
+:is(button,a,[role="button"]) >
+:is(svg[viewBox="0 0 24 24"],svg[viewBox="0 0 28 28"],svg[viewBox="0 0 32 32"]){
+  box-sizing:border-box!important;
+  width:min(23px,72%)!important;
+  height:auto!important;
+  max-height:23px!important;
+  aspect-ratio:1/1;
+  flex-shrink:0!important;
+  vertical-align:middle!important;
+}
+
+/* Los iconos dentro de un recuadro se alinean al centro sin tocar
+   el tamaño del recuadro ni las medidas establecidas de cada pantalla. */
+html body :is(#screen,.liga-media-modal,.v105-modal,.ljr-install-page,.ljr-install-overlay)
+:is(.ljr-admin-tile-icon,.ljr-simple-icon,.v1004-pub-mini-icon,
+    .v1004-pub-primary-icon,.v1004-pub-editor-icon,.v642-pub-badge,
+    .ljr-install-choice-icon,.ljr-install-guide-icon,.v990-search-icon,
+    .csvpro-upload){
+  box-sizing:border-box!important;
+  display:grid!important;
+  place-items:center!important;
+  flex-shrink:0!important;
+  line-height:1!important;
+  vertical-align:middle!important;
+  background-clip:padding-box!important;
+}
+html body :is(#screen,.liga-media-modal,.v105-modal,.ljr-install-page,.ljr-install-overlay)
+:is(.ljr-admin-tile-icon,.ljr-simple-icon,.v1004-pub-mini-icon,
+    .v1004-pub-primary-icon,.v1004-pub-editor-icon,.v642-pub-badge,
+    .ljr-install-choice-icon,.ljr-install-guide-icon,.v990-search-icon)
+> svg{
+  box-sizing:border-box!important;
+  display:block!important;
+  width:clamp(19px,65%,26px)!important;
+  height:clamp(19px,65%,26px)!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  margin:0 auto!important;
+  transform:none!important;
+  color:inherit!important;
+  vertical-align:middle!important;
+}
+
+/* Administración: el icono va centrado en un cuadrado legible.
+   No se cambia la distribución de los botones del CMS. */
+html body .liga-media-modal .ljr-admin-tile-icon{
+  width:36px!important;
+  height:36px!important;
+  min-width:36px!important;
+  min-height:36px!important;
+  flex:0 0 36px!important;
+  border-radius:11px!important;
+  overflow:hidden!important;
+}
+html body .liga-media-modal .ljr-admin-tile-icon svg{
+  width:23px!important;
+  height:23px!important;
+  max-width:23px!important;
+  max-height:23px!important;
+  display:block!important;
+  margin:auto!important;
+  color:inherit!important;
+}
+@media(max-width:380px){
+  html body .liga-media-modal .ljr-admin-tile-icon{
+    width:32px!important;height:32px!important;
+    min-width:32px!important;min-height:32px!important;
+    flex-basis:32px!important;
+  }
+  html body .liga-media-modal .ljr-admin-tile-icon svg{
+    width:21px!important;height:21px!important;
+    max-width:21px!important;max-height:21px!important;
+  }
+}
+
+/* Variación cromática POR TARJETA, no por página entera.
+   Mantiene la superficie azul de la liga y da jerarquía a cada símbolo. */
+html body .liga-media-modal
+:is(.cms-kind-grid,.ljr-editor-hub-grid,.ljr-admin-tool-grid,.ljr-admin-tools-grid)
+> :nth-child(5n + 1) .ljr-admin-tile-icon,
+html body .liga-media-modal .ljr-admin-tile:nth-of-type(5n + 1) .ljr-admin-tile-icon{
+  color:var(--ljr-glyph-gold)!important;
+  background:rgba(249,209,119,.12)!important;
+  border-color:rgba(249,209,119,.35)!important;
+}
+html body .liga-media-modal
+:is(.cms-kind-grid,.ljr-editor-hub-grid,.ljr-admin-tool-grid,.ljr-admin-tools-grid)
+> :nth-child(5n + 2) .ljr-admin-tile-icon,
+html body .liga-media-modal .ljr-admin-tile:nth-of-type(5n + 2) .ljr-admin-tile-icon{
+  color:var(--ljr-glyph-mint)!important;
+  background:rgba(119,225,179,.12)!important;
+  border-color:rgba(119,225,179,.35)!important;
+}
+html body .liga-media-modal
+:is(.cms-kind-grid,.ljr-editor-hub-grid,.ljr-admin-tool-grid,.ljr-admin-tools-grid)
+> :nth-child(5n + 3) .ljr-admin-tile-icon,
+html body .liga-media-modal .ljr-admin-tile:nth-of-type(5n + 3) .ljr-admin-tile-icon{
+  color:var(--ljr-glyph-coral)!important;
+  background:rgba(255,154,155,.12)!important;
+  border-color:rgba(255,154,155,.35)!important;
+}
+html body .liga-media-modal
+:is(.cms-kind-grid,.ljr-editor-hub-grid,.ljr-admin-tool-grid,.ljr-admin-tools-grid)
+> :nth-child(5n + 4) .ljr-admin-tile-icon,
+html body .liga-media-modal .ljr-admin-tile:nth-of-type(5n + 4) .ljr-admin-tile-icon{
+  color:var(--ljr-glyph-violet)!important;
+  background:rgba(196,175,255,.12)!important;
+  border-color:rgba(196,175,255,.35)!important;
+}
+html body .liga-media-modal
+:is(.cms-kind-grid,.ljr-editor-hub-grid,.ljr-admin-tool-grid,.ljr-admin-tools-grid)
+> :nth-child(5n + 5) .ljr-admin-tile-icon,
+html body .liga-media-modal .ljr-admin-tile:nth-of-type(5n + 5) .ljr-admin-tile-icon{
+  color:var(--ljr-glyph-sky)!important;
+  background:rgba(175,205,251,.12)!important;
+  border-color:rgba(175,205,251,.35)!important;
+}
+
+/* Tarjetas rápidas de administrador en el inicio. */
+html body .v620-admin-actions>button>span{
+  box-sizing:border-box!important;
+  display:grid!important;
+  place-items:center!important;
+  margin:0 auto!important;
+  line-height:1!important;
+  overflow:hidden!important;
+}
+html body .v620-admin-actions>button:nth-child(4n + 1)>span{color:var(--ljr-glyph-gold)!important}
+html body .v620-admin-actions>button:nth-child(4n + 2)>span{color:var(--ljr-glyph-mint)!important}
+html body .v620-admin-actions>button:nth-child(4n + 3)>span{color:var(--ljr-glyph-violet)!important}
+html body .v620-admin-actions>button:nth-child(4n + 4)>span{color:var(--ljr-glyph-coral)!important}
+html body .v620-admin-actions>button>span svg{
+  display:block!important;
+  width:min(23px,80%)!important;
+  height:auto!important;
+  max-height:23px!important;
+  margin:auto!important;
+}
+
+/* Herramientas: tamaños medianos, bien situados dentro del control.
+   Sin cambiar el botón de Comparar ni su controlador de eventos. */
+html body #screen .v446-stats-ref-compare svg.v1360-compare-icon{
+  display:block!important;
+  box-sizing:border-box!important;
+  width:22px!important;
+  height:22px!important;
+  min-width:22px!important;
+  max-width:22px!important;
+  max-height:22px!important;
+  flex:0 0 22px!important;
+  color:var(--ljr-glyph-gold)!important;
+  margin:0!important;
+  vertical-align:middle!important;
+}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"])
+#screen .v1073-dashboard-actions button:nth-child(4n + 1) .v1073-icon{
+  color:var(--ljr-glyph-mint)!important;
+}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"])
+#screen .v1073-dashboard-actions button:nth-child(4n + 2) .v1073-icon{
+  color:var(--ljr-glyph-gold)!important;
+}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"])
+#screen .v1073-dashboard-actions button:nth-child(4n + 3) .v1073-icon{
+  color:var(--ljr-glyph-violet)!important;
+}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"])
+#screen .v1073-dashboard-actions button:nth-child(4n + 4) .v1073-icon{
+  color:var(--ljr-glyph-coral)!important;
+}
+
+/* Publicaciones y herramientas de instalación: evitar todos los iconos cyan.
+   Sus recuadros, logotipos y textos siguen usando los tamaños existentes. */
+html body[data-app-route="publicationCenter"] .v1004-pub-primary-icon{
+  color:var(--ljr-glyph-gold)!important;
+}
+html body[data-app-route="publicationCenter"] .v1004-pub-mini:nth-child(4n + 1) .v1004-pub-mini-icon{
+  color:var(--ljr-glyph-mint)!important;
+}
+html body[data-app-route="publicationCenter"] .v1004-pub-mini:nth-child(4n + 2) .v1004-pub-mini-icon{
+  color:var(--ljr-glyph-violet)!important;
+}
+html body[data-app-route="publicationCenter"] .v1004-pub-mini:nth-child(4n + 3) .v1004-pub-mini-icon{
+  color:var(--ljr-glyph-coral)!important;
+}
+html body[data-app-route="publicationCenter"] .v1004-pub-mini:nth-child(4n + 4) .v1004-pub-mini-icon{
+  color:var(--ljr-glyph-sky)!important;
+}
+html body :is(.ljr-install-page,.ljr-install-overlay) .ljr-install-choice:nth-child(3n + 1) .ljr-install-choice-icon{
+  color:var(--ljr-glyph-mint)!important;
+}
+html body :is(.ljr-install-page,.ljr-install-overlay) .ljr-install-choice:nth-child(3n + 2) .ljr-install-choice-icon{
+  color:var(--ljr-glyph-gold)!important;
+}
+html body :is(.ljr-install-page,.ljr-install-overlay) .ljr-install-choice:nth-child(3n + 3) .ljr-install-choice-icon{
+  color:var(--ljr-glyph-violet)!important;
+}
+
+/* Los emojis y las fuentes de símbolos usadas como iconos tienen centro óptico.
+   No se modifica el texto de los botones. */
+html body :is(#screen,.liga-media-modal,.v105-modal)
+:is(button,a,[role="button"]) :is(.material-icons,.material-symbols-rounded,.fa,.fas,.far){
+  font-size:clamp(18px,5vw,23px)!important;
+  line-height:1!important;
+  vertical-align:middle!important;
+  flex-shrink:0!important;
+}
