@@ -254,3 +254,10 @@ html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1074-butto
  background:linear-gradient(130deg,#1658ad,#13607f)!important;
  border-color:rgba(89,225,255,.56)!important;
 }
+
+/* V1093: WhatsApp personal, botón compacto dentro del grupo de envíos. */
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1074-flow [data-v1074-wa-manual]{
+ background:linear-gradient(135deg,#0e7c65,#11687b)!important;
+ border-color:rgba(106,248,198,.55)!important;
+ color:#fff!important;
+}
