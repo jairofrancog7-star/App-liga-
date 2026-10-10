@@ -1,29 +1,46 @@
 /* V1082 — Ajustes de notificaciones oficiales sin huecos ni botones sobredimensionados */
-#screen .v1082-push{box-sizing:border-box;width:calc(100% - 22px);max-width:880px;margin:12px auto 15px;padding:14px;border:1px solid #3163ad;border-radius:20px;background:linear-gradient(155deg,#18398c 0%,#111e63 58%,#0b154e 100%);color:#ecf7ff;box-shadow:0 7px 20px rgba(0,4,36,.24);display:grid;gap:10px}
-#screen .v1082-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-#screen .v1082-head span:first-child{display:grid;gap:3px}
-#screen .v1082-head small{font:800 10px/1.2 system-ui,sans-serif;letter-spacing:.1em;color:#54e3f8}
-#screen .v1082-head strong{font:800 clamp(16px,4vw,20px)/1.25 system-ui,sans-serif;color:white}
-#screen .v1082-head em{font-style:normal;font-size:11px;color:#a4c8ef}
-#screen .v1082-signal{background:#14398c;border:1px solid #3976b9;color:#59e9ff;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;font-size:22px;flex:none}
-#screen .v1082-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-#screen .v1082-filters label{display:grid;gap:4px;color:#c9dfff;font:650 11px/1.3 system-ui,sans-serif;min-width:0}
-#screen .v1082-filters label:nth-child(2){grid-column:auto}
-#screen .v1082-filters label:nth-child(3){grid-column:1/-1}
-#screen .v1082-filters :is(input,select){box-sizing:border-box;display:block;width:100%;min-width:0;height:38px;padding:6px 9px;color:#f5ffff;background:#10296f;border:1px solid #477ab9;border-radius:10px;outline:none;font:650 12px system-ui,sans-serif}
-#screen .v1082-filters input::placeholder{color:#8cb0d7}
-#screen .v1082-filters :is(input,select):focus-visible{border-color:#4ce0f3;outline:2px solid #37d3fa}
-#screen .v1082-types{border:1px solid rgba(86,153,241,.35);border-radius:11px;padding:8px 10px;background:#112969}
-#screen .v1082-types summary{cursor:pointer;color:#cff3ff;font-size:12px;font-weight:750}
-#screen .v1082-types>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:12px 0 3px}
-#screen .v1082-types label{display:flex;align-items:center;gap:7px;font-size:11px;color:#e1edff}
-#screen .v1082-types input{accent-color:#11d7ed;width:15px;height:15px}
-#screen .v1082-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-#screen .v1082-actions button{min-height:40px;min-width:0;padding:9px 7px;border-radius:12px;cursor:pointer;font:800 12px/1.2 system-ui,sans-serif;border:1px solid #2fcdf5;background:linear-gradient(105deg,#17d4e6,#1496dd);color:#08265a}
-#screen .v1082-actions button+button{border-color:#4c80c4;background:#152f77;color:#d7edff}
-#screen .v1082-actions button:disabled{opacity:.58;cursor:not-allowed}
-#screen .v1082-actions button:focus-visible{outline:2px solid #76f1ff;outline-offset:2px}
-#screen .v1082-status{margin:0;font-size:12px;line-height:1.4;color:#d3f4ff}
-#screen .v1082-note{color:#9ab9d7;font-size:10.5px;line-height:1.4}
-@media(min-width:650px){#screen .v1082-filters{grid-template-columns:repeat(3,minmax(0,1fr))}#screen .v1082-filters label:nth-child(3){grid-column:auto}}
-@media(max-width:350px){#screen .v1082-push{width:calc(100% - 14px);padding:10px}#screen .v1082-actions button{font-size:11px}}
+:is(#screen, .v920-registration-modal) .v1082-push{box-sizing:border-box;width:calc(100% - 22px);max-width:880px;margin:12px auto 15px;padding:14px;border:1px solid #3163ad;border-radius:20px;background:linear-gradient(155deg,#18398c 0%,#111e63 58%,#0b154e 100%);color:#ecf7ff;box-shadow:0 7px 20px rgba(0,4,36,.24);display:grid;gap:10px}
+:is(#screen, .v920-registration-modal) .v1082-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+:is(#screen, .v920-registration-modal) .v1082-head span:first-child{display:grid;gap:3px}
+:is(#screen, .v920-registration-modal) .v1082-head small{font:800 10px/1.2 system-ui,sans-serif;letter-spacing:.1em;color:#54e3f8}
+:is(#screen, .v920-registration-modal) .v1082-head strong{font:800 clamp(16px,4vw,20px)/1.25 system-ui,sans-serif;color:white}
+:is(#screen, .v920-registration-modal) .v1082-head em{font-style:normal;font-size:11px;color:#a4c8ef}
+:is(#screen, .v920-registration-modal) .v1082-signal{background:#14398c;border:1px solid #3976b9;color:#59e9ff;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;font-size:22px;flex:none}
+:is(#screen, .v920-registration-modal) .v1082-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+:is(#screen, .v920-registration-modal) .v1082-filters label{display:grid;gap:4px;color:#c9dfff;font:650 11px/1.3 system-ui,sans-serif;min-width:0}
+:is(#screen, .v920-registration-modal) .v1082-filters label:nth-child(2){grid-column:auto}
+:is(#screen, .v920-registration-modal) .v1082-filters label:nth-child(3){grid-column:1/-1}
+:is(#screen, .v920-registration-modal) .v1082-filters :is(input,select){box-sizing:border-box;display:block;width:100%;min-width:0;height:38px;padding:6px 9px;color:#f5ffff;background:#10296f;border:1px solid #477ab9;border-radius:10px;outline:none;font:650 12px system-ui,sans-serif}
+:is(#screen, .v920-registration-modal) .v1082-filters input::placeholder{color:#8cb0d7}
+:is(#screen, .v920-registration-modal) .v1082-filters :is(input,select):focus-visible{border-color:#4ce0f3;outline:2px solid #37d3fa}
+:is(#screen, .v920-registration-modal) .v1082-types{border:1px solid rgba(86,153,241,.35);border-radius:11px;padding:8px 10px;background:#112969}
+:is(#screen, .v920-registration-modal) .v1082-types summary{cursor:pointer;color:#cff3ff;font-size:12px;font-weight:750}
+:is(#screen, .v920-registration-modal) .v1082-types>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:12px 0 3px}
+:is(#screen, .v920-registration-modal) .v1082-types label{display:flex;align-items:center;gap:7px;font-size:11px;color:#e1edff}
+:is(#screen, .v920-registration-modal) .v1082-types input{accent-color:#11d7ed;width:15px;height:15px}
+:is(#screen, .v920-registration-modal) .v1082-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+:is(#screen, .v920-registration-modal) .v1082-actions button{min-height:40px;min-width:0;padding:9px 7px;border-radius:12px;cursor:pointer;font:800 12px/1.2 system-ui,sans-serif;border:1px solid #2fcdf5;background:linear-gradient(105deg,#17d4e6,#1496dd);color:#08265a}
+:is(#screen, .v920-registration-modal) .v1082-actions button+button{border-color:#4c80c4;background:#152f77;color:#d7edff}
+:is(#screen, .v920-registration-modal) .v1082-actions button:disabled{opacity:.58;cursor:not-allowed}
+:is(#screen, .v920-registration-modal) .v1082-actions button:focus-visible{outline:2px solid #76f1ff;outline-offset:2px}
+:is(#screen, .v920-registration-modal) .v1082-status{margin:0;font-size:12px;line-height:1.4;color:#d3f4ff}
+:is(#screen, .v920-registration-modal) .v1082-note{color:#9ab9d7;font-size:10.5px;line-height:1.4}
+@media(min-width:650px){:is(#screen, .v920-registration-modal) .v1082-filters{grid-template-columns:repeat(3,minmax(0,1fr))}:is(#screen, .v920-registration-modal) .v1082-filters label:nth-child(3){grid-column:auto}}
+@media(max-width:350px){:is(#screen, .v920-registration-modal) .v1082-push{width:calc(100% - 14px);padding:10px}:is(#screen, .v920-registration-modal) .v1082-actions button{font-size:11px}}
+
+
+/* V1210: las mismas funciones Push dentro del modal de registro móvil. */
+.v920-registration-modal [data-r-push-slot] .v1082-push{
+ box-sizing:border-box;width:100%!important;max-width:100%!important;
+ margin:0!important;padding:12px!important;border-radius:14px!important;
+ background:linear-gradient(145deg,#143b93,#091c63)!important;
+ border-color:rgba(104,164,255,.42)!important;
+}
+.v920-registration-modal .v1082-filters{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
+.v920-registration-modal .v1082-filters label:nth-child(2){grid-column:1/-1;}
+.v920-registration-modal .v1082-filters label:nth-child(3){grid-column:1/-1;}
+.v920-registration-modal .v1082-actions button{min-height:44px;}
+@media(max-width:350px){
+ .v920-registration-modal .v1082-filters{grid-template-columns:1fr;}
+ .v920-registration-modal .v1082-types>div{grid-template-columns:1fr;}
+}
