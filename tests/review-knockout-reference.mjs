@@ -22,6 +22,8 @@ try{
   const root=page.locator('.ljr-knockout');
   for(const stage of ['playoff','octavos','cuartos','semifinal','final']){
    await page.locator(`.ljr-ko-tabs [data-ko-stage="${stage}"]`).click();
+   await page.waitForTimeout(750);
+   writeFileSync(`${folder}/${name}-${stage}-layout.json`,JSON.stringify(await page.evaluate(()=>{const root=document.querySelector('.ljr-knockout'),sc=root?.querySelector('.ljr-ko-scroll');return {stage:root?.dataset.koStage,scroll:{left:sc?.scrollLeft,width:sc?.clientWidth,total:sc?.scrollWidth},columns:[...root.querySelectorAll('[data-ko-column]')].map(c=>({stage:c.dataset.koColumn,left:c.offsetLeft,width:c.clientWidth})),header:[...document.querySelectorAll('#screen,.v501-top,.v501-tabs')].map(c=>({cls:c.className,rect:c.getBoundingClientRect().toJSON(),position:getComputedStyle(c).position,margin:getComputedStyle(c).margin,padding:getComputedStyle(c).padding}))}}),null,2));
    await page.waitForFunction(s=>{
     const root=document.querySelector('.ljr-knockout'),sc=root?.querySelector('.ljr-ko-scroll'),col=root?.querySelector(`[data-ko-column="${s}"]`);
     return root?.dataset.koStage===s&&sc&&col&&Math.abs(sc.scrollLeft-col.offsetLeft)<2;

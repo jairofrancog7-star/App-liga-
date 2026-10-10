@@ -108,3 +108,18 @@ html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-score-
  html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-score-control,
  html body[data-app-route="simulator"] #screen [data-v501-simulator] .v501-score-control button{width:36px!important}
 }
+
+/* The simulator owns its header; neutralize the generic fixed 88px chrome. */
+html body[data-app-route="simulator"] #app #screen{margin-top:0!important;padding-top:0!important}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator]{margin-top:0!important;padding-top:0!important}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-top{
+ position:sticky!important;inset:0 auto auto!important;display:block!important;
+ width:100%!important;height:112px!important;min-height:112px!important;max-height:112px!important;
+ margin:0!important;padding:0!important;transform:none!important;overflow:visible!important;
+ background:#000040!important;background-image:none!important;
+}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-top .v501-tabs{
+ position:absolute!important;inset:auto 16px 8px!important;width:calc(100% - 32px)!important;
+ height:48px!important;min-height:48px!important;margin:0!important;transform:none!important;
+}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-top .ljr-chrome-actions{inset:10px 16px auto!important}
