@@ -71,8 +71,12 @@ async function fields(){
   }catch(_){}
   fieldCache=FALLBACK_FIELDS.slice();return fieldCache;
 }
+function fieldAddress(f){
+  if(['sur-1','sur-2','sur-3'].includes(String(f?.id||''))||/unidad deportiva sur/i.test(String(f?.name||'')))return 'Unidad Deportiva Sur, Juventino Rosas, Guanajuato';
+  return String(f?.address||f?.community||'Juventino Rosas');
+}
 function teamLogo(name){
-  try{return window.LJR_TEAM_LOGOS?.get?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name)||''}catch(_){return ''}
+  try{return window.LJR_TEAMS_CURRENT_LOGO?.get?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name)||''}catch(_){return ''}
 }
 function setNative(el,value){
   if(!el)return;
@@ -144,11 +148,11 @@ async function fieldPicker(target,button){
   const render=()=>{
     const qq=norm(q),show=list.filter(x=>!qq||norm(x.name+' '+x.community+' '+(x.address||'')).includes(qq));
     results.innerHTML='<button class="v159-row field" data-field=""><span class="v159-field-icon">?</span><span><b>Por confirmar</b><small>Sin sede definida</small></span><em>›</em></button>'+
-      show.map(x=>'<button class="v159-row field" data-field="'+esc(x.name)+'"><span class="v159-field-icon">⌖</span><span><b>'+esc(x.name)+'</b><small>'+esc(x.community||'Juventino Rosas')+'</small></span><em>›</em></button>').join('');
+      show.map(x=>'<button class="v159-row field" data-field="'+esc(x.name)+'"><span class="v159-field-icon"><svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg></span><span><b>'+esc(x.name)+'</b><small>'+esc(fieldAddress(x))+'</small></span><em>›</em></button>').join('');
     $$('[data-field]',results).forEach(b=>b.onclick=()=>{
       target.value=b.dataset.field||'';target.dispatchEvent(new Event('input',{bubbles:true}));target.dispatchEvent(new Event('change',{bubbles:true}));
       button.querySelector('b').textContent=b.dataset.field||'Por confirmar';
-      button.querySelector('small').textContent=b.dataset.field?'Campo seleccionado':'Sin sede definida';closeLayer();
+      const chosen=list.find(x=>x.name===b.dataset.field);button.querySelector('small').textContent=b.dataset.field?fieldAddress(chosen):'Sin sede definida';closeLayer();
     });
   };
   input.oninput=()=>{q=input.value;render()};render();setTimeout(()=>input.focus({preventScroll:true}),80);
@@ -159,6 +163,7 @@ function buildQuickButton(native,type,label){
   const current=(window.LJR_FIELDS?.canonical?.(rawCurrent)||rawCurrent)||'Por confirmar';
   let sub=type==='field'?'Escoge uno de los campos registrados':'Filtra por categoría o escribe el nombre';
   if(type==='team'&&native.selectedOptions?.[0]?.dataset?.category)sub=native.selectedOptions[0].dataset.category;
+  if(type==='field'&&/unidad deportiva sur/i.test(rawCurrent))sub='Unidad Deportiva Sur, Juventino Rosas, Guanajuato';
   b.innerHTML='<span class="v159-picker-icon">'+(type==='field'?'⌖':'⌕')+'</span><span><b>'+esc(current)+'</b><small>'+esc(sub)+'</small></span><i>›</i>';
   b.onclick=e=>{e.preventDefault();e.stopPropagation();type==='field'?fieldPicker(native,b):teamPicker(native,b)};
   return b;
