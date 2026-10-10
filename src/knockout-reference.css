@@ -140,3 +140,13 @@ html body #screen .ljr-knockout .ljr-ko-scroll{touch-action:auto!important}
 
 /* An old overflow:hidden wrapper prevented the header from sticking to #screen. */
 html body[data-app-route="simulator"] #app #screen [data-v501-simulator]{overflow:visible!important}
+@media(max-width:359px){
+ html body #screen .ljr-knockout .ljr-ko-routes{left:4px}
+ html body #screen .ljr-knockout .ljr-ko-connectors{width:18px}
+}
+@media(min-width:760px){
+ html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-sheet{
+  width:520px!important;max-width:calc(100% - 32px)!important;left:50%!important;right:auto!important;
+  transform:translate3d(-50%,var(--v515-sheet-y,calc(100dvh - 110px)),0)!important;
+ }
+}
