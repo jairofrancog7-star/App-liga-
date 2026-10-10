@@ -1365,9 +1365,20 @@ function matchExtra(){
     '</div>'+
   '</section>';
 }
-function icsDate(d){return d.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'')}
-function bindMatch(root){$('[data-v100-ics]',root).onclick=()=>{const v=$('[data-v100-reminder-time]',root).value;if(!v)return toast('Selecciona fecha y hora');const start=new Date(v),end=new Date(start.getTime()+120*60000),title=$('[data-v100-reminder-title]',root).value||'Partido Liga Juventino';const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Liga Juventino//App//ES','BEGIN:VEVENT','UID:'+Date.now()+'@ligajuventino','DTSTAMP:'+icsDate(new Date()),'DTSTART:'+icsDate(start),'DTEND:'+icsDate(end),'SUMMARY:'+title.replace(/[,;]/g,' '),'DESCRIPTION:Recordatorio creado desde la app Liga Juventino Rosas','END:VEVENT','END:VCALENDAR'].join('\r\n');download(new Blob([ics],{type:'text/calendar;charset=utf-8'}),'Partido_Liga_Juventino.ics')}}
-
+function bindMatch(root){
+ const button=$('[data-v100-ics]',root);
+ if(!button)return;
+ button.onclick=()=>{
+  const value=$('[data-v100-reminder-time]',root)?.value||'';
+  const title=$('[data-v100-reminder-title]',root)?.value||'Partido Liga Juventino';
+  const venue=$('[data-v100-reminder-title]',root)?.dataset.meta||'';
+  if(!value)return toast('Selecciona la fecha y hora del partido.');
+  window.LJR_GOOGLE_CALENDAR_GLOBAL.open({
+   title,iso:value.slice(0,10),time:value.slice(11,16),duration:120,venue,
+   description:'Liga Juventino Rosas · Recordatorio del encuentro. Confirma el horario oficial antes de acudir.'
+  });
+ };
+}
 /* ---------- MODALES / herramientas locales ---------- */
 let installPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e});
 function modal(html,cls=''){let m=$('.v100-modal');if(m)m.remove();m=document.createElement('div');m.className='v100-modal '+cls;m.innerHTML='<div class="v100-modal-card"><button class="v100-modal-close" aria-label="Cerrar">×</button>'+html+'</div>';document.body.appendChild(m);$('.v100-modal-close',m).onclick=()=>m.remove();m.addEventListener('click',e=>{if(e.target===m)m.remove()});return m}
