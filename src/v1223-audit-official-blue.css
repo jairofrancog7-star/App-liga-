@@ -1,0 +1,113 @@
+/* V1223 · Auditoría en azules reales de Liga Juventino Rosas.
+   Misma familia cromática que V1173/V1174: #08144f, #102b75, #2464c9.
+   Afecta solamente a la ventana de auditoría. */
+html body > .v105-modal.v1107-admin-modal.v1212-audit-modal {
+  --au-bg:#08144f;
+  --au-panel:#0b1c61;
+  --au-card:#102b75;
+  --au-card-up:#173c90;
+  --au-control:#0c205e;
+  --au-blue:#2464c9;
+  --au-edge:#547fcf;
+  --au-text:#f5f9ff;
+  --au-muted:#bdcfee;
+}
+html body > .v105-modal.v1212-audit-modal > .v105-dialog {
+  border-color:#547fcf!important;
+  background:linear-gradient(170deg,#122c7b 0%,#0b1c61 53%,#070e44 100%)!important;
+  background-color:#08144f!important;
+  color:#f5f9ff!important;
+  box-shadow:0 16px 36px rgba(2,9,37,.3)!important;
+}
+html body > .v105-modal.v1212-audit-modal .v105-close {
+  background:#16387f!important;border-color:#6795e5!important;color:#fff!important;
+}
+html body > .v105-modal.v1212-audit-modal :is(.v1212-pill,.v1212-item-icon) {
+  background:#1b4593!important;border-color:#648de1!important;color:#eff5ff!important;
+}
+html body > .v105-modal.v1212-audit-modal :is(.v1212-metrics > div,.v1212-item,.v1212-details,.v1212-disclaimer) {
+  background:linear-gradient(150deg,#12337e,#0b215f)!important;
+  background-color:#102b75!important;
+  border-color:rgba(100,150,236,.42)!important;
+}
+html body > .v105-modal.v1212-audit-modal :is(.v1212-filters,.v1212-empty) {
+  background:#0a205a!important;border-color:rgba(100,150,236,.42)!important;
+}
+html body > .v105-modal.v1212-audit-modal .v1212-filters :is(input,select){
+  background:#0c205e!important;border-color:#547fcf!important;color:#f5f9ff!important;
+}
+html body > .v105-modal.v1212-audit-modal .v1212-presets button{
+  background:linear-gradient(145deg,#1a4498,#102e79)!important;
+  border-color:#648de1!important;color:#f6f9ff!important;
+}
+html body > .v105-modal.v1212-audit-modal .v1212-presets button[aria-pressed="true"],
+html body > .v105-modal.v1212-audit-modal .v1212-export button:first-child{
+  background:linear-gradient(125deg,#2465c9,#17428d)!important;
+  border-color:#8fb5fb!important;color:#fff!important;
+}
+html body > .v105-modal.v1212-audit-modal :is(.v1212-export button:last-child,.v1212-more,.v1212-details button) {
+  background:linear-gradient(145deg,#1a4498,#102e79)!important;
+  border-color:#648de1!important;color:#f6f9ff!important;
+}
+html body > .v105-modal.v1212-audit-modal .v1212-metrics span,
+html body > .v105-modal.v1212-audit-modal .v1212-item-text small,
+html body > .v105-modal.v1212-audit-modal .v1212-disclaimer,
+html body > .v105-modal.v1212-audit-modal .v1212-limit{
+  color:#bdcfee!important;
+}
+/* Panel inteligente ligero: sin gradientes verdes, turquesas ni tarjetas infladas. */
+html body > .v105-modal.v1212-audit-modal .v1223-insight {
+  width:100%;min-width:0;max-width:100%;box-sizing:border-box;
+  border:1px solid #547fcf;border-radius:14px;
+  background:linear-gradient(155deg,#102b75 0%,#0b1c61 100%);
+  color:#f5f9ff;padding:12px;margin:0 0 12px;
+  font:500 12px/1.4 Inter,Roboto,Arial,sans-serif;
+}
+.v1223-insight *,.v1223-insight *::before,.v1223-insight *::after{box-sizing:border-box}
+.v1223-title{display:flex;gap:10px;align-items:center;min-width:0;margin-bottom:11px}
+.v1223-title > div{flex:1;min-width:0}
+.v1223-title b{display:block;color:#fff;font-size:13.5px;font-weight:850;line-height:1.3}
+.v1223-title small{display:block;color:#bdcfee;font-size:10px;line-height:1.4;margin-top:3px}
+.v1223-glyph{display:grid;place-items:center;flex:0 0 37px;width:37px;height:37px;
+  border-radius:10px;background:#1b4593;border:1px solid #648de1;color:#c8dcff;font-size:21px}
+.v1223-toolbar{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.v1223-toggle{display:flex;gap:7px;align-items:center;min-width:0;flex:1;font-size:10.5px;color:#e4eeff}
+.v1223-toggle input{accent-color:#2464c9;width:16px;height:16px;flex:0 0 16px;margin:0}
+.v1223-insight button{min-width:0;min-height:38px;padding:8px 10px;border-radius:10px;
+  border:1px solid #648de1;background:linear-gradient(145deg,#1a4498,#102e79);
+  color:#f5f9ff;font:750 11px/1.3 Inter,Roboto,Arial,sans-serif;cursor:pointer}
+.v1223-toolbar > button{background:linear-gradient(125deg,#2465c9,#17428d);border-color:#8fb5fb}
+.v1223-insight button:focus-visible{outline:2px solid #a7c9ff;outline-offset:2px}
+.v1223-overview{color:#e5edff;padding:11px 0 8px;font-size:11px;line-height:1.5;overflow-wrap:anywhere}
+.v1223-chart{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;padding:10px 7px;
+  border:1px solid rgba(100,150,236,.42);border-radius:10px;background:#0a205a;min-width:0}
+.v1223-bar{display:flex;flex-direction:column;align-items:center;min-width:0;gap:5px}
+.v1223-bar b{font-size:10px;color:#fff;font-variant-numeric:tabular-nums}
+.v1223-bar small{color:#d1e0f9;font-size:9px;max-width:100%;line-height:1.3;text-align:center}
+.v1223-bar-area{position:relative;display:block;height:55px;width:min(100%,21px);
+  border-radius:5px;background:#173774;overflow:hidden}
+.v1223-bar-area i{position:absolute;bottom:0;left:0;right:0;display:block;
+  border-radius:4px 4px 0 0;background:#518ee6}
+.v1223-tags{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:10px 0}
+.v1223-tags > strong{flex-basis:100%;color:#dce9ff;font-size:10px;font-weight:750}
+.v1223-tags > span{border:1px solid #557fc8;background:#173878;border-radius:8px;
+  color:#dce9ff;padding:5px 7px;font-size:9.5px;max-width:100%;overflow-wrap:anywhere}
+.v1223-tags > span b{color:#fff;font-variant-numeric:tabular-nums}
+.v1223-notices{display:grid;gap:6px;margin:2px 0 9px}
+.v1223-notice{display:flex;align-items:flex-start;gap:8px;background:#112d73;
+  border:1px solid #456fb8;border-radius:9px;padding:9px;min-width:0}
+.v1223-notice > span{display:grid;place-items:center;width:18px;height:18px;flex:0 0 18px;
+  border-radius:50%;font-size:11px;font-weight:850;color:#fff;background:#3060ad}
+.v1223-notice[data-tone="warning"]{border-color:#81a6e7}
+.v1223-notice p{font-size:10.5px;line-height:1.48;color:#e8f0ff;margin:0;min-width:0;overflow-wrap:anywhere}
+.v1223-footer{display:flex;gap:9px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.v1223-footer small{flex:1;min-width:145px;color:#bdcfee;font-size:9.5px;line-height:1.4}
+.v1223-footer button{min-height:36px}
+@media(max-width:420px){
+  html body > .v105-modal.v1212-audit-modal .v1223-insight{padding:10px}
+  .v1223-title b{font-size:12.5px}
+  .v1223-toolbar button{flex:0 1 auto}
+  .v1223-bar small{font-size:8px}
+  .v1223-footer small{flex-basis:100%}
+}
+@media(prefers-reduced-motion:reduce){.v1223-insight *{animation:none!important;transition:none!important}}
