@@ -274,7 +274,7 @@ function patchMoreLess(){
   const screen=document.querySelector('#screen');
   if(!screen||screen.querySelector('[data-v12-moreless]')) return;
   screen.innerHTML='<section class="v12-moreless" data-v12-moreless>'+
-    '<div class="v12-ml-title"><span>MÁS</span><small>O</small><span>MENOS</span></div>'+
+    '<div class="v12-ml-title"><span>MORE</span><small>OR</small><span>LESS</span></div>'+
     '<div class="v12-ml-curves"><div class="down">'+curveArrow('#ff003c',true)+'</div><div class="up">'+curveArrow('#18ef72',false)+'</div></div>'+
     '<div class="v12-ml-choice">'+
       '<button type="button" data-v12-choice="more" data-route="moreLessGallery" data-v577-more-gallery aria-label="Abrir Más o Menos">'+avatarSvg('#c776e8')+'</button>'+
