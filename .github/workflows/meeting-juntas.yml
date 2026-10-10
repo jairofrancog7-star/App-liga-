@@ -9,6 +9,13 @@ on:
       - 'src/v1140-meeting-suite.js'
       - 'src/v1130-meeting-hub.css'
       - 'src/v1140-meeting-suite.css'
+      - 'src/v1150-meeting-sync.js'
+      - 'server/notifications/meeting-store.mjs'
+      - 'server/notifications/index.mjs'
+      - 'server/notifications/schema.sql'
+      - 'server/notifications/authorization.mjs'
+      - 'server/notifications/bootstrap.mjs'
+      - 'tests/meeting-private-sync-v1150.test.mjs'
       - 'index.html'
       - 'tests/meeting-hub-v1130.test.mjs'
       - 'tests/meeting-suite-v1140.test.mjs'
@@ -28,9 +35,12 @@ jobs:
         with:
           node-version: '22'
       - name: Verificar flujos y permisos de juntas
-        run: node --test tests/meeting-hub-v1130.test.mjs tests/meeting-suite-v1140.test.mjs
+        run: node --test tests/meeting-hub-v1130.test.mjs tests/meeting-suite-v1140.test.mjs tests/meeting-private-sync-v1150.test.mjs
       - name: Comprobar sintaxis JS
         run: |
           node --check src/v1130-meeting-hub.js
           node --check src/v1140-meeting-suite.js
+          node --check src/v1150-meeting-sync.js
+          node --check server/notifications/meeting-store.mjs
+          node --check server/notifications/index.mjs
           node --check src/v105-green-app-bottom.js
