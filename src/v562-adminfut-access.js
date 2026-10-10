@@ -45,18 +45,14 @@ function controlMarkup(){
    card('📘','Reglamento','Abrir reglamento dentro de la app','data-v563-route="rulebook"')+
    card('📰','Publicaciones','PNG de tablas, jornadas, goleo y sanciones','data-v563-route="publicationCenter"')+
    card('🌦️','Campos y clima','Clima y estado de campos','data-v563-route="weatherFields"')+
-  '</div></section>'+
-  '<section class="v562-panel"><div class="v562-title"><span><small>APP PROPIA</small><h2>Instalar y descargar</h2></span></div><div class="v562-list">'+
-   card('📱','Instalar acceso directo','Agregar Liga Juventino a la pantalla de inicio','data-v563-install')+
-   card('⬇️','Generar / descargar APK','Compilación Android de esta misma app azul','data-v563-route="appInstall"')+
-   card('🔗','Compartir mi app','Compartir acceso directo a Liga Juventino','data-v563-share')+
    card('👤','Mi cuenta','Perfil y configuración de la app','data-v563-route="profile"')+
   '</div></section>'+
+
  '</section>';
 }
 function installMarkup(){
  return '<section class="v562-page" data-v563-install-page>'+
-  '<header class="v562-hero"><small>LIGA JUVENTINO · ANDROID</small><h1>Mi APK</h1><p>Esta compilación corresponde a la app azul de Liga Juventino. No instala ni abre otra aplicación de fútbol.</p></header>'+
+  '<header class="v562-hero"><small>INSTALACIÓN OFICIAL</small><h1>Instalar Liga Juventino</h1><p>Elige la opción para tu teléfono. Puedes instalar desde el navegador o descargar el APK de Android.</p></header>'+
   '<section class="v562-panel"><div class="v562-title"><span><small>ANDROID</small><h2>APK propia</h2></span></div>'+
    '<div class="v562-app-badge"><span>⚽</span><div><b>Liga Juventino</b><small>Paquete Android generado desde este repositorio</small></div></div>'+
    '<div class="v562-main-actions"><button type="button" data-v563-apk>Descargar APK</button><button type="button" class="alt" data-v563-install>Instalar acceso directo</button></div>'+
@@ -65,7 +61,7 @@ function installMarkup(){
   '<section class="v562-panel"><div class="v562-title"><span><small>ACCESO DIRECTO</small><h2>Como app en el teléfono</h2></span></div><div class="v562-list">'+
    card('➕','Instalar en Android','Chrome → Instalar aplicación','data-v563-install')+
    card('🍎','Agregar en iPhone / iPad','Abrir acceso móvil de Liga Juventino','data-v563-ios')+
-   card('🔵','Abrir modo aplicación','Abrir con ?mode=apk','data-v563-appmode')+
+   card('🔵','Abrir versión web','Acceder a Liga Juventino desde el navegador','data-v563-appmode')+
   '</div></section>'+
  '</section>';
 }
