@@ -171,7 +171,18 @@ function quizData(data){
   return {...q,options,leader:rows[0]||null};
 }
 function morePair(data){
-  const list=scorers(data);
+  const scorersList=scorers(data);
+  // Algunos listados incluyen resúmenes por equipo entre los goleadores.
+  // Para el juego de PERSONAS usamos únicamente registros de jugadores,
+  // y priorizamos a quienes tienen una foto auténtica publicada.
+  const profiles=category(data)?.player_profiles||{};
+  const roster=scorersList.filter(p=>{
+    const found=Object.entries(profiles).find(([club])=>norm(club)===norm(p.team));
+    return (Array.isArray(found?.[1])?found[1]:[]).some(x=>norm(x?.name)===norm(p.name));
+  });
+  const portraits=roster.filter(p=>!!v538PlayerPhoto(p.name,p.team,data));
+  const useful=rows=>rows.length>=2&&rows.some(x=>x.goals!==rows[0].goals);
+  const list=useful(portraits)?portraits:useful(roster)?roster:scorersList;
   const pairs=[];
   for(let i=0;i<list.length;i++){
     for(let j=i+1;j<list.length;j++){
