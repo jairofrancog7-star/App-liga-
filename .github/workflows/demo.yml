@@ -45,6 +45,7 @@ jobs:
           rm -rf demo
           mkdir -p demo
           cp -R dist/. demo/
+          node scripts/ensure-demo-notice-css.mjs
           touch demo/.nojekyll
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
