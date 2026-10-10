@@ -259,11 +259,10 @@ async function shareNormalWhatsApp(p){
  // WhatsApp personal: abrir el compositor, NUNCA usar Twilio ni envío silencioso.
  const url='https://api.whatsapp.com/send?text='+encodeURIComponent(msg);
  try{
-  // En móviles, abrir WhatsApp o su página para que el administrador
-  // seleccione el destinatario y pulse Enviar manualmente.
-  const w=window.open(url,'_blank','noopener,noreferrer');
-  if(!w)window.location.assign(url);
-  message(p,'Se preparó WhatsApp normal. Elige el chat y confirma Enviar; no se registró ningún envío automático.');
+  // Navegar una sola vez: evita ventanas bloqueadas o doble apertura del chat.
+  // WhatsApp pide escoger contacto y pulsar Enviar manualmente.
+  message(p,'Elige el chat en WhatsApp y confirma Enviar; no se registró ningún envío automático.');
+  window.location.assign(url);
  }catch(_){
   try{await navigator.clipboard?.writeText(msg);
    message(p,'El navegador bloqueó WhatsApp. Copiamos el texto; abre WhatsApp y pégalo manualmente.');
