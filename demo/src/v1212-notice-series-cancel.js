@@ -3,6 +3,8 @@
 (function(){
 'use strict';
 if(window.__LJR_V1212_SERIES_CANCEL__)return;
+// Si el programador principal ya controla las series, evitar botones duplicados.
+if(window.__LJR_V1211_CANCEL_SERIES_ENABLED__)return;
 window.__LJR_V1212_SERIES_CANCEL__=true;
 const KEY='ljr-v713-auto-notices';
 const $=(s,r=document)=>r.querySelector(s);
