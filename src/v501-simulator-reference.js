@@ -477,7 +477,6 @@ function simulationCategory(){
  })}))};
 }
 function bracketView(){
-function bracketView(){
  return window.LJR_KNOCKOUT.render({category:simulationCategory(),rows:simulatedStandings(),simulate:true,
    categoryId:catId(),logoFor,stage:bracketStage()});
 }
