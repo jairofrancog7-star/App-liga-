@@ -592,9 +592,234 @@ function delegates(){
  $('[data-add]',m).onclick=()=>{const name=$('[data-n]',m).value.trim(),team=$('[data-t]',m).value.trim(),phone=$('[data-p]',m).value.trim();if(!name||!phone)return toast('Agrega nombre y teléfono');list.push({name,team,phone});write('v105-delegates',list);log('Agregar delegado local');render()};
 }
 function officials(){
- const list=read('v105-officials',[]);
- const m=modal('Árbitros y oficiales','Directorio operativo local. No se publica en el sitio.','<div class="v105-form"><label><span>Nombre</span><input data-n></label><label><span>Función</span><select data-role><option>Árbitro</option><option>Asistente</option><option>Responsable de campo</option><option>Delegado</option></select></label><label><span>Teléfono</span><input data-p inputmode="tel"></label></div><div class="v105-actions"><button class="v105-btn" data-add>Agregar</button></div><div class="v105-list" data-list></div>');
- const render=()=>{$('[data-list]',m).innerHTML=list.length?list.map(x=>'<article><b>'+esc(x.name)+' · '+esc(x.role)+'</b><small>'+esc(x.phone)+'</small></article>').join(''):'<p class="v105-footnote">Sin oficiales guardados.</p>'};render();$('[data-add]',m).onclick=()=>{const name=$('[data-n]',m).value.trim(),role=$('[data-role]',m).value,phone=$('[data-p]',m).value.trim();if(!name)return toast('Agrega nombre');list.push({name,role,phone});write('v105-officials',list);log('Agregar oficial local');render()};
+ const roles=['Árbitro','Árbitro central','Árbitro asistente','Cuarto árbitro','Asistente','Responsable de campo','Delegado','Supervisor'];
+ const cats=['Todas','Primera','Intermedia','Segunda','Veteranos 35+','Veteranos 50+'];
+ const fields=['Por definir','UDS Campo 1','UDS Campo 2','UDS Campo 3','Campo 4','Fraccionamiento','Romerillo','San Julián','Franco Tavera','Cuenda','Otro'];
+ const avails=['Sin definir','Sábado','Domingo','Ambos','No disponible'];
+ const readList=(key)=>{const value=read(key,[]);return Array.isArray(value)?value:[]};
+ const list=readList('v105-officials');
+ const assignments=readList('v1125-official-assignments');
+ const makeId=()=>String(Date.now())+'-'+Math.random().toString(36).slice(2,10);
+ const options=(values,current)=>values.map(x=>'<option value="'+esc(x)+'"'+(x===current?' selected':'')+'>'+esc(x)+'</option>').join('');
+ const persist=()=>{write('v105-officials',list);log('Actualizar directorio local de oficiales')};
+ const persistAssignments=()=>{write('v1125-official-assignments',assignments);log('Actualizar designaciones arbitrales locales')};
+ let migrated=false;
+ list.forEach(o=>{if(!o.id){o.id=makeId();migrated=true}});
+ if(migrated)write('v105-officials',list);
+ let editing=-1,activeTab='directory';
+ const m=modal('Árbitros y oficiales','Directorio y designaciones privadas de este dispositivo. No se publican ni se sincronizan automáticamente.',
+  '<div class="v1125-wrap">'+
+   '<div class="v1125-stats" data-o-stats></div>'+
+   '<div class="v1125-tabs" role="tablist" aria-label="Herramientas arbitrales">'+
+    '<button type="button" data-o-tab="directory" class="is-active" role="tab" aria-selected="true">Directorio</button>'+
+    '<button type="button" data-o-tab="assignments" role="tab" aria-selected="false">Designaciones</button>'+
+   '</div>'+
+   '<section data-o-panel="directory" role="tabpanel">'+
+    '<div class="v1125-toolbar"><input type="search" data-o-search aria-label="Buscar oficial" placeholder="Buscar nombre o teléfono…" />'+
+      '<select data-o-filter aria-label="Filtrar por función">'+options(['Todas las funciones',...roles],'Todas las funciones')+'</select></div>'+
+    '<div class="v1125-header"><strong>Personal registrado</strong><div class="v1125-mini-actions"><button type="button" data-o-action="new">+ Nuevo</button><button type="button" data-o-action="csv">CSV</button></div></div>'+
+    '<section data-o-editor class="v1125-editor"><div class="v1125-form-title" data-o-form-title>Agregar oficial</div>'+
+     '<div class="v105-form v1125-form">'+
+      '<label><span>Nombre *</span><input data-o-name autocomplete="name" maxlength="100" placeholder="Nombre completo"></label>'+
+      '<label><span>Función</span><select data-o-role>'+options(roles,'Árbitro')+'</select></label>'+
+      '<label><span>Teléfono (privado)</span><input data-o-phone type="tel" autocomplete="tel" inputmode="tel" maxlength="22" placeholder="10 dígitos"></label>'+
+      '<label><span>Categoría</span><select data-o-cat>'+options(cats,'Todas')+'</select></label>'+
+      '<label><span>Disponibilidad</span><select data-o-avail>'+options(avails,'Sin definir')+'</select></label>'+
+      '<label><span>Campo habitual</span><select data-o-field>'+options(fields,'Por definir')+'</select></label>'+
+      '<label><span>Estado</span><select data-o-status><option>Activo</option><option>Inactivo</option></select></label>'+
+      '<label class="v1125-wide"><span>Observaciones privadas</span><textarea data-o-notes maxlength="500" placeholder="Experiencia, observaciones o restricciones…"></textarea></label>'+
+     '</div><div class="v105-actions v1125-form-actions"><button type="button" class="v105-btn" data-o-action="save">Guardar oficial</button><button type="button" class="v105-btn alt" data-o-action="cancel">Cancelar</button></div>'+
+    '</section><div class="v105-list v1125-list" data-o-list aria-live="polite"></div>'+
+   '</section>'+
+   '<section data-o-panel="assignments" role="tabpanel" hidden>'+
+    '<p class="v1125-hint">Designaciones internas. No modifican el calendario ni las cédulas oficiales.</p>'+
+    '<div class="v1125-header"><strong>Nombramientos de jornada</strong><button type="button" data-o-action="new-assignment">+ Designar</button></div>'+
+    '<section data-o-assignment-editor class="v1125-editor" hidden><div class="v1125-form-title">Preparar designación</div>'+
+     '<div class="v105-form v1125-form">'+
+      '<label class="v1125-wide"><span>Oficial *</span><select data-o-assignee></select></label>'+
+      '<label class="v1125-wide"><span>Partido *</span><input data-o-game maxlength="140" placeholder="Escribe los equipos del partido"></label>'+
+      '<label><span>Fecha *</span><input type="date" data-o-date></label>'+
+      '<label><span>Hora *</span><input type="time" data-o-time></label>'+
+      '<label><span>Categoría</span><select data-o-game-cat>'+options(cats.filter(x=>x!=='Todas'),'Primera')+'</select></label>'+
+      '<label><span>Cancha</span><select data-o-game-field>'+options(fields,'Por definir')+'</select></label>'+
+     '</div><div class="v105-actions v1125-form-actions"><button type="button" class="v105-btn" data-o-action="save-assignment">Guardar pendiente</button><button type="button" class="v105-btn alt" data-o-action="cancel-assignment">Cancelar</button></div>'+
+    '</section><div class="v105-list v1125-list" data-o-assignments aria-live="polite"></div>'+
+   '</section>'+
+   '<p class="v1125-privacy">Solo guardado en este navegador. Las llamadas, mensajes y exportaciones se realizan únicamente cuando tú pulsas el botón correspondiente.</p>'+
+  '</div>');
+ m.classList.add('v1125-officials-modal');
+ const q=selector=>$(selector,m);
+ const nameOf=id=>list.find(o=>o.id===id);
+ const cleanPhone=value=>{
+  let d=String(value||'').replace(/\D/g,'');
+  if(d.length===10)d='52'+d; // México; WhatsApp normal con prefijo internacional
+  else if(d.length===13&&d.startsWith('521'))d='52'+d.slice(3);
+  return d.length>=11&&d.length<=15?d:'';
+ };
+ const whatsapp=(phone,message)=>{
+  const n=cleanPhone(phone);
+  if(!n){toast('Agrega un teléfono con código de país o 10 dígitos de México');return}
+  window.open('https://wa.me/'+n+'?text='+encodeURIComponent(message),'_blank','noopener,noreferrer');
+ };
+ const csvCell=value=>{
+  const s=String(value??'').replace(/^[\s]*([=+\-@])/,"'$1");
+  return '"'+s.replace(/"/g,'""')+'"';
+ };
+ const download=(name,body,mime)=>{
+  const blob=new Blob([body],{type:mime}),url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+ };
+ const stats=()=>{
+  const live=list.filter(o=>(o.status||'Activo')==='Activo');
+  q('[data-o-stats]').innerHTML=
+   '<span><b>'+list.length+'</b><small>Registrados</small></span>'+
+   '<span><b>'+live.length+'</b><small>Activos</small></span>'+
+   '<span><b>'+assignments.filter(a=>a.status==='Pendiente').length+'</b><small>Por confirmar</small></span>';
+ };
+ const renderDirectory=()=>{
+  const query=norm(q('[data-o-search]').value),filter=q('[data-o-filter]').value;
+  const filtered=list.map((o,i)=>({...o,_index:i})).filter(o=>{
+   const matches=!query||norm([o.name,o.phone,o.role,o.category,o.field].join(' ')).includes(query);
+   return matches&&(filter==='Todas las funciones'||o.role===filter);
+  });
+  q('[data-o-list]').innerHTML=filtered.length?filtered.map(o=>{
+   const status=o.status||'Activo',avail=o.availability||'Sin definir';
+   return '<article class="v1125-entry">'+
+    '<div class="v1125-entry-heading"><div><b>'+esc(o.name||'Sin nombre')+'</b><small>'+esc(o.role||'Árbitro')+' · '+esc(o.category||'Todas')+'</small></div>'+
+      '<span class="v1125-state '+(status==='Activo'?'good':'muted')+'">'+esc(status)+'</span></div>'+
+    '<div class="v1125-tags"><span>◷ '+esc(avail)+'</span><span>⌖ '+esc(o.field||'Por definir')+'</span></div>'+
+    (o.phone?'<small>Tel. '+esc(o.phone)+'</small>':'')+
+    (o.notes?'<small>'+esc(o.notes)+'</small>':'')+
+    '<div class="v1125-entry-actions"><button type="button" data-o-action="edit" data-index="'+o._index+'">Editar</button>'+
+     (cleanPhone(o.phone)?'<button type="button" data-o-action="whatsapp" data-index="'+o._index+'">WhatsApp</button>':'')+
+     '<button type="button" class="v1125-danger" data-o-action="remove" data-index="'+o._index+'">Eliminar</button></div>'+
+   '</article>';
+  }).join(''):'<p class="v105-footnote">'+(list.length?'No se encontraron oficiales con ese filtro.':'Todavía no hay oficiales. Pulsa «+ Nuevo» para registrar el primero.')+'</p>';
+  stats();updateAssigneeOptions();
+ };
+ const updateAssigneeOptions=()=>{
+  const sel=q('[data-o-assignee]');if(!sel)return;
+  const old=sel.value;
+  sel.innerHTML='<option value="">Elegir oficial</option>'+list.filter(o=>(o.status||'Activo')==='Activo').map(o=>'<option value="'+esc(o.id)+'">'+esc(o.name)+' · '+esc(o.role||'Árbitro')+'</option>').join('');
+  sel.value=Array.from(sel.options).some(o=>o.value===old)?old:'';
+ };
+ const renderAssignments=()=>{
+  const sorted=assignments.map((a,i)=>({...a,_index:i})).sort((a,b)=>(b.date+' '+b.time).localeCompare(a.date+' '+a.time));
+  q('[data-o-assignments]').innerHTML=sorted.length?sorted.map(a=>{
+   const official=nameOf(a.officialId);
+   return '<article class="v1125-entry"><div class="v1125-entry-heading"><div><b>'+esc(a.game||'Partido')+'</b>'+
+     '<small>'+esc(a.date)+' · '+esc(a.time)+' · '+esc(a.category)+'</small></div>'+
+     '<span class="v1125-state '+(a.status==='Confirmado'?'good':'muted')+'">'+esc(a.status||'Pendiente')+'</span></div>'+
+     '<div class="v1125-tags"><span>♙ '+esc(official?.name||a.officialName||'Oficial no disponible')+'</span><span>⌖ '+esc(a.field||'Por definir')+'</span></div>'+
+     '<div class="v1125-entry-actions">'+
+      (a.status!=='Confirmado'?'<button type="button" data-o-action="confirm" data-index="'+a._index+'">Confirmar</button>':'')+
+      (official&&cleanPhone(official.phone)?'<button type="button" data-o-action="notify" data-index="'+a._index+'">WhatsApp</button>':'')+
+      '<button type="button" data-o-action="ics" data-index="'+a._index+'">Calendario</button>'+
+      '<button type="button" class="v1125-danger" data-o-action="remove-assignment" data-index="'+a._index+'">Quitar</button></div></article>';
+  }).join(''):'<p class="v105-footnote">Sin designaciones. Registra oficiales y prepara el primer nombramiento.</p>';
+  stats();
+ };
+ const editorVisible=show=>{q('[data-o-editor]').hidden=!show};
+ const resetEditor=()=>{
+  editing=-1;
+  ['name','phone','notes'].forEach(k=>q('[data-o-'+k+']').value='');
+  q('[data-o-role]').value='Árbitro';q('[data-o-cat]').value='Todas';q('[data-o-avail]').value='Sin definir';
+  q('[data-o-field]').value='Por definir';q('[data-o-status]').value='Activo';
+  q('[data-o-form-title]').textContent='Agregar oficial';q('[data-o-action="save"]').textContent='Guardar oficial';
+ };
+ const switchTab=tab=>{
+  activeTab=tab;
+  $$('[data-o-tab]',m).forEach(b=>{const selected=b.dataset.oTab===tab;b.classList.toggle('is-active',selected);b.setAttribute('aria-selected',String(selected))});
+  $$('[data-o-panel]',m).forEach(p=>{p.hidden=p.dataset.oPanel!==tab});
+  if(tab==='assignments'){updateAssigneeOptions();renderAssignments()}else renderDirectory();
+ };
+ const onDateTime=(date,time)=>new Date(date+'T'+time+':00');
+ m.addEventListener('input',e=>{if(e.target.matches('[data-o-search]'))renderDirectory()});
+ m.addEventListener('change',e=>{if(e.target.matches('[data-o-filter]'))renderDirectory()});
+ m.addEventListener('click',e=>{
+  const tab=e.target.closest('[data-o-tab]');if(tab){switchTab(tab.dataset.oTab);return}
+  const btn=e.target.closest('[data-o-action]');if(!btn||!m.contains(btn))return;
+  const action=btn.dataset.oAction,index=Number(btn.dataset.index);
+  if(action==='new'){resetEditor();editorVisible(true);q('[data-o-name]').focus();return}
+  if(action==='cancel'){resetEditor();editorVisible(false);return}
+  if(action==='edit'){
+   const o=list[index];if(!o)return;editing=index;
+   q('[data-o-name]').value=o.name||'';q('[data-o-phone]').value=o.phone||'';q('[data-o-notes]').value=o.notes||'';
+   q('[data-o-role]').value=roles.includes(o.role)?o.role:'Árbitro';
+   q('[data-o-cat]').value=cats.includes(o.category)?o.category:'Todas';
+   q('[data-o-avail]').value=avails.includes(o.availability)?o.availability:'Sin definir';
+   q('[data-o-field]').value=fields.includes(o.field)?o.field:'Por definir';
+   q('[data-o-status]').value=o.status==='Inactivo'?'Inactivo':'Activo';
+   q('[data-o-form-title]').textContent='Editar oficial';q('[data-o-action="save"]').textContent='Guardar cambios';
+   editorVisible(true);q('[data-o-name]').focus();return;
+  }
+  if(action==='save'){
+   const name=q('[data-o-name]').value.trim(),phone=q('[data-o-phone]').value.trim();
+   if(!name){toast('Escribe el nombre del oficial');q('[data-o-name]').focus();return}
+   if(phone){const digits=phone.replace(/\D/g,'');if(digits.length<7||digits.length>15){toast('Revisa el número de teléfono');return}}
+   if(list.some((o,i)=>i!==editing&&norm(o.name)===norm(name)&&(!phone||o.phone===phone))){toast('Este oficial ya está registrado');return}
+   const o={id:editing>=0?list[editing].id:makeId(),name,phone,role:q('[data-o-role]').value,category:q('[data-o-cat]').value,
+    availability:q('[data-o-avail]').value,field:q('[data-o-field]').value,status:q('[data-o-status]').value,notes:q('[data-o-notes]').value.trim()};
+   if(editing>=0)list[editing]={...list[editing],...o};else list.push(o);
+   persist();resetEditor();editorVisible(false);renderDirectory();toast('Oficial guardado en este dispositivo');return;
+  }
+  if(action==='remove'){
+   const o=list[index];if(!o||!confirm('¿Eliminar a '+o.name+' del directorio local? Las designaciones guardadas conservarán su nombre.'))return;
+   list.splice(index,1);persist();renderDirectory();renderAssignments();toast('Oficial eliminado');return;
+  }
+  if(action==='whatsapp'){
+   const o=list[index];if(o)whatsapp(o.phone,'Hola '+o.name+', te contactamos de la Liga Juventino Rosas para consultar tu disponibilidad como '+(o.role||'árbitro')+'. ¿Nos puedes confirmar?');
+   return;
+  }
+  if(action==='csv'){
+   if(!list.length){toast('No hay registros para exportar');return}
+   const cols=['Nombre','Función','Teléfono','Categoría','Disponibilidad','Campo habitual','Estado','Notas'];
+   const rows=list.map(o=>[o.name,o.role,o.phone,o.category,o.availability,o.field,o.status,o.notes]);
+   download('arbitros-privado-'+new Date().toISOString().slice(0,10)+'.csv','\uFEFF'+[cols,...rows].map(row=>row.map(csvCell).join(',')).join('\r\n'),'text/csv;charset=utf-8');toast('Archivo privado descargado');return;
+  }
+  if(action==='new-assignment'){
+   updateAssigneeOptions();if(!list.some(o=>(o.status||'Activo')==='Activo')){toast('Primero registra un oficial activo');return}
+   q('[data-o-assignment-editor]').hidden=false;return;
+  }
+  if(action==='cancel-assignment'){q('[data-o-assignment-editor]').hidden=true;return}
+  if(action==='save-assignment'){
+   const id=q('[data-o-assignee]').value,off=nameOf(id),game=q('[data-o-game]').value.trim(),date=q('[data-o-date]').value,time=q('[data-o-time]').value;
+   if(!off||!game||!date||!time){toast('Selecciona oficial, partido, fecha y hora');return}
+   if(off.availability==='No disponible'||(off.availability==='Sábado'&&onDateTime(date,time).getDay()!==6)||
+      (off.availability==='Domingo'&&onDateTime(date,time).getDay()!==0)){
+    toast('El oficial figura sin disponibilidad en ese día');return;
+   }
+   const when=onDateTime(date,time);
+   if(Number.isNaN(+when)){toast('Fecha y hora inválidas');return}
+   if(assignments.some(a=>a.officialId===id&&a.date===date&&a.status!=='Rechazado'&&Math.abs((onDateTime(a.date,a.time)-when)/60000)<120)){
+    toast('Conflicto: este oficial ya tiene otro partido cercano (±2 h)');return;
+   }
+   assignments.push({id:makeId(),officialId:id,officialName:off.name,game,date,time,category:q('[data-o-game-cat]').value,field:q('[data-o-game-field]').value,status:'Pendiente'});
+   persistAssignments();q('[data-o-assignment-editor]').hidden=true;
+   q('[data-o-game]').value='';q('[data-o-date]').value='';q('[data-o-time]').value='';
+   renderAssignments();toast('Designación pendiente guardada localmente');return;
+  }
+  const a=assignments[index];if(!a)return;
+  if(action==='confirm'){a.status='Confirmado';persistAssignments();renderAssignments();toast('Marcado como confirmado en este dispositivo');return}
+  if(action==='remove-assignment'){
+   if(confirm('¿Quitar esta designación local?')){assignments.splice(index,1);persistAssignments();renderAssignments()}return;
+  }
+  if(action==='notify'){
+   const o=nameOf(a.officialId);if(o)whatsapp(o.phone,'Hola '+o.name+', la Liga Juventino Rosas preparó tu designación para '+a.game+' ('+a.category+'), el '+a.date+' a las '+a.time+' en '+a.field+'. ¿Puedes confirmar? Este mensaje no representa una publicación oficial.');return;
+  }
+  if(action==='ics'){
+   const start=onDateTime(a.date,a.time),end=new Date(start.getTime()+120*60000);
+   const stamp=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('')+'T'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0')+'00';
+   const safeText=t=>String(t||'').replace(/\\/g,'\\\\').replace(/\r?\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');
+   const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Liga Juventino Rosas//Designacion local//ES','BEGIN:VEVENT',
+    'UID:ljr-'+a.id.replace(/[^a-zA-Z0-9-]/g,'')+'@local','DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,''),
+    'DTSTART:'+stamp(start),'DTEND:'+stamp(end),'SUMMARY:'+safeText('Designación arbitral · '+a.game),
+    'LOCATION:'+safeText(a.field),'DESCRIPTION:'+safeText('Oficial: '+(nameOf(a.officialId)?.name||a.officialName)+' · '+a.category+' · Designación local'), 'END:VEVENT','END:VCALENDAR'];
+   download('designacion-'+a.date+'.ics',lines.join('\r\n')+'\r\n','text/calendar;charset=utf-8');
+   toast('Evento listo para importar en el calendario');return;
+  }
+ });
+ resetEditor();editorVisible(list.length===0);switchTab('directory');
 }
 function incidents(){
  // V1111: nuevo registro visual; este formulario anterior queda como respaldo.
