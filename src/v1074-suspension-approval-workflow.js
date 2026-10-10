@@ -73,7 +73,7 @@ function panel(p){
  '<label class="v1074-confirm"><input type="checkbox" data-v1074-agree><span>Confirmo que recibí autorización real y revisé los datos. Este registro local no verifica identidad.</span></label>'+
  '<button type="button" data-v1074-authorize>Guardar constancia local</button></div></div>'+
  '<div class="v1074-group"><b>03 · Programación</b><p>Elige cuándo publicar en el programador existente. Nada se envía hasta que confirmes allí.</p>'+
- '<div class="v1074-buttons"><button type="button" data-v1074-schedule>Ir al programador</button><button type="button" data-v1074-official>Abrir editor oficial</button></div>'+
+ '<div class="v1074-buttons"><button type="button" data-v1074-schedule>Programador local</button><button type="button" data-v1074-official>Editor oficial</button><button type="button" data-v1074-global>Programar envío global (Push / SMS / WhatsApp)</button></div>'+
  '<small data-v1074-schedule-status></small><button type="button" data-v1074-cancel hidden>Cancelar programación local anterior</button></div>'+
  '<div class="v1074-group"><b>04 · Avisar a los equipos</b><p>Usa los equipos del rol oficial. Cada envío y recepción se registra manualmente en este teléfono.</p>'+
  '<button type="button" data-v1074-export>Descargar registro CSV</button><div class="v1074-recipients" data-v1074-teams></div></div>'+
@@ -103,6 +103,8 @@ function refresh(p){
  if(scheduleButton)scheduleButton.disabled=!isAuthorized(p);
  const official=$('[data-v1074-official]',ui);
  if(official)official.disabled=!isAuthorized(p);
+ const global=$('[data-v1074-global]',ui);
+ if(global)global.disabled=!isAuthorized(p);
  const cancel=$('[data-v1074-cancel]',ui);
  const previous=st.s.previousScheduledId||(!st.notice?st.s.scheduledId:null);
  if(cancel)cancel.hidden=!previous||!queue().some(x=>String(x.id)===String(previous)&&!x.published);
@@ -313,6 +315,25 @@ function openOfficialEditor(p){
   message(p,'Aviso enviado al editor para revisión, NO publicado. Solo una sesión de administración autorizada puede guardarlo en el servidor.');
  }catch(e){message(p,'No se pudo abrir el editor oficial. Revisa tu sesión de administración.')}
 }
+function openGlobalNotice(p){
+ if(!isAuthorized(p)){message(p,'Antes de programar el envío global, revisa y registra la autorización realmente recibida.');return}
+ const s=fields(p),manager=window.LJR_GLOBAL_NOTICES;
+ if(typeof manager?.open!=='function'){message(p,'Abre Administración y espera a que se cargue Avisos globales.');return}
+ const text=[
+  'Liga Municipal de Fútbol Juventino Rosas A. C.',
+  s.type+'.','Categoría: '+s.cat+' · Jornada: '+s.round+'.',
+  s.match&&s.match!=='Todos los partidos'?'Partido: '+s.match+'.':'',
+  s.venue&&s.venue!=='Todos los campos'?'Campo: '+s.venue+'.':'',
+  s.reason?'Motivo: '+s.reason+'.':'',
+  'Fecha efectiva: '+s.date+' '+s.time+'.',
+  s.message
+ ].filter(Boolean).join(' ').slice(0,700);
+ const result=manager.open({title:(s.type||'Aviso de suspensión').slice(0,120),
+  type:'suspension',category:s.cat,team:'',field:s.venue==='Todos los campos'?'':s.venue,body:text});
+ if(!result)message(p,'Inicia sesión en Administración para programar el comunicado.');
+ else message(p,'El aviso se abrió para revisión en el programador global. Elige la hora de envío y confirma; no se ha publicado.');
+}
+
 function cancelLocalSchedule(p){
  const s=read(),id=s.previousScheduledId||s.scheduledId;
  if(!id){message(p,'No hay programación local que cancelar.');return}
@@ -376,7 +397,7 @@ function boot(){
   const b=e.target.closest('button');
   if(!b)return;
   // La aprobación en localStorage no es una credencial; exigir además sesión del servidor.
-  if(b.matches('[data-v1074-review],[data-v1074-ask],[data-v1074-authorize],[data-v1074-schedule],[data-v1074-official],[data-v1074-share],[data-v1074-mark],[data-v1074-cancel]')){
+  if(b.matches('[data-v1074-review],[data-v1074-ask],[data-v1074-authorize],[data-v1074-schedule],[data-v1074-official],[data-v1074-global],[data-v1074-share],[data-v1074-mark],[data-v1074-cancel]')){
    if(!await verifyAdminSession()){
     const flow=$('[data-v1074-flow]',p);if(flow)flow.open=true;
     message(p,'Inicia sesión en Administración: este control requiere permiso verificado del servidor.');
@@ -391,6 +412,7 @@ function boot(){
   }else if(b.matches('[data-v1074-authorize]'))authorize(p);
   else if(b.matches('[data-v1074-schedule]'))schedule(p);
   else if(b.matches('[data-v1074-official]'))openOfficialEditor(p);
+  else if(b.matches('[data-v1074-global]'))openGlobalNotice(p);
   else if(b.matches('[data-v1074-export]'))exportLog(p);
   else if(b.matches('[data-v1074-cancel]'))cancelLocalSchedule(p);
   else if(b.matches('[data-v1074-share]'))prepare(p,b.dataset.v1074Share);
