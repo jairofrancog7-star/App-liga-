@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {parseDelimited} from '../src/v1222-csv-parser-core.js';
-import {suggestCsvMapping,guessCsvType,csvLocalInsights,keepCsvLearning,readCsvLearning,standardCategory} from '../src/v1222-csv-local-ai.js';
+import {suggestCsvMapping,guessCsvType,csvLocalInsights,keepCsvLearning,readCsvLearning,standardCategory,compareCsvTeams} from '../src/v1222-csv-local-ai.js';
 
 const schemas={
  equipos:{fields:[['nombre','Nombre del equipo',true,['equipo','club','nombre']],['categoria','Categoría',true,['categoria','division']],['campo','Campo',false,['sede','cancha']],['ciudad','Ciudad',false,['ciudad','comunidad']]]},
@@ -57,4 +57,16 @@ test('IA local no mapea automáticamente una columna desconocida',()=>{
  const m=suggestCsvMapping(p.headers,p.rows,'equipos',schemas);
  assert.equal(m.mapping.ciudad,-1);
  assert.equal(m.mapping.nombre,0);
+});
+
+test('Compara clubes cargados sin inventar ni editar nombres',()=>{
+ const parsed=parseDelimited('nombre,categoria\nManchester,Primera\nManchestar,Primera\nGalácticos de Pozos,Primera');
+ const comparison=compareCsvTeams(parsed,'equipos',{nombre:0,categoria:1},[
+  {name:'Manchester',category:'Primera'},{name:'Galácticos de Pozos',category:'Primera'}
+ ]);
+ assert.equal(comparison.available,true);
+ assert.equal(comparison.exact,2);
+ assert.equal(comparison.notFound,1);
+ assert.equal(comparison.suggestions[0]?.suggested,'Manchester');
+ assert.equal(parsed.rows[1][0],'Manchestar');
 });
