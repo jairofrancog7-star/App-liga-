@@ -14,12 +14,12 @@ test('minuta actions scroll with the modal and are not sticky',()=>{
 test('PDF, hero and PNG minute share a real transparent crest',()=>{
  const page=src('src/v875-review-corrections.js');
  const media=src('src/v926-meeting-media.js');
- assert.match(page,/await window\\.LJR_MINUTA_MEDIA\\?\\.transparentLogo\\?\\.\\(\\)/);
- assert.match(page,/liga-logo-oficial-transparente\\.png/);
+ assert.match(page,/await window\.LJR_MINUTA_MEDIA\?\.transparentLogo\?\.\(\)/);
+ assert.match(page,/liga-logo-oficial-transparente\.png/);
  assert.match(media,/OFFICIAL_LEAGUE_LOGO=new URL/);
- assert.match(media,/liga-logo-oficial-transparente\\.png/);
- assert.doesNotMatch(media,/ctx\\.putImageData\\(pixels,0,0\\)/);
- assert.match(page,/src="'\\+esc\\(leagueLogo\\)/);
+ assert.match(media,/liga-logo-oficial-transparente\.png/);
+ assert.doesNotMatch(media,/ctx\.putImageData\(pixels,0,0\)/);
+ assert.match(page,/src="'\+esc\(leagueLogo\)/);
  assert.match(media,/const area=136/);
 });
 
