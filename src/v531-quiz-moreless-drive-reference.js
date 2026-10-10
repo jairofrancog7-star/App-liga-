@@ -678,7 +678,7 @@ function v535CurveArrow(color,flip){
 }
 function v535MorePrimaryMarkup(){
   return '<section class="v12-moreless v535-restored-primary" data-v12-moreless data-v535-restored-primary>'+
-    '<div class="v12-ml-title"><span>MÁS</span><small>O</small><span>MENOS</span></div>'+
+    '<div class="v12-ml-title"><span>MORE</span><small>OR</small><span>LESS</span></div>'+
     '<div class="v12-ml-curves"><div class="down">'+v535CurveArrow('#ff003c',true)+'</div><div class="up">'+v535CurveArrow('#18ef72',false)+'</div></div>'+
     '<div class="v12-ml-choice">'+
       '<button type="button" data-v12-choice="more" data-route="moreLessGallery" data-v577-more-gallery aria-label="Abrir Más o Menos">'+v535AvatarSvg('#c776e8')+'</button>'+
