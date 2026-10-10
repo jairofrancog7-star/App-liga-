@@ -57,6 +57,9 @@ function patchChoiceList(el){
   if(!fieldHint(el))return;
   const options=Array.from(el.options||[]);
   const selected=options.find(o=>o.selected);
+  // V1154: En Revisión de canchas los values son IDs estables ('pozos', 'cuenda', etc.).
+  // Solo ajustar etiquetas visibles, NUNCA transformar el ID que usan reportes y avisos.
+  const preserveFieldIds=el.hasAttribute('data-v668-stable-field');
   const selectedCanon=selected?(isKnown(selected.value)?canonical(selected.value):(isKnown(selected.textContent)?canonical(selected.textContent):'')):'';
   const seen=new Map();
 
@@ -69,7 +72,7 @@ function patchChoiceList(el){
     if(!canon)continue;
 
     if(labelCanon)o.textContent=labelCanon;
-    if(valueCanon || (labelCanon&&norm(oldValue)===norm(oldText)))o.value=valueCanon||labelCanon;
+    if(!preserveFieldIds && (valueCanon || (labelCanon&&norm(oldValue)===norm(oldText))))o.value=valueCanon||labelCanon;
 
     const key=norm(canon);
     const keep=seen.get(key);
