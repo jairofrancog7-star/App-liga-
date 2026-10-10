@@ -1,7 +1,7 @@
 // Solo permisos del servicio de avisos; otras API requieren controles independientes.
 export const ROLE_PERMS=Object.freeze({
- presidente:Object.freeze(['notices:read','notices:write','roles:write','audit:read','recipients:write']),
- secretario:Object.freeze(['notices:read','notices:write']),
+ presidente:Object.freeze(['notices:read','notices:write','meetings:read','meetings:write','roles:write','audit:read','recipients:write']),
+ secretario:Object.freeze(['notices:read','notices:write','meetings:read','meetings:write']),
  editor:Object.freeze(['notices:read','notices:write']),
  disciplina:Object.freeze(['notices:read']),
  lector:Object.freeze([])
