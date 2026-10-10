@@ -22,7 +22,7 @@ const media=()=>window.LJR_MEDIA;
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const dateString=s=>{try{return s?new Date(s+'T12:00:00').toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}):''}catch(_){return ''}};
 const catName=v=>CATS.find(x=>x[0]===v)?.[1]||'Todas las categorías';
-function status(modal,value){const box=$('[data-status]',modal);if(box)box.textContent=value}
+function status(modal,value){const box=$('.ljr-editor-compose [data-status]',modal)||$('[data-status]',modal);if(box)box.textContent=value}
 async function verified(){
  if(!admin())throw Error('Solo los administradores autorizados pueden editar la Liga.');
  const response=await media().api('me');
@@ -38,7 +38,7 @@ function showComposer(prefill){
  if(!admin())return media()?.login?.(()=>showComposer(prefill));
  const choices=Object.entries(TYPES).map(([key,val])=>'<option value="'+key+'">'+esc(val[0])+'</option>').join('');
  const modal=createModal('Crear aviso oficial','<form class="ljr-editor-form" data-editor-form>'+
-  '<p class="ljr-editor-note">Sin programar: escribe, revisa y confirma. La publicación aparecerá en Noticias de toda la Liga; un borrador queda privado en el servidor.</p>'+
+  '<p class="ljr-editor-note ljr-editor-intro">Completa los datos confirmados, prepara el mensaje y revisa antes de publicar. Los borradores permanecen privados en el servidor.</p>'+
   '<div class="ljr-editor-two">'+
   '<label>Tipo de aviso<select name="type">'+choices+'</select></label>'+
   '<label>Categoría<select name="category">'+CATS.map(x=>'<option value="'+x[0]+'">'+esc(x[1])+'</option>').join('')+'</select></label>'+
@@ -49,21 +49,159 @@ function showComposer(prefill){
   '<label>Equipo afectado (opcional)<input name="team" maxlength="90" placeholder="Ej. Manchester"></label>'+
   '</div>'+
   '<label>Detalles confirmados<textarea name="details" rows="2" maxlength="1200" placeholder="Escribe el cambio o la información oficial. No se inventan resultados."></textarea></label>'+
-  '<div class="ljr-editor-tools"><button type="button" data-generate="formal">Generar comunicado</button><button type="button" data-generate="short">Versión corta</button><button type="button" data-generate="urgent">Aviso urgente</button></div>'+
+  '<div class="ljr-editor-tools"><button type="button" data-generate="formal">✎ Comunicado</button><button type="button" data-generate="short">☰ Versión corta</button><button type="button" data-generate="urgent">⚠ Urgente</button></div>'+
   '<label>Título<input name="title" required maxlength="160"></label>'+
   '<label>Mensaje<textarea name="body" required rows="5" minlength="15" maxlength="4000"></textarea></label>'+
   '<label>Mostrar en<select name="scope"><option value="Liga">Liga</option><option value="Equipos">Equipos</option><option value="Fichajes">Fichajes</option></select></label>'+
-  '<div class="ljr-editor-preview"><small>VISTA PREVIA · NOTICIAS</small><strong data-preview-title></strong><p data-preview-body></p><small data-preview-meta></small></div>'+
+  '<div class="ljr-editor-smart-tools" aria-label="Herramientas del aviso"><button type="button" data-editor-check>✓ Revisar datos</button><button type="button" data-editor-local-ai>✦ IA en el dispositivo</button><button type="button" data-editor-calendar>▦ Google Calendar</button><button type="button" data-editor-schedule>◷ Programar envío</button><button type="button" data-editor-copy>⧉ Copiar aviso</button></div>'+
+  '<p class="ljr-editor-feedback" data-editor-feedback aria-live="polite" role="status"></p>'+
+  '<div class="ljr-editor-preview"><small>VISTA PREVIA · NOTICIAS OFICIALES</small><strong data-preview-title></strong><p data-preview-body></p><small data-preview-meta></small></div>'+
+  '<p class="ljr-editor-progress" data-status role="status" aria-live="polite"></p>'+
   '<div class="ljr-editor-bottom"><button type="button" data-editor-draft>Guardar borrador</button><button type="submit" data-editor-publish>Publicar en Noticias</button></div>'+
-  '<small>Cuando esté conectado el servidor Web Push, las publicaciones oficiales se notificarán automáticamente según categoría, equipo y cancha. Sin servidor, se publican solo en Noticias.</small>'+
+  '<small>Publicar requiere confirmación y permisos del servidor. Las notificaciones push, SMS o WhatsApp automáticas solo funcionan si el servicio HTTPS y los destinatarios autorizados están configurados.</small>'+
   '</form>','ljr-editor-compose');
  const form=$('[data-editor-form]',modal);
  const title=$('[name=title]',form),body=$('[name=body]',form);
  let savedId='', savedRevision=0, saving=false;
+ // Los catálogos son públicos y solo sugieren nombres; nunca alteran los permisos de publicación.
+ const fieldInput=form.elements.field,teamInput=form.elements.team;
+ const fieldList=document.createElement('datalist'),teamList=document.createElement('datalist');
+ const uid='ljr-aviso-'+Math.random().toString(36).slice(2);
+ fieldList.id=uid+'-fields';teamList.id=uid+'-teams';
+ fieldInput.setAttribute('list',fieldList.id);teamInput.setAttribute('list',teamList.id);
+ form.append(fieldList,teamList);
+ const knownFields=[
+  'Campo 1 · Unidad Deportiva Sur','Campo 2 · Unidad Deportiva Sur','Campo 3 · Unidad Deportiva Sur',
+  'Campo 4 · Emiliano Zapata','Campo Cerrito de Gasca','Campo de Tavera','Campo San Juan de la Cruz',
+  'Unidad Deportiva Santiago de Cuenda','Campo San Antonio de Romerillo','Campo Fraccionamiento Comontuoso',
+  'Campo de Fútbol de Pozos','Campo Rincón de Centeno','Campo San José de la Montaña','Campo San Julián Tierra Blanca'
+ ];
+ let categoryTeams=new Map(),availableTeamNames=[];
+ const normalizeName=x=>String(x||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('es').trim();
+ function fillList(list,items){
+  const seen=new Set();
+  list.replaceChildren();
+  items.forEach(value=>{
+   value=String(value||'').trim();
+   const key=normalizeName(value);
+   if(!value||seen.has(key))return;
+   seen.add(key);
+   const option=document.createElement('option');option.value=value;list.append(option);
+  });
+ }
+ function teamOptions(clearInvalid=false){
+  const cat=form.elements.category.value;
+  const names=cat==='all'?[...new Set([...categoryTeams.values()].flat())]:(categoryTeams.get(cat)||[]);
+  availableTeamNames=names.sort((a,b)=>a.localeCompare(b,'es'));
+  fillList(teamList,availableTeamNames);
+  if(clearInvalid&&teamInput.value.trim()&&availableTeamNames.length&&!availableTeamNames.some(x=>normalizeName(x)===normalizeName(teamInput.value)))teamInput.value='';
+ }
+ async function loadCatalogs(){
+  fillList(fieldList,knownFields);
+  try{
+   const r=await fetch('./data/fields-v38-22.json',{cache:'force-cache'});
+   if(r.ok){
+    const data=await r.json();
+    if(Array.isArray(data.fields))fillList(fieldList,[...data.fields.map(x=>x?.name).filter(Boolean),...knownFields]);
+   }
+  }catch(_){/* El campo sigue siendo editable si el catálogo no carga. */}
+  try{
+   let data=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA;
+   if(!data?.categories){
+    const r=await fetch('./data/official-live.json',{cache:'force-cache'});
+    if(r.ok)data=await r.json();
+   }
+   for(const [id,cat] of Object.entries(data?.categories||{})){
+    const teams=[];
+    (cat?.teams||[]).forEach(x=>teams.push(typeof x==='string'?x:x?.name));
+    Object.keys(cat?.rosters||{}).forEach(x=>teams.push(x));
+    const unique=[...new Set(teams.map(x=>String(x||'').trim()).filter(Boolean))];
+    categoryTeams.set(String(id),unique);
+   }
+   teamOptions();
+  }catch(_){/* Equipo sigue siendo editable; no se inventa un catálogo. */}
+ }
+ function qualityNotes(){
+  const f=form.elements,warnings=[],details=f.details.value.trim();
+  if(!details)warnings.push('Faltan los detalles oficiales confirmados.');
+  if(f.type.value==='jornada'&&!f.round.value)warnings.push('Indica la jornada si corresponde.');
+  if(f.type.value==='cancha'&&!f.field.value.trim())warnings.push('Selecciona la cancha nueva o afectada.');
+  if(f.type.value==='horario'&&!f.time.value)warnings.push('Indica la hora confirmada.');
+  if(f.type.value==='junta'&&(!f.date.value||!f.time.value))warnings.push('Para convocar una junta conviene indicar fecha y hora.');
+  if(Boolean(f.date.value)!==Boolean(f.time.value))warnings.push('Comprueba la fecha y la hora; una de ellas está vacía.');
+  if(f.category.value!=='all'&&f.team.value.trim()&&availableTeamNames.length&&!availableTeamNames.some(x=>normalizeName(x)===normalizeName(f.team.value)))warnings.push('El equipo no coincide con el catálogo de la categoría seleccionada.');
+  return warnings;
+ }
+ function checkNotice(){
+  const warnings=qualityNotes();
+  const feedback=$('[data-editor-feedback]',form);
+  feedback.textContent=warnings.length?'Revisa antes de publicar: '+warnings.join(' '):'Datos básicos completos. Confirma que la información oficial es correcta.';
+  feedback.dataset.level=warnings.length?'warning':'ok';
+  return warnings;
+ }
+ loadCatalogs();
+ form.elements.category.addEventListener('change',()=>{teamOptions(true);checkNotice();});
+ $('[data-editor-check]',form).onclick=checkNotice;
+ $('[data-editor-schedule]',form).onclick=()=>openScheduler($('[data-editor-schedule]',form));
+ $('[data-editor-copy]',form).onclick=async()=>{
+  const result=(title.value.trim()+'\n\n'+body.value.trim()).trim();
+  if(!body.value.trim())return status(modal,'Escribe primero un mensaje para copiar.');
+  try{
+   await navigator.clipboard.writeText(result);
+   status(modal,'Aviso copiado; compartirlo es una acción manual.');
+  }catch(_){status(modal,'El navegador no permitió copiar. Mantén pulsado el texto para copiarlo.');}
+ };
+ $('[data-editor-calendar]',form).onclick=()=>{
+  const f=form.elements;
+  if(!f.date.value||!f.time.value)return status(modal,'Para crear un recordatorio, selecciona fecha y hora.');
+  const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(f.date.value);
+  const t=/^(\d{2}):(\d{2})$/.exec(f.time.value);
+  if(!m||!t)return status(modal,'Fecha u hora inválida.');
+  const base=Date.UTC(+m[1],+m[2]-1,+m[3],+t[1],+t[2]);
+  const stamp=d=>d.toISOString().replace(/[-:]/g,'').slice(0,15);
+  const link=new URL('https://calendar.google.com/calendar/render');
+  link.searchParams.set('action','TEMPLATE');
+  link.searchParams.set('text',title.value.trim()||'Aviso de Liga Juventino Rosas');
+  link.searchParams.set('details',body.value.trim().slice(0,4000));
+  link.searchParams.set('location',f.field.value.trim());
+  link.searchParams.set('dates',stamp(new Date(base))+'/'+stamp(new Date(base+3600000)));
+  link.searchParams.set('ctz','America/Mexico_City');
+  window.open(link.toString(),'_blank','noopener,noreferrer');
+  status(modal,'Se solicitó abrir Google Calendar. Confirma Guardar allí; si no se abre, permite ventanas emergentes. No se creó ningún evento automáticamente.');
+ };
+ $('[data-editor-local-ai]',form).onclick=async()=>{
+  const button=$('[data-editor-local-ai]',form);
+  if(!form.elements.details.value.trim())return status(modal,'Escribe primero los hechos confirmados en Detalles.');
+  const model=window.LanguageModel;
+  if(!model||typeof model.create!=='function')return status(modal,'La IA generativa local no está disponible en este navegador. Puedes usar las plantillas y Revisar datos sin conexión.');
+  let session;
+  button.disabled=true;status(modal,'Preparando IA en el dispositivo; puede requerir descargar un modelo local…');
+  try{
+   const availability=typeof model.availability==='function'?await model.availability():null;
+   if(availability==='unavailable')throw Error('Modelo local no disponible en este dispositivo.');
+   session=await model.create();
+   const facts=[
+    'Tipo: '+(TYPES[form.elements.type.value]?.[0]||'Aviso'),
+    'Categoría: '+catName(form.elements.category.value),
+    'Jornada: '+(form.elements.round.value||'no indicada'),
+    'Fecha: '+(form.elements.date.value||'no indicada'),
+    'Hora: '+(form.elements.time.value||'no indicada'),
+    'Sede: '+(form.elements.field.value||'no indicada'),
+    'Equipo: '+(form.elements.team.value||'no indicado'),
+    'Hechos confirmados: '+form.elements.details.value.trim()
+   ].join('\n');
+   const generated=await session.prompt('Redacta en español un comunicado oficial breve para Liga Juventino Rosas. Usa EXCLUSIVAMENTE los hechos proporcionados, sin inventar cambios, resultados, sedes, sanciones ni horarios. No añadas datos ausentes. Devuelve solo el comunicado, sin Markdown.\n'+facts);
+   const result=String(generated||'').trim().slice(0,4000);
+   if(result.length<15)throw Error('La IA no devolvió un mensaje utilizable.');
+   body.value=result;updatePreview();
+   status(modal,'Borrador propuesto por IA local. Revisa personalmente cada dato antes de publicar; aún no se ha guardado ni enviado.');
+  }catch(err){status(modal,'IA local no disponible: '+(err?.message||'error de modelo')+'. Puedes seguir con las plantillas.');}
+  finally{try{session?.destroy?.()}catch(_){}button.disabled=false;}
+ };
  const updatePreview=()=>{
   $('[data-preview-title]',form).textContent=title.value||'Título del aviso';
   $('[data-preview-body]',form).textContent=body.value||'Aquí aparecerá el comunicado oficial.';
-  $('[data-preview-meta]',form).textContent=catName(form.elements.category.value)+' · '+form.elements.scope.value;
+  $('[data-preview-meta]',form).textContent=[catName(form.elements.category.value),form.elements.date.value?dateString(form.elements.date.value):'',form.elements.time.value,form.elements.field.value.trim(),form.elements.scope.value].filter(Boolean).join(' · ');
  };
  function generate(mode='formal'){
   const f=form.elements,t=TYPES[f.type.value]||TYPES.jornada,parts=[];
@@ -82,8 +220,8 @@ function showComposer(prefill){
   updatePreview();
  }
  form.querySelectorAll('[data-generate]').forEach(b=>b.onclick=()=>generate(b.dataset.generate));
- form.addEventListener('input',updatePreview);form.addEventListener('change',updatePreview);
- generate('formal');
+ form.addEventListener('input',()=>{updatePreview();checkNotice();});form.addEventListener('change',()=>{updatePreview();checkNotice();});
+ generate('formal');checkNotice();
  // V1077: importación opcional del aviso de suspensión, sin publicar ni eludir la API.
  // Solo se rellenan campos del formulario; el administrador debe revisar y pulsar Publicar.
  if(prefill&&typeof prefill==='object'&&!Array.isArray(prefill)){
@@ -102,6 +240,8 @@ function showComposer(prefill){
   if(saving||!form.reportValidity())return;
   if(body.value.trim().length<15){status(modal,'Agrega un mensaje de por lo menos 15 caracteres.');return}
   if(published&&!form.elements.details.value.trim()){status(modal,'Antes de publicar, escribe los detalles oficiales confirmados del aviso.');form.elements.details.focus();return}
+  if(published){const notes=checkNotice();if(notes.length&&!confirm('Hay datos por revisar:\n'+notes.join('\n')+'\n\n¿Continuar a la confirmación?'))return;
+   if(!confirm('¿Confirmas que verificaste los hechos y deseas PUBLICAR este aviso para toda la Liga?'))return;}
   const buttons=form.querySelectorAll('[data-editor-draft],[data-editor-publish]');
   saving=true;buttons.forEach(x=>x.disabled=true);
   status(modal,'Verificando permiso y guardando…');
