@@ -110,7 +110,7 @@ function readStore(db,spec){
    const key=c.primaryKey;
    if(!(typeof key==='string'||typeof key==='number')||String(key).length>250){tx.abort();reject(Error('Identificador no admitido en '+spec.db));return}
    rows.push({key,value:c.value});
-   cursor.continue();
+   c.continue();
   };
   cursor.onerror=()=>reject(cursor.error||Error('Error leyendo datos locales.'));
   tx.onerror=()=>reject(tx.error||Error('No se pudo leer '+spec.db));
