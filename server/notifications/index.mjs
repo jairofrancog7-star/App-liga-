@@ -135,6 +135,43 @@ async function subscribe(req,res){
 }
 app.post('/push/subscribe',throttle,subscribe);
 app.post('/api/push/subscribe',throttle,subscribe);
+// Prueba explícita de extremo a extremo: solo el propio dispositivo puede solicitarla.
+// Debe demostrar las claves de su suscripción registrada. Jamás publica un aviso oficial.
+const recentSelfTests=new Map(),SELF_TEST_DELAY_MS=15000,SELF_TEST_COOLDOWN_MS=300000;
+app.post('/api/push/self-test',throttle,async(req,res)=>{
+ if(!vapidReady)return res.status(503).json({error:'El servidor Web Push no está configurado.'});
+ const subscription=req.body?.subscription;
+ if(!isPush(subscription))return res.status(400).json({error:'La suscripción del navegador no es válida.'});
+ try{
+  const result=await pool.query('SELECT subscription FROM ljr_push_subscriptions WHERE endpoint=$1 LIMIT 1',[subscription.endpoint]);
+  const registered=result.rows[0]?.subscription;
+  // auth es un secreto aleatorio del navegador; una URL de endpoint por sí sola no autoriza envíos.
+  if(!registered||!secretEquals(registered.keys?.auth,subscription.keys?.auth)||
+    !secretEquals(registered.keys?.p256dh,subscription.keys?.p256dh))
+   return res.status(404).json({error:'El teléfono aún no tiene una suscripción confirmada en el servidor. Activa los avisos primero.'});
+  const token=hash(subscription.endpoint),now=Date.now(),last=recentSelfTests.get(token)||0;
+  if(now-last<SELF_TEST_COOLDOWN_MS)return res.status(429).json({error:'Ya solicitaste una prueba. Espera cinco minutos antes de repetirla.'});
+  recentSelfTests.set(token,now);
+  if(recentSelfTests.size>3000){
+   for(const [k,t] of recentSelfTests)if(now-t>=SELF_TEST_COOLDOWN_MS)recentSelfTests.delete(k);
+  }
+  const timer=setTimeout(async()=>{
+   try{
+    await webpush.sendNotification(registered,JSON.stringify({
+     title:'PRUEBA PERSONAL · Liga Juventino Rosas',
+     body:'Si recibiste este aviso con la página cerrada, Web Push está funcionando en este dispositivo.',
+     route:'notifications'
+    }),{TTL:180});
+   }catch(err){
+    console.error('Prueba Web Push privada fallida:',err?.statusCode||err?.code||'desconocido');
+    if([404,410].includes(err?.statusCode))
+     await pool.query('DELETE FROM ljr_push_subscriptions WHERE endpoint=$1',[subscription.endpoint]).catch(()=>{});
+   }
+  },SELF_TEST_DELAY_MS);
+  timer.unref?.();
+  return res.status(202).json({ok:true,scheduled:true,delaySeconds:15});
+ }catch(err){return apiError(err,res)}
+});
 async function unsubscribe(req,res){
  const endpoint=req.body?.endpoint||req.body?.subscription?.endpoint;if(typeof endpoint!=='string'||endpoint.length>2100)return res.status(400).json({error:'Endpoint inválido'});
  try{await pool.query('DELETE FROM ljr_push_subscriptions WHERE endpoint=$1',[endpoint]);res.json({ok:true})}catch(e){apiError(e,res)}
