@@ -43,7 +43,7 @@ export function registerMeetingRoutes({app,pool,admin,requirePermission,audit,ap
   try{payload=prepareMeeting(req.body?.payload)}catch(e){return res.status(400).json({error:e.message})}
   try{
    const sql='INSERT INTO ljr_meeting_minutes(meeting_date,payload,revision,updated_by) '+
-     'VALUES($1,$2::jsonb,1,$3) '+
+     'SELECT $1::date,$2::jsonb,1,$3::text WHERE $4=0 '+
      'ON CONFLICT(meeting_date) DO UPDATE SET '+
      'payload=EXCLUDED.payload,revision=ljr_meeting_minutes.revision+1, '+
      'updated_by=EXCLUDED.updated_by,updated_at=now() '+
