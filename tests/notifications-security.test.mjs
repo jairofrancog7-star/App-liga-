@@ -61,6 +61,8 @@ test('El remitente de WhatsApp exige el formato internacional y una plantilla ap
  assert.match(src,/const whatsappReady=twilioReady/);
  assert.match(src,/\^whatsapp:/);
  assert.match(src,/TWILIO_WHATSAPP_CONTENT_SID/);
+ assert.match(src,/TWILIO_WHATSAPP_ACTIVATED==='true'/);
+ assert.match(src,/\^whatsapp:/);
  assert.match(src,/\^HX\[0-9a-f\]\{32\}/);
  const match=/^whatsapp:\+[1-9]\d{7,14}$/;
  assert.equal(match.test('whatsapp:+524121234567'),true);
