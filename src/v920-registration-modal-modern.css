@@ -235,3 +235,71 @@ html body > .v105-modal.v168-account-modal.v920-registration-modal .v168-inline-
     transition-duration:0s!important;
   }
 }
+
+
+/* V906 — Avisos: paleta azul unificada con la app. */
+html body > .v105-modal.v168-account-modal.v920-registration-modal{
+  background:rgba(1,5,32,.90)!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal > .v105-dialog{
+  background:
+    radial-gradient(circle at 14% 0%,rgba(28,105,212,.24),transparent 34%),
+    radial-gradient(circle at 88% 8%,rgba(13,71,161,.20),transparent 32%),
+    linear-gradient(180deg,#0d2d91 0%,#0a1f70 42%,#07145a 72%,#050d45 100%)!important;
+  border:1px solid rgba(68,135,239,.35)!important;
+  box-shadow:0 22px 55px rgba(0,5,42,.42),inset 0 1px 0 rgba(255,255,255,.06)!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v105-close{
+  background:linear-gradient(180deg,#173d9c,#102c7f)!important;
+  border-color:rgba(93,151,239,.38)!important;
+  color:#fff!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v105-dialog > p{
+  color:#b9c9ee!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v105-form.v920-register-form{
+  background:linear-gradient(160deg,rgba(19,50,138,.84),rgba(8,25,94,.88))!important;
+  border-color:rgba(74,132,231,.35)!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v920-register-form .v920-label{
+  color:#c8d8f7!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v920-register-form input,
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v920-register-form select{
+  background:linear-gradient(180deg,#0a236f,#081a5d)!important;
+  border-color:rgba(76,127,220,.48)!important;
+  color:#fff!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025)!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v920-register-form input::placeholder{
+  color:#8ea4d8!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v920-register-form input:focus,
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v920-register-form select:focus{
+  border-color:#4aa8ff!important;
+  background:#0a246f!important;
+  box-shadow:0 0 0 3px rgba(45,130,255,.15)!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v920-register-form .v920-glyph{
+  color:#55b6ff!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v920-register-form .v920-glyph-chevron{
+  color:#b8cef8!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v920-register-actions .v920-btn-primary{
+  border-color:rgba(105,178,255,.58)!important;
+  background:linear-gradient(135deg,#2b93f1 0%,#1c69d4 52%,#0d47a1 100%)!important;
+  color:#fff!important;
+  box-shadow:0 12px 25px rgba(13,71,161,.24),inset 0 1px 0 rgba(255,255,255,.24)!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v920-register-actions .v920-btn-primary .v920-glyph{
+  color:#fff!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v920-register-actions .v920-btn-secondary{
+  border-color:rgba(74,126,220,.45)!important;
+  background:linear-gradient(180deg,#153b96,#102b78)!important;
+  color:#eaf2ff!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v920-register-actions .v920-btn-secondary .v920-glyph{
+  color:#6ab7ff!important;
+}
