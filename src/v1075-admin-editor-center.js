@@ -98,13 +98,13 @@ function showComposer(prefill){
   const m=/^(\d\d)\/(\d\d)\/(\d{4})\s+([01]\d|2[0-3]):([0-5]\d)/.exec(String(text||''));
   if(!m)return {date:'',time:''};
   const date=m[3]+'-'+m[2]+'-'+m[1],d=new Date(date+'T12:00:00');
-  return Number.isFinite(+d)&&d.getFullYear()===+m[3]&&d.getMonth()+1===+m[2]&&d.getDate()===+m[1]?{date,time:m[4]+':'+m[5]}:{date:'',time:''};
+  return Number.isFinite(+d)&&d.getFullYear()===+m[3]&&d.getMonth()+1===+m[2]&&d.getDate()===+m[1]?{date,time:(m[4]==='00'&&m[5]==='00')?'':m[4]+':'+m[5]}:{date:'',time:''};
  }
  async function loadCatalogs(){
   fieldOptions();roundOptions();teamOptions();
   try{
-   let data=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA;
-   if(!data?.categories){const r=await fetch('./data/official-live.json',{cache:'no-store'});if(!r.ok)throw Error('Sin rol');data=await r.json();}
+   let data;try{data=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA}catch(_){data=window.LJR_OFFICIAL_DATA;}
+   if(!data?.categories){const r=await fetch('./data/official-live.json',{cache:'default'});if(!r.ok)throw Error('Sin rol');data=await r.json();}
    const venues=[];
    for(const [id,cat] of Object.entries(data.categories||{})){
     const teams=[],rounds=[],games=[];
