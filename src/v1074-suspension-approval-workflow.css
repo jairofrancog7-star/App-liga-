@@ -246,3 +246,11 @@ html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1074-flow 
 html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1074-recipients{
   scrollbar-width:thin;
 }
+
+/* V1092: acceso al programador global sin tarjetas adicionales ni huecos. */
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1074-buttons [data-v1074-global]{
+ grid-column:1/-1!important;
+ min-height:39px!important;
+ background:linear-gradient(130deg,#1658ad,#13607f)!important;
+ border-color:rgba(89,225,255,.56)!important;
+}

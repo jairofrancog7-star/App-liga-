@@ -47,3 +47,48 @@ test('No se incluyen claves de publicación en la aplicación pública',()=>{
  assert.match(html,/src\/v1081-global-admin-notices\.js/);
  assert.doesNotMatch(client,/ADMIN_NOTIFY_TOKEN/);
 });
+
+
+test('Seguimiento de entregas limitado a administración y sin datos de contacto',()=>{
+ const src=read('server/notifications/index.mjs');
+ assert.match(src,/app\.get\('\/admin\/notices\/:id\/deliveries',admin,requirePermission\('notices:read'\)/);
+ assert.match(src,/FROM ljr_delivery_log WHERE notice_id=\$1 GROUP BY channel,status/);
+ assert.match(src,/twilio\.validateRequest\(E\.TWILIO_AUTH_TOKEN,signature,url,req\.body\)/);
+ assert.match(src,/opted_out_at IS NULL/);
+});
+test('El remitente de WhatsApp exige el formato internacional y una plantilla aprobada',()=>{
+ const src=read('server/notifications/index.mjs');
+ assert.match(src,/const whatsappReady=twilioReady/);
+ assert.match(src,/\^whatsapp:/);
+ assert.match(src,/TWILIO_WHATSAPP_CONTENT_SID/);
+ assert.match(src,/TWILIO_WHATSAPP_ACTIVATED==='true'/);
+ assert.match(src,/\^whatsapp:/);
+ assert.match(src,/\^HX\[0-9a-f\]\{32\}/);
+ const match=/^whatsapp:\+[1-9]\d{7,14}$/;
+ assert.equal(match.test('whatsapp:+524121234567'),true);
+ assert.equal(match.test('whatsapp:4121234567'),false);
+});
+test('La vista compacta consulta estados y no muestra teléfonos',()=>{
+ const src=read('src/v1081-global-admin-notices.js');
+ assert.match(src,/Estado de entregas/);
+ assert.match(src,/deliveryStates/);
+ assert.doesNotMatch(src,/rec\.phone|rec\.endpoint/);
+});
+
+test('programación global interna y salud real sin secretos visibles',()=>{
+ const backend=read('server/notifications/index.mjs');
+ const bootstrap=read('server/notifications/bootstrap.mjs');
+ assert.match(backend,/const internalDispatchEnabled=E\.ENABLE_INTERNAL_DISPATCH!=='false'/);
+ assert.match(backend,/app\.get\('\/health\/ready'/);
+ assert.match(backend,/async function dispatchDue\(/);
+ assert.match(backend,/function activateScheduler\(/);
+ assert.match(backend,/setInterval\(tick,60000\)/);
+ assert.match(backend,/app\.listen\(Number\(E\.PORT\)\|\|8080,\(\)=>\{console\.log\('Liga notifier listening'\);activateScheduler\(\)\}\)/);
+ assert.match(backend,/const cron=.*!E\.JOB_NOTIFY_TOKEN/);
+ assert.match(bootstrap,/notifications-schema-v1084/);
+ const ui=read('src/v1081-global-admin-notices.js');
+ assert.match(ui,/showSystemStatus\(/);
+ assert.match(ui,/Estado del sistema/);
+ assert.match(ui,/Servidor de avisos/);
+ assert.match(ui,/Permisos de toda la página/);
+});

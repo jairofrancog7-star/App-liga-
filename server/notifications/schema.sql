@@ -73,3 +73,9 @@ ALTER TABLE ljr_push_subscriptions ADD COLUMN IF NOT EXISTS preferences JSONB NO
 ALTER TABLE ljr_scheduled_notices ADD COLUMN IF NOT EXISTS notice_type TEXT NOT NULL DEFAULT 'general';
 ALTER TABLE ljr_scheduled_notices ADD COLUMN IF NOT EXISTS team TEXT NOT NULL DEFAULT '';
 ALTER TABLE ljr_scheduled_notices ADD COLUMN IF NOT EXISTS field TEXT NOT NULL DEFAULT '';
+
+-- V1083: categoria interna del contacto, nunca expuesta al publico.
+ALTER TABLE ljr_message_consent ADD COLUMN IF NOT EXISTS contact_role TEXT NOT NULL DEFAULT 'general';
+ALTER TABLE ljr_message_consent DROP CONSTRAINT IF EXISTS ljr_message_consent_contact_role_check;
+ALTER TABLE ljr_message_consent ADD CONSTRAINT ljr_message_consent_contact_role_check
+ CHECK (contact_role IN ('general','delegado','presidencia'));

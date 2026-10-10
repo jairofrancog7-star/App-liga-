@@ -63,7 +63,7 @@ function mexicoInput(value){
  }).formatToParts(date).map(q=>[q.type,q.value]));
  return p.year+'-'+p.month+'-'+p.day+'T'+p.hour+':'+p.minute;
 }
-function makeAdminForm(){
+function makeAdminForm(prefill){
  const modal=dialog('Avisos globales programados',
   '<div class="v1081"><p class="v1081-note">Los avisos se publican en el servidor aunque el teléfono esté apagado. Requiere que el servicio HTTPS esté desplegado y configurado. Todo cambio se verifica con tu sesión.</p>'+
   '<form data-v1081-form>'+
@@ -75,18 +75,52 @@ function makeAdminForm(){
   '<label>Equipo afectado (opcional)<input name="team" maxlength="90" placeholder="Solo si aplica"></label>'+
   '<label>Cancha afectada (opcional)<input name="field" maxlength="100" placeholder="Solo si aplica"></label>'+
   '<label>Publicar · hora Juventino Rosas<input name="when" type="datetime-local" required></label></div>'+
-  '<label class="v1081-check"><input type="checkbox" name="push"> Avisar también por notificación Push (requiere VAPID)</label>'+
-  '<p class="v1081-preview">Se publicará en Noticias para todos. No se agregan resultados automáticamente.</p>'+
+  '<div class="v1081-channel-options">'+
+  '<label class="v1081-check"><input type="checkbox" name="push" disabled> Push a seguidores suscritos</label>'+
+  '<label class="v1081-check"><input type="checkbox" name="sms" disabled> SMS por Twilio</label>'+
+  '<label class="v1081-check"><input type="checkbox" name="whatsapp" disabled> WhatsApp Business (plantilla aprobada)</label>'+
+  '</div><small class="v1081-channel-note" data-v1091-channel-status>Consultando canales disponibles…</small>'+
+  '<p class="v1081-preview">Se publicará en Noticias; los mensajes externos requieren canal aprobado y consentimiento individual. Nada se envía al guardar.</p>'+
   '<div class="v1081-actions"><button type="button" data-v1081-reset>Limpiar</button><button type="submit" data-v1081-save>Programar publicación</button></div>'+
   '</form><div class="v1081-list"><div class="v1081-list-head"><strong>Publicaciones programadas</strong><button type="button" data-v1081-refresh>Actualizar</button></div><div data-v1081-items>Cargando...</div></div>'+
   '<p class="v1081-status" data-v1081-status role="status" aria-live="polite"></p></div>');
  const form=$('[data-v1081-form]',modal),list=$('[data-v1081-items]',modal),save=$('[data-v1081-save]',modal);
  let editing=null,rows=[],busy=false;
+ // Los canales se habilitan únicamente cuando el backend responde que están
+ // preparados: claves privadas, remitente aprobado, plantilla y base de datos.
+ async function loadChannels(){
+  const msg=$('[data-v1091-channel-status]',modal);
+  const options={push:false,sms:false,whatsapp:false};
+  try{
+   const result=await publicCall('/config');
+   if(result){options.push=!!result.pushEnabled;options.sms=!!result.smsEnabled;options.whatsapp=!!result.whatsappEnabled;}
+  }catch(_){}
+  for(const [name,enabled] of Object.entries(options)){
+   const input=form.elements[name];if(!input)continue;
+   input.disabled=!enabled;if(!enabled)input.checked=false;
+  }
+  if(msg)msg.textContent=Object.values(options).some(Boolean)?
+   'Canales habilitados por el servidor. SMS y WhatsApp requieren contactos con consentimiento registrado; pueden generar cargos.':
+   'Push, SMS y WhatsApp pendientes de configurar en el servidor. Puedes preparar el aviso sin enviarlo.';
+ }
  function clear(){
   editing=null;form.reset();save.textContent='Programar publicación';
   form.elements.when.value=mexicoInput(Date.now()+3600000).slice(0,16);
  }
  clear();
+ // Entrada desde Aviso de suspensión: rellenar sin publicar ni seleccionar canales externos.
+ if(prefill&&typeof prefill==='object'&&active()){
+  const safe=(value,max)=>String(value||'').slice(0,max);
+  form.elements.title.value=safe(prefill.title,120);
+  form.elements.body.value=safe(prefill.body,700);
+  for(const k of ['category','type','team','field']){
+   const el=form.elements[k],v=safe(prefill[k],100);
+   if(!el||!v)continue;
+   if(el.tagName==='SELECT'&&![...el.options].some(o=>o.value===v))continue;
+   el.value=v;
+  }
+  message(modal,'Aviso importado para revisión. Elige la hora de publicación y confirma los canales; todavía no se ha enviado.');
+ }
  async function refresh(){
   list.textContent='Consultando avisos…';
   try{
@@ -108,7 +142,9 @@ function makeAdminForm(){
       form.elements.category.value=item.category||'Todas';form.elements.type.value=item.notice_type||'general';
       form.elements.team.value=item.team||'';form.elements.field.value=item.field||'';
       form.elements.when.value=mexicoInput(item.send_at);
-      form.elements.push.checked=Array.isArray(item.channels)&&item.channels.includes('push');
+      for(const ch of ['push','sms','whatsapp']){
+       if(!form.elements[ch]?.disabled)form.elements[ch].checked=Array.isArray(item.channels)&&item.channels.includes(ch);
+      }
       save.textContent='Guardar cambios';form.scrollIntoView({block:'nearest',behavior:'smooth'});
      };
      const cancel=document.createElement('button');cancel.textContent='Cancelar';cancel.className='is-danger';
@@ -122,6 +158,44 @@ function makeAdminForm(){
      };
      buttons.append(edit,cancel);card.append(buttons);
     }
+    // Sólo la administración autenticada consulta los estados del proveedor.
+    // No se muestran teléfonos, endpoints de Push ni credenciales privadas.
+    if(item.status==='done'||item.status==='processing'){
+     const detail=document.createElement('details');detail.className='v1081-deliveries';
+     const summary=document.createElement('summary');summary.textContent='Estado de entregas';
+     const data=document.createElement('div');data.className='v1081-delivery-data';
+     detail.append(summary,data);
+     detail.addEventListener('toggle',async()=>{
+      if(!detail.open)return;
+      data.textContent='Consultando los estados de entrega…';
+      try{
+       const result=await call('/admin/notices/'+encodeURIComponent(item.id)+'/deliveries');
+       if(!detail.open)return;
+       data.replaceChildren();
+       const entries=Array.isArray(result.deliveryStates)?result.deliveryStates:[];
+       if(!entries.length){
+        const empty=document.createElement('p');
+        empty.textContent='Sin entregas externas registradas. Los avisos internos de la app no generan recibos de lectura.';
+        data.append(empty);
+       }else{
+        const labels={push:'Notificación',sms:'SMS',whatsapp:'WhatsApp',
+         queued:'En cola',accepted:'Aceptado',sending:'Enviando',sent:'Enviado',delivered:'Entregado',
+         read:'Leído (si el proveedor lo confirma)',undelivered:'No entregado',failed:'Falló'};
+        for(const rec of entries){
+         const row=document.createElement('p');row.className='v1081-delivery-row';
+         const channel=labels[rec.channel]||String(rec.channel||'Canal');
+         const status=labels[rec.status]||String(rec.status||'Estado');
+         row.textContent=channel+' · '+status+': '+Number(rec.count||0).toLocaleString('es-MX');
+         data.append(row);
+        }
+       }
+       const note=document.createElement('small');
+       note.textContent='Datos de Twilio cuando existan; Push aceptado no significa leído.';
+       data.append(note);
+      }catch(error){data.textContent='No se pudieron consultar las entregas: '+String(error?.message||'Servidor no disponible');}
+     });
+     card.append(detail);
+    }
     list.append(card);
    }
   }catch(err){list.textContent='No se pueden consultar avisos: '+err.message}
@@ -133,10 +207,13 @@ function makeAdminForm(){
   const payload={title:form.elements.title.value.trim(),body:form.elements.body.value.trim(),
    category:form.elements.category.value,type:form.elements.type.value,
    team:form.elements.team.value.trim(),field:form.elements.field.value.trim(),
-   channels:form.elements.push.checked?['app','push']:['app'],
+   channels:['app',...['push','sms','whatsapp'].filter(ch=>form.elements[ch]?.checked&&!form.elements[ch]?.disabled)],
    sendAt:new Date(sendAt).toISOString()};
   if(payload.body.length<15){message(modal,'Escribe al menos 15 caracteres con datos oficiales.');return}
-  if(!confirm('¿Guardar la programación oficial? No se publicará hasta la fecha indicada.'))return;
+  const external=payload.channels.filter(ch=>ch==='sms'||ch==='whatsapp');
+  if(!confirm(external.length?
+   '¿Programar el aviso oficial con envío por '+external.join(' y ')+'? Solo debe llegar a destinatarios con consentimiento y puede generar cargos en Twilio.':
+   '¿Guardar la programación oficial? No se publicará hasta la fecha indicada.'))return;
   busy=true;save.disabled=true;
   try{
    const item=editing;
@@ -148,8 +225,8 @@ function makeAdminForm(){
   finally{busy=false;save.disabled=false}
  };
  $('[data-v1081-reset]',modal).onclick=clear;
- $('[data-v1081-refresh]',modal).onclick=refresh;
- refresh();
+ $('[data-v1081-refresh]',modal).onclick=()=>{loadChannels();refresh()};
+ loadChannels();refresh();
 }
 async function showRoles(){
  if(!media()?.admin?.owner)return;
@@ -197,18 +274,65 @@ async function showAudit(){
   if(!box.children.length)box.textContent='No hay operaciones registradas todavía.';
  }catch(err){box.textContent='No se pudo cargar el historial: '+err.message}
 }
+async function showSystemStatus(){
+ const modal=dialog('Estado de automatización',
+ '<div class="v1081"><p class="v1081-note">Verifica qué funciones oficiales están disponibles. No publica mensajes ni cambia datos.</p>'+
+ '<div data-v1081-checks role="status" aria-live="polite">Comprobando la conexión...</div>'+
+ '<div class="v1081-actions"><button type="button" data-v1081-check-again>Volver a comprobar</button></div>'+
+ '<p class="v1081-note">Si aparece «Pendiente», hay que terminar la configuración del servidor privado y aprobar su despliegue. Nunca pegues contraseñas en la página pública ni en GitHub.</p></div>');
+ const box=$('[data-v1081-checks]',modal);
+ async function inspect(){
+  box.replaceChildren();
+  function row(label,detail,ready){
+   const card=document.createElement('div');card.className='v1081-audit-row';
+   const title=document.createElement('strong');title.textContent=(ready?'✓ ':'○ ')+label;
+   const info=document.createElement('small');info.textContent=detail;
+   card.append(title,info);box.append(card);
+  }
+  const base=await server();
+  if(!base){
+   row('Servidor de avisos','Pendiente de desplegar y conectar URL HTTPS. GitHub Pages no ejecuta servidores.',false);
+   row('Publicaciones globales','Preparadas en GitHub; todavía no se pueden programar desde el teléfono.',false);
+   row('Notificaciones Push y WhatsApp','Requieren un servidor activo, permisos del usuario y proveedores configurados.',false);
+   row('Permisos por cargo','Diseñados para el servidor de avisos; todavía no controlan los demás módulos del CMS.',false);
+   return;
+  }
+  row('Dirección del servidor','Configurada para '+base,true);
+  try{
+   const health=await publicCall('/health/ready');
+   row('Base de datos',health?.ready?'Conexión confirmada.':'No se pudo validar la base de datos.',!!health?.ready);
+   row('Avisos con teléfono apagado',health?.schedulerEnabled?'Programador interno disponible.':'Programador interno desactivado.',!!health?.schedulerEnabled);
+   row('Push',health?.pushEnabled?'Configurado. Cada usuario debe aceptar las notificaciones.':'Claves de envío Push pendientes.',!!health?.pushEnabled);
+   row('SMS y WhatsApp',health?.smsEnabled||health?.whatsappEnabled?'Algún canal de mensajería está configurado.':'Canales de proveedor aún no configurados.',!!(health?.smsEnabled||health?.whatsappEnabled));
+  }catch(e){row('Servicio disponible','No responde correctamente: '+e.message,false);return}
+  try{
+   const me=await call('/admin/me');
+   row('Permisos de esta cuenta',
+    (me?.actor?.role||'Sin cargo')+' · '+(me?.actor?.permissions||[]).join(', '),!!me?.actor?.role);
+  }catch(e){row('Autorización administrativa','No validada: '+e.message,false)}
+  row('Permisos de toda la página','Las autorizaciones del CMS de jugadores, jornadas y sanciones son independientes de este servidor.',false);
+ }
+ $('[data-v1081-check-again]',modal).onclick=inspect;
+ inspect().catch(e=>{box.textContent='No se pudo completar el diagnóstico: '+e.message});
+}
+window.LJR_GLOBAL_NOTICES={open:prefill=>{
+ if(!active())return false;
+ makeAdminForm(prefill);
+ return true;
+}};
 function adminMount(){
  const grid=$('.liga-media-modal > section.ljr-admin-manage [data-ljr-editor-center] .ljr-editor-hub-grid');
  if(!grid||!active()||grid.querySelector('[data-v1081-global]'))return;
  const buttons=[['global','◷','Avisos globales','Programación para todos'],
+  ['status','✓','Estado del sistema','Comprobar conexión y permisos'],
   ...(media().admin?.owner?[['roles','♧','Permisos','Cargos de la directiva'],['audit','≡','Historial','Registro de cambios']]:[])];
  for(const [key,icon,title,sub] of buttons){
   const b=document.createElement('button');b.type='button';b.dataset.v1081Global=key;
   b.innerHTML='<b aria-hidden="true">'+esc(icon)+'</b><span>'+esc(title)+'<small>'+esc(sub)+'</small></span>';
-  b.onclick=()=>{if(!active())return;key==='global'?makeAdminForm():key==='roles'?showRoles():showAudit()};
+  b.onclick=()=>{if(!active())return;key==='global'?makeAdminForm():key==='status'?showSystemStatus():key==='roles'?showRoles():showAudit()};
   grid.append(b);
   server().then(url=>{
-   if(url||!b.isConnected)return;
+   if(url||!b.isConnected||key==='status')return;
    const hint=b.querySelector('small');if(hint)hint.textContent='Pendiente conectar servidor HTTPS';
   }).catch(()=>{});
  }

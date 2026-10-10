@@ -1,3 +1,47 @@
+## Remitente WhatsApp México — pendiente de autorización
+
+El responsable de la Liga confirmó que desea usar un número mexicano como **remitente oficial**. Se cargó el candidato **solo como variable privada y STAGED de Railway** (nunca en GitHub Pages, este README ni los archivos públicos), con el prefijo E.164 `whatsapp:+52`.
+
+**Estado actual:** `TWILIO_WHATSAPP_ACTIVATED=false`. Esta bandera impide activar el canal aun con credenciales Twilio y plantilla configuradas. No se comprobó la titularidad del número, su registro WhatsApp Business ni la aprobación de Meta. Ningún mensaje se ha enviado.
+
+**Para activarlo**, el propietario autorizado deberá:
+
+1. Abrir [Twilio Console](https://console.twilio.com/) y conectar o registrar ese número en **WhatsApp Senders**, siguiendo las verificaciones de Meta y comprobando que está autorizado para uso empresarial. Si ya está asociado a otra cuenta WhatsApp, respetar el procedimiento oficial de migración de Twilio.
+2. Aprobar en Meta una plantilla de tipo utilidad compatible con las variables `{{1}}` (título del aviso) y `{{2}}` (cuerpo), y guardar el `Content SID` (`HX...`) en las variables privadas de Railway.
+3. Configurar las credenciales de Twilio exclusivamente en Railway: `TWILIO_ACCOUNT_SID`, `TWILIO_API_KEY`, `TWILIO_API_SECRET` y `TWILIO_AUTH_TOKEN` para verificar webhooks.
+4. Verificar `PUBLIC_API_ORIGIN` HTTPS para las devoluciones de estado, el consentimiento voluntario de los delegados por canal y las pruebas de mensajes a contactos de prueba que hayan aceptado recibirlos.
+5. Solo después de validar todo, cambiar `TWILIO_WHATSAPP_ACTIVATED=true` **en Railway**. No modificar el código para saltarse la comprobación.
+6. Aplicar el despliegue STAGED cuando se acepten los costos de infraestructura y mensajería, comprobar `GET /health/ready` y `GET /config`, y verificar un mensaje de prueba y su estado.
+
+**Importante:** El candidato a remitente no se debe registrar como destinatario ni agregar a la tabla de consentimiento automáticamente. Son operaciones separadas. El contacto privado no se añade a `data/notifications-client.json`, `index.html` ni a ningún JavaScript público.
+
+## Estado actualizado de las funciones pendientes (10 de octubre de 2026)
+
+- **Código listo para activación, sin servicios desplegados todavía.** Se encontró más de un proyecto Railway preparado. Para evitar facturar contenedores duplicados, usar únicamente el proyecto que incluye `liga-avisos-api` y `Postgres`; no aceptar simultáneamente los dos despliegues.
+- **Programador global incorporado al servidor:** al arrancar `server/notifications`, procesa avisos vencidos automáticamente cada minuto mediante PostgreSQL, incluso si el móvil está cerrado. La función no necesita `JOB_NOTIFY_TOKEN` ni secrets de GitHub Actions. Solo requiere que la instancia Railway permanezca encendida y la base esté conectada. Opcional: desactivar con `ENABLE_INTERNAL_DISPATCH=false`.
+- **Activación por etapas:** se puede encender primero Noticias globales (con `DATABASE_URL` y `LJR_MEDIA_AUTH_BASE`) sin Twilio ni Push. Para recibir notificaciones Push es obligatorio instalar VAPID y que el usuario dé permiso. SMS/WhatsApp requieren credenciales oficiales de Twilio, aprobaciones correspondientes y consentimiento de los destinatarios.
+- **Diagnóstico incorporado a Administración → Avisos y automatización → Estado del sistema:** comprueba si responde el servidor y si están listos la base de datos, el programador, los canales y los permisos. Sin servidor muestra claramente el paso pendiente y no simula envíos.
+- `GET /health/ready` indica el estado de conexión PostgreSQL y canales sin mostrar secretos. La migración se actualizó a `notifications-schema-v1084` para aplicar también los cambios de contactos y categorías que aparecieron después de v1082.
+- **Aún no implementado:** permisos granulares para alterar jugadores, sanciones, jornadas y resultados en la API independiente del CMS. No basta con ocultar opciones de la interfaz pública; es necesaria la misma verificación en esa API.
+
+**Costos y consentimiento:** aplicar los cambios de Railway puede generar cargos por uso, y Twilio cobra los mensajes según el servicio. No se despliega ni se envían mensajes reales sin la aprobación correspondiente. La existencia de código, dominio o proyecto STAGED no equivale a funcionamiento de producción.
+
+## Preparación Railway (9 de octubre de 2026)
+
+Se creó el proyecto privado **Liga Juventino Rosas - Avisos** en Railway y se dejaron en **STAGED**, sin ejecutar ni facturar por contenedores nuevos, el servicio `liga-avisos-api` conectado a la carpeta `/server/notifications` de GitHub y una instancia PostgreSQL con volumen. El servicio tiene configurados la ruta de salud, reinicio por fallas, puerto 8080 y conexión a la base mediante referencia privada de Railway.
+
+**El despliegue sigue detenido intencionalmente**: faltan los secretos obligatorios y la confirmación del operador sobre potenciales cargos de Railway/Twilio. No pulses Apply Changes hasta completar estos pasos:
+
+1. Registrar o conectar Twilio y aprobar el remitente WhatsApp Business y su plantilla (Content SID `HX...`). Los destinatarios deberán aceptar mensajes específicamente por SMS o WhatsApp.
+2. En Railway, establecer opcionalmente `JOB_NOTIFY_TOKEN` (aleatorio de al menos 32 caracteres, solo para disparos externos), `PUBLIC_API_ORIGIN` (dominio HTTPS real del servicio), credenciales de Twilio (`TWILIO_ACCOUNT_SID`, `TWILIO_API_KEY`, `TWILIO_API_SECRET`, `TWILIO_AUTH_TOKEN`, `TWILIO_MESSAGING_SERVICE_SID`, `TWILIO_WHATSAPP_SENDER`, `TWILIO_WHATSAPP_CONTENT_SID`). **No introducir valores reales en GitHub**.
+3. Generar `VAPID_PUBLIC_KEY` y `VAPID_PRIVATE_KEY` en entorno seguro, introducir un correo operativo real en `VAPID_SUBJECT=mailto:...`. No existe todavía un correo de contacto verificado, por eso no se ha configurado automáticamente.
+4. Tras confirmar posibles cargos, aplicar los cambios de Railway. Si solo se usan avisos de la app, Twilio y VAPID pueden configurarse después. El inicio del servidor ejecuta `bootstrap.mjs` para aplicar de forma transaccional `schema.sql` antes de aceptar peticiones.
+5. Verificar `GET /health`, `GET /config` y la autenticación con `GET /admin/me`. Después poner la URL HTTPS **sin tokens** en `data/notifications-client.json`, `public/data/notifications-client.json` y, para el flujo V1082, en `public/push-config.json`. GitHub Pages debe reconstruirse.
+6. Añadir `LJR_NOTIFICATIONS_API_URL` y `LJR_NOTIFICATIONS_JOB_TOKEN` a los **Secrets** de GitHub Actions. La clave debe coincidir con `JOB_NOTIFY_TOKEN` del servidor. Probar un evento de ejemplo con destinatario de prueba voluntario.
+7. Probar rechazo a visitantes, consentimiento por canal, STOP/BAJA, StatusCallback firmado, reintentos y cancelación antes de habilitar envíos masivos.
+
+Se agregaron `Dockerfile`, `railway.toml`, `bootstrap.mjs` y el workflow `notifications-backend-checks.yml`. Este workflow verifica sintaxis, permisos y que no haya credenciales evidentes comprometidas.
+
 # Administración de la Liga · Avisos globales, Push, cargos y auditoría
 
 La interfaz del sitio azul **está agregada a GitHub**, pero **GitHub Pages es estático y no ejecuta PostgreSQL ni este servidor**. Hasta que se despliegue el backend privado, el panel muestra que falta conexión y no finge haber enviado avisos. Los avisos locales anteriores siguen funcionando en su dispositivo.
@@ -14,7 +58,7 @@ La interfaz del sitio azul **está agregada a GitHub**, pero **GitHub Pages es e
 ## Pasos necesarios para activar (administración técnica una sola vez)
 
 1. Despliega **server/notifications** como un servicio Node.js en Railway u otro hosting HTTPS, con PostgreSQL. Ejecuta `server/notifications/schema.sql` contra tu base de datos, incluida su migración de columnas adicionales, antes de arrancar.
-2. Configura las variables de `.env.example` **como secretos del hosting**, especialmente `DATABASE_URL`, `LJR_MEDIA_AUTH_BASE`, `JOB_NOTIFY_TOKEN`, `PUBLIC_API_ORIGIN` y `WEB_ORIGIN`. `LJR_MEDIA_AUTH_BASE` es el origen de tu servidor de autenticación administrativa existente. No publiques tokens en GitHub.
+2. Configura las variables de `.env.example` **como secretos del hosting**, especialmente `DATABASE_URL`, `LJR_MEDIA_AUTH_BASE`, `WEB_ORIGIN` y el dominio HTTPS; `JOB_NOTIFY_TOKEN` es opcional para el programador interno. `LJR_MEDIA_AUTH_BASE` es el origen de tu servidor de autenticación administrativa existente. No publiques tokens en GitHub.
 3. Para activar Push genera un par VAPID, guarda la clave **privada** solo en el servidor y configura `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT`. Para Twilio, configura sus credenciales y canal/plantilla aprobados; son opcionales si solo quieres noticias en la app.
 4. En `public/data/notifications-client.json`, coloca **únicamente** el origen HTTPS público del nuevo servidor en `apiBaseUrl` (ejemplo `https://avisos.tu-dominio.mx`). Esa URL pública no es un secreto. El archivo `public/push-config.json` puede permanecer vacío porque v1082 reutiliza la misma URL.
 5. En **GitHub Actions → Settings → Secrets and variables → Actions** establece `LJR_NOTIFICATIONS_API_URL` (URL HTTPS del servicio) y `LJR_NOTIFICATIONS_JOB_TOKEN` (la misma clave secreta que `JOB_NOTIFY_TOKEN` del hosting). La acción `scheduled-notices.yml` invoca `POST /jobs/dispatch` cada cinco minutos, independientemente del teléfono.

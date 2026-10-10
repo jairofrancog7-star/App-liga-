@@ -57,12 +57,14 @@
    '<fieldset class="ag1075-channels"><legend>Enviar por</legend><label><input type="checkbox" data-ag1075-ch="push" checked> Push</label><label><input type="checkbox" data-ag1075-ch="sms"> SMS</label><label><input type="checkbox" data-ag1075-ch="whatsapp"> WhatsApp (plantilla aprobada)</label></fieldset>'+
    '<div class="ag1075-actions"><button data-ag1075-fill type="button">✦ Usar partido seleccionado</button><button data-ag1075-submit type="button">▣ Programar aviso</button></div>'+
    '<details class="ag1075-consents"><summary>Registrar teléfono con consentimiento</summary>'+
-   '<p>La Liga debe documentar el permiso por separado para SMS o WhatsApp; nunca registrar números sin autorización.</p>'+
-   '<label>Teléfono internacional<input data-ag1075-phone type="tel" inputmode="tel" placeholder="+52XXXXXXXXXX"></label>'+
+   '<p>El teléfono particular del presidente NO es un remitente Twilio automático. Regístralo únicamente como destinatario autorizado después de su consentimiento; no se publica el número.</p>'+
+   '<label>Cargo del contacto<select data-ag1075-contact-role><option value="general">Otro contacto autorizado</option><option value="presidencia">Presidencia de la Liga</option><option value="delegado">Delegado de equipo</option></select></label>'+ 
+   '<label>Teléfono privado del contacto<input data-ag1075-phone type="tel" inputmode="tel" autocomplete="off" placeholder="+52XXXXXXXXXX"></label>'+
+   '<p class="ag1075-note">Escribe el número cuando entres como administrador. No está precargado en GitHub ni se usará como remitente sin verificación en Twilio.</p>'+
    '<label>Origen del consentimiento<input data-ag1075-source placeholder="Ej. Formulario firmado, fecha y responsable" maxlength="300"></label>'+
    '<label>Canal<select data-ag1075-consent-channel><option value="sms">SMS</option><option value="whatsapp">WhatsApp</option></select></label>'+
    '<label class="ag1075-checked"><input type="checkbox" data-ag1075-confirm> Confirmo que el titular autorizó recibir estos avisos.</label>'+
-   '<button data-ag1075-save-phone type="button">Guardar destinatario autorizado</button></details>'+
+   '<div class="ag1075-actions"><button data-ag1075-request-consent type="button">Solicitar autorización</button><button data-ag1075-save-phone type="button">Guardar destinatario autorizado</button></div></details>'+
    '<p class="ag1075-status" data-ag1075-status role="status" aria-live="polite">Sin envíos pendientes de esta pantalla.</p>';
   details.append(s);
   $('[data-ag1075-fill]',s).onclick=()=>{const g=match(),status=$('[data-ag1075-status]',s);
@@ -82,12 +84,25 @@
    if(!window.confirm('¿Programar este aviso para destinatarios que ya dieron consentimiento?'))return;
    await send('/admin/notices',{title,body,sendAt:new Date(when).toISOString(),channels,category:$('[data-ag1075-category]',s).value});
   };
+  // Solicitud manual: abrir WhatsApp y permitir que el administrador decida enviarla.
+  // No invocar Twilio, no publicar contactos, no guardar teléfonos en el navegador.
+  $('[data-ag1075-request-consent]',s).onclick=()=>{
+   const phone=$('[data-ag1075-phone]',s).value.replace(/[\s()-]/g,'');
+   const status=$('[data-ag1075-status]',s);
+   if(!/^\+[1-9]\d{7,14}$/.test(phone)){status.textContent='Escribe el teléfono internacional antes de solicitar autorización.';return}
+   const channel=$('[data-ag1075-consent-channel]',s).value;
+   const label=$('[data-ag1075-contact-role]',s).selectedOptions?.[0]?.textContent||'Contacto';
+   const text='Hola. Estamos configurando los avisos de la Liga Juventino Rosas para '+label+'. ¿Autorizas recibir recordatorios y cambios de jornada por '+(channel==='sms'?'SMS':'WhatsApp')+'? Si aceptas, responde expresamente SÍ. Puedes darte de baja cuando lo necesites. No se enviará ningún aviso automático sin tu autorización.';
+   const link='https://wa.me/'+encodeURIComponent(phone.slice(1))+'?text='+encodeURIComponent(text);
+   window.open(link,'_blank','noopener,noreferrer');
+   status.textContent='Solicitud preparada en WhatsApp. Solo guarda el contacto después de recibir su autorización.';
+  };
   $('[data-ag1075-save-phone]',s).onclick=async()=>{const phone=$('[data-ag1075-phone]',s).value.replace(/\s/g,''),
     source=$('[data-ag1075-source]',s).value.trim(),ch=$('[data-ag1075-consent-channel]',s).value;
    if(!/^\+[1-9]\d{7,14}$/.test(phone)||!source||!$('[data-ag1075-confirm]',s).checked){
     $('[data-ag1075-status]',s).textContent='Es obligatorio el número válido y el consentimiento confirmado.';return}
    if(!window.confirm('¿Confirmas que este número aceptó recibir '+(ch==='sms'?'SMS':'WhatsApp')+' de la Liga?'))return;
-   await send('/admin/recipients',{number:phone,channel:ch,consentAt:new Date().toISOString(),consentSource:source,category:$('[data-ag1075-category]',s).value});
+   await send('/admin/recipients',{number:phone,channel:ch,contactRole:$('[data-ag1075-contact-role]',s).value,consentAt:new Date().toISOString(),consentSource:source,category:$('[data-ag1075-category]',s).value});
    $('[data-ag1075-phone]',s).value='';$('[data-ag1075-confirm]',s).checked=false;
   };
  }

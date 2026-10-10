@@ -64,3 +64,19 @@ Para programar se solicita un token del servidor que nunca se guarda en localSto
 | Baja por mensaje | `POST /twilio/inbound` | Firma validada de Twilio |
 
 Recomendaciones adicionales antes de producción: autenticar a cada usuario de la app si se necesita filtrar suscripciones por equipo, limitar tráfico por IP a nivel de proxy/cloud, hacer backups de PostgreSQL, cifrar/restreñir acceso a los datos personales y monitorear errores de entrega. La cola simple incluida sirve como **base inicial**, no sustituye una plataforma distribuida de mensajería ni una auditoría de seguridad.
+
+
+## V1083 · Contacto de Presidencia (número particular)
+
+En **Preparar mi jornada → SMS y WhatsApp mediante Twilio → Registrar teléfono con consentimiento**, selecciona **Presidencia de la Liga**. El número se introduce en la sesión de administración y **no se incorpora a los archivos públicos de GitHub**. El backend valida el permiso y almacena `contact_role=presidencia` exclusivamente en PostgreSQL tras indicar el origen del consentimiento y confirmarlo.
+
+El botón **Solicitar autorización** abre WhatsApp con un mensaje de solicitud redactado, pero la persona administradora debe revisarlo y pulsar **Enviar**. No realiza un envío Twilio ni inscribe automáticamente al contacto. Registrar el contacto no implica darlo de alta como remitente.
+
+### Dos posibilidades distintas para el celular particular
+
+- **Destinatario**: puede recibir SMS o WhatsApp de la Liga después de consentir cada canal, contar con un emisor Twilio aprobado y desplegar el backend seguro. Escribe el teléfono en formato internacional; para México, generalmente `+52` seguido de diez dígitos para contactos.
+- **Remitente WhatsApp**: es posible dar de alta un número ajeno a Twilio mediante WhatsApp Self Sign-up, con permiso del propietario, verificación por SMS/llamada, Meta Business Portfolio y requisitos de Meta. Si ese número ya se usa con WhatsApp personal o WhatsApp Business, migrarlo a la plataforma de Twilio **puede exigir eliminar o cambiar el uso de la cuenta actual**. No iniciar esta migración sin aprobación expresa del titular. Ver https://www.twilio.com/docs/whatsapp/self-sign-up y https://www.twilio.com/docs/whatsapp/migrate-numbers-and-senders .
+- **Remitente SMS**: un número personal de otro operador no sirve por sí solo como origen de SMS en Twilio; requiere una vía soportada, verificación/portabilidad cuando corresponda, o adquirir un número de Twilio con capacidad SMS.
+- **Sin cuenta ni remitente Twilio**: se conserva la preparación de avisos, Google Calendar, ICS y WhatsApp manual. No activar la distribución automática ni generar gastos.
+
+**Privacidad**: el teléfono del presidente no se guarda en el repositorio, en archivos JSON públicos, en la URL de la app ni en variables públicas del frontend. No colocar números de terceras personas en GitHub Actions Secrets salvo que exista una necesidad y autorización explícita.
