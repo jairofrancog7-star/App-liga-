@@ -19,6 +19,11 @@ test('filtros, acciones y estados de revisión están conectados',()=>{
  assert.match(code,/method:'PUT'/);
  assert.match(code,/method:'DELETE'/);
  assert.match(code,/if\(!confirm\(/);
+ assert.ok(code.includes('data-review-type'));
+ assert.ok(code.includes('data-review-clear'));
+ assert.ok(code.includes('ljr-review-feedback'));
+ assert.ok(code.includes('borrador privado'));
+ assert.ok(code.includes("status(modal,'Filtros limpiados.')"));
 });
 test('IA en dispositivo sin API remota, acciones protegidas',()=>{
  const code=root('src/v1075-admin-editor-center.js');

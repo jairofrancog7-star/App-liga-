@@ -324,19 +324,22 @@ function openReview(){
   '<div class="ljr-review-filters" role="search" aria-label="Buscar avisos">'+
   '<label class="ljr-review-search"><span>Buscar aviso</span><input type="search" data-review-query placeholder="Título, equipo, sede, contenido…" autocomplete="off"></label>'+
   '<label><span>Categoría</span><select data-review-category>'+CATS.map(x=>'<option value="'+x[0]+'">'+esc(x[1])+'</option>').join('')+'</select></label>'+
+  '<label><span>Tipo</span><select data-review-type><option value="all">Todos los tipos</option>'+Object.entries(TYPES).map(([key,val])=>'<option value="'+esc(key)+'">'+esc(val[0])+'</option>').join('')+'</select></label>'+ 
   '<label><span>Orden</span><select data-review-order><option value="recent">Más recientes</option><option value="old">Más antiguos</option><option value="title">Título A–Z</option></select></label></div>'+
   '<div class="ljr-review-automation"><button type="button" data-review-audit>✓ Revisar calidad</button>'+
-  '<button type="button" data-review-ai>✦ IA en el dispositivo</button>'+
+  '<button type="button" data-review-ai>✦ Revisión inteligente local</button>'+ 
+  '<button type="button" data-review-clear>Limpiar filtros</button>'+
   '<label><input type="checkbox" data-review-auto> Actualizar cada minuto</label></div>'+
   '<div class="ljr-review-insights" data-review-insights hidden role="status" aria-live="polite"></div>'+
-  '<div class="ljr-review-meta" data-review-meta role="status" aria-live="polite">Consultando avisos…</div>'+
+  '<div class="ljr-review-meta" data-review-meta role="status" aria-live="polite">Consultando avisos…</div>'+ 
+  '<p class="ljr-review-feedback" data-status role="status" aria-live="polite"></p>'+
   '<div data-editor-list aria-live="polite">Cargando avisos…</div>'+
   '<button type="button" data-review-more hidden>Ver más avisos</button>'+
   '<div class="ljr-review-footer"><button type="button" data-reload>↻ Actualizar lista</button>'+
   '<button type="button" data-review-new>＋ Crear aviso</button>'+
   '<button type="button" data-review-csv>↓ CSV privado</button></div>'+
   '</div>','ljr-editor-review-dialog');
- let records=[],filter='all',query='',category='all',order='recent',loading=false,ready=false,limit=40,interval=null,aiAvailability='unavailable';
+ let records=[],filter='all',query='',category='all',type='all',order='recent',loading=false,ready=false,limit=40,interval=null,searchTimer=null,aiAvailability='unavailable';
  const list=$('[data-editor-list]',modal),meta=$('[data-review-meta]',modal),insights=$('[data-review-insights]',modal);
  const clean=s=>String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
  const timestamp=r=>String(r.updated||r.updatedAt||r.created||r.createdAt||'');
@@ -361,6 +364,7 @@ function openReview(){
    const p=r.payload||{};
    return (filter==='all'||(filter==='published'?!!r.published:!r.published))&&
     (category==='all'||String(p.category??'all')===category)&&
+    (type==='all'||String(p.type||'')===type)&&
     (!query||clean(entryText(r)).includes(clean(query)));
   }).sort((a,b)=>order==='title'?
    String(a.payload?.title||'').localeCompare(String(b.payload?.title||''),'es',{sensitivity:'base'}):
@@ -392,6 +396,7 @@ function openReview(){
    const preview=actions.lastElementChild;
    actions.append(makeButton('Editar',()=>{window.LJR_CMS?.editor?.('news',record)},'ljr-review-edit'));
    actions.append(makeButton('Compartir',async()=>{
+    if(!record.published&&!confirm('Este aviso es un borrador privado. ¿Deseas compartirlo fuera de la administración?'))return;
     const txt=(p.title||'Aviso oficial')+'\n\n'+(p.body||'')+'\n\nLiga Juventino Rosas';
     try{
      if(navigator.share){await navigator.share({title:p.title||'Aviso oficial',text:txt});status(modal,'Se abrió la opción para compartir.')}
@@ -465,10 +470,23 @@ function openReview(){
   filter=b.dataset.state;limit=40;
   modal.querySelectorAll('[data-state]').forEach(v=>v.setAttribute('aria-pressed',String(v===b)));paint()
  });
- $('[data-review-query]',modal).addEventListener('input',e=>{query=e.target.value;limit=40;paint()});
+ $('[data-review-query]',modal).addEventListener('input',e=>{
+  const next=e.target.value;clearTimeout(searchTimer);
+  searchTimer=setTimeout(()=>{if(!modal.isConnected)return;query=next;limit=40;paint()},120);
+ });
  $('[data-review-category]',modal).addEventListener('change',e=>{category=e.target.value;limit=40;paint()});
+ $('[data-review-type]',modal).addEventListener('change',e=>{type=e.target.value;limit=40;paint()});
  $('[data-review-order]',modal).addEventListener('change',e=>{order=e.target.value;paint()});
  $('[data-review-more]',modal).onclick=()=>{limit+=40;paint()};
+ $('[data-review-clear]',modal).onclick=()=>{
+  clearTimeout(searchTimer);query='';category='all';type='all';order='recent';filter='all';limit=40;
+  $('[data-review-query]',modal).value='';
+  $('[data-review-category]',modal).value='all';
+  $('[data-review-type]',modal).value='all';
+  $('[data-review-order]',modal).value='recent';
+  modal.querySelectorAll('[data-state]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.state==='all')));
+  status(modal,'Filtros limpiados.');paint();
+ };
  $('[data-reload]',modal).onclick=reload;
  $('[data-review-new]',modal).onclick=()=>showComposer();
  $('[data-review-audit]',modal).onclick=()=>{if(!ready)return status(modal,'Espera a que carguen los avisos.');audit()};
@@ -483,7 +501,7 @@ function openReview(){
  $('[data-review-ai]',modal).onclick=async e=>{
   if(!ready)return status(modal,'Espera a que carguen los avisos.');
   audit();
-  if(!records.length)return;
+  if(!records.length){status(modal,'Todavía no hay avisos para revisar.');return;}
   if(aiAvailability!=='available'||typeof window.LanguageModel?.create!=='function'){
    return status(modal,'IA del navegador no disponible aquí; se usó la revisión local por reglas sin enviar datos.');
   }
@@ -507,7 +525,7 @@ function openReview(){
  if(typeof window.LanguageModel?.availability==='function'){
   window.LanguageModel.availability().then(x=>{aiAvailability=x;
    const button=$('[data-review-ai]',modal);
-   if(button)button.title=x==='available'?'Modelo de IA disponible en este navegador':'Modelo local no instalado. El botón utilizará revisión por reglas.';
+   if(button)button.title=x==='available'?'IA generativa local disponible':'Revisión automática mediante reglas locales; la IA generativa de Chrome no está disponible en este dispositivo.';
   }).catch(()=>{aiAvailability='unavailable'});
  }
  $('[data-review-csv]',modal).onclick=()=>{
