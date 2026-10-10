@@ -1,0 +1,47 @@
+/* V1083 — Restaurar ritmo compacto de Estadísticas (captura móvil).
+   La separación de 52px introducida por V845, sobre el padding de la
+   cabecera fija histórica, producía una franja azul vacía antes del ranking. */
+@media (max-width:1023px){
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="general"] > .v33-data-content.v33-general-content,
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="team"] > .v33-data-content.v593-detail-horizontal,
+  html body.v33-data-active #screen .v33-data-page[data-v33-mode="player"] > .v33-data-content.v593-detail-horizontal{
+    padding-top:12px!important;
+    margin-top:0!important;
+    transform:none!important;
+  }
+  html body.v33-data-active #screen .v33-data-page .v33-data-content > .v33-general-section:first-child{
+    margin-top:0!important;
+  }
+  html body.v33-data-active #screen .v33-data-page .v33-general-title{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    gap:12px!important;
+    min-width:0!important;
+    margin:0 6px 12px!important;
+  }
+  html body.v33-data-active #screen .v33-data-page .v33-general-title h2{
+    min-width:0!important;
+    max-width:calc(100% - 96px)!important;
+    margin:0!important;
+    font-size:clamp(20px,5.7vw,25px)!important;
+    line-height:1.12!important;
+    overflow-wrap:normal!important;
+    text-wrap:balance;
+  }
+  html body.v33-data-active #screen .v33-data-page .v33-general-title button{
+    flex:0 0 auto!important;
+    width:auto!important;
+    max-width:90px!important;
+    padding:6px 1px!important;
+    white-space:nowrap!important;
+    font-size:clamp(12px,3.5vw,15px)!important;
+    line-height:1.15!important;
+    text-align:right!important;
+  }
+  html body.v33-data-active #screen .v33-data-page .v33-carousel{
+    min-width:0!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+  }
+}

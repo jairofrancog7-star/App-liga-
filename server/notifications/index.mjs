@@ -7,6 +7,7 @@ import pg from 'pg';
 import webpush from 'web-push';
 import twilio from 'twilio';
 import crypto from 'node:crypto';
+import {ROLE_PERMS,roleFor,can,safeSubject} from './authorization.mjs';
 const app=express();app.disable('x-powered-by');app.set('trust proxy',1);
 const E=process.env, origin=E.WEB_ORIGIN||'https://jairofrancog7-star.github.io';
 const publicUrl=(E.PUBLIC_API_ORIGIN||'').replace(/\/$/,'');
@@ -36,13 +37,6 @@ app.use(express.json({limit:'20kb'}));
 const secretEquals=(a,b)=>{if(typeof a!=='string'||typeof b!=='string')return false;
  const x=Buffer.from(a),y=Buffer.from(b);return x.length===y.length&&crypto.timingSafeEqual(x,y)};
 // Valida la sesión existente EN EL SERVIDOR; nunca acepta un rol desde el navegador.
-const ROLE_PERMS=Object.freeze({
- presidente:['notices:read','notices:write','roles:write','audit:read','recipients:write'],
- secretario:['notices:read','notices:write'],
- editor:['notices:read','notices:write'],
- disciplina:['notices:read'],
- lector:[]
-});
 const ROLES=Object.keys(ROLE_PERMS);
 async function admin(req,res,next){
  const bearer=req.get('Authorization')||'';
@@ -56,14 +50,11 @@ async function admin(req,res,next){
   const data=await response.json(),identity=data?.admin;
   if(!identity||typeof identity!=='object')return res.status(403).json({error:'Cuenta sin autorización administrativa'});
   const subject=String(identity.id??identity.username??'').trim();
-  if(!/^[a-zA-Z0-9:_-]{1,128}$/.test(subject))return res.status(403).json({error:'Identificador administrativo inválido'});
+  if(!safeSubject(subject))return res.status(403).json({error:'Identificador administrativo inválido'});
   const isOwner=identity.owner===true;
-  let role='lector';
-  if(isOwner)role='presidente';
-  else {
-   const result=await pool.query('SELECT role FROM ljr_admin_roles WHERE subject=$1',[subject]);
-   role=ROLES.includes(result.rows[0]?.role)?result.rows[0].role:'lector';
-  }
+  let stored='lector';
+  if(!isOwner){const result=await pool.query('SELECT role FROM ljr_admin_roles WHERE subject=$1',[subject]);stored=result.rows[0]?.role;}
+  const role=roleFor(identity,stored);
   req.actor={subject,role,owner:isOwner,permissions:ROLE_PERMS[role]};
   next();
  }catch(e){
@@ -71,7 +62,7 @@ async function admin(req,res,next){
   res.status(503).json({error:'No se pudo verificar el permiso con el servidor de la Liga'});
  }
 }
-const requirePermission=name=>(req,res,next)=>req.actor?.permissions?.includes(name)?next():res.status(403).json({error:'Tu cargo no tiene permiso para esta operación'});
+const requirePermission=name=>(req,res,next)=>can(req.actor?.role,name)?next():res.status(403).json({error:'Tu cargo no tiene permiso para esta operación'});
 async function audit(req,action,target,detail={}){
  await pool.query('INSERT INTO ljr_admin_audit(actor,role,action,target,detail) VALUES($1,$2,$3,$4,$5)',
  [req.actor.subject,req.actor.role,action,target,JSON.stringify(detail)]);
