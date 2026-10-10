@@ -1,0 +1,220 @@
+/* V1181 — Noticias y Registro de jugadores, AZUL OFICIAL.
+   Corrección final después de V1051/V1075; sin verde/turquesa.
+   Sólo apariencia: no modifica categorías, escudos, imágenes ni eventos. */
+:root{
+  --v1181-deep:#080f60;
+  --v1181-navy:#0c1b6b;
+  --v1181-blue:#1654b8;
+  --v1181-bright:#277ff0;
+  --v1181-outline:rgba(107,165,255,.46);
+  --v1181-muted:#c1d4f5;
+}
+@media(max-width:1023px){
+/* BARRAS SUPERIORES: enlazan el azul luminoso con el azul oscuro del contenido */
+html body:is([data-app-route="news"],[data-app-route="players"]) #app>.topbar,
+html body:is([data-app-route="news"],[data-app-route="players"]) .app-shell>.topbar{
+  background:radial-gradient(ellipse at 9% -16%,rgba(112,172,255,.32) 0%,transparent 64%),
+    linear-gradient(180deg,#176be5 0%,#1346c4 36%,#0b2c98 68%,#090f65 100%)!important;
+  border-bottom:1px solid rgba(112,167,255,.52)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 3px 10px rgba(4,7,58,.12)!important;
+}
+html body:is([data-app-route="news"],[data-app-route="players"]) #screen{
+  background:linear-gradient(180deg,#090e62 0%,#090d62 24%,#070b5d 100%)!important;
+}
+
+/* NOTICIAS: azul profundo en cada estado, incluso en el filtro seleccionado */
+html body[data-app-route="news"] #screen>.eyebrow{
+  margin-top:15px!important;color:#8cbcff!important;
+  text-shadow:none!important;
+}
+html body[data-app-route="news"] #screen>.screen-title{
+  color:#fff!important;text-shadow:0 2px 9px rgba(0,6,49,.22)!important;
+}
+html body[data-app-route="news"] #screen .v727-news-tabs .chip{
+  border:1px solid rgba(110,164,253,.40)!important;
+  background:linear-gradient(145deg,#192c8e,#0d1a6e)!important;
+  color:#e9f1ff!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 4px 10px rgba(0,6,62,.10)!important;
+}
+html body[data-app-route="news"] #screen .v727-news-tabs .chip.active,
+html body[data-app-route="news"] #screen .v727-news-tabs .chip[aria-selected="true"]{
+  background:linear-gradient(135deg,#358cff 0%,#2375e7 65%,#1557bf 100%)!important;
+  border-color:#8ab9ff!important;
+  color:#fff!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.19),0 5px 13px rgba(19,88,219,.23)!important;
+}
+html body[data-app-route="news"] #screen [data-news-list] .news-row{
+  background:radial-gradient(ellipse 62% 92% at 0% 0%,rgba(50,116,238,.14),transparent 86%),
+    linear-gradient(135deg,#192a86,#0d1b6c)!important;
+  border-color:rgba(107,165,255,.40)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 8px 20px rgba(0,5,55,.14)!important;
+}
+html body[data-app-route="news"] #screen [data-news-list] .news-row:active{
+  border-color:#7cafff!important;filter:brightness(1.07)!important;
+}
+html body[data-app-route="news"] #screen [data-news-list] .news-thumb{
+  background:radial-gradient(circle at 16% 8%,rgba(170,208,255,.27),transparent 55%),
+    linear-gradient(155deg,#318df4 0%,#1f61ce 53%,#16398f 100%)!important;
+  border-color:rgba(138,192,255,.51)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.20),0 5px 12px rgba(0,9,72,.14)!important;
+}
+html body[data-app-route="news"] #screen [data-news-list] .news-thumb::after{
+  opacity:.57!important;filter:none!important;
+}
+html body[data-app-route="news"] #screen [data-news-list] .news-row small{color:#afc5e8!important}
+html body[data-app-route="news"] #screen [data-news-list] .news-row b{color:#fff!important}
+html body[data-app-route="news"] #screen [data-news-list] .news-row p{color:#c5d5f0!important}
+
+/* REGISTRO: aplicar a los TRES renderizadores de plantillas existentes.
+   v66 es el propietario principal, pero se conservan v562 y v104 antiguos. */
+html body[data-app-route="players"] #screen :is(
+  .v66-directory[data-v66-directory="players"],
+  .v104-players,.v562-registry
+){
+  color:#fff!important;background:transparent!important;
+}
+html body[data-app-route="players"] #screen :is(
+  .v695-player-kicker,.v104-head small,.v562-registry-head small,
+  .v66-filter-label,.v104-filter>span,.v562-filters label>span
+){
+  color:#91bfff!important;text-shadow:none!important;
+}
+html body[data-app-route="players"] #screen :is(.v695-player-title,.v104-head h1,.v562-registry-head h1){
+  color:#fff!important;text-shadow:0 2px 11px rgba(1,7,52,.22)!important;
+}
+html body[data-app-route="players"] #screen :is(.v695-player-count,.v104-head p,.v562-registry-head p){
+  color:#c0ceec!important;
+}
+/* Panel superior visible en la captura: azul con borde suave y profundidad. */
+html body[data-app-route="players"] #screen :is(
+  .v104-filter-panel,.v562-filters,.v66-filter-panel
+){
+  background:radial-gradient(ellipse 85% 110% at 0 0,rgba(40,110,226,.20),transparent 85%),
+    linear-gradient(140deg,#152a88,#0b1b68)!important;
+  border:1px solid rgba(104,166,252,.47)!important;
+  border-radius:19px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.13),0 8px 20px rgba(0,5,51,.17)!important;
+}
+/* Selectores y campos: mantener alto y ancho compacto; mejorar texto y flechas. */
+html body[data-app-route="players"] #screen :is(
+  .v104-filter select,.v562-filters select,.v66-directory select,
+  .v104-search,.v562-search,.v66-directory[data-v66-directory="players"] .v66-search
+){
+  background:linear-gradient(125deg,#183c9c,#0d257a)!important;
+  border:1px solid rgba(131,180,255,.47)!important;
+  border-radius:14px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10)!important;
+  color:#f8fbff!important;
+}
+html body[data-app-route="players"] #screen :is(
+  .v104-filter select,.v562-filters select,.v66-directory select
+){
+  font-weight:760!important;letter-spacing:.005em!important;
+  color-scheme:dark!important;
+}
+html body[data-app-route="players"] #screen :is(
+  .v104-filter select,.v562-filters select,.v66-directory select
+):focus-visible,
+html body[data-app-route="players"] #screen :is(
+  .v104-search,.v562-search,.v66-search
+):focus-within{
+  outline:2px solid #8bbaff!important;outline-offset:1px!important;
+  border-color:#9dc3ff!important;
+}
+html body[data-app-route="players"] #screen :is(
+  .v104-search input,.v562-search input,.v66-search input
+){
+  color:white!important;font-weight:600!important;
+}
+html body[data-app-route="players"] #screen :is(
+  .v104-search input,.v562-search input,.v66-search input
+)::placeholder{color:#adc5ef!important;opacity:1!important}
+html body[data-app-route="players"] #screen :is(
+  .v104-search>span,.v562-search>span,.v66-search>span
+){
+  color:#9bc6ff!important;
+}
+/* Botones por categoría/equipo y botón limpiar */
+html body[data-app-route="players"] #screen :is(
+  .v66-category-rail button,.v66-team-filter-rail button,.v104-cats button,.v104-clear
+){
+  border:1px solid rgba(108,165,252,.44)!important;
+  background:linear-gradient(135deg,#173582,#0c226e)!important;
+  color:#e8f2ff!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10)!important;
+  font-weight:800!important;
+}
+html body[data-app-route="players"] #screen :is(
+  .v66-category-rail button.active,.v66-team-filter-rail button.active,.v104-cats button.active
+){
+  border-color:rgba(147,194,255,.80)!important;
+  background:linear-gradient(135deg,#2a83ed,#185fc8)!important;
+  color:#fff!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 5px 13px rgba(5,46,160,.22)!important;
+}
+/* Cabeceras de club: resaltado azul, letra blanca más legible y flecha uniforme. */
+html body[data-app-route="players"] #screen :is(.v104-team,.v562-team){
+  background:#091765!important;
+  border:1px solid rgba(106,167,253,.43)!important;
+  border-radius:18px!important;
+  box-shadow:0 8px 19px rgba(0,5,51,.16)!important;
+  overflow:hidden!important;
+}
+html body[data-app-route="players"] #screen :is(.v104-team-head,.v562-team-head){
+  background:linear-gradient(120deg,#1e439f,#132678)!important;
+  color:#fff!important;border:0!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.13)!important;
+}
+html body[data-app-route="players"] #screen :is(
+  .v104-team-head b,.v562-team-head b,.v66-player-row b,
+  .v104-player b,.v562-player-copy b
+){color:#fff!important;font-weight:820!important;letter-spacing:-.012em!important}
+html body[data-app-route="players"] #screen :is(
+  .v104-team-head small,.v562-team-head small,.v66-player-row small,
+  .v104-player small,.v562-player-copy small
+){color:#bbd0f2!important}
+html body[data-app-route="players"] #screen :is(
+  .v104-team-head i,.v562-team-head i,.v66-player-row i
+){color:#91bdff!important}
+html body[data-app-route="players"] #screen :is(
+  .v104-roster,.v562-players
+){background:rgba(115,157,238,.10)!important}
+html body[data-app-route="players"] #screen :is(
+  .v104-player,.v562-player,.v66-player-row
+){
+  background:linear-gradient(115deg,#0e247b,#0b1a69)!important;
+  border-color:rgba(104,152,243,.29)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.065)!important;
+}
+/* Escudos y fotos oficiales sin filtros ni fondos sólidos pintados encima. */
+html body[data-app-route="players"] #screen :is(
+  .v104-team-logo,.v562-team-head>img,.v66-team-logo
+){
+  background:transparent!important;box-shadow:none!important;
+}
+html body[data-app-route="players"] #screen :is(
+  .v104-team-logo img,.v562-team-head>img,.v66-team-logo img,
+  .v104-player img,.v562-avatar img,.v66-player-avatar img
+){filter:none!important;opacity:1!important}
+html body[data-app-route="players"] #screen :is(
+  .v104-player>span,.v562-avatar,.v66-player-avatar
+){
+  border-color:rgba(112,175,255,.50)!important;
+  background-color:#173b8d!important;
+}
+html body[data-app-route="players"] #screen :is(
+  .v104-team-head,.v562-team-head,.v66-player-row,
+  .v66-category-rail button,.v66-team-filter-rail button,.v104-clear
+):active{filter:brightness(1.09)!important}
+html body[data-app-route="players"] #screen :is(
+  button,select,input
+):focus-visible{
+  outline:2px solid #a2caff!important;
+  outline-offset:2px!important;
+}
+}
+@media(prefers-reduced-motion:reduce){
+  html body:is([data-app-route="news"],[data-app-route="players"]) #screen button{
+    transition:none!important;
+  }
+}
