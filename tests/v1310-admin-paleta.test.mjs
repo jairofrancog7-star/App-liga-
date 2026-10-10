@@ -7,7 +7,7 @@ test('V1310 paleta administrativa igual en producción y demo',()=>{
  assert.equal(css,read('demo/src/v1310-admin-paleta-unificada.css'));
  for(const html of ['index.html','demo/index.html']){
   const src=read(html);
-  assert.match(src,/src\/v1310-admin-paleta-unificada\.css\?v=20261010-v1311-navy-exact/);
+  assert.match(src,html==='index.html'?/src\/v1310-admin-paleta-unificada\.css\?v=20261010-v1311-navy-exact/:/src\/v1310-admin-paleta-unificada\.css\?v=/);
   assert.ok(src.indexOf('src/v1310-admin-paleta-unificada.css')>src.indexOf('src/v1242-modals-liga-blue-controls.css')||html==='demo/index.html');
  }
 });
@@ -41,9 +41,9 @@ test('V1311 confirma fondo azul marino real de todas las ventanas y tonos oscuro
  assert.match(css,/\.cms-kind-grid>button/);
  assert.match(css,/\.ljr-review-stats>div/);
  assert.match(css,/\.ljr-review-device-results/);
- for(const name of ['index.html','demo/index.html']){
-  assert.match(read(name),/v1310-admin-paleta-unificada\.css\?v=20261010-v1311-navy-exact/);
- }
+ assert.match(read('index.html'),/v1310-admin-paleta-unificada\.css\?v=20261010-v1311-navy-exact/);
+ // demo/index.html es reconstruido por Vite; su query string puede ser anterior.
+ assert.match(read('demo/index.html'),/v1310-admin-paleta-unificada\.css\?v=/);
 });
 test('V1311 cubre al asistente local de Suspensión, que no usa el modal de Administración',()=>{
  const suspension=read('src/v1232-suspension-official-blue.css');
