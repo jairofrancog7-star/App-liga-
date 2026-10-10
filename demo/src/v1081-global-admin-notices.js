@@ -257,13 +257,15 @@ function makeAdminForm(prefill){
  loadChannels();refresh();
 }
 async function showRoles(){
- if(!media()?.admin?.owner)return;
+ if(!active())return;
  const modal=dialog('Permisos de administradores',
  '<div class="v1081"><p class="v1081-note">Solo las cuentas principales verificadas pueden asignar cargos. El servidor valida cada modificación de avisos; los permisos del editor de otras secciones necesitan conectarse al mismo sistema de roles.</p>'+
  '<div data-v1081-roles>Consultando...</div><p data-v1081-status class="v1081-status" role="status"></p></div>');
  const box=$('[data-v1081-roles]',modal);
  try{
-  const [perms,admins]=await Promise.all([call('/admin/roles'),media().api('admins')]);
+  const perms=await call('/admin/roles');
+  let admins={admins:[]},cmsDirectoryAvailable=true;
+  try{admins=await media().api('admins')}catch(_){cmsDirectoryAvailable=false}
   box.replaceChildren();
   const assigned=new Map((perms.roles||[]).map(p=>[String(p.subject),p.role]));
   const roleTitles={lector:'Solo lectura',editor:'Editor de avisos',secretario:'Secretario (avisos)',disciplina:'Disciplina (lectura)'};
@@ -284,11 +286,26 @@ async function showRoles(){
    };
    row.append(name,pick,save);box.append(row);
   }
-  if(!box.children.length)box.textContent='No hay administradores adicionales activos.';
+  if(!box.children.length){
+   const note=document.createElement('p');
+   note.textContent=cmsDirectoryAvailable
+    ? 'No hay administradores adicionales activos.'
+    : 'La cuenta puede gestionar avisos, pero el directorio de cuentas del CMS principal solo está disponible para su propietario.';
+   box.append(note);
+  }
+  if(!cmsDirectoryAvailable&&assigned.size){
+   const info=document.createElement('p');info.textContent='Cargos guardados en el servidor de Avisos y Juntas:';
+   box.append(info);
+   for(const [subject,role] of assigned){
+    const row=document.createElement('p');
+    row.textContent=subject+' · '+(roleTitles[role]||'Permiso restringido');
+    box.append(row);
+   }
+  }
  }catch(err){box.textContent='Permisos no disponibles: '+err.message}
 }
 async function showAudit(){
- if(!media()?.admin?.owner)return;
+ if(!active())return;
  const modal=dialog('Historial de cambios','<div class="v1081"><p class="v1081-note">Registro persistente de cambios de avisos y cargos efectuados desde el servidor de notificaciones.</p><div data-v1081-audit>Consultando…</div><p data-v1081-status class="v1081-status"></p></div>');
  const box=$('[data-v1081-audit]',modal);
  try{
@@ -353,11 +370,18 @@ function adminMount(){
  if(!grid||!active()||grid.querySelector('[data-v1081-global]'))return;
  const buttons=[['global','◷','Avisos globales','Programación para todos'],
   ['status','✓','Estado del sistema','Comprobar conexión y permisos'],
-  ...(media().admin?.owner?[['roles','♧','Permisos','Cargos de la directiva'],['audit','≡','Historial','Registro de cambios']]:[])];
+  ['roles','♧','Permisos','Cargos de Avisos y Juntas'],['audit','≡','Historial','Registro de cambios']];
  for(const [key,icon,title,sub] of buttons){
   const b=document.createElement('button');b.type='button';b.dataset.v1081Global=key;
   b.innerHTML='<b aria-hidden="true">'+esc(icon)+'</b><span>'+esc(title)+'<small>'+esc(sub)+'</small></span>';
   b.onclick=()=>{if(!active())return;key==='global'?makeAdminForm():key==='status'?showSystemStatus():key==='roles'?showRoles():showAudit()};
+  if(key==='roles'||key==='audit'){
+   b.hidden=true;
+   call('/admin/me').then(result=>{
+    const permission=key==='roles'?'roles:write':'audit:read';
+    if(b.isConnected&&result?.actor?.permissions?.includes(permission))b.hidden=false;
+   }).catch(()=>{});
+  }
   grid.append(b);
   server().then(url=>{
    if(url||!b.isConnected||key==='status')return;

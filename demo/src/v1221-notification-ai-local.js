@@ -70,16 +70,33 @@ function classify(text,feedback=[]){
  return {important:p>=.5,confidence:Math.round(p*100),method:'Naive Bayes en este dispositivo'};
 }
 function categoryMatches(item,profile){
- const category=CATEGORIES[String(profile?.cat||'')]||'';
- const itemCat=clean(item.category||'Todas');
- return !category||!itemCat||['todas','todos','general','liga'].includes(itemCat)||
-   itemCat===clean(category)||
-   (category==='Primera'&&itemCat==='primera fuerza')||
-   (category==='Segunda'&&itemCat==='segunda fuerza');
+ const id=String(profile?.cat||'').trim();
+ const itemCat=clean(item.category||'Todas').replace(/\s+/g,' ').trim();
+ if(!CATEGORIES[id]||!itemCat||['todas','todos','general','liga','todas las categorias'].includes(itemCat))return true;
+ const aliases={
+  '3':['3','primera','primera fuerza','libre primera','primera division'],
+  '5':['5','intermedia','fuerza intermedia','libre intermedia'],
+  '4':['4','segunda','segunda fuerza','libre segunda','segunda division'],
+  '2':['2','veteranos 35+','veteranos 35','veteranos 35 anos','veteranos mayores de 35'],
+  '1':['1','veteranos 50+','veteranos 50','veteranos 50 anos','veteranos mayores de 50']
+ };
+ return aliases[id].includes(itemCat);
 }
-function normalizeRecord(row,index){
+function noticeId(row){
+ const explicit=String(row?.id??'').trim();
+ if(explicit)return explicit.slice(0,120);
+ // IDs estables: un aviso sin ID no debe parecer nuevo por cambiar su posición.
+ const base=[row?.title,row?.body||row?.message,row?.category,row?.published_at||row?.publishedAt||row?.publishAt].join('|');
+ let hash=2166136261;
+ for(let i=0;i<base.length&&i<2000;i++){hash^=base.charCodeAt(i);hash=Math.imul(hash,16777619);}
+ return 'local-feed-'+(hash>>>0).toString(36);
+}
+function normalizeRecord(row){
  if(!row||typeof row!=='object'||typeof row.title!=='string'||!row.title.trim())return null;
- return {id:String(row.id||index).slice(0,120),
+ if(row.published===false||['draft','borrador','scheduled'].includes(clean(row.status||'')))return null;
+ const schedule=String(row.publishAt||'').trim();
+ if(schedule&&!row.published_at&&!row.publishedAt&&Number.isFinite(Date.parse(schedule))&&Date.parse(schedule)>Date.now())return null;
+ return {id:noticeId(row),
   title:row.title.trim().slice(0,140),
   body:String(row.body||row.message||'').slice(0,1200),
   category:String(row.category||'Todas').slice(0,80),
@@ -200,7 +217,7 @@ async function refresh(force=false){
   if(!rows)throw Error('Formato oficial no reconocido');
   rawItems=rows.slice(0,500);
   const next=rank(rawItems,profile,opts.feedback);
-  const ids=rawItems.map((x,i)=>String(x?.id||i)).slice(0,160);
+  const ids=rawItems.map(noticeId).slice(0,160);
   const hasBaseline=!!opts.baselined;
   const unseen=next.filter(x=>!opts.known.includes(x.id)&&x.importance>=72);
   entries=next;
@@ -254,12 +271,20 @@ function mount(modal){
  const tools=element('div','v1221-ai-tools');
  const scan=button('Analizar avisos oficiales','v1221-ai-secondary');
  scan.addEventListener('click',()=>refresh(true));
- tools.append(scan);
+ const reset=button('Borrar aprendizaje local','v1221-ai-reset');
+ reset.addEventListener('click',()=>{
+  if(!settings().feedback.length){status('La IA local todavía no tiene preferencias aprendidas.');return;}
+  saveOptions({feedback:[]});
+  entries=rank(rawItems,context(modal),[]);
+  status('✓ Se borraron las elecciones usadas para entrenar la IA local. Tus filtros y avisos Push no cambiaron.');
+  render();
+ });
+ tools.append(scan,reset);
  const options=element('div','v1221-ai-options');
  const s=settings();
  const auto=element('label','v1221-ai-check');
  const autoInput=document.createElement('input');autoInput.type='checkbox';autoInput.checked=!!s.auto;
- auto.append(autoInput,element('span','','Consultar automáticamente mientras esta página esté abierta'));
+ auto.append(autoInput,element('span','','Consultar automáticamente mientras la app esté abierta y visible'));
  const notify=element('label','v1221-ai-check');
  const notifyInput=document.createElement('input');notifyInput.type='checkbox';notifyInput.checked=!!s.notify;
  notify.append(notifyInput,element('span','','Avisar si aparece un comunicado importante (solo con permiso ya concedido)'));
@@ -270,7 +295,7 @@ function mount(modal){
  select.value=String(s.interval);frequency.append(select);
  autoInput.addEventListener('change',()=>{
   const next=saveOptions({auto:autoInput.checked,baselined:autoInput.checked?false:settings().baselined,known:autoInput.checked?[]:settings().known});
-  status(next.auto?'Automatización activa solo mientras la sección esté abierta.':'Consulta automática desactivada.');
+  status(next.auto?'Automatización activa mientras la aplicación esté abierta y visible.':'Consulta automática desactivada.');
   if(next.auto)refresh(true);
  });
  notifyInput.addEventListener('change',()=>{
