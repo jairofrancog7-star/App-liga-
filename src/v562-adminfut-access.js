@@ -43,7 +43,17 @@ const V563_ICON_PATHS={
   account:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
   permission:'<path d="M12 2 20 6v6c0 5-3.2 8-8 10-4.8-2-8-5-8-10V6Z"/><path d="m8.5 12 2.5 2.5 5-5"/>',
   notice:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/>',
-  reschedule:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18m-11 4-3 3 3 3m-3-3h10"/>'
+  reschedule:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18m-11 4-3 3 3 3m-3-3h10"/>',
+  sponsor:'<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18m-15 5h5m5 0h2"/>',
+  meeting:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18m5 5h3m3 0h5"/>',
+  delegate:'<circle cx="8" cy="8" r="3"/><path d="M2 21v-2a6 6 0 0 1 12 0v2M17 8h5m-5 4h5m-5 4h5"/>',
+  officials:'<path d="M12 3 20 7v5c0 5-3 8-8 9-5-1-8-4-8-9V7Z"/><path d="m9 12 2 2 4-4"/>',
+  incidents:'<path d="m12 3 10 18H2L12 3Z"/><path d="M12 9v5m0 3v.2"/>',
+  backup:'<path d="M12 3v11m-4-4 4 4 4-4M4 17v4h16v-4"/>',
+  audit:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h7M8 12h7M8 16h4"/><path d="m15 16 2 2 3-4"/>',
+  import:'<path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4"/>',
+  poll:'<path d="M5 20v-8m7 8V5m7 15v-11"/>',
+  calendarExport:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18m-3 4v4m-2-2h4"/>'
 };
 function v563Icon(icon){
  const path=V563_ICON_PATHS[icon];
@@ -72,16 +82,26 @@ function controlMarkup(){
    '<div class="v562-list">'+
    card('register','Registro de jugadores','Altas, equipos y datos del jugador','data-v563-route="recruitment"')+
    card('id','Credenciales','Foto y escudo en la credencial','data-v563-route="credentialBuilder"')+
+   card('sponsor','Patrocinadores','Acuerdos, vigencias y contactos · local','data-v563-tool="sponsors"')+
    card('matchday','Centro de jornada','Organizar partidos y cierre','data-v563-route="matchday"')+
+   card('calendarExport','Calendarios oficiales','Preparar y descargar PDF o imagen','data-v563-tool="calendar-generator"')+
+   card('meeting','Juntas y acuerdos','Registro de reuniones y pendientes','data-v563-tool="meeting"')+
    card('referee','Modo árbitro offline','Mis partidos y cédulas sin señal','data-v563-route="refereeOffline"')+
    card('document','Cédulas arbitrales','Plantillas y exportación PDF','data-v563-route="cedulaBuilder"')+
+   card('officials','Árbitros y oficiales','Directorio operativo local','data-v563-tool="officials"')+
+   card('incidents','Incidencias','Anotar hechos y dar seguimiento','data-v563-tool="incidents"')+
    card('team','Equipos','Directorio y consulta de clubes','data-v563-route="teams"')+
+   card('delegate','Delegados / encargados','Directorio de representantes','data-v563-tool="delegates"')+
    card('player','Jugadores','Plantillas de los equipos','data-v563-route="players"')+
    card('report','Reportes','Resumen semanal y pendientes','data-v563-route="v38Weekly"')+
    card('book','Reglamento','Consultar el reglamento oficial','data-v563-route="rulebook"')+
    card('publish','Publicaciones','Tablas, jornadas y comunicados','data-v563-route="publicationCenter"')+
+   card('poll','Encuestas','Participación y opinión de la Liga','data-v563-tool="poll"')+
    card('weather','Campos y clima','Estado y pronóstico de canchas','data-v563-route="weatherFields"')+
    card('account','Mi cuenta','Perfil y configuración','data-v563-route="profile"')+
+   card('import','Importar CSV','Leer archivo y revisar vista previa','data-v563-tool="csv-import"')+
+   card('backup','Respaldo local','Descargar copia de herramientas','data-v563-tool="backup-export"')+
+   card('audit','Auditoría local','Ver actividades guardadas','data-v563-tool="audit"')+
    '</div>'+
    '<div class="v563-admin-direct" data-v563-admin-direct hidden>'+
     '<div class="v563-admin-direct-title"><small>SOLO ADMINISTRACIÓN</small><b>Modificar la Liga</b></div>'+
@@ -128,7 +148,24 @@ async function share(){
 function bind(root){
  function syncAdmin(){const section=$('[data-v563-admin-direct]',root);if(section)section.hidden=!Boolean(window.LJR_MEDIA?.admin)}
  syncAdmin();window.addEventListener('liga:admin',syncAdmin,{signal:root.v563Controller?.signal});
- $$('[data-v563-route]',root).forEach(b=>b.addEventListener('click',()=>go(b.dataset.v563Route)));
+ $('[data-v563-route]',root).forEach(b=>b.addEventListener('click',()=>go(b.dataset.v563Route)));
+ const privateTools=new Set(['sponsors','meeting','delegates','officials','incidents','csv-import','backup-export','audit']);
+ const openTool=name=>{
+   if(typeof window.LJR_V105_OPEN_TOOL==='function'&&window.LJR_V105_OPEN_TOOL(name))return;
+   toast('La herramienta no pudo abrirse. Actualiza la página e inténtalo de nuevo.');
+ };
+ $('[data-v563-tool]',root).forEach(b=>b.addEventListener('click',()=>{
+   const name=b.dataset.v563Tool;
+   if(!name)return;
+   if(privateTools.has(name)&&!window.LJR_MEDIA?.admin){
+     const login=window.LJR_MEDIA?.login;
+     if(typeof login==='function'){
+       login(()=>{if(window.LJR_MEDIA?.admin)openTool(name);else toast('Se requiere acceso de administración')});
+     }else toast('Inicia sesión como administrador para abrir esta herramienta');
+     return;
+   }
+   openTool(name);
+ }));
  $$('[data-v563-action]',root).forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.v563Action;if(a==='positions')openPositions();else if(a==='fixtures')openFixtures();else if(a==='cards')openDiscipline('cards');else if(a==='suspensions')openDiscipline('suspensions')}));
  $$('[data-v563-install]',root).forEach(b=>b.addEventListener('click',install));
  $('[data-v563-share]',root)?.addEventListener('click',share);
