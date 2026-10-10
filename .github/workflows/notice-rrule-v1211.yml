@@ -1,0 +1,34 @@
+name: Verificar avisos recurrentes y fechas
+
+on:
+  push:
+    branches:
+      - main
+      - feat/avisos-recurrencia-fechas-v1211
+    paths:
+      - 'src/v1211-notice-rrule-chrono.js'
+      - 'src/v713-auto-notice-scheduler.js'
+      - 'tests/notice-recurring-chrono-v1211.test.mjs'
+      - 'package.json'
+  pull_request:
+    paths:
+      - 'src/v1211-notice-rrule-chrono.js'
+      - 'tests/notice-recurring-chrono-v1211.test.mjs'
+      - 'package.json'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar dependencias
+        run: npm install --prefer-offline --no-audit --no-fund
+      - name: Probar español, hora México y series locales
+        run: node --test tests/notice-recurring-chrono-v1211.test.mjs tests/notice-local-assistant-v1210.test.mjs
