@@ -128,7 +128,7 @@ async function share(){
 function bind(root){
  function syncAdmin(){const section=$('[data-v563-admin-direct]',root);if(section)section.hidden=!Boolean(window.LJR_MEDIA?.admin)}
  syncAdmin();window.addEventListener('liga:admin',syncAdmin,{signal:root.v563Controller?.signal});
- $('[data-v563-route]',root).forEach(b=>b.addEventListener('click',()=>go(b.dataset.v563Route)));
+ $$('[data-v563-route]',root).forEach(b=>b.addEventListener('click',()=>go(b.dataset.v563Route)));
  $$('[data-v563-action]',root).forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.v563Action;if(a==='positions')openPositions();else if(a==='fixtures')openFixtures();else if(a==='cards')openDiscipline('cards');else if(a==='suspensions')openDiscipline('suspensions')}));
  $$('[data-v563-install]',root).forEach(b=>b.addEventListener('click',install));
  $('[data-v563-share]',root)?.addEventListener('click',share);
