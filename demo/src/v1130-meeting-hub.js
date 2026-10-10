@@ -168,6 +168,8 @@ function mount(){
    localStorage.setItem(KEY,JSON.stringify(state));
   }
  }catch(_){} 
+ // Al reabrir una fecha, restaurar su minuta (sede y cargos) antes de editarla.
+ if(state[date()]?.minute)applyMinute(state[date()].minute);
  host.addEventListener('click',e=>{const b=e.target.closest('[data-mh-action]');if(b){e.preventDefault();handle(b.dataset.mhAction,b)}});
  host.addEventListener('change',e=>{if(sync()?.onChange?.(e,advancedCtx))return;advanced()?.onChange?.(e,advancedCtx)});
  host.addEventListener('input',e=>{if(e.target.matches('[data-mh-input="search"]')){search=e.target.value.toLocaleLowerCase('es-MX');const start=e.target.selectionStart;render();const input=$('[data-mh-input="search"]',host);input?.focus();input?.setSelectionRange(start,start)}});
