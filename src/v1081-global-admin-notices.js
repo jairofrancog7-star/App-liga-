@@ -235,18 +235,60 @@ async function showAudit(){
   if(!box.children.length)box.textContent='No hay operaciones registradas todavía.';
  }catch(err){box.textContent='No se pudo cargar el historial: '+err.message}
 }
+async function showSystemStatus(){
+ const modal=dialog('Estado de automatización',
+ '<div class="v1081"><p class="v1081-note">Verifica qué funciones oficiales están disponibles. No publica mensajes ni cambia datos.</p>'+
+ '<div data-v1081-checks role="status" aria-live="polite">Comprobando la conexión...</div>'+
+ '<div class="v1081-actions"><button type="button" data-v1081-check-again>Volver a comprobar</button></div>'+
+ '<p class="v1081-note">Si aparece «Pendiente», hay que terminar la configuración del servidor privado y aprobar su despliegue. Nunca pegues contraseñas en la página pública ni en GitHub.</p></div>');
+ const box=$('[data-v1081-checks]',modal);
+ async function inspect(){
+  box.replaceChildren();
+  function row(label,detail,ready){
+   const card=document.createElement('div');card.className='v1081-audit-row';
+   const title=document.createElement('strong');title.textContent=(ready?'✓ ':'○ ')+label;
+   const info=document.createElement('small');info.textContent=detail;
+   card.append(title,info);box.append(card);
+  }
+  const base=await server();
+  if(!base){
+   row('Servidor de avisos','Pendiente de desplegar y conectar URL HTTPS. GitHub Pages no ejecuta servidores.',false);
+   row('Publicaciones globales','Preparadas en GitHub; todavía no se pueden programar desde el teléfono.',false);
+   row('Notificaciones Push y WhatsApp','Requieren un servidor activo, permisos del usuario y proveedores configurados.',false);
+   row('Permisos por cargo','Diseñados para el servidor de avisos; todavía no controlan los demás módulos del CMS.',false);
+   return;
+  }
+  row('Dirección del servidor','Configurada para '+base,true);
+  try{
+   const health=await publicCall('/health/ready');
+   row('Base de datos',health?.ready?'Conexión confirmada.':'No se pudo validar la base de datos.',!!health?.ready);
+   row('Avisos con teléfono apagado',health?.schedulerEnabled?'Programador interno disponible.':'Programador interno desactivado.',!!health?.schedulerEnabled);
+   row('Push',health?.pushEnabled?'Configurado. Cada usuario debe aceptar las notificaciones.':'Claves de envío Push pendientes.',!!health?.pushEnabled);
+   row('SMS y WhatsApp',health?.smsEnabled||health?.whatsappEnabled?'Algún canal de mensajería está configurado.':'Canales de proveedor aún no configurados.',!!(health?.smsEnabled||health?.whatsappEnabled));
+  }catch(e){row('Servicio disponible','No responde correctamente: '+e.message,false);return}
+  try{
+   const me=await call('/admin/me');
+   row('Permisos de esta cuenta',
+    (me?.actor?.role||'Sin cargo')+' · '+(me?.actor?.permissions||[]).join(', '),!!me?.actor?.role);
+  }catch(e){row('Autorización administrativa','No validada: '+e.message,false)}
+  row('Permisos de toda la página','Las autorizaciones del CMS de jugadores, jornadas y sanciones son independientes de este servidor.',false);
+ }
+ $('[data-v1081-check-again]',modal).onclick=inspect;
+ inspect().catch(e=>{box.textContent='No se pudo completar el diagnóstico: '+e.message});
+}
 function adminMount(){
  const grid=$('.liga-media-modal > section.ljr-admin-manage [data-ljr-editor-center] .ljr-editor-hub-grid');
  if(!grid||!active()||grid.querySelector('[data-v1081-global]'))return;
  const buttons=[['global','◷','Avisos globales','Programación para todos'],
+  ['status','✓','Estado del sistema','Comprobar conexión y permisos'],
   ...(media().admin?.owner?[['roles','♧','Permisos','Cargos de la directiva'],['audit','≡','Historial','Registro de cambios']]:[])];
  for(const [key,icon,title,sub] of buttons){
   const b=document.createElement('button');b.type='button';b.dataset.v1081Global=key;
   b.innerHTML='<b aria-hidden="true">'+esc(icon)+'</b><span>'+esc(title)+'<small>'+esc(sub)+'</small></span>';
-  b.onclick=()=>{if(!active())return;key==='global'?makeAdminForm():key==='roles'?showRoles():showAudit()};
+  b.onclick=()=>{if(!active())return;key==='global'?makeAdminForm():key==='status'?showSystemStatus():key==='roles'?showRoles():showAudit()};
   grid.append(b);
   server().then(url=>{
-   if(url||!b.isConnected)return;
+   if(url||!b.isConnected||key==='status')return;
    const hint=b.querySelector('small');if(hint)hint.textContent='Pendiente conectar servidor HTTPS';
   }).catch(()=>{});
  }
