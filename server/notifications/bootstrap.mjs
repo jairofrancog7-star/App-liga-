@@ -37,6 +37,15 @@ try{
     await client.query(await readFile(new URL('./approval-schema.sql',import.meta.url),'utf8'));
     await client.query('INSERT INTO ljr_schema_migrations(name) VALUES($1)',[approvalMigration]);
   }
+  // V1224: cargo Delegado (solo avisos) y Árbitro (cédulas). Una sola vez,
+  // dentro de esta misma transacción/advisory lock; nunca asigna cuentas.
+  const rolesMigration='admin-roles-delegado-arbitro-v1224';
+  const rolesDone=await client.query('SELECT name FROM ljr_schema_migrations WHERE name=$1',[rolesMigration]);
+  if(!rolesDone.rowCount){
+    const rolesDDL=await readFile(new URL('./migrations/20261010-delegado-arbitro-roles.sql',import.meta.url),'utf8');
+    await client.query(rolesDDL);
+    await client.query('INSERT INTO ljr_schema_migrations(name) VALUES($1)',[rolesMigration]);
+  }
   await client.query('COMMIT');
   console.log('Esquema de avisos verificado.');
 }catch(error){
