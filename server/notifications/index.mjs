@@ -11,8 +11,11 @@ const app=express();app.disable('x-powered-by');app.set('trust proxy',1);
 const E=process.env, origin=E.WEB_ORIGIN||'https://jairofrancog7-star.github.io';
 const publicUrl=(E.PUBLIC_API_ORIGIN||'').replace(/\/$/,'');
 const pool=new pg.Pool({connectionString:E.DATABASE_URL,max:8,connectionTimeoutMillis:7000,ssl:E.DATABASE_URL?.includes('sslmode=require')?{rejectUnauthorized:true}:undefined});
-if(!E.DATABASE_URL||!E.ADMIN_NOTIFY_TOKEN||!E.JOB_NOTIFY_TOKEN||E.ADMIN_NOTIFY_TOKEN.length<32||E.JOB_NOTIFY_TOKEN.length<32){
- throw new Error('Falta base de datos o secretos seguros de admin/cron.');
+if(!E.DATABASE_URL||!E.JOB_NOTIFY_TOKEN||E.JOB_NOTIFY_TOKEN.length<32){
+ throw new Error('Falta base de datos o secreto JOB_NOTIFY_TOKEN seguro.');
+}
+if(!/^https:\/\/[a-z0-9.-]+(?::\d+)?$/i.test(E.LJR_MEDIA_AUTH_BASE||'')){
+ throw new Error('Configura LJR_MEDIA_AUTH_BASE=https://servidor-autenticacion; sin acceso de visitante.');
 }
 const vapidReady=Boolean(E.VAPID_PUBLIC_KEY&&E.VAPID_PRIVATE_KEY&&E.VAPID_SUBJECT);
 if(vapidReady)webpush.setVapidDetails(E.VAPID_SUBJECT,E.VAPID_PUBLIC_KEY,E.VAPID_PRIVATE_KEY);
@@ -25,14 +28,54 @@ app.use((req,res,next)=>{res.setHeader('X-Content-Type-Options','nosniff');res.s
  if(requestOrigin&&requestOrigin!==origin)return res.status(403).json({error:'Origen no autorizado'});
  if(requestOrigin===origin){res.setHeader('Access-Control-Allow-Origin',origin);res.setHeader('Vary','Origin');
  res.setHeader('Access-Control-Allow-Headers','Content-Type,Authorization,X-Job-Token');
- res.setHeader('Access-Control-Allow-Methods','GET,POST,DELETE,OPTIONS');}
+ res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,PATCH,DELETE,OPTIONS');}
  if(req.method==='OPTIONS')return res.status(204).end();
  next();
 });
 app.use(express.json({limit:'20kb'}));
 const secretEquals=(a,b)=>{if(typeof a!=='string'||typeof b!=='string')return false;
  const x=Buffer.from(a),y=Buffer.from(b);return x.length===y.length&&crypto.timingSafeEqual(x,y)};
-const admin=(req,res,next)=>secretEquals(req.get('Authorization')?.replace(/^Bearer /,''),E.ADMIN_NOTIFY_TOKEN)?next():res.status(401).json({error:'Acceso exclusivo de administración'});
+// Valida la sesión existente EN EL SERVIDOR; nunca acepta un rol desde el navegador.
+const ROLE_PERMS=Object.freeze({
+ presidente:['notices:read','notices:write','roles:write','audit:read','recipients:write'],
+ secretario:['notices:read','notices:write'],
+ editor:['notices:read','notices:write'],
+ disciplina:['notices:read'],
+ lector:[]
+});
+const ROLES=Object.keys(ROLE_PERMS);
+async function admin(req,res,next){
+ const bearer=req.get('Authorization')||'';
+ if(!/^Bearer [^\s]{16,4096}$/.test(bearer))return res.status(401).json({error:'Inicia sesión como administrador de la Liga'});
+ try{
+  const response=await fetch(E.LJR_MEDIA_AUTH_BASE+'/api/me',{
+   headers:{Authorization:bearer,Accept:'application/json'},
+   signal:AbortSignal.timeout(8000),redirect:'error'
+  });
+  if(!response.ok)return res.status(response.status===401||response.status===403?401:503).json({error:'No se pudo validar la sesión administrativa'});
+  const data=await response.json(),identity=data?.admin;
+  if(!identity||typeof identity!=='object')return res.status(403).json({error:'Cuenta sin autorización administrativa'});
+  const subject=String(identity.id??identity.username??'').trim();
+  if(!/^[a-zA-Z0-9:_-]{1,128}$/.test(subject))return res.status(403).json({error:'Identificador administrativo inválido'});
+  const isOwner=identity.owner===true;
+  let role='lector';
+  if(isOwner)role='presidente';
+  else {
+   const result=await pool.query('SELECT role FROM ljr_admin_roles WHERE subject=$1',[subject]);
+   role=ROLES.includes(result.rows[0]?.role)?result.rows[0].role:'lector';
+  }
+  req.actor={subject,role,owner:isOwner,permissions:ROLE_PERMS[role]};
+  next();
+ }catch(e){
+  console.warn('Verificación de sesión no disponible:',e?.name||'Error');
+  res.status(503).json({error:'No se pudo verificar el permiso con el servidor de la Liga'});
+ }
+}
+const requirePermission=name=>(req,res,next)=>req.actor?.permissions?.includes(name)?next():res.status(403).json({error:'Tu cargo no tiene permiso para esta operación'});
+async function audit(req,action,target,detail={}){
+ await pool.query('INSERT INTO ljr_admin_audit(actor,role,action,target,detail) VALUES($1,$2,$3,$4,$5)',
+ [req.actor.subject,req.actor.role,action,target,JSON.stringify(detail)]);
+}
 const cron=(req,res,next)=>secretEquals(req.get('X-Job-Token'),E.JOB_NOTIFY_TOKEN)?next():res.status(401).json({error:'Token del programador incorrecto'});
 const hash=x=>crypto.createHash('sha256').update(x).digest('hex');
 const phone=x=>/^\+[1-9]\d{7,14}$/.test(String(x||''))?x:null;
@@ -62,7 +105,7 @@ app.post('/push/unsubscribe',throttle,async(req,res)=>{
  const endpoint=req.body?.endpoint;if(typeof endpoint!=='string'||endpoint.length>2100)return res.status(400).json({error:'Endpoint inválido'});
  try{await pool.query('DELETE FROM ljr_push_subscriptions WHERE endpoint=$1',[endpoint]);res.json({ok:true})}catch(e){apiError(e,res)}
 });
-app.post('/admin/recipients',admin,async(req,res)=>{
+app.post('/admin/recipients',admin,requirePermission('recipients:write'),async(req,res)=>{
  const {number,channel,consentAt,consentSource,category:cat}=req.body||{};
  if(!phone(number)||!['sms','whatsapp'].includes(channel)||!consentSource||!consentAt||!Number.isFinite(Date.parse(consentAt)))
  return res.status(400).json({error:'Requiere teléfono E.164, canal y consentimiento documentado'});
@@ -70,16 +113,17 @@ app.post('/admin/recipients',admin,async(req,res)=>{
  VALUES($1,$2,$3,$4,$5,NULL)
  ON CONFLICT(phone,channel) DO UPDATE SET category=EXCLUDED.category,consent_at=EXCLUDED.consent_at,consent_source=EXCLUDED.consent_source,opted_out_at=NULL`,
  [number,channel,category(cat),consentAt,text(consentSource,300)]);
+ await audit(req,'recipients:save',hash(number),{channel,category:category(cat)});
  res.status(201).json({ok:true})}catch(e){apiError(e,res)}
 });
-app.post('/admin/optout',admin,async(req,res)=>{
+app.post('/admin/optout',admin,requirePermission('recipients:write'),async(req,res)=>{
  const number=phone(req.body?.number),channel=req.body?.channel;
  if(!number||!['sms','whatsapp'].includes(channel))return res.status(400).json({error:'Número/canal no válido'});
- try{await pool.query('UPDATE ljr_message_consent SET opted_out_at=now() WHERE phone=$1 AND channel=$2',[number,channel]);res.json({ok:true})}catch(e){apiError(e,res)}
+ try{await pool.query('UPDATE ljr_message_consent SET opted_out_at=now() WHERE phone=$1 AND channel=$2',[number,channel]);await audit(req,'recipients:optout',hash(number),{channel});res.json({ok:true})}catch(e){apiError(e,res)}
 });
-app.post('/admin/notices',admin,async(req,res)=>{
+app.post('/admin/notices',admin,requirePermission('notices:write'),async(req,res)=>{
  const {title,body,sendAt,category:cat,channels}=req.body||{};
- const allowed=['push','sms','whatsapp'];const selected=Array.isArray(channels)?[...new Set(channels)]:[];
+ const allowed=['app','push','sms','whatsapp'];const selected=Array.isArray(channels)?[...new Set(channels)]:[];
  const when=Date.parse(sendAt||'');
  if(!title||!body||title.length>120||body.length>700||!Number.isFinite(when)||when<Date.now()-120000||
  selected.length===0||selected.some(x=>!allowed.includes(x)))return res.status(400).json({error:'Aviso inválido; define título, mensaje, canales y hora futura'});
@@ -87,9 +131,78 @@ app.post('/admin/notices',admin,async(req,res)=>{
  selected.includes('whatsapp')&&!whatsappReady)
  return res.status(503).json({error:'Hay canales sin configurar'});
  const id=crypto.randomUUID();
- try{await pool.query('INSERT INTO ljr_scheduled_notices(id,title,body,category,channels,send_at) VALUES($1,$2,$3,$4,$5,$6)',
- [id,text(title,120),text(body,700),category(cat),selected,new Date(when).toISOString()]);
- res.status(201).json({ok:true,id,sendAt:new Date(when).toISOString(),status:'queued'})}catch(e){apiError(e,res)}
+ try{
+ await pool.query('INSERT INTO ljr_scheduled_notices(id,title,body,category,channels,send_at,created_by) VALUES($1,$2,$3,$4,$5,$6,$7)',
+ [id,text(title,120),text(body,700),category(cat),selected,new Date(when).toISOString(),req.actor.subject]);
+ await audit(req,'notices:create',id,{category:category(cat),channels:selected});
+ res.status(201).json({ok:true,id,sendAt:new Date(when).toISOString(),status:'queued',revision:1});
+ }catch(e){apiError(e,res)}
+});
+app.get('/admin/me',admin,(req,res)=>res.json({actor:{id:req.actor.subject,role:req.actor.role,owner:req.actor.owner,permissions:req.actor.permissions}}));
+app.get('/admin/roles',admin,requirePermission('roles:write'),async(req,res)=>{
+ try{
+  const r=await pool.query('SELECT subject,role,updated_at FROM ljr_admin_roles ORDER BY subject LIMIT 100');
+  res.json({roles:r.rows,allowedRoles:ROLES.filter(r=>r!=='presidente')});
+ }catch(e){apiError(e,res)}
+});
+app.put('/admin/roles/:subject',admin,requirePermission('roles:write'),async(req,res)=>{
+ const subject=String(req.params.subject||'').trim(),role=String(req.body?.role||'');
+ if(!/^[a-zA-Z0-9:_-]{1,128}$/.test(subject)||!ROLES.includes(role)||role==='presidente'||subject===req.actor.subject)
+  return res.status(400).json({error:'Cargo o identificador no permitido'});
+ try{
+  await pool.query(`INSERT INTO ljr_admin_roles(subject,role,updated_by) VALUES($1,$2,$3)
+  ON CONFLICT(subject) DO UPDATE SET role=EXCLUDED.role,updated_by=EXCLUDED.updated_by,updated_at=now()`,[subject,role,req.actor.subject]);
+  await audit(req,'roles:assign',subject,{role});
+  res.json({ok:true,subject,role});
+ }catch(e){apiError(e,res)}
+});
+app.get('/admin/audit',admin,requirePermission('audit:read'),async(req,res)=>{
+ try{const r=await pool.query('SELECT actor,role,action,target,detail,created_at FROM ljr_admin_audit ORDER BY created_at DESC LIMIT 120');res.json({items:r.rows})}
+ catch(e){apiError(e,res)}
+});
+app.get('/admin/notices',admin,requirePermission('notices:read'),async(req,res)=>{
+ try{const r=await pool.query(`SELECT id,title,body,category,channels,send_at,status,revision,created_by,created_at,published_at
+ FROM ljr_scheduled_notices ORDER BY created_at DESC LIMIT 120`);res.json({items:r.rows})}
+ catch(e){apiError(e,res)}
+});
+app.put('/admin/notices/:id',admin,requirePermission('notices:write'),async(req,res)=>{
+ const {title,body,sendAt,category:cat,channels,revision}=req.body||{};
+ const allowed=['app','push','sms','whatsapp'],when=Date.parse(sendAt||'');
+ const selected=Array.isArray(channels)?[...new Set(channels)]:[];
+ if(!Number.isInteger(revision)||revision<1||!title||!body||title.length>120||body.length>700||
+ !Number.isFinite(when)||when<Date.now()||!selected.length||selected.some(x=>!allowed.includes(x)))
+ return res.status(400).json({error:'Datos de edición no válidos'});
+ if((selected.includes('push')&&!vapidReady)||(selected.includes('sms')&&!smsReady)||(selected.includes('whatsapp')&&!whatsappReady))
+ return res.status(503).json({error:'Hay canales aún no configurados'});
+ try{
+  const r=await pool.query(`UPDATE ljr_scheduled_notices
+ SET title=$2,body=$3,send_at=$4,category=$5,channels=$6,revision=revision+1
+ WHERE id=$1 AND revision=$7 AND status='queued' RETURNING revision`,
+ [req.params.id,text(title,120),text(body,700),new Date(when).toISOString(),category(cat),selected,revision]);
+  if(!r.rowCount)return res.status(409).json({error:'El aviso cambió, se canceló o ya se publicó. Actualiza la lista.'});
+  await audit(req,'notices:update',req.params.id,{category:category(cat),revision:r.rows[0].revision});
+  res.json({ok:true,revision:r.rows[0].revision});
+ }catch(e){apiError(e,res)}
+});
+app.delete('/admin/notices/:id',admin,requirePermission('notices:write'),async(req,res)=>{
+ const revision=Number(req.body?.revision);if(!Number.isInteger(revision)||revision<1)return res.status(400).json({error:'Revisión necesaria'});
+ try{
+  const r=await pool.query(`UPDATE ljr_scheduled_notices SET status='cancelled',revision=revision+1
+  WHERE id=$1 AND revision=$2 AND status='queued' RETURNING id`,[req.params.id,revision]);
+  if(!r.rowCount)return res.status(409).json({error:'No se puede cancelar un aviso ya procesado'});
+  await audit(req,'notices:cancel',req.params.id,{revision});
+  res.json({ok:true});
+ }catch(e){apiError(e,res)}
+});
+app.get('/notices',async(req,res)=>{
+ try{
+  const cat=category(String(req.query.category||'Todas'));
+  const r=await pool.query(`SELECT id,title,body,category,channels,published_at
+  FROM ljr_scheduled_notices WHERE status='done' AND published_at IS NOT NULL
+  AND published_at>=now()-interval '30 days' AND (category=$1 OR category='Todas' OR $1='Todas')
+  ORDER BY published_at DESC LIMIT 60`,[cat]);
+  res.json({items:r.rows,source:'servidor_oficial'});
+ }catch(e){apiError(e,res)}
 });
 async function onceLog(id,channel,recipient){
  const k=hash(recipient),r=await pool.query(`INSERT INTO ljr_delivery_log(notice_id,channel,recipient_key)
@@ -129,19 +242,21 @@ app.post('/jobs/dispatch',cron,async(req,res)=>{
  if(!publicUrl.startsWith('https://')&&twilioReady)return res.status(503).json({error:'PUBLIC_API_ORIGIN debe ser HTTPS'});
  try{
   const jobs=await pool.query(`UPDATE ljr_scheduled_notices SET status='processing'
- WHERE id IN(SELECT id FROM ljr_scheduled_notices WHERE status='queued' AND send_at<=now()
- ORDER BY send_at LIMIT 10 FOR UPDATE SKIP LOCKED)
+ ,processing_at=now() WHERE id IN(SELECT id FROM ljr_scheduled_notices
+ WHERE (status='queued' OR (status='processing' AND processing_at<now()-interval '30 minutes'))
+ AND send_at<=now() ORDER BY send_at LIMIT 10 FOR UPDATE SKIP LOCKED)
  RETURNING id,title,body,category,channels`);
   let count=0;
   for(const job of jobs.rows){
    for(const channel of job.channels){
+    if(channel==='app')continue;
     const sql=channel==='push'
      ?'SELECT endpoint,subscription,category FROM ljr_push_subscriptions ORDER BY created_at LIMIT 1000'
      :'SELECT phone,category FROM ljr_message_consent WHERE channel=$1 AND opted_out_at IS NULL ORDER BY phone LIMIT 1000';
     const result=await pool.query(sql,channel==='push'?[]:[channel]);
     for(const rec of result.rows){if(matchCat(rec.category,job.category)){await deliver(job,channel,rec);count++}}
    }
-   await pool.query("UPDATE ljr_scheduled_notices SET status='done' WHERE id=$1",[job.id]);
+   await pool.query("UPDATE ljr_scheduled_notices SET status='done',published_at=COALESCE(published_at,now()) WHERE id=$1",[job.id]);
   }
   res.json({ok:true,notices:jobs.rows.length,attempted:count});
  }catch(e){apiError(e,res)}
