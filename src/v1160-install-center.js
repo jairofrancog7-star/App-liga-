@@ -68,6 +68,75 @@ const explanation={
  ios:{title:'Acceso directo para iPhone o iPad',copy:'En iOS no existe un botón web que instale automáticamente la aplicación. Se añade desde el menú Compartir de Safari.',button:'Compartir enlace'},
  pc:{title:'Instalar en computadora',copy:'En Chrome o Edge puedes instalar Liga Juventino y abrirla como aplicación, sin otra pestaña.',button:'Instalar en este equipo'}
 };
+/* V1240 local-install assistant: lightweight on-device decision rules, no model download,
+   telemetry, account access, new worker registration, or automatic app reload. */
+function assistantMarkup(){
+ return '<section class="ljr-install-advisor" aria-label="Asistente local de instalación">'+
+  '<div class="ljr-install-advisor-top"><span class="ljr-install-advisor-mark">'+svg('shield',19)+'</span>'+
+   '<div><small>ASISTENTE LOCAL · DIAGNÓSTICO AUTOMÁTICO</small><h3>Instalación inteligente</h3>'+
+    '<p>Revisa tu navegador y recomienda los siguientes pasos. Funciona con reglas locales, sin enviar datos ni descargar modelos de IA.</p></div></div>'+
+  '<div class="ljr-install-diagnostics" aria-live="polite" role="status">'+
+   '<b data-ljr-diagnostic-status>Preparando diagnóstico de este dispositivo…</b>'+
+   '<span data-ljr-diagnostic-details>La recomendación se calcula en tu navegador.</span></div>'+
+  '<div class="ljr-install-advisor-actions">'+
+   '<button type="button" data-ljr-action="diagnose">'+svg('check',16)+' Revisar mi dispositivo</button>'+
+   '<button type="button" data-ljr-action="updates">'+svg('refresh',16)+' Comprobar actualización</button></div>'+
+  '<p class="ljr-install-update-note" data-ljr-update-note role="status" aria-live="polite"></p>'+
+ '</section>';
+}
+async function diagnose(root){
+ if(!root?.isConnected)return;
+ const mode=root.dataset.ljrInstallMode||initial();
+ const installed=standalone();
+ const isOffline=navigator.onLine===false;
+ let worker='Sin verificar';
+ try{
+   if('serviceWorker' in navigator){
+     const reg=await navigator.serviceWorker.getRegistration(location.href);
+     worker=reg?.active?'Servicio sin conexión disponible':'Servicio sin conexión no detectado';
+   }else worker='Tu navegador no admite servicio sin conexión';
+ }catch(_){worker='Servicio sin conexión: estado desconocido'}
+ if(!root.isConnected)return;
+ let recommendation='';
+ if(installed)recommendation='La aplicación web ya está abierta en modo instalado.';
+ else if(ios)recommendation='En iPhone/iPad, abre Safari y usa Compartir → Añadir a pantalla de inicio.';
+ else if(android)recommendation=pendingPrompt
+   ?'Tu navegador permite solicitar la instalación PWA desde el botón principal.'
+   :'En Android, prueba Chrome → menú ⋮ → Instalar app o Añadir a pantalla de inicio.';
+ else recommendation=pendingPrompt
+   ?'Instalación PWA disponible desde el botón principal.'
+   :'En computadora, busca Instalar aplicación en Chrome o Edge.';
+ if(mode==='apk'&&android)recommendation='Seleccionaste el archivo APK. Descárgalo únicamente desde la publicación GitHub de la Liga.';
+ if(mode==='apk'&&!android)recommendation='El APK es exclusivo de Android; para este dispositivo usa la opción recomendada.';
+ const primary=root.querySelector('[data-ljr-diagnostic-status]');
+ const secondary=root.querySelector('[data-ljr-diagnostic-details]');
+ if(primary)primary.textContent=recommendation;
+ if(secondary)secondary.textContent=(isOffline?'Posible falta de conexión · ':'Conexión detectada · ')+worker+'. Diagnóstico orientativo, no confirma instalación ni acceso a Internet.';
+}
+async function checkUpdates(root){
+ const target=root?.querySelector('[data-ljr-update-note]');
+ if(!target)return;
+ target.textContent='Comprobando cambios de la aplicación…';
+ if(navigator.onLine===false){target.textContent='Parece que no hay conexión. Prueba de nuevo cuando tengas Internet.';return}
+ if(!('serviceWorker' in navigator)){
+   target.textContent='Este navegador no admite actualizaciones PWA automáticas. Puedes recargar desde el menú del navegador.';return;
+ }
+ try{
+   const reg=await navigator.serviceWorker.getRegistration(location.href);
+   if(!reg){
+     target.textContent='No hay servicio de actualizaciones instalado. Recarga la página para obtener la versión publicada.';return;
+   }
+   const hadWaiting=!!reg.waiting;
+   await reg.update();
+   if(!root.isConnected)return;
+   target.textContent=reg.waiting||hadWaiting
+      ?'Hay una actualización pendiente. Cierra y vuelve a abrir la app cuando termines de trabajar.'
+      :'Revisión solicitada. Si GitHub publicó cambios, el navegador los cargará según su caché; no se ha reiniciado la aplicación.';
+ }catch(_){
+   if(root.isConnected)target.textContent='No se pudo consultar la actualización. Comprueba tu conexión y vuelve a intentarlo.';
+ }
+}
+
 function markup(mode,modal=false){
  const m=MODES.some(x=>x.id===mode)?mode:initial(),o=explanation[m],installed=standalone();
  const cards=MODES.map(x=>'<button type="button" class="ljr-install-choice '+(x.id===m?'is-active':'')+'" data-ljr-action="mode" data-ljr-mode="'+x.id+'" aria-pressed="'+(x.id===m)+'">'+
@@ -96,6 +165,7 @@ function markup(mode,modal=false){
    '</div>'+
    '<p class="ljr-install-feedback" role="status" aria-live="polite" data-ljr-feedback></p>'+
   '</section>'+
+  assistantMarkup()+
   '<div class="ljr-install-utilities">'+
     '<button type="button" data-ljr-action="share">'+svg('share',17)+' Compartir app</button>'+
     '<a href="'+BUILD+'" target="_blank" rel="noopener noreferrer">'+svg('refresh',17)+' Ver compilaciones Android</a>'+
@@ -108,6 +178,7 @@ function status(root,message){const target=root.querySelector('[data-ljr-feedbac
 function draw(root,mode){
  root.dataset.ljrInstallMode=mode;
  root.innerHTML=markup(mode,root.classList.contains('ljr-install-overlay'));
+ diagnose(root);
 }
 function page(){
  return '<section class="v562-page ljr-install-page" data-v563-install-page data-ljr-install-hub data-ljr-install-mode="'+initial()+'">'+markup(initial())+'</section>';
@@ -118,14 +189,20 @@ function open(){
  const wrap=document.createElement('div');wrap.className='ljr-install-overlay';wrap.dataset.ljrInstallHub='';wrap.dataset.ljrInstallMode=initial();
  wrap.setAttribute('role','dialog');wrap.setAttribute('aria-modal','true');wrap.setAttribute('aria-label','Instalar Liga Juventino');wrap.innerHTML=markup(initial(),true);
  document.body.appendChild(wrap);
+ diagnose(wrap);
  wrap.querySelector('.ljr-install-close')?.focus();
 }
 function mountExisting(){
  if(!String(location.hash||'').includes('appInstall'))return;
  const el=document.querySelector('[data-v563-install-page]');
- if(!el||el.hasAttribute('data-ljr-install-hub'))return;
+ if(!el)return;
+ if(el.hasAttribute('data-ljr-install-hub')){
+   if(!el.dataset.ljrDiagnosisReady){el.dataset.ljrDiagnosisReady='1';diagnose(el)}
+   return;
+ }
  el.dataset.ljrInstallHub='';el.dataset.ljrInstallMode=initial();el.classList.add('ljr-install-page');
- el.innerHTML=markup(initial());
+ el.innerHTML=markup(initial());el.dataset.ljrDiagnosisReady='1';
+ diagnose(el);
 }
 function close(){const old=document.querySelector('.ljr-install-overlay');if(!old)return;old.remove();try{lastFocus?.focus?.()}catch(_){}}
 async function copy(){
@@ -139,8 +216,10 @@ function manualNote(mode){
  return mode==='ios'?'Abre este enlace en Safari y usa Compartir → Añadir a pantalla de inicio.':
  'En tu navegador abre el menú ⋮ y elige Instalar aplicación o Añadir a pantalla de inicio. Si estás en un navegador dentro de otra app, abre la página en Chrome.';
 }
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();pendingPrompt=e});
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();pendingPrompt=e;document.querySelectorAll('[data-ljr-install-hub]').forEach(diagnose)});
 window.addEventListener('appinstalled',()=>{alreadyInstalled=true;document.querySelectorAll('[data-ljr-install-hub]').forEach(root=>draw(root,root.dataset.ljrInstallMode||initial()))});
+window.addEventListener('online',()=>document.querySelectorAll('[data-ljr-install-hub]').forEach(diagnose));
+window.addEventListener('offline',()=>document.querySelectorAll('[data-ljr-install-hub]').forEach(diagnose));
 document.addEventListener('click',async e=>{
  const b=e.target.closest?.('[data-ljr-action]');if(!b)return;
  const root=b.closest('[data-ljr-install-hub]');if(!root)return;
@@ -149,6 +228,8 @@ document.addEventListener('click',async e=>{
  e.preventDefault();
  if(action==='close'){close();return}
  if(action==='mode'){draw(root,b.dataset.ljrMode);return}
+ if(action==='diagnose'){await diagnose(root);return}
+ if(action==='updates'){await checkUpdates(root);return}
  if(action==='help'){
    status(root,'Android: instala la PWA desde Chrome. iPhone: usa Safari y “Añadir a pantalla de inicio”. La APK es opcional y exclusiva de Android.');
    return;
@@ -180,6 +261,6 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
 window.addEventListener('hashchange',()=>setTimeout(mountExisting,100));
 const screen=document.querySelector('#screen');
 if(screen)new MutationObserver(mountExisting).observe(screen,{childList:true,subtree:false});
-window.LJR_INSTALL_HUB={open,page,mount:mountExisting,version:'v1160'};
+window.LJR_INSTALL_HUB={open,page,mount:mountExisting,version:'v1240'};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mountExisting,{once:true});else mountExisting();
 })();
