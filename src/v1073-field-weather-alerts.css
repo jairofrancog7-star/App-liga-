@@ -35,3 +35,41 @@ body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v10
 @media(min-width:700px){#screen .v1073-dashboard{max-width:880px;margin:14px auto 20px}#screen .v1073-dashboard-actions button{font-size:12px}#screen .v1073-shortcuts :is(button,a){font-size:12px}}
 @media(max-width:350px){#screen .v1073-dashboard{margin:10px 8px;padding:10px}#screen .v1073-dashboard-actions button{font-size:10px}#screen .v1073-shortcuts :is(button,a){font-size:10px;padding:5px 2px}}
 @media(prefers-reduced-motion:reduce){#screen .v1073-dashboard *,#screen .v1073-field *{animation:none!important;transition:none!important}}
+/* V1094 — Iconografía de sedes: trazos SVG reales, misma escala y tacto móvil. */
+#screen .v921-field-page .v1073-icon,
+#screen .v1073-dashboard .v1073-icon{
+ display:block;flex:0 0 19px;width:19px;height:19px;fill:none;stroke:currentColor;
+ stroke-width:1.85;stroke-linecap:round;stroke-linejoin:round;
+}
+#screen .v1073-action-label{display:block;min-width:0;line-height:1.2}
+#screen .v1073-mini{display:inline-flex;justify-content:center;align-items:center;gap:7px;min-height:38px;padding:8px 11px;font-size:11.5px}
+#screen .v1073-mini .v1073-icon{width:17px;height:17px;flex-basis:17px}
+#screen .v1073-shortcuts :is(button,a){
+ display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+ min-height:59px;padding:8px 4px;font-size:11.3px;font-weight:770;
+ line-height:1.15;overflow-wrap:normal;word-break:normal;
+ transition:background .16s ease,transform .16s ease,border-color .16s ease;
+}
+#screen .v1073-shortcuts .v1073-icon{color:#61def3}
+#screen .v1073-shortcuts button[aria-pressed="true"] .v1073-icon{color:#0a4b63}
+#screen .v1073-shortcuts :is(button,a):active{transform:scale(.97)}
+#screen .v1073-dashboard-actions button{
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:5px;min-height:58px;padding:9px 5px;font-size:11px;
+}
+#screen .v1073-dashboard-actions button:first-child .v1073-icon{color:#082c50}
+html body .v921-field-page .v921-field-actions a .v1073-icon{
+ width:21px!important;height:21px!important;flex:0 0 21px!important;stroke-width:1.9!important;
+}
+@media(max-width:350px){
+ #screen .v1073-shortcuts :is(button,a){min-height:57px;font-size:10.4px;padding:7px 2px}
+ #screen .v1073-shortcuts .v1073-icon{width:17px;height:17px;flex-basis:17px}
+ #screen .v1073-dashboard-actions button{font-size:10px}
+}
+@media(min-width:700px){
+ #screen .v1073-shortcuts :is(button,a){flex-direction:row;min-height:48px;gap:8px;font-size:12px}
+ #screen .v1073-dashboard-actions button{flex-direction:row;min-height:46px}
+}
+@media(prefers-reduced-motion:reduce){
+ #screen .v1073-shortcuts :is(button,a){transition:none}
+}
