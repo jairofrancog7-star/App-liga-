@@ -1097,97 +1097,270 @@ function motm(){
  const fill=()=>{const t=$('[data-team]',m).value;$('[data-player]',m).innerHTML=ps.filter(p=>p.team===t).map(p=>'<option>'+esc(p.name)+'</option>').join('')};fill();$('[data-team]',m).onchange=fill;$('[data-save]',m).onclick=()=>{const x={team:$('[data-team]',m).value,player:$('[data-player]',m).value,at:new Date().toISOString()};write('v105-motm',x);log('Jugador del partido local');$('[data-out]',m).textContent=x.player+' · '+x.team+' · selección local no oficial'};
 }
 function calendarGenerator(){
- const db=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{};
- const cats=Object.entries(db.categories||{}).map(([id,c])=>({
-   id:String(id),name:c?.name||('Categoría '+id),season:c?.season_id??'',rows:(c?.fixtures||[]).flatMap(b=>Array.isArray(b?.rows)?b.rows:[])
+ // V1130: consulta y exportación local. Nunca escribe o inventa cruces oficiales.
+ let db=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{};
+ const groups=()=>Object.entries(db.categories||{}).map(([id,c])=>({
+   id:String(id),name:c?.name||('Categoría '+id),season:c?.season_id??'',
+   rows:(c?.fixtures||[]).flatMap(b=>Array.isArray(b?.rows)?b.rows:[])
  })).filter(c=>c.name);
+ let cats=groups();
  if(!cats.length)return toast('Todavía no cargan los calendarios oficiales');
- const officialUrl=c=>'https://www.juventinorosasliga.com/reportes/jornadas/completo/'+(c?.season!==''?'?temporada='+encodeURIComponent(c.season):'');
  const safeName=s=>String(s||'Liga').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/gi,'_').replace(/^_+|_+$/g,'');
- const labelRow=r=>{
-   const j=r?.[1]||'—',home=r?.[2]||'—',away=r?.[6]||'—',venue=r?.[7]||'Por confirmar',when=r?.[8]||'Fecha por confirmar';
-   const gh=String(r?.[3]??'').trim(),ga=String(r?.[5]??'').trim(),score=/^\d+$/.test(gh)&&/^\d+$/.test(ga)?' · '+gh+'-'+ga:'';
-   return 'J'+j+' · '+when+' · '+home+' vs '+away+score+' · '+venue;
+ const officialUrl=c=>'https://www.juventinorosasliga.com/reportes/jornadas/completo/'+(c?.season!==''?'?temporada='+encodeURIComponent(c.season):'');
+ const dateParts=r=>{
+   const s=String(r?.[8]||''),a=s.match(/^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2}))?/);
+   if(!a)return null;
+   const day=+a[1],month=+a[2],year=+a[3],hour=+(a[4]||0),min=+(a[5]||0);
+   const d=new Date(year,month-1,day,hour,min);
+   if(d.getFullYear()!==year||d.getMonth()!==month-1||d.getDate()!==day||hour>23||min>59)return null;
+   return {date:d,hasTime:!!a[4]&&!(hour===0&&min===0),day:a[1]+'/'+a[2]+'/'+a[3]};
  };
- const m=modal('Calendarios oficiales','Los cruces ya están hechos en Liga Juventino Rosas. Aquí se consultan y se descargan; no se generan partidos nuevos.','<div class="v105-form"><label><span>Categoría</span><select data-cat>'+cats.map(c=>'<option value="'+esc(c.id)+'">'+esc(c.name)+'</option>').join('')+'</select></label></div><div class="v105-actions"><button class="v105-btn" data-open>Abrir oficial</button><button class="v105-btn alt" data-pdf>Descargar PDF</button><button class="v105-btn alt" data-img>Descargar imagen</button></div><div class="v105-output" data-out></div>');
- const current=()=>cats.find(c=>c.id===$('[data-cat]',m).value)||cats[0];
+ const scoreOf=r=>{
+   const a=String(r?.[3]??'').trim(),b=String(r?.[5]??'').trim();
+   return /^\d+$/.test(a)&&/^\d+$/.test(b)?a+' - '+b:null;
+ };
+ const fixture=r=>({
+   round:String(r?.[1]||'—'),home:String(r?.[2]||'—'),away:String(r?.[6]||'—'),
+   field:String(r?.[7]||'').trim(),when:String(r?.[8]||'Fecha por confirmar'),referee:String(r?.[9]||'').trim(),
+   date:dateParts(r),score:scoreOf(r)
+ });
+ const m=modal('Calendarios oficiales','Partidos publicados por la Liga Juventino Rosas. Consulta, filtra y comparte; aquí no se generan ni modifican cruces.',
+   '<div class="v105-form v1130-filters">'+
+     '<label><span>Categoría</span><select data-cat>'+cats.map(c=>'<option value="'+esc(c.id)+'">'+esc(c.name)+'</option>').join('')+'</select></label>'+
+     '<label><span>Jornada</span><select data-round><option value="">Todas las jornadas</option></select></label>'+
+     '<label><span>Equipo</span><select data-team><option value="">Todos los equipos</option></select></label>'+
+     '<label><span>Estado</span><select data-status><option value="">Todos</option><option value="pending">Sin marcador confirmado</option><option value="scored">Con marcador</option></select></label>'+
+     '<label class="v1130-wide"><span>Buscar partidos</span><input type="search" data-search placeholder="Equipo, rival o campo…" autocomplete="off"></label>'+
+   '</div>'+
+   '<div class="v1130-bar" role="group" aria-label="Vista de calendario">'+
+     '<button type="button" class="v1130-view is-active" data-view="list" aria-pressed="true">Lista</button>'+
+     '<button type="button" class="v1130-view" data-view="dates" aria-pressed="false">Por fecha</button>'+
+     '<button type="button" class="v1130-view" data-view="upcoming" aria-pressed="false">Próximos</button>'+
+   '</div>'+
+   '<div class="v1130-summary" data-summary role="status" aria-live="polite"></div>'+
+   '<div class="v1130-source"><span data-source></span><button type="button" data-refresh title="Releer datos publicados en esta página">Actualizar</button></div>'+
+   '<div class="v105-output" data-out></div>'+
+   '<div class="v105-actions v1130-exports">'+
+     '<button type="button" class="v105-btn" data-open>Abrir oficial ↗</button>'+
+     '<button type="button" class="v105-btn alt" data-pdf>Descargar PDF</button>'+
+     '<button type="button" class="v105-btn alt" data-img>Descargar PNG</button>'+
+     '<button type="button" class="v105-btn alt" data-ics>Calendario .ics</button>'+
+   '</div>'+
+   '<p class="v1130-notice">Descargas y recordatorios usan los filtros elegidos. Las fechas sin hora confirmada no se exportan al calendario. Los avisos de cambios dependen de las publicaciones oficiales.</p>');
+ m.classList.add('v1130-calendar-pro');
+ let view='list',filtered=[];
+ const current=()=>cats.find(c=>c.id===$('[data-cat]',m)?.value)||cats[0];
+ const normalizeSelected=(selector,values)=>{
+   const el=$(selector,m),old=el.value;
+   el.innerHTML='<option value="">'+(selector==='[data-round]'?'Todas las jornadas':'Todos los equipos')+'</option>'+
+      values.map(v=>'<option value="'+esc(v)+'">'+esc(selector==='[data-round]'?'Jornada '+v:v)+'</option>').join('');
+   el.value=values.includes(old)?old:'';
+ };
+ const fillOptions=()=>{
+   const rows=current().rows;
+   const rounds=[...new Set(rows.map(r=>String(r?.[1]||'').trim()).filter(Boolean))].sort((a,b)=>Number(a)-Number(b));
+   const teams=[...new Set(rows.flatMap(r=>[r?.[2],r?.[6]]).map(x=>String(x||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+   normalizeSelected('[data-round]',rounds);normalizeSelected('[data-team]',teams);
+ };
+ const sourceText=()=>{
+   const s=String(db?.captured_at_utc||'');
+   const date=s?new Date(s):null;
+   return date&&!Number.isNaN(date.getTime())?'Datos consultados: '+date.toLocaleString('es-MX',{dateStyle:'medium',timeStyle:'short'}):'Fecha de actualización no disponible';
+ };
+ const crest=name=>{
+   let url='';
+   try{url=window.LJR_TEAM_LOGOS?.get?.(name)||window.V66_OFFICIAL_DIRECTORY?.logoFor?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name)||''}catch(_){}
+   if(typeof url==='object')url=url?.url||url?.src||'';
+   url=String(url||'').trim();
+   if(!/^(https?:\/\/|\/(?!\/)|\.\/)/i.test(url))url='';
+   return url?'<img class="v1130-crest" src="'+esc(url)+'" alt="" loading="lazy" decoding="async">':
+       '<span class="v1130-crest v1130-crest-fallback" aria-hidden="true">'+esc(String(name||'?').trim().slice(0,1).toUpperCase())+'</span>';
+ };
+ const knownField=f=>f&&!/^(?:-|---|por confirmar|campo por confirmar|sin campo|pendiente|no asignad)/i.test(f);
+ const statusOf=f=>f.score?'Con marcador':f.date?.date>=new Date()?'Programado':'Marcador pendiente';
+ const labelRow=r=>{
+   const f=fixture(r);return 'J'+f.round+' · '+f.when+' · '+f.home+' vs '+f.away+
+     (f.score?' · '+f.score:'')+' · '+(f.field||'Campo por confirmar');
+ };
+ const listRows=()=>{
+   const c=current(),round=$('[data-round]',m).value,team=$('[data-team]',m).value;
+   const search=norm($('[data-search]',m).value),status=$('[data-status]',m).value;
+   const today=new Date();
+   return c.rows.filter(r=>{
+     const f=fixture(r);
+     if(round&&f.round!==round)return false;
+     if(team&&f.home!==team&&f.away!==team)return false;
+     if(status==='pending'&&f.score)return false;
+     if(status==='scored'&&!f.score)return false;
+     if(search&&!norm([f.home,f.away,f.field,f.round,f.when].join(' ')).includes(search))return false;
+     if(view==='upcoming'&&(!f.date?.date||f.date.date<today||f.score))return false;
+     return true;
+   }).sort((a,b)=>{
+     const da=dateParts(a)?.date?.getTime()??Number.MAX_SAFE_INTEGER,dbb=dateParts(b)?.date?.getTime()??Number.MAX_SAFE_INTEGER;
+     return da-dbb||(+a?.[1]||0)-(+b?.[1]||0);
+   });
+ };
+ const rowCard=(r,i)=>{
+   const f=fixture(r),dateOk=!!f.date?.hasTime,place=knownField(f.field);
+   return '<article class="v1107-fixture v1130-fixture">'+
+     '<div class="v1107-fixture-top"><strong>J'+esc(f.round)+'</strong><span>'+esc(f.when)+'</span></div>'+
+     '<div class="v1107-fixture-teams v1130-teams">'+
+       '<div class="v1130-team">'+crest(f.home)+'<b>'+esc(f.home)+'</b></div>'+
+       '<em>'+esc(f.score||'VS')+'</em>'+
+       '<div class="v1130-team v1130-away">'+crest(f.away)+'<b>'+esc(f.away)+'</b></div></div>'+
+     '<div class="v1130-meta"><small class="v1107-fixture-field">'+esc(f.field||'Campo por confirmar')+'</small>'+
+       '<span class="v1130-state">'+esc(statusOf(f))+'</span></div>'+
+     '<div class="v1130-card-actions">'+
+       '<button type="button" data-share="'+i+'">Compartir</button>'+
+       '<button type="button" data-google="'+i+'" '+(!dateOk?'disabled title="Horario sin confirmar"':'')+'>Google Calendar</button>'+
+       '<button type="button" data-map="'+i+'" '+(!place?'disabled title="Campo sin confirmar"':'')+'>Mapa</button>'+
+     '</div>'+
+     '<details class="v1130-details"><summary>Detalles del partido</summary><p>'+
+       esc(f.home+' vs '+f.away)+' · '+esc(f.when)+' · '+esc(f.field||'Campo por confirmar')+
+       (f.referee&&f.referee!=='---'?' · Árbitro: '+esc(f.referee):'')+
+       '</p></details></article>';
+ };
  const render=()=>{
-   const c=current(),rows=c.rows||[],out=$('[data-out]',m);
-   const rowCard=r=>{
-     const home=esc(r?.[2]||'—'),away=esc(r?.[6]||'—'),round=esc(r?.[1]||'—');
-     const when=esc(r?.[8]||'Fecha por confirmar'),field=esc(r?.[7]||'Campo por confirmar');
-     const gh=String(r?.[3]??'').trim(),ga=String(r?.[5]??'').trim();
-     const score=/^\d+$/.test(gh)&&/^\d+$/.test(ga)?esc(gh+' - '+ga):'VS';
-     return '<article class="v1107-fixture">'+
-       '<div class="v1107-fixture-top"><strong>J'+round+'</strong><span>'+when+'</span></div>'+
-       '<div class="v1107-fixture-teams"><b>'+home+'</b><em>'+score+'</em><b>'+away+'</b></div>'+
-       '<small class="v1107-fixture-field">'+field+'</small></article>';
-   };
+   const c=current(),out=$('[data-out]',m);
+   filtered=listRows();
+   const all=c.rows,scored=all.filter(r=>scoreOf(r)).length,pending=all.length-scored;
+   const upcoming=all.filter(r=>{const d=dateParts(r);return !!d?.date&&d.date>=new Date()&&!scoreOf(r)}).length;
+   $('[data-summary]',m).innerHTML='<span><b>'+all.length+'</b> partidos</span><span><b>'+pending+'</b> sin marcador</span><span><b>'+upcoming+'</b> próximos</span><span><b>'+filtered.length+'</b> visibles</span>';
+   $('[data-source]',m).textContent=sourceText();
+   $$('[data-view]',m).forEach(b=>{const selected=b.dataset.view===view;b.classList.toggle('is-active',selected);b.setAttribute('aria-pressed',String(selected))});
    out.classList.add('v1107-calendar-output');
-   out.innerHTML=rows.length?'<div class="v1107-fixtures">'+rows.map(rowCard).join('')+'</div>':
-      '<p class="v1107-empty">No hay cruces oficiales cargados para esta categoría.</p>';
-   $('[data-pdf]',m).disabled=!rows.length;
-   $('[data-img]',m).disabled=!rows.length;
+   if(!filtered.length){
+     out.innerHTML='<p class="v1107-empty">No se encontraron partidos con estos filtros. Prueba otra jornada, equipo o estado.</p>';
+   }else if(view==='dates'){
+     const dates=new Map();
+     filtered.forEach((r,i)=>{const key=dateParts(r)?.day||'Fecha por confirmar';if(!dates.has(key))dates.set(key,[]);dates.get(key).push([r,i])});
+     out.innerHTML=[...dates].map(([day,items])=>'<section class="v1130-day"><h4>'+esc(day)+'</h4><div class="v1107-fixtures">'+items.map(([r,i])=>rowCard(r,i)).join('')+'</div></section>').join('');
+   }else out.innerHTML='<div class="v1107-fixtures">'+filtered.map(rowCard).join('')+'</div>';
+   ['[data-pdf]','[data-img]','[data-ics]'].forEach(selector=>$(selector,m).disabled=!filtered.length);
+ };
+ $('[data-cat]',m).onchange=()=>{fillOptions();render()};
+ ['[data-round]','[data-team]','[data-status]'].forEach(selector=>$(selector,m).onchange=render);
+ $('[data-search]',m).oninput=render;
+ $$('[data-view]',m).forEach(b=>b.onclick=()=>{view=b.dataset.view;render()});
+ const goExternal=url=>{const w=window.open(url,'_blank','noopener,noreferrer');if(!w)toast('Permite abrir pestañas para continuar')};
+ const selectedFixture=i=>filtered[Number(i)]?fixture(filtered[Number(i)]):null;
+ const eventDates=f=>{
+   if(!f?.date?.hasTime)return null;
+   const pad=n=>String(n).padStart(2,'0');
+   const encode=d=>d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'T'+pad(d.getHours())+pad(d.getMinutes())+'00';
+   return [encode(f.date.date),encode(new Date(f.date.date.getTime()+2*60*60*1000))];
+ };
+ const shareText=f=>'Liga Juventino Rosas · '+current().name+'\nJ'+f.round+' · '+f.home+' vs '+f.away+'\n'+
+   f.when+'\n'+(f.field||'Campo por confirmar')+(f.score?'\nMarcador: '+f.score:'')+'\n'+officialUrl(current());
+ outEvents();
+ function outEvents(){
+   $('[data-out]',m).addEventListener('click',async e=>{
+     const button=e.target.closest('button[data-share],button[data-google],button[data-map]');
+     if(!button)return;
+     const f=selectedFixture(button.dataset.share??button.dataset.google??button.dataset.map);
+     if(!f)return;
+     if(button.hasAttribute('data-share')){
+       const share={title:'Calendario Liga Juventino Rosas',text:shareText(f)};
+       try{if(navigator.share)await navigator.share(share);
+       else if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(share.text);toast('Datos del partido copiados')}
+       else {goExternal('https://wa.me/?text='+encodeURIComponent(share.text))}}
+       catch(err){if(err?.name!=='AbortError')goExternal('https://wa.me/?text='+encodeURIComponent(share.text))}
+     }else if(button.hasAttribute('data-google')){
+       const ds=eventDates(f);if(!ds)return toast('Falta confirmar la hora del partido');
+       goExternal('https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(f.home+' vs '+f.away+' · Liga Juventino Rosas')+
+       '&dates='+ds[0]+'/'+ds[1]+'&details='+encodeURIComponent('Jornada '+f.round+' · '+current().name+'\nConsulta posibles cambios en '+officialUrl(current()))+
+       '&location='+encodeURIComponent(f.field||'Juventino Rosas, Guanajuato'));
+     }else if(button.hasAttribute('data-map')&&knownField(f.field)){
+       goExternal('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(f.field+' Juventino Rosas Guanajuato'));
+     }
+   });
+ }
+ $('[data-open]',m).onclick=()=>{log('Abrir calendario oficial '+current().name);goExternal(officialUrl(current()))};
+ $('[data-refresh]',m).onclick=async()=>{
+   const btn=$('[data-refresh]',m);btn.disabled=true;btn.textContent='Actualizando…';
+   try{
+     const response=await fetch('./data/official-live.json?calendarRefresh='+Date.now(),{cache:'no-store'});
+     if(!response.ok)throw new Error('HTTP '+response.status);
+     const next=await response.json();
+     if(!next?.categories||!Object.keys(next.categories).length)throw new Error('Datos vacíos');
+     const oldStamp=Date.parse(db.captured_at_utc||'')||0,newStamp=Date.parse(next.captured_at_utc||'')||0;
+     if(newStamp>=oldStamp){db=next;const old=current().id;cats=groups();$('[data-cat]',m).innerHTML=cats.map(c=>'<option value="'+esc(c.id)+'">'+esc(c.name)+'</option>').join('');$('[data-cat]',m).value=cats.some(c=>c.id===old)?old:cats[0].id;fillOptions();render()}
+     toast(newStamp>oldStamp?'Datos publicados actualizados':'Ya se muestra la última versión publicada');
+   }catch(err){toast('No se pudo actualizar; se conservan los datos actuales')}
+   finally{btn.disabled=false;btn.textContent='Actualizar'}
  };
  const loadJsPDF=()=>new Promise((resolve,reject)=>{
    if(window.jspdf?.jsPDF)return resolve(window.jspdf.jsPDF);
    const old=document.querySelector('script[data-v105-jspdf]');
-   if(old){
-     old.addEventListener('load',()=>window.jspdf?.jsPDF?resolve(window.jspdf.jsPDF):reject(new Error('jsPDF no disponible')),{once:true});
-     old.addEventListener('error',reject,{once:true});
-     return;
-   }
-   const s=document.createElement('script');
-   s.src='https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js';
-   s.async=true;s.dataset.v105Jspdf='1';
-   s.onload=()=>window.jspdf?.jsPDF?resolve(window.jspdf.jsPDF):reject(new Error('jsPDF no disponible'));
+   if(old){old.addEventListener('load',()=>window.jspdf?.jsPDF?resolve(window.jspdf.jsPDF):reject(new Error('jsPDF no disponible')),{once:true});old.addEventListener('error',reject,{once:true});return}
+   const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js';
+   s.async=true;s.dataset.v105Jspdf='1';s.onload=()=>window.jspdf?.jsPDF?resolve(window.jspdf.jsPDF):reject(new Error('jsPDF no disponible'));
    s.onerror=reject;document.head.appendChild(s);
  });
- $('[data-cat]',m).onchange=render;
- $('[data-open]',m).onclick=()=>{const c=current();log('Abrir calendario oficial '+c.name);window.open(officialUrl(c),'_blank','noopener,noreferrer')};
+ const fileStem=()=>safeName(current().name)+($('[data-round]',m).value?'_J'+safeName($('[data-round]',m).value):'')+
+   ($('[data-team]',m).value?'_'+safeName($('[data-team]',m).value):'');
  $('[data-pdf]',m).onclick=async()=>{
-   const c=current(),rows=c.rows||[];if(!rows.length)return toast('No hay partidos para descargar');
+   if(!filtered.length)return toast('Sin partidos para descargar');
+   const rows=filtered.slice(),category=current().name,name=fileStem();
    try{
      const jsPDF=await loadJsPDF(),doc=new jsPDF({orientation:'portrait',unit:'pt',format:'a4'});
-     const pageW=doc.internal.pageSize.getWidth(),pageH=doc.internal.pageSize.getHeight(),margin=42,maxW=pageW-margin*2;
-     let y=52;
-     const header=()=>{
-       doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text('Liga Municipal de Futbol Juventino Rosas',margin,y);y+=24;
-       doc.setFontSize(14);doc.text('Calendario oficial - '+c.name,margin,y);y+=20;
-       doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text('LIGA JUVENTINO ROSAS',margin,y,{maxWidth:maxW});y+=22;
-     };
-     header();doc.setFontSize(9);
+     const w=doc.internal.pageSize.getWidth(),h=doc.internal.pageSize.getHeight(),margin=40,maxW=w-margin*2;
+     let y=45;
+     const heading=()=>{doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text('LIGA JUVENTINO ROSAS',margin,y);y+=22;
+       doc.setFontSize(12);doc.text('Calendario · '+category,margin,y);y+=20;
+       doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text('Consulta oficial: '+officialUrl(current()),margin,y,{maxWidth:maxW});y+=31};
+     heading();
      for(const r of rows){
-       const lines=doc.splitTextToSize(labelRow(r),maxW);
-       const need=lines.length*12+8;
-       if(y+need>pageH-40){doc.addPage();y=52;header();doc.setFontSize(9)}
-       doc.text(lines,margin,y);y+=lines.length*12+8;
+       const lines=doc.splitTextToSize(labelRow(r),maxW),height=lines.length*13+8;
+       if(y+height>h-35){doc.addPage();y=45;heading()}
+       doc.text(lines,margin,y);y+=height;
      }
-     doc.save('Calendario_oficial_'+safeName(c.name)+'.pdf');log('Descargar calendario oficial PDF '+c.name);
-   }catch(_){
-     toast('No se pudo crear el PDF aquí; se abrirá el reporte oficial');
-     window.open(officialUrl(c),'_blank','noopener,noreferrer');
-   }
+     doc.save('Calendario_'+name+'.pdf');log('Descargar calendario filtrado PDF '+category);
+   }catch(_){toast('No fue posible generar el PDF. Abre el reporte oficial para consultarlo')}
  };
  $('[data-img]',m).onclick=()=>{
-   const c=current(),rows=c.rows||[];if(!rows.length)return toast('No hay partidos para descargar');
-   const width=1080,rowH=54,pad=58,headH=190,height=Math.max(900,headH+pad+rows.length*rowH);
-   const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;const ctx=canvas.getContext('2d');
-   const g=ctx.createLinearGradient(0,0,width,height);g.addColorStop(0,'#08147f');g.addColorStop(.58,'#07106a');g.addColorStop(1,'#02043f');ctx.fillStyle=g;ctx.fillRect(0,0,width,height);
-   ctx.fillStyle='#42dff5';ctx.fillRect(0,0,width,10);
-   ctx.fillStyle='#fff';ctx.font='700 42px Arial';ctx.fillText('LIGA JUVENTINO ROSAS',pad,72);
-   ctx.font='700 32px Arial';ctx.fillText('CALENDARIO OFICIAL · '+c.name.toUpperCase(),pad,122);
-   ctx.fillStyle='#b9c7ff';ctx.font='22px Arial';ctx.fillText('Cruces oficiales publicados en Liga Juventino Rosas',pad,160);
-   let y=headH;
+   if(!filtered.length)return toast('Sin partidos para descargar');
+   const rows=filtered.slice(),width=1080,rowH=83,pad=58,header=200,height=header+pad+rows.length*rowH;
+   const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;
+   const ctx=canvas.getContext('2d');if(!ctx)return toast('No se pudo crear la imagen');
+   const g=ctx.createLinearGradient(0,0,width,height);g.addColorStop(0,'#1253b1');g.addColorStop(.25,'#091d73');g.addColorStop(1,'#061044');
+   ctx.fillStyle=g;ctx.fillRect(0,0,width,height);ctx.fillStyle='#51e5ef';ctx.fillRect(0,0,width,9);
+   ctx.textAlign='left';ctx.fillStyle='#fff';ctx.font='bold 36px Arial';ctx.fillText('LIGA JUVENTINO ROSAS',pad,68);
+   ctx.font='bold 28px Arial';ctx.fillText('CALENDARIO · '+current().name.toUpperCase(),pad,114);
+   ctx.font='20px Arial';ctx.fillStyle='#afc9f3';ctx.fillText('Partidos seleccionados: '+rows.length+' · Datos publicados por la Liga',pad,156);
+   const fit=(text,max)=>{text=String(text||'');while(ctx.measureText(text).width>max&&text.length>3)text=text.slice(0,-2);return text.endsWith('…')?text:text+'…'};
    rows.forEach((r,i)=>{
-     if(i%2===0){ctx.fillStyle='rgba(255,255,255,.045)';ctx.fillRect(pad-18,y-30,width-pad*2+36,rowH-2)}
-     ctx.fillStyle='#48e6f5';ctx.font='700 20px Arial';ctx.fillText('J'+(r?.[1]||'—'),pad,y);
-     ctx.fillStyle='#fff';ctx.font='700 22px Arial';ctx.fillText(String(r?.[2]||'—')+'  vs  '+String(r?.[6]||'—'),pad+72,y);
-     ctx.fillStyle='#b9c7ff';ctx.font='18px Arial';ctx.textAlign='right';ctx.fillText(String(r?.[8]||'Fecha por confirmar')+' · '+String(r?.[7]||'Por confirmar'),width-pad,y);ctx.textAlign='left';
-     y+=rowH;
+     const f=fixture(r),y=header+i*rowH;
+     if(i%2===0){ctx.fillStyle='rgba(255,255,255,.065)';ctx.fillRect(pad-16,y-18,width-2*pad+32,rowH-4)}
+     ctx.fillStyle='#55e1f0';ctx.font='bold 21px Arial';ctx.fillText('J'+f.round,pad,y+8);
+     ctx.fillStyle='#fff';ctx.font='bold 23px Arial';const label=f.home+'   '+(f.score||'vs')+'   '+f.away;
+     ctx.fillText(ctx.measureText(label).width>width-pad*2-95?fit(label,width-pad*2-95):label,pad+77,y+8);
+     ctx.fillStyle='#bed0f0';ctx.font='18px Arial';const info=f.when+' · '+(f.field||'Campo por confirmar');
+     ctx.fillText(ctx.measureText(info).width>width-pad*2-78?fit(info,width-pad*2-78):info,pad+77,y+37);
    });
-   canvas.toBlob(b=>{if(!b)return toast('No se pudo crear la imagen');dl(b,'Calendario_oficial_'+safeName(c.name)+'.png');log('Descargar calendario oficial imagen '+c.name)},'image/png');
+   canvas.toBlob(blob=>{if(!blob)return toast('No se pudo crear la imagen');dl(blob,'Calendario_'+fileStem()+'.png');log('Descargar calendario filtrado PNG '+current().name)},'image/png');
  };
+ $('[data-ics]',m).onclick=()=>{
+   const pad=n=>String(n).padStart(2,'0');
+   const stamp=d=>d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'T'+pad(d.getHours())+pad(d.getMinutes())+'00';
+   const protect=s=>String(s||'').replace(/\\/g,'\\\\').replace(/\r?\n/g,'\\n').replace(/[,;]/g,c=>'\\'+c);
+   let count=0;const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//LJR//Calendario Oficial//ES','CALSCALE:GREGORIAN','METHOD:PUBLISH'];
+   filtered.forEach((r,i)=>{
+     const f=fixture(r),ds=eventDates(f);if(!ds)return;
+     count++;
+     const uid='ljr-'+current().id+'-'+safeName([f.round,f.home,f.away,f.when,i].join('-'))+'@juventinorosasliga.com';
+     lines.push('BEGIN:VEVENT','UID:'+uid,'DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,''),
+       'DTSTART:'+ds[0],'DTEND:'+ds[1],
+       'SUMMARY:'+protect(f.home+' vs '+f.away+' · Liga Juventino Rosas'),
+       'DESCRIPTION:'+protect('Jornada '+f.round+' · '+current().name+'; verifica cambios en '+officialUrl(current())),
+       'LOCATION:'+protect(f.field),'END:VEVENT');
+   });
+   if(!count)return toast('No hay partidos con hora confirmada para exportar');
+   lines.push('END:VCALENDAR');
+   dl(new Blob([lines.join('\r\n')+'\r\n'],{type:'text/calendar;charset=utf-8'}),'Calendario_'+fileStem()+'.ics');
+   toast(count+' partidos exportados a calendario');
+ };
+ fillOptions();
  render();
 }
 function csvImport(){
