@@ -11,7 +11,7 @@
 .ljr-meeting-hub button:focus-visible,.ljr-meeting-hub input:focus-visible,.ljr-meeting-hub select:focus-visible{outline:2px solid #7beef7;outline-offset:1px}
 .ljr-meeting-hub .mh-body{display:grid;gap:12px}
 .ljr-meeting-hub .mh-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-.ljr-meeting-hub label{display:grid!important;gap:5px!important;min-width:0;padding:0!important;margin:0!important;border:0!important;background:transparent!important;color:#d6eaff!important;font-size:11px!important;font-weight:700!important}
+.v875-meeting-modal .v105-meeting-form .ljr-meeting-hub label{display:grid!important;gap:5px!important;min-width:0;padding:0!important;margin:0!important;border:0!important;background:transparent!important;color:#d6eaff!important;font-size:11px!important;font-weight:700!important}
 .ljr-meeting-hub .mh-fields .mh-full{grid-column:1/-1}
 .ljr-meeting-hub input:not([type="checkbox"]),.ljr-meeting-hub select{width:100%!important;min-width:0;min-height:40px!important;background:#0b215a!important;border:1px solid #466ebf!important;color:#fff!important;border-radius:10px!important;font:inherit!important;font-size:13px!important;padding:9px!important;outline:0}
 .ljr-meeting-hub input::placeholder{color:#a6b8df!important}
