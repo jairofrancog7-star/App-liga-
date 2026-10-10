@@ -38,9 +38,9 @@
   /* Barra inferior: tamaño reducido, 100% funcional y desplazamiento horizontal. */
   html body.v33-data-active #screen .v33-data-head .v33-tabs,
   html body.v33-data-active #screen .v33-data-head.is-collapsed .v33-tabs {
-    height:42px!important;
-    min-height:42px!important;
-    max-height:42px!important;
+    height:38px!important;
+    min-height:38px!important;
+    max-height:38px!important;
     padding:0!important;
     background:#101268!important;
     background-image:none!important;
@@ -52,9 +52,9 @@
   }
   html body.v33-data-active #screen .v33-data-head .v33-tabs button,
   html body.v33-data-active #screen .v33-data-head.is-collapsed .v33-tabs button {
-    height:40px!important;
-    min-height:40px!important;
-    max-height:40px!important;
+    height:36px!important;
+    min-height:36px!important;
+    max-height:36px!important;
     padding:0 15px!important;
     margin:0!important;
     font-size:clamp(11px,2.8vw,13px)!important;
