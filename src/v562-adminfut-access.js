@@ -53,7 +53,18 @@ const V563_ICON_PATHS={
   audit:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h7M8 12h7M8 16h4"/><path d="m15 16 2 2 3-4"/>',
   import:'<path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4"/>',
   poll:'<path d="M5 20v-8m7 8V5m7 15v-11"/>',
-  calendarExport:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18m-3 4v4m-2-2h4"/>'
+  calendarExport:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18m-3 4v4m-2-2h4"/>',
+  match:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M12 5v14"/><circle cx="12" cy="12" r="3"/>',
+  brackets:'<path d="M4 4h5v5H4zM4 15h5v5H4zM15 9h5v6h-5zM9 6h4v6h2M9 18h4v-6"/>',
+  simulator:'<path d="M4 20h16M6 16l4-5 3 3 5-8m-4 0h4v4"/>',
+  analysis:'<path d="M4 19V9m6 10V5m6 14v-7m5 7V3"/>',
+  tactic:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M12 5v14M6 9h2m8 6h2"/>',
+  alertShield:'<path d="M12 3 20 6v6c0 5-3 8-8 10-5-2-8-5-8-10V6Z"/><path d="M12 8v6m0 3v.1"/>',
+  trophy:'<path d="M7 4h10v5c0 3-2 5-5 6-3-1-5-3-5-6V4Zm0 2H4v3a3 3 0 0 0 3 3m10-6h3v3a3 3 0 0 1-3 3m-5 3v4m-4 2h8"/>',
+  export:'<path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4"/>',
+  editPage:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8m-8 4h5m-4 6 7-7 3 3-7 7H9z"/>',
+  manage:'<circle cx="12" cy="8" r="4"/><path d="M3 21c0-5 4-8 9-8s9 3 9 8M19 3v5m-2.5-2.5h5"/>',
+  review:'<rect x="4" y="4" width="16" height="17" rx="2"/><path d="M8 9h8m-8 4h5m-5 4 2 2 5-5"/>'
 };
 function v563Icon(icon){
  const path=V563_ICON_PATHS[icon];
@@ -78,26 +89,42 @@ function controlMarkup(){
    card('target','Quiniela','Pronósticos de la Liga','data-v563-route="quiniela"')+
   '</div></section>'+
   '<section class="v562-panel v563-management"><div class="v562-title"><span><small>GESTIÓN</small><h2>Registro y administración</h2></span></div>'+
-   '<p class="v563-section-help">Accesos directos, sin submenús. Toca una herramienta para abrirla.</p>'+
-   '<div class="v562-list">'+
+   '<p class="v563-section-help">Todas las herramientas disponibles, sin submenús. Las opciones privadas requieren autorización.</p>'+
+   '<label class="v563-tool-search"><span>Buscar herramienta</span><input type="search" data-v563-tool-search placeholder="Patrocinadores, jornadas, sanciones…" autocomplete="off" aria-label="Buscar en Registro y administración"></label>'+
+   '<div class="v562-list" data-v563-management-list>'+
    card('register','Registro de jugadores','Altas, equipos y datos del jugador','data-v563-route="recruitment"')+
    card('id','Credenciales','Foto y escudo en la credencial','data-v563-route="credentialBuilder"')+
    card('sponsor','Patrocinadores','Acuerdos, vigencias y contactos · local','data-v563-tool="sponsors"')+
    card('matchday','Centro de jornada','Organizar partidos y cierre','data-v563-route="matchday"')+
+   card('calendar','Programar partido','Crear borrador con cancha y horario','data-v563-tool="schedule-match"')+
+   card('calendar','Agenda de campos','Organizar y revisar sedes y horarios','data-v563-route="agendaBuilder"')+
+   card('match','Match Center oficial','Marcador, alineaciones y cronología','data-v563-route="v4-matchcenter"')+
    card('calendarExport','Calendarios oficiales','Preparar y descargar PDF o imagen','data-v563-tool="calendar-generator"')+
    card('meeting','Juntas y acuerdos','Registro de reuniones y pendientes','data-v563-tool="meeting"')+
    card('referee','Modo árbitro offline','Mis partidos y cédulas sin señal','data-v563-route="refereeOffline"')+
    card('document','Cédulas arbitrales','Plantillas y exportación PDF','data-v563-route="cedulaBuilder"')+
    card('officials','Árbitros y oficiales','Directorio operativo local','data-v563-tool="officials"')+
    card('incidents','Incidencias','Anotar hechos y dar seguimiento','data-v563-tool="incidents"')+
+   card('alertShield','Nueva sanción','Preparar sanción sin publicarla','data-v563-tool="new-sanction"')+
+   card('alertShield','Aviso de suspensión','Crear borrador de suspensión de jornada','data-v563-route="suspensionTool"')+
+   card('permission','Disciplina y tarjetas','Expulsiones, amarillas y sanciones','data-v563-route="discipline"')+
    card('team','Equipos','Directorio y consulta de clubes','data-v563-route="teams"')+
    card('delegate','Delegados / encargados','Directorio de representantes','data-v563-tool="delegates"')+
    card('player','Jugadores','Plantillas de los equipos','data-v563-route="players"')+
    card('report','Reportes','Resumen semanal y pendientes','data-v563-route="v38Weekly"')+
+   card('trophy','Jugador del partido','Elegir MVP en el registro local','data-v563-tool="motm"')+
+   card('analysis','Estadísticas generales','Goles, rendimiento y clasificaciones','data-v563-route="stats"')+
+   card('brackets','Cuadro de liguilla','Crear y exportar eliminatorias','data-v563-route="bracketBuilder"')+
+   card('simulator','Simulador de partidos','Ensayar cruces sin alterar oficiales','data-v563-route="simulator"')+
    card('book','Reglamento','Consultar el reglamento oficial','data-v563-route="rulebook"')+
    card('publish','Publicaciones','Tablas, jornadas y comunicados','data-v563-route="publicationCenter"')+
    card('poll','Encuestas','Participación y opinión de la Liga','data-v563-tool="poll"')+
    card('weather','Campos y clima','Estado y pronóstico de canchas','data-v563-route="weatherFields"')+
+   card('calendar','Calendario mensual','Ver la agenda de partidos por mes','data-v563-route="v4-calendar"')+
+   card('export','Exportar tablas','Descargar clasificaciones PNG o PDF','data-v563-route="tableExport"')+
+   card('tactic','Tácticas 2D y 3D','Pizarra y formaciones interactivas','data-v563-route="tactics"')+
+   card('notice','Notificaciones','Preferencias y avisos de la Liga','data-v563-route="notifications"')+
+   card('book','Historial de la Liga','Temporadas, resultados y eventos','data-v563-route="historyLog"')+
    card('account','Mi cuenta','Perfil y configuración','data-v563-route="profile"')+
    card('import','Importar CSV','Leer archivo y revisar vista previa','data-v563-tool="csv-import"')+
    card('backup','Respaldo local','Descargar copia de herramientas','data-v563-tool="backup-export"')+
@@ -109,6 +136,11 @@ function controlMarkup(){
     card('permission','Permisos y autorizaciones','Crear documentos oficiales','data-v563-route="permissionBuilder"')+
     card('notice','Avisos programados','Notificaciones y comunicados','data-v563-route="v38Alerts"')+
     card('reschedule','Cambios de jornada','Cambiar fechas y partidos','data-v563-route="scheduleChanges"')+
+    card('publish','Crear aviso oficial','Redactar, revisar y publicar con permiso','data-v563-cms="compose"')+
+    card('review','Revisar avisos','Consultar borradores y publicaciones','data-v563-cms="review"')+
+    card('editPage','Editar páginas','Modificar información y diseño sin programar','data-v563-cms="pages"')+
+    card('manage','Administrar accesos','Gestionar administradores autorizados','data-v563-cms="manage"')+
+    (window.LJR_MEDIA?.admin?.owner?card('backup','Respaldo oficial','Exportación privada solo del presidente','data-v563-cms="backup"'):'')+
     '</div></div>'+
    '</section>'+
  '</section>';
@@ -148,13 +180,25 @@ async function share(){
 function bind(root){
  function syncAdmin(){const section=$('[data-v563-admin-direct]',root);if(section)section.hidden=!Boolean(window.LJR_MEDIA?.admin)}
  syncAdmin();window.addEventListener('liga:admin',syncAdmin,{signal:root.v563Controller?.signal});
- $$('[data-v563-route]',root).forEach(b=>b.addEventListener('click',()=>go(b.dataset.v563Route)));
- const privateTools=new Set(['sponsors','meeting','delegates','officials','incidents','csv-import','backup-export','audit']);
+ $('[data-v563-route]',root).forEach(b=>b.addEventListener('click',()=>go(b.dataset.v563Route)));
+ const search=$('[data-v563-tool-search]',root);
+ if(search){
+   const cards=()=>[...root.querySelectorAll('[data-v563-management-list] > .v562-card, [data-v563-admin-direct] .v562-card')];
+   const normalize=x=>String(x||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+   search.addEventListener('input',()=>{
+     const q=normalize(search.value);
+     cards().forEach(button=>{
+       const isPrivate=!!button.closest('[data-v563-admin-direct]');
+       button.hidden=(isPrivate&&!window.LJR_MEDIA?.admin)||!!(q&&!normalize(button.textContent).includes(q));
+     });
+   });
+ }
+ const privateTools=new Set(['sponsors','meeting','delegates','officials','incidents','csv-import','backup-export','audit','schedule-match','new-sanction','motm']);
  const openTool=name=>{
    if(typeof window.LJR_V105_OPEN_TOOL==='function'&&window.LJR_V105_OPEN_TOOL(name))return;
    toast('La herramienta no pudo abrirse. Actualiza la página e inténtalo de nuevo.');
  };
- $$('[data-v563-tool]',root).forEach(b=>b.addEventListener('click',()=>{
+ $('[data-v563-tool]',root).forEach(b=>b.addEventListener('click',()=>{
    const name=b.dataset.v563Tool;
    if(!name)return;
    if(privateTools.has(name)&&!window.LJR_MEDIA?.admin){
@@ -166,7 +210,24 @@ function bind(root){
    }
    openTool(name);
  }));
- $$('[data-v563-action]',root).forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.v563Action;if(a==='positions')openPositions();else if(a==='fixtures')openFixtures();else if(a==='cards')openDiscipline('cards');else if(a==='suspensions')openDiscipline('suspensions')}));
+ const cmsActions={
+   compose:()=>window.LJR_EDITOR_CENTER?.openNotice?.(),
+   review:()=>window.LJR_EDITOR_CENTER?.openReview?.(),
+   pages:()=>window.LJR_EDITOR_CENTER?.openPages?.(),
+   manage:()=>window.LJR_MEDIA?.manage?.(),
+   backup:()=>window.LJR_EDITOR_CENTER?.exportBackup?.()
+ };
+ $('[data-v563-cms]',root).forEach(b=>b.addEventListener('click',()=>{
+   if(!window.LJR_MEDIA?.admin){toast('Inicia sesión como administrador para continuar');return}
+   const name=b.dataset.v563Cms;
+   if(name==='backup'&&!window.LJR_MEDIA.admin.owner){toast('Solo el presidente puede exportar el respaldo oficial');return}
+   try{
+     const handler=cmsActions[name];
+     if(typeof handler!=='function'){toast('Opción no disponible; recarga la aplicación');return}
+     handler();
+   }catch(error){console.error('[JR Control] Acción administrativa',error);toast('No fue posible abrir esta función')}
+ }));
+ $('[data-v563-action]',root).forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.v563Action;if(a==='positions')openPositions();else if(a==='fixtures')openFixtures();else if(a==='cards')openDiscipline('cards');else if(a==='suspensions')openDiscipline('suspensions')}));
  $$('[data-v563-install]',root).forEach(b=>b.addEventListener('click',install));
  $('[data-v563-share]',root)?.addEventListener('click',share);
  $('[data-v563-builds]',root)?.addEventListener('click',()=>window.open(ACTIONS,'_blank','noopener,noreferrer'));
