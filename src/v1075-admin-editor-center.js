@@ -53,7 +53,7 @@ function showComposer(prefill){
   '<label>Título<input name="title" required maxlength="160"></label>'+
   '<label>Mensaje<textarea name="body" required rows="5" minlength="15" maxlength="4000"></textarea></label>'+
   '<label>Mostrar en<select name="scope"><option value="Liga">Liga</option><option value="Equipos">Equipos</option><option value="Fichajes">Fichajes</option></select></label>'+
-  '<div class="ljr-editor-smart-tools" aria-label="Herramientas del aviso"><button type="button" data-editor-check>✓ Revisar datos</button><button type="button" data-editor-local-ai>✦ IA en el dispositivo</button><button type="button" data-editor-calendar>▦ Google Calendar</button><button type="button" data-editor-copy>⧉ Copiar aviso</button></div>'+
+  '<div class="ljr-editor-smart-tools" aria-label="Herramientas del aviso"><button type="button" data-editor-check>✓ Revisar datos</button><button type="button" data-editor-local-ai>✦ IA en el dispositivo</button><button type="button" data-editor-calendar>▦ Google Calendar</button><button type="button" data-editor-schedule>◷ Programar envío</button><button type="button" data-editor-copy>⧉ Copiar aviso</button></div>'+
   '<p class="ljr-editor-feedback" data-editor-feedback aria-live="polite" role="status"></p>'+
   '<div class="ljr-editor-preview"><small>VISTA PREVIA · NOTICIAS OFICIALES</small><strong data-preview-title></strong><p data-preview-body></p><small data-preview-meta></small></div>'+
   '<div class="ljr-editor-bottom"><button type="button" data-editor-draft>Guardar borrador</button><button type="submit" data-editor-publish>Publicar en Noticias</button></div>'+
@@ -141,6 +141,7 @@ function showComposer(prefill){
  loadCatalogs();
  form.elements.category.addEventListener('change',()=>{teamOptions(true);checkNotice();});
  $('[data-editor-check]',form).onclick=checkNotice;
+ $('[data-editor-schedule]',form).onclick=()=>openScheduler($('[data-editor-schedule]',form));
  $('[data-editor-copy]',form).onclick=async()=>{
   const result=(title.value.trim()+'\n\n'+body.value.trim()).trim();
   if(!body.value.trim())return status(modal,'Escribe primero un mensaje para copiar.');
@@ -164,8 +165,8 @@ function showComposer(prefill){
   link.searchParams.set('location',f.field.value.trim());
   link.searchParams.set('dates',stamp(new Date(base))+'/'+stamp(new Date(base+3600000)));
   link.searchParams.set('ctz','America/Mexico_City');
-  window.open(link.toString(),'_blank','noopener,noreferrer');
-  status(modal,'Google Calendar abierto: confirma Guardar allí. No se ha creado ningún evento automáticamente.');
+  const opened=window.open(link.toString(),'_blank','noopener,noreferrer');
+  status(modal,opened?'Google Calendar abierto: confirma Guardar allí. No se ha creado ningún evento automáticamente.':'Si no se abrió Calendar, permite las ventanas emergentes de este sitio e inténtalo otra vez.');
  };
  $('[data-editor-local-ai]',form).onclick=async()=>{
   const button=$('[data-editor-local-ai]',form);
