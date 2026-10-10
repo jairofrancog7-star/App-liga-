@@ -92,8 +92,13 @@ function refresh(p){
  if(progress){
   progress.replaceChildren();
   steps.forEach(([key,label],i)=>{
-   const x=document.createElement('span');x.className='v1074-step'+(i<=index?' is-done':'');
-   x.textContent=label;progress.append(x);
+   const x=document.createElement('button');
+   x.type='button';x.dataset.v1074Stage=key;
+   x.className='v1074-step'+(i<=index?' is-done':'')+(i===index?' is-current':'');
+   x.textContent=label;
+   x.setAttribute('aria-label',label+(i===index?' · estado actual':i<index?' · etapa completada':' · etapa pendiente')+'. Abrir acción');
+   if(i===index)x.setAttribute('aria-current','step');
+   progress.append(x);
   });
  }
  const status=$('[data-v1074-schedule-status]',ui);
@@ -134,11 +139,65 @@ async function ask(p){
   (s.match&&s.match!=='Todos los partidos'?'Partido: '+s.match+'\n':'')+
   (s.venue&&s.venue!=='Todos los campos'?'Campo: '+s.venue+'\n':'')+
   '\nBorrador propuesto:\n'+s.message+'\n\nPor favor confirma expresamente tu autorización antes de programar.';
- try{
-  if(navigator.share)await navigator.share({title:'Solicitud de aprobación',text:txt});
-  else window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank','noopener,noreferrer');
-  message(p,'Solicitud preparada. Espera la respuesta; el envío no cuenta como autorización.');
- }catch(e){if(e?.name!=='AbortError')message(p,'No se abrió el panel de compartir. Utiliza Copiar texto como alternativa.')}
+ openWhatsApp(p,txt,'524121715599','Solicitud abierta para el presidente. Espera su confirmación; esto NO es una autorización.');
+}
+function approvedNoticeText(s){
+ return [
+  'LIGA MUNICIPAL DE FÚTBOL JUVENTINO ROSAS A. C.',
+  (s.type||'AVISO').toUpperCase(),
+  'Categoría: '+s.cat+' · Jornada: '+s.round,
+  'Alcance: '+s.scope,
+  s.match&&s.match!=='Todos los partidos'?'Partido: '+s.match:'',
+  s.venue&&s.venue!=='Todos los campos'?'Campo: '+s.venue:'',
+  s.reason?'Motivo: '+s.reason:'',
+  'Fecha efectiva: '+s.date+' '+s.time,
+  s.message
+ ].filter(Boolean).join('\n');
+}
+function openWhatsApp(p,txt,number='',confirmation='WhatsApp abierto: elige el chat y pulsa Enviar manualmente.'){
+ const url='https://wa.me/'+number+'?text='+encodeURIComponent(txt);
+ message(p,confirmation+' Ningún mensaje se envió automáticamente.');
+ try{window.location.assign(url)}
+ catch(_){
+  try{navigator.clipboard?.writeText(txt).then(()=>message(p,'No se abrió WhatsApp; texto copiado para pegarlo manualmente.')).catch(()=>message(p,'No se pudo abrir WhatsApp. Usa Copiar texto.'))}
+  catch(__){message(p,'No se pudo abrir WhatsApp; utiliza Copiar texto.')}
+ }
+}
+function presidentWhatsApp(p){
+ const s=fields(p),authorized=isAuthorized(p);
+ const txt=authorized?approvedNoticeText(s):
+  'SOLICITUD DE VISTO BUENO — BORRADOR, NO PUBLICAR\n'+
+  'Liga Municipal de Fútbol Juventino Rosas A. C.\n'+
+  'Tipo: '+s.type+'\nCategoría: '+s.cat+' · Jornada '+s.round+
+  '\nMotivo: '+s.reason+'\nAlcance: '+s.scope+
+  '\nFecha efectiva: '+s.date+' '+s.time+
+  '\nMensaje propuesto: '+s.message+
+  '\n\nPor favor revisa y confirma tu autorización. NO difundir como aviso oficial.';
+ openWhatsApp(p,txt,'524121715599',authorized?
+  'Aviso preparado para compartir con el presidente.':
+  'Solicitud de visto bueno preparada para el presidente. Debes registrar después su autorización real.');
+}
+function stageAction(p,key){
+ const flow=$('[data-v1074-flow]',p);if(flow)flow.open=true;
+ if(key==='draft'){
+  const save=$('[data-v64-susp-save]',p);
+  if(save){save.click();message(p,'Borrador guardado en este dispositivo; todavía no está publicado.')}
+  else message(p,'No se encontró el botón Guardar borrador.');
+ }else if(key==='review')review(p);
+ else if(key==='authorized'){
+  if(state(p).key==='draft'){message(p,'Primero pulsa Revisado para comprobar el aviso.');return}
+  const box=$('[data-v1074-auth]',p);if(box)box.hidden=false;
+  message(p,isAuthorized(p)?'Autorización ya anotada en este teléfono. Puedes actualizar la constancia.':
+   'Solicita el visto bueno y registra únicamente una autorización realmente recibida.');
+  box?.scrollIntoView({behavior:'smooth',block:'nearest'});
+ }else if(key==='scheduled')schedule(p);
+ else if(key==='published'){
+  const st=state(p);
+  message(p,st.key==='published'?
+   'El programador local marca este aviso como procesado. Revisa la entrega real en los canales oficiales.':
+   'Procesado es un estado de seguimiento, NO un botón para publicar. Solo se activa cuando el programador registra el procesamiento.');
+  $('[data-v1074-teams]',p)?.scrollIntoView({behavior:'smooth',block:'nearest'});
+ }
 }
 function authorize(p){
  const ui=$('[data-v1074-flow]',p),name=String($('[data-v1074-author]',ui)?.value||'').trim();
@@ -244,30 +303,7 @@ function drawTeams(p){
 }
 async function shareNormalWhatsApp(p){
  if(!isAuthorized(p)){message(p,'Revisa y registra primero una autorización real para compartir el aviso.');return}
- const s=fields(p);
- const lines=[
-  'LIGA MUNICIPAL DE FÚTBOL JUVENTINO ROSAS A. C.',
-  (s.type||'AVISO').toUpperCase(),
-  s.cat+' · Jornada '+s.round,
-  s.match&&s.match!=='Todos los partidos'?'Partido: '+s.match:'',
-  s.venue&&s.venue!=='Todos los campos'?'Campo: '+s.venue:'',
-  s.reason?'Motivo: '+s.reason:'',
-  'Fecha efectiva: '+s.date+' '+s.time,
-  s.message
- ].filter(Boolean);
- const msg=lines.join('\n');
- // WhatsApp personal: abrir el compositor, NUNCA usar Twilio ni envío silencioso.
- const url='https://api.whatsapp.com/send?text='+encodeURIComponent(msg);
- try{
-  // Navegar una sola vez: evita ventanas bloqueadas o doble apertura del chat.
-  // WhatsApp pide escoger contacto y pulsar Enviar manualmente.
-  message(p,'Elige el chat en WhatsApp y confirma Enviar; no se registró ningún envío automático.');
-  window.location.assign(url);
- }catch(_){
-  try{await navigator.clipboard?.writeText(msg);
-   message(p,'El navegador bloqueó WhatsApp. Copiamos el texto; abre WhatsApp y pégalo manualmente.');
-  }catch(__){message(p,'No se pudo abrir WhatsApp; utiliza Compartir texto desde el teléfono.')}
- }
+ openWhatsApp(p,approvedNoticeText(fields(p)),'','Aviso preparado. Selecciona el equipo o contacto y confirma Enviar en WhatsApp.');
 }
 async function prepare(p,name){
  if(!isAuthorized(p)){message(p,'Registra primero la autorización recibida.');return}
@@ -279,11 +315,7 @@ async function prepare(p,name){
   '\nMotivo: '+s.reason+'\nFecha efectiva: '+s.date+' '+s.time+
   '\n'+s.message+
   '\n\nConfirma que recibiste este aviso con tu delegado.';
- try{
-  if(navigator.share)await navigator.share({title:'Aviso para '+name,text:body});
-  else window.open('https://wa.me/?text='+encodeURIComponent(body),'_blank','noopener,noreferrer');
-  message(p,'Mensaje preparado para '+name+'. Marca Enviado solo después de verificar el envío.');
- }catch(e){if(e?.name!=='AbortError')message(p,'No se pudo abrir Compartir.')}
+ openWhatsApp(p,body,'','Aviso preparado para '+name+'. Marca Enviado únicamente después de verificar el envío.');
 }
 function mark(p,name){
  if(!isAuthorized(p))return;
@@ -413,10 +445,20 @@ function boot(){
   if(route()!=='suspensionTool')return;
   const btn=e.target.closest('button');
   if(!btn?.matches('[data-v64-susp-whatsapp],[data-v1066-share]'))return;
-  const page=btn.closest('.v425-suspension');
-  if(!page||isAuthorized(page))return;
-  e.preventDefault();
-  e.stopImmediatePropagation();
+  const page=btn.closest('.v425-suspension');if(!page)return;
+  if(btn.matches('[data-v64-susp-whatsapp]')){
+   // Captura también el manejador antiguo {once:true}. Nunca abrir dos chats.
+   e.preventDefault();e.stopImmediatePropagation();
+   verifyAdminSession().then(ok=>{
+    if(!page.isConnected)return;
+    if(ok)presidentWhatsApp(page);
+    else{const flow=$('[data-v1074-flow]',page);if(flow)flow.open=true;
+     message(page,'Inicia sesión como administrador para preparar el WhatsApp del presidente.')}
+   });
+   return;
+  }
+  if(isAuthorized(page))return;
+  e.preventDefault();e.stopImmediatePropagation();
   const flow=$('[data-v1074-flow]',page);if(flow)flow.open=true;
   message(page,'Primero revisa y registra una autorización real. Para solicitarla usa «Solicitar visto bueno».');
  },true);
@@ -427,7 +469,7 @@ function boot(){
   const b=e.target.closest('button');
   if(!b)return;
   // La aprobación en localStorage no es una credencial; exigir además sesión del servidor.
-  if(b.matches('[data-v1074-review],[data-v1074-ask],[data-v1074-authorize],[data-v1074-schedule],[data-v1074-official],[data-v1074-global],[data-v1074-wa-manual],[data-v1074-share],[data-v1074-mark],[data-v1074-cancel]')){
+  if(b.matches('[data-v1074-stage],[data-v1074-review],[data-v1074-ask],[data-v1074-show-auth],[data-v1074-authorize],[data-v1074-schedule],[data-v1074-official],[data-v1074-global],[data-v1074-wa-manual],[data-v1074-share],[data-v1074-mark],[data-v1074-cancel],[data-v1074-export]')){
    if(!await verifyAdminSession()){
     const flow=$('[data-v1074-flow]',p);if(flow)flow.open=true;
     message(p,'Inicia sesión en Administración: este control requiere permiso verificado del servidor.');
@@ -435,7 +477,8 @@ function boot(){
    }
    if(!p.isConnected)return;
   }
-  if(b.matches('[data-v1074-review]'))review(p);
+  if(b.matches('[data-v1074-stage]'))stageAction(p,b.dataset.v1074Stage);
+  else if(b.matches('[data-v1074-review]'))review(p);
   else if(b.matches('[data-v1074-ask]'))ask(p);
   else if(b.matches('[data-v1074-show-auth]')){
     const box=$('[data-v1074-auth]',p);if(box)box.hidden=!box.hidden;
@@ -462,8 +505,9 @@ function boot(){
  screen.addEventListener('click',e=>{
   if(route()!=='v38Alerts'||!e.target.closest('[data-v713-save]'))return;
   setTimeout(checkScheduled,240);
+  setTimeout(checkScheduled,1200);
  },true);
- window.addEventListener('ljr:auto-notice',()=>{const p=$('.v425-suspension',screen);if(p)refresh(p)});
+ window.addEventListener('ljr:auto-notice',()=>{checkScheduled();const p=$('.v425-suspension',screen);if(p)refresh(p)});
  window.addEventListener('hashchange',queueRedraw);
  window.addEventListener('liga:admin',queueRedraw);
  document.addEventListener('liga:admin',queueRedraw);
