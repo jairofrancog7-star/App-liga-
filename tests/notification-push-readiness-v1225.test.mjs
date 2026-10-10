@@ -13,7 +13,7 @@ function setup({supported=true,sub=null,serverError=false,permission='granted',n
  const label={textContent:''},toggle={disabled:false,textContent:'',dataset:{}};
  const messages=[];
  let queriedServer=0,queriedSubscription=0;
- const fn=new Function('$','supported','apiBase','server','subscription','keyMatches','status','Notification','window',
+ const fn=new Function('$','supported','apiBase','server','subscription','keyMatches','status','Notification','window','isNativeApk',
     extracted+'\nreturn syncState;')(
     s=>s==='[data-v1082-state]'?label:toggle,
     ()=>supported,
@@ -23,7 +23,8 @@ function setup({supported=true,sub=null,serverError=false,permission='granted',n
     ()=>true,
     (_root,message)=>messages.push(message),
     {permission},
-    {Capacitor:{isNativePlatform:()=>native}}
+    {Capacitor:{isNativePlatform:()=>native}},
+    ()=>native
  );
  return {check:()=>fn({}),label,toggle,messages,get requests(){return {server:queriedServer,subscription:queriedSubscription}}};
 }
