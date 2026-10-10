@@ -44,11 +44,12 @@ La interfaz y el código no cambian por sí solos un servidor antiguo ya despleg
   "approval": {
     "status": "approved",
     "by": "cuenta-revisora",
-    "at": "2026-10-31T18:00:00Z"
+    "at": "2026-10-31T18:00:00Z",
+    "signature": "64 caracteres hexadecimales; firma creada por un responsable autorizado"
   }
 }
 ```
-Este campo JSON **no verifica una identidad por sí mismo**. La validación humana se debe hacer en un PR revisado y fusionado por responsables autorizados. Configurar reglas de protección de `main`, revisión obligatoria y, de ser posible, CODEOWNERS. GitHub Pages sigue siendo público, por lo que nunca guardar datos personales, credenciales ni claves de servicio en los JSON.
+Una etiqueta JSON **no verifica la identidad por sí misma**. Además del PR aprobado, cada aviso del repositorio necesita `approval.signature`: un HMAC-SHA256 sobre los campos `id,title,body,message,category,channels,publish_at,publishAt,type` (serialización JSON ordenada, compacta, UTF-8). La clave `LJR_OFFICIAL_NOTICE_APPROVAL_SECRET` (mínimo 32 caracteres) debe guardarse **únicamente en GitHub Actions Secrets**; nunca publicarla en commits o GitHub Pages. Un responsable con acceso autorizado puede firmar offline usando un entorno seguro y copiar solamente la firma al JSON después de revisarlo. Si la clave no está configurada, **el publicador de archivos JSON permanece bloqueado por seguridad**. Cambiar fecha, título, mensaje, categoría o canales invalida la firma y exige volver a revisar y firmar. Configurar reglas de protección de `main`, revisión obligatoria y, de ser posible, CODEOWNERS. GitHub Pages sigue siendo público, por lo que nunca guardar datos personales, credenciales ni claves de servicio en los JSON.
 
 ## Verificaciones técnicas
 
