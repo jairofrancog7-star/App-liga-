@@ -131,3 +131,60 @@ html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-actio
 @media(prefers-reduced-motion:reduce){
  html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-qa *{scroll-behavior:auto!important}
 }
+
+
+/* V1311 · aviso de suspensión igual al azul marino de la app.
+   El asistente está DENTRO de la pantalla suspensionTool (no es modal),
+   por eso los estilos generales de Administración no lo alcanzaban.
+   Sólo modifica fondos, bordes e iconos; no altera revisión ni publicación. */
+html body[data-app-route="suspensionTool"] #screen .v425-suspension{
+ --susp-night:#060f32;
+ --susp-base:#091a47;
+ --susp-card:#0d2559;
+ --susp-button:#112d61;
+ --susp-line:rgba(86,125,187,.6);
+ --susp-muted:#bdcdec;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension
+ :is(.v425-panel,.v425-summary,.v1062-writer,details.v1066-automation,details.v1074-flow){
+ background:#091a47!important;
+ background-image:linear-gradient(160deg,#0c2255,#07153a)!important;
+ border-color:#436baa!important;
+ box-shadow:none!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-qa{
+ background:#081940!important;
+ background-image:linear-gradient(170deg,#0b2050,#071538)!important;
+ background-color:#081940!important;
+ border-color:#4d73b1!important;
+ box-shadow:none!important;
+ color:#f4f8ff!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-head>span{
+ background:#112d61!important;
+ border-color:#5c83c1!important;
+ color:#e0edff!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-actions button{
+ background:#0f285b!important;
+ background-image:linear-gradient(155deg,#133165,#0b2250)!important;
+ background-color:#0f285b!important;
+ border-color:#557ebb!important;
+ box-shadow:none!important;
+ color:#fff!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-qa li{
+ background:#071539!important;
+ background-image:none!important;
+ border-color:#3a609c!important;
+ color:#e3efff!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension .v1232-toggle input{
+ accent-color:#4785d1!important;
+}
+html body[data-app-route="suspensionTool"] #screen .v425-suspension
+ :is(.v1074-flow,.v1066-automation,.v1062-writer) button:not(:disabled){
+ background:#112b60!important;
+ background-image:linear-gradient(155deg,#15346c,#0c2252)!important;
+ border-color:#557bb7!important;
+}
