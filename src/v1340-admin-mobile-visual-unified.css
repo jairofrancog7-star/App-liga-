@@ -1,3 +1,4 @@
+/* V1352: los módulos administrativos usan la paleta V1311; los demás módulos V1340 permanecen sin cambios. */
 /* V1340 · Armonización visual solicitada en Android.
    Respeta el comportamiento de botones, selectores, datos y servicios.
    Paleta de la app azul: noche #05045f, panel #090879, acción #1c69d4. */
@@ -15,22 +16,22 @@ html body{
 }
 /* Modal administrativo y edición de comunicados: mismo azul de toda la aplicación. */
 html body .liga-media-modal > section:is(.ljr-editor-dialog,.ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,.ljr-admin-studio,.v1081-dialog){
-  background:linear-gradient(160deg,#101f75 0%,#090e66 53%,#05045f 100%)!important;
-  border-color:var(--ljr-v1340-border)!important;
+  background:linear-gradient(180deg,var(--ljr1310-surface,#0a1b48) 0%,var(--ljr1310-bg,#071338) 100%)!important;
+  border-color:var(--ljr1310-edge,#426bb0)!important;
   color:var(--ljr-v1340-text)!important;
 }
 html body .liga-media-modal > section:is(.ljr-editor-dialog,.ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,.ljr-admin-studio,.v1081-dialog) > header{
-  background:linear-gradient(180deg,#133d9c,#0b2175 63%,#090879)!important;
-  border-color:var(--ljr-v1340-border)!important;
+  background:linear-gradient(180deg,#102b62,#0b2050)!important;
+  border-color:var(--ljr1310-edge,#426bb0)!important;
 }
 html body .liga-media-modal .ljr-editor-dialog :is(.ljr-editor-preview,.ljr-review-stats>div,.ljr-review-card,.ljr-review-insights,.ljr-review-empty,.ljr-review-device-results,.ljr-editor-note,.ljr-editor-autofill,.ljr-editor-row){
-  background:linear-gradient(150deg,#132b7c,#0b1767)!important;
-  border-color:var(--ljr-v1340-border)!important;
+  background:linear-gradient(170deg,var(--ljr1310-card,#0c2457),var(--ljr1310-surface,#0a1b48))!important;
+  border-color:var(--ljr1310-edge,#426bb0)!important;
   color:var(--ljr-v1340-text)!important;
 }
 html body .liga-media-modal .ljr-editor-dialog :is(.ljr-editor-form,.ljr-review-filters) :is(input:not([type=checkbox]),select,textarea){
-  background:var(--ljr-v1340-control)!important;
-  border-color:var(--ljr-v1340-border)!important;
+  background:var(--ljr1310-input,#091a46)!important;
+  border-color:var(--ljr1310-edge,#426bb0)!important;
   color:#fff!important;
 }
 html body .liga-media-modal .ljr-editor-dialog :is(.ljr-editor-tools,.ljr-editor-bottom,.ljr-editor-smart-tools,.ljr-review-tabs,.ljr-review-automation) button{
@@ -41,16 +42,16 @@ html body .liga-media-modal .ljr-editor-dialog :is(.ljr-editor-tools,.ljr-editor
   min-width:0!important;
   min-height:46px!important;
   padding:10px 11px!important;
-  background:linear-gradient(160deg,#183d94,#0e2776)!important;
-  border-color:#557fca!important;
+  background:linear-gradient(160deg,var(--ljr1310-card,#0c2457),var(--ljr1310-surface,#0a1b48))!important;
+  border-color:var(--ljr1310-edge,#426bb0)!important;
   color:#fff!important;
   line-height:1.3!important;
   white-space:normal!important;
   text-align:center!important;
 }
 html body .liga-media-modal .ljr-editor-dialog :is(.ljr-editor-bottom [data-editor-publish],.ljr-review-tabs button[aria-pressed=true]){
-  background:linear-gradient(145deg,#1c69d4,#0d47a1)!important;
-  border-color:#81b3f1!important;
+  background:linear-gradient(145deg,#19407f,#0e2b5e)!important;
+  border-color:var(--ljr1310-edge,#426bb0)!important;
 }
 html body .liga-media-modal .ljr-editor-dialog :is(.ljr-editor-tools,.ljr-editor-bottom,.ljr-editor-smart-tools,.ljr-review-automation) button :is(svg,img){
   width:21px!important;height:21px!important;flex:0 0 21px!important;object-fit:contain!important;
