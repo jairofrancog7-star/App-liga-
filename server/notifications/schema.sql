@@ -79,3 +79,14 @@ ALTER TABLE ljr_message_consent ADD COLUMN IF NOT EXISTS contact_role TEXT NOT N
 ALTER TABLE ljr_message_consent DROP CONSTRAINT IF EXISTS ljr_message_consent_contact_role_check;
 ALTER TABLE ljr_message_consent ADD CONSTRAINT ljr_message_consent_contact_role_check
  CHECK (contact_role IN ('general','delegado','presidencia'));
+
+-- V1150: archivo privado de minutas con versiones para evitar sobrescritura.
+CREATE TABLE IF NOT EXISTS ljr_meeting_minutes (
+ meeting_date DATE PRIMARY KEY,
+ payload JSONB NOT NULL,
+ revision INTEGER NOT NULL DEFAULT 1,
+ updated_by TEXT NOT NULL,
+ updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+ CONSTRAINT ljr_meeting_minutes_revision_positive CHECK (revision > 0)
+);
+CREATE INDEX IF NOT EXISTS ljr_meeting_minutes_updated_idx ON ljr_meeting_minutes(updated_at DESC);
