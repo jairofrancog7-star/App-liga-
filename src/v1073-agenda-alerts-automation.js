@@ -7,6 +7,9 @@ const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLo
 const html=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const KEY='v64-agenda', PREF='ljr-v1073-agenda-pref', SENT='ljr-v1073-agenda-reminders';
 const TZ='America/Mexico_City';
+const AG_ICONS={"notice":"<path d=\"m12 3 2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4L12 3Z\"/>","calendar":"<rect x=\"3\" y=\"5\" width=\"18\" height=\"16\" rx=\"2\"/><path d=\"M7 3v4m10-4v4M3 10h18M8 15h8\"/>","last":"<path d=\"M20 11a8 8 0 0 0-14-5L4 9m0-5v5h5M4 13a8 8 0 0 0 14 5l2-3m0 5v-5h-5\"/>","weather":"<path d=\"M19 16a4 4 0 0 0-3-5 6 6 0 0 0-11 2 3.5 3.5 0 0 0 1.5 7H18a4 4 0 0 0 1-4Z\"/>","copy":"<rect x=\"8\" y=\"8\" width=\"12\" height=\"12\" rx=\"2\"/><path d=\"M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3\"/>","share":"<circle cx=\"18\" cy=\"5\" r=\"2\"/><circle cx=\"6\" cy=\"12\" r=\"2\"/><circle cx=\"18\" cy=\"19\" r=\"2\"/><path d=\"m8 11 8-5M8 13l8 5\"/>","whatsapp":"<path d=\"M20 11a8 8 0 0 1-11.5 7L3 21l2.5-6.5A8 8 0 1 1 20 11Z\"/><path d=\"m9 10 2 2 4-3\"/>","test":"<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"m9 8 7 4-7 4V8Z\"/>","bell":"<path d=\"M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9m-11 12h4\"/>"};
+function agAction(icon,label){return '<svg class="ljr-ag-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+AG_ICONS[icon]+'</svg><span class="ljr-ag-label">'+label+'</span>'}
+
 const route=()=>location.hash.replace(/^#\/?/,'').split('?')[0];
 const val=s=>$(s)?.value?.trim()||'';
 const read=()=>{try{const x=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(x)?x.filter(v=>v&&typeof v==='object').slice(0,150):[]}catch{return []}};
@@ -85,17 +88,17 @@ function mount(){
  section.innerHTML='<div class="ag1073-head"><span><small>ASISTENTE LOCAL · JORNADA</small><strong>Avisos y automatización</strong></span><b>ACTIVO</b></div>'+
  '<div class="ag1073-info" data-ag1073-info aria-live="polite"></div>'+
  '<div class="ag1073-actions">'+
- '<button type="button" data-ag1073-action="notice">✦ Preparar aviso</button>'+
- '<button type="button" data-ag1073-action="calendar">▣ Calendario (.ics)</button>'+
- '<button type="button" data-ag1073-action="last">↺ Reutilizar campo</button>'+
- '<button type="button" data-ag1073-action="weather">☁ Revisar clima</button></div>'+
+ '<button type="button" data-ag1073-action="notice">'+agAction('notice','Preparar aviso')+'</button>'+
+ '<button type="button" data-ag1073-action="calendar">'+agAction('calendar','Calendario (.ics)')+'</button>'+
+ '<button type="button" data-ag1073-action="last">'+agAction('last','Reutilizar campo')+'</button>'+
+ '<button type="button" data-ag1073-action="weather">'+agAction('weather','Revisar clima')+'</button></div>'+
  '<div data-ag1073-warnings class="ag1073-warnings" aria-live="polite"></div>'+
- '<details class="ag1073-details"><summary>⚙ Avisos, recordatorios y compartir <span>▾</span></summary>'+
+ '<details class="ag1073-details"><summary>'+agAction('bell','Avisos, recordatorios y compartir')+'<span class="ag1073-chevron" aria-hidden="true">▾</span></summary>'+
  '<div class="ag1073-controls"><label>Tipo de aviso<select data-ag1073-kind><option>Partido programado</option><option>Recordatorio de partido</option><option>Confirmación de sede</option><option>Cambio de horario (revisión)</option></select></label>'+
  '<label>Recordarme con anticipación<select data-ag1073-lead><option value="1440">24 horas antes</option><option value="120">2 horas antes</option><option value="30">30 minutos antes</option></select></label></div>'+
  '<label class="ag1073-toggle"><input type="checkbox" data-ag1073-enabled><span>Activar avisos en este dispositivo, mientras la aplicación esté abierta</span></label>'+
  '<label class="ag1073-preview-label">Vista previa editable<textarea data-ag1073-preview rows="6" aria-label="Texto de aviso"></textarea></label>'+
- '<div class="ag1073-actions small"><button type="button" data-ag1073-action="copy">Copiar texto</button><button type="button" data-ag1073-action="share">Compartir</button><button type="button" data-ag1073-action="whatsapp">WhatsApp</button><button type="button" data-ag1073-action="test">Probar aviso</button></div>'+
+ '<div class="ag1073-actions small"><button type="button" data-ag1073-action="copy">'+agAction('copy','Copiar texto')+'</button><button type="button" data-ag1073-action="share">'+agAction('share','Compartir')+'</button><button type="button" data-ag1073-action="whatsapp">'+agAction('whatsapp','WhatsApp')+'</button><button type="button" data-ag1073-action="test">'+agAction('test','Probar aviso')+'</button></div>'+
  '<p class="ag1073-foot">Los recordatorios son locales: se revisan cuando la web está abierta. No se envían automáticamente a otros usuarios ni se publican partidos oficiales.</p>'+
  '</details>';
  const stack=$('.v64-stack-actions');if(stack)stack.insertAdjacentElement('afterend',section);else host.insertAdjacentElement('afterend',section);
@@ -105,10 +108,10 @@ function mount(){
  if(action==='notice'){section.querySelector('details').open=true;syncPanel();$('[data-ag1073-preview]',section)?.focus({preventScroll:true});return}
  if(action==='calendar')return calendar();
  if(action==='weather'){location.hash='#/v38Weather';return}
- if(action==='last'){const last=read().at(-1);if(!last)return toast('Guarda un cruce primero');const field=$('[data-v64-ag-field]');if(field){field.value=last.field||'';field.dispatchEvent(new Event('change',{bubbles:true}));const visual=field.parentElement?.querySelector('.v159-picker');if(visual){visual.querySelector('b').textContent=last.field||'Por confirmar';visual.querySelector('small').textContent='Campo reutilizado'}}toast('Campo recuperado; escoge los equipos y un nuevo horario');return}
- const txt=$('[data-ag1073-preview]',section).value;if(action==='copy'){navigator.clipboard?.writeText(txt).then(()=>toast('Aviso copiado'),()=>toast('No se pudo copiar')).catch(()=>toast('No se pudo copiar'));return}
+ if(action==='last'){const last=read().at(-1);if(!last)return toast('Guarda un cruce primero');const field=$('[data-v64-ag-field]');if(field){field.value=last.field||'';field.dispatchEvent(new Event('change',{bubbles:true}));const visual=field.parentElement?.querySelector('.v159-picker');if(visual){const title=visual.querySelector('b'),detail=visual.querySelector('small');if(title)title.textContent=last.field||'Por confirmar';if(detail)detail.textContent=/unidad deportiva sur/i.test(last.field||'')?'Unidad Deportiva Sur, Juventino Rosas, Guanajuato':'Campo reutilizado'}}toast('Campo recuperado; escoge los equipos y un nuevo horario');return}
+ const txt=$('[data-ag1073-preview]',section).value;if(action==='copy'){copyTextSafe(txt).then(ok=>toast(ok?'Aviso copiado':'No se pudo copiar en este navegador'));return}
  if(action==='whatsapp'){window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank','noopener,noreferrer');return}
- if(action==='share'){if(navigator.share){navigator.share({title:'Borrador de aviso · Liga Juventino Rosas',text:txt}).catch(()=>{});}else navigator.clipboard?.writeText(txt).then(()=>toast('Aviso copiado para compartir')).catch(()=>toast('No disponible'));return}
+ if(action==='share'){if(navigator.share){navigator.share({title:'Borrador de aviso · Liga Juventino Rosas',text:txt}).catch(e=>{if(e?.name!=='AbortError')toast('No se pudo compartir');});}else copyTextSafe(txt).then(ok=>toast(ok?'Aviso copiado para compartir':'No disponible en este navegador'));return}
  if(action==='test')showNotice('Prueba · Liga Juventino Rosas','Tus avisos están configurados para este dispositivo.');
  });
  const form=$('.v64-form-grid.one');form?.addEventListener('input',debounceSync);form?.addEventListener('change',debounceSync);
@@ -122,6 +125,13 @@ document.addEventListener('click',e=>{
  setTimeout(()=>{syncPanel();checkReminders()},100);
 },true);
 document.addEventListener('click',e=>{if(route()!=='agendaBuilder')return;if(e.target.closest('[data-v64-ag-remove],[data-v64-ag-clear]'))setTimeout(syncPanel,120)},true);
+async function copyTextSafe(str){
+ if(navigator.clipboard?.writeText){try{await navigator.clipboard.writeText(str);return true}catch(_){}}
+ const el=document.createElement('textarea');el.value=str;el.setAttribute('readonly','');
+ el.style.position='fixed';el.style.opacity='0';document.body.append(el);el.select();
+ let ok=false;try{ok=!!document.execCommand('copy')}catch(_){}
+ el.remove();return ok;
+}
 async function enableNotifications(){
  if(!('Notification' in window)){toast('Este navegador no permite notificaciones');return}
  if(Notification.permission==='default'){try{const result=await Notification.requestPermission();toast(result==='granted'?'Notificaciones permitidas':'Activa los permisos en tu navegador')}catch{toast('El navegador no permitió activar los avisos')}}
