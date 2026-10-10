@@ -2,7 +2,8 @@
 (function(){
 'use strict';
 
-const LEAGUE_LOGO='./assets/branding/escudo-liga-azul-sin-fondo-v1007.png?v=v1011-transparent-about';
+// Logo oficial compartido con camisetas 3D y minutas; cache independiente.
+const LEAGUE_LOGO='./assets/branding/escudo-liga-camisetas-unificado-v1122.png?v=v1122-mismo-escudo-camisetas';
 const STADIUM='./deportiva-sur-partido.jpg';
 
 function route(){return location.hash.replace('#/','')||'home'}

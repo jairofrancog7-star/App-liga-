@@ -15,9 +15,9 @@ test('PDF, hero and PNG minute share a real transparent crest',()=>{
  const page=src('src/v875-review-corrections.js');
  const media=src('src/v926-meeting-media.js');
  assert.match(page,/await window\.LJR_MINUTA_MEDIA\?\.transparentLogo\?\.\(\)/);
- assert.match(page,/liga-logo-oficial-transparente\.png/);
+ assert.match(page,/escudo-liga-camisetas-unificado-v1122\.png/);
  assert.match(media,/OFFICIAL_LEAGUE_LOGO=new URL/);
- assert.match(media,/liga-logo-oficial-transparente\.png/);
+ assert.match(media,/escudo-liga-camisetas-unificado-v1122\.png/);
  assert.doesNotMatch(media,/ctx\.putImageData\(pixels,0,0\)/);
  assert.match(page,/src="'\+esc\(leagueLogo\)/);
  assert.match(media,/const area=136/);
@@ -36,4 +36,14 @@ test('minuta PNG export shares actual image or downloads PNG',()=>{
  assert.match(media,/a\.download=file\.name/);
  assert.match(index,/src="\.\/src\/v926-meeting-media\.js/);
  assert.ok(index.indexOf('src/v926-meeting-media.js')<index.indexOf('src/v875-review-corrections.js'),'media helper must be loaded first');
+});
+
+test('one versioned official logo is reused by Sobre la Liga, 3D shirts and minutes',()=>{
+ const file='escudo-liga-camisetas-unificado-v1122.png';
+ for(const name of ['src/v33-about-reference.js','src/v777-profile.js','src/v803-football-shirt-3d.js','src/v1011-league-transparent-global.js','src/v926-meeting-media.js','src/v875-review-corrections.js']){
+   assert.ok(src(name).includes(file),name);
+ }
+ const index=src('index.html');
+ assert.match(index,/v1122-about-shirt-logo/);
+ assert.match(index,/v1122-minuta-shirt-logo/);
 });

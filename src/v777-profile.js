@@ -172,7 +172,7 @@ function cleanColor(value){
  return /^#[0-9a-f]{6}$/i.test(v)?v:'#0b4bd8';
 }
 
-const PROFILE_LEAGUE_LOGO='./assets/branding/escudo-liga-azul-sin-fondo-v1007.png?v=v1010-perfil-camiseta-3d';
+const PROFILE_LEAGUE_LOGO='./assets/branding/escudo-liga-camisetas-unificado-v1122.png?v=v1122-mismo-escudo-camisetas';
 function shirtViewer(){
  return '<div class="ljr-shirt-preview v803-shirt-preview" data-shirt-stage aria-label="Camiseta de fútbol 3D editable">'+
    '<div class="v803-shirt-badge">CAMISETA CORTA · 3D</div>'+

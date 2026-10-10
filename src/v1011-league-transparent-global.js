@@ -5,7 +5,7 @@
  'use strict';
  if(window.__LJR_V1011_TRANSPARENT_LIGA__)return;
  window.__LJR_V1011_TRANSPARENT_LIGA__=true;
- const PNG=new URL('./assets/branding/escudo-liga-azul-sin-fondo-v1007.png?v=v1011-global-transparent',document.baseURI).href;
+ const PNG=new URL('./assets/branding/escudo-liga-camisetas-unificado-v1122.png?v=v1122-mismo-escudo-camisetas',document.baseURI).href;
  const LEGACY=/(?:^|\/)assets\/liga-logo(?:-original)?\.webp(?:[?#]|$)/i;
  const LEGACY_URL=/(?:https?:\/\/[^)'"\s]+\/)?(?:\.\/)?assets\/liga-logo(?:-original)?\.webp(?:\?[^)'"\s]*)?/gi;
  function fixImg(img){

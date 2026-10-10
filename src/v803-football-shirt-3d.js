@@ -16,7 +16,7 @@ const RENDER_DPR=Math.min(window.devicePixelRatio||1,COMPACT_3D?1.4:1.75);
 const fabricKey=c=>JSON.stringify([c.name,c.number,c.color,c.accentColor,c.pattern,c.logo,c.categoryLogo,c.category,c.leagueLogo]);
 // V1009 — mismo PNG de las cédulas, azul oficial arriba y abajo;
 // estampado en textura, sin alterar los colores de la camiseta ni del equipo.
-const LEAGUE_LOGO='./assets/branding/escudo-liga-azul-sin-fondo-v1007.png?v=v1009-camisetas-azul';
+const LEAGUE_LOGO='./assets/branding/escudo-liga-camisetas-unificado-v1122.png?v=v1122-mismo-escudo-camisetas';
 
 function makeFabricBump(){
   const c=document.createElement('canvas');

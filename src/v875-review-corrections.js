@@ -84,7 +84,7 @@ function v919MeetingIcon(name){
   share:'<circle cx="18" cy="5" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="19" r="2"/><path d="m8 11 8-5m-8 7 8 5"/>',
   image:'<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="m4 18 5-5 3.5 3.5 3.5-4L21 17"/>'
  };
- return window.LJR_ICONS?.svg(name) || '<svg viewBox="0 0 24 24" aria-hidden="true">'+(p[name]||p.calendar)+'</svg>';
+ return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(p[name]||p.calendar)+'</svg>';
 }
 function v919MeetingShortcut(root){
  if(route()!=='leagueTools')return;
@@ -123,7 +123,7 @@ function meeting(root){
  const dialog=meetingModal?.querySelector('.v105-dialog');
  if(dialog&&!dialog.querySelector('[data-v919-meeting-hero]')){
   const hero=document.createElement('div');hero.className='v919-meeting-hero';hero.dataset.v919MeetingHero='1';
-  hero.innerHTML='<span class="v919-hero-logo"><img src="./assets/liga-logo-oficial-transparente.png" alt="Liga Juventino Rosas"></span><span class="v919-hero-copy"><small>OPERACIÓN SEMANAL</small><b>Junta de la Liga</b><em>Agenda, acuerdos y seguimiento</em></span><span class="v919-hero-day">MAR</span>';
+  hero.innerHTML='<span class="v919-hero-logo"><img src="./assets/branding/escudo-liga-camisetas-unificado-v1122.png?v=v1122-mismo-escudo-camisetas" alt="Liga Juventino Rosas"></span><span class="v919-hero-copy"><small>OPERACIÓN SEMANAL</small><b>Junta de la Liga</b><em>Agenda, acuerdos y seguimiento</em></span><span class="v919-hero-day">MAR</span>';
   window.LJR_MINUTA_MEDIA?.transparentLogo?.().then(src=>{if(src&&hero.isConnected)hero.querySelector('img').src=src}).catch(()=>{});
   const title=dialog.querySelector(':scope>h3');if(title){title.hidden=true;title.insertAdjacentElement('beforebegin',hero)}
   const intro=dialog.querySelector(':scope>p');if(intro)intro.classList.add('v919-meeting-intro');
@@ -160,7 +160,7 @@ function meeting(root){
    agenda:get('[data-x="agenda"]'),agreements:get('[data-x="agreements"]'),tasks:get('[data-meeting-field="tasks"]')
   };
   // Imagen ya sin el fondo oscuro, tomada del mismo escudo oficial de la app.
-  const leagueLogo=await window.LJR_MINUTA_MEDIA?.transparentLogo?.()||new URL('./assets/liga-logo-oficial-transparente.png',document.baseURI).href;
+  const leagueLogo=await window.LJR_MINUTA_MEDIA?.transparentLogo?.()||new URL('./assets/branding/escudo-liga-camisetas-unificado-v1122.png?v=v1122-mismo-escudo-camisetas',document.baseURI).href;
   const html='<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'+
    '<title>Minuta · Liga Juventino Rosas</title><style>'+
    '@page{size:letter;margin:13mm}*{box-sizing:border-box}html,body{margin:0;padding:0;background:#fff;color:#111827;font-family:Arial,Helvetica,sans-serif}'+
