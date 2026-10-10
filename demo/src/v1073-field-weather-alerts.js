@@ -36,6 +36,21 @@ function esc(x){return String(x==null?'':x).replace(/[&<>"']/g,function(c){retur
 function cardId(card,index){var attr=card.getAttribute('data-v921-field');return byId.has(attr)?attr:(FIELDS[index]||{}).id;}
 function mapUrl(f){return 'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(f.name+', Guanajuato, México');}
 function el(html){var div=document.createElement('div');div.innerHTML=html.trim();return div.firstElementChild;}
+// Iconos SVG consistentes, sin fuentes ni dependencias externas.
+var V1073_ICON_PATHS={
+  refresh:'<path d="M20 11a8 8 0 0 0-14.8-4M4 4v5h5M4 13a8 8 0 0 0 14.8 4M20 20v-5h-5"/>',
+  risk:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="M12 8v5"/><path d="M12 17h.01"/>',
+  follow:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/>',
+  check:'<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',
+  share:'<circle cx="18" cy="5" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="19" r="2"/><path d="m8 11 8-5M8 13l8 5"/>',
+  navigation:'<path d="m3 11 19-9-9 19-2-8-8-2Z"/>',
+  pin:'<path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/>',
+  notices:'<path d="m3 11 18-5v12L3 13v-2Z"/><path d="M7 14v5h4l1-4"/>'
+};
+function fieldIcon(name){
+ return '<svg class="v1073-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round">'+(V1073_ICON_PATHS[name]||V1073_ICON_PATHS.pin)+'</svg>';
+}
+function fieldAction(name,label){return fieldIcon(name)+'<span class="v1073-action-label">'+label+'</span>';}
 function weatherBadge(id){
  var r=riskById.get(id);
  return r?'<span class="v1073-risk" data-tone="'+r.tone+'">'+esc(r.short)+'</span>':
@@ -45,11 +60,11 @@ function cardMarkup(f){
  var on=state.followed.includes(f.id);
  return '<div class="v1073-field" data-v1073-field="'+esc(f.id)+'">'+
   '<div class="v1073-inline"><span class="v1073-live">'+weatherBadge(f.id)+'</span>'+
-   '<button type="button" class="v1073-mini" data-v1073-check="'+esc(f.id)+'">⟳ <span>Revisar riesgo</span></button></div>'+
+   '<button type="button" class="v1073-mini" data-v1073-check="'+esc(f.id)+'">'+fieldAction('risk','Revisar riesgo')+'</button></div>'+
   '<div class="v1073-shortcuts">'+
-   '<button type="button" data-v1073-follow="'+esc(f.id)+'" aria-pressed="'+on+'">'+(on?'✓ Siguiendo':'♧ Seguir cancha')+'</button>'+
-   '<button type="button" data-v1073-share="'+esc(f.id)+'">↗ Compartir</button>'+
-   '<a href="'+esc(mapUrl(f))+'" target="_blank" rel="noopener noreferrer">➤ Cómo llegar</a>'+
+   '<button type="button" data-v1073-follow="'+esc(f.id)+'" aria-pressed="'+on+'">'+fieldAction(on?'check':'follow',on?'Siguiendo':'Seguir cancha')+'</button>'+
+   '<button type="button" data-v1073-share="'+esc(f.id)+'">'+fieldAction('share','Compartir')+'</button>'+
+   '<a href="'+esc(mapUrl(f))+'" target="_blank" rel="noopener noreferrer">'+fieldAction('navigation','Cómo llegar')+'</a>'+
   '</div>'+
   '<div class="v1073-detail" data-v1073-detail="'+esc(f.id)+'" hidden></div>'+
  '</div>';
@@ -59,9 +74,9 @@ function dashboardMarkup(){
   '<div class="v1073-heading"><div><small>SEGUIMIENTO DE SEDES</small><h2>Alertas de canchas</h2></div>'+
    '<span class="v1073-count" data-v1073-count>0 seguidas</span></div>'+
   '<div class="v1073-dashboard-actions">'+
-   '<button type="button" data-v1073-refresh>⟳ Actualizar</button>'+
-   '<button type="button" data-v1073-notify>♧ Notificaciones</button>'+
-   '<button type="button" data-v1073-notices>▣ Avisos de la Liga</button></div>'+
+   '<button type="button" data-v1073-refresh>'+fieldAction('refresh','Actualizar')+'</button>'+
+   '<button type="button" data-v1073-notify>'+fieldAction('follow','Notificaciones')+'</button>'+
+   '<button type="button" data-v1073-notices>'+fieldAction('notices','Avisos de la Liga')+'</button></div>'+
   '<p class="v1073-message" data-v1073-message role="status" aria-live="polite">Sigue un campo para revisar su pronóstico automáticamente.</p>'+
   '<p class="v1073-disclaimer">Avisos meteorológicos orientativos · no cancelan partidos ni representan una decisión oficial. Se revisan al abrir esta página y mientras la app permanece abierta; no son alertas push de fondo.</p>'+
  '</section>';
@@ -71,10 +86,10 @@ function syncDashboard(){
  var count=panel.querySelector('[data-v1073-count]');
  if(count)count.textContent=state.followed.length+' seguida'+(state.followed.length===1?'':'s');
  var notify=panel.querySelector('[data-v1073-notify]');
- if(notify)notify.textContent=(state.notify&&'Notification'in window&&Notification.permission==='granted')?'✓ Notificaciones':'♧ Notificaciones';
+ if(notify){var enabled=state.notify&&'Notification'in window&&Notification.permission==='granted';notify.innerHTML=fieldAction(enabled?'check':'follow','Notificaciones');}
  document.querySelectorAll('#screen [data-v1073-follow]').forEach(function(b){
   var on=state.followed.includes(b.dataset.v1073Follow);
-  b.setAttribute('aria-pressed',String(on));b.textContent=on?'✓ Siguiendo':'♧ Seguir cancha';
+  b.setAttribute('aria-pressed',String(on));b.innerHTML=fieldAction(on?'check':'follow',on?'Siguiendo':'Seguir cancha');
  });
 }
 function msg(str){var p=document.querySelector('#screen [data-v1073-message]');if(p)p.textContent=str;}
@@ -89,6 +104,12 @@ function mount(){
    var dashboard=el(dashboardMarkup());
    h.insertBefore(dashboard,list);
   }
+  // Sustituir el pictograma de cancha por una ubicación real en el acceso a Maps.
+  list.querySelectorAll('.v921-field-actions a').forEach(function(link){
+   if(link.hasAttribute('data-v1073-map-icon'))return;
+   var old=link.querySelector('svg');
+   if(old){old.outerHTML=fieldIcon('pin');link.setAttribute('data-v1073-map-icon','');}
+  });
   Array.from(list.querySelectorAll('.v921-field-card')).forEach(function(card,i){
    if(card.querySelector('[data-v1073-field]'))return;
    var id=cardId(card,i),f=byId.get(id);if(!f)return;
