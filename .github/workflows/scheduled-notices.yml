@@ -37,6 +37,7 @@ jobs:
         env:
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
           FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          LJR_OFFICIAL_NOTICE_APPROVAL_SECRET: ${{ secrets.LJR_OFFICIAL_NOTICE_APPROVAL_SECRET }}
         run: python .github/scripts/process_scheduled_notices.py
       - name: Guardar resultados y decidir despliegue
         id: publish
