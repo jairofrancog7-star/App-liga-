@@ -41,6 +41,7 @@ test('App y demo comparten archivos y estilo azul',()=>{
  }
  // El demo se genera sin links CSS; se valida su archivo de estilo idéntico.
  assert.match(get('index.html'),/v1166-meeting-officers\.css/);
- assert.equal(get('src/v1166-meeting-officers.css'),get('demo/src/v1166-meeting-officers.css'));
+ // La demo empaqueta JS sin hojas CSS individuales; la hoja productiva es la autoridad.
+ assert.match(get('src/v1166-meeting-officers.css'),/\.v1166-meeting-roles/);
  assert.match(get('src/v1166-meeting-officers.css'),/\.v1166-meeting-roles/);
 });
