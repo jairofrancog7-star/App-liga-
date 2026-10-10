@@ -1214,6 +1214,12 @@ function showWeatherInline(root,mode){
  }));
  panel.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
 }
+const V1171_FIELD_NAV={"pozos":"https://goo.gl/maps/BF9dnqf5SaBfu41PA","san julian":"https://maps.app.goo.gl/5yfZH7nGMtw2Cqqf7","fraccionamiento":"https://maps.app.goo.gl/Y1ZGLTpGJ7XmGCKT7","san juan":"https://maps.app.goo.gl/mcc7DpevkPW5mW4M9","tavera":"https://maps.app.goo.gl/yBhVkMrXzL3Npv3WA"};
+function v1171FieldNavigation(f){
+ const key=norm(String(f?.key||'')+' '+String(f?.name||''));
+ const direct=Object.entries(V1171_FIELD_NAV).find(([name])=>key.includes(norm(name)));
+ return direct?.[1]||'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(f.coord[0]+','+f.coord[1]);
+}
 function bindWeather(root){
  const current=()=>{const opts=weatherFieldOptions(),idx=Number($('[data-v100-weather-field]',root)?.value||0);return opts[idx]||opts[0]||null};
  const openUrl=u=>{if(u)window.open(u,'_blank','noopener,noreferrer')};
@@ -1221,8 +1227,8 @@ function bindWeather(root){
  $('[data-v100-weather-run]',root)?.addEventListener('click',()=>runWeather(root));
  $('[data-v100-weather-fields]',root)?.addEventListener('click',()=>inline?showWeatherInline(root,'fields'):go('venues'));
  $('[data-v100-weather-fixtures]',root)?.addEventListener('click',()=>inline?showWeatherInline(root,'fixtures'):go('competition'));
- $('[data-v100-weather-map]',root)?.addEventListener('click',()=>{const f=current();if(!f)return toast('Selecciona un campo');openUrl('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(f.coord[0]+','+f.coord[1]))});
- $('[data-v100-weather-directions]',root)?.addEventListener('click',()=>{const f=current();if(!f)return toast('Selecciona un campo');openUrl('https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(f.coord[0]+','+f.coord[1]))});
+ $('[data-v100-weather-map]',root)?.addEventListener('click',()=>{const f=current();if(!f)return toast('Selecciona un campo');openUrl(v1171FieldNavigation(f))});
+ $('[data-v100-weather-directions]',root)?.addEventListener('click',()=>{const f=current();if(!f)return toast('Selecciona un campo');openUrl(v1171FieldNavigation(f))});
  $('[data-v100-weather-google]',root)?.addEventListener('click',()=>{const f=current();if(!f)return toast('Selecciona un campo');openUrl('https://www.google.com/search?q='+encodeURIComponent('clima '+f.name+' Guanajuato'))});
  $('[data-v100-weather-pin]',root)?.addEventListener('click',()=>inline?showWeatherInline(root,'fields'):go('venues'));
  $('[data-v100-weather-share]',root)?.addEventListener('click',async()=>{const text=root.dataset.weatherShare||'';if(!text)return;try{if(navigator.share)await navigator.share({title:'Clima · Liga Juventino',text});else{await navigator.clipboard.writeText(text);toast('Aviso copiado')}}catch(e){}});
