@@ -1318,8 +1318,16 @@ function act(a){
  if(a==='meeting')meeting();else if(a==='poll')poll();else if(a==='fanzone')fanzone();else if(a==='delegates')delegates();else if(a==='officials')officials();else if(a==='incidents')incidents();else if(a==='motm')motm();else if(a==='calendar-generator')calendarGenerator();else if(a==='csv-import')csvImport();else if(a==='backup-export')backupExport();else if(a==='audit')audit();else if(a==='sponsors')sponsors();else if(a==='shotmap')shotmap();
  else if(a==='register-alerts')registerAlerts();else if(a==='schedule-match')scheduleMatch();else if(a==='new-sanction')newSanction();else if(a==='tv-panel')openTvSafe();else if(a==='open-standings')openCompetitionStandings();
 }
+/* Acceso directo para Liga Control: reutiliza exactamente las herramientas existentes.
+   Lista explícita: no publica datos oficiales ni concede privilegios. */
+const V1104_CONTROL_TOOLS=new Set(['sponsors','meeting','delegates','officials','incidents','calendar-generator','csv-import','backup-export','audit','poll']);
+window.LJR_V105_OPEN_TOOL=function(name){
+ if(!V1104_CONTROL_TOOLS.has(name))return false;
+ try{log('Herramienta de Liga Control: '+name);act(name);return true}
+ catch(error){console.error('[Liga Control] No se pudo abrir '+name,error);return false}
+};
 function bind(root){
- $$('[data-v105-route]',root).forEach(b=>b.onclick=e=>{
+ $('[data-v105-route]',root).forEach(b=>b.onclick=e=>{
    e?.preventDefault?.();
    e?.stopPropagation?.();
    const tab=b.dataset.v105HistoryTab||'';
