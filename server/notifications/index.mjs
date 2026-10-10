@@ -8,6 +8,7 @@ import webpush from 'web-push';
 import twilio from 'twilio';
 import crypto from 'node:crypto';
 import {ROLE_PERMS,roleFor,can,safeSubject} from './authorization.mjs';
+import {registerMeetingRoutes} from './meeting-store.mjs';
 const app=express();app.disable('x-powered-by');app.set('trust proxy',1);
 const E=process.env, origin=E.WEB_ORIGIN||'https://jairofrancog7-star.github.io';
 const publicUrl=(E.PUBLIC_API_ORIGIN||'').replace(/\/$/,'');
@@ -95,6 +96,7 @@ function matchPreferences(rec,job){
  return true;
 }
 const apiError=(err,res)=>{console.error('Notifier error',err?.message);if(!res.headersSent)res.status(500).json({error:'No se pudo completar la operación'})};
+registerMeetingRoutes({app,pool,admin,requirePermission,audit,apiError});
 app.get('/health',(_q,res)=>res.json({ok:true,service:'Liga Juventino Rosas · notificaciones',schedulerEnabled:internalDispatchEnabled}));
 app.get('/health/ready',async(_req,res)=>{
  try{await pool.query('SELECT 1');res.json({ready:true,database:'connected',schedulerEnabled:internalDispatchEnabled,
