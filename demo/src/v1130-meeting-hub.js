@@ -166,7 +166,7 @@ function mount(){
  const save=$('[data-save]',form.closest('.v105-dialog'));save?.addEventListener('click',()=>{if(validDate(date())){const r=item();r.minute=snapshot();persist()}});
  // Borrador automático de agenda y minuta: no sobrescribir otra fecha.
  let minuteTimer=0;
- form.addEventListener('input',e=>{
+ form.addEventListener?.('input',e=>{
   if(!window.LJR_MEDIA?.admin||!e.target.matches?.('[data-x="agenda"],[data-x="agreements"],[data-x="attendance"],[data-meeting-field]'))return;
   const d=date(),draft={...snapshot(),date:d};clearTimeout(minuteTimer);
   minuteTimer=setTimeout(()=>{
