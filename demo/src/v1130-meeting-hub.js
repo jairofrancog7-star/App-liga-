@@ -79,7 +79,7 @@ function history(){
 }
 function calendar(){
  const s=snapshot();
- return '<p class="mh-tip">Crea un evento en Google Calendar o descarga un archivo .ics para invitar a los delegados. El envío de WhatsApp requiere confirmación manual.</p><div class="mh-overview"><b>'+fmt(date())+'</b><small>'+esc(s.time||'Hora por definir')+' · '+esc(s.place||'Lugar por definir')+'</small></div><div class="mh-buttons">'+button('google','Abrir Google Calendar')+button('ics','Descargar invitación .ics')+button('whatsapp','Compartir convocatoria')+'</div><p class="mh-tip">Los recordatorios recurrentes y sincronización multiusuario necesitan un backend con consentimiento.</p>';
+ return '<p class="mh-tip">Abre la junta en Google Calendar con fecha, hora y lugar. Pulsa Guardar; no se descarga .ics.</p><div class="mh-overview"><b>'+fmt(date())+'</b><small>'+esc(s.time||'Hora por definir')+' · '+esc(s.place||'Lugar por definir')+'</small></div><div class="mh-buttons">'+button('google','Guardar en Google Calendar')+button('whatsapp','Compartir convocatoria')+'</div><p class="mh-tip">Los recordatorios recurrentes y sincronización multiusuario necesitan un backend con consentimiento.</p>';
 }
 const advancedCtx={get host(){return host},KEY,state,date,item,snapshot,preserve,persist,render,go,download,validDate,fmt,esc,msg,applyMinute};
 function render(){
@@ -95,11 +95,17 @@ function render(){
 function download(file,content,type){const b=new Blob([content],{type}),url=URL.createObjectURL(b),a=document.createElement('a');a.href=url;a.download=file;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200)}
 const icsEsc=s=>String(s||'').replace(/\\/g,'\\\\').replace(/\r?\n/g,'\\n').replace(/[,;]/g,'\\$&');
 function when(d,t){return d.replace(/-/g,'')+'T'+(t||'19:00').replace(':','')+'00'}
-function eventInfo(){const d=date(),s=snapshot();if(!validDate(d))return null;const t=/^\d{2}:\d{2}$/.test(s.time)?s.time:'19:00';const end=new Date(d+'T'+t+':00');end.setHours(end.getHours()+1);const p=n=>String(n).padStart(2,'0');return {start:when(d,t),end:when(d,p(end.getHours())+':'+p(end.getMinutes())),name:'Junta de la Liga Juventino Rosas',place:s.place,description:'Orden del día: '+s.agenda}}
+function eventInfo(){
+ const d=date(),record=snapshot(),time=String(record.time||'').trim();
+ if(!validDate(d)||!/^([01]\\d|2[0-3]):[0-5]\\d$/.test(time))return null;
+ return {iso:d,time,name:'Junta de la Liga Juventino Rosas',place:record.place||'',description:'Orden del día: '+(record.agenda||'Por confirmar')};
+}
 function doCalendar(mode){
- const x=eventInfo();if(!x)return msg('Selecciona una fecha válida.');
- if(mode==='google'){const u=new URL('https://calendar.google.com/calendar/render');u.searchParams.set('action','TEMPLATE');u.searchParams.set('text',x.name);u.searchParams.set('dates',x.start+'/'+x.end);u.searchParams.set('details',x.description);u.searchParams.set('location',x.place);u.searchParams.set('ctz','America/Mexico_City');window.open(u.toString(),'_blank','noopener,noreferrer');return}
- const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Liga Juventino Rosas//Juntas//ES','BEGIN:VEVENT','UID:ljr-junta-'+date()+'@juventinorosasliga.local','DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'').replace('Z','Z'),'DTSTART;TZID=America/Mexico_City:'+x.start,'DTEND;TZID=America/Mexico_City:'+x.end,'SUMMARY:'+icsEsc(x.name),'LOCATION:'+icsEsc(x.place),'DESCRIPTION:'+icsEsc(x.description),'END:VEVENT','END:VCALENDAR'].join('\r\n');download('convocatoria-junta-'+date()+'.ics',ics,'text/calendar;charset=utf-8');
+ const entry=eventInfo();
+ if(!entry)return msg('Selecciona una fecha y hora válidas.');
+ if(!window.LJR_GOOGLE_CALENDAR_GLOBAL?.open)return msg('Google Calendar no está disponible. Recarga la página.');
+ if(window.LJR_GOOGLE_CALENDAR_GLOBAL.open({title:entry.name,iso:entry.iso,time:entry.time,duration:60,venue:entry.place,description:entry.description}))
+   msg('Revisa los detalles en Google Calendar y pulsa Guardar.');
 }
 function whatsapp(){const x=eventInfo();if(!x)return msg('Selecciona una fecha válida.');const s=snapshot(),message='Convocatoria · Junta de la Liga Juventino Rosas\nFecha: '+fmt(date())+'\nHora: '+(s.time||'por definir')+'\nLugar: '+(s.place||'por definir')+'\nOrden del día: '+(s.agenda||'Por confirmar');window.open('https://wa.me/?text='+encodeURIComponent(message),'_blank','noopener,noreferrer')}
 function printAct(){
