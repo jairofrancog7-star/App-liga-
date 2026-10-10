@@ -114,7 +114,8 @@
     overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
     overlay.addEventListener('keydown', e => { if (e.key === 'Escape') overlay.remove(); });
     document.body.appendChild(overlay);
-    search.focus();
+    // No forzar el teclado de Android ni desplazar la lista al abrir el selector.
+    list.scrollTop = 0;
     return true;
   }
   window.LJR_GOOGLE_CALENDAR_GLOBAL = Object.freeze({ build, open, choose, zone: ZONE });
