@@ -153,6 +153,11 @@ function upgrade(){
  if(!select)return;
  const label=select.closest('label');
  if(!label)return;
+ // El select se mantiene sólo como valor del formulario: ocultarlo evita
+ // el cuadro superior duplicado mientras el botón inferior continúa activo.
+ select.hidden=true;
+ select.tabIndex=-1;
+ select.style.setProperty('display','none','important');
  if(!select.dataset.v1124TeamEnhanced){
   select.dataset.v1124TeamEnhanced='1';
   label.classList.add('v1124-team-field');
