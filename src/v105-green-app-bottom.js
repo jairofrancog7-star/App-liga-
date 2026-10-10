@@ -1655,10 +1655,83 @@ function registerAlerts(){
    '</div>'+
    '<div class="v168-inline-notifications" data-r-inline-notif hidden></div>');
  m.classList.add('v168-account-modal','v920-registration-modal');
+
+ const form=$('.v920-register-form',m),actions=$('.v920-register-actions',m);
+ const summary=document.createElement('div');
+ summary.className='v1210-alert-summary';
+ summary.setAttribute('aria-live','polite');
+ summary.innerHTML='<strong data-r-summary-title>Personaliza tus alertas</strong><span data-r-summary-sub>Selecciona tu categoría y equipo.</span>';
+ form.after(summary);
+ const extra=document.createElement('section');
+ extra.className='v1210-alert-tools';
+ extra.setAttribute('aria-label','Herramientas de notificaciones');
+ extra.innerHTML='<div class="v1210-alert-tools-row">'+
+   '<button type="button" data-r-push aria-expanded="false">'+glyph('bell')+'<span>Notificaciones Push</span></button>'+
+   '<button type="button" data-r-test>'+glyph('shield')+'<span>Probar aviso</span></button></div>'+
+   '<button type="button" class="v1210-official-link" data-r-news>Ver avisos oficiales de la Liga <span aria-hidden="true">›</span></button>'+
+   '<div data-r-push-slot hidden></div>'+
+   '<p class="v1210-notice" data-r-notice aria-live="polite">El registro guarda tus preferencias en este dispositivo. Las alertas con la página cerrada requieren permitir Push y una suscripción confirmada.</p>';
+ actions.after(extra);
+ const notice=$('[data-r-notice]',m);
+ const setNotice=text=>{notice.textContent=text;};
+ const updateSummary=()=>{
+   const profile=read('v160-alert-profile',{});
+   $('[data-r-summary-title]',m).textContent=profile.enabled?'✓ Preferencias guardadas en este dispositivo':'Configura tus alertas';
+   $('[data-r-summary-sub]',m).textContent=(cat.selectedOptions?.[0]?.textContent||'Categoría')+' · '+(team.value||'Selecciona un equipo');
+ };
+ const inputName=$('[data-r-name]',m),inputEmail=$('[data-r-email]',m);
+ inputName.maxLength=70;inputEmail.maxLength=140;
+ team.addEventListener('change',updateSummary);
+ cat.addEventListener('change',()=>setTimeout(updateSummary,0));
+ updateSummary();
+ $('[data-r-push]',m).onclick=async()=>{
+   const button=$('[data-r-push]',m),slot=$('[data-r-push-slot]',m);
+   slot.hidden=!slot.hidden;button.setAttribute('aria-expanded',String(!slot.hidden));
+   if(slot.hidden)return;
+   if(!window.LJR_V1082_PUSH_PANEL?.mountInto){
+     slot.textContent='El módulo Web Push todavía no está disponible. Puedes gestionar los avisos desde Notificaciones.';
+   }else{
+     try{await window.LJR_V1082_PUSH_PANEL.mountInto(slot,{category:cat.value,team:team.value});}
+     catch(_){slot.textContent='No fue posible mostrar Web Push. Intenta desde Notificaciones.';}
+   }
+   slot.scrollIntoView({behavior:'smooth',block:'nearest'});
+ };
+ $('[data-r-test]',m).onclick=async()=>{
+   if(!('Notification'in window)||!('serviceWorker'in navigator)||!window.isSecureContext){
+     setNotice('Este navegador no admite la prueba de notificaciones. Revisa los permisos o utiliza Chrome con HTTPS.');
+     return;
+   }
+   try{
+     let permission=Notification.permission;
+     if(permission==='default')permission=await Notification.requestPermission();
+     if(permission!=='granted'){setNotice('El navegador no permitió las notificaciones. Actívalas en los ajustes del sitio para probar.');return;}
+     const reg=await navigator.serviceWorker.register('./sw.js');
+     await reg.showNotification('Liga Juventino Rosas',{
+       body:'Prueba local correcta. Para avisos con la página cerrada, activa una suscripción Push.',
+       tag:'ljr-alert-test',renotify:false
+     });
+     setNotice('✓ Prueba local enviada a este dispositivo. No confirma todavía el envío automático desde el servidor.');
+   }catch(err){setNotice('No se pudo mostrar la prueba: '+String(err?.message||'comprueba permisos del navegador.'));}
+ };
+ $('[data-r-news]',m).onclick=()=>{m.remove();location.hash='#/notifications';};
+
  const cat=$('[data-r-cat]',m),team=$('[data-r-team]',m);
  const fill=()=>{const list=v160Teams(cat.value);team.innerHTML=list.map(n=>'<option '+(norm(n)===norm(old.team)?'selected':'')+'>'+esc(n)+'</option>').join('')||'<option>Sin equipos publicados</option>'};fill();
  cat.onchange=()=>{old.team='';fill()};
- $('[data-r-save]',m).onclick=()=>{const v={name:$('[data-r-name]',m).value.trim(),email:$('[data-r-email]',m).value.trim(),cat:cat.value,team:team.value,enabled:true,updatedAt:new Date().toISOString()};write('v160-alert-profile',v);log('Guardar perfil de avisos');toast('Avisos personalizados activados localmente')};
+ $('[data-r-save]',m).onclick=()=>{
+   const name=inputName.value.trim(),email=inputEmail.value.trim();
+   if(!name){setNotice('Escribe tu nombre para guardar las preferencias.');inputName.focus();return;}
+   if(email&&!inputEmail.checkValidity()){setNotice('Revisa el formato del correo electrónico.');inputEmail.focus();return;}
+   if(!cat.value||!team.value||team.value==='Sin equipos publicados'){setNotice('Selecciona una categoría y un equipo válido.');team.focus();return;}
+   try{
+     const v={name,email,cat:cat.value,team:team.value,enabled:true,updatedAt:new Date().toISOString()};
+     write('v160-alert-profile',v);
+     log('Guardar perfil de avisos');
+     updateSummary();
+     setNotice('✓ Perfil guardado. Para recibir avisos con la página cerrada, abre Notificaciones Push y confirma la suscripción.');
+     toast('Preferencias de avisos guardadas');
+   }catch(_){setNotice('No se pudieron guardar los cambios en este dispositivo. Revisa el almacenamiento del navegador.');}
+ };
  const notifBox=$('[data-r-inline-notif]',m);
  const getNotif=()=>{try{const s=JSON.parse(localStorage.getItem('lj-store-v3')||'{}');return Object.assign({goal:true,kickoff:true,halftime:false,final:true,news:true,video:true,fantasy:true,predictor:true,scheduleChanges:true,venueChanges:true},s.notifications||{})}catch(_){return {goal:true,kickoff:true,halftime:false,final:true,news:true,video:true,fantasy:true,predictor:true,scheduleChanges:true,venueChanges:true}}};
  const saveNotif=p=>{let s={};try{s=JSON.parse(localStorage.getItem('lj-store-v3')||'{}')}catch(_){}s.notifications=Object.assign({},s.notifications||{},p);localStorage.setItem('lj-store-v3',JSON.stringify(s))};
@@ -1675,9 +1748,17 @@ function registerAlerts(){
      ['fantasy','Fantasy','Novedades de tu equipo Fantasy'],
      ['predictor','Quiniela','Recordatorios del pronóstico']
    ];
-   notifBox.innerHTML='<div class="v168-inline-head"><b>Avisos dentro de esta página</b><span>No te manda a otra sección.</span></div>'+
+   notifBox.innerHTML='<div class="v168-inline-head"><b>Avisos dentro de esta página</b><span>Elige qué te interesa recibir.</span></div>'+ 
+     '<div class="v1210-presets"><button type="button" data-r-preset="important">Solo importantes</button><button type="button" data-r-preset="all">Todos</button><button type="button" data-r-preset="none">Ninguno</button></div>'+
      rows.map(r=>'<label class="v168-notif-row"><span><b>'+esc(r[1])+'</b><small>'+esc(r[2])+'</small></span><input type="checkbox" data-r-pref="'+r[0]+'" '+(p[r[0]]?'checked':'')+'><i></i></label>').join('');
-   $$('[data-r-pref]',notifBox).forEach(x=>x.onchange=()=>{saveNotif({[x.dataset.rPref]:x.checked});toast('Preferencia guardada')});
+   $('[data-r-pref]',notifBox).forEach(x=>x.onchange=()=>{saveNotif({[x.dataset.rPref]:x.checked});toast('Preferencia guardada')});
+   $('[data-r-preset]',notifBox).forEach(button=>button.onclick=()=>{
+     const preset=button.dataset.rPreset,important=new Set(['goal','kickoff','final','scheduleChanges','venueChanges']);
+     const next={};
+     rows.forEach(([key])=>{next[key]=preset==='all'||(preset==='important'&&important.has(key));});
+     try{saveNotif(next);renderNotif();toast('Preferencias actualizadas');}
+     catch(_){setNotice('No se pudieron guardar las preferencias.');}
+   });
  };
  $('[data-r-notif]',m).onclick=()=>{
    if(notifBox.hidden){renderNotif();notifBox.hidden=false;$('[data-r-notif-label]',m).textContent='Ocultar preferencias';notifBox.scrollIntoView({behavior:'smooth',block:'nearest'})}
