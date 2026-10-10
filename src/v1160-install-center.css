@@ -72,3 +72,100 @@
  .ljr-install-utilities :last-child{grid-column:auto}
 }
 @media(prefers-reduced-motion:reduce){.ljr-install-page *,.ljr-install-overlay *{transition:none!important;animation:none!important}}
+
+
+/* V1161 — Ajuste solicitado: mismo azul de la página y ancho real de borde a borde.
+   Solo centro de instalación; no cambia botones ni funcionalidad. */
+body[data-app-route="appInstall"] #screen {
+  background:#06065f!important;
+}
+body[data-app-route="appInstall"] #screen .ljr-install-page.v562-page {
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:7px 6px calc(100px + env(safe-area-inset-bottom))!important;
+}
+body[data-app-route="appInstall"] #screen .ljr-install-page .ljr-install-shell,
+.ljr-install-overlay .ljr-install-shell {
+  box-sizing:border-box!important;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  margin-left:0!important;
+  margin-right:0!important;
+}
+.ljr-install-overlay {
+  box-sizing:border-box!important;
+  width:100%!important;
+  padding:max(7px,env(safe-area-inset-top)) 6px max(8px,env(safe-area-inset-bottom))!important;
+}
+.ljr-install-page,
+.ljr-install-overlay {
+  --ljr-install-blue:#0d47a1;
+  --ljr-install-dark:#06065f;
+  --ljr-install-cyan:#48dded;
+  --ljr-install-line:rgba(98,152,240,.34);
+}
+.ljr-install-page .ljr-install-shell,
+.ljr-install-overlay .ljr-install-shell {
+  border-color:rgba(78,138,232,.47)!important;
+  background:linear-gradient(180deg,#10247c 0%,#0b176b 42%,#070c61 100%)!important;
+  box-shadow:0 12px 28px rgba(0,1,45,.2),inset 0 1px 0 rgba(255,255,255,.05)!important;
+  border-radius:17px!important;
+}
+.ljr-install-page .ljr-install-current,
+.ljr-install-overlay .ljr-install-current {
+  background:#122778!important;
+  border-color:rgba(91,163,233,.36)!important;
+}
+.ljr-install-page .ljr-install-choice,
+.ljr-install-overlay .ljr-install-choice {
+  background:linear-gradient(155deg,#122875,#0d1b68)!important;
+  border-color:rgba(94,149,233,.36)!important;
+}
+.ljr-install-page .ljr-install-choice.is-active,
+.ljr-install-overlay .ljr-install-choice.is-active {
+  background:linear-gradient(145deg,#1b51a6,#17327d)!important;
+  border-color:#48dce9!important;
+}
+.ljr-install-page .ljr-install-choice-icon,
+.ljr-install-overlay .ljr-install-choice-icon {
+  background:#0d2775!important;
+}
+.ljr-install-page .ljr-install-guide,
+.ljr-install-overlay .ljr-install-guide {
+  background:linear-gradient(160deg,#122976,#09185e)!important;
+  border-color:rgba(93,145,237,.4)!important;
+}
+.ljr-install-page .ljr-install-steps li,
+.ljr-install-overlay .ljr-install-steps li {
+  background:rgba(5,13,71,.56)!important;
+}
+.ljr-install-page .ljr-install-primary,
+.ljr-install-overlay .ljr-install-primary {
+  background:linear-gradient(115deg,#1c69d4,#1655bb)!important;
+  border-color:rgba(97,176,252,.75)!important;
+  color:#fff!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.17)!important;
+}
+.ljr-install-page .ljr-install-secondary,
+.ljr-install-overlay .ljr-install-secondary {
+  background:#102c7b!important;
+}
+.ljr-install-page .ljr-install-utilities :is(a,button),
+.ljr-install-overlay .ljr-install-utilities :is(a,button) {
+  background:#112c79!important;
+}
+@media(max-width:520px){
+  body[data-app-route="appInstall"] #screen .ljr-install-page.v562-page {
+    padding-left:5px!important;
+    padding-right:5px!important;
+  }
+  .ljr-install-overlay{padding-left:5px!important;padding-right:5px!important}
+  .ljr-install-page .ljr-install-shell,.ljr-install-overlay .ljr-install-shell{
+    padding:11px!important;
+    border-radius:15px!important;
+  }
+}
