@@ -228,7 +228,7 @@ function open(){
   const html='<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Borrador disciplinario</title><style>body{font:15px/1.8 Arial;padding:35px;color:#12224d}h1{color:#064f9b}.warning{color:#a32714;font-weight:bold}pre{white-space:pre-wrap;font:15px/1.8 Arial}@page{size:A4;margin:15mm}</style></head><body><h1>Informe disciplinario · Liga Juventino Rosas</h1><p class="warning">BORRADOR · NO OFICIAL</p><pre>'+esc(textFor(v))+'</pre><p>Pendiente de comprobación y resolución de la Liga.</p></body></html>';
   const w=window.open('','_blank');
   if(!w)return notify('Permite ventanas emergentes para imprimir');
-  w.document.open();w.document.write(html);w.document.close();w.focus();w.addEventListener('load',()=>w.print(),{once:true});
+  w.document.open();w.document.write(html);w.document.close();w.focus();setTimeout(()=>{try{w.print()}catch(_){notify('Usa Imprimir en la ventana del documento')}},400);
  }
  function share(v){
   const txt=textFor(v);
