@@ -173,7 +173,7 @@ function open(options={}){
   const existing=allRecords().filter(x=>x.key!==r.key);
   if(!save(STORE,[...existing,r])){setNotice('No se pudo guardar: almacenamiento bloqueado o sin espacio.');return}
   if(r.matchKey)save('v92-mvp-local:'+r.matchKey,{player:r.player,team:r.team,at:r.at});
-  save('v105-motm',{player:r.player,team:r.team,at:r.at});
+  // The old value is read only as a legacy record; writing it again would double-count MVPs.
   state.view='';state.notice='MVP guardado en este dispositivo. No cambia datos oficiales.';render();
  }
  async function share(){
@@ -201,7 +201,11 @@ function open(options={}){
   else if(btn.hasAttribute('data-mvp-share'))await share();
   else if(btn.hasAttribute('data-mvp-delete')){
    const key=btn.dataset.mvpDelete;if(!confirm('¿Quitar esta selección local del historial?'))return;
-   if(save(STORE,allRecords().filter(r=>r.key!==key))){if(key.startsWith('legacy'))save('v105-motm',null);state.notice='Selección eliminada del historial local.';render()}
+   if(save(STORE,allRecords().filter(r=>r.key!==key))){
+    if(key.startsWith('legacy'))save('v105-motm',null);
+    else if(key.includes(':'))try{localStorage.removeItem('v92-mvp-local:'+key)}catch(_){}
+    state.notice='Selección eliminada del historial local.';render();
+   }
   }else if(btn.hasAttribute('data-mvp-edit')){
    const r=allRecords().find(x=>x.key===btn.dataset.mvpEdit);if(!r)return;
    state.catId=String(r.catId||state.catId);state.matchKey=r.matchKey||'';
