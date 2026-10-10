@@ -1,0 +1,36 @@
+/* V1085 — Corrección acotada de la pantalla Quiniela con herramientas
+   de edición visibles. El cuadro superior no debe entrar debajo de la
+   cabecera fija. Conserva el diseño azul y todos sus controles. */
+@media (max-width:1023px){
+  /* Solo cuando la barra de publicaciones existe: NO añadir un hueco
+     artificial a la Quiniela pública sin barra de administración. */
+  html body[data-app-route="quiniela"] #screen:has(> .ljr-cms-entry){
+    box-sizing:border-box!important;
+    padding-top:clamp(64px,8dvh,80px)!important;
+    scroll-padding-top:12px!important;
+  }
+  html body[data-app-route="quiniela"] #screen > .ljr-cms-entry{
+    box-sizing:border-box!important;
+    position:relative!important;
+    inset:auto!important;
+    transform:none!important;
+    clear:both!important;
+    margin:0 auto 13px!important;
+    max-width:calc(100% - 16px)!important;
+  }
+  html body[data-app-route="quiniela"] #screen > .ljr-cms-entry + [data-v561-quiniela-mount]{
+    position:relative!important;
+    margin-top:0!important;
+    padding-top:0!important;
+    clear:both!important;
+  }
+  /* La tarjeta Quiniela conserva todo el ancho y una separación pequeña,
+     sin volver a subirla debajo de la barra superior. */
+  html body[data-app-route="quiniela"] #screen > [data-v561-quiniela-mount] > .v618-quiniela{
+    margin-top:10px!important;
+  }
+}
+/* Separar panel de creación y tarjeta sin alterar ninguna función. */
+html body[data-app-route="quiniela"] #screen .ljr-cms-entry + [data-v561-quiniela-mount] .v619-q-hero{
+  margin-top:0!important;
+}
