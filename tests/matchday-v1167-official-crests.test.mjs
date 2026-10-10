@@ -9,14 +9,15 @@ const css=load('src/v1167-matchday-centered-official-crests.css');
 const build=load('vite.config.js');
 const mainHtml=load('index.html');
 
-test('official 2026 team PNGs take priority over flattened WebP images',()=>{
- assert.match(js,/Liga_Futbol\/main\/assets\/official-logos\//);
- for(const slug of ['la-cuadrilla','mazacotes-fc','pachangas-fc','promesas-fc','populares','san-antonio-jrs','hermanos','tavera-fc','malvinas','la-huerta']){
-  assert.ok(js.includes(slug),slug+' should use an existing official PNG');
- }
- assert.match(js,/return officialCrest\(name\)\|\|legacyLogo\(name\)/);
- assert.match(js,/data-md-fallback-src/);
+test('matchday uses the exact same dynamic registry as Equipos and Siguiendo',()=>{
+ assert.match(js,/window\.LJR_TEAM_LOGOS\?\.get\?\.\(name\)/);
+ assert.doesNotMatch(js,/OFFICIAL_CREST_ROOT|OFFICIAL_CREST_SLUGS/);
+ assert.doesNotMatch(js,/data-md-fallback-src/);
+ assert.match(js,/const src=logo\(name\)/);
+ assert.match(js,/data-md1132-team/);
  assert.doesNotMatch(mainHtml,/src\/v1152-matchday-clear-crests\.js/);
+ const registry=load('src/v67-team-logo-registry.js');
+ assert.match(registry,/if\(img\.closest\('\.md1132-crest'\)\)return;/);
 });
 
 test('centered matchday copy has its own column and never overlaps team crests',()=>{
