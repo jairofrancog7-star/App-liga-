@@ -345,7 +345,9 @@ function manageRefresh(){
   if(route()!=='historyLog'||document.hidden){
     requestController?.abort();return;
   }
-  if(safeGet(PREF,'1')!=='1')return;
+  if(safeGet(PREF,'1')!=='1'||!getDb())return;
+  // El módulo oficial ya cargó el archivo: no descargarlo de nuevo al entrar.
+  if(!lastCheck)lastCheck=Date.now();
   // Sin temporizadores globales activos en otras pantallas.
   refreshTimer=setInterval(()=>fetchNewest(false),CHECK_INTERVAL);
   if(Date.now()-lastCheck>=CHECK_INTERVAL)fetchNewest(false);
@@ -408,7 +410,7 @@ function scheduleMount(){
   requestAnimationFrame(mount);
 }
 window.addEventListener('hashchange',()=>{manageRefresh();scheduleMount()});
-window.addEventListener('ljr:official-data',()=>{lastSnapshotData=null;lastAudit=null;scheduleMount()});
+window.addEventListener('ljr:official-data',()=>{lastSnapshotData=null;lastAudit=null;manageRefresh();scheduleMount()});
 document.addEventListener('visibilitychange',()=>{manageRefresh();if(!document.hidden)scheduleMount()});
 const screen=document.querySelector('#screen');
 if(screen)new MutationObserver(()=>{if(route()==='historyLog')scheduleMount()}).observe(screen,{childList:true,subtree:false});
