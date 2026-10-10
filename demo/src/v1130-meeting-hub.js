@@ -134,9 +134,20 @@ function handle(action,target){
  if(action==='whatsapp')return whatsapp();
 }
 function mount(){
+ if(scanner&&!scanner.layer.isConnected)stopCamera();
  const found=$('.v105-meeting-form');if(!found||!$('[data-v875-meeting]',found)||found.dataset.mhReady)return;
  form=found;found.dataset.mhReady='1';host=document.createElement('section');host.className='ljr-meeting-hub';host.setAttribute('aria-label','Herramientas de gestión de juntas');
  const after=$('[data-v875-meeting]',form);after.insertAdjacentElement('afterend',host);
+ // Preserve old single-meeting data as the first dated historic record.
+ try{
+  const old=JSON.parse(localStorage.getItem('v105-meeting')||'null');
+  if(old&&validDate(old.date)&&!state[old.date]){
+   const oldRecord=empty();
+   oldRecord.minute={date:old.date,agenda:old.agenda||'',agreements:old.agreements||'',attendanceText:old.attendance||'',time:field('time'),place:field('place'),owner:field('owner'),deadline:field('deadline'),taskNotes:field('tasks')};
+   state[old.date]=oldRecord;
+   localStorage.setItem(KEY,JSON.stringify(state));
+  }
+ }catch(_){} 
  host.addEventListener('click',e=>{const b=e.target.closest('[data-mh-action]');if(b){e.preventDefault();handle(b.dataset.mhAction,b)}});
  host.addEventListener('input',e=>{if(e.target.matches('[data-mh-input="search"]')){search=e.target.value.toLocaleLowerCase('es-MX');const start=e.target.selectionStart;render();const input=$('[data-mh-input="search"]',host);input?.focus();input?.setSelectionRange(start,start)}});
  const save=$('[data-save]',form.closest('.v105-dialog'));save?.addEventListener('click',()=>{if(validDate(date())){const r=item();r.minute=snapshot();persist()}});
