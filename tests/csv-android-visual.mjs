@@ -84,6 +84,19 @@ try{
    await modal.locator('.csvpro-summary').waitFor({timeout:30000});
    const stats=await modal.locator('.csvpro-summary').innerText();
    console.log('CSV_MOBILE_STATS '+width+' '+JSON.stringify(stats));
+   const summaryLayout=await modal.locator('.csvpro-summary').evaluate(node=>{
+    const dialog=node.closest('.v105-dialog').getBoundingClientRect();
+    const box=node.getBoundingClientRect();
+    const columns=[...node.children].map(el=>{const r=el.getBoundingClientRect();return {left:r.left,right:r.right,width:r.width};});
+    const status=node.closest('.v105-dialog').querySelector('.csvpro-chip');
+    return {dialogRight:dialog.right,boxWidth:box.width,boxRight:box.right,columns,chipWidth:status?.getBoundingClientRect().width||null,
+     chipText:status?.innerText||null,chipScrollWidth:status?.scrollWidth||null};
+   });
+   console.log('CSV_SUMMARY_LAYOUT '+width+' '+JSON.stringify(summaryLayout));
+   assert.equal(summaryLayout.columns.length,3,'Show all 3 summary cards');
+   assert.ok(summaryLayout.columns.every(x=>x.width>=55&&x.right<=summaryLayout.dialogRight+1),
+    'No cut summary cards at '+width+': '+JSON.stringify(summaryLayout));
+   assert.ok(summaryLayout.chipScrollWidth<=summaryLayout.chipWidth+2,'Status chip text must not wrap/overflow');
    assert.match(stats,/2/,'Data rows recognized at '+width);
    const report=await modal.locator('.csvpro-aireport').innerText();
    assert.match(report,/Diagnóstico local/);
