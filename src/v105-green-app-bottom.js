@@ -1650,7 +1650,7 @@ function registerAlerts(){
      '<label class="v920-field"><span class="v920-label">Equipo favorito</span>'+glyph('users')+'<select data-r-team></select>'+glyph('chevron')+'</label>'+
    '</div>'+
    '<div class="v105-actions v920-register-actions">'+
-     '<button type="button" class="v105-btn v920-btn-primary" data-r-save>'+glyph('shield')+'<span>Guardar y activar avisos</span></button>'+
+     '<button type="button" class="v105-btn v920-btn-primary" data-r-save>'+glyph('shield')+'<span>Guardar mis avisos</span></button>'+
      '<button type="button" class="v105-btn alt v920-btn-secondary" data-r-notif>'+glyph('bell')+'<span data-r-notif-label>Preferencias de notificación</span></button>'+
    '</div>'+
    '<div class="v168-inline-notifications" data-r-inline-notif hidden></div>');
