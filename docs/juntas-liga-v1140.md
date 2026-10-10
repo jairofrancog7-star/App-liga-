@@ -30,3 +30,15 @@ Este módulo amplía **Junta de la Liga** sin quitar las herramientas de fecha, 
 - `node --test tests/meeting-hub-v1130.test.mjs tests/meeting-suite-v1140.test.mjs`
 - GitHub Actions: `.github/workflows/meeting-juntas.yml`
 - Revisión manual necesaria en un Android real: permisos de cámara para QR, escritura de firma táctil, importación de archivos y diálogos de impresión.
+
+## Sincronización privada opcional (v1150)
+
+La pestaña **Servidor** aparece en la administración de juntas. Permite:
+- Comprobar si existe el servidor privado de la Liga.
+- Guardar la junta elegida (martes) en PostgreSQL, tras confirmar explícitamente.
+- Recuperar una minuta para otro administrador. Antes de sustituir la copia local descarga automáticamente un JSON de respaldo; la propia pestaña permite volver a **Restaurar copia previa**.
+- Control de revisiones: si otra persona cambió la misma fecha en el servidor, se bloquea el guardado antiguo (HTTP 409) hasta recuperar y revisar la nueva versión.
+- El servidor valida la sesión de Liga y el rol: presidente y secretario pueden leer/escribir; editor, disciplina y lector no reciben acceso al archivo de juntas.
+- Archivos de IndexedDB y firmas dibujadas **no se suben**; permanecen locales y deben respaldarse por separado.
+
+**Activación pendiente:** el proyecto Railway que incluye `liga-avisos-api` y `Postgres` está en STAGED, no desplegado. Solo el responsable de la cuenta puede aceptar su despliegue y sus posibles costos; no activar el proyecto duplicado. Se debe configurar en `data/notifications-client.json` el dominio HTTPS real del servidor una vez desplegado y probado. Nunca publicar contraseñas en GitHub. GitHub Pages no ejecuta PostgreSQL ni Node.
