@@ -2106,6 +2106,7 @@ function v100ShortcutHelp(kind){
  $('[data-v100-help-close]',m)?.addEventListener('click',()=>m.remove());
 }
 async function installApp(){
+ if(window.LJR_INSTALL_HUB?.open){window.LJR_INSTALL_HUB.open();return}
  const ios=v100IsIos(),standalone=v100IsStandalone();
  const m=modal(
   sectionTitle('INSTALAR APP','Liga Juventino','La app móvil de Liga Juventino está disponible como PWA, APK Android y acceso directo para iPhone/iPad.')+
