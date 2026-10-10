@@ -201,3 +201,14 @@ html body > .v105-modal.v168-account-modal.v920-registration-modal .v1221-local-
  html body > .v105-modal.v168-account-modal.v920-registration-modal .v1221-local-ai{padding:11px;}
  .v920-registration-modal .v1221-ai-feedback{grid-template-columns:1fr;}
 }
+
+/* V1222: controles de IA compactos con el mismo azul del resto de la Liga. */
+.v920-registration-modal .v1221-ai-tools{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
+}
+.v920-registration-modal .v1221-local-ai .v1221-ai-reset{
+ width:100%;background:#0a096f;border:1px solid #3654ad;color:#eaf2ff;
+}
+@media(max-width:355px){
+ .v920-registration-modal .v1221-ai-tools{grid-template-columns:1fr;}
+}
