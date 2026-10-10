@@ -110,9 +110,14 @@ async function syncState(root){
  toggle.disabled=false;
  if(testButton)testButton.disabled=true;
  if(!supported()){
-  label.textContent='Web Push no compatible con este navegador';
+  const native=typeof window!=='undefined'&&window.Capacitor?.isNativePlatform?.()===true;
+  label.textContent=native?'APK Android · falta Push remoto nativo':'Web Push no compatible con este navegador';
   toggle.disabled=true;
-  status(root,'Puedes consultar los avisos en la página. Para notificaciones con la app cerrada se requiere un navegador compatible y permiso del dispositivo.');
+  if(native){
+   status(root,'La APK permite avisos locales mediante Android, pero aún no recibe Push remoto al cerrarse: falta integrar Firebase Cloud Messaging (FCM). Para probar el aviso LOCAL usa «Probar aviso» en Actividad reciente. Para probar Push REMOTO abre esta misma sección en Chrome Android. Una prueba local no demuestra entrega con la APK cerrada.');
+  }else{
+   status(root,'Puedes consultar los avisos en la página. Para notificaciones con la app cerrada se requiere un navegador compatible y permiso del dispositivo.');
+  }
   return;
  }
  const base=await apiBase();
