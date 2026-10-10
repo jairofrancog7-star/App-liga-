@@ -16,6 +16,7 @@ on:
       - 'server/notifications/authorization.mjs'
       - 'server/notifications/bootstrap.mjs'
       - 'tests/meeting-private-sync-v1150.test.mjs'
+      - 'tests/meeting-access-regression-v1151.test.mjs'
       - 'index.html'
       - 'tests/meeting-hub-v1130.test.mjs'
       - 'tests/meeting-suite-v1140.test.mjs'
@@ -35,7 +36,7 @@ jobs:
         with:
           node-version: '22'
       - name: Verificar flujos y permisos de juntas
-        run: node --test tests/meeting-hub-v1130.test.mjs tests/meeting-suite-v1140.test.mjs tests/meeting-private-sync-v1150.test.mjs
+        run: node --test tests/meeting-hub-v1130.test.mjs tests/meeting-suite-v1140.test.mjs tests/meeting-private-sync-v1150.test.mjs tests/meeting-access-regression-v1151.test.mjs
       - name: Comprobar sintaxis JS
         run: |
           node --check src/v1130-meeting-hub.js
