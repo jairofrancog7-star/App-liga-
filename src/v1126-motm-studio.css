@@ -102,3 +102,23 @@ html body .v1126-head p{font-size:11px!important;line-height:1.45!important;colo
 .v1126-team-rail button>span{min-width:0;flex:1;overflow-wrap:anywhere;text-align:center}
 .v1126-team-pick-logo{display:block;width:30px!important;height:30px!important;object-fit:contain!important;flex:none;filter:none!important;background:transparent!important}
 @media(max-width:360px){.v1126-team-rail button{gap:4px;padding:6px 5px}.v1126-team-pick-logo{width:25px!important;height:25px!important}}
+
+/* V1169 — un solo escudo de Equipo; logos Liga/Categoría/Equipo sin fondos. */
+.v1126-profile-brand{display:flex;flex:none;align-items:center;gap:3px;max-width:100px}
+.v1126-profile-brand .v1126-league-logo,
+.v1126-profile-brand .v1126-category-logo,
+.v1126-profile-brand .v1126-team-logo{display:block!important;width:30px!important;height:30px!important;max-width:30px!important;object-fit:contain!important;object-position:center!important;background:none!important;border:0!important;border-radius:0!important;filter:none!important;box-shadow:none!important}
+.v1126-preview-top{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;align-items:center;justify-items:center;gap:12px;width:100%}
+.v1126-preview-league,.v1126-preview-category,.v1126-preview-team{
+ display:block!important;width:clamp(47px,14vw,71px)!important;height:clamp(47px,14vw,71px)!important;
+ max-width:100%!important;object-fit:contain!important;object-position:center!important;
+ background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;filter:none!important;mix-blend-mode:normal!important
+}
+.v1126-preview-heading{display:grid;gap:2px;text-align:center;color:#fff;font-size:12px!important;font-weight:900;letter-spacing:.45px;line-height:1.25}
+.v1126-preview-heading small{color:#70dff3;font-size:9px!important;font-weight:800}
+@media(max-width:365px){
+ .v1126-profile-brand{gap:2px;max-width:79px}
+ .v1126-profile-brand .v1126-league-logo,.v1126-profile-brand .v1126-category-logo,.v1126-profile-brand .v1126-team-logo{width:25px!important;height:25px!important}
+ .v1126-preview-top{gap:6px}
+ .v1126-preview-league,.v1126-preview-category,.v1126-preview-team{width:45px!important;height:45px!important}
+}
