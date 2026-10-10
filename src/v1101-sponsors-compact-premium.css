@@ -1,0 +1,254 @@
+/* V1101 — Patrocinadores: interfaz compacta premium.
+   Sólo afecta al modal de patrocinadores; no modifica los datos ni los eventos existentes. */
+html body .v105-modal.v105-sponsors-modal {
+  padding:clamp(7px,2vw,14px);
+  background:rgba(0,5,30,.84);
+  backdrop-filter:blur(8px);
+}
+html body .v105-modal.v105-sponsors-modal *,
+html body .v105-modal.v105-sponsors-modal *::before,
+html body .v105-modal.v105-sponsors-modal *::after {box-sizing:border-box}
+html body .v105-modal.v105-sponsors-modal > .v105-dialog {
+  width:min(680px,100%);
+  max-height:calc(100dvh - 24px);
+  padding:18px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(68,218,244,.55) transparent;
+  border:1px solid rgba(78,212,245,.33);
+  border-radius:21px;
+  background:radial-gradient(80% 40% at 98% 0%,rgba(16,137,228,.25),transparent 75%),
+             linear-gradient(180deg,#0a1c73 0%,#07135d 42%,#050d45 100%);
+  box-shadow:0 20px 60px rgba(0,3,33,.46),inset 0 1px rgba(255,255,255,.08);
+  color:#f5f9ff;
+  font-family:Inter,Roboto,Arial,sans-serif;
+}
+html body .v105-modal.v105-sponsors-modal .v105-dialog > h3 {
+  margin:0 48px 3px 0;
+  font-size:21px;
+  font-weight:850;
+  line-height:1.16;
+  letter-spacing:-.4px;
+}
+html body .v105-modal.v105-sponsors-modal .v105-dialog > p {
+  margin:0 46px 12px 0;
+  font-size:11.5px;
+  line-height:1.4;
+  color:#b9c8e6;
+}
+html body .v105-modal.v105-sponsors-modal .v105-close {
+  top:12px;
+  right:12px;
+  width:39px;
+  height:39px;
+  min-width:39px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:rgba(14,44,121,.85);
+  border:1px solid rgba(129,191,246,.25);
+  color:#fff;
+  font-size:21px;
+  line-height:1;
+  cursor:pointer;
+}
+html body .v105-modal.v105-sponsors-modal .v105-close:focus-visible,
+html body .v105-modal.v105-sponsors-modal button:focus-visible {
+  outline:2px solid #5defff;outline-offset:2px;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-hero {
+  grid-template-columns:40px minmax(0,1fr);
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  margin:0 0 9px;
+  border-radius:14px;
+  border:1px solid rgba(81,209,242,.22);
+  background:linear-gradient(115deg,rgba(17,79,193,.4),rgba(14,44,128,.43));
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-badge {
+  width:40px;height:40px;border-radius:12px;
+  background:linear-gradient(145deg,#56eff4,#1db5f0);
+  box-shadow:0 5px 14px rgba(24,194,244,.16);
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-badge svg {
+  width:21px;height:21px;stroke:#041c62;stroke-width:1.9;fill:none;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-hero small {
+  font-size:8.5px;letter-spacing:.12em;color:#67ebf5;font-weight:850;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-hero b {
+  font-size:14.5px;line-height:1.2;margin:2px 0 3px;font-weight:850;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-hero span {
+  font-size:10.5px;line-height:1.3;color:#bdd0ef;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-stats {
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:7px;margin:0 0 9px;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-stats > span {
+  min-width:0;min-height:54px;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:7px 5px;border-radius:12px;
+  border:1px solid rgba(120,161,226,.17);
+  background:rgba(4,22,87,.54);
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-stats b {
+  font-size:17px;line-height:1.1;font-weight:850;color:#56eaf6;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-stats > span:last-child b {font-size:13px;letter-spacing:.01em}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-stats small {
+  margin-top:3px;font-size:9.5px;line-height:1.2;color:#b8c6e4;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-card,
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-saved {
+  margin:9px 0 0;
+  padding:12px;
+  border-radius:15px;
+  background:linear-gradient(155deg,rgba(8,31,103,.74),rgba(3,15,69,.85));
+  border:1px solid rgba(108,158,225,.18);
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-section-title {
+  display:flex;flex-wrap:wrap;justify-content:space-between;
+  align-items:baseline;gap:3px 10px;margin:0 0 10px;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-section-title b {
+  font-size:13px;line-height:1.25;font-weight:850;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-section-title small {
+  font-size:9.5px;line-height:1.3;color:#a6bce3;text-align:left;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-form {
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px 10px;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-form label {
+  display:grid;grid-template-rows:auto minmax(0,auto);align-content:start;
+  gap:4px;min-width:0;margin:0;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-form label.v105-sponsor-wide {grid-column:1/-1}
+html body .v105-modal.v105-sponsors-modal .v105-form label > span,
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-notes > span {
+  font-size:10.5px;line-height:1.32;font-weight:750;color:#d3e2fa;
+}
+html body .v105-modal.v105-sponsors-modal .v105-form input,
+html body .v105-modal.v105-sponsors-modal .v105-form select,
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-notes textarea {
+  display:block;width:100%;max-width:100%;min-width:0;
+  min-height:40px;height:40px;
+  margin:0;padding:8px 10px;
+  border:1px solid rgba(111,180,241,.26);
+  border-radius:10px;
+  background:#091658;
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.09);
+  font:500 12.5px/1.3 Inter,Roboto,Arial,sans-serif;
+  color:#fff;
+  color-scheme:dark;
+}
+html body .v105-modal.v105-sponsors-modal .v105-form input::placeholder,
+html body .v105-modal.v105-sponsors-modal textarea::placeholder {color:#90a4d1;opacity:1}
+html body .v105-modal.v105-sponsors-modal .v105-form :is(input,select,textarea):focus {
+  border-color:#54e5f6;
+  outline:none;
+  box-shadow:0 0 0 2px rgba(71,225,245,.14);
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-checks {
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-checks label {
+  display:flex;gap:7px;align-items:center;
+  min-width:0;min-height:38px;padding:7px 8px;
+  border-radius:10px;
+  border:1px solid rgba(112,164,233,.2);
+  background:rgba(10,37,105,.7);
+  font-size:10.5px;line-height:1.25;font-weight:700;color:#dceafd;
+  cursor:pointer;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-checks input {
+  width:16px;height:16px;min-width:16px;accent-color:#4de6ef;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-notes {gap:5px;margin-top:10px}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-notes textarea {
+  height:auto;min-height:72px;resize:vertical;line-height:1.45;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-actions {
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;margin:10px 0;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-actions .v105-btn {
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  min-height:42px;min-width:0;margin:0;
+  padding:9px 11px;
+  border-radius:11px;
+  border:1px solid rgba(106,171,233,.24);
+  font-size:11.5px;line-height:1.1;font-weight:800;
+  white-space:normal;
+  cursor:pointer;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-actions .v105-sponsor-primary {
+  grid-column:1/-1;color:#03215b;
+  border:0;
+  background:linear-gradient(115deg,#6cf3f4,#25bee9);
+  box-shadow:0 7px 18px rgba(25,205,230,.13);
+}
+html body .v105-modal.v105-sponsors-modal .v105-btn.alt {
+  background:rgba(18,43,115,.75);color:#f1f8ff;
+}
+html body .v105-modal.v105-sponsors-modal .v105-btn svg {
+  width:16px;height:16px;flex:0 0 16px;
+  stroke:currentColor;stroke-width:1.9;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;
+}
+html body .v105-modal.v105-sponsors-modal .v105-btn:active {transform:scale(.985)}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-list {gap:7px}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-item {
+  padding:11px;border-radius:12px;
+  background:rgba(9,28,91,.65);
+  border:1px solid rgba(108,165,226,.18);
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-item-top b {font-size:12.5px;line-height:1.25}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-item-top small {font-size:9.5px}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-item p {font-size:10.5px;line-height:1.35}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-item-actions {
+  display:flex;flex-wrap:wrap;gap:7px;margin-top:9px;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-item-actions .v105-btn {
+  display:inline-flex;align-items:center;justify-content:center;gap:5px;
+  min-height:36px;padding:7px 11px;font-size:10.5px;
+  border-radius:9px;cursor:pointer;
+}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-empty {padding:13px}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-empty b {font-size:11px}
+html body .v105-modal.v105-sponsors-modal .v105-sponsor-empty small {font-size:10px}
+@media (max-width:560px) {
+ html body .v105-modal.v105-sponsors-modal {padding:8px}
+ html body .v105-modal.v105-sponsors-modal > .v105-dialog {
+   padding:13px;
+   border-radius:17px;
+   max-height:calc(100dvh - 16px - env(safe-area-inset-bottom,0px));
+ }
+ html body .v105-modal.v105-sponsors-modal .v105-dialog > h3 {font-size:19px;margin-right:44px}
+ html body .v105-modal.v105-sponsors-modal .v105-dialog > p {
+   margin:0 43px 10px 0;font-size:11px;
+ }
+ html body .v105-modal.v105-sponsors-modal .v105-close {top:11px;right:11px;width:37px;height:37px;min-width:37px}
+ html body .v105-modal.v105-sponsors-modal .v105-sponsor-hero {grid-template-columns:38px minmax(0,1fr);gap:9px;padding:9px 10px}
+ html body .v105-modal.v105-sponsors-modal .v105-sponsor-badge {width:38px;height:38px}
+ html body .v105-modal.v105-sponsors-modal .v105-sponsor-hero b {font-size:13.5px}
+ html body .v105-modal.v105-sponsors-modal .v105-sponsor-card,
+ html body .v105-modal.v105-sponsors-modal .v105-sponsor-saved {padding:11px}
+ html body .v105-modal.v105-sponsors-modal .v105-sponsor-section-title {display:flex;align-items:baseline}
+ html body .v105-modal.v105-sponsors-modal .v105-sponsor-form {grid-template-columns:repeat(2,minmax(0,1fr));gap:9px 8px}
+ html body .v105-modal.v105-sponsors-modal .v105-sponsor-checks {grid-template-columns:repeat(2,minmax(0,1fr))}
+ html body .v105-modal.v105-sponsors-modal .v105-sponsor-stats b {font-size:16px}
+}
+@media(max-width:350px) {
+ html body .v105-modal.v105-sponsors-modal .v105-sponsor-form {grid-template-columns:1fr}
+ html body .v105-modal.v105-sponsors-modal .v105-sponsor-form label {grid-column:1/-1}
+ html body .v105-modal.v105-sponsors-modal .v105-sponsor-hero span {font-size:10px}
+}
+@media (prefers-reduced-motion:reduce) {
+ html body .v105-modal.v105-sponsors-modal .v105-btn {transition:none}
+}
