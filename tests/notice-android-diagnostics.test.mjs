@@ -16,6 +16,12 @@ test('El diagnóstico Android compila y no activa ni envía avisos',()=>{
  assert.doesNotMatch(src,/\.subscribe\(/);
  assert.doesNotMatch(src,/method:\s*['"]POST/);
  assert.doesNotMatch(src,/method:\s*['"]PUT/);
+
+ assert.match(src,/showNotification\('Prueba local/);
+ assert.match(src,/Notification\.permission!=='granted'/);
+ assert.match(src,/navigator\.serviceWorker\.getRegistration\('\.\/'\)/);
+ assert.match(src,/solo se generó en tu teléfono/);
+
 });
 test('El formulario nuevo conserva seguridad y el azul de la Liga',()=>{
  const index=read('index.html'),css=read('src/v1230-notice-device-check.css');

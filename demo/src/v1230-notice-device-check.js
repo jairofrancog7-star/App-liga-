@@ -1,5 +1,6 @@
-/* V1230 — Diagnóstico real del dispositivo en Crear aviso oficial.
-   Solo lectura: NO registra Push, NO solicita permisos ni envía mensajes. */
+/* V1231 — Diagnóstico Android con prueba local opcional.
+   La inspección es de solo lectura. La prueba explícita solo muestra una notificación
+   del dispositivo actual; jamás publica avisos ni consulta un servidor para enviarlos. */
 (()=>{
  'use strict';
  if(window.__LJR_NOTICE_DEVICE_CHECK_V1230__)return;
@@ -36,6 +37,41 @@
    const note=document.createElement('p');
    note.textContent='Esta revisión no envía avisos ni activa permisos. Para probar una notificación real, activa Push en Notificaciones desde tu teléfono y realiza una prueba autorizada.';
    results.append(note);
+  }
+  // La muestra se crea ÚNICAMENTE tras pulsar este botón y con permiso ya concedido.
+  // No se pide permiso, no se crea una suscripción, no se envían datos por Internet.
+  function offerLocalTest(){
+   if(!('Notification' in window)||Notification.permission!=='granted'||!('serviceWorker' in navigator))return;
+   const testButton=document.createElement('button');
+   testButton.type='button';testButton.className='ljr-diagnostic-local-test';
+   testButton.textContent='🔔 Probar aviso solo en mi teléfono';
+   const feedback=document.createElement('p');
+   feedback.className='ljr-diagnostic-local-feedback';
+   feedback.setAttribute('role','status');feedback.setAttribute('aria-live','polite');
+   testButton.addEventListener('click',async()=>{
+    if(Notification.permission!=='granted'){
+     feedback.textContent='Permiso desactivado. Activa avisos desde Notificaciones antes de probar.';
+     return;
+    }
+    testButton.disabled=true;
+    feedback.textContent='Solicitando una notificación de muestra solamente a este navegador…';
+    try{
+     const registration=await navigator.serviceWorker.getRegistration('./');
+     if(!registration?.active||typeof registration.showNotification!=='function'){
+      feedback.textContent='Falta un Service Worker activo. Abre Notificaciones y activa avisos antes de repetir.';
+      return;
+     }
+     await registration.showNotification('Prueba local · Liga Juventino Rosas',{
+      body:'Este mensaje de prueba solo se generó en tu teléfono. No es un aviso oficial.',
+      tag:'ljr-android-local-test',
+      silent:true
+     });
+     feedback.textContent='Notificación solicitada al sistema Android. Comprueba si apareció; esto NO verifica entrega Push desde el servidor.';
+    }catch(_){
+     feedback.textContent='No se pudo mostrar la notificación local. Comprueba los permisos del sitio y del sistema Android.';
+    }finally{testButton.disabled=false;}
+   });
+   results.append(testButton,feedback);
   }
   async function inspect(){
    if(busy)return;busy=true;button.disabled=true;results.hidden=false;
@@ -102,7 +138,7 @@
      finally{clearTimeout(timeout);}
     }
    }catch(_){items.push(msg('Diagnóstico incompleto','El navegador no permitió consultar todas las capacidades.',false));}
-   draw(items);button.disabled=false;busy=false;
+   draw(items);offerLocalTest();button.disabled=false;busy=false;
   }
   button.addEventListener('click',inspect);
  }
