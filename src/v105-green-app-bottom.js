@@ -1138,7 +1138,7 @@ function calendarGenerator(){
      '<button type="button" class="v1130-view" data-view="upcoming" aria-pressed="false">Próximos</button>'+
    '</div>'+
    '<div class="v1130-summary" data-summary role="status" aria-live="polite"></div>'+
-   '<div class="v1130-source"><span data-source></span><button type="button" data-refresh title="Releer datos publicados en esta página">Actualizar</button></div>'+
+   '<div class="v1130-source"><span data-source></span><div class="v1130-source-actions"><button type="button" data-alerts title="Configurar avisos por categoría y equipo">Avisos</button><button type="button" data-refresh title="Releer datos publicados en esta página">Actualizar</button></div></div>'+
    '<div class="v105-output" data-out></div>'+
    '<div class="v105-actions v1130-exports">'+
      '<button type="button" class="v105-btn" data-open>Abrir oficial ↗</button>'+
@@ -1269,13 +1269,14 @@ function calendarGenerator(){
        const ds=eventDates(f);if(!ds)return toast('Falta confirmar la hora del partido');
        goExternal('https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(f.home+' vs '+f.away+' · Liga Juventino Rosas')+
        '&dates='+ds[0]+'/'+ds[1]+'&details='+encodeURIComponent('Jornada '+f.round+' · '+current().name+'\nConsulta posibles cambios en '+officialUrl(current()))+
-       '&location='+encodeURIComponent(f.field||'Juventino Rosas, Guanajuato'));
+       '&location='+encodeURIComponent(f.field||'Juventino Rosas, Guanajuato')+'&ctz=America%2FMexico_City');
      }else if(button.hasAttribute('data-map')&&knownField(f.field)){
        goExternal('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(f.field+' Juventino Rosas Guanajuato'));
      }
    });
  }
  $('[data-open]',m).onclick=()=>{log('Abrir calendario oficial '+current().name);goExternal(officialUrl(current()))};
+ $('[data-alerts]',m).onclick=()=>registerAlerts();
  $('[data-refresh]',m).onclick=async()=>{
    const btn=$('[data-refresh]',m);btn.disabled=true;btn.textContent='Actualizando…';
    try{
@@ -1350,7 +1351,7 @@ function calendarGenerator(){
      count++;
      const uid='ljr-'+current().id+'-'+safeName([f.round,f.home,f.away,f.when,i].join('-'))+'@juventinorosasliga.com';
      lines.push('BEGIN:VEVENT','UID:'+uid,'DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,''),
-       'DTSTART:'+ds[0],'DTEND:'+ds[1],
+       'DTSTART;TZID=America/Mexico_City:'+ds[0],'DTEND;TZID=America/Mexico_City:'+ds[1],
        'SUMMARY:'+protect(f.home+' vs '+f.away+' · Liga Juventino Rosas'),
        'DESCRIPTION:'+protect('Jornada '+f.round+' · '+current().name+'; verifica cambios en '+officialUrl(current())),
        'LOCATION:'+protect(f.field),'END:VEVENT');
