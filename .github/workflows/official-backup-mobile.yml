@@ -1,0 +1,34 @@
+name: Respaldo oficial - diseño Android simulado
+on:
+  pull_request:
+    paths:
+      - 'tests/official-backup-mobile-visual.mjs'
+      - 'src/v1212-official-backup-center.css'
+      - 'src/v1212-official-backup-center.js'
+      - '.github/workflows/official-backup-mobile.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mobile-visual:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar Chromium de pruebas
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Probar respaldo, color y tamaño móvil
+        run: node tests/official-backup-mobile-visual.mjs
+      - name: Guardar capturas de simulación
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: respaldo-oficial-android-simulado
+          path: artifacts/official-backup/
+          if-no-files-found: ignore
+          retention-days: 7
