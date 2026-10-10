@@ -1327,7 +1327,7 @@ window.LJR_V105_OPEN_TOOL=function(name){
  catch(error){console.error('[Liga Control] No se pudo abrir '+name,error);return false}
 };
 function bind(root){
- $('[data-v105-route]',root).forEach(b=>b.onclick=e=>{
+ $$('[data-v105-route]',root).forEach(b=>b.onclick=e=>{
    e?.preventDefault?.();
    e?.stopPropagation?.();
    const tab=b.dataset.v105HistoryTab||'';
