@@ -11,7 +11,7 @@ const nativeRoutes=[
  'comparar','v4-compare','players','match','matchCenter','match-center',
  'stats','rankings','historyLog','newsDetail','notices','scheduleChanges',
  'favorites','search','accountRegister','accountLogin','accountEdit',
- 'accountSecurity','accountPassword','accountDevices','publicationCenter',
+ 'accountSecurity','accountPassword','accountDevices','accountPrivacy','publicationCenter',
  'ligaControl','adminFut','appInstall','positions','cards','suspensions',
  'privacy','leagueTools','recruitment','v38Stats','v38Weekly','v38Weather',
  'v38Alerts','tableExport','bracketBuilder','credentialBuilder','cedulaBuilder',
