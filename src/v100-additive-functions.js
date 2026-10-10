@@ -2145,6 +2145,8 @@ async function installApp(){
 /* ---------- V190: RECLUTAMIENTO EN MÁS HERRAMIENTAS ---------- */
 let v190RecruitPngFile=null;
 let v190RecruitPreviewUrl='';
+// Mismo PNG transparente que se muestra en «Sobre la Liga» y en las camisetas 3D.
+const V190_RECRUIT_LEAGUE_LOGO='./assets/branding/escudo-liga-camisetas-unificado-v1122.png?v=v1122-mismo-escudo-camisetas';
 function v190RecruitData(){
   const x=read(V190_RECRUIT_KEY,{teams:[],players:[]})||{};
   return {teams:Array.isArray(x.teams)?x.teams:[],players:Array.isArray(x.players)?x.players:[]};
@@ -2459,9 +2461,10 @@ async function v190RecruitGeneratedBlob(root){
   x.strokeStyle='#3be7f2';x.lineWidth=5;x.strokeRect(42,42,996,1266);
 
   // Logo sin deformación: conserva siempre su proporción original.
-  const league=await v200LeagueLogoTransparent();
+  const league=await v100LoadImage(V190_RECRUIT_LEAGUE_LOGO) || await v200LeagueLogoTransparent();
   if(league){
-    const boxX=72,boxY=70,boxW=132,boxH=132;
+    // Mayor visibilidad sin invadir el encabezado ni cambiar las proporciones.
+    const boxX=66,boxY=62,boxW=150,boxH=150;
     const nw=league.naturalWidth||league.width||boxW;
     const nh=league.naturalHeight||league.height||boxH;
     const scale=Math.min(boxW/nw,boxH/nh);
