@@ -164,7 +164,7 @@
     function render(){
       var term=normalize(search.value.trim());
       var first=from.value,last=to.value;
-      var now=Date.now(),today=dateKey(now),since=now-6*86400000;
+      var now=Date.now(),today=dateKey(now),firstDay=new Date(now);firstDay.setHours(0,0,0,0);firstDay.setDate(firstDay.getDate()-6);var since=firstDay.getTime();
       state.filtered=state.items.filter(function(item){
         var d=item.time?dateKey(item.time):'';
         var matchesTerm=!term||normalize(label(item.original)+' '+item.original+' '+type(item)+' '+formatDate(item)).includes(term);
@@ -206,17 +206,23 @@
       root.querySelector('[data-a-json]').disabled=disabled;
     }
     function feedback(msg){root.querySelector('[data-a-feedback]').textContent=msg;}
-    function change(){state.shown=12;render();}
+    function change(){state.shown=12;render();feedback('Filtros aplicados: '+state.filtered.length+' movimientos visibles.');}
     search.addEventListener('input',change);
     select.addEventListener('change',change);
-    from.addEventListener('change',change);
-    to.addEventListener('change',change);
+    from.addEventListener('change',function(){state.preset='all';change();});
+    to.addEventListener('change',function(){state.preset='all';change();});
     root.addEventListener('click',function(e){
-      var target=e.target.closest('button');
+      var target=e.target instanceof Element?e.target.closest('button'):null;
       if(!target||!root.contains(target))return;
-      if(target.hasAttribute('data-a-preset')){state.preset=target.dataset.aPreset;change();return;}
+      if(target.hasAttribute('data-a-preset')){
+        state.preset=target.dataset.aPreset;from.value='';to.value='';state.shown=12;
+        // Un periodo predefinido sustituye el rango manual, manteniendo la búsqueda y herramienta.
+        render();
+        feedback((state.preset==='today'?'Hoy':state.preset==='week'?'Últimos 7 días':'Todas las fechas')+': '+state.filtered.length+' movimientos.');
+        return;
+      }
       if(target.hasAttribute('data-a-reset')){
-        search.value='';select.value='';from.value='';to.value='';state.preset='all';state.shown=12;render();feedback('Filtros restablecidos.');return;
+        search.value='';select.value='';from.value='';to.value='';state.preset='all';state.shown=12;reload();feedback('Todos los filtros eliminados. Se muestran '+state.filtered.length+' movimientos.');return;
       }
       if(target.hasAttribute('data-a-more')){state.shown+=12;render();return;}
       if(target.hasAttribute('data-a-copy')){
@@ -240,7 +246,7 @@
             JSON.stringify({version:1,exportado_en:new Date().toISOString(),fuente:'Registro local V105, sin certificación de servidor',total:data.length,eventos:data},null,2));
         feedback(success?'Archivo preparado para descargar.':'No fue posible generar la descarga.');
       }
-    });
+    },true);
     var storageHandler=function(e){if(e.key===KEY&&modal.isConnected)reload();};
     window.addEventListener('storage',storageHandler);
     var dispose=new MutationObserver(function(){
