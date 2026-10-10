@@ -56,6 +56,8 @@ try{
     header:getComputedStyle(document.querySelector('#admin>header')).backgroundImage,
     reviewCard:getComputedStyle(document.querySelector('#review .ljr-review-card')).backgroundImage,
     select:getComputedStyle(document.querySelector('#category')).backgroundColor,
+    contentClose:getComputedStyle(document.querySelector('#content>header>button')).backgroundColor,
+    contentFile:getComputedStyle(document.querySelector('#content input[type=file]')).backgroundColor,
     overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth,
     outside:[...document.querySelectorAll('button,input,select')].filter(el=>{
       const b=el.getBoundingClientRect();return b.left<-2||b.right>innerWidth+2;
@@ -80,6 +82,8 @@ try{
   assert.ok(fieldRGB.length===3 && fieldRGB[0]<=22 && fieldRGB[1]<=45 && fieldRGB[2]<=106 &&
     fieldRGB[2]>=fieldRGB[1]+28 && fieldRGB[1]>=fieldRGB[0]+7,
     'Selector should use a dark navy field, not bright cyan/purple: '+m.select);
+  assert.equal(m.contentClose,'rgb(18, 44, 96)','Content studio close button must be blue');
+  assert.equal(m.contentFile,'rgb(9, 26, 70)','Content studio file input must be dark navy');
   await page.locator('#category').selectOption({label:'Segunda'});
   assert.equal(await page.locator('#category').inputValue(),'Segunda');
   await page.locator('#team').fill('Boavista FC');
