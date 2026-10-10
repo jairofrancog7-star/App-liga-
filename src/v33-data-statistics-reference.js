@@ -58,13 +58,13 @@ function playerAvatar(name,team,cls='v33-player-avatar'){
     ?'<span class="'+cls+' v576-has-photo" data-v579-player-photo><img src="'+esc(src)+'" alt="'+esc(name)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>'
     :'<span class="'+cls+' v576-photo-fallback">'+esc(initials(name).slice(0,2))+'</span>';
 }
-function backIcon(){return '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M20.5 7.5 12 16l8.5 8.5M12.5 16H27"/></svg>'}
+function backIcon(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H4m7-7-7 7 7 7"/></svg>'}
 function shareIcon(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.25"/><circle cx="6" cy="12" r="2.25"/><circle cx="18" cy="19" r="2.25"/><path d="m8.1 10.9 7.6-4.5M8.1 13.1l7.6 4.5"/></svg>'}
 function tabs(){
  return '<nav class="v33-tabs" aria-label="Tipos de estadísticas">'+
   '<button type="button" class="'+(activeTab==='general'?'active':'')+'" data-v33-tab="general">General</button>'+
   '<button type="button" class="'+(activeTab==='team'?'active':'')+'" data-v33-tab="team">Estadísticas de equipo</button>'+
-  '<button type="button" class="'+(activeTab==='player'?'active':'')+'" data-v33-tab="player">Estadísticas de jugadores</button>'+
+  '<button type="button" class="'+(activeTab==='player'?'active':'')+'" data-v33-tab="player">Estadísticas de jugador</button>'+
  '</nav>';
 }
 function header(){
@@ -115,15 +115,18 @@ function rosterEntries(){
 }
 function playerRow(p,index){
  return '<button type="button" class="v33-stat-row player" data-v33-player="'+esc(p.name)+'" data-v33-player-team="'+esc(p.team)+'">'+
-   '<span class="v33-rank">'+(index+1)+'</span>'+playerAvatar(p.name,p.team,'v33-player-team-logo v576-player-avatar')+
-   '<span class="v33-row-copy"><b>'+esc(p.name)+'</b><small>'+teamLogo(p.team,'v33-inline-team-logo')+esc(p.team)+' · Jugador registrado</small></span>'+
-   '<strong>✓</strong>'+
+   '<span class="v33-rank">'+esc(p.rank??(index+1))+'</span>'+playerAvatar(p.name,p.team,'v33-player-team-logo v576-player-avatar')+
+   '<span class="v33-row-copy"><b>'+esc(p.name)+'</b><small>'+teamLogo(p.team,'v33-inline-team-logo')+esc(p.team)+(p.goals==null?' · Jugador registrado':'')+'</small></span>'+
+   '<strong>'+esc(p.goals??'✓')+'</strong>'+
  '</button>';
 }
-function playerStatCard(title,players){
+function scorerEntries(){
+ return (current()?.scorers?.[0]?.rows||[]).filter(r=>r[1]&&r[2]&&/^\d+$/.test(String(r[3]))).map(r=>({rank:r[0],name:r[1],team:r[2],goals:r[3]}));
+}
+function playerStatCard(title,players,goals=false){
  return '<article class="v33-stat-card"><h3>'+esc(title)+'</h3><div class="v33-stat-list">'+
    players.slice(0,5).map((p,i)=>playerRow(p,i)).join('')+
-   '</div><button type="button" class="v33-see-all" data-v33-expand-player="'+esc(title)+'" aria-expanded="false">Ver todos los jugadores <span>›</span></button></article>';
+   '</div><button type="button" class="v33-see-all" '+(goals?'data-v33-expand-goals':'data-v33-expand-player="'+esc(title)+'"')+' aria-expanded="false">Ver todos los jugadores <span>›</span></button></article>';
 }
 function teamSections(){
  return [
@@ -146,16 +149,12 @@ function teamSections(){
  ];
 }
 function teamDetailedView(){
- /* V593: Estadísticas de equipo usa el mismo carrusel horizontal de General.
-    Todas las tablas quedan a un costado, no apiladas hacia abajo. */
- const cards=teamSections().flatMap(section=>section[1]).map(item=>
-   teamStatCard(item[0],item[1],item[2])
- ).join('');
+ // Each metric group has its own horizontal carousel, as in the recording.
  return '<main class="v33-data-content v33-detailed v593-detail-horizontal">'+
-   '<section class="v33-general-section v593-detail-section">'+
-     '<div class="v33-general-title"><h2>Datos clave</h2></div>'+
-     '<div class="v33-carousel v593-detail-carousel">'+cards+'</div>'+
-   '</section>'+
+   teamSections().map(([title,items])=>'<section class="v33-general-section v593-detail-section">'+
+     '<div class="v33-general-title"><h2>'+esc(title)+'</h2></div>'+
+     '<div class="v33-carousel v593-detail-carousel">'+items.map(item=>teamStatCard(item[0],item[1],item[2])).join('')+'</div>'+
+   '</section>').join('')+
  '</main>';
 }
 function playerSections(){
@@ -189,6 +188,7 @@ function playerDetailedView(){
        groups.map(g=>playerStatCard(g.team,g.players)).join('')+
      '</div>'+
    '</section>'+
+   (scorerEntries().length?'<section class="v33-general-section v593-detail-section"><div class="v33-general-title"><h2>Goles</h2></div><div class="v33-carousel v593-detail-carousel">'+playerStatCard('Goles',scorerEntries(),true)+'</div></section>':'')+
  '</main>';
 }
 function generalView(){
@@ -271,7 +271,7 @@ function markup(){
  /* V872 — leagueData/Estadísticas vuelve al diseño histórico V33.
     El bloque V446/V509 se había quedado sin su CSS histórico y provocaba
     el logo gigante, fondo negro y botones grises de la captura. */
- return '<section class="v33-data-page" data-v33-data data-v33-mode="'+activeTab+'">'+header()+
+ return '<section class="v33-data-page" data-v33-data data-v1350-reference data-v33-mode="'+activeTab+'">'+header()+
    (activeTab==='general'?generalView():activeTab==='team'?teamDetailedView():playerDetailedView())+'</section>';
 }
 function toast(msg){const old=document.querySelector('.v33-toast');if(old)old.remove();const n=document.createElement('div');n.className='v33-toast';n.textContent=msg;document.body.appendChild(n);setTimeout(()=>n.remove(),1500)}
@@ -302,12 +302,14 @@ function goRoute(r){
  else location.hash='#/'+next;
 }
 function bind(){
- document.querySelectorAll('[data-v33-expand-team],[data-v33-expand-player]').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('[data-v33-expand-team],[data-v33-expand-player],[data-v33-expand-goals]').forEach(b=>b.onclick=()=>{
    const expanded=b.getAttribute('aria-expanded')!=='true';
    const list=b.closest('.v33-stat-card').querySelector('.v33-stat-list');
    if(b.hasAttribute('data-v33-expand-team')){
      const metric=Number(b.dataset.v33ExpandTeam);
      list.innerHTML=metricRows(metric,b.dataset.v33Order,expanded?Infinity:5).map((r,i)=>teamMetricRow(r,i,metric)).join('');
+   }else if(b.hasAttribute('data-v33-expand-goals')){
+     list.innerHTML=scorerEntries().slice(0,expanded?Infinity:5).map(playerRow).join('');
    }else{
      const title=b.dataset.v33ExpandPlayer;
      const players=rosterEntries().filter(p=>!current()?.rosters?.[title]||p.team===title);
@@ -347,23 +349,29 @@ function applyHeaderScroll(){
  );
  const p=Math.min(1,y/165);
  const vw=Math.min(window.innerWidth,520);
+ // Horizontal carousel events must not repeatedly mutate the fixed header.
+ if(head._v1350ScrollY===y&&head._v1350ScrollWidth===vw)return;
+ head._v1350ScrollY=y;head._v1350ScrollWidth=vw;
 
- const expandedH=Math.max(184,Math.min(258,vw*0.5012));
- const collapsedH=Math.max(104,Math.min(142,vw*0.2720));
- const expandedLeft=Math.max(20,Math.min(32,vw*0.055));
- const compactLeft=Math.max(92,Math.min(132,vw*0.255));
- const expandedTop=Math.max(98,Math.min(142,vw*0.274));
- const compactTop=Math.max(24,Math.min(36,vw*0.070));
- const expandedSize=Math.max(32,Math.min(44,vw*0.0855));
- const compactSize=Math.max(18,Math.min(25,vw*0.048));
+ // Ratios measured from the 691px screenshots, excluding Android's status bar.
+ const expandedH=vw*0.564;
+ const collapsedH=vw*0.333;
+ const expandedLeft=vw*0.047;
+ const compactLeft=vw*0.188;
+ const expandedTop=vw*0.228;
+ const compactTop=vw*0.063;
+ const expandedSize=vw*0.077;
+ const compactSize=vw*0.048;
  const lerp=(a,b,t)=>a+(b-a)*t;
 
  head.style.setProperty('--v33-collapse',p.toFixed(4));
  const actualHeaderHeight=lerp(expandedH,collapsedH,p).toFixed(1)+'px';
  head.style.setProperty('--v33-head-h',actualHeaderHeight);
- // Mantener el inicio del contenido unido al borde inferior real de la cabecera.
- // Antes el padding de página siempre retenía 184–258 px aun tras compactarse.
- document.querySelector('[data-v33-data]')?.style.setProperty('--v33-actual-head-h',actualHeaderHeight);
+ // Keep content origin stable. Resizing its padding during scroll moves the
+ // table twice and can trigger scroll anchoring feedback and blank bands.
+ const page=document.querySelector('[data-v33-data]');
+ page?.style.setProperty('--v33-expanded-head-h',expandedH.toFixed(1)+'px');
+ head.style.setProperty('--v33-actions-top',(vw*0.04).toFixed(1)+'px');
  head.style.setProperty('--v33-tabs-opacity','1');
 
  title.style.left=lerp(expandedLeft,compactLeft,p).toFixed(1)+'px';
@@ -381,29 +389,18 @@ function applyHeaderScroll(){
 
  head.classList.toggle('is-collapsed',p>.82);
 }
-/* V1188: medir el hueco real visible en el móvil.
-   Los estilos históricos dejan un offset extra de hasta ~150px por debajo de
-   la línea blanca. Eliminar únicamente el excedente, no la altura del header. */
-function alignFirstStatsHeading(screen){
- if(!isDataRoute())return;
- if((screen?.scrollTop||0)>4 || (window.scrollY||0)>4)return;
- const page=screen?.querySelector('[data-v33-data]');
- const head=page?.querySelector('[data-v33-head]');
- const main=page?.querySelector('.v33-data-content');
- const first=main?.querySelector('.v33-general-title');
- if(!page||!head||!main||!first||!head.getBoundingClientRect||!first.getBoundingClientRect)return;
- // En cada render se crea un nuevo elemento sin compensaciones anteriores.
- const gap=first.getBoundingClientRect().top-head.getBoundingClientRect().bottom;
- const excess=Math.max(0,Math.min(320,Math.round(gap-8)));
- page.style.setProperty('--v33-visible-gap-fix',excess+'px');
-}
 let tick=0;function onScroll(){if(tick)return;tick=requestAnimationFrame(()=>{tick=0;applyHeaderScroll()})}
 window.addEventListener('scroll',onScroll,{passive:true});
+window.addEventListener('resize',onScroll,{passive:true});
 document.addEventListener('scroll',onScroll,{passive:true,capture:true});
 async function render(){
  const active=isDataRoute();document.body.classList.toggle('v33-data-active',active);if(!active)return;
  await load();if(!db||!isDataRoute())return;
- const screen=document.querySelector('#screen');if(!screen)return;screen.innerHTML=markup();setBottomNav();bind();applyHeaderScroll();requestAnimationFrame(()=>alignFirstStatsHeading(screen));
+ const screen=document.querySelector('#screen');if(!screen)return;screen.innerHTML=markup();setBottomNav();bind();applyHeaderScroll();
+ // Keep the active label visible without changing vertical scroll position.
+ const tabsNode=screen.querySelector('.v33-tabs');
+ const selected=tabsNode?.querySelector('.active');
+ if(tabsNode&&selected)tabsNode.scrollLeft=Math.max(0,selected.offsetLeft-(tabsNode.clientWidth-selected.offsetWidth)/2);
 }
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}
 window.addEventListener('hashchange',schedule);
