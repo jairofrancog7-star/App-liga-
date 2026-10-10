@@ -30,9 +30,9 @@ try{
  await answers.nth(0).click({timeout:10000});
  await page.waitForSelector('#v612-quiz-portal [data-v531-view="hub"]',{timeout:6000});
  await page.screenshot({path:'quiz-debug/02-hub.png'});
- const close=page.locator('#v612-quiz-portal [data-v1070-quiz-hub-close]');
- assert.ok(await close.isVisible(),'Hub X visible');
- await close.click();
+ const back=page.locator('#v612-quiz-portal [data-v531-view="hub"] [data-v531-quiz-back]');
+ assert.ok(await back.isVisible(),'Flecha Volver visible en el Hub');
+ await back.click();
  await page.waitForSelector('#v612-quiz-portal [data-v531-view="splash"]',{timeout:5000});
  await page.locator('#v612-quiz-portal [data-v531-view="splash"] .v1059-answer').nth(2).click();
  await page.waitForSelector('#v612-quiz-portal [data-v531-view="hub"]',{timeout:5000});
