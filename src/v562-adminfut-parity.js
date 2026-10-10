@@ -335,10 +335,10 @@ function openFieldMap(m){
 function openCalendar(m){
  const start=parseDate(m.date);
  if(!Number.isFinite(start)){toast('Este partido no tiene fecha y hora válidas');return}
- const dt=new Date(start),end=new Date(start+120*60000);
- const localStamp=d=>new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,19).replace(/[-:]/g,'').replace('T','T');
- const params=new URLSearchParams({action:'TEMPLATE',text:m.home+' vs '+m.away+' · Liga Juventino Rosas',dates:localStamp(dt)+'/'+localStamp(end),ctz:'America/Mexico_City',location:m.field+', Juventino Rosas, Gto.',details:m.category+' · Jornada '+(m.round||'sin definir')+' · Consulta la programación oficial antes de asistir.'});
- window.open('https://calendar.google.com/calendar/render?'+params.toString(),'_blank','noopener,noreferrer');
+ window.LJR_GOOGLE_CALENDAR_GLOBAL.open({
+  title:m.home+' - '+m.away,startMs:start,duration:120,venue:m.field,
+  description:'Liga Juventino Rosas · '+m.category+' · Jornada '+(m.round||'sin definir')+' · Consulta el rol oficial.'
+ });
 }
 async function prepareOffline(){
  if(!navigator.onLine){toast('Conéctate a internet para preparar los datos');return}
