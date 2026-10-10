@@ -86,6 +86,9 @@ window.LJR_SANCTION_ENHANCE=function(api){
   '<div class="v1126-stage" data-panel="2" hidden>'+
     '<div class="v1126-preview" data-preview></div>'+
     '<p class="v1126-hint">Revisa los datos antes de guardar o compartir. Las sanciones solo son oficiales si la Liga las valida y publica.</p>'+
+    '<label class="v1126-field"><span>Fecha para recordar revisar este borrador (opcional)</span><input type="date" data-review-date></label>'+
+    '<button type="button" class="v1126-calendar" data-calendar>Preparar recordatorio en Google Calendar</button>'+
+    '<p class="v1126-hint">Solo abre un evento genérico en Google Calendar. Tendrás que confirmarlo ahí. No incluirá el nombre ni los detalles del jugador.</p>'+
   '</div>'+
   '<p class="v1126-feedback" data-feedback role="status" aria-live="polite" hidden></p>'+
   '<div class="v1126-actions">'+
@@ -172,6 +175,7 @@ window.LJR_SANCTION_ENHANCE=function(api){
    served:(type==='matches'||type==='red')&&Number.isInteger(served)&&served>=0?Math.min(served,matches||0):0,
    until:type==='until'?value('[data-until]'):'',
    officialFixtureId:value('[data-official-match]'),fixtureSource:value('[data-official-match]')?'Rol oficial (referencia local)':'Captura manual',
+   reviewDate:value('[data-review-date]'),
    incidentDate:value('[data-incident-date]'),round:value('[data-round]'),match:value('[data-match]'),
    venue:value('[data-venue]'),referee:value('[data-referee]'),report:value('[data-report]'),
    evidence:value('[data-evidence]'),notes:value('[data-notes]'),
@@ -224,7 +228,7 @@ window.LJR_SANCTION_ENHANCE=function(api){
   selected=matches.length===1?matches[0]:null;activeId=x.id||'';
   for(const [selector,key] of [
     ['[data-incident-date]','incidentDate'],['[data-round]','round'],['[data-match]','match'],['[data-venue]','venue'],
-    ['[data-referee]','referee'],['[data-report]','report'],['[data-type]','sanctionType'],['[data-reason]','reason'],
+    ['[data-referee]','referee'],['[data-report]','report'],['[data-type]','sanctionType'],['[data-reason]','reason'],['[data-review-date]','reviewDate'],
     ['[data-detail]','reasonDetail'],['[data-matches]','matches'],['[data-served]','served'],['[data-until]','until'],
     ['[data-evidence]','evidence'],['[data-notes]','notes']
   ])$(selector).value=x[key]??'';
@@ -338,10 +342,22 @@ window.LJR_SANCTION_ENHANCE=function(api){
   if(!window.confirm('¿Empezar un nuevo borrador? Los cambios no guardados se perderán.'))return;
   activeId='';selected=null;
   $('[data-search]').value='';$('[data-cat]').value='';teams();$('[data-team]').value='';
-  for(const sel of ['[data-incident-date]','[data-round]','[data-match]','[data-venue]','[data-referee]','[data-report]','[data-reason]','[data-detail]','[data-until]','[data-evidence]','[data-notes]'])$(sel).value='';
+  for(const sel of ['[data-incident-date]','[data-round]','[data-match]','[data-venue]','[data-referee]','[data-report]','[data-reason]','[data-detail]','[data-until]','[data-evidence]','[data-notes]','[data-review-date]'])$(sel).value='';
   $('[data-type]').value='matches';$('[data-matches]').value='1';$('[data-served]').value='0';
   syncOfficialMatches();selectedHtml();listPlayers();duration();view(0);
   toast('Formulario listo para un nuevo borrador');
+ };
+ $('[data-calendar]').onclick=()=>{
+  const x=getDraft(true);if(!x)return;
+  const when=value('[data-review-date]');
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(when)){feedback('Selecciona una fecha para el recordatorio.');return}
+  const [year,month,day]=when.split('-').map(Number),start=new Date(year,month-1,day),end=new Date(year,month-1,day+1);
+  if(start.getFullYear()!==year||start.getMonth()!==month-1||start.getDate()!==day){feedback('La fecha del recordatorio no es válida.');return}
+  const stamp=d=>String(d.getFullYear())+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
+  const params=new URLSearchParams({action:'TEMPLATE',text:'Revisar borrador disciplinario de la Liga',dates:stamp(start)+'/'+stamp(end),
+   details:'Revisión pendiente en la aplicación Liga Juventino Rosas. Borrador local, no sanción oficial. No contiene datos personales.'});
+  window.open('https://calendar.google.com/calendar/render?'+params.toString(),'_blank','noopener,noreferrer');
+  toast('Confirma el recordatorio en Google Calendar');
  };
  $('[data-history-toggle]').onclick=()=>{showHistory=!showHistory;renderHistory()};
  $('[data-history-search]').addEventListener('input',renderHistory);
@@ -360,7 +376,7 @@ window.LJR_SANCTION_ENHANCE=function(api){
    const data=JSON.parse(await file.text());
    if(data?.format!=='ljr-sanction-local-backup-v1'||!Array.isArray(data.drafts)||data.drafts.length>100)throw Error('El archivo no es un respaldo válido de sanciones.');
    const seen=new Set(drafts.map(x=>x.id)),add=[];
-   const allowed=['player','team','cat','category','sanctionType','sanctionLabel','reason','reasonLabel','reasonDetail','matches','served','until','incidentDate','round','match','venue','referee','report','evidence','notes','officialFixtureId','fixtureSource','createdAt','updatedAt'];
+   const allowed=['player','team','cat','category','sanctionType','sanctionLabel','reason','reasonLabel','reasonDetail','matches','served','until','incidentDate','round','match','venue','referee','report','evidence','notes','officialFixtureId','fixtureSource','reviewDate','createdAt','updatedAt'];
    for(const entry of data.drafts){
     if(!entry||typeof entry!=='object'||Array.isArray(entry)||typeof entry.player!=='string'||!entry.player.trim()||entry.player.length>150)throw Error('El respaldo contiene registros inválidos.');
     const n={id:typeof entry.id==='string'&&entry.id.length<150?entry.id:id(),status:'Borrador local'};
