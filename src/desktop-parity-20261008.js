@@ -18,7 +18,7 @@ const nativeRoutes=[
  'permissionBuilder','agendaBuilder','motionHub','suspensionTool','rulebook',
  'matchday','weatherFields','cedulas','cedulaDetail','credential',
  'publications','tactics','simulator','jrControl','refereeOffline',
- 'discipline','disciplina','disciplineTool','venues'
+ 'discipline','disciplina','disciplineTool','venues','compareTeams','teamCompare'
 ];
 const routes=new Set(nativeRoutes);
 window.LJR_PC_NATIVE_ROUTES=routes;
@@ -42,7 +42,10 @@ const names={
  publications:'Publicaciones',rulebook:'Reglamento',historyLog:'Historial',
  scheduleChanges:'Cambios de jornada',vote:'Jugador de la semana',
  moments:'Momentos',favorites:'Favoritos',agendaBuilder:'Agenda',
- profile:'Cuenta',adminFut:'Administración',jrControl:'JR Control'
+ profile:'Cuenta',adminFut:'Administración',jrControl:'JR Control',
+ compareTeams:'Comparar equipos',teamCompare:'Comparar equipos',
+ appInstall:'Instalar aplicación',matchday:'Centro de Jornada',
+ refereeOffline:'Cédulas del árbitro',cedulas:'Archivo de cédulas'
 };
 const navButtons=[
  ['Inicio','home'],['Partidos','pc-fixtures'],['Clasificación','pc-standings'],
@@ -97,6 +100,8 @@ function enhanceNavigation(){
 }
 function sync(){
  const enabled=desktop();
+ // Evitar el formulario demo de PC: abrir el módulo real de autenticación.
+ if(enabled&&current()==='profile'){go('accountLogin');return}
  const native=enabled&&routes.has(current());
  document.body.classList.toggle('ljpc-native-route',native);
  if(native)toolbar();
