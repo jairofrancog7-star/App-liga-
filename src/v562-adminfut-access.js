@@ -148,13 +148,13 @@ async function share(){
 function bind(root){
  function syncAdmin(){const section=$('[data-v563-admin-direct]',root);if(section)section.hidden=!Boolean(window.LJR_MEDIA?.admin)}
  syncAdmin();window.addEventListener('liga:admin',syncAdmin,{signal:root.v563Controller?.signal});
- $('[data-v563-route]',root).forEach(b=>b.addEventListener('click',()=>go(b.dataset.v563Route)));
+ $$('[data-v563-route]',root).forEach(b=>b.addEventListener('click',()=>go(b.dataset.v563Route)));
  const privateTools=new Set(['sponsors','meeting','delegates','officials','incidents','csv-import','backup-export','audit']);
  const openTool=name=>{
    if(typeof window.LJR_V105_OPEN_TOOL==='function'&&window.LJR_V105_OPEN_TOOL(name))return;
    toast('La herramienta no pudo abrirse. Actualiza la página e inténtalo de nuevo.');
  };
- $('[data-v563-tool]',root).forEach(b=>b.addEventListener('click',()=>{
+ $$('[data-v563-tool]',root).forEach(b=>b.addEventListener('click',()=>{
    const name=b.dataset.v563Tool;
    if(!name)return;
    if(privateTools.has(name)&&!window.LJR_MEDIA?.admin){
