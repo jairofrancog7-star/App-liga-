@@ -296,11 +296,11 @@ function wrap(ctx,text,x,y,maxWidth,lineHeight,maxLines=3){
 async function downloadPoster(n){
   const canvas=document.createElement('canvas');canvas.width=1080;canvas.height=1350;
   const ctx=canvas.getContext('2d');
-  const g=ctx.createLinearGradient(0,0,1080,1350);g.addColorStop(0,'#08147f');g.addColorStop(.55,'#07106a');g.addColorStop(1,'#02043f');ctx.fillStyle=g;ctx.fillRect(0,0,1080,1350);
-  const glow=ctx.createRadialGradient(860,250,20,860,250,520);glow.addColorStop(0,'rgba(22,222,234,.38)');glow.addColorStop(1,'rgba(22,222,234,0)');ctx.fillStyle=glow;ctx.fillRect(0,0,1080,800);
+  const g=ctx.createLinearGradient(0,0,1080,1350);g.addColorStop(0,'#07117e');g.addColorStop(.55,'#050b61');g.addColorStop(1,'#03083f');ctx.fillStyle=g;ctx.fillRect(0,0,1080,1350);
+  const glow=ctx.createRadialGradient(860,250,20,860,250,520);glow.addColorStop(0,'rgba(22,155,234,.20)');glow.addColorStop(1,'rgba(22,222,234,0)');ctx.fillStyle=glow;ctx.fillRect(0,0,1080,800);
   ctx.fillStyle='#22dfe9';ctx.font='800 34px Arial';ctx.fillText('LIGA MUNICIPAL DE FÚTBOL · JUVENTINO ROSAS',70,92);
   ctx.fillStyle='#fff';ctx.font='900 74px Arial';wrap(ctx,n.type.toUpperCase(),70,180,940,82,2);
-  roundRect(ctx,60,300,960,750,48);ctx.fillStyle='rgba(25,40,145,.76)';ctx.fill();ctx.strokeStyle='rgba(111,145,255,.42)';ctx.lineWidth=3;ctx.stroke();
+  roundRect(ctx,60,300,960,750,48);ctx.fillStyle='rgba(13,26,107,.86)';ctx.fill();ctx.strokeStyle='rgba(111,145,255,.42)';ctx.lineWidth=3;ctx.stroke();
   const hLogo=await loadImage(teamLogo(n.home)),aLogo=await loadImage(teamLogo(n.away));
   if(hLogo)ctx.drawImage(hLogo,150,390,150,150);
   if(aLogo)ctx.drawImage(aLogo,780,390,150,150);
@@ -352,7 +352,7 @@ function bind(root){
     root.querySelector('[data-v129-list]').innerHTML=savedList(list);
     showPreview(root,n);toast('Cambio guardado en este dispositivo');
   });
-  root.querySelector('[data-v129-clear]')?.addEventListener('click',()=>{write([]);root.querySelector('[data-v129-list]').innerHTML=savedList([]);toast('Historial local limpiado')});
+  root.querySelector('[data-v129-clear]')?.addEventListener('click',()=>{if(!window.confirm('¿Borrar el historial de cambios guardado en este dispositivo?'))return;write([]);root.querySelector('[data-v129-list]').innerHTML=savedList([]);toast('Historial local limpiado')});
   root.addEventListener('click',e=>{
     const b=e.target.closest('[data-v129-open-saved]');if(!b)return;
     const n=read().find(x=>x.uid===b.dataset.v129OpenSaved);if(n)showPreview(root,n);

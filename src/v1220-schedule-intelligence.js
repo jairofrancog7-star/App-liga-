@@ -299,7 +299,16 @@ function init(root){
   observer.observe(root,{childList:true,subtree:true});
   }
   warmFields();
-  monitorSnapshot(root,window.LJR_OFFICIAL_DATA);
+  let storedSnapshot=false,recentCheck=false;
+  try{
+    storedSnapshot=Boolean(localStorage.getItem(SNAP_KEY));
+    recentCheck=Date.now()-Number(localStorage.getItem(POLL_KEY)||0)<30*60000;
+  }catch(_){}
+  if(!storedSnapshot)monitorSnapshot(root,window.LJR_OFFICIAL_DATA);
+  else if(recentCheck){
+    const status=$('[data-v1224-status]',root);
+    if(status)status.textContent='Revisión reciente disponible. Pulsa “Revisar rol oficial” para consultar cambios nuevos.';
+  }
   reviewOfficial(root,false);
   update(root);decoratePreview(root);
 }
