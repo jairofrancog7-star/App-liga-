@@ -1,0 +1,38 @@
+/* V1126 · Herramientas operativas compactas dentro del modal V1125. */
+html body > .v105-modal.v1125-officials-modal .v1125-tabs{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+html body > .v105-modal.v1125-officials-modal [data-o-ops-panel][hidden]{display:none!important}
+html body > .v105-modal.v1125-officials-modal .v1126-operational{display:grid;gap:9px;min-width:0;font-family:Inter,Roboto,Arial,sans-serif}
+html body > .v105-modal.v1125-officials-modal .v1126-tool{min-width:0;padding:11px;background:linear-gradient(140deg,rgba(19,44,120,.88),rgba(7,23,82,.84));border:1px solid rgba(83,152,229,.34);border-radius:12px}
+html body > .v105-modal.v1125-officials-modal .v1126-tool>strong{display:block;color:#f9fbff;font-size:12px;line-height:1.35;margin-bottom:3px}
+html body > .v105-modal.v1125-officials-modal .v1126-tool>small{display:block;color:#afcbed;font-size:10px;line-height:1.45;margin-bottom:8px}
+html body > .v105-modal.v1125-officials-modal .v1126-operational :is(button,input,select){min-width:0;max-width:100%;box-sizing:border-box;font-family:Inter,Roboto,Arial,sans-serif}
+html body > .v105-modal.v1125-officials-modal .v1126-operational :is(select,input:not([type=file])){display:block;width:100%;min-height:39px;border-radius:9px;border:1px solid rgba(97,158,236,.42);background:#091957;color:#fff;font-size:11px;padding:7px 9px}
+html body > .v105-modal.v1125-officials-modal .v1126-operational button{display:inline-flex;align-items:center;justify-content:center;min-height:35px;background:#1c468f;color:#f9fdff;border:1px solid rgba(82,209,247,.35);border-radius:9px;padding:7px 10px;font-size:10.5px;font-weight:800;cursor:pointer;line-height:1.2}
+html body > .v105-modal.v1125-officials-modal .v1126-tool>[data-op-action=pick-fixture]{width:100%;margin-top:8px;background:linear-gradient(115deg,#5be7ef,#2ec0e9);color:#082456;border:0}
+html body > .v105-modal.v1125-officials-modal .v1126-help{display:block;margin:7px 0 0;color:#abc4e3;font-size:10px;line-height:1.5;overflow-wrap:anywhere}
+html body > .v105-modal.v1125-officials-modal .v1126-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:10px 0}
+html body > .v105-modal.v1125-officials-modal .v1126-stats>span{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:50px;padding:7px 4px;border:1px solid rgba(93,152,239,.3);border-radius:9px;background:rgba(9,33,101,.62)}
+html body > .v105-modal.v1125-officials-modal .v1126-stats b{font-weight:850;color:#f3fcff;font-size:13px;line-height:1.2;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;text-align:center}
+html body > .v105-modal.v1125-officials-modal .v1126-stats small{font-size:9px;line-height:1.3;color:#b4d1f2;text-align:center;margin-top:2px}
+html body > .v105-modal.v1125-officials-modal .v1126-rows{display:grid;gap:8px;max-height:45dvh;overflow-y:auto;overscroll-behavior:contain}
+html body > .v105-modal.v1125-officials-modal .v1126-game{padding:10px;border:1px solid rgba(96,157,233,.3);background:rgba(7,20,73,.76);border-radius:10px;min-width:0}
+html body > .v105-modal.v1125-officials-modal .v1126-game-head{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:5px}
+html body > .v105-modal.v1125-officials-modal .v1126-game-head b{font-size:11.5px;line-height:1.25;color:white;overflow-wrap:anywhere}
+html body > .v105-modal.v1125-officials-modal .v1126-game-head span{font-size:9.5px;color:#a4dfeb;white-space:nowrap}
+html body > .v105-modal.v1125-officials-modal .v1126-game>small{display:block;color:#b8c9e8;font-size:9.5px;margin:5px 0 9px;overflow-wrap:anywhere}
+html body > .v105-modal.v1125-officials-modal .v1126-game-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+html body > .v105-modal.v1125-officials-modal .v1126-game-fields label{display:flex;min-width:0;flex-direction:column;gap:4px}
+html body > .v105-modal.v1125-officials-modal .v1126-game-fields label.v1126-full{grid-column:1/-1}
+html body > .v105-modal.v1125-officials-modal .v1126-game-fields label span,
+html body > .v105-modal.v1125-officials-modal .v1126-backup span{color:#b6ecfa;font-size:9.5px;font-weight:750;line-height:1.25}
+html body > .v105-modal.v1125-officials-modal .v1126-game-actions{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+html body > .v105-modal.v1125-officials-modal .v1126-game-actions button{min-height:32px;font-size:9.5px;padding:5px 7px}
+html body > .v105-modal.v1125-officials-modal .v1126-status{display:block;font-size:9.5px;margin-top:6px;color:#a7f0e1}
+html body > .v105-modal.v1125-officials-modal .v1126-backup{display:grid;gap:5px}
+html body > .v105-modal.v1125-officials-modal .v1126-backup-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:8px}
+html body > .v105-modal.v1125-officials-modal .v1126-backup-actions button:first-child{background:linear-gradient(115deg,#5be7ef,#2ec0e9);color:#082456;border:0}
+html body > .v105-modal.v1125-officials-modal .v1126-flash{border-radius:10px;padding:8px 11px;color:#e5fdff;background:#154587;border:1px solid #4caad2;font-size:11px;line-height:1.4;margin:0}
+html body > .v105-modal.v1125-officials-modal .v1126-operational :is(button,input,select):focus-visible{outline:2px solid #78f0fa;outline-offset:2px}
+@media (min-width:530px){
+ html body > .v105-modal.v1125-officials-modal .v1126-stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
