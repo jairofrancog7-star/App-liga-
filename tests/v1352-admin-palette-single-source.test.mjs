@@ -44,7 +44,8 @@ test('V1352: el estudio de contenido comparte la paleta sin modificar elementos 
 });
 test('V1352: CSS en la web refrescado sin añadir scripts ni controles',()=>{
  for(const n of ['v1310-admin-paleta-unificada','v1335-admin-app-colors','v1340-admin-mobile-visual-unified','v1246-content-studio']){
-  const match=html.match(new RegExp('src/'+n+'\\.css\\?v=20261010-v1352-unified-navy','g'))||[];
+  const version=n==='v1246-content-studio'?'20261010-v1354-content-controls':'20261010-v1352-unified-navy';
+  const match=html.match(new RegExp('src/'+n+'\\.css\\?v='+version,'g'))||[];
   assert.equal(match.length,1,n+' must load once');
  }
  const refs=['v1310-admin-paleta-unificada','v1335-admin-app-colors','v1340-admin-mobile-visual-unified','v1246-content-studio'];
