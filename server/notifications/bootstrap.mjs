@@ -12,7 +12,7 @@ try{
   await client.query('SELECT pg_advisory_xact_lock($1)',[8117342026]);
   await client.query(`CREATE TABLE IF NOT EXISTS ljr_schema_migrations (
     name TEXT PRIMARY KEY, applied_at TIMESTAMPTZ NOT NULL DEFAULT now())`);
-  const v='notifications-schema-v1084'; // aplica también columnas contact_role y filtros de avisos
+  const v='notifications-schema-v1150'; // migración idempotente: roles, filtros y archivo privado de juntas
   const done=await client.query('SELECT name FROM ljr_schema_migrations WHERE name=$1',[v]);
   if(!done.rowCount){
     const ddl=await readFile(new URL('./schema.sql',import.meta.url),'utf8');
