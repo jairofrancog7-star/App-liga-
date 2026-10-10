@@ -66,3 +66,10 @@ ALTER TABLE ljr_scheduled_notices ADD CONSTRAINT ljr_scheduled_notices_status_ch
  CHECK(status IN ('queued','processing','done','cancelled'));
 CREATE INDEX IF NOT EXISTS ljr_public_notices_idx
  ON ljr_scheduled_notices(published_at DESC) WHERE status='done';
+
+
+-- V1082: preferencias consentidas por dispositivo y segmentación de avisos.
+ALTER TABLE ljr_push_subscriptions ADD COLUMN IF NOT EXISTS preferences JSONB NOT NULL DEFAULT '{}'::jsonb;
+ALTER TABLE ljr_scheduled_notices ADD COLUMN IF NOT EXISTS notice_type TEXT NOT NULL DEFAULT 'general';
+ALTER TABLE ljr_scheduled_notices ADD COLUMN IF NOT EXISTS team TEXT NOT NULL DEFAULT '';
+ALTER TABLE ljr_scheduled_notices ADD COLUMN IF NOT EXISTS field TEXT NOT NULL DEFAULT '';
