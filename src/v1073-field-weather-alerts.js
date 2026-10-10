@@ -34,7 +34,8 @@ function route(){return String(location.hash||'').replace(/^#\/?/,'').split('?')
 function host(){var r=route();return r==='venues'||r==='weatherFields'?document.querySelector('#screen .v921-field-page'):null;}
 function esc(x){return String(x==null?'':x).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c];});}
 function cardId(card,index){var attr=card.getAttribute('data-v921-field');return byId.has(attr)?attr:(FIELDS[index]||{}).id;}
-function mapUrl(f){return 'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(f.name+', Guanajuato, México');}
+var USER_MAP_LINKS={"pozos":"https://goo.gl/maps/BF9dnqf5SaBfu41PA","san-julian":"https://maps.app.goo.gl/5yfZH7nGMtw2Cqqf7","fraccionamiento":"https://maps.app.goo.gl/Y1ZGLTpGJ7XmGCKT7","san-juan":"https://maps.app.goo.gl/mcc7DpevkPW5mW4M9","tavera":"https://maps.app.goo.gl/yBhVkMrXzL3Npv3WA"};
+function mapUrl(f){return USER_MAP_LINKS[f.id]||'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(f.name+', Guanajuato, México');}
 function el(html){var div=document.createElement('div');div.innerHTML=html.trim();return div.firstElementChild;}
 // Iconos SVG consistentes, sin fuentes ni dependencias externas.
 var V1073_ICON_PATHS={
