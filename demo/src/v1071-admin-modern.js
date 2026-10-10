@@ -29,6 +29,7 @@ const glyphs={
  inbox:'<path d="M3 4h18v15H3zM3 14h5l2 3h4l2-3h5"/>'
 };
 function icon(name){
+ const original=window.LJR_ICONS?.node(name);if(original)return original;
  const svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox','0 0 24 24');
  svg.setAttribute('fill','none');svg.setAttribute('stroke','currentColor');
  svg.setAttribute('stroke-width','1.65');svg.setAttribute('stroke-linecap','round');svg.setAttribute('stroke-linejoin','round');

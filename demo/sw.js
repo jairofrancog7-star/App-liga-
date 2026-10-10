@@ -1,5 +1,5 @@
 /* V1072: evitar que la PWA Android conserve estilos y módulos obsoletos. */
-const CACHE='liga-juventino-v1086-competition-original-tabs';
+const CACHE='liga-juventino-v1100-reference-layout';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{

@@ -6,6 +6,8 @@ const HEADERLESS_GAMES=new Set(['video','fantasy','fantasyAccess','fantasyTeam',
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const svg=p=>'<svg viewBox="0 0 24 24" aria-hidden="true">'+p+'</svg>';
 const icons={back:svg('<path d="M20 12H4m7-7-7 7 7 7"/>'),person:svg('<circle cx="12" cy="12" r="10"/><circle cx="12" cy="8" r="3"/><path d="M4.5 18.6a8.3 8.3 0 0 1 15 0"/>'),menu:svg('<circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>')};
+for(const name of Object.keys(icons)) icons[name]=window.LJR_ICONS?.svg(name==='menu'?'overflow':name) || icons[name];
+
 const account=()=>window.LJR_V569_AUTH?.currentAccount ? window.LJR_V569_AUTH.currentAccount() : window.LJR_MAIN_ROUTE?.state?.user||null;
 const media=()=>window.LJR_MEDIA;
 const go=r=>window.LJR_MAIN_ROUTE?.go ? window.LJR_MAIN_ROUTE.go(r) : location.hash='#/'+r;

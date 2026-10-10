@@ -23,6 +23,7 @@
   var managed = new Set();
   var pending = 0;
   function svg(name) {
+    const original=window.LJR_ICONS?.svg(({back:"replay10",next:"forward10",full:"fullscreen",loop:"repeat",sound:"volume",muted:"mute",menu:"overflow"})[name]||name);if(original)return original;
     return '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'+ICONS[name]+'</svg>';
   }
   function button(action,label,body) {
