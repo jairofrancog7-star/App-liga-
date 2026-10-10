@@ -10,6 +10,7 @@ const empty=()=>({attendance:[],tasks:[],votes:[],sign:{president:'',secretary:'
 const read=()=>{try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');return x&&typeof x==='object'&&!Array.isArray(x)?x:{}}catch(_){return {}}};
 const state=read();
 const drafts={};
+const advanced=()=>window.LJR_MEETING_ADVANCED_V1140;
 let form=null,host=null,tab='attendance',qrValue='',scanner=null,search='';
 function date(){return $('input[data-x="date"]',form)?.value||''}
 function validDate(d){if(!/^\d{4}-\d{2}-\d{2}$/.test(d))return false;const x=new Date(d+'T12:00:00');return !isNaN(x)&&x.getDay()===2}
@@ -73,11 +74,16 @@ function calendar(){
  const s=snapshot();
  return '<p class="mh-tip">Crea un evento en Google Calendar o descarga un archivo .ics para invitar a los delegados. El envío de WhatsApp requiere confirmación manual.</p><div class="mh-overview"><b>'+fmt(date())+'</b><small>'+esc(s.time||'Hora por definir')+' · '+esc(s.place||'Lugar por definir')+'</small></div><div class="mh-buttons">'+button('google','Abrir Google Calendar')+button('ics','Descargar invitación .ics')+button('whatsapp','Compartir convocatoria')+'</div><p class="mh-tip">Los recordatorios recurrentes y sincronización multiusuario necesitan un backend con consentimiento.</p>';
 }
+const advancedCtx={get host(){return host},KEY,state,date,item,snapshot,preserve,persist,render,go,download,validDate,fmt,esc,msg};
 function render(){
  if(!host?.isConnected)return;
- const choices=[['attendance','Asistencia'],['tasks','Acuerdos'],['votes','Votaciones'],['minutes','Acta'],['history','Historial'],['calendar','Calendario']];
+ const choices=[['attendance','Asistencia'],['tasks','Acuerdos'],['votes','Votaciones'],['minutes','Acta'],['history','Historial'],['calendar','Calendario'],['summary','Resumen'],['files','Archivos']];
  const views={attendance,tasks,votes,minutes,history,calendar};
- host.innerHTML='<div class="mh-header"><div><small>GESTIÓN DE JUNTAS</small><h4>Control de delegados</h4></div><span>Local</span></div><div class="mh-tabs" role="tablist" aria-label="Herramientas de junta">'+choices.map(([id,label])=>'<button type="button" role="tab" aria-selected="'+(id===tab)+'" data-mh-action="tab" data-tab="'+id+'" class="'+(id===tab?'active':'')+'">'+label+'</button>').join('')+'</div><div class="mh-body">'+views[tab]()+'</div><p class="mh-status" aria-live="polite" data-mh-status>Los registros nuevos se guardan solo en este navegador.</p>';
+ const base=views[tab]?.()||'';
+ const replacement=advanced()?.view?.(tab,advancedCtx,base);
+ const body=replacement??base;
+ host.innerHTML='<div class="mh-header"><div><small>GESTIÓN DE JUNTAS</small><h4>Control de delegados</h4></div><span>Local</span></div><div class="mh-tabs" role="tablist" aria-label="Herramientas de junta">'+choices.map(([id,label])=>'<button type="button" role="tab" aria-selected="'+(id===tab)+'" data-mh-action="tab" data-tab="'+id+'" class="'+(id===tab?'active':'')+'">'+label+'</button>').join('')+'</div><div class="mh-body">'+body+'</div><p class="mh-status" aria-live="polite" data-mh-status>Los registros nuevos se guardan solo en este navegador.</p>';
+ advanced()?.afterRender?.(tab,advancedCtx);
 }
 function download(file,content,type){const b=new Blob([content],{type}),url=URL.createObjectURL(b),a=document.createElement('a');a.href=url;a.download=file;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200)}
 const icsEsc=s=>String(s||'').replace(/\\/g,'\\\\').replace(/\r?\n/g,'\\n').replace(/[,;]/g,'\\$&');
@@ -95,7 +101,8 @@ function printAct(){
  ['Orden del día',s.agenda],['Acuerdos / minuta',s.agreements],['Seguimiento',r.tasks.map(t=>t.name+' — '+(t.owner||'—')+' — '+(t.due||'—')+' ('+t.status+')').join('\n')],
  ['Votaciones',r.votes.map(v=>v.title+': '+Object.values(v.ballots||{}).map(b=>b.team+' '+b.vote).join(', ')).join('\n')]
  ];
- const html='<!doctype html><html lang="es"><meta charset="utf-8"><title>Acta Junta '+esc(d)+'</title><style>@page{size:letter;margin:15mm}body{font:12px Arial;color:#102142}h1{color:#084c9e}h2{font-size:15px;color:#0956aa;border-bottom:1px solid #ddd;padding-bottom:5px}.field{padding:10px 0;white-space:pre-wrap;line-height:1.5}.meta{background:#eef5ff;padding:12px;border-radius:8px}footer{margin-top:35px;display:flex;gap:25px}footer div{flex:1;border-top:1px solid #777;padding-top:10px}</style><h1>Liga Municipal de Fútbol Juventino Rosas</h1><h2>Acta de junta semanal</h2><div class="meta">Fecha: '+esc(fmt(d))+' · Hora: '+esc(s.time||'—')+' · Lugar: '+esc(s.place||'—')+' · Responsable: '+esc(s.owner||'—')+'</div>'+blocks.map(([h,v])=>'<section><h2>'+esc(h)+'</h2><div class="field">'+line(v||'Sin registros')+'</div></section>').join('')+'<footer><div>Presidente: '+esc(r.sign.president||'Sin registrar')+'</div><div>Secretario: '+esc(r.sign.secretary||'Sin registrar')+'</div></footer><p>Conformidad registrada: '+(r.sign.approved?'Sí':'No')+'. Documento generado desde datos locales; requiere validación de los responsables.</p></html>';
+ const signature=s=>/^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(String(s||''))&&s.length<230000?s:'';
+ const html='<!doctype html><html lang="es"><meta charset="utf-8"><title>Acta Junta '+esc(d)+'</title><style>@page{size:letter;margin:15mm}body{font:12px Arial;color:#102142}h1{color:#084c9e}h2{font-size:15px;color:#0956aa;border-bottom:1px solid #ddd;padding-bottom:5px}.field{padding:10px 0;white-space:pre-wrap;line-height:1.5}.meta{background:#eef5ff;padding:12px;border-radius:8px}footer{margin-top:35px;display:flex;gap:25px}footer div{flex:1;border-top:1px solid #777;padding-top:10px}footer img{display:block;width:180px;height:70px;object-fit:contain}</style><h1>Liga Municipal de Fútbol Juventino Rosas</h1><h2>Acta de junta semanal</h2><div class="meta">Fecha: '+esc(fmt(d))+' · Hora: '+esc(s.time||'—')+' · Lugar: '+esc(s.place||'—')+' · Responsable: '+esc(s.owner||'—')+'</div>'+blocks.map(([h,v])=>'<section><h2>'+esc(h)+'</h2><div class="field">'+line(v||'Sin registros')+'</div></section>').join('')+'<footer><div>'+(signature(r.sign?.images?.president)?'<img src="'+signature(r.sign.images.president)+'" alt="Firma de presidencia">':'')+'Presidente: '+esc(r.sign.president||'Sin registrar')+'</div><div>'+(signature(r.sign?.images?.secretary)?'<img src="'+signature(r.sign.images.secretary)+'" alt="Firma de secretaría">':'')+'Secretario: '+esc(r.sign.secretary||'Sin registrar')+'</div></footer><p>Conformidad registrada: '+(r.sign.approved?'Sí':'No')+'. Documento generado desde datos locales; requiere validación de los responsables.</p></html>';
  const frame=document.createElement('iframe');frame.style.cssText='position:fixed;left:-10000px;top:0;width:816px;height:1000px;border:0';frame.setAttribute('aria-hidden','true');document.body.append(frame);frame.onload=()=>{try{frame.contentWindow.focus();frame.contentWindow.print()}catch(_){msg('No se pudo imprimir; usa Descargar respaldo.')}};frame.srcdoc=html;setTimeout(()=>frame.remove(),60000);
 }
 function exportData(){preserve();download('respaldo-juntas-liga-'+date()+'.json',JSON.stringify({format:'LJR-meetings-v1130',exported:new Date().toISOString(),records:state},null,2),'application/json;charset=utf-8')}
@@ -110,6 +117,7 @@ async function camera(){
 function stopCamera(){if(scanner){scanner.active=false;scanner.stream.getTracks().forEach(t=>t.stop());scanner.layer.remove();scanner=null}}
 function handle(action,target){
  if(action==='tab')return go(target.dataset.tab);
+ if(advanced()?.handle?.(action,target,advancedCtx))return;
  if(action==='close-camera'){stopCamera();return}
  if(action==='camera')return camera();
  if(action==='add-attendee'||action==='make-qr'){
@@ -135,6 +143,7 @@ function handle(action,target){
  if(action==='whatsapp')return whatsapp();
 }
 function mount(){
+ if(!window.LJR_MEDIA?.admin)return;
  if(scanner&&!scanner.layer.isConnected)stopCamera();
  const found=$('.v105-meeting-form');if(!found||!$('[data-v875-meeting]',found)||found.dataset.mhReady)return;
  form=found;found.dataset.mhReady='1';host=document.createElement('section');host.className='ljr-meeting-hub';host.setAttribute('aria-label','Herramientas de gestión de juntas');
@@ -150,6 +159,7 @@ function mount(){
   }
  }catch(_){} 
  host.addEventListener('click',e=>{const b=e.target.closest('[data-mh-action]');if(b){e.preventDefault();handle(b.dataset.mhAction,b)}});
+ host.addEventListener('change',e=>advanced()?.onChange?.(e,advancedCtx));
  host.addEventListener('input',e=>{if(e.target.matches('[data-mh-input="search"]')){search=e.target.value.toLocaleLowerCase('es-MX');const start=e.target.selectionStart;render();const input=$('[data-mh-input="search"]',host);input?.focus();input?.setSelectionRange(start,start)}});
  const save=$('[data-save]',form.closest('.v105-dialog'));save?.addEventListener('click',()=>{if(validDate(date())){const r=item();r.minute=snapshot();persist()}});
  const dateField=$('[data-x="date"]',form);dateField?.addEventListener('change',()=>{qrValue='';render()});
