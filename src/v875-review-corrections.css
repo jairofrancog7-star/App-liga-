@@ -655,7 +655,7 @@ html body.ljr-v777[data-app-route="playerDetail"] #screen .v379-hero>[data-v379-
 }
 .v919-hero-logo{
   width:54px;height:54px;border-radius:17px;display:grid;place-items:center;
-  background:linear-gradient(145deg,rgba(44,224,240,.2),rgba(35,83,190,.24));
+  background:linear-gradient(145deg,#fff,#e5f0ff);
   border:1px solid rgba(92,226,243,.3);overflow:hidden
 }
 .v919-hero-logo img{width:42px;height:42px;object-fit:contain!important;background:transparent!important;filter:none!important}

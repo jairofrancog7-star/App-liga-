@@ -20,41 +20,11 @@ function dateMX(value){
   .format(new Date(Number(m[1]),Number(m[2])-1,Number(m[3]),12));}
  catch(_){return value||'—';}
 }
-// The old WebP logo has a solid dark outer matte. Remove only its outer,
-// connected dark area, leaving the black details of the emblem intact.
+// Escudo oficial de la Liga sin fondo. PDF y PNG reutilizan el mismo archivo.
+// Evita el flood-fill y la reducción previa: borraban trazos oscuros del escudo.
+const OFFICIAL_LEAGUE_LOGO=new URL('./assets/liga-logo-oficial-transparente.png',document.baseURI).href;
 function transparentLogo(){
- if(logoPromise)return logoPromise;
- logoPromise=new Promise(resolve=>{
-  const img=new Image();
-  img.onload=()=>{
-   try{
-    const w=Math.max(1,Math.round(img.naturalWidth*Math.min(1,360/img.naturalWidth,360/img.naturalHeight)));
-    const h=Math.max(1,Math.round(img.naturalHeight*w/img.naturalWidth));
-    const c=document.createElement('canvas');c.width=w;c.height=h;
-    const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0,w,h);
-    const pixels=ctx.getImageData(0,0,w,h);
-    const rgba=pixels.data,visited=new Uint8Array(w*h),queue=new Int32Array(w*h);
-    let tail=0,head=0;
-    function background(n){
-     const i=n*4,r=rgba[i],g=rgba[i+1],b=rgba[i+2],a=rgba[i+3];
-     return a<20 || (Math.max(r,g,b)<86 && Math.max(r,g,b)-Math.min(r,g,b)<42);
-    }
-    function push(n){if(n<0||n>=w*h||visited[n]||!background(n))return;visited[n]=1;queue[tail++]=n;}
-    for(let x=0;x<w;x++){push(x);push((h-1)*w+x);}
-    for(let y=0;y<h;y++){push(y*w);push(y*w+w-1);}
-    while(head<tail){
-     const n=queue[head++],x=n%w,y=(n/w)|0;
-     rgba[n*4+3]=0;
-     if(x)push(n-1);if(x<w-1)push(n+1);
-     if(y)push(n-w);if(y<h-1)push(n+w);
-    }
-    ctx.putImageData(pixels,0,0);
-    resolve(c.toDataURL('image/png'));
-   }catch(_){resolve(img.src);}
-  };
-  img.onerror=()=>resolve('');
-  img.src=new URL('./assets/liga-logo.webp',document.baseURI).href;
- });
+ if(!logoPromise)logoPromise=Promise.resolve(OFFICIAL_LEAGUE_LOGO);
  return logoPromise;
 }
 function loadImage(url){
@@ -117,15 +87,15 @@ async function renderPNG(form){
  ctx.fillStyle='#ffffff';ctx.fillRect(0,0,w,canvas.height);
  let y=54;
  if(logo){
-  const area=118,ratio=Math.min(area/logo.width,area/logo.height);
+  const area=136,ratio=Math.min(area/logo.width,area/logo.height);
   const iw=logo.width*ratio,ih=logo.height*ratio;
   ctx.drawImage(logo,margin+(area-iw)/2,y+(area-ih)/2,iw,ih);
  }
  ctx.textBaseline='top';ctx.fillStyle='#0d52ab';ctx.font='bold 17px Arial';
- ctx.fillText('LIGA MUNICIPAL DE FÚTBOL JUVENTINO ROSAS',205,y+10);
- ctx.fillStyle='#0b204d';ctx.font='bold 43px Arial';ctx.fillText('Minuta de junta semanal',205,y+43);
+ ctx.fillText('LIGA MUNICIPAL DE FÚTBOL JUVENTINO ROSAS',220,y+10);
+ ctx.fillStyle='#0b204d';ctx.font='bold 43px Arial';ctx.fillText('Minuta de junta semanal',220,y+43);
  ctx.fillStyle='#637083';ctx.font='22px Arial';
- ctx.fillText('Documento generado desde la aplicación oficial de la Liga.',205,y+99);
+ ctx.fillText('Documento generado desde la aplicación oficial de la Liga.',220,y+99);
  y+=148;ctx.fillStyle='#1055b0';ctx.fillRect(margin,y,inner,4);y+=24;
  let offset=0;
  for(const row of metaRows){

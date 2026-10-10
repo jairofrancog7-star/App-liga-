@@ -11,14 +11,16 @@ test('minuta actions scroll with the modal and are not sticky',()=>{
  assert.match(css,/html body > \.v105-modal\.v875-meeting-modal \.v105-dialog\{[\s\S]*?overflow-y:auto!important/);
 });
 
-test('PDF minuta logo is processed to remove its dark background',()=>{
+test('PDF, hero and PNG minute share a real transparent crest',()=>{
  const page=src('src/v875-review-corrections.js');
  const media=src('src/v926-meeting-media.js');
- assert.match(page,/await window\.LJR_MINUTA_MEDIA\?\.transparentLogo\?\.\(\)/);
- assert.doesNotMatch(page,/const leagueLogo='https:\/\/raw\.githubusercontent\.com/);
- assert.match(media,/ctx\.putImageData\(pixels,0,0\)/);
- assert.match(media,/rgba\[n\*4\+3\]=0/);
- assert.match(page,/src="'\+esc\(leagueLogo\)/);
+ assert.match(page,/await window\\.LJR_MINUTA_MEDIA\\?\\.transparentLogo\\?\\.\\(\\)/);
+ assert.match(page,/liga-logo-oficial-transparente\\.png/);
+ assert.match(media,/OFFICIAL_LEAGUE_LOGO=new URL/);
+ assert.match(media,/liga-logo-oficial-transparente\\.png/);
+ assert.doesNotMatch(media,/ctx\\.putImageData\\(pixels,0,0\\)/);
+ assert.match(page,/src="'\\+esc\\(leagueLogo\\)/);
+ assert.match(media,/const area=136/);
 });
 
 test('minuta PNG export shares actual image or downloads PNG',()=>{
