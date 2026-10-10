@@ -45,6 +45,8 @@ jobs:
       - name: Generar diagnóstico sin publicar nada
         id: audit
         shell: bash
+        env:
+          LJR_OFFICIAL_NOTICE_APPROVAL_SECRET: ${{ secrets.LJR_OFFICIAL_NOTICE_APPROVAL_SECRET }}
         run: |
           node .github/scripts/review-official-data.mjs "$RUNNER_TEMP/review.json" "$RUNNER_TEMP/review.md"
           cat "$RUNNER_TEMP/review.md" >> "$GITHUB_STEP_SUMMARY"
