@@ -24,7 +24,9 @@ test('Todos los carruseles permiten ver cada cuadro completo al deslizar',()=>{
   assert.match(css,/scroll-snap-type:x mandatory!important/);
   assert.match(css,/scroll-padding-inline:12px!important/);
   assert.match(css,/padding:0 12px 12px!important/);
-  assert.match(css,/flex:0 0 100%!important/);
+  assert.match(css,/flex:0 0 82%!important/);
+  assert.match(css,/flex-basis:86%!important/);
+  assert.doesNotMatch(css,/flex:0 0 100%!important/);
   assert.match(css,/mask-image:none!important/);
   assert.match(css,/scroll-snap-stop:always!important/);
 });
