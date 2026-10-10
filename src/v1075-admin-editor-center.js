@@ -685,14 +685,14 @@ async function exportBackup(){
   if(who.owner!==true)throw Error('Solo las cuentas principales autorizadas por el servidor pueden consultar este respaldo.');
   if(!document.querySelector('[data-ljr-backup-v1212-css]')){
    const css=document.createElement('link');css.rel='stylesheet';
-   css.href=new URL('./src/v1212-official-backup-center.css?v=20261010-v1212',document.baseURI).href;
+   css.href=new URL('./src/v1212-official-backup-center.css?v=20261010-v1213-local-ai-official-blue',document.baseURI).href;
    css.setAttribute('data-ljr-backup-v1212-css','');document.head.append(css);
   }
   if(!window.LJR_BACKUP_CENTER?.open){
    if(!window.__LJR_BACKUP_CENTER_LOADING){
     window.__LJR_BACKUP_CENTER_LOADING=new Promise((resolve,reject)=>{
      const script=document.createElement('script');script.async=true;
-     script.src=new URL('./src/v1212-official-backup-center.js?v=20261010-v1212',document.baseURI).href;
+     script.src=new URL('./src/v1212-official-backup-center.js?v=20261010-v1213-local-ai-official-blue',document.baseURI).href;
      script.onload=()=>window.LJR_BACKUP_CENTER?.open?resolve():reject(Error('El módulo de respaldo no pudo iniciarse.'));
      script.onerror=()=>reject(Error('No se pudo cargar el respaldo protegido.'));
      document.head.append(script);
