@@ -1,0 +1,209 @@
+/* 2026-10-10 · Administración de la Liga: legibilidad, navegación local y menú táctil.
+   Sólo afecta al modal de administración existente. No modifica permisos ni API. */
+html body .liga-media-modal:has(>section.ljr-admin-manage) {
+  padding: max(8px, env(safe-area-inset-top, 0px)) 8px max(8px, env(safe-area-inset-bottom, 0px))!important;
+  align-items:center!important;
+}
+html body .liga-media-modal>section.ljr-admin-manage {
+  width:min(100%,720px)!important;
+  max-width:720px!important;
+  max-height:calc(100dvh - 16px)!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  scroll-padding-top:74px!important;
+  -webkit-overflow-scrolling:touch;
+}
+html body .liga-media-modal>section.ljr-admin-manage .ljr-admin-area {
+  padding:11px!important;
+  margin:8px 0!important;
+}
+html body .liga-media-modal>section.ljr-admin-manage .ljr-simple-intro {
+  padding:9px 10px!important;
+  margin:0 0 7px!important;
+}
+html body .liga-media-modal>section.ljr-admin-manage .ljr-guide {
+  margin:0 0 9px!important;
+}
+html body .liga-media-modal>section.ljr-admin-manage .ljr-admin-intro {
+  margin:5px 0 8px!important;
+}
+html body .liga-media-modal>section.ljr-admin-manage .ljr-admin-action-grid {
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:9px!important;
+  width:100%!important;
+  align-items:stretch!important;
+}
+html body .liga-media-modal>section.ljr-admin-manage .ljr-admin-action-grid > button.ljr-admin-tile {
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  align-items:center!important;
+  gap:8px!important;
+  min-width:0!important;
+  min-height:110px!important;
+  height:100%!important;
+  padding:12px 8px!important;
+  text-align:center!important;
+  border-radius:14px!important;
+  border-color:#688ddd!important;
+  background:linear-gradient(155deg,#1d4c9d,#102d73)!important;
+  color:#f8fbff!important;
+  overflow:visible!important;
+  font:750 12.5px/1.28 system-ui,sans-serif!important;
+}
+html body .liga-media-modal>section.ljr-admin-manage .ljr-admin-action-grid > button.ljr-admin-tile-primary {
+  background:linear-gradient(145deg,#2368cc,#19428b)!important;
+}
+html body .liga-media-modal>section.ljr-admin-manage .ljr-admin-action-grid > button.ljr-admin-tile-danger {
+  background:linear-gradient(145deg,#402658,#241b50)!important;
+  border-color:#916091!important;
+}
+html body .liga-media-modal>section.ljr-admin-manage .ljr-admin-action-grid .ljr-admin-tile-icon {
+  flex:0 0 34px!important;
+  width:34px!important;
+  height:34px!important;
+  border-radius:10px!important;
+  background:#2a5cb0!important;
+  color:#c5dbff!important;
+}
+html body .liga-media-modal>section.ljr-admin-manage .ljr-admin-action-grid .ljr-admin-tile-icon svg {
+  width:21px!important;height:21px!important;
+}
+html body .liga-media-modal>section.ljr-admin-manage .ljr-admin-action-grid .ljr-admin-tile-label {
+  display:block!important;
+  flex:none!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  line-height:1.28!important;
+  white-space:normal!important;
+  word-break:normal!important;
+  overflow-wrap:normal!important;
+  hyphens:none!important;
+  text-wrap:balance;
+  letter-spacing:-.12px!important;
+}
+html body .liga-media-modal>section.ljr-admin-manage .ljr-admin-action-grid .ljr-admin-tile-next {
+  display:none!important;
+}
+html body .liga-media-modal>section.ljr-admin-manage .ljr-admin-action-grid > button[hidden] {
+  display:none!important;
+}
+html body .liga-media-modal>section.ljr-admin-manage .ljr-smart-hub {
+  background:linear-gradient(155deg,#123982,#0a245e)!important;
+  border:1px solid rgba(119,164,242,.55)!important;
+  border-radius:14px!important;
+  padding:11px!important;
+  margin:8px 0!important;
+  color:#f4f8ff!important;
+}
+html body .liga-media-modal .ljr-smart-heading {
+  display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  margin:0 0 8px;
+}
+html body .liga-media-modal .ljr-smart-heading strong {
+  font:800 13.5px/1.3 system-ui,sans-serif!important;
+}
+html body .liga-media-modal .ljr-smart-heading small {
+  color:#b9d3f8!important;font:500 10.5px/1.35 system-ui,sans-serif!important;
+}
+html body .liga-media-modal .ljr-smart-search {
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:43px!important;
+  padding:10px 12px!important;
+  border:1px solid #6898e5!important;
+  border-radius:11px!important;
+  background:#071c54!important;
+  color:#fff!important;
+  font:500 13px/1.35 system-ui,sans-serif!important;
+}
+html body .liga-media-modal .ljr-smart-search::placeholder{color:#bed1ec!important;opacity:1!important}
+html body .liga-media-modal .ljr-smart-search:focus-visible,
+html body .liga-media-modal .ljr-smart-hub button:focus-visible,
+html body .liga-media-modal .ljr-smart-tasks input:focus-visible {
+  outline:2px solid #c0deff!important;outline-offset:2px!important;
+}
+html body .liga-media-modal .ljr-smart-actions {
+  display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;
+}
+html body .liga-media-modal .ljr-smart-actions button,
+html body .liga-media-modal .ljr-smart-recommendation button,
+html body .liga-media-modal .ljr-smart-tasks button {
+  min-height:34px!important;
+  width:auto!important;
+  max-width:100%!important;
+  padding:6px 10px!important;
+  border:1px solid #719be7!important;
+  border-radius:9px!important;
+  background:#19488f!important;
+  color:#f9fcff!important;
+  font:700 11.5px/1.3 system-ui,sans-serif!important;
+  cursor:pointer!important;
+}
+html body .liga-media-modal .ljr-smart-actions button[aria-pressed="true"]{
+  background:#2862bd!important;border-color:#b0d2ff!important;
+}
+html body .liga-media-modal .ljr-smart-recommendation {
+  display:flex;align-items:center;justify-content:space-between;gap:9px;
+  border-top:1px solid #537bb18c;margin-top:8px;padding-top:8px;
+}
+html body .liga-media-modal .ljr-smart-recommendation p {
+  flex:1;min-width:0;margin:0!important;
+  color:#d3e4fc!important;font:500 11.5px/1.4 system-ui,sans-serif!important;
+}
+html body .liga-media-modal .ljr-smart-recommendation button{
+  flex:none!important;max-width:38%!important;
+}
+html body .liga-media-modal .ljr-smart-count {
+  display:block;margin:6px 0 0!important;color:#bdcff0!important;
+  font:500 10.5px/1.3 system-ui,sans-serif!important;
+}
+html body .liga-media-modal .ljr-smart-tasks {
+  margin:9px 0 0!important;padding:8px 10px!important;
+  background:#0a265e!important;border:1px solid #4e7cbd!important;
+  border-radius:11px!important;
+}
+html body .liga-media-modal .ljr-smart-tasks > summary {
+  cursor:pointer;list-style:none;color:#d2e5ff!important;
+  font:700 12px/1.35 system-ui,sans-serif!important;
+}
+html body .liga-media-modal .ljr-smart-tasks > summary::-webkit-details-marker{display:none}
+html body .liga-media-modal .ljr-smart-task-list {display:grid;gap:8px;margin:9px 0 3px}
+html body .liga-media-modal .ljr-smart-task {
+  display:flex;align-items:center;gap:7px;min-width:0!important;
+  font:500 11.5px/1.35 system-ui,sans-serif!important;color:#f4f9ff!important;
+}
+html body .liga-media-modal .ljr-smart-task input{
+  flex:0 0 18px!important;width:18px!important;height:18px!important;
+  min-height:18px!important;margin:0!important;accent-color:#568af0!important;
+}
+html body .liga-media-modal .ljr-smart-task span{flex:1;min-width:0;overflow-wrap:break-word}
+html body .liga-media-modal .ljr-smart-task span.is-complete{
+  text-decoration:line-through;color:#a9bddd;
+}
+@media (min-width:590px) {
+  html body .liga-media-modal>section.ljr-admin-manage .ljr-admin-action-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  html body .liga-media-modal>section.ljr-admin-manage .ljr-admin-action-grid > button.ljr-admin-tile {
+    flex-direction:row!important;text-align:left!important;
+    justify-content:flex-start!important;min-height:62px!important;
+    padding:10px 12px!important;font-size:13px!important;
+  }
+  html body .liga-media-modal>section.ljr-admin-manage .ljr-admin-action-grid .ljr-admin-tile-label{
+    flex:1!important;text-wrap:wrap;
+  }
+}
+@media (max-width:340px){
+  html body .liga-media-modal>section.ljr-admin-manage .ljr-admin-action-grid > button.ljr-admin-tile{
+    font-size:11.8px!important;padding:10px 6px!important;
+  }
+  html body .liga-media-modal .ljr-smart-recommendation{align-items:stretch;flex-direction:column}
+  html body .liga-media-modal .ljr-smart-recommendation button{max-width:100%!important}
+}
+@media (prefers-reduced-motion:reduce){
+  html body .liga-media-modal>section.ljr-admin-manage * {transition:none!important}
+}
