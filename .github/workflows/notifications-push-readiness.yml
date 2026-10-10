@@ -67,6 +67,17 @@ jobs:
           const config=await get('/config');
           assert.equal(config.pushEnabled,true,'Config pública no habilitada');
           assert.equal(config.vapidPublicKey,key.publicKey,'Clave VAPID distinta entre endpoints');
+          // Verificar que el endpoint de prueba privada EXISTE pero rechaza
+          // solicitudes sin suscripción: jamás envía un mensaje en CI.
+          const denied=await fetch(base+'/api/push/self-test',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({subscription:{endpoint:'invalid'}}),
+            signal:AbortSignal.timeout(12000),
+            redirect:'error'
+          });
+          assert.equal(denied.status,400,'La prueba privada debe rechazar dispositivos no registrados');
+          console.log('OK: prueba privada protegida (400 sin suscripción).');
           console.log('OK: HTTPS, PostgreSQL, programador y VAPID listos.');
           console.log('Nota: esta prueba NO confirma suscripciones ni entrega real en Android cerrado.');
           NODE
