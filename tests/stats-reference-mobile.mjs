@@ -13,17 +13,23 @@ const rect=e=>{const r=e.getBoundingClientRect();return {top:r.top,bottom:r.bott
  for(const width of (process.env.STATS_WIDTHS||'360,393,412').split(',').map(Number)){
   const browser=await launch();
   try{
-  const page=await browser.newPage({viewport:{width,height:900},isMobile:true,hasTouch:true});
+  const page=await browser.newPage({viewport:{width,height:900},isMobile:true,hasTouch:true,serviceWorkers:'block'});
   page.setDefaultTimeout(45000);
   // Geometry and interactions use the local official dataset; avoid hanging
   // on third-party media servers in an isolated CI browser.
-  await page.route('https://**',route=>route.abort());
-  await page.route('http://app.test/**',async route=>{
-   const pathname=new URL(route.request().url()).pathname;
-   const file=path.join(root,'dist',pathname==='/'?'index.html':pathname);
+  await page.route('**/*',async route=>{
+   const url=new URL(route.request().url());
+   if(url.hostname!=='app.test'){
+    if(route.request().resourceType()==='image')return route.fulfill({contentType:'image/png',body:Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a2ioAAAAASUVORK5CYII=','base64')});
+    return route.abort();
+   }
+   const pathname=url.pathname.replace(/^\/App-liga-/, '')||'/';
+   // Production also serves the deferred source scripts alongside Vite assets.
+   let file=path.join(root,'dist',pathname==='/'?'index.html':pathname);
+   if(!fs.existsSync(file)&&pathname.startsWith('/src/'))file=path.join(root,pathname);
    try{await route.fulfill({body:fs.readFileSync(file),contentType:({'html':'text/html','js':'application/javascript','css':'text/css','json':'application/json','svg':'image/svg+xml','webp':'image/webp','png':'image/png','jpg':'image/jpeg'})[path.extname(file).slice(1)]||'application/octet-stream'});}catch{await route.fulfill({status:404,body:'missing'});}
   });
-  await page.goto('http://app.test/#/leagueData',{waitUntil:'domcontentloaded'});
+  await page.goto('http://app.test/App-liga-/#/leagueData',{waitUntil:'domcontentloaded'});
   await page.waitForSelector('[data-v33-head]');
   await page.waitForTimeout(1200);
   const expanded=await page.locator('[data-v33-head]').evaluate(rect);
@@ -34,6 +40,13 @@ const rect=e=>{const r=e.getBoundingClientRect();return {top:r.top,bottom:r.bott
   assert.ok(phase.bottom+8<=tabs.top,'Fase final must fit above the tabs');
   const heading=await page.locator('.v33-general-title').first().evaluate(rect);
   assert.ok(heading.top>=tabs.bottom&&heading.top-tabs.bottom<35,'first heading sits just below white line');
+  // Simulate the extra ancestor spacer left by an older mobile route/layout.
+  await page.locator('#screen').evaluate(e=>e.style.setProperty('padding-top','128px','important'));
+  await page.evaluate(()=>window.dispatchEvent(new Event('resize')));await page.waitForTimeout(300);
+  const recovered=await page.locator('.v33-general-title').first().evaluate(rect);
+  assert.ok(Math.abs(recovered.top-tabs.bottom-width*.05)<1,'legacy extra spacer is removed using the measured white-line position');
+  await page.locator('#screen').evaluate(e=>e.style.removeProperty('padding-top'));
+  await page.evaluate(()=>window.dispatchEvent(new Event('resize')));await page.waitForTimeout(300);
   const padding=await page.locator('[data-v33-data]').evaluate(e=>getComputedStyle(e).paddingTop);
   await page.evaluate(y=>window.scrollTo(0,y),width*.1);
   await page.waitForTimeout(300);
@@ -73,11 +86,12 @@ const rect=e=>{const r=e.getBoundingClientRect();return {top:r.top,bottom:r.bott
    assert.ok(cards[0].left>=0&&cards[0].right<width&&cards[1].left<width,'next card peeks at right edge');
    await carousel.evaluate(e=>e.scrollTo({left:e.clientWidth,behavior:'instant'}));
    assert.ok(await carousel.evaluate(e=>e.scrollLeft)>0,'horizontal carousel scrolls');
-   const expand=page.locator('[data-v33-expand-team],[data-v33-expand-player]').first();
+   const expand=page.locator('[data-v33-expand-team],[data-v33-expand-player],[data-v33-expand-metric]').first();
    console.log('expand',width,tab);
    const count=await expand.locator('..').locator('.v33-stat-row').count();
    await expand.click({noWaitAfter:true});
    assert.ok(await expand.locator('..').locator('.v33-stat-row').count()>count,'see all expands real data');
+   await page.waitForTimeout(300);
    await expand.click({noWaitAfter:true});
    assert.equal(await expand.locator('..').locator('.v33-stat-row').count(),count,'see less restores five rows');
    await page.evaluate(()=>window.scrollTo(0,0));await carousel.evaluate(e=>e.scrollTo({left:0,behavior:'instant'}));
@@ -89,9 +103,13 @@ const rect=e=>{const r=e.getBoundingClientRect();return {top:r.top,bottom:r.bott
    assert.match(await expand.textContent(),/Ver todos los (equipos|jugadores)/,'full footer label returns after collapse');
    await page.screenshot({path:process.env.STATS_SHOTS_DIR?path.join(process.env.STATS_SHOTS_DIR,`stats-${width}-${tab}.png`):`/tmp/stats-${width}-${tab}.png`});
    if(tab==='player'){
-    assert.equal(await page.locator('.v33-stat-card').first().locator('h3').textContent(),'Goles');
-    assert.ok(await page.locator('.v33-stat-card').first().locator('.v33-stat-row > strong').evaluateAll(es=>es.every(e=>/^\d+$/.test(e.textContent))));
-    const goals=page.locator('[data-v33-expand-goals]');
+    const sections=await page.locator('[data-v33-player-section]').evaluateAll(es=>es.map(e=>({title:e.querySelector('h2').textContent,top:e.getBoundingClientRect().top,bottom:e.getBoundingClientRect().bottom,cards:e.querySelectorAll('.v33-stat-card').length})));
+    assert.deepEqual(sections.map(s=>s.title),['Datos clave','Goles','Remates','Ataque','Distribución','Defensa','Portería','Información disciplinaria']);
+    for(let i=1;i<sections.length;i++)assert.ok(Math.abs(sections[i].top-sections[i-1].bottom-width*.07)<1,'consecutive vertical sections have the reference spacing');
+    assert.ok(sections.every(s=>s.cards===2),'each section owns its two horizontal cards');
+    assert.equal(await page.locator('[data-v33-metric="goals"] h3').textContent(),'Goles');
+    assert.ok(await page.locator('[data-v33-metric="goals"] .v33-stat-row > strong').evaluateAll(es=>es.every(e=>/^\d+$/.test(e.textContent))));
+    const goals=page.locator('[data-v33-expand-metric="goals"]');
     const before=await goals.locator('..').locator('.v33-stat-row').count();
     await goals.click({noWaitAfter:true});
     assert.ok(await goals.locator('..').locator('.v33-stat-row').count()>before,'official goals expands');

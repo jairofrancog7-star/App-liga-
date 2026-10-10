@@ -13,7 +13,16 @@ test('player statistics shows the official goal ranking with compact official pl
  assert.ok(!screen.innerHTML.includes('✓'),'no registration checkmarks in statistics');
  assert.ok(!screen.innerHTML.includes(' · Jugador registrado'),'only team and position in the secondary line');
  assert.match(screen.innerHTML,/<h2>Goles<\/h2>/);
+ assert.deepEqual([...screen.innerHTML.matchAll(/<h2>([^<]+)<\/h2>/g)].map(m=>m[1]),['Datos clave','Goles','Remates','Ataque','Distribución','Defensa','Portería','Información disciplinaria']);
  const [first]=data.categories['3'].scorers[0].rows;
- const row=screen.innerHTML.match(new RegExp('data-v33-player="'+first[1]+'"[^]*?<strong[^>]*>([^<]+)</strong>'));
+ const goalsCard=screen.innerHTML.split('data-v33-metric="goals"')[1]?.split('</article>')[0]||'';
+ assert.ok(goalsCard.includes(first[1]),'official top scorer appears in the goals card');
+ assert.ok(!goalsCard.includes('goles en temporada'),'team summaries never become player rankings');
+ const shotsCard=screen.innerHTML.split('data-v33-metric="shots"')[1]?.split('</article>')[0]||'';
+ assert.match(shotsCard,/Datos no publicados/);
+ assert.ok([...shotsCard.matchAll(/<strong[^>]*>([^<]+)<\/strong>/g)].every(m=>m[1]==='—'),'unknown shots never inherit a player goal count');
+ const yellow=screen.innerHTML.split('data-v33-metric="yellow"')[1]?.split('</article>')[0]||'';
+ assert.ok(yellow.includes(data.categories['3'].cards[0].rows.find(r=>r[0]==='Amarilla')[1]),'disciplinary section contains published cards');
+ const row=goalsCard.match(new RegExp('data-v33-player="'+first[1]+'"[^]*?<strong[^>]*>([^<]+)</strong>'));
  assert.equal(row?.[1],first[3],'goals are official numeric values, not registration check marks');
 });

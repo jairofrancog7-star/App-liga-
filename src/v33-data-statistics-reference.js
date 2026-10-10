@@ -122,16 +122,18 @@ function playerRow(p,index){
  const profile=playerProfile(p.name,p.team);
  const position=profile?.position&&profile.position!=='No especificada'?profile.position:'';
  const scorer=scorerEntries().find(r=>same(r.name,p.name)&&same(r.team,p.team));
- const goals=p.goals??scorer?.goals;
+ const metric=p.metricTitle||'Goles';
+ const goals=Object.prototype.hasOwnProperty.call(p,'value')?p.value:p.goals??scorer?.goals;
+ const valueLabel=goals==null?metric+' no publicados':goals+' '+metric.toLowerCase();
  const detail=p.team+(position?' · '+position:'');
- return '<button type="button" class="v33-stat-row player" data-v33-player="'+esc(p.name)+'" data-v33-player-team="'+esc(p.team)+'" title="'+esc(p.name+' · '+detail+' · '+(goals==null?'Goles no publicados':goals+' goles'))+'">'+
+ return '<button type="button" class="v33-stat-row player" data-v33-player="'+esc(p.name)+'" data-v33-player-team="'+esc(p.team)+'" title="'+esc(p.name+' · '+detail+' · '+valueLabel)+'">'+
    '<span class="v33-rank">'+esc(p.rank??(index+1))+'</span>'+playerAvatar(p.name,p.team,'v33-player-team-logo v576-player-avatar')+
    '<span class="v33-row-copy"><b>'+esc(p.name)+'</b><small data-v33-player-detail>'+teamLogo(p.team,'v33-inline-team-logo')+esc(detail)+'</small></span>'+
-   '<strong aria-label="'+(goals==null?'Goles no publicados':esc(goals)+' goles')+'">'+esc(goals??'—')+'</strong>'+
+   '<strong aria-label="'+esc(valueLabel)+'">'+esc(goals??'—')+'</strong>'+
  '</button>';
 }
 function scorerEntries(){
- return (current()?.scorers?.[0]?.rows||[]).filter(r=>r[1]&&r[2]&&/^\d+$/.test(String(r[3]))).map(r=>({rank:r[0],name:r[1],team:r[2],goals:r[3]}));
+ return (current()?.scorers?.[0]?.rows||[]).filter(r=>r[1]&&r[2]&&!/goles en temporada/i.test(String(r[2]))&&/^\d+$/.test(String(r[3]))).map(r=>({rank:r[0],name:r[1],team:r[2],goals:r[3]}));
 }
 function playerStatCard(title,players,goals=false){
  return '<article class="v33-stat-card"><h3>'+esc(title)+'</h3><div class="v33-stat-list">'+
@@ -167,39 +169,53 @@ function teamDetailedView(){
    '</section>').join('')+
  '</main>';
 }
-function playerSections(){
- const groups=Object.entries(current()?.rosters||{}).map(([team,names])=>({
-   team,
-   players:(Array.isArray(names)?names:[]).map(name=>({team,name}))
- })).filter(g=>g.players.length);
- const sections=[];
- for(let i=0;i<groups.length;i+=2){
-   const a=groups[i],b=groups[i+1];
-   sections.push([
-     i===0?'Jugadores registrados':'Plantillas oficiales',
-     [a,b].filter(Boolean)
-   ]);
+// Separate vertical metric groups; each group owns its horizontal carousel.
+const PLAYER_METRICS={
+ cedulas:'Cédulas registradas', minutes:'Minutos jugados', goals:'Goles', penalties:'Goles de penalti',
+ shots:'Disparos totales', onTarget:'Disparos a puerta', assists:'Asistencias', corners:'Saques de esquina',
+ passAccuracy:'Precisión en el pase (%)', passes:'Pases completados', recoveries:'Balones recuperados', duels:'Duelos ganados',
+ conceded:'Goles encajados', saves:'Paradas', yellow:'Tarjetas amarillas', red:'Tarjetas rojas'
+};
+function playerMetricEntries(metric){
+ const title=PLAYER_METRICS[metric];
+ let players;
+ if(metric==='goals')players=scorerEntries().map(p=>({...p,value:p.goals}));
+ else if(metric==='cedulas')players=Object.values(current()?.player_usage||{}).filter(p=>p.name&&p.team&&Number.isFinite(Number(p.cedulas))).map(p=>({...p,value:Number(p.cedulas)}));
+ else if(metric==='yellow'||metric==='red')players=(current()?.cards?.[0]?.rows||[]).filter(r=>same(r[0],metric==='yellow'?'Amarilla':'Roja')&&r[1]&&r[2]&&/^\d+$/.test(String(r[3]))).map(r=>({name:r[1],team:r[2],value:Number(r[3])}));
+ if(players?.length){
+   players.sort((a,b)=>Number(b.value)-Number(a.value));
+   return {published:true,players:players.map((p,i,all)=>({...p,metricTitle:title,rank:all.findIndex(x=>Number(x.value)===Number(p.value))+1}))};
  }
- return sections;
+ // The source has no minutes, shots, passes or keeper statistics. Keep the
+ // official roster visible, with explicit unknown values rather than zeros.
+ players=rosterEntries();
+ if(metric==='conceded'||metric==='saves')players=players.filter(p=>same(playerProfile(p.name,p.team)?.position,'Portero'));
+ return {published:false,players:players.map(p=>({...p,value:null,rank:'—',metricTitle:title}))};
+}
+function playerMetricCard(metric){
+ const {published,players}=playerMetricEntries(metric),title=PLAYER_METRICS[metric];
+ return '<article class="v33-stat-card" data-v33-metric="'+metric+'" data-v33-published="'+published+'"><h3>'+esc(title)+(published?'':'<small class="v33-unpublished">Datos no publicados</small>')+'</h3><div class="v33-stat-list">'+
+   players.slice(0,5).map(playerRow).join('')+
+   '</div><button type="button" class="v33-see-all" data-v33-expand-metric="'+metric+'" aria-expanded="false">Ver todos los jugadores <span>›</span></button></article>';
+}
+function playerSections(){
+ return [
+   ['Datos clave',['cedulas','minutes']],
+   ['Goles',['goals','penalties']],
+   ['Remates',['shots','onTarget']],
+   ['Ataque',['assists','corners']],
+   ['Distribución',['passAccuracy','passes']],
+   ['Defensa',['recoveries','duels']],
+   ['Portería',['conceded','saves']],
+   ['Información disciplinaria',['yellow','red']]
+ ];
 }
 function playerDetailedView(){
- const groups=Object.entries(current()?.rosters||{}).map(([team,names])=>({
-   team,
-   players:(Array.isArray(names)?names:[]).map(name=>({team,name}))
- })).filter(g=>g.players.length);
- if(!groups.length){
-   return '<main class="v33-data-content v33-detailed v593-detail-horizontal"><section class="v33-general-section v593-detail-section"><div class="v33-general-title"><h2>Jugadores registrados</h2></div><div class="v33-carousel v593-detail-carousel"><article class="v33-stat-card"><div class="v33-stat-list"><div class="v33-stat-row"><span class="v33-row-copy"><b>No hay jugadores publicados</b><small>Liga Juventino Rosas no expone una plantilla pública para esta categoría.</small></span></div></div></article></div></section></main>';
- }
- // Show published numerical statistics first; roster cards use the same metric
- // and leave unpublished values unknown rather than inventing goal totals.
  return '<main class="v33-data-content v33-detailed v593-detail-horizontal">'+
-   '<section class="v33-general-section v593-detail-section">'+
-     '<div class="v33-general-title"><h2>Goles</h2></div>'+
-     '<div class="v33-carousel v593-detail-carousel">'+
-       (scorerEntries().length?playerStatCard('Goles',scorerEntries(),true):'')+
-       groups.map(g=>playerStatCard(g.team+' · Goles',g.players)).join('')+
-     '</div>'+
-   '</section>'+
+   playerSections().map(([title,metrics])=>'<section class="v33-general-section v593-detail-section" data-v33-player-section>'+
+     '<div class="v33-general-title"><h2>'+esc(title)+'</h2></div>'+
+     '<div class="v33-carousel v593-detail-carousel">'+metrics.map(playerMetricCard).join('')+'</div>'+
+   '</section>').join('')+
  '</main>';
 }
 function generalView(){
@@ -332,12 +348,14 @@ function fitRowText(){
  });
 }
 function bind(){
- document.querySelectorAll('[data-v33-expand-team],[data-v33-expand-player],[data-v33-expand-goals]').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('[data-v33-expand-team],[data-v33-expand-player],[data-v33-expand-goals],[data-v33-expand-metric]').forEach(b=>b.onclick=()=>{
    const expanded=b.getAttribute('aria-expanded')!=='true';
    const list=b.closest('.v33-stat-card').querySelector('.v33-stat-list');
    if(b.hasAttribute('data-v33-expand-team')){
      const metric=Number(b.dataset.v33ExpandTeam);
      list.innerHTML=metricRows(metric,b.dataset.v33Order,expanded?Infinity:5).map((r,i,rows)=>teamMetricRow(r,i,metric,rows)).join('');
+   }else if(b.hasAttribute('data-v33-expand-metric')){
+     list.innerHTML=playerMetricEntries(b.dataset.v33ExpandMetric).players.slice(0,expanded?Infinity:5).map(playerRow).join('');
    }else if(b.hasAttribute('data-v33-expand-goals')){
      list.innerHTML=scorerEntries().slice(0,expanded?Infinity:5).map(playerRow).join('');
    }else{
@@ -420,14 +438,36 @@ function applyHeaderScroll(){
 
  head.classList.toggle('is-collapsed',p>.82);
 }
+// Use the rendered white line as the origin, including older route spacers
+// retained by an already open mobile shell. Never accumulate scroll corrections.
+function alignContentOrigin(){
+ if(!isDataRoute()||window.innerWidth>=700)return;
+ const page=document.querySelector('[data-v33-data]');
+ const head=page?.querySelector('[data-v33-head]');
+ const content=page?.querySelector('.v33-data-content');
+ const first=content?.querySelector('.v33-general-title');
+ if(!head||!first)return;
+ const width=window.innerWidth,vw=Math.min(width,520);
+ const y=Math.max(0,document.querySelector('#screen')?.scrollTop||0,window.scrollY||0,document.documentElement.scrollTop||0,document.body.scrollTop||0);
+ const expectedGap=width*.05-Math.max(0,y-vw*(.564-.333));
+ const excess=first.getBoundingClientRect().top-head.getBoundingClientRect().bottom-expectedGap;
+ if(Math.abs(excess)<.75)return;
+ const margin=parseFloat(getComputedStyle(content).marginTop)||0;
+ content.style.setProperty('margin-top',(margin-excess).toFixed(2)+'px','important');
+}
+let layoutTick=0;
+function scheduleContentOrigin(){
+ if(layoutTick)return;
+ layoutTick=requestAnimationFrame(()=>{layoutTick=0;alignContentOrigin()});
+}
 let tick=0;function onScroll(){if(tick)return;tick=requestAnimationFrame(()=>{tick=0;applyHeaderScroll()})}
 window.addEventListener('scroll',onScroll,{passive:true});
-window.addEventListener('resize',()=>{onScroll();requestAnimationFrame(fitRowText)},{passive:true});
+window.addEventListener('resize',()=>{onScroll();requestAnimationFrame(fitRowText);scheduleContentOrigin()},{passive:true});
 document.addEventListener('scroll',onScroll,{passive:true,capture:true});
 async function render(){
  const active=isDataRoute();document.body.classList.toggle('v33-data-active',active);if(!active)return;
  await load();if(!db||!isDataRoute())return;
- const screen=document.querySelector('#screen');if(!screen)return;screen.innerHTML=markup();setBottomNav();bind();applyHeaderScroll();fitRowText();
+ const screen=document.querySelector('#screen');if(!screen)return;screen.innerHTML=markup();setBottomNav();bind();applyHeaderScroll();fitRowText();alignContentOrigin();scheduleContentOrigin();
  // Keep the active label visible without changing vertical scroll position.
  const tabsNode=screen.querySelector('.v33-tabs');
  const selected=tabsNode?.querySelector('.active');
@@ -440,6 +480,7 @@ if(target){
  target.addEventListener('scroll',onScroll,{passive:true});
  new MutationObserver(()=>{if(isDataRoute()&&!target.querySelector('[data-v33-data]'))schedule()}).observe(target,{childList:true,subtree:false});
 }
+if(document.body)new MutationObserver(scheduleContentOrigin).observe(document.body,{attributes:true,attributeFilter:['class','data-app-route','data-mobile-layout']});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
 window.LJR_V33_STATS={setTab,setRefView,goRoute,share,render};
 })();
