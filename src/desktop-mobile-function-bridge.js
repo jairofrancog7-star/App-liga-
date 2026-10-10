@@ -25,7 +25,7 @@ const ALIASES={
   'standings':'pc-standings',
   'competition':'pc-fixtures'
 };
-const OWN=new Set(['pc-calendar','pc-notifications','pc-scorers','pc-standings','pc-fixtures']);
+const OWN=new Set(['pc-calendar','pc-notifications','pc-scorers','pc-standings','pc-fixtures','pc-team-compare']);
 let db=null,loading=null,monthShift=0,calendarCat='3',selectedDate='',fixtureView='upcoming';
 const CAT_STORAGE_KEY='ljpc-selected-category';
 function savedCat(){
@@ -66,6 +66,12 @@ function injectStyle(){
   .ljpc-toggle{display:flex;justify-content:space-between;gap:16px;align-items:center;background:#fff;border:1px solid #e0e7ef;border-radius:12px;padding:14px}
   .ljpc-toggle b{display:block;color:#14233b;font-size:13px}.ljpc-toggle small{display:block;color:#7d8797;margin-top:4px}
   .ljpc-switch{appearance:none;width:44px;height:24px;border-radius:999px;background:#c9d2de;position:relative;cursor:pointer;transition:.2s;flex:0 0 auto}.ljpc-switch:before{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;left:3px;top:3px;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.25)}.ljpc-switch:checked{background:#0055a5}.ljpc-switch:checked:before{transform:translateX(20px)}
+  .ljpc-compare-selectors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:15px 0}
+  .ljpc-compare-selectors label{display:grid;gap:5px;font:750 11px system-ui;color:#144a7c}
+  .ljpc-compare-clubs{display:grid;grid-template-columns:minmax(0,1fr) 35px minmax(0,1fr);gap:10px;align-items:center;text-align:center;margin:16px auto}
+  .ljpc-compare-clubs>span{display:flex;justify-content:center;align-items:center;gap:9px;min-width:0;overflow-wrap:anywhere}
+  .ljpc-compare-table{width:100%;table-layout:fixed}.ljpc-compare-table th,.ljpc-compare-table td{text-align:center}
+  @media(max-width:690px){.ljpc-compare-selectors{grid-template-columns:1fr}.ljpc-compare-clubs>span{display:grid;justify-items:center}}
   .ljpc-cat-tabs{display:flex;gap:7px;flex-wrap:wrap}.ljpc-chip.active{background:#0055a5;color:#fff;border-color:#0055a5}
   .ljpc-official-link{font:700 12px/1.3 system-ui;color:#1368ba;text-decoration:none;padding:7px 3px}.ljpc-official-link:hover{text-decoration:underline}
   .ljpc-table{width:100%;border-collapse:collapse;background:#fff}.ljpc-table th{font:800 10px/1 system-ui;color:#65738a;text-transform:uppercase;text-align:left;padding:11px;border-bottom:1px solid #dfe6ef}.ljpc-table td{padding:11px;border-bottom:1px solid #edf1f5;color:#16243a;font-size:12px}.ljpc-table tr:hover td{background:#f8fbff}.ljpc-rank{font-weight:900;color:#0055a5}
@@ -228,6 +234,43 @@ function renderStandings(catId=activeCat){
  wrap.querySelectorAll('[data-ljpc-standing-cat]').forEach(b=>b.addEventListener('click',()=>renderStandings(rememberCat(b.dataset.ljpcStandingCat))));
  wrap.querySelector('[data-ljpc-fixtures]')?.addEventListener('click',()=>go('pc-fixtures'));
 }
+let pcCompareA='',pcCompareB='';
+function compareRows(catId){
+ return standingsRows(catId).filter(r=>Array.isArray(r)&&r[1]);
+}
+function renderTeamCompare(catId=activeCat){
+ rememberCat(catId);
+ const wrap=ensureOwnHost('Comparar equipos','Compara datos de la tabla oficial sin modificar resultados ni clubes.');
+ if(!wrap)return;
+ const rows=compareRows(catId),names=rows.map(r=>String(r[1]));
+ if(!names.includes(pcCompareA))pcCompareA=names[0]||'';
+ if(!names.includes(pcCompareB)||pcCompareA===pcCompareB)pcCompareB=names.find(n=>n!==pcCompareA)||'';
+ const aa=rows.find(r=>String(r[1])===pcCompareA)||[],bb=rows.find(r=>String(r[1])===pcCompareB)||[];
+ const optionList=chosen=>names.map(n=>'<option value="'+esc(n)+'"'+(n===chosen?' selected':'')+'>'+esc(pretty(n))+'</option>').join('');
+ const cols=[['Partidos jugados',2],['Ganados',3],['Empatados',4],['Perdidos',5],['Goles a favor',6],['Goles en contra',7],['Diferencia',8],['Puntos',9]];
+ const fmt=(r,i)=>r[i]!==undefined&&r[i]!==''?esc(r[i]):'—';
+ const rowsHtml=cols.map(([label,i])=>'<tr><td><b>'+fmt(aa,i)+'</b></td><th scope="row">'+label+'</th><td><b>'+fmt(bb,i)+'</b></td></tr>').join('');
+ const chosenA=pcCompareA,chosenB=pcCompareB;
+ wrap.innerHTML='<div class="ljpc-function-root" data-ljpc-function-route="pc-team-compare">'+
+   '<div class="ljpc-toolbar"><div class="ljpc-cat-tabs">'+CAT_ORDER.map(id=>'<button type="button" class="ljpc-chip '+(id===catId?'active':'')+'" data-ljpc-compare-cat="'+id+'">'+esc(categoryName(id))+'</button>').join('')+'</div>'+
+   '<button type="button" class="ljpc-btn" data-ljpc-compare-standings>Clasificación completa</button></div>'+
+   '<section class="ljpc-panel"><h3>Comparar dos equipos de la misma categoría</h3><p class="ljpc-muted">Estadísticas publicadas por la Liga. Las celdas vacías aparecen con —; no se inventan valores.</p>'+
+   (names.length>=2?'<div class="ljpc-compare-selectors"><label>Equipo A<select class="ljpc-select" data-ljpc-compare-a>'+optionList(chosenA)+'</select></label><label>Equipo B<select class="ljpc-select" data-ljpc-compare-b>'+optionList(chosenB)+'</select></label></div>'+
+   '<div class="ljpc-compare-clubs"><span>'+crest(chosenA)+'<b>'+esc(pretty(chosenA))+'</b></span><span class="ljpc-muted">VS</span><span>'+crest(chosenB)+'<b>'+esc(pretty(chosenB))+'</b></span></div>'+
+   '<div class="ljpc-data-tablebox"><table class="ljpc-table ljpc-compare-table"><thead><tr><th>Equipo A</th><th>Dato oficial</th><th>Equipo B</th></tr></thead><tbody>'+rowsHtml+'</tbody></table></div>'+
+   '<div class="ljpc-toolbar-group"><button type="button" class="ljpc-btn" data-ljpc-compare-open="a">Ver equipo A</button><button type="button" class="ljpc-btn" data-ljpc-compare-open="b">Ver equipo B</button></div>':
+   '<p class="ljpc-muted">Esta categoría no tiene dos equipos con tabla oficial disponible.</p>')+'</section></div>';
+ wrap.querySelectorAll('[data-ljpc-compare-cat]').forEach(b=>b.addEventListener('click',()=>{pcCompareA='';pcCompareB='';renderTeamCompare(b.dataset.ljpcCompareCat)}));
+ wrap.querySelector('[data-ljpc-compare-a]')?.addEventListener('change',e=>{pcCompareA=e.target.value;if(pcCompareA===pcCompareB)pcCompareB=names.find(n=>n!==pcCompareA)||'';renderTeamCompare(catId)});
+ wrap.querySelector('[data-ljpc-compare-b]')?.addEventListener('change',e=>{pcCompareB=e.target.value;if(pcCompareA===pcCompareB)pcCompareA=names.find(n=>n!==pcCompareB)||'';renderTeamCompare(catId)});
+ wrap.querySelector('[data-ljpc-compare-standings]')?.addEventListener('click',()=>go('pc-standings'));
+ wrap.querySelectorAll('[data-ljpc-compare-open]').forEach(b=>b.addEventListener('click',()=>{
+  const name=b.dataset.ljpcCompareOpen==='a'?pcCompareA:pcCompareB;
+  if(!name)return;
+  if(typeof window.LJR_OFFICIAL_API?.openTeam==='function')window.LJR_OFFICIAL_API.openTeam(name);
+  else{try{localStorage.setItem('v62-team-name',name)}catch(_){}go('teamDetail')}
+ }));
+}
 function desktopFixtureRows(catId,view='upcoming',referenceDate=new Date()){
  const all=fixtures(catId);
  const today=new Date(referenceDate.getFullYear(),referenceDate.getMonth(),referenceDate.getDate());
@@ -294,6 +337,7 @@ async function renderOwn(){
   if(r==='pc-scorers')renderScorers(activeCat);
   if(r==='pc-standings')renderStandings(activeCat);
   if(r==='pc-fixtures')renderFixtures(activeCat);
+  if(r==='pc-team-compare')renderTeamCompare(activeCat);
 }
 
 function rerouteLegacy(){
