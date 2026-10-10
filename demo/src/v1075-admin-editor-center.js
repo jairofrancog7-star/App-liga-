@@ -22,7 +22,7 @@ const media=()=>window.LJR_MEDIA;
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const dateString=s=>{try{return s?new Date(s+'T12:00:00').toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}):''}catch(_){return ''}};
 const catName=v=>CATS.find(x=>x[0]===v)?.[1]||'Todas las categorías';
-function status(modal,value){const box=$('[data-status]',modal);if(box)box.textContent=value}
+function status(modal,value){const box=$('.ljr-editor-compose [data-status]',modal)||$('[data-status]',modal);if(box)box.textContent=value}
 async function verified(){
  if(!admin())throw Error('Solo los administradores autorizados pueden editar la Liga.');
  const response=await media().api('me');
@@ -56,6 +56,7 @@ function showComposer(prefill){
   '<div class="ljr-editor-smart-tools" aria-label="Herramientas del aviso"><button type="button" data-editor-check>✓ Revisar datos</button><button type="button" data-editor-local-ai>✦ IA en el dispositivo</button><button type="button" data-editor-calendar>▦ Google Calendar</button><button type="button" data-editor-schedule>◷ Programar envío</button><button type="button" data-editor-copy>⧉ Copiar aviso</button></div>'+
   '<p class="ljr-editor-feedback" data-editor-feedback aria-live="polite" role="status"></p>'+
   '<div class="ljr-editor-preview"><small>VISTA PREVIA · NOTICIAS OFICIALES</small><strong data-preview-title></strong><p data-preview-body></p><small data-preview-meta></small></div>'+
+  '<p class="ljr-editor-progress" data-status role="status" aria-live="polite"></p>'+
   '<div class="ljr-editor-bottom"><button type="button" data-editor-draft>Guardar borrador</button><button type="submit" data-editor-publish>Publicar en Noticias</button></div>'+
   '<small>Publicar requiere confirmación y permisos del servidor. Las notificaciones push, SMS o WhatsApp automáticas solo funcionan si el servicio HTTPS y los destinatarios autorizados están configurados.</small>'+
   '</form>','ljr-editor-compose');
@@ -165,8 +166,8 @@ function showComposer(prefill){
   link.searchParams.set('location',f.field.value.trim());
   link.searchParams.set('dates',stamp(new Date(base))+'/'+stamp(new Date(base+3600000)));
   link.searchParams.set('ctz','America/Mexico_City');
-  const opened=window.open(link.toString(),'_blank','noopener,noreferrer');
-  status(modal,opened?'Google Calendar abierto: confirma Guardar allí. No se ha creado ningún evento automáticamente.':'Si no se abrió Calendar, permite las ventanas emergentes de este sitio e inténtalo otra vez.');
+  window.open(link.toString(),'_blank','noopener,noreferrer');
+  status(modal,'Se solicitó abrir Google Calendar. Confirma Guardar allí; si no se abre, permite ventanas emergentes. No se creó ningún evento automáticamente.');
  };
  $('[data-editor-local-ai]',form).onclick=async()=>{
   const button=$('[data-editor-local-ai]',form);
