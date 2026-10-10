@@ -3,7 +3,7 @@
 import { chromium } from 'playwright';
 import fs from 'node:fs/promises';
 
-const base=process.env.LJR_INSTALL_TEST_URL||'http://127.0.0.1:4173/App-liga-/';
+const base=process.env.LJR_INSTALL_TEST_URL||'https://jairofrancog7-star.github.io/App-liga-/';
 const path='artifacts/install-center-mobile';
 await fs.mkdir(path,{recursive:true});
 const browser=await chromium.launch({headless:true,args:['--disable-dev-shm-usage']});
@@ -21,10 +21,18 @@ try{
     });
     const page=await context.newPage();
     const issues=[];
+    const failedRequests=[];
     page.on('pageerror',err=>issues.push(String(err)));
+    page.on('requestfailed',req=>failedRequests.push({url:req.url(),reason:req.failure()?.errorText}));
     try{
       await page.goto(base+'?refresh=v1241-visual#/appInstall',{waitUntil:'domcontentloaded',timeout:60000});
-      await page.locator('[data-ljr-install-hub]').first().waitFor({state:'visible',timeout:25000});
+      try{
+        await page.locator('[data-ljr-install-hub]').first().waitFor({state:'visible',timeout:30000});
+      }catch(err){
+        const diag={url:page.url(),title:await page.title().catch(()=>''),body:(await page.locator('body').innerText().catch(()=>''))?.slice(0,900),issues:issues.slice(0,12),failedRequests:failedRequests.slice(0,15)};
+        await fs.writeFile(path+'/debug-'+width+'.json',JSON.stringify(diag,null,2));
+        throw new Error('No apareció el Centro de instalación: '+JSON.stringify(diag)+' · '+String(err));
+      }
       await page.locator('.ljr-install-advisor').first().waitFor({state:'visible',timeout:12000});
       await page.locator('[data-ljr-diagnostic-status]').first().waitFor({state:'visible',timeout:10000});
       await page.waitForTimeout(900);
