@@ -44,3 +44,15 @@
  .v920-registration-modal .v1082-filters{grid-template-columns:1fr;}
  .v920-registration-modal .v1082-types>div{grid-template-columns:1fr;}
 }
+
+/* V1227: prueba privada de Push; azul oficial y un control completo por fila. */
+:is(#screen, .v920-registration-modal) .v1082-actions [data-v1082-self-test]{
+ grid-column:1/-1;
+ min-height:42px;
+ background:#0a096f;
+ border:1px solid #3654ad;
+ color:#f3f8ff;
+}
+:is(#screen, .v920-registration-modal) .v1082-actions [data-v1082-self-test]:disabled{
+ opacity:.55;
+}
