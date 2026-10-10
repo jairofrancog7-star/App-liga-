@@ -43,10 +43,15 @@ CREATE INDEX IF NOT EXISTS ljr_delivery_sid_idx ON ljr_delivery_log(provider_sid
 -- por la respuesta verificada /api/me del servicio de la Liga.
 CREATE TABLE IF NOT EXISTS ljr_admin_roles (
  subject TEXT PRIMARY KEY,
- role TEXT NOT NULL DEFAULT 'lector' CHECK(role IN ('secretario','editor','disciplina','lector')),
+ role TEXT NOT NULL DEFAULT 'lector' CHECK(role IN ('secretario','editor','disciplina','arbitro','delegado','lector')),
  updated_by TEXT NOT NULL,
  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+-- V1224: ampliar cargos permitidos para directorio de delegados y árbitros.
+-- Esta migración es idempotente y requiere ejecución en PostgreSQL privado.
+ALTER TABLE ljr_admin_roles DROP CONSTRAINT IF EXISTS ljr_admin_roles_role_check;
+ALTER TABLE ljr_admin_roles ADD CONSTRAINT ljr_admin_roles_role_check
+ CHECK(role IN ('secretario','editor','disciplina','arbitro','delegado','lector'));
 CREATE TABLE IF NOT EXISTS ljr_admin_audit (
  id BIGSERIAL PRIMARY KEY,
  actor TEXT NOT NULL,
