@@ -163,7 +163,7 @@ function mount(){
   }
  }catch(_){} 
  host.addEventListener('click',e=>{const b=e.target.closest('[data-mh-action]');if(b){e.preventDefault();handle(b.dataset.mhAction,b)}});
- host.addEventListener('change',e=>advanced()?.onChange?.(e,advancedCtx));
+ host.addEventListener('change',e=>{if(sync()?.onChange?.(e,advancedCtx))return;advanced()?.onChange?.(e,advancedCtx)});
  host.addEventListener('input',e=>{if(e.target.matches('[data-mh-input="search"]')){search=e.target.value.toLocaleLowerCase('es-MX');const start=e.target.selectionStart;render();const input=$('[data-mh-input="search"]',host);input?.focus();input?.setSelectionRange(start,start)}});
  const save=$('[data-save]',form.closest('.v105-dialog'));save?.addEventListener('click',()=>{if(validDate(date())){const r=item();r.minute=snapshot();persist()}});
  // Borrador automático de agenda y minuta: no sobrescribir otra fecha.
