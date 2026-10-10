@@ -9,6 +9,7 @@ import twilio from 'twilio';
 import crypto from 'node:crypto';
 import {ROLE_PERMS,roleFor,can,safeSubject} from './authorization.mjs';
 import {registerMeetingRoutes} from './meeting-store.mjs';
+import {registerCedulaRoutes} from './cedula-store.mjs';
 const app=express();app.disable('x-powered-by');app.set('trust proxy',1);
 const E=process.env, origin=E.WEB_ORIGIN||'https://jairofrancog7-star.github.io';
 const publicUrl=(E.PUBLIC_API_ORIGIN||'').replace(/\/$/,'');
@@ -38,6 +39,7 @@ app.use((req,res,next)=>{res.setHeader('X-Content-Type-Options','nosniff');res.s
  if(req.method==='OPTIONS')return res.status(204).end();
  next();
 });
+app.use('/admin/cedulas',express.json({limit:'3mb'}));
 app.use(express.json({limit:'20kb'}));
 const secretEquals=(a,b)=>{if(typeof a!=='string'||typeof b!=='string')return false;
  const x=Buffer.from(a),y=Buffer.from(b);return x.length===y.length&&crypto.timingSafeEqual(x,y)};
@@ -97,6 +99,7 @@ function matchPreferences(rec,job){
 }
 const apiError=(err,res)=>{console.error('Notifier error',err?.message);if(!res.headersSent)res.status(500).json({error:'No se pudo completar la operación'})};
 registerMeetingRoutes({app,pool,admin,requirePermission,audit,apiError});
+registerCedulaRoutes({app,pool,admin,requirePermission,apiError});
 app.get('/health',(_q,res)=>res.json({ok:true,service:'Liga Juventino Rosas · notificaciones',schedulerEnabled:internalDispatchEnabled}));
 app.get('/health/ready',async(_req,res)=>{
  try{await pool.query('SELECT 1');res.json({ready:true,database:'connected',schedulerEnabled:internalDispatchEnabled,

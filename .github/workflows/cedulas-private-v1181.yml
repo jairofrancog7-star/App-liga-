@@ -1,0 +1,33 @@
+name: Actas arbitrales privadas — seguridad
+on:
+  pull_request:
+    paths:
+      - 'server/notifications/**'
+      - 'src/v1181-cedulas-workflow.*'
+      - 'tests/cedulas-private-v1181.test.mjs'
+      - '.github/workflows/cedulas-private-v1181.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'server/notifications/**'
+      - 'src/v1181-cedulas-workflow.*'
+      - 'tests/cedulas-private-v1181.test.mjs'
+  workflow_dispatch:
+jobs:
+  secure-cedulas:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar servidor y navegador
+        run: |
+          node --check server/notifications/index.mjs
+          node --check server/notifications/bootstrap.mjs
+          node --check server/notifications/cedula-store.mjs
+          node --check src/v1181-cedulas-workflow.js
+      - name: Probar roles y políticas de privacidad
+        run: node --test tests/cedulas-private-v1181.test.mjs tests/notifications-security.test.mjs
