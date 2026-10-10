@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {runInNewContext} from 'node:vm';
+import {spawnSync} from 'node:child_process';
 
 const source=readFileSync(new URL('../src/v1140-meeting-suite.js',import.meta.url),'utf8');
 const oldHub=readFileSync(new URL('../src/v1130-meeting-hub.js',import.meta.url),'utf8');
@@ -35,7 +36,8 @@ function fixture(){
 test('scripts linked and administrative gate protects the meeting modal',()=>{
  new Function(source);
  new Function(oldHub);
- new Function(meeting);
+ const checked=spawnSync(process.execPath,['--check','--input-type=module'],{input:meeting,encoding:'utf8'});
+ assert.equal(checked.status,0,checked.stderr);
  assert.match(html,/v1140-meeting-suite\.js/);
  assert.match(html,/v1140-meeting-suite\.css/);
  assert.ok(html.indexOf('v1140-meeting-suite.js')<html.indexOf('v1130-meeting-hub.js'));
