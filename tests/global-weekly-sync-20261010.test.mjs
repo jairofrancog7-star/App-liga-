@@ -63,3 +63,53 @@ test('espejo verde renumerado conserva decisión del azul por partido y resultad
  assert.equal(merged.categories['4'].fixtures[0].rows[0][5],'1');
  assert.equal(remote.categories['4'].fixtures[0].rows[0][3],'-','original mirror must remain immutable');
 });
+
+test('resultado numérico posterior prevalece sobre cualquier default o cédula azul anterior',()=>{
+ const begin=v62.indexOf('function preserveBlueRegistrations(base){');
+ const end=v62.indexOf('\nasync function fetchJson(',begin);
+ const snippet=v62.slice(begin,end);
+ const local={categories:{
+  '3':{fixtures:[{rows:[['32','7','GALACTICOS','-','vs','-','LINCES','Pozos','11/10/2026 09:00']]}],fixture_decisions:{'32':{winner:'LINCES',type:'administrative',default:true}}},
+  '4':{fixtures:[{rows:[['31','6','SAN JULIAN','1','vs','1','SAN JUAN FC','San Julian','27/09/2026 08:00']]}]}
+ },latest_user_verified_results:{category_id:'4',fixtures:[{round:'6',home:'SAN JULIAN',away:'SAN JUAN FC',date:'27/09/2026',home_goals:1,away_goals:1}]}};
+ const remote={categories:{
+  '3':{fixtures:[{rows:[['900','7','GALACTICOS','2','vs','1','LINCES','Pozos','11/10/2026 09:00']]}],fixture_decisions:{}},
+  '4':{fixtures:[{rows:[['999','6','SAN JULIAN','2','vs','0','SAN JUAN FC','San Julian','27/09/2026 08:00']]}]}
+ }};
+ const fn=vm.runInNewContext(snippet+';preserveBlueRegistrations',{
+  localRegistrationSnapshot:local,CAT_ORDER:['3','4'],
+  norm:v=>String(v??'').trim().toLowerCase(),
+  same:(a,b)=>String(a??'').trim().toLowerCase()===String(b??'').trim().toLowerCase()
+ });
+ const merged=fn(remote);
+ assert.equal(merged.categories['3'].fixture_decisions['900'],undefined,'do not copy default over numeric final');
+ assert.equal(merged.categories['3'].fixtures[0].rows[0][3],'2');
+ assert.equal(merged.categories['3'].fixtures[0].rows[0][5],'1');
+ assert.equal(merged.categories['4'].fixtures[0].rows[0][3],'2');
+ assert.equal(merged.categories['4'].fixtures[0].rows[0][5],'0');
+});
+
+test('atajo de inicio PC omite defaults y elige el próximo encuentro cronológico',()=>{
+ const shell=read('src/desktop-shell.js');
+ const start=shell.indexOf('function desktopSecondRound(){');
+ const end=shell.indexOf('function fixtureStrip(){',start);
+ assert.ok(start>0&&end>start);
+ const snippet=shell.slice(start,end);
+ class FixedDate extends Date {
+  constructor(...args){super(...(args.length?args:[2026,9,10]))}
+ }
+ const stub={categories:{'4':{
+  fixtures:[{rows:[
+   ['43','8','DEP. LA LUZ','-','vs','-','SAN ANTONIO FC','Campo 2','18/10/2026 08:00'],
+   ['37','7','PACHANGAS FC','-','vs','-','TAPATIO','Campo 2','11/10/2026 08:00'],
+   ['38','7','SAN JOSE JRS','-','vs','-','SAN JUAN FC','Campo 2','11/10/2026 10:00']
+  ]}],
+  fixture_decisions:{'37':{winner:'TAPATIO',type:'administrative',default:true}}
+ }}};
+ const fn=vm.runInNewContext(snippet+';desktopSecondRound',{desktopOfficialData:()=>stub,Date:FixedDate,String});
+ const next=fn();
+ assert.equal(next.round,'7');
+ assert.equal(next.date,'11/10/2026');
+ stub.categories['4'].fixture_decisions['38']={winner:'SAN JOSE JRS',type:'administrative',default:true};
+ assert.equal(fn().round,'8','skip awarded J7 fixtures and advance to next fixture date');
+});
