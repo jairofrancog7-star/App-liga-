@@ -522,3 +522,62 @@ body[data-app-route="profile"] .v575-create-account:active{
     font-size:22px!important;
   }
 }
+
+/* V1150 — Perfil y panel de privacidad: cambios aislados a rutas de cuenta. */
+body[data-app-route="profile"] #screen .v569-profile-account-menu > button:focus-visible,
+body[data-app-route="profile"] #screen .v12-profile-menu > .v12-profile-row:focus-visible{
+  outline:2px solid #48e1ef!important;outline-offset:-2px!important;
+  background:rgba(43,101,216,.13)!important;
+}
+body[data-app-route="profile"] #screen .v569-profile-account-menu{
+  margin-top:12px!important;
+}
+.v1150-privacy-card h2{
+  font-size:15px;line-height:1.25;margin:19px 0 11px;color:#fff;letter-spacing:-.01em;
+}
+.v1150-privacy-banner{
+  display:grid;grid-template-columns:38px minmax(0,1fr);gap:10px;align-items:center;
+  padding:14px;border:1px solid rgba(53,216,231,.28);border-radius:15px;
+  background:linear-gradient(135deg,rgba(36,99,194,.24),rgba(9,26,107,.7));
+}
+.v1150-privacy-banner>span{
+  display:grid;place-items:center;width:36px;height:36px;border-radius:12px;
+  color:#75f4ed;background:rgba(21,195,195,.12);font-size:18px;font-weight:900;
+}
+.v1150-privacy-banner b{display:block;font-size:14px;color:#fff}
+.v1150-privacy-banner small{
+  display:block;margin-top:4px;font-size:11px;line-height:1.55;color:#b8caea;
+}
+.v1150-privacy-details{margin:0;display:grid;border-top:1px solid rgba(255,255,255,.1)}
+.v1150-privacy-details>div{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+  padding:12px 1px;border-bottom:1px solid rgba(255,255,255,.1);
+}
+.v1150-privacy-details dt{font-size:12px;color:#b4c5e6}
+.v1150-privacy-details dd{
+  margin:0;max-width:58%;text-align:right;font-size:12px;font-weight:700;color:#fff;
+  overflow-wrap:anywhere;
+}
+.v1150-privacy-description{font-size:12px;line-height:1.65;color:#b8c9e8}
+.v1150-privacy-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+.v1150-privacy-actions button{
+  width:100%;min-height:48px;padding:10px;border-radius:12px;
+  color:#fff;font-size:12px;font-weight:800;line-height:1.35;cursor:pointer;
+}
+.v1150-privacy-actions button:first-child{grid-column:1/-1;background:linear-gradient(180deg,#2b67d8,#1a44a8)}
+.v1150-privacy-actions button:focus-visible{
+  outline:2px solid #48e1ef;outline-offset:2px;
+}
+.v1150-privacy-actions .v569-secondary{
+  background:#102472;border:1px solid rgba(122,162,235,.4);
+}
+.v1150-privacy-card .v569-note{
+  margin-top:18px;font-size:11px;line-height:1.6;color:#9fb3da;
+}
+@media(max-width:370px){
+  .v1150-privacy-actions{grid-template-columns:1fr}
+  .v1150-privacy-actions button:first-child{grid-column:auto}
+}
+@media(prefers-reduced-motion:reduce){
+  .v1150-privacy-actions button{transition:none!important}
+}
