@@ -53,7 +53,7 @@ function openServerDraftForm(row){
   '<label>Color de letra<input name="color" readonly></label><label>Fondo<input name="background" readonly></label>'+
   '<button type="submit">Guardar borrador en CMS</button>'+
   '<p data-studio-server-status role="status" aria-live="polite">Requiere una sesión válida del servidor.</p></form>');
- const form=$('[data-studio-server-draft]',modal),status=$('[data-studio-server-status]',modal);
+ const form=modal.querySelector('[data-studio-server-draft]'),status=modal.querySelector('[data-studio-server-status]');
  for(const name of fields){const element=field(form,name);if(element)element.value=row[name]||'';}
  let saving=false;
  form.addEventListener('submit',async event=>{
