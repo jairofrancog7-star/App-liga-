@@ -96,7 +96,7 @@ async function interpretSpanish(input,reference=new Date(),parseFn){
   const clock=timeEs(input);if(clock)result.time=clock;
   let fn=parseFn;
   if(!fn){
-    const chrono=await import('chrono-node');fn=(text,now)=>chrono.en.parse(text,now,{forwardDate:true});
+    const chrono=await import('chrono-node');const en=chrono.en||chrono.default?.en;fn=(text,now)=>en.parse(text,now,{forwardDate:true});
   }
   const translated=spanishToEnglish(input);
   const parsed=fn(translated,reference)||[];
@@ -127,7 +127,9 @@ async function occurrenceTimes(date,time,repeat,count,lib){
   if(start.toISOString().slice(0,10)!==date||start.toISOString().slice(11,16)!==time)throw Error('Fecha inexistente.');
   let floating=[start];
   if(freq!=='once'){
-    const {RRule}=lib || await import('rrule');
+    const module=lib || await import('rrule');
+    const RRule=module.RRule||module.default?.RRule;
+    if(typeof RRule!=='function')throw Error('Motor de recurrencia no disponible.');
     const name={daily:RRule.DAILY,weekly:RRule.WEEKLY,monthly:RRule.MONTHLY}[freq];
     const rule=new RRule({freq:name,dtstart:start,count:max,interval:1});
     floating=rule.all();
