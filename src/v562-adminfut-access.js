@@ -111,15 +111,17 @@ function controlMarkup(){
    card('alertShield','Nueva sanción','Preparar sanción sin publicarla','data-v563-tool="new-sanction"')+
    card('alertShield','Aviso de suspensión','Crear borrador de suspensión de jornada','data-v563-route="suspensionTool"')+
    card('permission','Disciplina y tarjetas','Expulsiones, amarillas y sanciones','data-v563-route="discipline"')+
-   card('team','Equipos','Directorio y consulta de clubes','data-v563-route="teams"')+
+
+
    card('delegate','Delegados / encargados','Directorio de representantes','data-v563-tool="delegates"')+
    card('player','Jugadores','Plantillas de los equipos','data-v563-route="players"')+
    card('report','Reportes','Resumen semanal y pendientes','data-v563-route="v38Weekly"')+
    card('trophy','Jugador del partido','Elegir MVP en el registro local','data-v563-tool="motm"')+
-   card('analysis','Estadísticas generales','Goles, rendimiento y clasificaciones','data-v563-route="stats"')+
+
+
    card('brackets','Cuadro de liguilla','Crear y exportar eliminatorias','data-v563-route="bracketBuilder"')+
-   card('simulator','Simulador de partidos','Ensayar cruces sin alterar oficiales','data-v563-route="simulator"')+
-   card('book','Reglamento','Consultar el reglamento oficial','data-v563-route="rulebook"')+
+
+
    card('publish','Publicaciones','Tablas, jornadas y comunicados','data-v563-route="publicationCenter"')+
    card('poll','Encuestas','Participación y opinión de la Liga','data-v563-tool="poll"')+
    card('weather','Campos y clima','Estado y pronóstico de canchas','data-v563-route="weatherFields"')+
