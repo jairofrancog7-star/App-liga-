@@ -1,0 +1,103 @@
+/* V1171 · Sedes y clima: mismo azul principal que la app; no cambia datos ni eventos. */
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v921-field-page{
+ background:linear-gradient(180deg,#081c69 0%,#080f58 65%,#060944 100%)!important;
+}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v921-field-card{
+ padding:12px!important;
+ border:1px solid rgba(72,128,228,.38)!important;
+ background:linear-gradient(165deg,#101e78 0%,#0b145f 72%,#080d51 100%)!important;
+ border-radius:19px!important;
+}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v921-field-actions{
+ display:grid!important;
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ gap:8px!important;
+ margin:12px 0 0!important;
+}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v921-field-actions :is(a,button),
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v921-field-actions :is(.v60-btn,.v60-link){
+ min-width:0!important;min-height:45px!important;
+ border:1px solid #477de0!important;
+ border-radius:12px!important;
+ padding:9px 8px!important;
+ background:linear-gradient(180deg,#1c69d4 0%,#0d47a1 100%)!important;
+ color:#f5fbff!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.10)!important;
+ font:760 12px/1.2 Inter,Roboto,Arial,sans-serif!important;
+ text-decoration:none!important;
+}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v921-field-actions :is(.outline,.v60-link.outline){
+ background:linear-gradient(180deg,#183582 0%,#102466 100%)!important;
+ border-color:#3c66ba!important;
+}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v921-field-actions svg{
+ flex:none!important;width:18px!important;height:18px!important;
+ color:#69eaff!important;stroke:#69eaff!important;
+}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v921-field-actions .v60-btn:not(.outline) svg{color:#dffaff!important;stroke:#dffaff!important}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v1073-field{
+ margin-top:10px!important;padding-top:11px!important;gap:8px!important;
+ border-top:1px solid rgba(102,163,255,.25)!important;
+}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v1073-inline{gap:9px!important;align-items:center!important}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v1073-risk{
+ color:#dce9ff!important;
+ border:1px solid #3d68b4!important;
+ background:#122a77!important;
+ font:750 11px/1.25 Inter,Roboto,Arial,sans-serif!important;
+}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v1073-mini,
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v1073-shortcuts :is(button,a){
+ min-width:0!important;box-sizing:border-box!important;
+ border:1px solid #416cbe!important;
+ background:linear-gradient(180deg,#1b3888,#14266b)!important;
+ color:#f2f7ff!important;
+ border-radius:12px!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.045)!important;
+ font:750 11px/1.18 Inter,Roboto,Arial,sans-serif!important;
+ text-align:center!important;
+}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v1073-mini{
+ min-height:39px!important;padding:8px 10px!important;
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;
+}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v1073-shortcuts{
+ display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ gap:7px!important;width:100%!important;
+}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v1073-shortcuts :is(button,a){
+ min-height:55px!important;padding:7px 4px!important;
+ display:flex!important;flex-direction:column!important;gap:5px!important;
+ align-items:center!important;justify-content:center!important;
+ overflow-wrap:break-word!important;word-break:normal!important;
+}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v1073-shortcuts button[aria-pressed="true"]{
+ background:linear-gradient(180deg,#1d69d3,#1450b0)!important;border-color:#75d7f8!important;
+ color:#fff!important;
+}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v1073-icon{
+ flex:0 0 18px!important;width:18px!important;height:18px!important;stroke:#60e2fa!important;
+}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v1073-shortcuts .v1073-action-label{font-size:11px!important;line-height:1.2!important}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v1073-dashboard-actions button:first-child{
+ background:linear-gradient(180deg,#1c69d4,#0d47a1)!important;
+ color:#fff!important;border-color:#4c8fec!important;
+}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v1073-dashboard-actions button:first-child .v1073-icon{stroke:#74eafa!important}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v1073-dashboard{
+ background:linear-gradient(155deg,#142d83,#0c1c67)!important;
+ border:1px solid #3156a4!important;border-radius:18px!important;
+}
+html body #screen .v1082-push select[data-v1082-field]{
+ box-sizing:border-box;max-width:100%;background:#102870!important;
+ color:#fff!important;border:1px solid #3a66c5!important;border-radius:11px!important;
+}
+html body #screen .v1082-push select[data-v1082-field] option{background:#102870;color:#fff}
+html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen :is(.v921-field-actions a,.v1073-shortcuts a):focus-visible{outline:2px solid #5fe5fa!important;outline-offset:2px!important}
+@media (max-width:360px){
+ html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v1073-shortcuts :is(button,a){padding:6px 2px!important;min-height:54px!important}
+ html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v1073-shortcuts .v1073-action-label{font-size:10px!important}
+}
+@media(min-width:700px){
+ html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen .v1073-shortcuts :is(button,a){flex-direction:row!important;min-height:46px!important;gap:7px!important}
+}
