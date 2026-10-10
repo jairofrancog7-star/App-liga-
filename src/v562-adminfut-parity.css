@@ -25,3 +25,102 @@ body[data-app-route="refereeOffline"] #screen{
 .v562-versus,.v562-score{display:grid;grid-template-columns:minmax(0,1fr) 42px minmax(0,1fr);align-items:center;gap:7px;margin:10px 0;text-align:center}.v562-versus span,.v562-score span{min-width:0}.v562-versus b,.v562-score b{display:block;overflow:hidden;font-size:8px;line-height:1.15;text-overflow:ellipsis}.v562-versus em,.v562-score em{display:block;margin-top:3px;color:#7787bc;font-size:5.5px;font-style:normal}.v562-versus strong,.v562-score strong{font-size:11px}.v562-meta{display:flex;flex-wrap:wrap;gap:6px;color:#8f9ece;font-size:6.3px}.v562-match>button{width:100%;min-height:32px;margin-top:10px;border:1px solid rgba(48,222,238,.25);border-radius:9px;background:#12429e;color:#fff;font-size:7.5px;font-weight:900}.v562-empty{padding:22px;border:1px dashed rgba(110,140,238,.25);border-radius:13px;color:#93a1cb;text-align:center;font-size:8px}.v562-note{margin:12px 2px 0;color:#7f8dbc;font-size:6.7px;line-height:1.45}
 .v562-editor .v562-score{margin:12px 0;padding:13px;border:1px solid rgba(82,126,242,.22);border-radius:14px;background:#0a1367}.v562-ref{margin-bottom:10px}.v562-team-editor{width:100%;margin-bottom:10px;overflow:hidden;border:1px solid rgba(96,131,238,.23);border-radius:14px;background:#080f5c}.v562-team-editor>header{min-height:42px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 11px;background:#10257f}.v562-team-editor>header>b{font-size:9px}.v562-team-editor>header label{display:flex;align-items:center;gap:5px;color:#dce5ff;font-size:7px}.v562-team-editor>header input{accent-color:#28dce9}.v562-default-reason{padding:8px;border-bottom:1px solid rgba(255,255,255,.06)}.v562-default-reason[hidden]{display:none!important}.v562-table-scroll{width:100%;overflow:auto;scrollbar-width:thin}.v562-team-editor table{width:100%;min-width:640px;border-collapse:collapse}.v562-team-editor th,.v562-team-editor td{padding:6px 5px;border-bottom:1px solid rgba(255,255,255,.055);text-align:center;font-size:6.8px}.v562-team-editor th{position:sticky;top:0;background:#090f5b;color:#7f90c6;font-size:5.8px;z-index:1}.v562-team-editor td:nth-child(2){min-width:170px;text-align:left}.v562-team-editor td:nth-child(2)b{font-size:7px}.v562-team-editor select{height:26px;border:1px solid rgba(106,137,233,.28);border-radius:6px;background:#101a71;color:#fff;font-size:6px}.v562-team-editor input[type="number"]{width:42px;height:26px;border:1px solid rgba(106,137,233,.28);border-radius:6px;background:#101a71;color:#fff;text-align:center;font-size:6.5px}.v562-team-editor input[type="checkbox"]{width:15px;height:15px;accent-color:#29d9e9}.v562-no-roster{height:54px;color:#8392c0;text-align:center!important}.v562-savebar{display:grid;grid-template-columns:1fr 1fr 1.15fr;gap:7px;width:100%;margin-top:12px}.v562-toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));z-index:2147483646;max-width:calc(100vw - 32px);transform:translateX(-50%);padding:9px 12px;border-radius:999px;background:#edf2ff;color:#07114d;font-family:Inter,Roboto,Arial,sans-serif;font-size:8px;font-weight:850;box-shadow:0 6px 22px rgba(0,0,0,.32)}
 @media(max-width:440px){.v562-page{padding-left:4px!important;padding-right:4px!important}.v562-page .v562-head{grid-template-columns:28px minmax(0,1fr) auto}.v562-page .v562-head h1{font-size:17px}.v562-page .v562-head p{font-size:7.7px}.v562-net{padding-left:5px;padding-right:5px;font-size:5.4px}.v562-tools{grid-template-columns:125px minmax(0,1fr)}.v562-actions{grid-template-columns:1fr 1fr}.v562-actions button:last-child{grid-column:1/-1}.v562-cap{grid-template-columns:1fr 1fr 1fr}.v562-savebar{grid-template-columns:1fr}.v562-versus b,.v562-score b{font-size:7.3px}}
+
+/* V1101 — Escala media legible del modo árbitro: panel, cédula y plantillas. */
+body[data-app-route="refereeOffline"] .v562-page .v562-head{
+  grid-template-columns:30px minmax(0,1fr) auto;
+  gap:8px;
+}
+body[data-app-route="refereeOffline"] .v562-page .v562-head small{
+  font-size:10px;line-height:1.35;letter-spacing:.085em;
+}
+body[data-app-route="refereeOffline"] .v562-page .v562-head h1{
+  font-size:20px;line-height:1.17;
+}
+body[data-app-route="refereeOffline"] .v562-page .v562-head p{
+  font-size:11px;line-height:1.4;
+}
+body[data-app-route="refereeOffline"] .v562-net{
+  font-size:9px;padding:6px 8px;white-space:nowrap;
+}
+body[data-app-route="refereeOffline"] .v562-kpis span{min-height:65px}
+body[data-app-route="refereeOffline"] .v562-kpis b{font-size:19px}
+body[data-app-route="refereeOffline"] .v562-kpis small{font-size:10px;line-height:1.35}
+body[data-app-route="refereeOffline"] .v562-info{gap:8px;padding:11px}
+body[data-app-route="refereeOffline"] .v562-info small{font-size:9px}
+body[data-app-route="refereeOffline"] .v562-info b{font-size:11.5px;line-height:1.4}
+body[data-app-route="refereeOffline"] .v562-info em{font-size:10px;line-height:1.4}
+body[data-app-route="refereeOffline"] .v562-info button{
+  font-size:11px;min-height:36px;padding:0 12px;
+}
+body[data-app-route="refereeOffline"] .v562-parity{padding:11px}
+body[data-app-route="refereeOffline"] .v562-parity h2{font-size:12px;line-height:1.4}
+body[data-app-route="refereeOffline"] .v562-parity span{
+  font-size:9.5px;line-height:1.35;padding:6px 8px;
+}
+body[data-app-route="refereeOffline"] .v562-tools label span,
+body[data-app-route="refereeOffline"] .v562-ref span{font-size:10px}
+body[data-app-route="refereeOffline"] .v562-tools select,
+body[data-app-route="refereeOffline"] .v562-tools input,
+body[data-app-route="refereeOffline"] .v562-ref input,
+body[data-app-route="refereeOffline"] .v562-default-reason input{
+  font-size:12px;min-height:40px;
+}
+body[data-app-route="refereeOffline"] .v562-actions button,
+body[data-app-route="refereeOffline"] .v562-savebar button{
+  font-size:11px;line-height:1.3;min-height:40px;padding:8px;
+}
+body[data-app-route="refereeOffline"] .v562-cap b{font-size:10px;line-height:1.25}
+body[data-app-route="refereeOffline"] .v562-cap small{font-size:9px;line-height:1.4}
+body[data-app-route="refereeOffline"] .v562-title{font-size:14px}
+body[data-app-route="refereeOffline"] .v562-match-top>small{font-size:9px;line-height:1.35}
+body[data-app-route="refereeOffline"] .v562-state{font-size:8.5px;padding:5px 7px}
+body[data-app-route="refereeOffline"] .v562-versus b,
+body[data-app-route="refereeOffline"] .v562-score b{
+  font-size:11.5px;line-height:1.3;overflow-wrap:anywhere;
+}
+body[data-app-route="refereeOffline"] .v562-versus em,
+body[data-app-route="refereeOffline"] .v562-score em{font-size:9px}
+body[data-app-route="refereeOffline"] .v562-versus strong,
+body[data-app-route="refereeOffline"] .v562-score strong{font-size:14px}
+body[data-app-route="refereeOffline"] .v562-meta{font-size:10px;line-height:1.4}
+body[data-app-route="refereeOffline"] .v562-match>button{
+  font-size:11px;min-height:38px;
+}
+body[data-app-route="refereeOffline"] .v562-empty{font-size:11px}
+body[data-app-route="refereeOffline"] .v562-note{font-size:10px}
+body[data-app-route="refereeOffline"] .v562-editor .v562-score{
+  padding:12px;margin:11px 0;
+}
+body[data-app-route="refereeOffline"] .v562-team-editor>header>b{font-size:12px}
+body[data-app-route="refereeOffline"] .v562-team-editor>header label{
+  font-size:10px;gap:6px;
+}
+body[data-app-route="refereeOffline"] .v562-team-editor table{min-width:620px}
+body[data-app-route="refereeOffline"] .v562-team-editor th,
+body[data-app-route="refereeOffline"] .v562-team-editor td{
+  font-size:10.5px;line-height:1.35;padding:8px 6px;
+}
+body[data-app-route="refereeOffline"] .v562-team-editor th{font-size:9.5px}
+body[data-app-route="refereeOffline"] .v562-team-editor td:nth-child(2){min-width:164px}
+body[data-app-route="refereeOffline"] .v562-team-editor td:nth-child(2)b{
+  font-size:11.5px;line-height:1.35;
+}
+body[data-app-route="refereeOffline"] .v562-team-editor select{
+  min-width:42px;height:32px;font-size:11px;
+}
+body[data-app-route="refereeOffline"] .v562-team-editor input[type="number"]{
+  width:43px;height:32px;font-size:11px;
+}
+body[data-app-route="refereeOffline"] .v562-team-editor input[type="checkbox"]{
+  width:17px;height:17px;
+}
+body[data-app-route="refereeOffline"] .v562-toast{font-size:11px}
+@media(max-width:440px){
+  body[data-app-route="refereeOffline"] .v562-page .v562-head h1{font-size:19px}
+  body[data-app-route="refereeOffline"] .v562-tools{
+    grid-template-columns:minmax(0,.9fr) minmax(0,1.35fr);
+  }
+  body[data-app-route="refereeOffline"] .v562-kpis{gap:6px}
+  body[data-app-route="refereeOffline"] .v562-kpis span{min-height:63px}
+}
