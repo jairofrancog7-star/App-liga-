@@ -1,6 +1,6 @@
 import {parseDelimited,detectDelimiter} from './v1222-csv-parser-core.js';
 export {parseDelimited,detectDelimiter};
-import {suggestCsvMapping,guessCsvType,csvLocalInsights,readCsvLearning,keepCsvLearning,standardCategory} from './v1222-csv-local-ai.js';
+import {suggestCsvMapping,guessCsvType,csvLocalInsights,readCsvLearning,keepCsvLearning,standardCategory,compareCsvTeams} from './v1222-csv-local-ai.js';
 /* Importador CSV local y seguro — Liga Juventino Rosas. Sin escritura de datos oficiales. */
 const SCHEMAS={
  equipos:{label:'Equipos',fields:[['nombre','Nombre del equipo',true,['equipo','club','team','nombre equipo','nombre']],['categoria','Categoría',true,['categoria','division','liga','category']],['campo','Campo',false,['sede','cancha','estadio','campo local','campo']],['ciudad','Ciudad / comunidad',false,['localidad','comunidad','municipio','ciudad']]]},
@@ -93,7 +93,7 @@ async function parseCsvBackground(text,chosen){
  }catch(_){return direct();}
  finally{if(worker)worker.terminate();}
 }
-export function openCsvImporter({modal,toast,log}){
+export function openCsvImporter({modal,toast,log,officialTeams}){
  const m=modal('Importar CSV','Analiza y prepara datos de la Liga. La revisión es local: no se publican cambios oficiales.',
  '<div class="csvpro">'+
  '<div class="csvpro-head"><div class="csvpro-step">1 <span>ARCHIVO Y TIPO</span></div><div class="csvpro-privacy">🔒 Sin subir datos</div></div>'+
@@ -109,7 +109,7 @@ export function openCsvImporter({modal,toast,log}){
  const $=selector=>m.querySelector(selector);
  const els={type:$('[data-csv-type]'),file:$('[data-csv-file]'),drop:$('[data-csv-drop]'),delimiter:$('[data-csv-delimiter]'),name:$('[data-csv-name]'),status:$('[data-csv-status]'),result:$('[data-csv-result]'),parse:$('[data-csv-parse]')};
  let selected=null,parsed=null,mapping={},analysis=null,query='',filter='all',shown=25,activeFile=0;
- let smart=null,insights=null,normalizeCategories=false,typeChanged=false;
+ let smart=null,insights=null,teamCompare=null,normalizeCategories=false,typeChanged=false;
  let learning=readCsvLearning(typeof localStorage==='undefined'?null:localStorage);
  const propose=()=>{
   smart=suggestCsvMapping(parsed.headers,parsed.rows,els.type.value,SCHEMAS,learning);
@@ -120,6 +120,9 @@ export function openCsvImporter({modal,toast,log}){
   if(!parsed)return;
   analysis=analyzeCsv(parsed,els.type.value,mapping);
   insights=csvLocalInsights(parsed,els.type.value,mapping,analysis);
+  let official=[];
+  try{official=typeof officialTeams==='function'?officialTeams():[];}catch(_){}
+  teamCompare=compareCsvTeams(parsed,els.type.value,mapping,official);
   render();
  };
  const choose=file=>{
@@ -164,12 +167,15 @@ export function openCsvImporter({modal,toast,log}){
     parsed.headers.map((h,i)=>'<option value="'+i+'" '+(mapping[key]===i?'selected':'')+'>'+html(h||'(sin nombre)')+' · '+(i+1)+'</option>').join('')+'</select></label>').join('');
   const warning=[...parsed.warnings,...missing.map(n=>'Falta asignar: '+n)];
   const warningUI=warning.length?'<details class="csvpro-warnings"><summary>Revisar '+warning.length+' aviso(s)</summary><ul>'+warning.slice(0,35).map(w=>'<li>'+html(w)+'</li>').join('')+'</ul></details>':'';
+  const teamReport=teamCompare?.available?'<details class="csvpro-warnings csvpro-teamreview"><summary>Comparación local: '+teamCompare.exact+' coincidencia(s) exacta(s), '+teamCompare.notFound+' valor(es) por revisar</summary>'+
+   '<p>Se compararon los nombres del CSV con los equipos que ya carga tu página. Una diferencia no significa necesariamente que el equipo no exista.</p>'+
+   (teamCompare.suggestions.length?'<ul>'+teamCompare.suggestions.map(x=>'<li>'+html(x.name)+' → Posible: '+html(x.suggested)+' ('+x.score+'% parecido)</li>').join('')+'</ul>':'')+'</details>':'';
   const aiReport='<div class="csvpro-aireport" aria-label="Diagnóstico automático">'+
    '<div class="csvpro-aireport-head"><b>✦ Diagnóstico local</b><strong>'+insights.quality+'% filas correctas</strong></div>'+
    '<div class="csvpro-meter" role="progressbar" aria-label="Filas correctas" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+insights.quality+'"><span style="width:'+insights.quality+'%"></span></div>'+
    '<ul>'+insights.notes.map(n=>'<li>'+html(n)+'</li>').join('')+'</ul></div>';
   els.result.innerHTML=
-   aiReport+
+   aiReport+teamReport+
    '<div class="csvpro-step csvpro-section">2 <span>ASIGNAR COLUMNAS</span></div>'+
    '<div class="csvpro-map">'+mapUI+'</div>'+
    '<div class="csvpro-summary"><div><b>'+results.length+'</b><small>Filas</small></div><div><b>'+valid.length+'</b><small>Correctas</small></div><div><b>'+invalid.length+'</b><small>Con errores</small></div></div>'+
