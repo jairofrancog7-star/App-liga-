@@ -394,7 +394,16 @@ function openReview(){
    const actions=document.createElement('div');actions.className='ljr-editor-row-actions ljr-review-actions';
    actions.append(makeButton('Ver',()=>{body.hidden=!body.hidden;preview.textContent=body.hidden?'Ver':'Ocultar'},'ljr-review-view'));
    const preview=actions.lastElementChild;
-   actions.append(makeButton('Editar',()=>{window.LJR_CMS?.editor?.('news',record)},'ljr-review-edit'));
+   actions.append(makeButton('Editar',async()=>{
+    try{
+     await verified();
+     if(typeof window.LJR_CMS?.editor==='function')window.LJR_CMS.editor('news',record);
+     else if(typeof window.LJR_CMS?.open==='function'){
+      window.LJR_CMS.open('news');
+      status(modal,'Editor general abierto. Selecciona el comunicado para editar.');
+     }else status(modal,'No está disponible el editor de avisos. Actualiza la aplicación.');
+    }catch(err){status(modal,'No se pudo abrir el editor: '+(err?.message||'Error de sesión'))}
+   },'ljr-review-edit'));
    actions.append(makeButton('Compartir',async()=>{
     if(!record.published&&!confirm('Este aviso es un borrador privado. ¿Deseas compartirlo fuera de la administración?'))return;
     const txt=(p.title||'Aviso oficial')+'\n\n'+(p.body||'')+'\n\nLiga Juventino Rosas';
@@ -406,14 +415,22 @@ function openReview(){
    },'ljr-review-share'));
    if(!record.published){
     actions.append(makeButton('Publicar',async ev=>{
+     if(!String(p.title||'').trim()||String(p.body||'').trim().length<15){
+      status(modal,'Completa el título y un mensaje de al menos 15 caracteres antes de publicar. Abre Editar para corregirlo.');
+      return;
+     }
      if(!confirm('¿Publicar este aviso en Noticias para todos los visitantes? Revisa antes fechas y datos oficiales.'))return;
      const btn=ev.currentTarget;btn.disabled=true;
      try{
       await verified();
       await media().api('content/'+encodeURIComponent(record.id),{method:'PUT',body:{kind:'news',payload:record.payload,revision:record.revision,published:true}});
-      await window.LJR_CMS?.refresh?.();await reload();window.dispatchEvent(new Event('liga:content'));
-      status(modal,'Aviso publicado en Noticias.');
-     }catch(err){status(modal,'No se pudo publicar: '+(err?.message||'Error'));btn.disabled=false}
+     }catch(err){
+      status(modal,'No se pudo publicar: '+(err?.message||'Error de conexión'));btn.disabled=false;return;
+     }
+     let note='';
+     try{await window.LJR_CMS?.refresh?.()}catch(_){note=' La actualización de Noticias se completará al volver a cargar la página.'}
+     await reload();window.dispatchEvent(new Event('liga:content'));
+     status(modal,'Aviso publicado en el servidor de la Liga.'+note);btn.disabled=false;
     },'ljr-review-publish'));
    }
    actions.append(makeButton(record.published?'Retirar':'Eliminar',async ev=>{
@@ -422,9 +439,13 @@ function openReview(){
     try{
      await verified();
      await media().api('content/'+encodeURIComponent(record.id),{method:'DELETE',body:{revision:record.revision}});
-     await window.LJR_CMS?.refresh?.();await reload();window.dispatchEvent(new Event('liga:content'));
-     status(modal,'Aviso retirado correctamente.');
-    }catch(err){status(modal,'No se pudo retirar: '+(err?.message||'Error'));btn.disabled=false}
+    }catch(err){
+     status(modal,'No se pudo retirar: '+(err?.message||'Error de conexión'));btn.disabled=false;return;
+    }
+    let note='';
+    try{await window.LJR_CMS?.refresh?.()}catch(_){note=' La vista de Noticias se actualizará al recargar la página.'}
+    await reload();window.dispatchEvent(new Event('liga:content'));
+    status(modal,'El aviso fue retirado del servidor.'+note);btn.disabled=false;
    },'ljr-review-danger'));
    card.append(actions);list.append(card);
   });
