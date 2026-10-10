@@ -867,7 +867,32 @@ function delegates(){
 function officials(){
  const roles=['Árbitro','Árbitro central','Árbitro asistente','Cuarto árbitro','Asistente','Responsable de campo','Delegado','Supervisor'];
  const cats=['Todas','Primera','Intermedia','Segunda','Veteranos 35+','Veteranos 50+'];
- const fields=['Por definir','UDS Campo 1','UDS Campo 2','UDS Campo 3','Campo 4','Fraccionamiento','Romerillo','San Julián','Franco Tavera','Cuenda','Otro'];
+ // Catálogo compartido: todas las canchas de Mapas para oficiales y designaciones.
+ const fieldFallback=[
+  'Campo 1 · Unidad Deportiva Sur','Campo 2 · Unidad Deportiva Sur','Campo 3 · Unidad Deportiva Sur',
+  'Campo 4 · Emiliano Zapata','Campo Cerrito de Gasca','Campo de Tavera','Campo San Juan de la Cruz',
+  'Unidad Deportiva Santiago de Cuenda','Campo San Antonio de Romerillo','Campo Fraccionamiento Comontuoso',
+  'Campo de Fútbol de Pozos','Campo Rincón de Centeno','Campo San José de la Montaña','Campo San Julián Tierra Blanca'
+ ];
+ const fields=['Por definir',...new Set(
+  [...fieldFallback,...(window.LJR_FIELDS?.catalog||[]).map(f=>f.name)]
+   .map(name=>window.LJR_FIELDS?.canonical?.(name)||name)
+ ),'Otro'];
+ const legacyFieldAliases={
+  'uds campo 1':'Campo 1 · Unidad Deportiva Sur',
+  'uds campo 2':'Campo 2 · Unidad Deportiva Sur',
+  'uds campo 3':'Campo 3 · Unidad Deportiva Sur'
+ };
+ const canonicalField=value=>{
+  const raw=String(value||'').trim()||'Por definir';
+  return legacyFieldAliases[norm(raw)]||window.LJR_FIELDS?.canonical?.(raw)||raw;
+ };
+ const restoreField=(select,saved)=>{
+  const value=canonicalField(saved);
+  // Conservar canchas personalizadas que ya estuvieran guardadas.
+  if(!Array.from(select.options).some(o=>o.value===value))select.add(new Option(value,value));
+  select.value=value;
+ };
  const avails=['Sin definir','Sábado','Domingo','Ambos','No disponible'];
  const readList=(key)=>{const value=read(key,[]);return Array.isArray(value)?value:[]};
  const list=readList('v105-officials');
@@ -960,7 +985,7 @@ function officials(){
    return '<article class="v1125-entry">'+
     '<div class="v1125-entry-heading"><div><b>'+esc(o.name||'Sin nombre')+'</b><small>'+esc(o.role||'Árbitro')+' · '+esc(o.category||'Todas')+'</small></div>'+
       '<span class="v1125-state '+(status==='Activo'?'good':'muted')+'">'+esc(status)+'</span></div>'+
-    '<div class="v1125-tags"><span>◷ '+esc(avail)+'</span><span>⌖ '+esc(o.field||'Por definir')+'</span></div>'+
+    '<div class="v1125-tags"><span>◷ '+esc(avail)+'</span><span>⌖ '+esc(canonicalField(o.field))+'</span></div>'+
     (o.phone?'<small>Tel. '+esc(o.phone)+'</small>':'')+
     (o.notes?'<small>'+esc(o.notes)+'</small>':'')+
     '<div class="v1125-entry-actions"><button type="button" data-o-action="edit" data-index="'+o._index+'">Editar</button>'+
@@ -983,7 +1008,7 @@ function officials(){
    return '<article class="v1125-entry"><div class="v1125-entry-heading"><div><b>'+esc(a.game||'Partido')+'</b>'+
      '<small>'+esc(a.date)+' · '+esc(a.time)+' · '+esc(a.category)+'</small></div>'+
      '<span class="v1125-state '+(a.status==='Confirmado'?'good':'muted')+'">'+esc(a.status||'Pendiente')+'</span></div>'+
-     '<div class="v1125-tags"><span>♙ '+esc(official?.name||a.officialName||'Oficial no disponible')+'</span><span>⌖ '+esc(a.field||'Por definir')+'</span></div>'+
+     '<div class="v1125-tags"><span>♙ '+esc(official?.name||a.officialName||'Oficial no disponible')+'</span><span>⌖ '+esc(canonicalField(a.field))+'</span></div>'+
      '<div class="v1125-entry-actions">'+
       (a.status!=='Confirmado'?'<button type="button" data-o-action="confirm" data-index="'+a._index+'">Confirmar</button>':'')+
       (official&&cleanPhone(official.phone)?'<button type="button" data-o-action="notify" data-index="'+a._index+'">WhatsApp</button>':'')+
@@ -1021,7 +1046,7 @@ function officials(){
    q('[data-o-role]').value=roles.includes(o.role)?o.role:'Árbitro';
    q('[data-o-cat]').value=cats.includes(o.category)?o.category:'Todas';
    q('[data-o-avail]').value=avails.includes(o.availability)?o.availability:'Sin definir';
-   q('[data-o-field]').value=fields.includes(o.field)?o.field:'Por definir';
+   restoreField(q('[data-o-field]'),o.field);
    q('[data-o-status]').value=o.status==='Inactivo'?'Inactivo':'Activo';
    q('[data-o-form-title]').textContent='Editar oficial';q('[data-o-action="save"]').textContent='Guardar cambios';
    editorVisible(true);q('[data-o-name]').focus();return;
