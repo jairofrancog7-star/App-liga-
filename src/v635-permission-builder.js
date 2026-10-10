@@ -44,7 +44,12 @@ const PERMISSION_FIELDS=[
   'Campo San Antonio de Romerillo',
   'Campo San Julián Tierra Blanca',
   'Campo de Tavera',
-  'Unidad Deportiva Santiago de Cuenda'
+  'Unidad Deportiva Santiago de Cuenda',
+  'Campo de Fútbol de Pozos',
+  'Campo Cerrito de Gasca',
+  'Campo San José de la Montaña',
+  'Campo San Juan de la Cruz',
+  'Campo Rincón de Centeno'
 ];
 
 let db=null;
