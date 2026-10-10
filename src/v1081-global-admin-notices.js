@@ -71,6 +71,9 @@ function makeAdminForm(){
   '<label>Mensaje oficial<textarea name="body" required minlength="15" maxlength="700" rows="3" placeholder="Escribe solo datos confirmados"></textarea></label>'+
   '<div class="v1081-two">'+
   '<label>Categoría<select name="category">'+cats.map(([v,t])=>'<option value="'+esc(v)+'">'+esc(t)+'</option>').join('')+'</select></label>'+
+  '<label>Tipo de aviso<select name="type"><option value="general">General</option><option value="jornada">Jornada</option><option value="horario">Cambio de horario</option><option value="cancha">Cambio de cancha</option><option value="suspension">Suspensión</option><option value="resultados">Resultados</option><option value="partido">Partido</option><option value="junta">Junta</option><option value="registro">Registro</option><option value="clima">Clima</option></select></label>'+
+  '<label>Equipo afectado (opcional)<input name="team" maxlength="90" placeholder="Solo si aplica"></label>'+
+  '<label>Cancha afectada (opcional)<input name="field" maxlength="100" placeholder="Solo si aplica"></label>'+
   '<label>Publicar · hora Juventino Rosas<input name="when" type="datetime-local" required></label></div>'+
   '<label class="v1081-check"><input type="checkbox" name="push"> Avisar también por notificación Push (requiere VAPID)</label>'+
   '<p class="v1081-preview">Se publicará en Noticias para todos. No se agregan resultados automáticamente.</p>'+
@@ -102,7 +105,9 @@ function makeAdminForm(){
      const edit=document.createElement('button');edit.textContent='Editar';
      edit.onclick=()=>{
       editing=item;form.elements.title.value=item.title||'';form.elements.body.value=item.body||'';
-      form.elements.category.value=item.category||'Todas';form.elements.when.value=mexicoInput(item.send_at);
+      form.elements.category.value=item.category||'Todas';form.elements.type.value=item.notice_type||'general';
+      form.elements.team.value=item.team||'';form.elements.field.value=item.field||'';
+      form.elements.when.value=mexicoInput(item.send_at);
       form.elements.push.checked=Array.isArray(item.channels)&&item.channels.includes('push');
       save.textContent='Guardar cambios';form.scrollIntoView({block:'nearest',behavior:'smooth'});
      };
@@ -126,7 +131,9 @@ function makeAdminForm(){
   const sendAt=mexicoMillis(form.elements.when.value);
   if(!Number.isFinite(sendAt)||sendAt<Date.now()+30000){message(modal,'Elige una fecha futura válida en hora de Juventino Rosas.');return}
   const payload={title:form.elements.title.value.trim(),body:form.elements.body.value.trim(),
-   category:form.elements.category.value,channels:form.elements.push.checked?['app','push']:['app'],
+   category:form.elements.category.value,type:form.elements.type.value,
+   team:form.elements.team.value.trim(),field:form.elements.field.value.trim(),
+   channels:form.elements.push.checked?['app','push']:['app'],
    sendAt:new Date(sendAt).toISOString()};
   if(payload.body.length<15){message(modal,'Escribe al menos 15 caracteres con datos oficiales.');return}
   if(!confirm('¿Guardar la programación oficial? No se publicará hasta la fecha indicada.'))return;
