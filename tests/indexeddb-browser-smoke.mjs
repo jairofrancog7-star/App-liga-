@@ -49,7 +49,10 @@ try{
  await page.locator('[data-idb-pass]').fill('clave-multimedia-larga-2026');
  await page.locator('[data-idb-repeat]').fill('clave-multimedia-larga-2026');
  await page.locator('[data-idb-folder]').click();
- await page.waitForFunction(()=>!!window.__mediaArchive,{timeout:30000});
+ await page.waitForFunction(()=>!!window.__mediaArchive || document.querySelector('[data-idb-status]')?.classList.contains('error'),{timeout:10000});
+ console.log('Estado de respaldo:',await page.locator('[data-idb-status]').innerText(),'errores navegador:',errors);
+ assert.equal(await page.locator('[data-idb-status]').evaluate(el=>el.classList.contains('error')),false,'La carpeta no debe mostrar un error');
+ assert.ok(await page.evaluate(()=>window.__mediaArchive),'Debe guardar el archivo cifrado en carpeta');
  const archive=await page.evaluate(()=>JSON.parse(window.__mediaArchive));
  assert.equal(archive.format,'LJR_IDB_MEDIA_PRIVATE');
  assert.equal(archive.encrypted,true);
