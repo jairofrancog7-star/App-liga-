@@ -9,10 +9,11 @@ const uid=()=>Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8);
 const empty=()=>({attendance:[],tasks:[],votes:[],sign:{president:'',secretary:'',approved:false},evidence:[],created:Date.now(),updated:Date.now()});
 const read=()=>{try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');return x&&typeof x==='object'&&!Array.isArray(x)?x:{}}catch(_){return {}}};
 const state=read();
+const drafts={};
 let form=null,host=null,tab='attendance',qrValue='',scanner=null,search='';
 function date(){return $('input[data-x="date"]',form)?.value||''}
 function validDate(d){if(!/^\d{4}-\d{2}-\d{2}$/.test(d))return false;const x=new Date(d+'T12:00:00');return !isNaN(x)&&x.getDay()===2}
-function item(d=date()){const r=state[d]||empty();for(const k of ['attendance','tasks','votes','evidence'])if(!Array.isArray(r[k]))r[k]=[];if(!r.sign)r.sign={president:'',secretary:'',approved:false};return r}
+function item(d=date()){const r=state[d]||(drafts[d]||(drafts[d]=empty()));for(const k of ['attendance','tasks','votes','evidence'])if(!Array.isArray(r[k]))r[k]=[];if(!r.sign)r.sign={president:'',secretary:'',approved:false};return r}
 function persist(d=date()){if(!validDate(d))return msg('Selecciona una fecha de martes válida.');const r=item(d);r.updated=Date.now();state[d]=r;try{localStorage.setItem(KEY,JSON.stringify(state))}catch(_){msg('Sin espacio local. Exporta tu respaldo y libera almacenamiento.');return}msg('Guardado en este dispositivo, sin sincronización en línea.')}
 function msg(s){const el=$('[data-mh-status]',host);if(el)el.textContent=s}
 function fmt(d){if(!d)return '—';const x=new Date(d+'T12:00:00');return isNaN(x)?d:x.toLocaleDateString('es-MX',{day:'numeric',month:'short',year:'numeric'})}
