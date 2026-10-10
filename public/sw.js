@@ -1,5 +1,5 @@
 /* V1072: evitar que la PWA Android conserve estilos y módulos obsoletos. */
-const CACHE='liga-juventino-v1103-stable-nav';
+const CACHE='liga-juventino-v1130-referee-ready';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
@@ -13,7 +13,7 @@ self.addEventListener('install',event=>{
 self.addEventListener('activate',event=>{
   event.waitUntil(
     caches.keys()
-      .then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))
+      .then(keys=>Promise.all(keys.filter(k=>k!==CACHE&&!k.startsWith('ljr-referee-offline-')).map(k=>caches.delete(k))))
       .then(()=>self.clients.claim())
   );
 });

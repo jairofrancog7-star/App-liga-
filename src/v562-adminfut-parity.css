@@ -124,3 +124,86 @@ body[data-app-route="refereeOffline"] .v562-toast{font-size:11px}
   body[data-app-route="refereeOffline"] .v562-kpis{gap:6px}
   body[data-app-route="refereeOffline"] .v562-kpis span{min-height:63px}
 }
+
+
+/* V1130 · Centro arbitral compacto, elementos táctiles y captura accesible. */
+body[data-app-route="refereeOffline"] .v1130-referee{--ref-line:rgba(115,173,255,.28);--ref-ink:#ecf7ff;--ref-tint:#70e8ff;color:var(--ref-ink);padding-top:7px!important}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-head{padding:8px 4px 12px;align-items:center;grid-template-columns:30px minmax(0,1fr) auto;gap:8px}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-head h1{font-size:20px;font-weight:900;line-height:1.15;letter-spacing:-.03em}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-head p{font-size:11px;margin-top:4px;color:#b6c7ed}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-head small{font-size:9px;color:#69eaff;letter-spacing:.085em}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-head>button{font-size:24px;display:grid;place-items:center}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-kpis{gap:7px;margin:10px 0 12px}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-kpis span{min-height:64px;background:linear-gradient(150deg,#163780,#0b1c66);border:1px solid var(--ref-line);border-radius:14px}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-kpis b{font-size:22px;line-height:1.1}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-kpis small{font-size:10px;line-height:1.25;color:#d2e4ff}
+body[data-app-route="refereeOffline"] .v1130-shortcuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:0 0 12px}
+body[data-app-route="refereeOffline"] .v1130-shortcut{min-width:0;min-height:78px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:linear-gradient(140deg,#1555ba,#0c2c83);color:#fff;border:1px solid rgba(86,196,255,.37);border-radius:13px;padding:10px;box-shadow:0 3px 14px rgba(0,0,0,.12);cursor:pointer}
+body[data-app-route="refereeOffline"] .v1130-shortcut span{font-size:21px;line-height:1}
+body[data-app-route="refereeOffline"] .v1130-shortcut b{font-size:12px;line-height:1.2;text-align:center}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-info{border-radius:13px;background:linear-gradient(135deg,#112a80,#0b195e);padding:12px;gap:10px}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-info button{font-size:11px;min-height:37px;line-height:1.25}
+body[data-app-route="refereeOffline"] .v1130-ready{margin:8px 1px 12px;color:#afc9ec;font-size:10.5px;line-height:1.4}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-tools{grid-template-columns:minmax(0,.95fr) minmax(0,1.3fr);gap:9px;margin:10px 0}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-tools label span{font-size:10px}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-tools select,body[data-app-route="refereeOffline"] .v1130-referee .v562-tools input{min-height:42px;border:1px solid var(--ref-line);border-radius:10px;background:#0c1c65;font-size:12px}
+body[data-app-route="refereeOffline"] .v1130-filters{display:flex;overflow-x:auto;gap:7px;padding:3px 1px 8px;scrollbar-width:thin;scroll-snap-type:x proximity}
+body[data-app-route="refereeOffline"] .v1130-filters button{flex:0 0 auto;min-height:34px;padding:6px 11px;background:#101f65;color:#bed0ef;border:1px solid var(--ref-line);border-radius:999px;font-size:11px;font-weight:750;scroll-snap-align:start}
+body[data-app-route="refereeOffline"] .v1130-filters button.active{background:#1459c4;border-color:#41c9fa;color:#fff}
+body[data-app-route="refereeOffline"] .v1130-my-ref{display:grid;gap:5px;margin:7px 1px;color:#bfddff;font-size:11px}
+body[data-app-route="refereeOffline"] .v1130-my-ref input{height:40px;background:#0b1c63;border:1px solid var(--ref-line);border-radius:10px;color:#fff;padding:0 11px;font-size:12px}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-actions{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:4px 0 10px}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-actions button{min-height:40px;padding:6px 5px;font-size:10px;overflow-wrap:anywhere}
+body[data-app-route="refereeOffline"] .v1130-more{background:#0b155c;border:1px solid rgba(100,155,255,.24);border-radius:11px;margin:8px 0;padding:0 11px}
+body[data-app-route="refereeOffline"] .v1130-more summary{list-style-position:inside;padding:11px 0;color:#c8dbff;font-weight:750;font-size:11px;cursor:pointer}
+body[data-app-route="refereeOffline"] .v1130-more p{font-size:10px;line-height:1.45;color:#b5c4e5}
+body[data-app-route="refereeOffline"] .v1130-tool-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:4px}
+body[data-app-route="refereeOffline"] .v1130-tool-grid button{min-height:38px;background:#123e95;border:1px solid var(--ref-line);border-radius:9px;color:#fff;font-size:10px;font-weight:800;padding:7px}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-cap{gap:5px;margin:8px 0}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-cap>span{padding:8px 5px}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-title{font-size:15px;margin:14px 2px 10px;line-height:1.3}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-title small{font-size:10px;color:#8ec9ff;font-weight:650}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-match{padding:12px;border-radius:13px;background:linear-gradient(150deg,#0d2674,#080f56)}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-versus{margin:10px 0;grid-template-columns:minmax(0,1fr) 43px minmax(0,1fr);gap:7px}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-versus b{font-size:12px;line-height:1.24}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-meta{margin-bottom:10px;gap:8px;color:#c0d0eb}
+body[data-app-route="refereeOffline"] .v1130-card-actions{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.75fr) minmax(0,.9fr);gap:6px}
+body[data-app-route="refereeOffline"] .v1130-card-actions button{min-width:0;min-height:36px;padding:5px 4px;border:1px solid rgba(50,208,245,.3);border-radius:9px;background:#17479d;color:#fff;font-size:10px;font-weight:800;overflow-wrap:anywhere}
+body[data-app-route="refereeOffline"] .v1130-card-actions button:first-child{background:#1764c9}
+body[data-app-route="refereeOffline"] .v1130-save-status{font-size:10px;color:#86ebc7;background:#0b2a64;border-radius:9px;margin:2px 0 10px;padding:9px 11px;line-height:1.3}
+body[data-app-route="refereeOffline"] .v1130-clock{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;padding:12px;margin:10px 0;background:linear-gradient(135deg,#123d8d,#081c63);border:1px solid rgba(75,211,255,.33);border-radius:14px}
+body[data-app-route="refereeOffline"] .v1130-clock>div:first-child{display:grid;gap:6px;justify-items:start}
+body[data-app-route="refereeOffline"] .v1130-clock small{font-size:9px;letter-spacing:.05em;color:#86e8ff;font-weight:850}
+body[data-app-route="refereeOffline"] .v1130-clock strong{font-size:29px;font-weight:950;letter-spacing:.035em;font-variant-numeric:tabular-nums}
+body[data-app-route="refereeOffline"] .v1130-clock select{width:100%;max-width:180px;min-height:33px;border-radius:8px;border:1px solid var(--ref-line);background:#0a1d62;color:#fff;padding:5px;font-size:11px}
+body[data-app-route="refereeOffline"] .v1130-clock-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:center;gap:7px}
+body[data-app-route="refereeOffline"] .v1130-clock-actions button{min-height:37px;border:1px solid rgba(105,208,253,.3);border-radius:9px;background:#1555ab;color:#fff;font-size:11px;font-weight:800}
+body[data-app-route="refereeOffline"] .v1130-clock-actions button:last-child{grid-column:1/-1;background:#133577}
+body[data-app-route="refereeOffline"] .v1130-incidents{background:#0b1a61;border:1px solid var(--ref-line);border-radius:13px;margin:10px 0;padding:12px}
+body[data-app-route="refereeOffline"] .v1130-incidents h2{font-size:14px;margin:0 0 6px}
+body[data-app-route="refereeOffline"] .v1130-incidents>p{font-size:10px;color:#adbee6;line-height:1.4;margin:0 0 12px}
+body[data-app-route="refereeOffline"] .v1130-event-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+body[data-app-route="refereeOffline"] .v1130-event-form label{display:grid;gap:5px;min-width:0;font-size:10px;font-weight:800;color:#cce5ff}
+body[data-app-route="refereeOffline"] .v1130-event-form .wide,body[data-app-route="refereeOffline"] .v1130-event-form>button{grid-column:1/-1}
+body[data-app-route="refereeOffline"] .v1130-event-form input,body[data-app-route="refereeOffline"] .v1130-event-form select{min-width:0;width:100%;min-height:39px;padding:7px 9px;border:1px solid var(--ref-line);border-radius:8px;background:#091452;color:#fff;font-size:12px}
+body[data-app-route="refereeOffline"] .v1130-event-form>button{height:41px;background:#1463c8;color:#fff;border:1px solid rgba(100,224,255,.3);border-radius:10px;font-weight:850;font-size:12px}
+body[data-app-route="refereeOffline"] .v1130-event-list{display:grid;gap:7px;margin-top:10px}
+body[data-app-route="refereeOffline"] .v1130-event{display:grid;grid-template-columns:minmax(0,1fr) 30px;gap:4px 7px;padding:9px;background:#0d2b72;border:1px solid rgba(107,147,230,.2);border-radius:9px}
+body[data-app-route="refereeOffline"] .v1130-event b{font-size:11px}
+body[data-app-route="refereeOffline"] .v1130-event span{grid-row:2;grid-column:1;overflow-wrap:anywhere;font-size:10px;color:#bdd0ec}
+body[data-app-route="refereeOffline"] .v1130-event button{grid-column:2;grid-row:1/3;align-self:center;width:30px;height:30px;background:#573055;border:1px solid #ad6480;color:#fff;border-radius:8px}
+body[data-app-route="refereeOffline"] .v1130-no-events{margin:5px 0;color:#a7b9e1;font-size:11px}
+body[data-app-route="refereeOffline"] .v1130-validation{background:#5a2338;color:#fff4f5;border:1px solid #e97c93;border-radius:10px;padding:11px;margin:10px 0;font-size:11px;line-height:1.5}
+body[data-app-route="refereeOffline"] .v1130-validation[hidden]{display:none!important}
+body[data-app-route="refereeOffline"] .v1130-validation ul{margin:7px 0 0;padding-left:16px}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-savebar{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+body[data-app-route="refereeOffline"] .v1130-referee .v562-savebar button{min-height:43px;font-size:11px;padding:8px}
+body[data-app-route="refereeOffline"] .v1130-referee button:focus-visible,body[data-app-route="refereeOffline"] .v1130-referee input:focus-visible,body[data-app-route="refereeOffline"] .v1130-referee select:focus-visible{outline:2px solid #65d8ff;outline-offset:2px}
+@media(max-width:440px){
+ body[data-app-route="refereeOffline"] .v1130-referee .v562-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
+ body[data-app-route="refereeOffline"] .v1130-referee .v562-actions button:last-child{grid-column:auto}
+ body[data-app-route="refereeOffline"] .v1130-shortcut{min-height:75px}
+ body[data-app-route="refereeOffline"] .v1130-card-actions{grid-template-columns:minmax(0,1.35fr) minmax(0,.72fr) minmax(0,.92fr)}
+ body[data-app-route="refereeOffline"] .v1130-card-actions button{font-size:9.5px}
+ body[data-app-route="refereeOffline"] .v1130-referee .v562-head h1{font-size:19px}
+}
