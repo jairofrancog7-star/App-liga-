@@ -56,7 +56,7 @@
       '</div>'+
       '<div class="v1131-dates"><label><span>DESDE</span><input type="date" aria-label="Fecha desde" data-v1131-from value="'+esc(state.from)+'"></label><label><span>HASTA</span><input type="date" aria-label="Fecha hasta" data-v1131-to value="'+esc(state.to)+'"></label><label><span>ORDENAR</span><select data-v1131-sort aria-label="Ordenar partidos"><option value="original"'+(state.sort==='original'?' selected':'')+'>Orden oficial</option><option value="recent"'+(state.sort==='recent'?' selected':'')+'>Más recientes</option><option value="oldest"'+(state.sort==='oldest'?' selected':'')+'>Más antiguos</option><option value="team"'+(state.sort==='team'?' selected':'')+'>Equipo A–Z</option></select></label></div>'+
       '<div class="v1131-toolbar"><button type="button" data-v1131-reset class="v1131-reset">Limpiar filtros</button><span data-v1131-count aria-live="polite">Calculando…</span></div>'+
-      '<div class="v1131-actions"><button type="button" data-v1131-ics title="Elegir encuentro y preparar evento de Google Calendar"><span aria-hidden="true">▦</span> Calendario</button><button type="button" data-v1131-csv title="Descargar el rol filtrado en CSV"><span aria-hidden="true">⇩</span> CSV</button><button type="button" data-v1131-share title="Compartir encuentros seleccionados"><span aria-hidden="true">↗</span> Compartir</button></div>'+
+      '<div class="v1131-actions"><button type="button" data-v1131-calendar title="Guardar un partido en Google Calendar" aria-label="Preparar partido en Google Calendar"><span aria-hidden="true">▦</span> Calendario</button><button type="button" data-v1131-csv title="Descargar el rol filtrado en CSV"><span aria-hidden="true">⇩</span> CSV</button><button type="button" data-v1131-share title="Compartir encuentros seleccionados"><span aria-hidden="true">↗</span> Compartir</button></div>'+
       '<small class="v1131-disclaimer">Esta lista contiene <b>partidos del rol</b>. No confirma que exista una cédula firmada, entregada o aprobada. Las descargas son una copia de consulta, no cambian resultados oficiales.</small>'+
       '<output class="v1131-feedback" data-v1131-feedback aria-live="polite"></output>'+
     '</section>';
@@ -155,17 +155,36 @@
     download('liga-juventino-rol-filtrado.csv','\uFEFF'+lines.join('\r\n')+'\r\n','text/csv;charset=utf-8');
     say(root,'Rol filtrado descargado en CSV.');
   }
-  function icsEsc(s){return String(s||'').replace(/\\/g,'\\\\').replace(/\r?\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;')}
-  function exportICS(root){
-    var data=(apply(root)||[]).filter(function(x){return x.when&&x.when.hasTime});
-    var events=data.map(function(x){
-      var time=x.when.ics.match(/T(\d\d)(\d\d)00$/);
-      return {title:x.home+' - '+x.away,iso:x.when.date,time:time[1]+':'+time[2],
-        duration:120,venue:x.field==='Por confirmar'?'':x.field,
-        description:'Liga Juventino Rosas · '+x.cat+' · Jornada '+(x.round||'sin confirmar')+' · Consulta el rol oficial.'};
-    });
-    if(window.LJR_GOOGLE_CALENDAR_GLOBAL.choose(events,'Selecciona el partido de la cédula')){
-      say(root,'Google Calendar abrirá con los datos del partido. Pulsa Guardar para añadirlo.');
+  function openGoogleCalendar(root){
+    // V1208: el mismo botón del rol usa Google Calendar, nunca una descarga .ics.
+    // Se respetan la categoría, los filtros activos, los equipos, el campo y la hora publicada.
+    var matches=(apply(root)||[]).filter(function(x){return x.when&&x.when.hasTime});
+    var events=matches.map(function(x){
+      var time=String(x.when.ics||'').match(/T(\d\d)(\d\d)00$/);
+      if(!time)return null;
+      return {
+        title:x.home+' - '+x.away,
+        iso:x.when.date,
+        time:time[1]+':'+time[2],
+        duration:120,
+        venue:x.field==='Por confirmar'?'':x.field,
+        description:'Liga Juventino Rosas · '+x.cat+' · Jornada '+(x.round||'sin confirmar')+' · Consulta el rol oficial antes de asistir.'
+      };
+    }).filter(Boolean);
+    if(!events.length){
+      say(root,'No hay partidos con fecha y hora confirmadas en los filtros actuales.');
+      return;
+    }
+    var calendar=window.LJR_GOOGLE_CALENDAR_GLOBAL;
+    if(!calendar||typeof calendar.choose!=='function'){
+      say(root,'No pudo cargar Google Calendar. Actualiza la página e inténtalo de nuevo.');
+      return;
+    }
+    // Para un encuentro abre directamente su ficha; para varios, permite elegir.
+    if(calendar.choose(events,'Selecciona el partido para Google Calendar')){
+      say(root,events.length===1
+        ? 'Partido preparado en Google Calendar. Revisa los datos y pulsa Guardar.'
+        : 'Selecciona un partido; después revisa sus datos y pulsa Guardar en Google Calendar.');
     }
   }
   async function share(root){
@@ -200,7 +219,7 @@
       apply(root);
     });
     q('[data-v1131-csv]',root)?.addEventListener('click',function(){exportCSV(root)});
-    q('[data-v1131-ics]',root)?.addEventListener('click',function(){exportICS(root)});
+    q('[data-v1131-calendar]',root)?.addEventListener('click',function(){openGoogleCalendar(root)});
     q('[data-v1131-share]',root)?.addEventListener('click',function(){share(root)});
   }
   function mount(){
