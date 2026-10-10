@@ -1,0 +1,16 @@
+/* V1211: aviso recurrente, azul oficial y textos cómodos en teléfono. */
+.v713-auto .v1211-panel{margin:10px 0 12px;padding:12px;border:1px solid rgba(66,131,216,.47);border-radius:15px;background:linear-gradient(148deg,#122b8c,#0e216c 58%,#0b185a);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.v713-auto .v1211-head{display:flex;align-items:center;justify-content:space-between;gap:9px}
+.v713-auto .v1211-head>div{min-width:0}
+.v713-auto .v1211-head small{display:block;font:800 9px/1.4 Inter,Roboto,Arial,sans-serif;letter-spacing:.095em;color:#76d9ff}
+.v713-auto .v1211-head h3{margin:4px 0 9px;font-size:16px;font-weight:850;line-height:1.25;color:#fff}
+.v713-auto .v1211-head>span{flex-shrink:0;border:1px solid #4389d8;border-radius:100px;padding:5px 9px;background:#184398;color:#d4e8ff;font-size:10px;font-weight:850}
+.v713-auto .v1211-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.v713-auto .v1211-grid label{display:grid;gap:5px;min-width:0;color:#d6e5ff;font-size:11px;font-weight:750}
+.v713-auto .v1211-grid [hidden]{display:none!important}
+.v713-auto .v1211-grid select{width:100%;min-width:0;min-height:43px;max-width:100%;padding:8px 9px;border:1px solid #4a83ce;border-radius:10px;background:#0a185d;color:#fff;font:700 12px Inter,Roboto,Arial,sans-serif;appearance:auto;box-sizing:border-box}
+.v713-auto .v1211-preview{margin:10px 0 0;padding:10px;background:rgba(7,22,89,.8);border:1px solid rgba(72,120,195,.34);border-radius:10px;color:#e3f2ff;font-size:12px;line-height:1.48;overflow-wrap:anywhere}
+.v713-auto .v1211-help{margin:9px 0 0;font-size:11px;line-height:1.5;color:#bdcef6}
+.v713-auto [data-v1211-message]{display:block;min-height:19px;margin-top:9px;font-size:11px;line-height:1.4;color:#76deff}
+.v713-auto [data-v1211-series]{background:#162f82!important;border-color:#437ebf!important}
+@media(max-width:365px){.v713-auto .v1211-panel{padding:10px}.v713-auto .v1211-grid{gap:6px}.v713-auto .v1211-grid select{font-size:11px;padding:6px}.v713-auto .v1211-head h3{font-size:14px}}
