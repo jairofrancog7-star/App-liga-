@@ -62,3 +62,122 @@
  .v1212-csv-modal .csvpro-actions>*{flex-basis:calc(50% - 5px)}
  .v1212-csv-modal .csvpro-downloads>*{flex-basis:100%}
 }
+
+/* V1222: misma paleta que CMS y patrocinadores, azul oficial nocturno (sin verde ni turquesa claro) */
+html body .v105-modal.v1212-csv-modal{
+ --csv-night:#070e44;--csv-bottom:#0b1d65;--csv-card:#102b75;
+ --csv-input:#0c205e;--csv-edge:rgba(95,149,241,.5);
+ --csv-blue:#1c69d4;--csv-soft:#c4d5f5;--csv-bright:#a8c9ff;
+ background:rgba(2,7,42,.89)!important;
+ color:#f5f9ff!important;
+}
+html body .v105-modal.v1212-csv-modal>.v105-dialog{
+ background:radial-gradient(80% 36% at 94% 0%,rgba(35,104,226,.20),transparent 75%),
+ linear-gradient(170deg,#102b7b 0%,#0b1d65 54%,#070e44 100%)!important;
+ background-color:var(--csv-bottom)!important;
+ border-color:var(--csv-edge)!important;
+ box-shadow:0 18px 55px rgba(0,4,43,.42),inset 0 1px rgba(172,198,255,.1)!important;
+ color:#f5f9ff!important;
+}
+html body .v105-modal.v1212-csv-modal .v105-close{
+ background:linear-gradient(145deg,#1a448e,#0d2365)!important;
+ color:#fff!important;border-color:rgba(108,162,243,.48)!important;
+}
+html body .v1212-csv-modal .csvpro-aiintro,
+html body .v1212-csv-modal .csvpro-aireport{
+ display:flex;align-items:flex-start;gap:10px;
+ background:linear-gradient(145deg,#143681,#0b225f)!important;
+ color:#fff!important;border:1px solid rgba(99,149,230,.46)!important;
+ border-radius:14px;padding:11px 12px;min-width:0;
+}
+html body .v1212-csv-modal .csvpro-aiintro .csvpro-aiicon{
+ flex:0 0 34px;width:34px;height:34px;display:grid;place-items:center;
+ border-radius:11px;border:1px solid #6896df;
+ background:linear-gradient(160deg,#2878e1,#1453b3);font-size:20px;color:#fff;
+}
+html body .v1212-csv-modal .csvpro-aiintro>div{min-width:0;display:grid;gap:4px}
+html body .v1212-csv-modal .csvpro-aiintro b{font-size:13px;color:#fff!important}
+html body .v1212-csv-modal .csvpro-aiintro small{font-size:11px;line-height:1.45;color:#c4d5f5!important}
+html body .v1212-csv-modal .csvpro-aireport{display:block;padding:12px}
+html body .v1212-csv-modal .csvpro-aireport-head{
+ display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap;
+ font-size:12px;color:#fff;
+}
+html body .v1212-csv-modal .csvpro-aireport-head strong{font-size:12px;color:#d4e8ff;font-variant-numeric:tabular-nums}
+html body .v1212-csv-modal .csvpro-meter{
+ height:7px;width:100%;border-radius:9px;overflow:hidden;background:#081a51;margin:9px 0;
+ border:1px solid #456bb3;
+}
+html body .v1212-csv-modal .csvpro-meter span{display:block;height:100%;max-width:100%;border-radius:8px;background:linear-gradient(90deg,#1d62c5,#80b7ff);transition:width .16s ease}
+html body .v1212-csv-modal .csvpro-aireport ul{
+ margin:0;padding-left:16px;display:grid;gap:4px;color:#c9daf7;
+ font-size:11px;line-height:1.5;overflow-wrap:anywhere;
+}
+html body .v1212-csv-modal .csvpro-localrow{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:9px}
+html body .v1212-csv-modal .csvpro-localrow small{font-size:10px;color:#b7cbee;line-height:1.4;flex:1;min-width:170px}
+html body .v1212-csv-modal .csvpro-forget{
+ min-height:34px;padding:7px 10px;border-radius:10px;white-space:normal;
+ background:#112d70;color:#d2e3ff;border:1px solid #4679c8;font-size:10px;font-weight:800;cursor:pointer
+}
+html body .v1212-csv-modal .csvpro-confidence{font-size:10px;line-height:1.25;color:#a8c9ff}
+html body .v1212-csv-modal .csvpro-normalize{
+ display:flex;align-items:flex-start;gap:10px;padding:11px 12px;
+ background:#102b75;border:1px solid rgba(100,150,236,.42);
+ border-radius:13px;color:#f4f7ff;cursor:pointer;
+}
+html body .v1212-csv-modal .csvpro-normalize input{flex:0 0 18px;width:18px;height:18px;accent-color:#2c73e1;margin:1px 0 0}
+html body .v1212-csv-modal .csvpro-normalize span{display:grid;gap:4px;min-width:0}
+html body .v1212-csv-modal .csvpro-normalize b{font-size:12px}
+html body .v1212-csv-modal .csvpro-normalize small{font-size:11px;color:#c3d2f0;line-height:1.4}
+html body .v1212-csv-modal :is(.csvpro-field select,.csvpro-map-item select,.csvpro-filters input,.csvpro-filters select){
+ background:var(--csv-input)!important;color:#f6f9ff!important;
+ border-color:rgba(100,150,236,.54)!important;border-radius:11px!important;
+ min-width:0!important;max-width:100%;
+}
+html body .v1212-csv-modal select option{background:#0c205e!important;color:#fff!important}
+html body .v1212-csv-modal .csvpro-drop{
+ background:linear-gradient(155deg,#173d95,#102c7a 55%,#0b205e)!important;
+ border-color:#5c8de0!important;box-shadow:none!important;
+}
+html body .v1212-csv-modal .csvpro-drop:is(:hover,.csvpro-drag){border-color:#b8d4ff!important;background:#174082!important}
+html body .v1212-csv-modal .csvpro-upload{background:linear-gradient(155deg,#2878e1,#1453b3)!important;border:1px solid #7dacfa}
+html body .v1212-csv-modal .csvpro-step>span{color:#c2d2f4!important}
+html body .v1212-csv-modal :is(.csvpro-privacy,.csvpro-status,.csvpro-map-item,.csvpro-summary>div){
+ background:#102b75!important;color:#e9f2ff!important;border-color:rgba(100,150,236,.4)!important;
+}
+html body .v1212-csv-modal .csvpro-map-item{background:transparent!important;border:0!important}
+html body .v1212-csv-modal .csvpro-status.csvpro-error{background:#54213f!important;border-color:#b95b78!important}
+html body .v1212-csv-modal :is(.csvpro-button.csvpro-primary){
+ background:linear-gradient(145deg,#2778e3,#1552b9)!important;
+ border-color:#78a9ff!important;color:#fff!important;text-shadow:none!important;
+}
+html body .v1212-csv-modal :is(.csvpro-button.csvpro-ghost){
+ background:linear-gradient(170deg,#122d77,#0b1b5b)!important;
+ border-color:rgba(105,151,226,.55)!important;color:#d7e5ff!important;
+}
+html body .v1212-csv-modal :is(.csvpro-button,.csvpro-forget,.csvpro-drop,select,input):focus-visible{
+ outline:2px solid #a8c9ff!important;outline-offset:2px!important;
+}
+html body .v1212-csv-modal .csvpro-table th{background:#1a448e!important}
+html body .v1212-csv-modal .csvpro-table td{background:#102b75!important;border-color:#2a4b89!important}
+html body .v1212-csv-modal .csvpro-table tr:nth-child(even) td{background:#0b205e!important}
+html body .v1212-csv-modal .csvpro-chip.ok{background:#1e589d!important;color:#fff!important}
+html body .v1212-csv-modal .csvpro-tablewrap{border-color:rgba(108,162,243,.48)!important}
+html body .v1212-csv-modal .csvpro-warnings{background:#102b75!important;border-color:#7799d8!important}
+@media(max-width:440px){
+ html body .v105-modal.v1212-csv-modal{padding:8px!important;align-items:center!important}
+ html body .v105-modal.v1212-csv-modal>.v105-dialog{
+  box-sizing:border-box!important;
+  width:100%!important;max-width:100%!important;
+  max-height:calc(100dvh - 16px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))!important;
+  overflow-x:hidden!important;overscroll-behavior:contain!important;
+ }
+ html body .v1212-csv-modal .csvpro-drop{min-height:100px;padding:13px 8px}
+ html body .v1212-csv-modal .csvpro-map{grid-template-columns:minmax(0,1fr)!important}
+ html body .v1212-csv-modal .csvpro-aiintro{padding:10px;gap:9px}
+ html body .v1212-csv-modal .csvpro-summary>div{padding:9px 3px}
+ html body .v1212-csv-modal .csvpro-summary b{font-size:20px}
+}
+@media(prefers-reduced-motion:reduce){
+ html body .v1212-csv-modal .csvpro-meter span{transition:none}
+}
