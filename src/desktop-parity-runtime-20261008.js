@@ -103,7 +103,7 @@ const toolGroups=[
       [
         "↔️",
         "Comparar equipos",
-        "compareTeams",
+        "pc-team-compare",
         "Análisis entre clubes"
       ],
       [
