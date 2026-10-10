@@ -9,18 +9,18 @@ const STORE='ljr-history-local-audit-v1215';
 const PREF='ljr-history-auto-v1215';
 const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json';
 const LOCAL='./data/official-live.json';
-const MODEL='Xenova/paraphrase-multilingual-MiniLM-L12-v2';
-const PHRASES=[
-  ['recent','Muéstrame los últimos partidos y resultados recientes'],
-  ['goals','Encuentra los partidos con más goles y marcadores más altos'],
-  ['margin','Busca las mayores goleadas por diferencia de goles'],
-  ['draws','Consulta cuántos partidos terminaron empatados'],
-  ['wins','Cuántos encuentros ha ganado este equipo'],
-  ['summary','Resume el historial de partidos y goles por equipo'],
-  ['audit','Revisa registros duplicados, canchas pendientes y datos incompletos']
+const TRAINING=[
+ ['recent','últimos resultados','últimos partidos','partidos recientes','encuentros anteriores','jornada reciente'],
+ ['goals','más goles','máximo marcador','partidos con goles','encuentros de muchos goles','anotaciones totales'],
+ ['margin','goleadas','mayor diferencia','victorias más amplias','mayor goleada','ganaron por muchos'],
+ ['draws','empates','partidos empatados','marcadores iguales','cuantos empates','resultado empate'],
+ ['wins','cuantas victorias','partidos ganados','cuántos ganó','triunfos del equipo','veces ganó'],
+ ['summary','resumen general','estadísticas equipo','balance de partidos','cuantos goles','totales por año'],
+ ['audit','revisar datos','partidos duplicados','canchas pendientes','fechas incompletas','auditoría de resultados']
 ];
-let model=null,modelPromise=null,mountPending=false,refreshing=false,lastCheck=0;
-let lastFindings=null,lastMessage='';
+const CHECK_INTERVAL=30*60*1000;
+let mountPending=false,refreshing=false,lastCheck=0,refreshTimer=null,requestController=null;
+let lastFindings=null,lastMessage='',cachedData=null,cachedRows=null,lastSnapshotData=null,lastAudit=null;
 const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safeGet=(key,def)=>{try{return localStorage.getItem(key)??def}catch(_){return def}};
@@ -32,6 +32,7 @@ const catLabel={
  '4':'Segunda Fuerza','5':'Intermedia'
 };
 function entries(data=getDb()){
+  if(data&&data===cachedData&&cachedRows)return cachedRows;
   const out=[];
   if(!data?.categories)return out;
   for(const [catId,cat] of Object.entries(data.categories)){
@@ -56,7 +57,9 @@ function entries(data=getDb()){
       }
     }
   }
-  return out.sort((a,b)=>b.stamp-a.stamp);
+  out.sort((a,b)=>b.stamp-a.stamp);
+  if(data){cachedData=data;cachedRows=out;}
+  return out;
 }
 function byNativeFilter(list){
   const root=document.querySelector('[data-v164-history-log]');
@@ -102,7 +105,9 @@ function analysisText(textValue){
   if(out){out.hidden=false;out.textContent=textValue;}
 }
 function renderAudit(){
-  const list=entries(),info=inspect(list,true);
+  const data=getDb(),list=entries(data);
+  const info=data===lastSnapshotData&&lastAudit?lastAudit:inspect(list,true);
+  lastSnapshotData=data;lastAudit=info;
   const noticeCounts=lastFindings||{fresh:info.fresh.length,changed:info.changed.length};
   const box=document.querySelector('[data-v1215-audit]');
   if(box){
@@ -239,45 +244,40 @@ function summarize(prompt,type){
   list.sort((a,b)=>b.stamp-a.stamp);
   return first+'Últimos resultados:\n'+showResultLines(list);
 }
-function noteModel(textValue){
-  const el=document.querySelector('[data-v1215-ml-state]');
-  if(el)el.textContent=textValue;
+// Entrenamiento ultraligero Naive Bayes; sin redes, librerías ni modelos de 120 MB.
+function tokens(v){
+  return norm(v).split(/\s+/).filter(x=>x.length>=3).map(x=>x.replace(/(?:es|s)$/,''));
 }
-async function activateModel(){
-  if(model){noteModel('Modelo semántico activo en este dispositivo.');return}
-  if(modelPromise)return modelPromise;
-  if(!navigator.onLine){noteModel('Conéctate a Wi-Fi para descargar el modelo primero.');return}
-  if(!window.confirm('El modelo multilingüe necesita descargar aproximadamente 120 MB o más (además de sus recursos). ¿Deseas activarlo ahora? Recomendado con Wi-Fi.'))return;
-  const button=document.querySelector('[data-v1215-model]');
-  if(button)button.disabled=true;
-  noteModel('Descargando el modelo y preparando la IA en tu navegador…');
-  modelPromise=(async()=>{
-    const module=await import(/* @vite-ignore */ 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1');
-    const extractor=await module.pipeline('feature-extraction',MODEL,{device:'wasm',dtype:'q8'});
-    const examples=await extractor(PHRASES.map(p=>p[1]),{pooling:'mean',normalize:true});
-    const vectors=examples.tolist();
-    model={extractor,vectors};noteModel('IA semántica activada. El análisis se realiza localmente.');
-  })();
-  try{await modelPromise}catch(err){model=null;noteModel('No se pudo cargar el modelo en este dispositivo. Continúa disponible el asistente local sin descarga.');}
-  finally{modelPromise=null;if(button)button.disabled=false;}
+const trainingModel=(()=>{
+  const classes=Object.create(null),vocab=new Set();
+  for(const [intent,...samples] of TRAINING){
+    const counts=new Map();let total=0;
+    for(const sample of samples)for(const word of tokens(sample)){
+      counts.set(word,(counts.get(word)||0)+1);vocab.add(word);total++;
+    }
+    classes[intent]={counts,total};
+  }
+  return {classes,size:vocab.size};
+})();
+function quickIntent(query){
+  const words=tokens(query);if(!words.length)return intentOf(query);
+  let best='',bestScore=-Infinity;
+  for(const [intent,m] of Object.entries(trainingModel.classes)){
+    let score=Math.log(1/TRAINING.length);
+    for(const word of words)score+=Math.log(((m.counts.get(word)||0)+1)/(m.total+trainingModel.size));
+    if(score>bestScore){bestScore=score;best=intent;}
+  }
+  const direct=intentOf(query);
+  // Las expresiones específicas tienen prioridad ante la clasificación aproximada.
+  return direct!=='recent'?direct:best||'recent';
 }
-async function modelIntent(q){
-  if(!model)return '';
-  try{
-    const output=await model.extractor(q,{pooling:'mean',normalize:true});
-    const vector=output.tolist()[0];
-    const cosine=(a,b)=>a.reduce((s,v,i)=>s+v*b[i],0);
-    const scored=model.vectors.map((v,i)=>({type:PHRASES[i][0],score:cosine(v,vector)})).sort((a,b)=>b.score-a.score);
-    return scored[0]?.score>0.35?scored[0].type:'';
-  }catch(_){return ''}
-}
-async function ask(prompt){
-  const q=String(prompt||'').trim();if(!q){message('Escribe una consulta para buscar en el historial.');return}
-  message('Analizando los resultados oficiales de este dispositivo…');
-  const intent=(await modelIntent(q))||intentOf(q);
+function ask(prompt){
+  const q=String(prompt||'').trim();
+  if(!q){message('Escribe una consulta para buscar en el historial.');return}
+  const intent=quickIntent(q);
   applyNativePrompt(q);
   analysisText(summarize(q,intent));
-  message(model?'Respuesta mediante IA semántica local y datos oficiales.':'Consulta inteligente local, sin enviar preguntas a servidores.');
+  message('Análisis local ligero, sin descargar modelos ni compartir consultas.');
 }
 function rowsCsv(){
   const rows=byNativeFilter(entries());
@@ -297,28 +297,54 @@ function downloadCsv(){
   setTimeout(()=>URL.revokeObjectURL(url),1000);
   message('CSV descargado con los filtros actuales. No se modificó ningún resultado.');
 }
-async function fetchNewest(){
+async function fetchNewest(manual=false){
   if(refreshing||!navigator.onLine||route()!=='historyLog'||document.hidden)return;
+  if(!manual&&navigator.connection?.saveData)return;
+  if(!manual&&/^(?:slow-2g|2g)$/.test(navigator.connection?.effectiveType||''))return;
+  if(!manual&&Date.now()-lastCheck<CHECK_INTERVAL)return;
   refreshing=true;lastCheck=Date.now();
-  message('Consultando si existe una actualización oficial…');
+  requestController=new AbortController();
+  message('Consultando los resultados oficiales…');
   try{
-    const results=await Promise.allSettled([LOCAL+'?historial='+lastCheck,REMOTE+'?historial='+lastCheck].map(u=>fetch(u,{cache:'no-store'}).then(async r=>{if(!r.ok)throw Error(String(r.status));return r.json()})));
-    const choices=results.filter(x=>x.status==='fulfilled'&&x.value?.categories).map(x=>x.value);
-    if(!choices.length){message('No se pudo revisar la fuente oficial. Se conservan los datos disponibles.');return}
-    const current=getDb(),currentAt=Date.parse(current?.captured_at_utc||0)||0;
-    choices.sort((a,b)=>(Date.parse(b.captured_at_utc||0)||0)-(Date.parse(a.captured_at_utc||0)||0));
-    const latest=choices[0],nextAt=Date.parse(latest.captured_at_utc||0)||0;
-    if(!current||nextAt>currentAt){
+    // Primero el JSON de la app, usando cache HTTP y 304 condicional.
+    // Sólo accedemos a GitHub si la fuente local no está disponible.
+    let latest=null;
+    for(const url of [LOCAL,REMOTE]){
+      const res=await fetch(url,{cache:'no-cache',signal:requestController.signal});
+      if(!res.ok)continue;
+      latest=await res.json();
+      if(latest?.categories)break;
+      latest=null;
+    }
+    if(!latest?.categories)throw Error('Sin datos oficiales');
+    if(route()!=='historyLog'||document.hidden)return;
+    const previous=getDb(),currentAt=Date.parse(previous?.captured_at_utc||'')||0;
+    const nextAt=Date.parse(latest.captured_at_utc||'')||0;
+    if(!previous||nextAt>currentAt){
       const changes=inspect(entries(latest),false);
       lastFindings={fresh:changes.fresh.length,changed:changes.changed.length};
       window.LJR_OFFICIAL_DATA=latest;
+      cachedData=null;cachedRows=null;lastSnapshotData=null;lastAudit=null;
       window.dispatchEvent(new Event('ljr:official-data'));
-      message('Datos oficiales actualizados: '+changes.fresh.length+' partidos nuevos y '+changes.changed.length+' marcadores cambiados.');
-      scheduleMount();
-    }else{if(!lastFindings)lastFindings={fresh:0,changed:0};message('Revisión completada: ya tienes la versión oficial disponible.');}
+      message('Archivo actualizado: '+changes.fresh.length+' nuevos y '+changes.changed.length+' marcadores cambiados.');
+    }else{
+      if(!lastFindings)lastFindings={fresh:0,changed:0};
+      message('Ya tienes la versión oficial disponible.');
+    }
     renderAudit();
-  }catch(_){message('No se pudo completar la revisión automática; los marcadores no fueron modificados.');}
-  finally{refreshing=false}
+  }catch(err){
+    if(err?.name!=='AbortError')message('No se pudo actualizar. Se conservan los datos existentes.');
+  }finally{refreshing=false;requestController=null}
+}
+function manageRefresh(){
+  if(refreshTimer){clearInterval(refreshTimer);refreshTimer=null;}
+  if(route()!=='historyLog'||document.hidden){
+    requestController?.abort();return;
+  }
+  if(safeGet(PREF,'1')!=='1')return;
+  // Sin temporizadores globales activos en otras pantallas.
+  refreshTimer=setInterval(()=>fetchNewest(false),CHECK_INTERVAL);
+  if(Date.now()-lastCheck>=CHECK_INTERVAL)fetchNewest(false);
 }
 function panelMarkup(){
  return '<section class="v1215-panel" aria-label="Asistente y automatización local del historial">'+
@@ -334,11 +360,11 @@ function panelMarkup(){
    '</div>'+
    '<output class="v1215-answer" data-v1215-answer aria-live="polite" hidden></output>'+
    '<div class="v1215-automation"><div class="v1215-auto-head"><h3>Automatización del archivo</h3><label class="v1215-toggle"><input type="checkbox" data-v1215-auto '+(safeGet(PREF,'1')==='1'?'checked':'')+' /> <span>Automática</span></label></div>'+
-     '<p>Revisa cambios de los datos oficiales al abrir esta sección y cada 5 minutos mientras está abierta.</p>'+
+     '<p>Revisa cambios cada 30 minutos, sólo con la pantalla abierta; respeta ahorro de datos. Puedes actualizar manualmente.</p>'+
      '<div class="v1215-action-row"><button type="button" data-v1215-sync>Actualizar ahora</button><button type="button" data-v1215-audit-now>Revisar archivo</button><button type="button" data-v1215-csv>Descargar CSV</button></div>'+
      '<div class="v1215-audit" data-v1215-audit hidden></div>'+
    '</div>'+
-   '<details class="v1215-ai-details"><summary>IA semántica real en el celular (opcional)</summary><p>Modelo multilingüe de Transformers.js: se descarga una vez (aprox. 120 MB o más) y después analiza preguntas en el navegador usando CPU. No sube tus consultas ni el historial a un servicio de IA; necesita internet para descargar sus archivos.</p><button type="button" data-v1215-model>Descargar y activar IA local</button><small data-v1215-ml-state>Desactivada para ahorrar datos móviles y memoria.</small></details>'+
+   '<p class="v1215-light-label">IA local ligera · Sin descargas de modelos · Ahorra memoria y datos</p>'+
    '<p class="v1215-status" data-v1215-status role="status" aria-live="polite"></p>'+
  '</section>';
 }
@@ -350,16 +376,15 @@ function bind(panel){
     const b=e.target.closest('button');if(!b)return;
     if(b.hasAttribute('data-v1215-example')){
       const inp=panel.querySelector('[data-v1215-query]');inp.value=b.dataset.v1215Example;ask(inp.value);
-    }else if(b.hasAttribute('data-v1215-sync'))fetchNewest();
+    }else if(b.hasAttribute('data-v1215-sync'))fetchNewest(true);
     else if(b.hasAttribute('data-v1215-audit-now')){
       const a=renderAudit();message('Revisión completa: '+a.duplicates.length+' duplicados posibles y '+a.venues.length+' canchas por confirmar.');
     }else if(b.hasAttribute('data-v1215-csv'))downloadCsv();
-    else if(b.hasAttribute('data-v1215-model'))activateModel();
   });
   panel.querySelector('[data-v1215-auto]')?.addEventListener('change',e=>{
     safeSet(PREF,e.target.checked?'1':'0');
     message(e.target.checked?'Revisión automática habilitada mientras Historial esté abierto.':'Revisión automática desactivada.');
-    if(e.target.checked)fetchNewest();
+    manageRefresh();
   });
 }
 function mount(){
@@ -372,25 +397,17 @@ function mount(){
   const panel=holder.firstElementChild;host.after(panel);bind(panel);
   if(getDb())renderAudit();
   if(lastMessage)message(lastMessage);
-  if(safeGet(PREF,'1')==='1'&&Date.now()-lastCheck>300000)fetchNewest();
+  manageRefresh();
 }
 function scheduleMount(){
   if(mountPending)return;mountPending=true;
   requestAnimationFrame(mount);
 }
-window.addEventListener('hashchange',scheduleMount);
-window.addEventListener('ljr:official-data',scheduleMount);
-document.addEventListener('visibilitychange',()=>{
-  if(!document.hidden&&route()==='historyLog'){
-    scheduleMount();
-    if(safeGet(PREF,'1')==='1'&&Date.now()-lastCheck>300000)fetchNewest();
-  }
-});
-window.setInterval(()=>{
-  if(route()==='historyLog'&&!document.hidden&&safeGet(PREF,'1')==='1'&&Date.now()-lastCheck>300000)fetchNewest();
-},60000);
+window.addEventListener('hashchange',()=>{manageRefresh();scheduleMount()});
+window.addEventListener('ljr:official-data',()=>{lastSnapshotData=null;lastAudit=null;scheduleMount()});
+document.addEventListener('visibilitychange',()=>{manageRefresh();if(!document.hidden)scheduleMount()});
 const screen=document.querySelector('#screen');
-if(screen)new MutationObserver(scheduleMount).observe(screen,{childList:true,subtree:false});
+if(screen)new MutationObserver(()=>{if(route()==='historyLog')scheduleMount()}).observe(screen,{childList:true,subtree:false});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scheduleMount,{once:true});
 else scheduleMount();
 })();
