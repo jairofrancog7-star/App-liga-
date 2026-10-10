@@ -8,8 +8,10 @@ export const ROLE_PERMS=Object.freeze({
  lector:Object.freeze([])
 });
 export const safeSubject=value=>/^[A-Za-z0-9:_-]{1,128}$/.test(String(value||''));
-export function roleFor(identity,assigned){
- if(identity?.owner===true)return 'presidente';
+export function roleFor(identity,assigned,secondaryPrincipal=false){
+ // El segundo principal procede exclusivamente de ljr_co_principals.
+ // Nunca aceptar el rol/correo/teléfono recibido desde el navegador.
+ if(identity?.owner===true||secondaryPrincipal===true)return 'presidente';
  return assigned&&assigned!=='presidente'&&Object.hasOwn(ROLE_PERMS,assigned)?assigned:'lector';
 }
 export const can=(role,permission)=>Object.hasOwn(ROLE_PERMS,role)&&ROLE_PERMS[role].includes(permission);
