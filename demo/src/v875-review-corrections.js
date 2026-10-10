@@ -207,7 +207,27 @@ function meeting(root){
   printButton.type='button';
  }
  wrap.querySelectorAll('[data-meeting-field]').forEach(input=>input.oninput=()=>{const data={};wrap.querySelectorAll('[data-meeting-field]').forEach(el=>data[el.dataset.meetingField]=el.value);localStorage.setItem('ljr-meeting-options-v875',JSON.stringify(data))});
- wrap.querySelectorAll('[data-add-topic]').forEach(button=>button.onclick=()=>{const agenda=form.querySelector('[data-x="agenda"]');if(agenda&&!agenda.value.includes(button.dataset.addTopic))agenda.value+='\n• '+button.dataset.addTopic});
+ const topicStatus=document.createElement('small');
+ topicStatus.className='v919-topic-status';topicStatus.setAttribute('role','status');topicStatus.setAttribute('aria-live','polite');
+ wrap.querySelector('.v875-agenda-chips')?.after(topicStatus);
+ const agenda=form.querySelector('[data-x="agenda"]');
+ const hasTopic=topic=>!!agenda&&agenda.value.split(/\\r?\\n/).some(line=>line.trim().replace(/^[•\\-]\\s*/, '')===topic);
+ wrap.querySelectorAll('[data-add-topic]').forEach(button=>{
+   const topic=button.dataset.addTopic;
+   const refresh=()=>{const added=hasTopic(topic);button.classList.toggle('is-added',added);button.setAttribute('aria-pressed',String(added))};
+   refresh();
+   button.addEventListener('click',event=>{
+     event.preventDefault();
+     if(!agenda){topicStatus.textContent='No se encontró el campo Orden del día.';return}
+     if(!hasTopic(topic)){
+       agenda.value=agenda.value.trimEnd()+(agenda.value.trim()?'\\n':'')+'• '+topic;
+       agenda.dispatchEvent(new Event('input',{bubbles:true}));
+       agenda.dispatchEvent(new Event('change',{bubbles:true}));
+       topicStatus.textContent='✓ '+topic+' agregado al orden del día.';
+     }else topicStatus.textContent='✓ '+topic+' ya está en el orden del día.';
+     refresh();
+   });
+ });
 }
 function profiles(){
  if(route()!=='video')return;
