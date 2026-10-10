@@ -514,7 +514,57 @@ function preserveBlueRegistrations(base){
       }
       profiles[key]=list;
     }
-    categories[id]={...older,rosters,player_profiles:profiles};
+    // Los IDs de AdminFut cambian cuando reordena los juegos de una jornada.
+    // Aplicar resoluciones conservadas por partido/fecha, nunca por ID ajeno.
+    const localRows=(own.fixtures||[]).flatMap(g=>Array.isArray(g.rows)?g.rows:[]);
+    const remoteRows=(older.fixtures||[]).flatMap(g=>Array.isArray(g.rows)?g.rows:[]);
+    const fixtureKey=r=>[
+      String(r[1]||''),norm(r[2]),norm(r[6]),
+      String(r[8]||'').trim().split(' ')[0]
+    ].join('|');
+    const remoteByKey=new Map(remoteRows.map(r=>[fixtureKey(r),r]));
+    const localById=new Map(localRows.map(r=>[String(r[0]),r]));
+    const fixtureDecisions={...(older.fixture_decisions||{})};
+    for(const [localId,decision] of Object.entries(own.fixture_decisions||{})){
+      if(!decision?.winner||!decision.default)continue;
+      const localFixture=localById.get(localId);
+      if(!localFixture)continue;
+      const remoteFixture=remoteByKey.get(fixtureKey(localFixture));
+      if(!remoteFixture)continue;
+      const remoteId=String(remoteFixture[0]);
+      // Si la fuente posterior publicó un resultado numérico, respetarlo.
+      const hasNewScore=/^\\d+$/.test(String(remoteFixture[3]))&&/^\\d+$/.test(String(remoteFixture[5]));
+      if(!hasNewScore&&!fixtureDecisions[remoteId])fixtureDecisions[remoteId]={...decision};
+    }
+    // Proteger exclusivamente resultados verificados por el usuario; no
+    // reemplazar resultados completos posteriores ni inferir goles.
+    const verified=(local.latest_user_verified_results?.category_id===id
+      ?local.latest_user_verified_results.fixtures:[])||[];
+    for(const receipt of verified){
+      const localFixture=localRows.find(r=>String(r[1])===String(receipt.round)&&
+        same(r[2],receipt.home)&&same(r[6],receipt.away)&&
+        String(r[8]||'').startsWith(String(receipt.date||'')));
+      if(!localFixture)continue;
+      const target=remoteByKey.get(fixtureKey(localFixture));
+      if(!target)continue;
+      const complete=/^\\d+$/.test(String(target[3]))&&/^\\d+$/.test(String(target[5]));
+      if(complete)continue;
+      // No mutar los grupos compartidos que entrega el espejo.
+      const group=(older.fixtures||[]).find(g=>(g.rows||[]).includes(target));
+      const groupIndex=(older.fixtures||[]).indexOf(group);
+      if(groupIndex<0)continue;
+      // La copia se crea después de resolver las decisiones.
+      if(!older.__verifiedOverlay)older.__verifiedOverlay=new Map();
+      older.__verifiedOverlay.set(fixtureKey(target),[String(receipt.home_goals),String(receipt.away_goals)]);
+    }
+    const fixtures=older.__verifiedOverlay?(older.fixtures||[]).map(g=>({
+      ...g,rows:(g.rows||[]).map(r=>{
+        const score=older.__verifiedOverlay.get(fixtureKey(r));
+        return score?[...r.slice(0,3),score[0],r[4],score[1],...r.slice(6)]:r;
+      })
+    })):older.fixtures;
+    categories[id]={...older,rosters,player_profiles:profiles,fixture_decisions:fixtureDecisions,fixtures};
+    if(older.__verifiedOverlay)delete older.__verifiedOverlay;
   }
   return {...base,categories};
 }
