@@ -101,12 +101,12 @@ function logoUrl(name){
     return RAW+p.replace(/^\.\//,'').replace(/^\//,'');
   };
   const key=norm(name);
-  const forced=HISTORY_FORCE_LOGOS[key];
-  if(forced)return forced;
   try{
     const stable=window.LJR_TEAM_LOGOS?.get?.(name)||window.V66_OFFICIAL_DIRECTORY?.logoFor?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name);
     if(stable)return normalizePath(stable);
   }catch(_){}
+  const forced=HISTORY_FORCE_LOGOS[key];
+  if(forced)return forced;
   const fixed=HISTORY_LOGO_PATHS[key];
   if(fixed)return normalizePath(fixed);
   const hit=Object.entries(db?.team_logos||{}).find(([k])=>norm(k)===key)?.[1];
@@ -124,6 +124,10 @@ function scoreOf(r){
   const h=String(r?.[3]??''),a=String(r?.[5]??'');
   return /^\d+$/.test(h)&&/^\d+$/.test(a)?h+'–'+a:'';
 }
+
+/* V1213: consultas de archivo, filtros y tarjetas adaptadas para móvil.
+   Todos los marcadores provienen de fixtures oficiales; no se crean resultados. */
+const historyState={category:'all',year:'all',team:'all',query:'',sort:'newest',page:1,pageSize:12};
 function rows(){
   const out=[];
   for(const [catId,cat] of Object.entries(db?.categories||{})){
@@ -131,52 +135,178 @@ function rows(){
       for(const r of block?.rows||[]){
         const score=scoreOf(r);
         if(!score||!r?.[2]||!r?.[6])continue;
+        const rawDate=String(r?.[8]||'');
+        const year=rawDate.match(/\b(20\d{2}|19\d{2})\b/)?.[1]||'';
         out.push({
-          catId,
-          category:cat?.name||'Categoría',
-          round:r?.[1]||'',
-          home:r?.[2]||'',
-          score,
-          away:r?.[6]||'',
-          venue:r?.[7]||'Campo por confirmar',
-          datetime:r?.[8]||'',
-          stamp:stamp(r?.[8])
+          catId,category:cat?.name||'Categoría',round:r?.[1]||'',
+          home:String(r?.[2]||''),away:String(r?.[6]||''),
+          homeGoals:Number(r?.[3]),awayGoals:Number(r?.[5]),score,
+          venue:r?.[7]||'Campo por confirmar',datetime:rawDate,
+          year,stamp:stamp(rawDate)
         });
       }
     }
   }
   return out.sort((a,b)=>b.stamp-a.stamp);
 }
-function markup(){
-  const list=rows();
-  return '<section class="v164-history-page" data-v164-history-log>'+
-    '<header class="v164-history-head">'+
-      '<small>ARCHIVO DE PARTIDOS</small>'+
-      '<h1>Historial</h1>'+
-      '<p>Consulta resultados, marcadores y partidos anteriores publicados oficialmente por la Liga.</p>'+
-    '</header>'+
-    '<div class="v164-history-switch">'+
-      '<button type="button" class="active">Historial</button>'+
-      '<button type="button" data-route="history">Historia</button>'+
+function filtered(all){
+  const q=norm(historyState.query);
+  return all.filter(x=>
+    (historyState.category==='all'||x.catId===historyState.category)&&
+    (historyState.year==='all'||x.year===historyState.year)&&
+    (historyState.team==='all'||norm(x.home)===historyState.team||norm(x.away)===historyState.team)&&
+    (!q||norm([x.home,x.away,x.category,x.venue,x.round,x.datetime].join(' ')).includes(q))
+  ).sort((a,b)=>historyState.sort==='oldest'?a.stamp-b.stamp:
+    historyState.sort==='goals'?(b.homeGoals+b.awayGoals)-(a.homeGoals+a.awayGoals)||b.stamp-a.stamp:
+    b.stamp-a.stamp);
+}
+function options(values,current){
+  return values.map(v=>'<option value="'+esc(v.value)+'"'+(String(v.value)===String(current)?' selected':'')+'>'+esc(v.label)+'</option>').join('');
+}
+function teamChoices(all){
+  const names=new Map();
+  all.filter(x=>historyState.category==='all'||x.catId===historyState.category)
+    .forEach(x=>[x.home,x.away].forEach(name=>{if(name&&!names.has(norm(name)))names.set(norm(name),name)}));
+  return [{value:'all',label:'Todos los equipos'},...Array.from(names.entries()).sort((a,b)=>a[1].localeCompare(b[1],'es')).map(([value,label])=>({value,label}))];
+}
+function filterMarkup(all){
+  const cats=new Map(all.map(x=>[x.catId,x.category]));
+  const catOptions=[{value:'all',label:'Todas las categorías'},...Array.from(cats.entries()).map(([value,label])=>({value,label}))];
+  const years=[...new Set(all.map(x=>x.year).filter(Boolean))].sort((a,b)=>b.localeCompare(a));
+  return '<section class="v164-history-controls" aria-label="Buscar y filtrar el historial">'+
+    '<label class="v164-history-search"><span>Buscar partido</span><span class="v164-history-search-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input type="search" data-v164-search placeholder="Equipo, cancha o jornada…" autocomplete="off" value="'+esc(historyState.query)+'"></span></label>'+
+    '<div class="v164-history-filters">'+
+      '<label><span>Categoría</span><select data-v164-category>'+options(catOptions,historyState.category)+'</select></label>'+
+      '<label><span>Temporada / Año</span><select data-v164-year>'+options([{value:'all',label:'Todos los años'},...years.map(y=>({value:y,label:y}))],historyState.year)+'</select></label>'+
+      '<label><span>Equipo</span><select data-v164-team>'+options(teamChoices(all),historyState.team)+'</select></label>'+
+      '<label><span>Ordenar</span><select data-v164-sort>'+options([{value:'newest',label:'Más recientes'},{value:'oldest',label:'Más antiguos'},{value:'goals',label:'Más goles'}],historyState.sort)+'</select></label>'+
     '</div>'+
-    '<section class="v164-history-results">'+
-      '<div class="v164-history-section-head"><h2>Partidos anteriores</h2><span>'+list.length+' resultados</span></div>'+
-      (list.length?list.slice(0,80).map(x=>
-        '<article class="v164-history-match">'+
-          '<div class="v164-history-meta"><span>'+esc(x.category)+'</span><b>'+esc(dateText(x.datetime))+'</b></div>'+
-          '<div class="v164-history-score">'+
-            '<span class="v164-history-team home">'+teamMark(x.home)+'<em>'+esc(x.home)+'</em></span>'+
-            '<strong>'+esc(x.score)+'</strong>'+
-            '<span class="v164-history-team away">'+teamMark(x.away)+'<em>'+esc(x.away)+'</em></span>'+
-          '</div>'+
-          '<div class="v164-history-foot"><span>'+(x.round?'Jornada '+esc(x.round)+' · ':'')+esc(x.venue)+'</span></div>'+
-        '</article>'
-      ).join(''):'<div class="v164-history-empty"><b>Sin resultados publicados</b><span>Cuando la Liga publique marcadores oficiales aparecerán aquí.</span></div>')+
-    '</section>'+
+    '<div class="v164-history-toolrow"><span>Datos publicados por la Liga</span><button type="button" data-v164-clear>Limpiar filtros</button></div>'+
   '</section>';
 }
+function summaryMarkup(list){
+  const goals=list.reduce((n,x)=>n+x.homeGoals+x.awayGoals,0);
+  const draws=list.filter(x=>x.homeGoals===x.awayGoals).length;
+  return '<div class="v164-history-summary">'+
+    '<div><strong>'+list.length+'</strong><span>Partidos</span></div>'+
+    '<div><strong>'+goals+'</strong><span>Goles</span></div>'+
+    '<div><strong>'+draws+'</strong><span>Empates</span></div>'+
+  '</div>';
+}
+function detailText(x){
+  return 'Liga Juventino Rosas\n'+x.category+'\n'+x.home+' '+x.score+' '+x.away+
+    '\n'+(x.datetime||'Fecha por confirmar')+
+    (x.round?'\nJornada '+x.round:'')+'\n'+x.venue;
+}
+function cardMarkup(x,index){
+  const day=dateText(x.datetime);
+  const clock=String(x.datetime).match(/\b(\d{1,2}:\d{2})\b/)?.[1]||'';
+  return '<article class="v164-history-match">'+
+    '<div class="v164-history-meta"><span>'+esc(x.category)+'</span><b>'+esc(day||'Fecha por confirmar')+'</b></div>'+
+    '<div class="v164-history-score">'+
+      '<span class="v164-history-team home">'+teamMark(x.home)+'<em title="'+esc(x.home)+'">'+esc(x.home)+'</em></span>'+
+      '<strong aria-label="Marcador '+esc(x.score)+'">'+esc(x.score)+'</strong>'+
+      '<span class="v164-history-team away">'+teamMark(x.away)+'<em title="'+esc(x.away)+'">'+esc(x.away)+'</em></span>'+
+    '</div>'+
+    '<div class="v164-history-foot"><span>'+(x.round?'Jornada '+esc(x.round)+' · ':'')+esc(x.venue)+'</span><small>Finalizado</small></div>'+
+    '<div class="v164-history-card-actions">'+
+      '<details class="v164-history-detail"><summary>Ficha del partido <span aria-hidden="true">⌄</span></summary>'+
+      '<div class="v164-history-detail-body"><p><b>Categoría</b><span>'+esc(x.category)+'</span></p>'+
+      '<p><b>Fecha</b><span>'+esc(day||'Por confirmar')+(clock?' · '+esc(clock):'')+'</span></p>'+
+      '<p><b>Jornada</b><span>'+esc(x.round||'Sin dato')+'</span></p>'+
+      '<p><b>Cancha</b><span>'+esc(x.venue)+'</span></p></div></details>'+
+      '<button type="button" data-v164-copy="'+index+'" aria-label="Copiar resultado de '+esc(x.home)+' contra '+esc(x.away)+'">Copiar</button>'+
+      '<button type="button" data-v164-share="'+index+'" aria-label="Compartir resultado de '+esc(x.home)+' contra '+esc(x.away)+'">Compartir</button>'+
+    '</div>'+
+  '</article>';
+}
+function resultsMarkup(all,list){
+  const shown=list.slice(0,historyState.page*historyState.pageSize);
+  return '<section class="v164-history-results" aria-label="Resultados históricos">'+
+    '<div class="v164-history-section-head"><h2>Partidos anteriores</h2><span>'+list.length+' resultado'+(list.length===1?'':'s')+'</span></div>'+
+    (shown.length?shown.map((x,i)=>cardMarkup(x,i)).join(''):
+      '<div class="v164-history-empty"><b>'+(all.length?'Sin coincidencias':'Sin resultados publicados')+'</b><span>'+
+      (all.length?'Prueba con otra categoría, equipo o año.':'Cuando la Liga publique marcadores oficiales aparecerán aquí.')+'</span></div>')+
+    (shown.length<list.length?'<button type="button" class="v164-history-more" data-v164-more>Ver más partidos ('+(list.length-shown.length)+' restantes)</button>':'')+
+    (list.length?'<p class="v164-history-showing">Mostrando '+shown.length+' de '+list.length+' resultados</p>':'')+
+  '</section>';
+}
+function markup(){
+  const all=rows(),list=filtered(all);
+  return '<section class="v164-history-page" data-v164-history-log>'+
+    '<header class="v164-history-head">'+
+      '<small>ARCHIVO DE PARTIDOS</small><h1>Historial</h1>'+
+      '<p>Consulta los marcadores y partidos anteriores publicados por la Liga.</p>'+
+    '</header>'+
+    '<div class="v164-history-switch">'+
+      '<button type="button" class="active" aria-current="page">Historial</button>'+
+      '<button type="button" data-route="history">Historia</button>'+
+    '</div>'+filterMarkup(all)+
+    '<div data-v164-summary>'+summaryMarkup(list)+'</div>'+
+    '<div data-v164-results>'+resultsMarkup(all,list)+'</div>'+
+    '<p class="v164-history-feedback" data-v164-feedback role="status" aria-live="polite"></p>'+
+  '</section>';
+}
+function updateResults(){
+  const root=document.querySelector('[data-v164-history-log]');
+  if(!root)return;
+  const all=rows(),list=filtered(all);
+  const summary=root.querySelector('[data-v164-summary]');
+  const results=root.querySelector('[data-v164-results]');
+  if(summary)summary.innerHTML=summaryMarkup(list);
+  if(results)results.innerHTML=resultsMarkup(all,list);
+}
+async function copyHistory(textValue){
+  if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(textValue);return}
+  const box=document.createElement('textarea');box.value=textValue;
+  box.style.cssText='position:fixed;top:-2000px;opacity:0';
+  document.body.appendChild(box);box.select();
+  try{if(!document.execCommand('copy'))throw Error('No se pudo copiar')}finally{box.remove()}
+}
+function notice(message){
+  const target=document.querySelector('[data-v164-feedback]');
+  if(target)target.textContent=message;
+}
 function bind(root){
-  root.querySelectorAll('[data-route]').forEach(b=>b.onclick=()=>{location.hash='#/'+b.dataset.route});
+  if(root.dataset.v164Bound)return;
+  root.dataset.v164Bound='1';
+  root.addEventListener('input',e=>{
+    if(!e.target.matches('[data-v164-search]'))return;
+    historyState.query=e.target.value;historyState.page=1;updateResults();
+  });
+  root.addEventListener('change',e=>{
+    const t=e.target;
+    if(t.matches('[data-v164-category]')){
+      historyState.category=t.value;historyState.team='all';
+      const sel=root.querySelector('[data-v164-team]');
+      if(sel)sel.innerHTML=options(teamChoices(rows()),'all');
+    }else if(t.matches('[data-v164-year]'))historyState.year=t.value;
+    else if(t.matches('[data-v164-team]'))historyState.team=t.value;
+    else if(t.matches('[data-v164-sort]'))historyState.sort=t.value;
+    else return;
+    historyState.page=1;updateResults();
+  });
+  root.addEventListener('click',async e=>{
+    const t=e.target.closest('button');if(!t||!root.contains(t))return;
+    if(t.hasAttribute('data-route')){location.hash='#/'+t.dataset.route;return}
+    if(t.hasAttribute('data-v164-clear')){
+      Object.assign(historyState,{category:'all',year:'all',team:'all',query:'',sort:'newest',page:1});
+      render();return;
+    }
+    if(t.hasAttribute('data-v164-more')){historyState.page++;updateResults();return}
+    if(t.hasAttribute('data-v164-copy')||t.hasAttribute('data-v164-share')){
+      const idx=Number(t.getAttribute('data-v164-copy')??t.getAttribute('data-v164-share'));
+      const match=filtered(rows())[idx];if(!match)return;
+      const txt=detailText(match);
+      try{
+        if(t.hasAttribute('data-v164-share')&&navigator.share){
+          await navigator.share({title:'Resultado · Liga Juventino Rosas',text:txt});
+          notice('Resultado compartido.');return;
+        }
+        await copyHistory(txt);notice('Resultado copiado para compartir.');
+      }catch(err){if(err?.name!=='AbortError')notice('No fue posible compartir automáticamente este resultado.')}
+    }
+  });
 }
 function render(){
   if(route()!=='historyLog'||guard)return;
@@ -184,9 +314,9 @@ function render(){
   guard=true;
   screen.innerHTML=markup();
   document.body.dataset.appRoute='historyLog';
-  bind(screen);
-  guard=false;
+  bind(screen);guard=false;
 }
+
 async function load(){
   if(db){render();return db}
   if(loading)return loading;
