@@ -65,3 +65,34 @@ test('No external AI API and no simulated official notices',()=>{
             program.includes("FEED='./data/active-notices.json'"));
   assert.ok(program.includes('No se generaron avisos de ejemplo'));
 });
+
+test('Numeric official categories, unpublished drafts, future notices and stable IDs',()=>{
+  const {ai}=engine();
+  const future='2999-01-01T12:00:00';
+  const rows=[
+    {title:'Boavista partido suspendido',category:'1'},
+    {title:'Recuerdo del campeonato',category:'Todas'},
+    {title:'Partido futuro',category:'1',publishAt:future},
+    {title:'Aviso interno',category:'1',published:false},
+    {title:'Partido Veteranos 35+',category:'2'}
+  ];
+  const ranked=ai.rank(rows,{cat:'1',team:'Boavista'});
+  assert.equal(ranked.length,2);
+  assert.ok(ranked.every(x=>x.id.startsWith('local-feed-')));
+  assert.ok(ranked.some(x=>x.title.includes('Boavista')));
+  assert.equal(ranked.filter(x=>x.title==='Partido futuro').length,0);
+  assert.deepEqual(
+    Array.from(ai.rank(rows,{cat:'1'}).map(x=>x.id).sort()),
+    Array.from(ai.rank([...rows].reverse(),{cat:'1'}).map(x=>x.id).sort())
+  );
+});
+
+test('Reset-learning control and Push selector integration are included',()=>{
+  const account=fs.readFileSync(new URL('../src/v105-green-app-bottom.js',import.meta.url),'utf8');
+  const push=fs.readFileSync(new URL('../src/v1082-push-notifications.js',import.meta.url),'utf8');
+  assert.ok(program.includes('Borrar aprendizaje local'));
+  assert.ok(program.includes('saveOptions({feedback:[]})'));
+  assert.ok(account.includes('syncPushSelection'));
+  assert.ok(push.includes('syncSelection(host,profile={})'));
+  assert.ok(styles.includes('.v1221-ai-reset'));
+});
