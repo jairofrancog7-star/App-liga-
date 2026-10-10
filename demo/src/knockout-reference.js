@@ -94,13 +94,13 @@
    (simulate?'<p class="ljr-ko-note" role="note">'+(m.projection?'Proyección del simulador · No son cruces oficiales':'Cruces publicados por la liga · Otros por definir')+'</p>':m.projection?'<p class="ljr-ko-note" role="note">Equipos según clasificación · Cruces oficiales por definir</p>':!m.published?'<p class="ljr-ko-note" role="status">Cruces oficiales por definir</p>':'')+
    '<div class="ljr-ko-board"><div class="ljr-ko-routes">'+rail()+'</div><div class="ljr-ko-scroll" aria-label="Cuadro de eliminatorias"><div class="ljr-ko-track">'+columns+'</div></div></div></section>';
  }
- function select(root,stage,animate=true){
+ function select(root,stage,animate=true,moveBoard=true){
   if(!root||!stages.includes(stage))return;
   root.dataset.koStage=stage;
   root.querySelectorAll('.ljr-ko-tabs button').forEach(b=>{b.classList.toggle('active',b.dataset.koStage===stage);b.setAttribute('aria-selected',String(b.dataset.koStage===stage));});
   try{localStorage.setItem('ljr-ko-stage:'+root.dataset.koMode+':'+root.dataset.koCategory,stage);if(root.dataset.koMode==='simulator')localStorage.setItem('v511-simulator-stage',stage);}catch(_){}
   const col=root.querySelector('[data-ko-column="'+stage+'"]'),scroll=root.querySelector('.ljr-ko-scroll');
-  if(col&&scroll){
+  if(moveBoard&&col&&scroll){
    root.dataset.koScrollTarget=String(Math.min(col.offsetLeft,Math.max(0,scroll.scrollWidth-scroll.clientWidth)));
    scroll.scrollTo({left:Number(root.dataset.koScrollTarget),behavior:animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches?'smooth':'instant'});
   }
@@ -110,19 +110,23 @@
  function init(root){
   if(!root||root.dataset.koReady)return;root.dataset.koReady='1';
   requestAnimationFrame(()=>select(root,root.dataset.koStage,false));
-  let end;
+  let frame;
   const scroller=root.querySelector('.ljr-ko-scroll');
   for(const event of ['pointerdown','touchstart','wheel'])scroller?.addEventListener(event,()=>{delete root.dataset.koScrollTarget;},{passive:true});
   scroller?.addEventListener('scroll',()=>{
-   clearTimeout(end);end=setTimeout(()=>{
-    const scroll=root.querySelector('.ljr-ko-scroll'),cols=[...root.querySelectorAll('[data-ko-column]')];
+   if(frame)return;
+   frame=requestAnimationFrame(()=>{
+    frame=null;
+    if(!root.isConnected)return;
+    const cols=[...root.querySelectorAll('[data-ko-column]')];
     if(root.dataset.koScrollTarget!=null){
-     if(Math.abs(scroll.scrollLeft-Number(root.dataset.koScrollTarget))<2)delete root.dataset.koScrollTarget;
+     if(Math.abs(scroller.scrollLeft-Number(root.dataset.koScrollTarget))<2)delete root.dataset.koScrollTarget;
      return;
     }
-    const nearest=cols.sort((a,b)=>Math.abs(a.offsetLeft-scroll.scrollLeft)-Math.abs(b.offsetLeft-scroll.scrollLeft))[0];
-    if(nearest&&nearest.dataset.koColumn!==root.dataset.koStage)select(root,nearest.dataset.koColumn,false);
-   },120);
+    const nearest=cols.reduce((a,b)=>Math.abs(a.offsetLeft-scroller.scrollLeft)<=Math.abs(b.offsetLeft-scroller.scrollLeft)?a:b);
+    // Follow a swipe without snapping the user's board back to a column.
+    if(nearest&&nearest.dataset.koColumn!==root.dataset.koStage)select(root,nearest.dataset.koColumn,false,false);
+   });
   },{passive:true});
  }
  window.LJR_KNOCKOUT={render,model,official,init,select,code};
