@@ -16,7 +16,8 @@
     "@capacitor/android": "^7.4.3",
     "@capacitor/core": "^7.4.3",
     "hls.js": "^1.7.3",
-    "three": "^0.169.0"
+    "three": "^0.169.0",
+    "@supabase/supabase-js": "^2.105.0"
   },
   "devDependencies": {
     "@capacitor/cli": "^7.4.3",
