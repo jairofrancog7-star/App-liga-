@@ -368,7 +368,10 @@ function openPCAdminTool(name){
   try{
    if(typeof window.LJR_V105_OPEN_TOOL==='function'&&window.LJR_V105_OPEN_TOOL(name))return;
    const fallback={incidents:()=>window.LJR_INCIDENTS_PRO?.open?.(),motm:()=>window.LJR_MOTM_STUDIO?.open?.(),'new-sanction':()=>window.LJR_V1130_SANCTIONS_OPEN?.()};
-   if(fallback[name]?.())return;
+   if(typeof fallback[name]==='function' && (
+    (name==='incidents'&&typeof window.LJR_INCIDENTS_PRO?.open==='function')||
+    (name==='motm'&&typeof window.LJR_MOTM_STUDIO?.open==='function')||
+    (name==='new-sanction'&&typeof window.LJR_V1130_SANCTIONS_OPEN==='function'))){fallback[name]();return}
   }catch(err){console.error('[PC tools] No se pudo abrir la herramienta',name,err)}
   // El panel JR Control conserva la ruta autorizada y su propia implementación.
   go('ligaControl');
