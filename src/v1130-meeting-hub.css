@@ -46,3 +46,10 @@
 .ljr-meeting-hub .mh-camera p{color:#fff;font-size:13px}
 @media(min-width:740px){.ljr-meeting-hub .mh-tabs{grid-template-columns:repeat(6,minmax(0,1fr))}}
 @media(max-width:370px){.ljr-meeting-hub .mh-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.ljr-meeting-hub .mh-fields{grid-template-columns:1fr}.ljr-meeting-hub .mh-stats small{font-size:8px}}
+/* Selector filtrable de equipos · colores oficiales de la app azul */
+.v875-meeting-modal .ljr-meeting-hub .mh-team-picker{display:grid;gap:9px;padding:11px!important;background:#0b2358;border:1px solid #3261ad;border-radius:12px;min-width:0}
+.v875-meeting-modal .ljr-meeting-hub .mh-team-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;min-width:0}
+.v875-meeting-modal .ljr-meeting-hub .mh-team-picker select,.v875-meeting-modal .ljr-meeting-hub .mh-team-picker input{background:#0b215a!important;border-color:#3c71c2!important;color:#fff!important;min-height:43px!important;text-overflow:ellipsis}
+.v875-meeting-modal .ljr-meeting-hub .mh-team-picker select:focus-visible,.v875-meeting-modal .ljr-meeting-hub .mh-team-picker input:focus-visible{outline:2px solid #60deef!important;outline-offset:2px}
+.v875-meeting-modal .ljr-meeting-hub .mh-team-picker [data-mh-team-counter]{font-size:11px;line-height:1.4;color:#bcd4f8}
+@media(max-width:520px){.v875-meeting-modal .ljr-meeting-hub .mh-team-filters{grid-template-columns:1fr}}
