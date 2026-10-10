@@ -301,7 +301,6 @@ const MORE_CARDS=[
  {icon:'timer',title:'Centro de jornada',sub:'Checklist operativo',route:'matchday'},
  {icon:'timer',title:'Barra de jornada',sub:'Accesos rápidos de operación',route:'matchday'},
  {icon:'fire',title:'Fan Zone',sub:'Reacciones locales',action:'fanzone'},
- {icon:'target',title:'Shot Map',sub:'Mapa local de tiros',action:'shotmap'},
  {icon:'card',title:'Credencial',sub:'OCR y credencial digital',route:'credentialBuilder'},
  {icon:'timer',title:'JR Matchday+',sub:'Centro de jornada',route:'matchday'},
  {icon:'bell',title:'Notificaciones',sub:'Preferencias y avisos',route:'notifications'},
