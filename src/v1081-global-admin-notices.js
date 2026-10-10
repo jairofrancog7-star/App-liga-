@@ -378,6 +378,9 @@ async function showSystemStatus(){
   try{
    const health=await publicCall('/health/ready');
    row('Base de datos',health?.ready?'Conexión confirmada.':'No se pudo validar la base de datos.',!!health?.ready);
+   row('Aprobación obligatoria de avisos',health?.ready&&health?.approvalRequired===true?
+    'El servidor exige autorización registrada antes de despachar cada aviso. La prueba no publica ni envía mensajes.':
+    'El servidor todavía no acredita el control de aprobación. No autorices publicaciones.',!!(health?.ready&&health?.approvalRequired===true));
    row('Avisos con teléfono apagado',health?.schedulerEnabled?'Programador interno disponible.':'Programador interno desactivado.',!!health?.schedulerEnabled);
    row('Push',health?.pushEnabled?'Configurado. Cada usuario debe aceptar las notificaciones.':'Claves de envío Push pendientes.',!!health?.pushEnabled);
    row('SMS y WhatsApp',health?.smsEnabled||health?.whatsappEnabled?'Algún canal de mensajería está configurado.':'Canales de proveedor aún no configurados.',!!(health?.smsEnabled||health?.whatsappEnabled));
@@ -386,6 +389,10 @@ async function showSystemStatus(){
    const me=await call('/admin/me');
    row('Permisos de esta cuenta',
     (me?.actor?.role||'Sin cargo')+' · '+(me?.actor?.permissions||[]).join(', '),!!me?.actor?.role);
+   const approve=Array.isArray(me?.actor?.permissions)&&me.actor.permissions.includes('notices:approve');
+   row('Permiso de aprobación de Presidencia',approve?
+    'Tu sesión tiene autorización del servidor para revisar borradores. No se ha aprobado ningún aviso en esta comprobación.':
+    'Esta sesión no puede aprobar avisos; se necesita una cuenta de Presidencia verificada.',approve);
   }catch(e){row('Autorización administrativa','No validada: '+e.message,false)}
   row('Permisos de toda la página','Las autorizaciones del CMS de jugadores, jornadas y sanciones son independientes de este servidor.',false);
  }
