@@ -227,11 +227,28 @@ function open(options={}){
  });
  modal.addEventListener('input',e=>{
   if(!e.target.matches('[data-mvp-search]'))return;
-  const start=e.target.selectionStart;state.filter=e.target.value;
+  // Update the results without replacing the focused search input: Android keyboard stays open.
+  state.filter=e.target.value;
   const list=playerData(state).filter(p=>norm(p.name+' '+(p.dorsal||'')).includes(norm(state.filter)));
-  if(list.length&&!list.some(p=>p.name===state.player))state.player=list[0].name;
-  if(!list.length)state.player='';
-  render();const input=$('[data-mvp-search]',modal);input?.focus();try{input.setSelectionRange(start,start)}catch(_){}
+  if(!list.some(p=>p.name===state.player))state.player=list[0]?.name||'';
+  const picker=$('[data-mvp-player]',modal);
+  if(picker){
+   picker.innerHTML=list.length?list.map(p=>'<option value="'+esc(p.name)+'">'+esc(p.name)+(p.dorsal?' · #'+esc(p.dorsal):'')+'</option>').join(''):'<option value="">Sin coincidencias</option>';
+   picker.value=state.player;
+  }
+  const counter=[...modal.querySelectorAll('.v1126-label')].find(x=>x.textContent.startsWith('Jugador registrado'));
+  if(counter)counter.textContent='Jugador registrado ('+list.length+')';
+  const person=list.find(p=>p.name===state.player)||null;
+  const profile=$('.v1126-profile',modal);
+  if(profile){
+   const title=profile.querySelector('strong'),detail=profile.querySelector('small'),avatarBox=profile.querySelector('.v1126-avatar');
+   if(title)title.textContent=person?.name||'Selecciona un jugador';
+   if(detail)detail.textContent=(state.team||'Sin equipo')+(person?.dorsal?' · #'+person.dorsal:'')+(person?.position?' · '+person.position:'');
+   if(avatarBox)avatarBox.innerHTML=iconImage(person?avatar(person):'',state.player,'v1126-player-photo')+'<span>★</span>';
+  }
+  modal.querySelectorAll('[data-mvp-save],[data-mvp-preview],[data-mvp-png],[data-mvp-share]').forEach(btn=>btn.disabled=!person);
+  const voteBtn=$('[data-mvp-vote]',modal);
+  if(voteBtn){voteBtn.disabled=!person||!match;voteBtn.textContent='Votar por '+(person?.name||'jugador')}
  });
  modal.addEventListener('keydown',e=>{if(e.key==='Escape')modal.remove()});
  render();$('.v1126-x',modal)?.focus();return modal;
