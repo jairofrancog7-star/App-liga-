@@ -45,7 +45,7 @@ function begin(scope,route,label){
  '<div class="ljr-studio-actions"><button type="button" data-studio-apply>Aplicar texto</button><button type="button" data-studio-color>Texto legible</button><button type="button" data-studio-blue>Fondo azul</button><button type="button" data-studio-touch>Botón 44 px</button><button type="button" data-studio-img>Imagen completa</button><button type="button" data-studio-auto>Mejora local</button></div>'+
  '<div class="ljr-studio-actions"><button type="button" data-studio-undo>↶ Deshacer</button><button type="button" data-studio-redo>↷ Rehacer</button><button type="button" data-studio-reset>Restablecer</button></div>'+
  '<div class="ljr-studio-actions"><button type="button" data-studio-save>Guardar borrador local</button><button type="button" data-studio-restore>Recuperar borrador</button><button type="button" data-studio-cms>Abrir editor oficial</button></div>'+
- '<small class="ljr-studio-disclaimer">Los borradores se guardan solamente en esta pestaña. Al salir se revierte la vista previa; para publicar se necesita el editor oficial y una sesión verificada.</small>';
+ '<small class="ljr-studio-disclaimer">Borradores privados en esta pestaña. Al cerrar se revierte la vista previa. El CMS oficial recibe texto y colores; para guardar otros ajustes hacen falta funciones nuevas del servidor. Revisa y guarda cada cambio desde su formulario.</small>';
  document.body.append(panel);
  let selected=null,history=[],position=0,closing=false;
  const txt=$('[data-studio-text]',panel),size=$('[data-studio-size]',panel),note=$('[data-studio-note]',panel);
@@ -155,12 +155,17 @@ function begin(scope,route,label){
    message(count+' cambio(s) recuperado(s) en vista previa. Revisa antes de guardar oficialmente.');
   }catch(e){message('No se pudo recuperar este borrador: '+(e?.message||'Formato incorrecto'))}
  };
- $('[data-studio-cms]',panel).onclick=()=>{
+ $('[data-studio-cms]',panel).onclick=async()=>{
+  const button=$('[data-studio-cms]',panel);
+  if(button.disabled)return;
   if(!window.LJR_MEDIA?.admin)return message('Necesitas iniciar sesión.');
-  const cms=window.LJR_CMS;
-  const method=typeof cms?.editPage==='function'?()=>cms.editPage():typeof cms?.open==='function'?()=>cms.open('page'):null;
-  if(!method)return message('El editor de guardado oficial no está disponible. Conserva el borrador local; no se publicó nada.');
-  cleanup();try{method()}catch(e){window.LJR_MEDIA?.modal?.('Editor oficial',esc(e?.message||'No se pudo abrir.'))}
+  if(!window.LJR_EDITOR_CMS_BRIDGE?.transfer)return message('El puente con el CMS oficial todavía no está disponible. Ningún cambio ha sido guardado.');
+  button.disabled=true;
+  message('Verificando permisos del servidor antes de abrir el CMS oficial…');
+  try{
+   await window.LJR_EDITOR_CMS_BRIDGE.transfer(route,history.slice(0,position),message);
+  }catch(e){message('No se guardó ni publicó el cambio: '+(e?.message||'No se pudo conectar con el CMS.'));}
+  finally{if(panel.isConnected)button.disabled=false}
  };
  reflect();
 }

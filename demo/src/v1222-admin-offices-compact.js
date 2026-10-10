@@ -54,14 +54,27 @@ function compatibleCategory(stored,id){
  return !expected||a===b||a.replace(' fuerza','')===b.replace(' fuerza','')||a.includes(b)||b.includes(a);
 }
 function openDirectory(kind,dialog,feedback){
- if(!window.LJR_MEDIA?.admin){if(feedback)feedback.textContent='Inicia sesión para abrir el directorio.';return}
- if(typeof window.LJR_V105_OPEN_TOOL!=='function'){
-  if(feedback)feedback.textContent='La herramienta aún no terminó de cargar. Inténtalo de nuevo.';return;
+ if(!['delegates','officials'].includes(kind)){
+  if(feedback)feedback.textContent='Directorio no reconocido.';return false;
  }
- // Cerrar solo este diálogo evita dos ventanas una encima de otra.
+ if(!window.LJR_MEDIA?.admin){
+  if(feedback)feedback.textContent='Inicia sesión para abrir el directorio.';return false;
+ }
+ if(typeof window.LJR_V105_OPEN_TOOL!=='function'){
+  if(feedback)feedback.textContent='La herramienta aún no terminó de cargar. Inténtalo de nuevo.';return false;
+ }
+ // Abre primero la herramienta real. Si falla, el modal actual permanece disponible.
+ try{
+  if(window.LJR_V105_OPEN_TOOL(kind)!==true){
+   if(feedback)feedback.textContent='No fue posible abrir el directorio. Reintenta sin perder los filtros.';
+   return false;
+  }
+ }catch(error){
+  if(feedback)feedback.textContent='Error al abrir el directorio. Inténtalo nuevamente.';
+  return false;
+ }
  dialog.querySelector(':scope > header [data-close]')?.click();
- const ok=window.LJR_V105_OPEN_TOOL(kind);
- if(!ok&&feedback)feedback.textContent='No fue posible abrir el directorio.';
+ return true;
 }
 function decorate(grid){
  for(const button of $$('[data-editor-open]',grid)){

@@ -268,15 +268,31 @@ async function showRoles(){
   try{admins=await media().api('admins')}catch(_){cmsDirectoryAvailable=false}
   box.replaceChildren();
   const assigned=new Map((perms.roles||[]).map(p=>[String(p.subject),p.role]));
-  const roleTitles={lector:'Solo lectura',editor:'Editor de avisos',secretario:'Secretario (avisos)',disciplina:'Disciplina (lectura)'};
+  const roleTitles={
+   lector:'Solo lectura',
+   editor:'Editor de avisos',
+   secretario:'Secretario (avisos)',
+   disciplina:'Disciplina (lectura)',
+   delegado:'Delegado · lectura de avisos',
+   arbitro:'Árbitro · cédulas asignadas'
+  };
+  // Solo ofrecer cargos confirmados por el servidor, nunca inventar permisos desde el navegador.
+  const allowedRoles=new Set(Array.isArray(perms.allowedRoles)?perms.allowedRoles.filter(r=>Object.hasOwn(roleTitles,r)):[]);
   for(const user of (admins.admins||[]).filter(u=>u.active&&!u.owner)){
    const subject=String(user.id||'');if(!/^[a-zA-Z0-9:_-]{1,128}$/.test(subject))continue;
    const row=document.createElement('div');row.className='v1081-role';
    const name=document.createElement('strong');name.textContent=user.name||user.username||subject;
    const pick=document.createElement('select');pick.setAttribute('aria-label','Permiso de '+name.textContent);
-   Object.entries(roleTitles).forEach(([value,label])=>{const option=document.createElement('option');option.value=value;option.textContent=label;pick.append(option)});
-   pick.value=assigned.get(subject)||'lector';
+   Object.entries(roleTitles).filter(([value])=>allowedRoles.has(value))
+    .forEach(([value,label])=>{const option=document.createElement('option');option.value=value;option.textContent=label;pick.append(option)});
+   const assignedRole=assigned.get(subject)||'lector';
+   if(allowedRoles.has(assignedRole))pick.value=assignedRole;
    const save=document.createElement('button');save.textContent='Guardar cargo';
+   if(!pick.options.length||!allowedRoles.has(assignedRole)){
+    // Evitar reemplazar un cargo existente desconocido por lector accidentalmente.
+    pick.disabled=true;save.disabled=true;
+    save.title='No se recibió un catálogo compatible de cargos del servidor.';
+   }
    save.onclick=async()=>{
     if(!confirm('¿Asignar este cargo al administrador seleccionado?'))return;
     save.disabled=true;
