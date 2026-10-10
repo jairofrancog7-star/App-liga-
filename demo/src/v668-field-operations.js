@@ -24,12 +24,19 @@ const FIELDS=[
   ['romerillo','Romerillo'],
   ['san-julian','San Julián'],
   ['franco-tavera','Franco Tavera'],
-  ['cuenda','Cuenda']
+  ['cuenda','Cuenda'],
+  ['pozos','Campo de Fútbol de Pozos'],
+  ['cerrito','Campo Cerrito de Gasca'],
+  ['san-jose','Campo San José de la Montaña'],
+  ['san-juan','Campo San Juan de la Cruz'],
+  ['rincon','Campo Rincón de Centeno']
 ];
 const WEATHER_FIELD_MAP={
   'uds-1':'sur-1','uds-2':'sur-2','uds-3':'sur-3','campo-4':'zapata-4',
   'fraccionamiento':'fraccionamiento','romerillo':'romerillo','san-julian':'san-julian',
-  'franco-tavera':'tavera','cuenda':'cuenda'
+  'franco-tavera':'tavera','cuenda':'cuenda',
+  'pozos':'pozos','cerrito':'cerrito','san-jose':'san-jose',
+  'san-juan':'san-juan','rincon':'rincon'
 };
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
@@ -199,7 +206,7 @@ function checkerMarkup(){
     '<p class="v668-help">La persona que revisa la cancha registra lo que ve físicamente. El sistema prepara el reporte y lo envía al presidente para decisión oficial.</p>'+
     '<div class="v668-form two">'+
       '<label><span>Quién revisa</span><input name="checker" list="v668-checker-list" value="'+esc(last)+'" placeholder="Nombre del checador">'+checkerDatalist()+'</label>'+
-      '<label><span>Cancha</span><select name="field">'+fieldOptions(localStorage.getItem('v668-last-field')||'uds-1')+'</select></label>'+
+      '<label><span>Cancha</span><select name="field" data-v668-stable-field>'+fieldOptions(localStorage.getItem('v668-last-field')||'uds-1')+'</select></label>'+
       '<label><span>Fecha y hora de revisión</span><input type="datetime-local" name="at" value="'+nowLocal()+'"></label>'+
       '<label><span>Tipo de superficie</span><select name="surfaceType"><option value="dirt_compact">Tierra compactada</option><option value="dirt_sandy">Tierra / arena</option><option value="grass">Pasto natural</option><option value="synthetic">Sintético</option></select></label>'+
       '<label><span>Condición general</span><select name="surface"><option value="dry">Seca / firme</option><option value="damp">Húmeda</option><option value="heavy">Pesada / blanda</option><option value="muddy">Lodosa / barro</option></select></label>'+
@@ -242,7 +249,7 @@ function checkerRosterMarkup(){
   const list=checkers();
   return '<div class="v668-roster">'+
     '<div class="v668-mini-head"><b>Checadores autorizados</b><small>'+list.length+' registrados en este dispositivo</small></div>'+
-    '<div class="v668-roster-form"><input data-v668-new-checker placeholder="Nombre del checador"><select data-v668-new-field>'+fieldOptions('uds-1')+'</select><button type="button" data-v668-add-checker>Agregar</button></div>'+
+    '<div class="v668-roster-form"><input data-v668-new-checker placeholder="Nombre del checador"><select data-v668-new-field data-v668-stable-field>'+fieldOptions('uds-1')+'</select><button type="button" data-v668-add-checker>Agregar</button></div>'+
     '<div class="v668-roster-list">'+(list.length?list.map((x,i)=>'<span><b>'+esc(x.name)+'</b><small>'+esc(fieldName(x.field))+'</small><button type="button" data-v668-remove-checker="'+i+'">×</button></span>').join(''):'<em>Aún no hay checadores guardados.</em>')+'</div>'+
   '</div>';
 }
