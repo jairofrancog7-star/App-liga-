@@ -25,6 +25,12 @@ const I={
   }
 };
 
+// Share the same original vectors with the global navigation owner.
+for(const route of Object.keys(I)){
+ const vector=window.LJR_ICONS?.svg(route);if(!vector)continue;
+ const holder=document.createElement('div');holder.innerHTML=vector;
+ I[route].off=I[route].on=holder.innerHTML;
+}
 const labels={home:'INICIO',competition:'COMPETICIÓN',video:'VÍDEO',fantasy:'FANTASY',more:'MÁS'};
 
 function apply(){
