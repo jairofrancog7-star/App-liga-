@@ -1,0 +1,157 @@
+/* V1241 · Ajustes de las capturas Android 10/oct: presentación únicamente.
+   No cambia eventos, estados de avisos, autentificación ni datos oficiales. */
+:root{--ljr-v1241-page:#050951;--ljr-v1241-panel:#0b1e62;--ljr-v1241-blue:#12377d;--ljr-v1241-edge:#537fc8;--ljr-v1241-text:#f5f8ff;--ljr-v1241-accent:#22d7ee}
+
+/* Favoritos: cada emblema ocupa un cuadro, sin la insignia-fallback negra detrás.
+   El fallback vuelve a mostrarse si la imagen falla (el onerror existente cambia display). */
+body.v414-favorites-active .v414-favorites{--v415-bg:#050951!important;--v415-band:#091653!important;--v415-panel:#112773!important;--v415-panel-2:#142e78!important}
+body.v414-favorites-active .v414-logo-tile,
+body.v414-favorites-active .v414-logo-tile:nth-child(n){
+  background:linear-gradient(155deg,#173b88,#0e2768)!important;
+  border:1px solid rgba(90,144,227,.28)!important;
+  box-shadow:none!important;isolation:isolate!important
+}
+body.v414-favorites-active .v414-logo-tile::before,
+body.v414-favorites-active .v414-logo-tile::after{content:none!important;display:none!important}
+body.v414-favorites-active .v414-logo-tile>img{
+  display:block;position:relative;z-index:1;width:81%!important;height:81%!important;
+  max-width:58px!important;max-height:58px!important;object-fit:contain!important;
+  background:transparent!important;filter:none!important;border:0!important;
+}
+body.v414-favorites-active .v414-logo-tile>img[style*="display: none"]{display:none!important}
+body.v414-favorites-active .v414-logo-tile>img+.v414-fallback[style*="display: none"]{display:none!important}
+body.v414-favorites-active .v414-logo-tile>.v414-fallback:not([style*="display: none"]){
+  position:relative;z-index:1;background:transparent!important;border-radius:8px!important
+}
+body.v414-favorites-active .v414-match-logo-pair img{background:transparent!important;border-radius:0!important;object-fit:contain!important}
+body.v414-favorites-active .v414-logo-rail{padding-bottom:15px!important}
+
+/* Programación: entrada date/time y el texto completo en Categoría sin recortes. */
+.v713-auto .v729-schedule-card{min-width:0!important;overflow:visible!important}
+.v713-auto .v729-schedule-card .v729-schedule-grid{width:100%!important;min-width:0!important;gap:10px!important}
+.v713-auto .v729-schedule-card .v729-schedule-grid label{
+  min-width:0!important;height:auto!important;min-height:0!important;
+  padding:10px!important;overflow:visible!important;align-content:start!important;
+  background:#0d2166!important;border-color:rgba(104,151,229,.32)!important
+}
+.v713-auto .v729-schedule-card .v729-schedule-grid label>span{
+  font:750 12px/1.3 system-ui,sans-serif!important;white-space:normal!important;
+  overflow:visible!important;text-overflow:clip!important;margin:0 0 7px!important
+}
+.v713-auto .v729-schedule-card .v729-schedule-grid :is(input,select){
+  box-sizing:border-box!important;width:100%!important;max-width:100%!important;
+  min-width:0!important;height:46px!important;min-height:46px!important;
+  padding:9px 11px!important;background:#080f58!important;
+  border:1px solid #527bc7!important;color:white!important;
+  font:650 14px/1.3 system-ui,sans-serif!important;
+  letter-spacing:normal!important;text-overflow:clip!important
+}
+.v713-auto .v729-schedule-card .v729-schedule-grid select[data-v713-category]{
+  font-size:14px!important;padding-right:30px!important;appearance:auto!important;
+}
+.v713-auto .v729-schedule-card .v729-schedule-grid input[type="date"],
+.v713-auto .v729-schedule-card .v729-schedule-grid input[type="time"]{
+  color-scheme:dark!important;font-variant-numeric:tabular-nums!important;
+}
+@media(max-width:560px){
+  .v713-auto .v729-schedule-card .v729-schedule-grid{grid-template-columns:minmax(0,1fr)!important}
+  .v713-auto .v729-schedule-card .v729-schedule-grid>label{grid-column:1/-1!important}
+}
+
+/* Acceso administrador: icono encima del título y palabras intactas. */
+.v620-admin-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;width:100%!important;min-width:0!important;margin:14px 0 16px!important}
+.v620-admin-actions>button{
+  box-sizing:border-box!important;display:flex!important;flex-direction:column!important;
+  justify-content:center!important;align-items:center!important;gap:8px!important;
+  min-width:0!important;width:100%!important;min-height:86px!important;height:auto!important;
+  padding:12px 7px!important;background:linear-gradient(150deg,#183f8f,#0e2b70)!important;
+  border:1px solid #5c8ddd!important;color:#fff!important;border-radius:13px!important;
+  white-space:normal!important;letter-spacing:normal!important
+}
+.v620-admin-actions>button>span{
+  box-sizing:border-box!important;display:grid!important;place-items:center!important;
+  flex:0 0 30px!important;width:30px!important;height:30px!important;
+  font-size:18px!important;line-height:1!important;background:#0c2465!important
+}
+.v620-admin-actions>button>b{
+  display:block!important;min-width:0!important;width:100%!important;
+  font:750 clamp(12px,3.2vw,14px)/1.32 system-ui,sans-serif!important;
+  color:#fff!important;text-align:center!important;white-space:normal!important;
+  overflow-wrap:normal!important;word-break:normal!important;hyphens:none!important
+}
+.v620-admin-bio-opt{grid-template-columns:22px minmax(0,1fr)!important;gap:11px!important}
+.v620-admin-bio-opt b{font-size:13px!important;line-height:1.4!important;overflow-wrap:normal!important;word-break:normal!important}
+.v620-admin-bio-opt small{font-size:11px!important;line-height:1.45!important}
+@media(max-width:340px){.v620-admin-actions{gap:8px!important}.v620-admin-actions>button{padding:10px 5px!important}}
+
+/* Auditoría: botones de análisis/filtros e iconos a tamaños táctiles coherentes. */
+html body>.v105-modal.v1212-audit-modal :is(.v1212-presets,.v1212-export){
+  display:flex!important;align-items:stretch!important;flex-wrap:wrap!important;gap:8px!important
+}
+html body>.v105-modal.v1212-audit-modal :is(.v1212-presets button,.v1212-export button,.v1223-toolbar button){
+  box-sizing:border-box!important;min-width:0!important;min-height:44px!important;
+  padding:9px 12px!important;font:750 13px/1.35 system-ui,sans-serif!important;
+  white-space:normal!important;overflow-wrap:normal!important;text-align:center!important;
+  border-radius:12px!important;background:linear-gradient(145deg,#1a4498,#102e79)!important;
+  border:1px solid #648de1!important;color:#f5f8ff!important
+}
+html body>.v105-modal.v1212-audit-modal :is(.v1212-presets button[aria-pressed="true"],.v1223-toolbar>button){
+  background:linear-gradient(130deg,#2464c9,#17428d)!important;border-color:#8fb5fb!important
+}
+html body>.v105-modal.v1212-audit-modal .v1223-toolbar{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:10px!important;align-items:center!important}
+html body>.v105-modal.v1212-audit-modal :is(button svg,button i){max-width:20px!important;max-height:20px!important;vertical-align:middle!important}
+@media(max-width:430px){
+  html body>.v105-modal.v1212-audit-modal .v1223-toolbar{grid-template-columns:minmax(0,1fr)!important}
+  html body>.v105-modal.v1212-audit-modal .v1223-toolbar>button{width:100%!important}
+}
+
+/* Administración/editor/avisos: el azul oscuro de la app, no otro azul brillante. */
+html body .liga-media-modal>section:is(.ljr-admin-manage,.ljr-admin-cms,.ljr-editor-dialog,.ljr-editor-compose){
+  background:linear-gradient(170deg,#0c246c 0%,#071754 56%,#050b43 100%)!important;
+  border-color:#547fcf!important;color:#f5f8ff!important
+}
+html body .liga-media-modal>section:is(.ljr-admin-manage,.ljr-admin-cms,.ljr-editor-dialog,.ljr-editor-compose)>header{
+  background:linear-gradient(105deg,#143a86,#0b256c)!important;border-color:rgba(114,159,229,.42)!important
+}
+html body .liga-media-modal :is(.ljr-editor-review,.ljr-editor-page-panel,.ljr-editor-section-info,.ljr-smart-hub,.ljr-editor-preview,.ljr-editor-feedback){
+  color:#eaf1ff!important
+}
+html body .liga-media-modal :is(.ljr-review-filters,.ljr-review-stats,.ljr-review-insights,.ljr-admin-area){
+  border-color:rgba(110,154,228,.42)!important
+}
+html body .liga-media-modal :is(.ljr-editor-page-panel,.ljr-review-smart) :is(button,select,input),
+html body .liga-media-modal .ljr-editor-compose :is(button,select,input,textarea){
+  max-width:100%!important;min-width:0!important;box-sizing:border-box!important
+}
+html body .liga-media-modal :is(.ljr-editor-page-panel,.ljr-review-smart) button,
+html body .liga-media-modal .ljr-editor-compose :is(.ljr-editor-tools button,.ljr-editor-smart-tools button){
+  min-height:44px!important;white-space:normal!important;overflow-wrap:normal!important;
+  word-break:normal!important;font-size:12px!important;line-height:1.35!important;
+  color:#fff!important;background:linear-gradient(150deg,#1a448f,#102e72)!important;
+  border-color:#648de1!important
+}
+html body .liga-media-modal .ljr-review-automation{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+html body .liga-media-modal .ljr-review-automation button{width:100%!important;min-height:48px!important}
+html body .liga-media-modal .ljr-review-automation label{grid-column:1/-1!important;display:flex!important;gap:10px!important;min-height:42px!important;align-items:center!important}
+html body .liga-media-modal .ljr-review-automation label input{flex:0 0 18px!important}
+html body .liga-media-modal .ljr-editor-page-panel .ljr-editor-two-choice{gap:10px!important}
+html body .liga-media-modal .ljr-editor-page-panel .ljr-editor-two-choice button{min-height:85px!important}
+html body .liga-media-modal .ljr-editor-page-panel .ljr-editor-extra-actions button{min-height:44px!important}
+html body .liga-media-modal .ljr-editor-compose .ljr-editor-bottom [data-editor-publish]{
+  background:linear-gradient(135deg,#1c69d4,#0055a5)!important
+}
+html body .liga-media-modal>section.ljr-admin-manage .ljr-smart-hub{
+  background:linear-gradient(165deg,#102e75,#0a1f5b)!important
+}
+.ljr-studio{
+  background:linear-gradient(165deg,#0e2b71,#071952)!important;border-color:#567fcf!important
+}
+.ljr-studio :is(button,input,select,textarea){max-width:100%!important}
+@media(max-width:420px){
+  html body .liga-media-modal .ljr-editor-page-panel .ljr-editor-two-choice{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  html body .liga-media-modal .ljr-review-footer{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+  html body .liga-media-modal .ljr-review-footer>button{min-width:0!important;white-space:normal!important}
+  html body .liga-media-modal .ljr-review-footer>button:last-child:nth-child(odd){grid-column:1/-1!important}
+}
+@media(prefers-reduced-motion:reduce){.v620-admin-actions *,.v414-logo-tile *{transition:none!important;animation:none!important}}
