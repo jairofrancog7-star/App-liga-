@@ -22,7 +22,7 @@ function dateMX(value){
 }
 // Escudo oficial de la Liga sin fondo. PDF y PNG reutilizan el mismo archivo.
 // Evita el flood-fill y la reducción previa: borraban trazos oscuros del escudo.
-const OFFICIAL_LEAGUE_LOGO=new URL('./assets/liga-logo-oficial-transparente.png',document.baseURI).href;
+const OFFICIAL_LEAGUE_LOGO=new URL('./assets/branding/escudo-liga-camisetas-unificado-v1122.png?v=v1122-mismo-escudo-camisetas',document.baseURI).href;
 function transparentLogo(){
  if(!logoPromise)logoPromise=Promise.resolve(OFFICIAL_LEAGUE_LOGO);
  return logoPromise;
