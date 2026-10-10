@@ -1177,8 +1177,8 @@ function calendarGenerator(){
    '</div>'+
    '<div class="v1130-summary" data-summary role="status" aria-live="polite"></div>'+
    '<div class="v1130-source"><span data-source></span><div class="v1130-source-actions"><button type="button" data-alerts title="Configurar avisos por categoría y equipo">Avisos</button><button type="button" data-refresh title="Releer datos publicados en esta página">Actualizar</button></div></div>'+
-   '<div class="v105-output" data-out></div>'+
-   '<div class="v1130-local-source" data-local-source hidden></div>'+ 
+   '<div class="v1130-local-source" data-local-source hidden></div>'+
+   '<div class="v105-output" data-out></div>'+ 
    '<div class="v105-actions v1130-exports">'+
      '<button type="button" class="v105-btn" data-open aria-pressed="false">Abrir rol oficial aquí</button>'+
      '<button type="button" class="v105-btn alt" data-pdf>Descargar PDF</button>'+
@@ -1342,9 +1342,13 @@ function calendarGenerator(){
        goExternal(googleCalendarDestination(event));
        toast('Revisa y pulsa Guardar en Google Calendar.');
      }else if(button.hasAttribute('data-map')){
+       // Abrir la pestaña en el toque inicial: Chrome bloquea ventanas abiertas tras un fetch.
+       const tab=window.open('about:blank','_blank');
+       if(tab)tab.opener=null;
        const link=await calendarFieldLink(f.field);
-       if(!link)return toast('Esta cancha no tiene dirección confirmada en Campos y sedes.');
-       goExternal(link);
+       if(!link){tab?.close();return toast('Esta cancha no tiene dirección confirmada en Campos y sedes.')}
+       if(tab)tab.location.replace(link);
+       else location.assign(link);
      }
    });
  }
