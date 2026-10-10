@@ -192,3 +192,20 @@ html body .liga-media-modal>section.ljr-admin-friendly .ljr-file-note{
  html body .liga-media-modal>section.ljr-admin-friendly .cms-form>button,
  html body .liga-media-modal>section.ljr-admin-friendly .cms-form>label.liga-remember{grid-column:1/-1!important}
 }
+
+/* Etiquetas cortas en las tarjetas del administrador; todo sigue siendo clicable. */
+html body .liga-media-modal>section.ljr-admin-friendly .cms-kind-grid button{
+  align-items:center!important;min-height:65px!important;max-width:100%!important;
+}
+html body .liga-media-modal>section.ljr-admin-friendly .cms-kind-grid .ljr-simple-tile-note{
+  display:block!important;margin-top:3px!important;color:#b6d9f0!important;
+  font:450 10.5px/1.25 system-ui,sans-serif!important;letter-spacing:0!important;
+}
+html body .liga-media-modal>section.ljr-admin-friendly .ljr-admin-tile-label{
+  overflow-wrap:anywhere!important;line-height:1.3!important;
+}
+@media(max-width:340px){
+ html body .liga-media-modal>section.ljr-admin-friendly .cms-kind-grid{
+  grid-template-columns:minmax(0,1fr)!important;
+ }
+}
