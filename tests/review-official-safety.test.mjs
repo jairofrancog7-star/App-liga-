@@ -71,4 +71,6 @@ test('La revisión de cron es sólo lectura y no toca ni datos ni sitio',()=>{
  assert.match(yml,/contents: read/);
  assert.doesNotMatch(yml,/contents: write|gh pr merge|git push/);
  assert.match(code('.github/scripts/process_scheduled_notices.py'),/not approved\(item\)/);
+ assert.match(code('.github/scripts/process_scheduled_notices.py'),/hmac\.compare_digest/);
+ assert.match(code('.github/workflows/scheduled-notices.yml'),/LJR_OFFICIAL_NOTICE_APPROVAL_SECRET/);
 });
