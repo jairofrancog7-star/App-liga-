@@ -533,7 +533,7 @@ function preserveBlueRegistrations(base){
       if(!remoteFixture)continue;
       const remoteId=String(remoteFixture[0]);
       // Si la fuente posterior publicó un resultado numérico, respetarlo.
-      const hasNewScore=/^\\d+$/.test(String(remoteFixture[3]))&&/^\\d+$/.test(String(remoteFixture[5]));
+      const hasNewScore=/^\d+$/.test(String(remoteFixture[3]))&&/^\d+$/.test(String(remoteFixture[5]));
       if(!hasNewScore&&!fixtureDecisions[remoteId])fixtureDecisions[remoteId]={...decision};
     }
     // Proteger exclusivamente resultados verificados por el usuario; no
@@ -548,7 +548,7 @@ function preserveBlueRegistrations(base){
       if(!localFixture)continue;
       const target=remoteByKey.get(fixtureKey(localFixture));
       if(!target)continue;
-      const complete=/^\\d+$/.test(String(target[3]))&&/^\\d+$/.test(String(target[5]));
+      const complete=/^\d+$/.test(String(target[3]))&&/^\d+$/.test(String(target[5]));
       if(complete)continue;
       // Registrar una superposición inmutable sin alterar el espejo compartido.
       verifiedOverlay.set(fixtureKey(target),[String(receipt.home_goals),String(receipt.away_goals)]);
