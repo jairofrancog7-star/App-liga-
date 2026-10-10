@@ -24,12 +24,19 @@ const FIELDS=[
   ['romerillo','Romerillo'],
   ['san-julian','San Julián'],
   ['franco-tavera','Franco Tavera'],
-  ['cuenda','Cuenda']
+  ['cuenda','Cuenda'],
+  ['pozos','Campo de Fútbol de Pozos'],
+  ['cerrito','Campo Cerrito de Gasca'],
+  ['san-jose','Campo San José de la Montaña'],
+  ['san-juan','Campo San Juan de la Cruz'],
+  ['rincon','Campo Rincón de Centeno']
 ];
 const WEATHER_FIELD_MAP={
   'uds-1':'sur-1','uds-2':'sur-2','uds-3':'sur-3','campo-4':'zapata-4',
   'fraccionamiento':'fraccionamiento','romerillo':'romerillo','san-julian':'san-julian',
-  'franco-tavera':'tavera','cuenda':'cuenda'
+  'franco-tavera':'tavera','cuenda':'cuenda',
+  'pozos':'pozos','cerrito':'cerrito','san-jose':'san-jose',
+  'san-juan':'san-juan','rincon':'rincon'
 };
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
