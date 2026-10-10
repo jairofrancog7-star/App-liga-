@@ -10,7 +10,7 @@ const ua=navigator.userAgent||'';
 const ios=/iPhone|iPad|iPod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const android=/Android/i.test(ua);
 const desktop=!ios&&!android;
-let pendingPrompt=null,alreadyInstalled=false;
+let pendingPrompt=null,alreadyInstalled=false,lastFocus=null;
 const standalone=()=>!!(window.matchMedia?.('(display-mode: standalone)')?.matches||navigator.standalone||alreadyInstalled);
 const home=()=>location.origin+location.pathname+'#/home';
 const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -112,9 +112,10 @@ function page(){
  return '<section class="v562-page ljr-install-page" data-v563-install-page data-ljr-install-hub data-ljr-install-mode="'+initial()+'">'+markup(initial())+'</section>';
 }
 function open(){
+ lastFocus=document.activeElement;
  document.querySelector('.ljr-install-overlay')?.remove();
  const wrap=document.createElement('div');wrap.className='ljr-install-overlay';wrap.dataset.ljrInstallHub='';wrap.dataset.ljrInstallMode=initial();
- wrap.setAttribute('role','presentation');wrap.innerHTML=markup(initial(),true);
+ wrap.setAttribute('role','dialog');wrap.setAttribute('aria-modal','true');wrap.setAttribute('aria-label','Instalar Liga Juventino');wrap.innerHTML=markup(initial(),true);
  document.body.appendChild(wrap);
  wrap.querySelector('.ljr-install-close')?.focus();
 }
@@ -125,7 +126,7 @@ function mountExisting(){
  el.dataset.ljrInstallHub='';el.dataset.ljrInstallMode=initial();el.classList.add('ljr-install-page');
  el.innerHTML=markup(initial());
 }
-function close(){document.querySelector('.ljr-install-overlay')?.remove()}
+function close(){const old=document.querySelector('.ljr-install-overlay');if(!old)return;old.remove();try{lastFocus?.focus?.()}catch(_){}}
 async function copy(){
  const value=home();
  try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(value);return true}}
