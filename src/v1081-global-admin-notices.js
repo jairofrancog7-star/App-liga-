@@ -63,7 +63,7 @@ function mexicoInput(value){
  }).formatToParts(date).map(q=>[q.type,q.value]));
  return p.year+'-'+p.month+'-'+p.day+'T'+p.hour+':'+p.minute;
 }
-function makeAdminForm(){
+function makeAdminForm(prefill){
  const modal=dialog('Avisos globales programados',
   '<div class="v1081"><p class="v1081-note">Los avisos se publican en el servidor aunque el teléfono esté apagado. Requiere que el servicio HTTPS esté desplegado y configurado. Todo cambio se verifica con tu sesión.</p>'+
   '<form data-v1081-form>'+
@@ -108,6 +108,19 @@ function makeAdminForm(){
   form.elements.when.value=mexicoInput(Date.now()+3600000).slice(0,16);
  }
  clear();
+ // Entrada desde Aviso de suspensión: rellenar sin publicar ni seleccionar canales externos.
+ if(prefill&&typeof prefill==='object'&&active()){
+  const safe=(value,max)=>String(value||'').slice(0,max);
+  form.elements.title.value=safe(prefill.title,120);
+  form.elements.body.value=safe(prefill.body,700);
+  for(const k of ['category','type','team','field']){
+   const el=form.elements[k],v=safe(prefill[k],100);
+   if(!el||!v)continue;
+   if(el.tagName==='SELECT'&&![...el.options].some(o=>o.value===v))continue;
+   el.value=v;
+  }
+  message(modal,'Aviso importado para revisión. Elige la hora de publicación y confirma los canales; todavía no se ha enviado.');
+ }
  async function refresh(){
   list.textContent='Consultando avisos…';
   try{
@@ -302,6 +315,11 @@ async function showSystemStatus(){
  $('[data-v1081-check-again]',modal).onclick=inspect;
  inspect().catch(e=>{box.textContent='No se pudo completar el diagnóstico: '+e.message});
 }
+window.LJR_GLOBAL_NOTICES={open:prefill=>{
+ if(!active())return false;
+ makeAdminForm(prefill);
+ return true;
+}};
 function adminMount(){
  const grid=$('.liga-media-modal > section.ljr-admin-manage [data-ljr-editor-center] .ljr-editor-hub-grid');
  if(!grid||!active()||grid.querySelector('[data-v1081-global]'))return;
