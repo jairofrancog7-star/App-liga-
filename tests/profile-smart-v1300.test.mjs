@@ -27,7 +27,7 @@ test('perfil v1300: las recomendaciones y contraseñas funcionan offline',()=>{
  const body={dataset:{}};
  const doc={body,readyState:'loading',addEventListener:(ev,handler)=>{actions[ev]=handler},querySelector:()=>null};
  const ctx={
-   window:{LJR_V569_AUTH:{currentAccount:()=>fakeAccount},addEventListener:()=>{}},
+   window:{LJR_V569_AUTH:{currentAccount:()=>fakeAccount},Notification:{permission:'denied'},addEventListener:()=>{}},
    document:doc,
    localStorage,
    Notification:{permission:'denied'},
