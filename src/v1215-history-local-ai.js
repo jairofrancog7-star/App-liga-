@@ -310,11 +310,15 @@ async function fetchNewest(manual=false){
     // Sólo accedemos a GitHub si la fuente local no está disponible.
     let latest=null;
     for(const url of [LOCAL,REMOTE]){
-      const res=await fetch(url,{cache:'no-cache',signal:requestController.signal});
-      if(!res.ok)continue;
-      latest=await res.json();
-      if(latest?.categories)break;
-      latest=null;
+      try{
+        const res=await fetch(url,{cache:'no-cache',signal:requestController.signal});
+        if(!res.ok)continue;
+        const result=await res.json();
+        if(result?.categories){latest=result;break;}
+      }catch(err){
+        if(err?.name==='AbortError')throw err;
+        // Fuente local no disponible: probar el origen oficial remoto.
+      }
     }
     if(!latest?.categories)throw Error('Sin datos oficiales');
     if(route()!=='historyLog'||document.hidden)return;
