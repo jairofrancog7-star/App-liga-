@@ -1,3 +1,19 @@
+## Preparación Railway (9 de octubre de 2026)
+
+Se creó el proyecto privado **Liga Juventino Rosas - Avisos** en Railway y se dejaron en **STAGED**, sin ejecutar ni facturar por contenedores nuevos, el servicio `liga-avisos-api` conectado a la carpeta `/server/notifications` de GitHub y una instancia PostgreSQL con volumen. El servicio tiene configurados la ruta de salud, reinicio por fallas, puerto 8080 y conexión a la base mediante referencia privada de Railway.
+
+**El despliegue sigue detenido intencionalmente**: faltan los secretos obligatorios y la confirmación del operador sobre potenciales cargos de Railway/Twilio. No pulses Apply Changes hasta completar estos pasos:
+
+1. Registrar o conectar Twilio y aprobar el remitente WhatsApp Business y su plantilla (Content SID `HX...`). Los destinatarios deberán aceptar mensajes específicamente por SMS o WhatsApp.
+2. En Railway, establecer `JOB_NOTIFY_TOKEN` (aleatorio de al menos 32 caracteres), `PUBLIC_API_ORIGIN` (dominio HTTPS real del servicio), credenciales de Twilio (`TWILIO_ACCOUNT_SID`, `TWILIO_API_KEY`, `TWILIO_API_SECRET`, `TWILIO_AUTH_TOKEN`, `TWILIO_MESSAGING_SERVICE_SID`, `TWILIO_WHATSAPP_SENDER`, `TWILIO_WHATSAPP_CONTENT_SID`). **No introducir valores reales en GitHub**.
+3. Generar `VAPID_PUBLIC_KEY` y `VAPID_PRIVATE_KEY` en entorno seguro, introducir un correo operativo real en `VAPID_SUBJECT=mailto:...`. No existe todavía un correo de contacto verificado, por eso no se ha configurado automáticamente.
+4. Con los secretos completos, aplicar los cambios de Railway. El inicio del servidor ejecuta `bootstrap.mjs` para aplicar de forma transaccional `schema.sql` antes de aceptar peticiones.
+5. Verificar `GET /health`, `GET /config` y la autenticación con `GET /admin/me`. Después poner la URL HTTPS **sin tokens** en `data/notifications-client.json`, `public/data/notifications-client.json` y, para el flujo V1082, en `public/push-config.json`. GitHub Pages debe reconstruirse.
+6. Añadir `LJR_NOTIFICATIONS_API_URL` y `LJR_NOTIFICATIONS_JOB_TOKEN` a los **Secrets** de GitHub Actions. La clave debe coincidir con `JOB_NOTIFY_TOKEN` del servidor. Probar un evento de ejemplo con destinatario de prueba voluntario.
+7. Probar rechazo a visitantes, consentimiento por canal, STOP/BAJA, StatusCallback firmado, reintentos y cancelación antes de habilitar envíos masivos.
+
+Se agregaron `Dockerfile`, `railway.toml`, `bootstrap.mjs` y el workflow `notifications-backend-checks.yml`. Este workflow verifica sintaxis, permisos y que no haya credenciales evidentes comprometidas.
+
 # Administración de la Liga · Avisos globales, Push, cargos y auditoría
 
 La interfaz del sitio azul **está agregada a GitHub**, pero **GitHub Pages es estático y no ejecuta PostgreSQL ni este servidor**. Hasta que se despliegue el backend privado, el panel muestra que falta conexión y no finge haber enviado avisos. Los avisos locales anteriores siguen funcionando en su dispositivo.
