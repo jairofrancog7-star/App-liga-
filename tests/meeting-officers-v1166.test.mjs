@@ -6,7 +6,7 @@ test('Sede Deportiva Sur es predeterminada sin perder otra sede editable',()=>{
  const code=get('src/v875-review-corrections.js');
  assert.match(code,/STANDARD_VENUE='Unidad Deportiva Sur, Juventino Rosas, Gto.'/);
  assert.match(code,/data-meeting-field="place"/);
- assert.match(code,/data\.v1166Venue/);
+ assert.match(code,/dataset\.v1166Venue/);
  assert.match(code,/Otra sede · escribir abajo/);
  assert.match(code,/venue\.dispatchEvent\(new Event\('input'/);
 });
