@@ -486,6 +486,23 @@
 ];
 
 
+
+  /* V1191: compartir exactamente los archivos de la sección Equipos. */
+  function currentKey(value){
+    return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');
+  }
+  window.LJR_TEAMS_CURRENT_LOGO={
+    get(name,category){
+      const key=currentKey(name),cat=currentKey(category);
+      if(!key)return '';
+      const aliases=[key,key.replace(/^(dep|deportivo) /,''),key.replace(/ (fc|f c)$/,'')];
+      const matches=V27_TEAMS.filter(t=>aliases.includes(currentKey(t.name))||aliases.includes(currentKey(t.short)));
+      const chosen=matches.find(t=>cat&&currentKey(t.category)===cat)||matches[0];
+      return chosen?.logo ? new URL(chosen.logo,document.baseURI).href : '';
+    }
+  };
+
   const FIRST_GRID=V27_TEAMS.slice(0,17);
   const LIBRE_TEAMS=V27_TEAMS.slice(17);
   const playerNames=[];
