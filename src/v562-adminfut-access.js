@@ -179,61 +179,6 @@ async function share(){
  const href=location.origin+location.pathname+'?mode=apk#/home';
  try{if(navigator.share){await navigator.share({title:'Liga Juventino',text:'App de la Liga Municipal de Fútbol Juventino Rosas',url:href});return}await navigator.clipboard.writeText(href);toast('Enlace copiado')}catch(_){}
 }
-/* V1108 — navegación delegada estable: funciona tras repintar #screen.
-   Evita botones sin evento y no modifica el diseño ni el acceso del administrador. */
-function v1108OpenTool(name){
- const handler=window.LJR_V105_OPEN_TOOL;
- if(typeof handler==='function'&&handler(name)===true)return;
- toast('La herramienta aún no está disponible. Actualiza la página e inténtalo de nuevo.');
-}
-function v1108ControlClick(event){
- if(!(event.target instanceof Element))return;
- const button=event.target.closest('button.v562-card[data-v563-route],button.v562-card[data-v563-tool],button.v562-card[data-v563-cms],button.v562-card[data-v563-action]');
- if(!button||button.disabled||!button.isConnected||!button.closest('.v562-page[data-v563-control]'))return;
- /* Se procesa antes de los otros controladores de navegación de la app. */
- event.preventDefault();
- event.stopImmediatePropagation();
- try{
-   const r=button.dataset.v563Route;
-   if(r){go(r);return}
-   const action=button.dataset.v563Action;
-   if(action){
-     if(action==='positions')openPositions();
-     else if(action==='fixtures')openFixtures();
-     else if(action==='cards')openDiscipline('cards');
-     else if(action==='suspensions')openDiscipline('suspensions');
-     else toast('Acceso de competición no disponible');
-     return;
-   }
-   const tool=button.dataset.v563Tool;
-   if(tool){
-     const restricted=new Set(['sponsors','meeting','delegates','officials','incidents','csv-import','backup-export','audit','schedule-match','new-sanction','motm']);
-     if(restricted.has(tool)&&!window.LJR_MEDIA?.admin){
-       const login=window.LJR_MEDIA?.login;
-       if(typeof login==='function'){
-         login(()=>{if(window.LJR_MEDIA?.admin)v1108OpenTool(tool);else toast('Se requiere acceso de administrador');});
-       }else toast('Inicia sesión como administrador para usar esta herramienta');
-     }else v1108OpenTool(tool);
-     return;
-   }
-   const cms=button.dataset.v563Cms;
-   if(!cms)return;
-   const admin=window.LJR_MEDIA?.admin;
-   if(!admin){toast('Inicia sesión como administrador para continuar');window.LJR_MEDIA?.login?.();return;}
-   if(cms==='backup'&&!admin.owner){toast('Solo el presidente puede exportar el respaldo oficial');return;}
-   const obj=cms==='manage'?window.LJR_MEDIA:window.LJR_EDITOR_CENTER;
-   const names={compose:'openNotice',review:'openReview',pages:'openPages',manage:'manage',backup:'exportBackup'};
-   const fn=obj?.[names[cms]];
-   if(typeof fn!=='function'){toast('Esta herramienta no está disponible; vuelve a cargar la página');return;}
-   fn.call(obj);
- }catch(error){
-   console.error('[JR Control] No fue posible abrir el cuadro',error);
-   toast('No se pudo abrir. Actualiza y vuelve a intentarlo.');
- }
-}
-window.addEventListener('click',v1108ControlClick,true);
-
-
 /* V1108 — Delegación de eventos resistente a repintados del panel.
    Captura clics en el botón completo, sus iconos o su texto; cada toque se
    resuelve una vez y conserva la autorización original. */
