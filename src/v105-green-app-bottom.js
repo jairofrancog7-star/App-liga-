@@ -431,6 +431,13 @@ function v105IsTuesday(value){
   return new Date(Number(m[1]),Number(m[2])-1,Number(m[3]),12,0,0).getDay()===2;
 }
 function meeting(){
+ // Las minutas contienen datos personales de delegados y acuerdos internos.
+ // Solicita sesión administrativa verificada antes de abrir sus controles.
+ if(!window.LJR_MEDIA?.admin){
+  if(typeof window.LJR_MEDIA?.login==='function')window.LJR_MEDIA.login(()=>window.LJR_OPEN_MEETING?.());
+  else toast('Inicia sesión de administración para gestionar las juntas');
+  return;
+ }
  const next=v105TuesdayDate();
  const nextValue=v105DateInput(next);
  const defaultAgenda='Revisión de jornada · sanciones · programación · campos · arbitraje · asuntos generales';
