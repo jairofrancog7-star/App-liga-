@@ -47,4 +47,4 @@ CREATE INDEX IF NOT EXISTS ljr_cedula_attachments_doc_idx ON ljr_cedula_attachme
 -- Permitir que la directiva asigne árbitros autenticados, sin confiar en roles del navegador.
 ALTER TABLE ljr_admin_roles DROP CONSTRAINT IF EXISTS ljr_admin_roles_role_check;
 ALTER TABLE ljr_admin_roles ADD CONSTRAINT ljr_admin_roles_role_check
- CHECK(role IN ('secretario','editor','disciplina','arbitro','lector'));
+ CHECK(role IN ('secretario','editor','disciplina','arbitro','delegado','lector'));
