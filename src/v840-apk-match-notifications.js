@@ -16,6 +16,11 @@ const MAX_INBOX=28;
 const VIEW_KEY='ljr-notifications-feed-view-v1202';
 const READ_KEY='ljr-notifications-feed-read-v1202';
 let remoteData=null,polling=false,renderTimer=0;
+let feedback='';
+function showFeedback(message){
+  feedback=String(message||'');
+  document.querySelectorAll('[data-v840-feed] .v840-feedback').forEach(el=>el.textContent=feedback);
+}
 
 const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9+]+/g,' ').trim();
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -330,13 +335,21 @@ function feedMarkup(){
   const denied=!native&&'Notification'in window&&Notification.permission==='denied';
   const readSet=new Set(readIds());
   const unread=all.filter(e=>!readSet.has(e.id)).length;
-  const categories=[...new Set(all.map(e=>e.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+  const categories=[...new Set([
+    ...all.map(e=>e.category),
+    ...Object.values(data()?.categories||{}).map(c=>c?.name)
+  ].filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+  // Un filtro antiguo no puede dejar toda la lista inaccesible.
+  if(view.category!=='all'&&!categories.includes(view.category)){
+    view.category='all';saveView();
+  }
   const filtered=all.filter(e=>
     (view.category==='all'||e.category===view.category)&&
     (view.type==='all'||(view.type==='goal'&&e.type==='goal')||
      (view.type==='final'&&(e.type==='final'||e.status==='Finalizado'))||
      (view.type==='live'&&(e.live||e.type==='live')))
   );
+  const filteredUnread=filtered.filter(e=>!readSet.has(e.id)).length;
   const rows=filtered.slice(0,view.more?MAX_INBOX:5);
   const filters=[['all','Todos'],['goal','Goles'],['final','Resultados'],['live','En vivo']];
   const status=granted?'Avisos permitidos en este dispositivo':denied?'Avisos bloqueados: cambia el permiso desde el navegador.':'Activa avisos para recibir alertas del dispositivo.';
@@ -346,15 +359,16 @@ function feedMarkup(){
         '<p>Marcadores y avisos oficiales por categoría.</p>'+
         '<span class="v840-permission-status '+(granted?'allowed':denied?'denied':'')+'">'+(granted?'✓':'○')+' '+esc(status)+'</span></div>'+
       '<div class="v840-head-actions"><button type="button" data-v840-permission class="'+(granted?'on':'')+'" aria-label="Activar permisos de avisos">'+
-        (granted?'Avisos activos':denied?'Ver permisos':native?'Activar avisos':'Activar avisos')+
+        (granted?'Avisos activos':denied?'Cómo permitir avisos':'Activar avisos')+
       '</button><button type="button" data-v851-rich-test>Probar aviso</button></div>'+
     '</div>'+
+    '<p class="v840-feedback" role="status" aria-live="polite">'+esc(feedback)+'</p>'+
     '<div class="v840-feed-tools"><div class="v840-feed-tabs" role="group" aria-label="Filtrar avisos">'+
       filters.map(([key,label])=>'<button type="button" data-v840-type="'+key+'" aria-pressed="'+(view.type===key?'true':'false')+'" class="'+(view.type===key?'selected':'')+'">'+label+'</button>').join('')+
     '</div><label class="v840-feed-category"><span>Categoría</span><select data-v840-category aria-label="Filtrar por categoría">'+
       '<option value="all">Todas las categorías</option>'+categories.map(cat=>'<option value="'+esc(cat)+'" '+(view.category===cat?'selected':'')+'>'+esc(cat)+'</option>').join('')+
     '</select></label></div>'+
-    '<div class="v840-feed-subhead"><span>'+filtered.length+' '+(filtered.length===1?'aviso':'avisos')+' · '+unread+' sin leer</span>'+
+    '<div class="v840-feed-subhead"><span>'+filtered.length+' '+(filtered.length===1?'aviso':'avisos')+' · '+filteredUnread+' sin leer en este filtro</span>'+
       (unread?'<button type="button" data-v840-readall>Marcar todos como leídos</button>':'')+'</div>'+
     '<div class="v840-feed-list">'+
       (rows.length?rows.map(e=>'<button type="button" class="v840-notice-row '+(!readSet.has(e.id)?'unread':'')+'" data-v840-id="'+esc(e.id)+'" data-v840-route="'+esc(e.route||'competition')+'" aria-label="'+esc(scoreText(e)+' · '+e.category+' · '+e.status)+'">'+
@@ -387,26 +401,35 @@ function renderFeed(){
   root?.querySelector('[data-v840-permission]')?.addEventListener('click',async event=>{
     const button=event.currentTarget;
     if(!Capacitor.isNativePlatform()&&'Notification'in window&&Notification.permission==='denied'){
-      const message=root.querySelector('.v840-permission-status');
-      if(message)message.textContent='En Chrome: icono junto a la dirección → Permisos → Notificaciones → Permitir.';
+      showFeedback('Chrome tiene bloqueadas las notificaciones. Abre el icono junto a la dirección → Permisos → Notificaciones → Permitir. Después vuelve a esta página.');
+      return;
+    }
+    if(!Capacitor.isNativePlatform()&&'Notification'in window&&Notification.permission==='granted'){
+      showFeedback('Los permisos ya están activos. Pulsa «Probar aviso» para comprobarlos.');
       return;
     }
     button.disabled=true;
+    showFeedback('Comprobando permisos del dispositivo…');
     const ok=await requestPermission();
     if(button.isConnected)button.disabled=false;
-    if(ok){
-      const latest=inbox()[0];
-      if(latest)await systemNotify({...latest,id:'test-'+Date.now(),type:'test',status:'Avisos activados'});
-    }
+    showFeedback(ok?'Permiso concedido. Puedes probar un aviso.':'No se concedió el permiso. Revisa los permisos del navegador o de Android.');
+    renderFeed();
   });
   root?.querySelector('[data-v851-rich-test]')?.addEventListener('click',async event=>{
     const button=event.currentTarget;
     button.disabled=true;
+    showFeedback('Comprobando si Chrome puede mostrar el aviso de prueba…');
     const ok=await sendSampleRich();
-    if(!button.isConnected)return;
-    button.disabled=false;
-    button.textContent=ok?'Aviso de prueba enviado':'Revisa los permisos';
-    setTimeout(()=>{if(button.isConnected)button.textContent='Probar aviso'},1800);
+    showFeedback(ok?
+      'Se solicitó mostrar el aviso de prueba en el dispositivo. Revisa las notificaciones de Android.':
+      (!Capacitor.isNativePlatform()&&'Notification'in window&&Notification.permission==='denied'?
+        'Chrome bloquea los avisos. Abre el icono junto a la dirección → Permisos → Notificaciones → Permitir.':
+        'No se pudo mostrar el aviso. Comprueba los permisos y que tu navegador admita notificaciones.'));
+    if(button.isConnected){
+      button.disabled=false;
+      button.textContent=ok?'Prueba solicitada':'Probar aviso';
+      setTimeout(()=>{if(button.isConnected)button.textContent='Probar aviso'},1800);
+    }
   });
   root?.querySelectorAll('[data-v840-type]').forEach(b=>b.addEventListener('click',()=>{
     view.type=b.dataset.v840Type||'all';view.more=false;saveView();renderFeed();
