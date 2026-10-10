@@ -75,13 +75,34 @@ function makeAdminForm(){
   '<label>Equipo afectado (opcional)<input name="team" maxlength="90" placeholder="Solo si aplica"></label>'+
   '<label>Cancha afectada (opcional)<input name="field" maxlength="100" placeholder="Solo si aplica"></label>'+
   '<label>Publicar · hora Juventino Rosas<input name="when" type="datetime-local" required></label></div>'+
-  '<label class="v1081-check"><input type="checkbox" name="push"> Avisar también por notificación Push (requiere VAPID)</label>'+
-  '<p class="v1081-preview">Se publicará en Noticias para todos. No se agregan resultados automáticamente.</p>'+
+  '<div class="v1081-channel-options">'+
+  '<label class="v1081-check"><input type="checkbox" name="push" disabled> Push a seguidores suscritos</label>'+
+  '<label class="v1081-check"><input type="checkbox" name="sms" disabled> SMS por Twilio</label>'+
+  '<label class="v1081-check"><input type="checkbox" name="whatsapp" disabled> WhatsApp Business (plantilla aprobada)</label>'+
+  '</div><small class="v1081-channel-note" data-v1091-channel-status>Consultando canales disponibles…</small>'+
+  '<p class="v1081-preview">Se publicará en Noticias; los mensajes externos requieren canal aprobado y consentimiento individual. Nada se envía al guardar.</p>'+
   '<div class="v1081-actions"><button type="button" data-v1081-reset>Limpiar</button><button type="submit" data-v1081-save>Programar publicación</button></div>'+
   '</form><div class="v1081-list"><div class="v1081-list-head"><strong>Publicaciones programadas</strong><button type="button" data-v1081-refresh>Actualizar</button></div><div data-v1081-items>Cargando...</div></div>'+
   '<p class="v1081-status" data-v1081-status role="status" aria-live="polite"></p></div>');
  const form=$('[data-v1081-form]',modal),list=$('[data-v1081-items]',modal),save=$('[data-v1081-save]',modal);
  let editing=null,rows=[],busy=false;
+ // Los canales se habilitan únicamente cuando el backend responde que están
+ // preparados: claves privadas, remitente aprobado, plantilla y base de datos.
+ async function loadChannels(){
+  const msg=$('[data-v1091-channel-status]',modal);
+  const options={push:false,sms:false,whatsapp:false};
+  try{
+   const result=await publicCall('/config');
+   if(result){options.push=!!result.pushEnabled;options.sms=!!result.smsEnabled;options.whatsapp=!!result.whatsappEnabled;}
+  }catch(_){}
+  for(const [name,enabled] of Object.entries(options)){
+   const input=form.elements[name];if(!input)continue;
+   input.disabled=!enabled;if(!enabled)input.checked=false;
+  }
+  if(msg)msg.textContent=Object.values(options).some(Boolean)?
+   'Canales habilitados por el servidor. SMS y WhatsApp requieren contactos con consentimiento registrado; pueden generar cargos.':
+   'Push, SMS y WhatsApp pendientes de configurar en el servidor. Puedes preparar el aviso sin enviarlo.';
+ }
  function clear(){
   editing=null;form.reset();save.textContent='Programar publicación';
   form.elements.when.value=mexicoInput(Date.now()+3600000).slice(0,16);
@@ -108,7 +129,9 @@ function makeAdminForm(){
       form.elements.category.value=item.category||'Todas';form.elements.type.value=item.notice_type||'general';
       form.elements.team.value=item.team||'';form.elements.field.value=item.field||'';
       form.elements.when.value=mexicoInput(item.send_at);
-      form.elements.push.checked=Array.isArray(item.channels)&&item.channels.includes('push');
+      for(const ch of ['push','sms','whatsapp']){
+       if(!form.elements[ch]?.disabled)form.elements[ch].checked=Array.isArray(item.channels)&&item.channels.includes(ch);
+      }
       save.textContent='Guardar cambios';form.scrollIntoView({block:'nearest',behavior:'smooth'});
      };
      const cancel=document.createElement('button');cancel.textContent='Cancelar';cancel.className='is-danger';
@@ -171,10 +194,13 @@ function makeAdminForm(){
   const payload={title:form.elements.title.value.trim(),body:form.elements.body.value.trim(),
    category:form.elements.category.value,type:form.elements.type.value,
    team:form.elements.team.value.trim(),field:form.elements.field.value.trim(),
-   channels:form.elements.push.checked?['app','push']:['app'],
+   channels:['app',...['push','sms','whatsapp'].filter(ch=>form.elements[ch]?.checked&&!form.elements[ch]?.disabled)],
    sendAt:new Date(sendAt).toISOString()};
   if(payload.body.length<15){message(modal,'Escribe al menos 15 caracteres con datos oficiales.');return}
-  if(!confirm('¿Guardar la programación oficial? No se publicará hasta la fecha indicada.'))return;
+  const external=payload.channels.filter(ch=>ch==='sms'||ch==='whatsapp');
+  if(!confirm(external.length?
+   '¿Programar el aviso oficial con envío por '+external.join(' y ')+'? Solo debe llegar a destinatarios con consentimiento y puede generar cargos en Twilio.':
+   '¿Guardar la programación oficial? No se publicará hasta la fecha indicada.'))return;
   busy=true;save.disabled=true;
   try{
    const item=editing;
@@ -186,8 +212,8 @@ function makeAdminForm(){
   finally{busy=false;save.disabled=false}
  };
  $('[data-v1081-reset]',modal).onclick=clear;
- $('[data-v1081-refresh]',modal).onclick=refresh;
- refresh();
+ $('[data-v1081-refresh]',modal).onclick=()=>{loadChannels();refresh()};
+ loadChannels();refresh();
 }
 async function showRoles(){
  if(!media()?.admin?.owner)return;
