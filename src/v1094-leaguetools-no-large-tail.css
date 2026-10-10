@@ -58,3 +58,56 @@
     margin-bottom:0!important;
   }
 }
+
+/* V1097 — evitar el doble espacio entre la ultima tarjeta y la barra fija.
+   No alterar la altura, los eventos ni los iconos de la barra de navegacion. */
+@media (max-width:1023px) {
+  html body[data-app-route="leagueTools"] #app,
+  html body[data-app-route="leagueTools"] .app-shell {
+    min-height:0!important;
+    height:auto!important;
+    max-height:none!important;
+    padding-bottom:0!important;
+    margin-bottom:0!important;
+  }
+
+  /* La reserva de navegacion vive solo en #screen, no en el shell ni
+     en la pagina de herramientas ni en la tarjeta de Facebook. */
+  html body[data-app-route="leagueTools"] #app #screen {
+    box-sizing:border-box!important;
+    min-height:0!important;
+    height:auto!important;
+    padding-bottom:calc(var(--v34-nav-h,69px) + 5px + env(safe-area-inset-bottom,0px))!important;
+    margin-bottom:0!important;
+  }
+  html body[data-app-route="leagueTools"] #app #screen > .v60-tool-page.v726-tools-page {
+    min-height:0!important;
+    height:auto!important;
+    padding-bottom:0!important;
+    margin-bottom:0!important;
+  }
+  html body[data-app-route="leagueTools"] #app #screen > .v60-tool-page.v726-tools-page > [data-v74-facebook-source="tools"]:last-child {
+    min-height:0!important;
+    height:auto!important;
+    margin-bottom:0!important;
+    padding-bottom:10px!important;
+  }
+  /* Solo restos realmente vacios de antiguos modulos inferiores. */
+  html body[data-app-route="leagueTools"] #app #screen > :is(#v105-bottom,.v105-bottom,.v73-below-native,.v100-block):empty {
+    display:none!important;
+    height:0!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+  }
+}
+@media (min-width:1024px) {
+  html body[data-app-route="leagueTools"] #app #screen > .v60-tool-page.v726-tools-page {
+    padding-bottom:0!important;
+  }
+  html body[data-app-route="leagueTools"] #app #screen > .v60-tool-page.v726-tools-page > [data-v74-facebook-source="tools"]:last-child {
+    margin-bottom:0!important;
+    padding-bottom:12px!important;
+  }
+}
