@@ -1,0 +1,14 @@
+/* V1213: estilo aislado del respaldo de fotos y documentos. */
+.ljr-bc-overlay .ljr-bc-idb{background:linear-gradient(155deg,rgba(15,54,135,.92),rgba(5,23,66,.97));border-color:rgba(85,205,255,.44)}
+.ljr-bc-overlay .ljr-bc-idb .ljr-bc-paneltitle h3{font-size:14px;line-height:1.35}
+.ljr-bc-overlay .ljr-bc-sensitive{color:#e4effd;border-left:2px solid #77d0ff;background:rgba(10,43,115,.5);padding:8px 10px;font-size:10px;line-height:1.5;margin:4px 0 10px}
+.ljr-bc-overlay .ljr-bc-idb-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.ljr-bc-overlay .ljr-bc-idb-actions button{margin:0}
+.ljr-bc-overlay .ljr-bc-help{font-size:10px;color:#a6d0f1;line-height:1.55}
+.ljr-bc-overlay .ljr-bc-idb-restore{padding-top:12px;margin-top:12px;border-top:1px solid rgba(103,194,252,.28)}
+.ljr-bc-overlay .ljr-bc-idb-restore h3{font-size:13px;margin:0 0 8px;color:#fff}
+.ljr-bc-overlay .ljr-bc-idb-status{border-radius:10px;background:rgba(13,50,111,.55);border:1px solid rgba(70,160,225,.27);padding:10px;font-size:10px;line-height:1.5;color:#b9e9ff;overflow-wrap:anywhere;margin:10px 0 0}
+.ljr-bc-overlay .ljr-bc-idb-status.error{color:#ffc9be;border-color:rgba(255,138,129,.5)}
+.ljr-bc-overlay .ljr-bc-idb input[type="password"]{max-width:100%;overflow:hidden}
+.ljr-bc-overlay [data-bc-export-folder]{margin-top:9px}
+@media(max-width:420px){.ljr-bc-overlay .ljr-bc-idb-actions{grid-template-columns:1fr}.ljr-bc-overlay .ljr-bc-idb .ljr-bc-paneltitle h3{font-size:13px}}
