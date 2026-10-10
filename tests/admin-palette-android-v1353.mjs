@@ -36,9 +36,9 @@ const fixture=[
  '<div class="liga-media-modal"><section id="content" class="ljr-content-studio"><header><h2>Publicar en la Liga</h2><button data-close>×</button></header>',
  '<div class="cms-design-presets"><button>Historia</button><button>Jornada</button></div>',
  '<label>Foto o video<input type="file"></label><div class="ljr-layout-gallery"><button aria-pressed="true">Diseño oficial</button></div></section></div>',
- '<div class="v105-modal v1126-delegate-modal"><div id="delegates" class="v105-dialog"><h3>Delegados</h3><div class="v1126-editor">Representantes por equipo</div></div></div>',
+ '</main><div class="v105-modal v1126-delegate-modal"><div id="delegates" class="v105-dialog"><h3>Delegados</h3><div class="v1126-editor">Representantes por equipo</div></div></div>',
  '<div class="v105-modal v1125-officials-modal"><div id="officials" class="v105-dialog"><h3>Árbitros y oficiales</h3><div class="v1125-editor">Directorio de oficiales</div></div></div>',
- '</main></body></html>'
+ '</body></html>'
 ].join('');
 const browser=await chromium.launch({headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
 try{
