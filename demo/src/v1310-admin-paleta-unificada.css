@@ -298,3 +298,134 @@ html body .liga-media-modal > section:is(
 @media(prefers-reduced-motion:reduce){
  html body .liga-media-modal .ljr-admin-manage .ljr-admin-tile{transition:none!important;}
 }
+
+
+/* V1311 · corrección real de fondos: la superficie de la app es azul marino
+   oscuro; las tarjetas no deben tener el degradado azul eléctrico de V1071.
+   Sólo color, bordes y contraste. Ningún cambio de interacción. */
+html body .liga-media-modal > section:is(
+  .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,
+  .ljr-admin-studio,.ljr-editor-dialog,.v1081-dialog
+){
+  --ljr1310-bg:#071338;
+  --ljr1310-surface:#0a1b48;
+  --ljr1310-card:#0c2457;
+  --ljr1310-input:#091a46;
+  --ljr1310-edge:#426bb0;
+  --ljr1310-muted:#b9cae7;
+  background:#071338!important;
+  background-image:linear-gradient(180deg,#0b1e4e 0%,#07173f 50%,#060f32 100%)!important;
+  background-color:#071338!important;
+  border-color:#426bb0!important;
+}
+html body .liga-media-modal > section:is(
+ .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,
+ .ljr-admin-studio,.ljr-editor-dialog,.v1081-dialog
+) > header{
+ background:#0e285c!important;
+ background-image:linear-gradient(180deg,#102b62,#0b2050)!important;
+ background-color:#0e285c!important;
+ border-bottom-color:#416cac!important;
+ box-shadow:none!important;
+}
+html body .liga-media-modal > section:is(
+ .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,
+ .ljr-admin-studio,.ljr-editor-dialog,.v1081-dialog
+) > header [data-close]{
+ background:#122c60!important;
+ background-image:none!important;
+ border-color:#5579b8!important;
+ color:#eef6ff!important;
+}
+
+/* Cuadros y recuadros internos: eliminar azules claros superpuestos. */
+html body .liga-media-modal :is(
+  .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,
+  .ljr-admin-studio,.ljr-editor-dialog,.v1081-dialog
+) :is(
+ .ljr-admin-area,.ljr-admin-intro,.ljr-simple-intro,.ljr-guide,
+ .ljr-editor-hub,.ljr-editor-note,.ljr-editor-preview,
+ .ljr-review-card,.ljr-review-insights,.ljr-review-empty,
+ .ljr-review-stats>div,.ljr-review-device-results,
+ .ljr-review-feedback,.ljr-admin-studio .cms-poster-preview,
+ .v1081-note,.v1081-item,.v1081-preview,.v1081-public-card,.v1081-role,
+ .v1081-channel-note,.v1081-channel-options .v1081-check,
+ .v1222-office-finder,.ljr-admin-results .cms-load-feedback
+ ){
+  background:#0a1c4b!important;
+  background-image:linear-gradient(170deg,#0d2456,#091b46)!important;
+  background-color:#0a1c4b!important;
+  border-color:rgba(86,127,191,.65)!important;
+  box-shadow:none!important;
+  color:#f5f9ff!important;
+}
+/* Recuadros de acciones y menú de administración. */
+html body .liga-media-modal :is(.ljr-admin-manage,.ljr-admin-cms,.ljr-admin-friendly)
+ :is(.ljr-admin-action-grid>button.ljr-admin-tile,.ljr-editor-hub-grid>button,
+      .cms-kind-grid>button,.ljr-admin-tile:not(.ljr-admin-tile-danger)){
+ background:#0f285b!important;
+ background-image:linear-gradient(158deg,#123069,#0a2050)!important;
+ background-color:#0f285b!important;
+ border-color:#4f76b6!important;
+ box-shadow:inset 0 1px rgba(210,233,255,.065)!important;
+ color:#f8fbff!important;
+}
+html body .liga-media-modal :is(.ljr-admin-manage,.ljr-admin-cms,.ljr-admin-friendly)
+ :is(.ljr-admin-tile-icon,.ljr-editor-hub-grid>button>b,.ljr-simple-icon){
+ background:#153264!important;
+ background-image:none!important;
+ color:#cfe4ff!important;
+ border-color:rgba(119,160,218,.52)!important;
+}
+/* Revisar avisos: los botones y estados no deben quedar más claros que el modal. */
+html body .liga-media-modal .ljr-editor-dialog
+ :is(.ljr-review-tabs button,.ljr-review-automation button,
+      .ljr-review-device-controls button,.ljr-editor-tools button,
+      .ljr-editor-bottom button,.ljr-editor-smart-tools button,
+      .ljr-editor-autofill button){
+ background:#0f2b60!important;
+ background-image:linear-gradient(160deg,#123267,#0c234f)!important;
+ border-color:#537bb9!important;
+ box-shadow:none!important;
+ color:#fff!important;
+}
+html body .liga-media-modal .ljr-editor-dialog
+ .ljr-review-tabs button[aria-pressed="true"]{
+ background:#19407f!important;
+ background-image:none!important;
+ border-color:#83a7e2!important;
+}
+html body .liga-media-modal .ljr-editor-dialog .ljr-review-tabs button span{
+ background:#091b46!important;
+ color:#edf4ff!important;
+}
+/* Formularios y bordes armonizados; los eventos y valores siguen iguales. */
+html body .liga-media-modal > section:is(
+ .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,
+ .ljr-admin-studio,.ljr-editor-dialog,.v1081-dialog
+) :is(input:not([type=checkbox]):not([type=radio]):not([type=file]),
+     select,textarea){
+ background:#091a46!important;
+ background-image:none!important;
+ background-color:#091a46!important;
+ border-color:#4b70b1!important;
+ color:#f5f9ff!important;
+}
+html body .liga-media-modal :is(.ljr-admin-child,.ljr-admin-manage,.ljr-admin-cms)
+ input[type=file]{
+ background:#091a46!important;
+ border-color:#4b70b1!important;
+}
+html body .liga-media-modal :is(.ljr-admin-child,.ljr-admin-manage,.ljr-admin-cms)
+ input[type=file]::file-selector-button{
+ background:#13346c!important;
+ border-color:#6288c5!important;
+}
+/* Cierre de sesión y revocaciones conservan su diferenciación, sin azul claro. */
+html body .liga-media-modal :is(.ljr-admin-manage,.ljr-admin-child,.ljr-admin-cms)
+ :is(.ljr-admin-tile-danger,[data-logout],[data-revoke]){
+ background:#2c203d!important;
+ background-image:none!important;
+ border-color:#8e587f!important;
+ color:#ffccd9!important;
+}
