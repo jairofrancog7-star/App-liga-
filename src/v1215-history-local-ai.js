@@ -244,7 +244,7 @@ function summarize(prompt,type){
   list.sort((a,b)=>b.stamp-a.stamp);
   return first+'Últimos resultados:\n'+showResultLines(list);
 }
-// Entrenamiento ultraligero Naive Bayes; sin redes, librerías ni modelos de 120 MB.
+// Clasificador Naive Bayes integrado: sin redes, librerías ni descargas pesadas.
 function tokens(v){
   return norm(v).split(/\s+/).filter(x=>x.length>=3).map(x=>x.replace(/(?:es|s)$/,''));
 }
