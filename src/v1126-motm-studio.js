@@ -31,17 +31,46 @@ function officialPlayers(){
  }));
  return out;
 }
+const CATEGORY_LOGOS={
+ '3':'./assets/branding/primera-fuerza-hd.png',
+ '5':'./assets/categories/intermedia.webp',
+ '4':'./assets/categories/segunda-fuerza.webp',
+ '2':'./assets/categories/veteranos-35-user.png',
+ '1':'./assets/categories/veteranos-50.webp'
+};
+const categoryCrest=id=>CATEGORY_LOGOS[String(id)]||'./assets/liga-logo.webp';
+function imageSource(value){
+ const raw=String(value||'').trim();
+ if(!raw)return '';
+ if(/^data:image\/(?:png|jpeg|webp|gif);base64,[a-z0-9+/=]+$/i.test(raw))return raw;
+ if(/^https?:\/\//i.test(raw))return raw;
+ if(/^(?:\.\/|\/|assets\/|data\/)/i.test(raw)){
+  try{return new URL(raw,document.baseURI).href}catch(_){return ''}
+ }
+ return '';
+}
 function avatar(p){
  let photo=p?.photo||'';
- if(!photo){try{photo=window.LJR_PLAYER_MEDIA?.photo?.(p?.name,p?.team,p?.cat)||''}catch(_){}}
- return /^https?:\/\//i.test(photo)||/^\.\//.test(photo)?photo:'';
+ if(!photo)try{photo=window.LJR_PLAYER_MEDIA?.photo?.(p?.name,p?.team,p?.cat)||''}catch(_){}
+ if(!photo)try{photo=window.LJR_PLAYER_PHOTOS?.get?.(p?.name,p?.team,p?.cat)||''}catch(_){}
+ return imageSource(photo);
 }
 function crest(team){
+ if(!team)return '';
+ // Exactamente el registro visual que consumen Equipos y Siguiendo; no usar escudos antiguos.
+ for(const get of [
+  ()=>window.LJR_TEAM_LOGOS?.get?.(team),
+  ()=>window.V66_OFFICIAL_DIRECTORY?.logoFor?.(team),
+  ()=>window.LJR_OFFICIAL_API?.getLogo?.(team),
+  ()=>window.LJR_SEASON_LOGOS?.get?.(team)
+ ]){
+  try{const src=imageSource(get());if(src)return src}catch(_){}
+ }
  const item=Object.entries(db().team_logos||{}).find(([name])=>norm(name)===norm(team))?.[1];
- const v=typeof item==='string'?item:(item?.source||item?.local||'');
- if(!v)return '';
- if(/^https?:\/\//.test(v))return v;
- return 'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/'+String(v).replace(/^\.\//,'');
+ const raw=typeof item==='string'?item:(item?.app||item?.local||item?.source||'');
+ if(!raw)return '';
+ const local=imageSource(raw);
+ return local||imageSource('https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/'+String(raw).replace(/^\.\//,''));
 }
 function allRecords(){
  let list=read(STORE,[]);if(!Array.isArray(list))list=[];
@@ -62,31 +91,78 @@ function dataUriDownload(blob,name){
  link.href=url;link.download=name;document.body.appendChild(link);link.click();link.remove();
  setTimeout(()=>URL.revokeObjectURL(url),1500);
 }
-function buildCanvas(r){
+// Las tres imágenes se comparten entre el formulario, la vista previa y el PNG.
+const loadImage=src=>new Promise(resolve=>{
+ if(!src)return resolve(null);
+ const img=new Image();
+ if(!src.startsWith('data:'))img.crossOrigin='anonymous';
+ img.onload=()=>resolve(img);img.onerror=()=>resolve(null);img.src=src;
+});
+function contain(ctx,img,x,y,w,h){
+ if(!img)return;
+ const k=Math.min(w/img.naturalWidth,h/img.naturalHeight);
+ const iw=img.naturalWidth*k,ih=img.naturalHeight*k;
+ ctx.drawImage(img,x+(w-iw)/2,y+(h-ih)/2,iw,ih);
+}
+function photoCircle(ctx,img,x,y,r){
+ ctx.save();ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.clip();
+ if(img){
+  const scale=Math.max(r*2/img.naturalWidth,r*2/img.naturalHeight);
+  const w=img.naturalWidth*scale,h=img.naturalHeight*scale;
+  ctx.drawImage(img,x-w/2,y-h*.37,w,h);
+ }else{
+  ctx.fillStyle='#102b79';ctx.fillRect(x-r,y-r,r*2,r*2);
+  ctx.fillStyle='#b8edff';ctx.font='bold 120px sans-serif';ctx.textAlign='center';ctx.fillText('★',x,y+43);
+ }
+ ctx.restore();
+ ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.strokeStyle='#4bdbea';ctx.lineWidth=9;ctx.stroke();
+}
+async function buildCanvas(r){
  const canvas=document.createElement('canvas');canvas.width=1080;canvas.height=1350;
- const c=canvas.getContext('2d'),g=c.createLinearGradient(0,0,0,1350);
- g.addColorStop(0,'#0b2e90');g.addColorStop(.52,'#08175c');g.addColorStop(1,'#020832');
+ const c=canvas.getContext('2d');
+ const [catImg,teamImg,playerImg]=await Promise.all([
+  loadImage(categoryCrest(r.catId)),loadImage(crest(r.team)),loadImage(r.photo||avatar({name:r.player,team:r.team,cat:r.catId}))
+ ]);
+ const g=c.createLinearGradient(0,0,700,1350);
+ g.addColorStop(0,'#0c3d9e');g.addColorStop(.44,'#081d70');g.addColorStop(1,'#030a35');
  c.fillStyle=g;c.fillRect(0,0,1080,1350);
- c.strokeStyle='#31d9ec';c.lineWidth=9;c.strokeRect(28,28,1024,1294);
- c.fillStyle='#4addf0';c.font='bold 35px sans-serif';c.textAlign='center';c.fillText('LIGA JUVENTINO ROSAS',540,132);
- c.fillStyle='#fff';c.font='bold 74px sans-serif';c.fillText('JUGADOR DEL',540,290);c.fillText('PARTIDO',540,377);
- c.strokeStyle='#2ed9ec';c.lineWidth=4;c.beginPath();c.moveTo(170,420);c.lineTo(910,420);c.stroke();
- c.fillStyle='#173b97';c.beginPath();c.arc(540,620,152,0,Math.PI*2);c.fill();
- c.fillStyle='#fff';c.font='bold 122px sans-serif';c.fillText('★',540,665);
- const wrap=(text,y,font,limit=25)=>{
-  c.font=font;const words=txt(text).split(/\s+/),lines=[];let line='';
-  for(const word of words){const next=(line+' '+word).trim();if(c.measureText(next).width>850&&line){lines.push(line);line=word}else line=next}
-  if(line)lines.push(line);for(const s of lines.slice(0,3)){c.fillText(s,540,y);y+=80}return y;
- };
- c.fillStyle='#fff';wrap(r.player,875,'bold 60px sans-serif');
- c.fillStyle='#52e8f2';c.font='bold 42px sans-serif';c.fillText(r.team||'Jugador destacado',540,1035);
- c.fillStyle='#cad9fa';c.font='32px sans-serif';
- c.fillText((r.category||'Liga')+(r.round?' · J'+r.round:''),540,1125);
- c.fillText(r.home&&r.away?r.home+' VS '+r.away:'Selección local',540,1185);
- c.font='24px sans-serif';c.fillText('RECONOCIMIENTO LOCAL · NO OFICIAL',540,1274);
+ c.fillStyle='rgba(43,153,234,.12)';c.beginPath();c.arc(540,570,410,0,Math.PI*2);c.fill();
+ c.strokeStyle='#36d9ee';c.lineWidth=7;c.strokeRect(26,26,1028,1298);
+ c.strokeStyle='rgba(157,217,255,.27)';c.lineWidth=2;c.strokeRect(41,41,998,1268);
+ contain(c,catImg,65,70,165,155);contain(c,teamImg,860,70,155,155);
+ c.textAlign='center';c.fillStyle='#b6d7fc';c.font='bold 32px sans-serif';c.fillText('LIGA JUVENTINO ROSAS',540,115);
+ c.fillStyle='#55e5f6';c.font='bold 26px sans-serif';c.fillText('RECONOCIMIENTO DESTACADO',540,162);
+ c.fillStyle='#ffffff';c.font='bold 74px sans-serif';c.fillText('JUGADOR DEL',540,290);c.fillText('PARTIDO',540,375);
+ c.strokeStyle='#46d5ed';c.lineWidth=4;c.beginPath();c.moveTo(185,414);c.lineTo(895,414);c.stroke();
+ photoCircle(c,playerImg,540,637,178);
+ contain(c,teamImg,740,681,145,145);
+ c.fillStyle='#ffffff';
+ const words=txt(r.player||'Jugador destacado').split(/\s+/);
+ const lines=[];let line='';
+ c.font='bold 58px sans-serif';
+ for(const word of words){
+  const next=(line+' '+word).trim();
+  if(c.measureText(next).width>900&&line){lines.push(line);line=word}else line=next;
+ }
+ if(line)lines.push(line);
+ const display=lines.slice(0,3);
+ const beginY=display.length===1?948:display.length===2?909:874;
+ display.forEach((txt,i)=>{c.font='bold 56px sans-serif';c.fillText(txt,540,beginY+i*67)});
+ c.fillStyle='#53e7f1';c.font='bold 39px sans-serif';
+ const teamName=txt(r.team||'');
+ for(let size=39;size>=24;size-=3){c.font='bold '+size+'px sans-serif';if(c.measureText(teamName).width<=920)break}
+ c.fillText(teamName,540,1090);
+ c.fillStyle='#dceaff';c.font='bold 32px sans-serif';
+ c.fillText((r.category||'Liga Juventino Rosas')+(r.round?' · Jornada '+r.round:''),540,1153);
+ const matchup=r.home&&r.away?r.home+'  VS  '+r.away:'';
+ if(matchup){c.font='27px sans-serif';for(let size=27;size>=18;size-=2){c.font=size+'px sans-serif';if(c.measureText(matchup).width<900)break}c.fillText(matchup,540,1214)}
+ c.fillStyle='#a8d6f9';c.font='26px sans-serif';c.fillText(r.reason||'Rendimiento destacado',540,1265);
  return canvas;
 }
-const png=(r)=>new Promise((resolve,reject)=>buildCanvas(r).toBlob(blob=>blob?resolve(blob):reject(Error('No se pudo generar el PNG')),'image/png'));
+const png=async r=>new Promise(async(resolve,reject)=>{
+ try{const canvas=await buildCanvas(r);canvas.toBlob(blob=>blob?resolve(blob):reject(Error('No se pudo generar el PNG')),'image/png')}
+ catch(err){reject(err)}
+});
 const reasons=['Rendimiento destacado','Goles','Asistencias','Defensa','Portero','Liderazgo','Juego en equipo','Otro'];
 function open(options={}){
  const matches=matchRows(),categories=cats(),all=officialPlayers();
@@ -111,14 +187,14 @@ function open(options={}){
  resolve();
  const modal=document.createElement('div');modal.className='v105-modal v1126-motm-modal';
  modal.innerHTML='<section class="v105-dialog v1126-motm-dialog" role="dialog" aria-modal="true" aria-label="Jugador del partido">'+
-  '<header class="v1126-head"><span class="v1126-trophy" aria-hidden="true">★</span><div><small>RECONOCIMIENTO · LIGA JUVENTINO ROSAS</small><h3>Jugador del partido</h3><p>Selección local, no oficial. Solo jugadores registrados en los datos públicos.</p></div><button class="v1126-x" type="button" data-mvp-close aria-label="Cerrar">×</button></header>'+
+  '<header class="v1126-head"><span class="v1126-trophy" aria-hidden="true">★</span><div><small>RECONOCIMIENTO · LIGA JUVENTINO ROSAS</small><h3>Jugador del partido</h3><p>Elige a un jugador registrado para crear su reconocimiento con foto y escudos.</p></div><button class="v1126-x" type="button" data-mvp-close aria-label="Cerrar">×</button></header>'+
   '<div class="v1126-content" data-mvp-content></div>'+
   '<p class="v1126-status" data-mvp-status role="status" aria-live="polite" hidden></p></section>';
  document.body.appendChild(modal);
  function selected(){return playerData(state).find(p=>p.name===state.player)||null}
  function draft(){
   const p=selected();
-  return {key:match?.key||('sin-partido:'+state.catId+':'+norm(state.team)),matchKey:match?.key||'',catId:state.catId,category:categories.find(x=>x.id===state.catId)?.name||'',round:match?.round||'',date:match?.date||'',home:match?.home||'',away:match?.away||'',team:state.team,player:p?.name||'',reason:state.reason,at:new Date().toISOString(),photo:p?avatar(p):''};
+  return {key:match?.key||('sin-partido:'+state.catId+':'+norm(state.team)),matchKey:match?.key||'',catId:state.catId,category:categories.find(x=>x.id===state.catId)?.name||'',round:match?.round||'',date:match?.date||'',home:match?.home||'',away:match?.away||'',team:state.team,player:p?.name||'',reason:state.reason,at:new Date().toISOString(),photo:p?avatar(p):'',teamLogo:crest(state.team),categoryLogo:categoryCrest(state.catId)};
  }
  function iconImage(url,alt,cls){
   return url?'<img class="'+cls+'" src="'+esc(url)+'" alt="'+esc(alt)+'" loading="lazy" referrerpolicy="no-referrer" onerror="this.hidden=true">':'';
@@ -144,7 +220,7 @@ function open(options={}){
     '<label class="v1126-label">Jugador registrado ('+filtered.length+')</label><select data-mvp-player>'+
     (filtered.length?filtered.map(p=>'<option value="'+esc(p.name)+'"'+(state.player===p.name?' selected':'')+'>'+esc(p.name)+(p.dorsal?' · #'+esc(p.dorsal):'')+'</option>').join(''):'<option value="">Sin coincidencias</option>')+
     '</select>';
-  html+='<div class="v1126-profile"><div class="v1126-avatar">'+iconImage(photo,state.player,'v1126-player-photo')+'<span>★</span></div><div><strong>'+esc(person?.name||'Selecciona un jugador')+'</strong><small>'+esc(state.team||'Sin equipo')+(person?.dorsal?' · #'+esc(person.dorsal):'')+(person?.position?' · '+esc(person.position):'')+'</small></div><span class="v1126-profile-star">★</span></div>';
+  html+='<div class="v1126-profile"><div class="v1126-avatar">'+iconImage(photo,state.player,'v1126-player-photo')+'<span>★</span></div><div><strong>'+esc(person?.name||'Selecciona un jugador')+'</strong><small>'+esc(state.team||'Sin equipo')+(person?.dorsal?' · #'+esc(person.dorsal):'')+(person?.position?' · '+esc(person.position):'')+'</small></div><span class="v1126-profile-brand">'+iconImage(crest(state.team),state.team,'v1126-team-logo')+iconImage(categoryCrest(state.catId),'Categoría','v1126-category-logo')+'</span></div>';
   html+='<label class="v1126-label">Motivo del reconocimiento</label><select data-mvp-reason>'+reasons.map(x=>'<option'+(x===state.reason?' selected':'')+'>'+esc(x)+'</option>').join('')+'</select>';
   html+='<div class="v1126-primary-actions"><button type="button" class="primary" data-mvp-save '+(!person?'disabled':'')+'>★ '+(saved?'Actualizar selección':'Guardar MVP')+'</button>'+
     '<button type="button" data-mvp-preview '+(!person?'disabled':'')+'>Vista previa</button></div>';
@@ -152,7 +228,10 @@ function open(options={}){
   html+='<div class="v1126-actions"><button type="button" data-mvp-png '+(!person?'disabled':'')+'>↓ PNG</button><button type="button" data-mvp-share '+(!person?'disabled':'')+'>↗ Compartir</button>'+
    '<button type="button" data-mvp-view="history">Historial</button><button type="button" data-mvp-view="ranking">Ranking</button><button type="button" data-mvp-view="votes">Voto local</button></div>';
   if(state.view==='preview'){
-   const d=draft();html+='<section class="v1126-detail"><h4>Vista previa del reconocimiento</h4><div class="v1126-preview"><b>★ JUGADOR DEL PARTIDO</b><strong>'+esc(d.player)+'</strong><span>'+esc(d.team)+' · '+esc(d.category)+'</span><small>'+esc(d.reason)+' · Selección no oficial</small></div></section>';
+   const d=draft();html+='<section class="v1126-detail"><h4>Vista previa del reconocimiento</h4><div class="v1126-preview">'+
+    '<div class="v1126-preview-top">'+iconImage(categoryCrest(d.catId),d.category,'v1126-preview-category')+'<span>LIGA JUVENTINO ROSAS<small>RECONOCIMIENTO DESTACADO</small></span>'+iconImage(crest(d.team),d.team,'v1126-preview-team')+'</div>'+
+    '<b>★ JUGADOR DEL PARTIDO</b><div class="v1126-preview-face">'+iconImage(d.photo,d.player,'v1126-preview-photo')+'<span>★</span></div>'+
+    '<strong>'+esc(d.player)+'</strong><span>'+esc(d.team)+' · '+esc(d.category)+'</span><small>'+esc(d.reason)+'</small></div></section>';
   }else if(state.view==='history'){
    const rows=allRecords().slice().sort((a,b)=>String(b.at).localeCompare(String(a.at)));
    html+='<section class="v1126-detail"><h4>Historial local ('+rows.length+')</h4>'+(rows.length?rows.slice(0,60).map(r=>'<article><div><b>'+esc(r.player)+'</b><small>'+esc(r.team)+' · '+esc(r.category||'Anterior')+(r.round?' · J'+esc(r.round):'')+'</small></div><button data-mvp-edit="'+esc(r.key)+'">Editar</button><button data-mvp-delete="'+esc(r.key)+'">Quitar</button></article>').join(''):'<p>Aún no hay selecciones guardadas.</p>')+'</section>';
@@ -174,11 +253,11 @@ function open(options={}){
   if(!save(STORE,[...existing,r])){setNotice('No se pudo guardar: almacenamiento bloqueado o sin espacio.');return}
   if(r.matchKey)save('v92-mvp-local:'+r.matchKey,{player:r.player,team:r.team,at:r.at});
   // The old value is read only as a legacy record; writing it again would double-count MVPs.
-  state.view='';state.notice='MVP guardado en este dispositivo. No cambia datos oficiales.';render();
+  state.view='';state.notice='MVP guardado en este dispositivo. Los resultados y las actas no se modifican.';render();
  }
  async function share(){
   const r=draft();if(!r.player)return;
-  const message='★ Jugador del partido · Liga Juventino Rosas\n'+r.player+' · '+r.team+'\n'+(r.category||'')+(r.round?' · Jornada '+r.round:'')+'\nSelección local, no oficial';
+  const message='★ Jugador del partido · Liga Juventino Rosas\n'+r.player+' · '+r.team+'\n'+(r.category||'')+(r.round?' · Jornada '+r.round:'')+'\nReconocimiento de la Liga Juventino Rosas';
   try{
    const blob=await png(r);
    if(navigator.share&&typeof File!=='undefined'){
