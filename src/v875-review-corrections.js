@@ -211,7 +211,7 @@ function meeting(root){
  topicStatus.className='v919-topic-status';topicStatus.setAttribute('role','status');topicStatus.setAttribute('aria-live','polite');
  wrap.querySelector('.v875-agenda-chips')?.after(topicStatus);
  const agenda=form.querySelector('[data-x="agenda"]');
- const hasTopic=topic=>!!agenda&&agenda.value.split(/\\r?\\n/).some(line=>line.trim().replace(/^[•\\-]\\s*/, '')===topic);
+ const hasTopic=topic=>!!agenda&&agenda.value.split(/\r?\n/).some(line=>line.trim().replace(/^[•-]\s*/, '')===topic);
  wrap.querySelectorAll('[data-add-topic]').forEach(button=>{
    const topic=button.dataset.addTopic;
    const refresh=()=>{const added=hasTopic(topic);button.classList.toggle('is-added',added);button.setAttribute('aria-pressed',String(added))};
@@ -220,7 +220,7 @@ function meeting(root){
      event.preventDefault();
      if(!agenda){topicStatus.textContent='No se encontró el campo Orden del día.';return}
      if(!hasTopic(topic)){
-       agenda.value=agenda.value.trimEnd()+(agenda.value.trim()?'\\n':'')+'• '+topic;
+       agenda.value=agenda.value.trimEnd()+(agenda.value.trim()?'\n':'')+'• '+topic;
        agenda.dispatchEvent(new Event('input',{bubbles:true}));
        agenda.dispatchEvent(new Event('change',{bubbles:true}));
        topicStatus.textContent='✓ '+topic+' agregado al orden del día.';
