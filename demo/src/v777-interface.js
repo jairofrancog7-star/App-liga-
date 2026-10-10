@@ -22,6 +22,13 @@ const BACK='.back-button,.ljr-back-control,.v35-back,.v46-back,.v41-back,.v27-ba
 let syncing=false,timer;
 function sync(header,custom=false){
  if(!header||syncing)return;
+ // The simulator owns its one-row back/selector/share header.
+ if(route()==='simulator'){
+  document.body.dataset.headerOwner='custom';
+  const top=document.querySelector('#app>.topbar');
+  if(top)for(const [key,value] of [['display','none'],['visibility','hidden'],['opacity','0']])top.style.setProperty(key,value,'important');
+  return;
+ }
  // Rankings includes its own back/share controls, title and category tabs.
  // Do not inject the 88px universal chrome or reparent its buttons.
  if(route()==='rankings'&&matchMedia('(max-width:1023px)').matches){
