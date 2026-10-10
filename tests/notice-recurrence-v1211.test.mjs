@@ -9,7 +9,7 @@ const source=read('src/v1211-notice-recurrence.js');
 function harness(){
  const window={addEventListener(){}},document={documentElement:{},addEventListener(){},querySelectorAll(){return []}};
  const MutationObserver=class{observe(){}},localStorage={getItem(){return null}};
- const injected=source.replace('new MutationObserver(mount).observe','window.__test={spanish,planned,localPlan,wallMillis,ruleString};new MutationObserver(mount).observe');
+ const injected=source.replace('new MutationObserver(mount).observe','window.__test={spanish,planned,localPlan,wallMillis,ruleString,cancelFutureSeries};new MutationObserver(mount).observe');
  assert.notEqual(injected,source);
  new Function('window','document','MutationObserver','localStorage','navigator',injected)(
    window,document,MutationObserver,localStorage,{});
@@ -62,4 +62,36 @@ test('Serie limitada a 20 avisos, autenticación de admin y bloqueo de Facebook'
  assert.match(source,/!old\.published/);
  assert.doesNotMatch(source,/\bfetch\s*\(/);
  assert.match(source,/LJR_V713_NOTICE_SCHEDULER_REFRESH/);
+});
+
+test('Cancelar serie elimina solo avisos futuros pendientes de la serie elegida',()=>{
+ const {cancelFutureSeries}=harness(),now=Date.parse('2026-10-10T18:00:00Z');
+ const items=[
+  {id:'s1-publicado',recurrenceId:'serie-a',published:true,publishAt:'2026-10-12T18:00:00Z'},
+  {id:'s1-pasado',recurrenceId:'serie-a',published:false,publishAt:'2026-10-09T18:00:00Z'},
+  {id:'s1-futuro1',recurrenceId:'serie-a',published:false,publishAt:'2026-10-13T18:00:00Z'},
+  {id:'s1-futuro2',recurrenceId:'serie-a',published:false,publishAt:'2026-10-20T18:00:00Z'},
+  {id:'s2-futuro',recurrenceId:'serie-b',published:false,publishAt:'2026-10-13T18:00:00Z'},
+  {id:'sueltos',published:false,publishAt:'2026-10-15T18:00:00Z'},
+  {id:'ya-procesado',recurrenceId:'serie-a',status:'published',publishAt:'2026-10-20T18:00:00Z'},
+  {id:'sin-fecha',recurrenceId:'serie-a',published:false,publishAt:'invalida'}
+ ];
+ const result=cancelFutureSeries(items,'serie-a',now);
+ assert.equal(result.cancelled,2);
+ assert.deepEqual(result.remaining.map(x=>x.id),
+  ['s1-publicado','s1-pasado','s2-futuro','sueltos','ya-procesado','sin-fecha']);
+ assert.equal(items.length,8,'el planificador no muta los datos originales');
+ assert.deepEqual(cancelFutureSeries(items,'serie-inexistente',now).remaining,items);
+ assert.equal(cancelFutureSeries(items,'',now).cancelled,0);
+});
+
+test('El control requiere sesión administrativa, confirmación y usa el mismo refresco local',()=>{
+ assert.match(source,/data-v1212-cancel-series/);
+ assert.match(source,/if\(!await authorized\(\)\)/);
+ assert.match(source,/window\.confirm\('¿Cancelar/);
+ assert.match(source,/cancelFutureSeries\(readItems\(\),groupId,Date\.now\(\)\)/);
+ assert.match(source,/LJR_V713_NOTICE_SCHEDULER_REFRESH/);
+ assert.match(read('src/v1211-notice-recurrence.css'),/v1212-cancel-series/);
+ assert.equal(read('demo/src/v1211-notice-recurrence.css'),read('src/v1211-notice-recurrence.css'));
+ assert.match(read('demo/index.html'),/v1211-notice-recurrence\.css/);
 });
