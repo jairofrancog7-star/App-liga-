@@ -15,14 +15,23 @@ const path=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0];
 let basePromise,working=false,renderQueued=false;
 async function apiBase(){
  if(basePromise)return basePromise;
- basePromise=fetch('./push-config.json',{cache:'no-store'}).then(async r=>{
-  if(!r.ok)throw Error('Sin configuración');
-  const config=await r.json(),s=String(config.apiBase||'').trim().replace(/\/+$/,'');
-  if(!s)return '';
-  const u=new URL(s);
-  if(u.protocol!=='https:'||u.username||u.password||u.search||u.hash)throw Error('URL inválida');
-  return u.origin+u.pathname.replace(/\/+$/,'');
- }).catch(()=> '');
+ basePromise=(async()=>{
+  try{
+   // La misma URL HTTPS sirve para avisos globales, Push y envíos de la directiva.
+   const r=await fetch('./data/notifications-client.json',{cache:'no-store'});
+   const v=r.ok?await r.json():{};
+   let address=String(v.apiBaseUrl||'').trim();
+   if(!address){
+    const fallback=await fetch('./push-config.json',{cache:'no-store'});
+    const legacy=fallback.ok?await fallback.json():{};
+    address=String(legacy.apiBase||'').trim();
+   }
+   if(!address)return '';
+   const u=new URL(address);
+   if(u.protocol!=='https:'||u.username||u.password||u.search||u.hash)return '';
+   return u.origin+u.pathname.replace(/\/+$/,'');
+  }catch{return ''}
+ })();
  return basePromise;
 }
 async function server(path,opts={}){

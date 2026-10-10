@@ -1,0 +1,41 @@
+name: Verificar backend de avisos y Twilio
+on:
+  push:
+    paths:
+      - 'server/notifications/**'
+      - 'tests/notifications-security.test.mjs'
+      - '.github/workflows/notifications-backend-checks.yml'
+  pull_request:
+    paths:
+      - 'server/notifications/**'
+      - 'tests/notifications-security.test.mjs'
+      - '.github/workflows/notifications-backend-checks.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar sintaxis del servidor
+        run: |
+          node --check server/notifications/index.mjs
+          node --check server/notifications/bootstrap.mjs
+          node --check server/notifications/authorization.mjs
+      - name: Ejecutar pruebas de seguridad y permisos
+        run: node --test tests/notifications-security.test.mjs
+      - name: Revisar que no se comprometieron credenciales
+        shell: bash
+        run: |
+          if grep -rE --include='*.mjs' --include='*.js' --include='*.json' \
+            '(AC[0-9a-f]{32}|SK[0-9a-f]{32}|whatsapp:\+[0-9]{10,15})' \
+            server/notifications; then
+            echo "Posibles credenciales o números reales encontrados. Revisar antes de desplegar." >&2
+            exit 1
+          fi
+          echo "Sin identificadores de producción evidentes en el backend."

@@ -86,12 +86,12 @@
    }).join('');
    if(s==='cuartos'||s==='semifinal')content=ys[s].map((y,i)=>card(m.games[s][i],y,logoFor)).join('');
    if(s==='final')content=card(m.games.final[0],ys.final[0],logoFor)+'<div class="ljr-ko-trophy" role="img" aria-label="Trofeo de la final"></div>';
-   return '<section class="ljr-ko-column '+(s==='final'?'ljr-ko-final':'')+'" data-ko-column="'+s+'" aria-label="'+labels[index]+'"><div class="ljr-ko-date">'+esc(m.games[s][0]?.date||'Por confirmar')+'</div><div class="ljr-ko-round">'+(s!=='final'?rail():'')+content+(s!=='final'?connectors(s):'')+'</div></section>';
+   return '<section class="ljr-ko-column '+(s==='final'?'ljr-ko-final':'')+'" data-ko-column="'+s+'" aria-label="'+labels[index]+'"><div class="ljr-ko-date">'+esc(m.games[s][0]?.date||'Por confirmar')+'</div><div class="ljr-ko-round">'+content+(s!=='final'?connectors(s):'')+'</div></section>';
   }).join('');
   return '<section class="ljr-knockout" data-v12-bracket'+(simulate?' data-v512-bracket':'')+' data-ko-mode="'+mode+'" data-ko-category="'+esc(categoryId)+'" data-ko-stage="'+stage+'" data-v1064-cat="'+esc(categoryId)+'" data-v1064-sig="'+esc(signature)+'">'+
    '<div class="ljr-ko-tabs" role="tablist" aria-label="Etapas del cuadro">'+stages.map((s,i)=>'<button type="button" role="tab" aria-selected="'+(s===stage)+'" class="'+(s===stage?'active':'')+'" data-ko-stage="'+s+'">'+labels[i]+'</button>').join('')+'</div>'+
    (simulate?'<p class="ljr-ko-note" role="note">'+(m.projection?'Proyección del simulador · No son cruces oficiales':'Cruces publicados por la liga · Otros por definir')+'</p>':!m.published?'<p class="ljr-ko-note" role="status">Cruces oficiales por definir</p>':'')+
-   '<div class="ljr-ko-scroll" aria-label="Cuadro de eliminatorias"><div class="ljr-ko-track">'+columns+'</div></div></section>';
+   '<div class="ljr-ko-board"><div class="ljr-ko-routes">'+rail()+'</div><div class="ljr-ko-scroll" aria-label="Cuadro de eliminatorias"><div class="ljr-ko-track">'+columns+'</div></div></div></section>';
  }
  function select(root,stage,animate=true){
   if(!root||!stages.includes(stage))return;
@@ -99,7 +99,10 @@
   root.querySelectorAll('.ljr-ko-tabs button').forEach(b=>{b.classList.toggle('active',b.dataset.koStage===stage);b.setAttribute('aria-selected',String(b.dataset.koStage===stage));});
   try{localStorage.setItem('ljr-ko-stage:'+root.dataset.koMode+':'+root.dataset.koCategory,stage);if(root.dataset.koMode==='simulator')localStorage.setItem('v511-simulator-stage',stage);}catch(_){}
   const col=root.querySelector('[data-ko-column="'+stage+'"]'),scroll=root.querySelector('.ljr-ko-scroll');
-  if(col&&scroll)scroll.scrollTo({left:col.offsetLeft,behavior:animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches?'smooth':'instant'});
+  if(col&&scroll){
+   root.dataset.koScrollTarget=String(Math.min(col.offsetLeft,Math.max(0,scroll.scrollWidth-scroll.clientWidth)));
+   scroll.scrollTo({left:Number(root.dataset.koScrollTarget),behavior:animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches?'smooth':'instant'});
+  }
   const button=root.querySelector('.ljr-ko-tabs .active'),tabs=button?.parentElement;
   if(button&&tabs)tabs.scrollTo({left:Math.max(0,button.offsetLeft-(tabs.clientWidth-button.offsetWidth)/2),behavior:animate?'smooth':'instant'});
  }
@@ -107,9 +110,15 @@
   if(!root||root.dataset.koReady)return;root.dataset.koReady='1';
   requestAnimationFrame(()=>select(root,root.dataset.koStage,false));
   let end;
-  root.querySelector('.ljr-ko-scroll')?.addEventListener('scroll',()=>{
+  const scroller=root.querySelector('.ljr-ko-scroll');
+  for(const event of ['pointerdown','touchstart','wheel'])scroller?.addEventListener(event,()=>{delete root.dataset.koScrollTarget;},{passive:true});
+  scroller?.addEventListener('scroll',()=>{
    clearTimeout(end);end=setTimeout(()=>{
     const scroll=root.querySelector('.ljr-ko-scroll'),cols=[...root.querySelectorAll('[data-ko-column]')];
+    if(root.dataset.koScrollTarget!=null){
+     if(Math.abs(scroll.scrollLeft-Number(root.dataset.koScrollTarget))<2)delete root.dataset.koScrollTarget;
+     return;
+    }
     const nearest=cols.sort((a,b)=>Math.abs(a.offsetLeft-scroll.scrollLeft)-Math.abs(b.offsetLeft-scroll.scrollLeft))[0];
     if(nearest&&nearest.dataset.koColumn!==root.dataset.koStage)select(root,nearest.dataset.koColumn,false);
    },120);

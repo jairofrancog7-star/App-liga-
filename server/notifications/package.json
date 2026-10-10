@@ -5,8 +5,8 @@
   "type": "module",
   "engines": { "node": ">=20" },
   "scripts": {
-    "start": "node index.mjs",
-    "check": "node --check index.mjs"
+    "start": "node bootstrap.mjs && node index.mjs",
+    "check": "node --check bootstrap.mjs && node --check index.mjs"
   },
   "dependencies": {
     "express": "^4.21.2",
