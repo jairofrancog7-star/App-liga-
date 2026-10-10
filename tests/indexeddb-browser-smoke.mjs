@@ -49,7 +49,9 @@ try{
  await page.locator('[data-idb-pass]').fill('clave-multimedia-larga-2026');
  await page.locator('[data-idb-repeat]').fill('clave-multimedia-larga-2026');
  await page.locator('[data-idb-folder]').click();
- await page.waitForFunction(()=>!!window.__mediaArchive || document.querySelector('[data-idb-status]')?.classList.contains('error'),{timeout:10000});
+ await page.waitForTimeout(1800);
+ console.log('Carpeta elegida:',await page.evaluate(()=>typeof window.showDirectoryPicker));
+ console.log('Existe archivo:',await page.evaluate(()=>!!window.__mediaArchive));
  console.log('Estado de respaldo:',await page.locator('[data-idb-status]').innerText(),'errores navegador:',errors);
  assert.equal(await page.locator('[data-idb-status]').evaluate(el=>el.classList.contains('error')),false,'La carpeta no debe mostrar un error');
  assert.ok(await page.evaluate(()=>window.__mediaArchive),'Debe guardar el archivo cifrado en carpeta');
