@@ -34,12 +34,16 @@ function norm(v){return String(v??'').trim().toUpperCase()}
 function categories(){return db?.categories||{}}
 function catById(id){return categories()?.[String(id)]||null}
 function logoUrl(name){
-  const global=window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name);
+  const global=window.LJR_TEAMS_CURRENT_LOGO?.get?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name);
   if(global)return global;
   const entry=Object.entries(db?.team_logos||{}).find(([k])=>norm(k)===norm(name))?.[1];
   const p=typeof entry==='string'?entry:(entry?.local||entry?.source||'');
   if(!p)return BASE+'assets/liga-logo.webp';
   return /^https?:/i.test(p)?p:BASE+p.replace(/^\.\//,'');
+}
+function addressForVenue(venue){
+  const v=String(venue||'');
+  return /unidad deportiva sur|campo\s*[123](?:\b|$)/i.test(v)?'Unidad Deportiva Sur, Juventino Rosas, Guanajuato':'';
 }
 function teamLogo(name,cls=''){
   return '<span class="v92-team-logo '+cls+'"><img src="'+esc(logoUrl(name))+'" alt="'+esc(name)+'" loading="eager" decoding="async"></span>';
@@ -747,7 +751,7 @@ function teamProfileDashboard(m){
       '<div class="v419-fixture-summary"><span><b>'+esc(st?.pj??'—')+'</b><small>Jugados</small></span><span><b>'+esc(st?.g??'—')+'</b><small>Ganados</small></span><span><b>'+esc(st?.e??'—')+'</b><small>Empates</small></span><span><b>'+esc(st?.p??'—')+'</b><small>Perdidos</small></span></div>'+
     '</section>'+
     '<section class="v419-card v419-trophies"><header><h3>Títulos</h3><small>Datos disponibles</small></header><div class="v419-empty">Los títulos históricos del equipo no están incluidos en el snapshot del Match Center.</div></section>'+
-    '<section class="v419-card v419-stadium"><header><h3>Estadio / campo</h3></header><div class="v419-stadium-row"><span>▣</span><div><b>'+esc(venue)+'</b><small>'+esc(dateOnly(r?.[8]))+' · '+esc(clock(r?.[8]))+'</small></div><em>CAMPO</em></div></section>'+
+    '<section class="v419-card v419-stadium"><header><h3>Estadio / campo</h3></header><div class="v419-stadium-row"><span>▣</span><div><b>'+esc(venue)+'</b><small>'+esc(dateOnly(r?.[8]))+' · '+esc(clock(r?.[8]))+'</small>'+(addressForVenue(venue)?'<small class="v1191-venue-address">'+esc(addressForVenue(venue))+'</small><a class="v1191-venue-map" href="https://www.google.com/maps/search/?api=1&amp;query=20.63753%2C-100.99297" target="_blank" rel="noopener noreferrer">↗ Cómo llegar</a>':'')+'</div><em>CAMPO</em></div></section>'+
   '</section>';
 }
 
@@ -904,7 +908,7 @@ function summaryBody(m,state){
   return '<div class="v92-summary-grid">'+
       '<div><b>'+esc(status)+'</b><small>'+(score?'Marcador oficial':'Estado')+'</small></div>'+
       '<div><b>'+esc(clock(r[8]))+'</b><small>Hora oficial</small></div>'+
-      '<div><b>'+esc(venue)+'</b><small>Sede</small></div>'+
+      '<div><b>'+esc(venue)+'</b><small>'+(addressForVenue(venue)?esc(addressForVenue(venue)):'Sede')+'</small></div>'+
     '</div>'+
     '<section class="v92-section"><div class="v92-section-head"><h2>Plantillas registradas</h2><small>No se presentan como alineaciones hasta que la Liga las confirme.</small></div><div class="v92-player-grid">'+
       rosterSummary(m,home)+rosterSummary(m,away)+
