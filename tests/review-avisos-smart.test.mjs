@@ -25,6 +25,10 @@ test('filtros, acciones y estados de revisión están conectados',()=>{
  assert.ok(code.includes('El aviso fue retirado del servidor.'));
  assert.ok(code.includes("typeof window.LJR_CMS?.editor==='function'"));
  assert.ok(code.includes('data-review-clear'));
+ assert.ok(code.includes('data-review-device'));
+ assert.ok(code.includes('data-review-copy'));
+ assert.ok(code.includes("media().api('content?admin=1')"));
+ assert.ok(code.includes('Prueba de solo lectura'));
  assert.ok(code.includes('ljr-review-feedback'));
  assert.ok(code.includes('borrador privado'));
  assert.ok(code.includes("status(modal,'Filtros limpiados.')"));

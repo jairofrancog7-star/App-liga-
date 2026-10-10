@@ -336,3 +336,19 @@ html body .liga-media-modal .ljr-review-smart :is(button,input,select){min-heigh
 html body .liga-media-modal .ljr-review-automation [data-review-clear]{background:#0a2a68!important;border-color:#4e79be!important}
 @media(max-width:559px){html body .liga-media-modal .ljr-review-filters label:has([data-review-order]){grid-column:1/-1!important}html body .liga-media-modal .ljr-review-automation{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}html body .liga-media-modal .ljr-review-automation label{grid-column:1/-1!important}}
 @media(min-width:560px){html body .liga-media-modal .ljr-review-filters{grid-template-columns:1.6fr repeat(3,minmax(0,1fr))!important}}
+
+
+/* V1242 · Comprobación local segura y legible del panel de avisos en Android. */
+html body .liga-media-modal .ljr-review-device-controls{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+html body .liga-media-modal .ljr-review-device-controls button{min-height:43px!important;font-size:11px!important;padding:9px 7px!important;white-space:normal!important}
+html body .liga-media-modal .ljr-review-device-controls [data-review-device]{background:#0055a5!important;border:1px solid #75a9ea!important}
+html body .liga-media-modal .ljr-review-device-controls [data-review-copy]{background:#123976!important;border:1px solid #608ed3!important}
+html body .liga-media-modal .ljr-review-device-controls button[hidden]{display:none!important}
+html body .liga-media-modal .ljr-review-device-results{padding:11px 12px!important;background:#0a235c!important;border:1px solid #4f86ca!important;border-radius:11px!important;color:#e7f2ff!important;font:500 11px/1.5 system-ui,sans-serif!important;overflow-wrap:anywhere}
+html body .liga-media-modal .ljr-review-device-results[hidden]{display:none!important}
+html body .liga-media-modal .ljr-review-device-results strong{font-size:12px!important;color:#fff!important}
+html body .liga-media-modal .ljr-review-device-results p{margin:5px 0!important}
+html body .liga-media-modal .ljr-review-device-results ul{margin:7px 0 0!important;padding-left:17px!important}
+html body .liga-media-modal .ljr-review-device-results li{margin:3px 0}
+html body .liga-media-modal .ljr-review-device-results li[data-passed=false]{color:#ffe0ae!important}
+@media(max-width:350px){html body .liga-media-modal .ljr-review-device-controls{grid-template-columns:minmax(0,1fr)!important}}

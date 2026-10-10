@@ -331,6 +331,10 @@ function openReview(){
   '<button type="button" data-review-clear>Limpiar filtros</button>'+
   '<label><input type="checkbox" data-review-auto> Actualizar cada minuto</label></div>'+
   '<div class="ljr-review-insights" data-review-insights hidden role="status" aria-live="polite"></div>'+
+  '<div class="ljr-review-device-controls">'+
+  '<button type="button" data-review-device>▣ Comprobar en mi Android</button>'+ 
+  '<button type="button" data-review-copy hidden>Copiar diagnóstico</button></div>'+ 
+  '<div class="ljr-review-device-results" data-review-device-results hidden role="status" aria-live="polite"></div>'+ 
   '<div class="ljr-review-meta" data-review-meta role="status" aria-live="polite">Consultando avisos…</div>'+ 
   '<p class="ljr-review-feedback" data-status role="status" aria-live="polite"></p>'+
   '<div data-editor-list aria-live="polite">Cargando avisos…</div>'+
@@ -549,6 +553,66 @@ function openReview(){
    if(button)button.title=x==='available'?'IA generativa local disponible':'Revisión automática mediante reglas locales; la IA generativa de Chrome no está disponible en este dispositivo.';
   }).catch(()=>{aiAvailability='unavailable'});
  }
+
+ // Verificación en el propio móvil: solo GET; nunca invoca PUT/DELETE ni expone registros.
+ let deviceReport='',deviceBusy=false;
+ $('[data-review-device]',modal).onclick=async()=>{
+  if(deviceBusy)return;
+  deviceBusy=true;
+  const button=$('[data-review-device]',modal),container=$('[data-review-device-results]',modal);
+  button.disabled=true;container.hidden=false;container.replaceChildren();
+  const loading=document.createElement('p');loading.textContent='Comprobando sesión, lectura y tamaño de pantalla…';
+  container.append(loading);
+  let permission=false,apiRead=false;
+  try{await verified();permission=true}catch(_){permission=false}
+  if(permission){
+   try{
+    const response=await media().api('content?admin=1');
+    apiRead=Array.isArray(response?.items);
+   }catch(_){apiRead=false}
+  }
+  const panel=modal.querySelector('section')||modal;
+  const bounds=panel.getBoundingClientRect(),review=$('.ljr-review-smart',modal);
+  const controls=[...review.querySelectorAll('button,input:not([type=checkbox]),select')]
+   .filter(el=>{const css=getComputedStyle(el);return css.display!=='none'&&css.visibility!=='hidden'&&el.getClientRects().length>0});
+  const clipped=controls.filter(el=>{const b=el.getBoundingClientRect();return b.left<bounds.left-4||b.right>bounds.right+4}).length;
+  const small=controls.filter(el=>el.getBoundingClientRect().height<38).length;
+  const sizeOk=review.scrollWidth<=review.clientWidth+5&&clipped===0;
+  const necessary=['[data-review-query]','[data-review-category]','[data-review-type]',
+   '[data-review-order]','[data-review-clear]','[data-reload]','[data-review-audit]'];
+  const filtersOk=necessary.every(selector=>!!$(selector,modal));
+  const checks=[
+   ['Sesión administrativa real',permission],
+   ['Lectura de avisos del servidor (sin cambios)',apiRead],
+   ['Filtros y controles disponibles',filtersOk],
+   ['Contenido sin cortes horizontales',sizeOk],
+   ['Botones y selectores con altura táctil suficiente',small===0]
+  ];
+  deviceReport='LIGA JUVENTINO ROSAS · DIAGNÓSTICO REVISAR AVISOS\n'
+   +'Pantalla: '+Math.round(window.innerWidth)+' px\n'
+   +checks.map(([name,ok])=>(ok?'CORRECTO':'REVISAR')+' · '+name).join('\n')
+   +'\nPrueba de solo lectura. No comprueba Push ni publicaciones reales.'
+   +'\nNo contiene contraseñas, identificadores ni datos de avisos.';
+  container.replaceChildren();
+  const title=document.createElement('strong');
+  title.textContent=checks.every(x=>x[1])?'Diagnóstico local completado':'Diagnóstico local: revisa las advertencias';
+  const description=document.createElement('p');
+  description.textContent='Se comprobó este navegador y tu sesión. No se publicó ni retiró ningún aviso.';
+  const list=document.createElement('ul');
+  checks.forEach(([name,passed])=>{const li=document.createElement('li');li.textContent=(passed?'✓ ':'! ')+name;li.dataset.passed=String(passed);list.append(li)});
+  container.append(title,description,list);
+  $('[data-review-copy]',modal).hidden=false;
+  status(modal,checks.every(x=>x[1])?'Comprobación terminada sin advertencias.':'Hay advertencias. Puedes copiar el informe sin datos privados.');
+  deviceBusy=false;button.disabled=false;
+ };
+ $('[data-review-copy]',modal).onclick=async()=>{
+  if(!deviceReport)return;
+  try{
+   if(!navigator.clipboard?.writeText)throw Error('Copiar no disponible en este navegador');
+   await navigator.clipboard.writeText(deviceReport);
+   status(modal,'Informe copiado sin datos privados. Puedes compartirlo para revisar los avisos.');
+  }catch(_){status(modal,'No se pudo copiar automáticamente. Puedes hacer una captura del resultado que aparece arriba.')}
+ };
  $('[data-review-csv]',modal).onclick=()=>{
   if(!ready||!records.length)return status(modal,'No hay avisos para exportar.');
   if(!confirm('Se descargará un CSV privado que podría contener borradores no publicados. No lo compartas sin autorización. ¿Continuar?'))return;
