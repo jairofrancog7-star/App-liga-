@@ -7,7 +7,7 @@ const get=(form,sel)=>String(form.querySelector(sel)?.value||'').trim();
 function info(form){
  return {
   date:get(form,'[data-x="date"]'),time:get(form,'[data-meeting-field="time"]'),
-  place:get(form,'[data-meeting-field="place"]'),owner:get(form,'[data-meeting-field="owner"]'),
+  place:get(form,'[data-meeting-field="place"]'),owner:get(form,'[data-meeting-field="owner"]'),president:get(form,'[data-meeting-field="president"]'),secretary:get(form,'[data-meeting-field="secretary"]'),
   attendance:get(form,'[data-x="attendance"]'),deadline:get(form,'[data-meeting-field="deadline"]'),
   agenda:get(form,'[data-x="agenda"]'),agreements:get(form,'[data-x="agreements"]'),
   tasks:get(form,'[data-meeting-field="tasks"]')
@@ -65,7 +65,7 @@ async function renderPNG(form){
  measurement.font='25px Arial';
  const meta=[
   ['FECHA DE JUNTA',dateMX(d.date)],['HORA',d.time||'—'],
-  ['LUGAR',d.place||'—'],['RESPONSABLE',d.owner||'—'],
+  ['SEDE',d.place||'—'],['RESPONSABLE',d.owner||'—'],['PRESIDENTE',d.president||'Por confirmar'],['SECRETARIO',d.secretary||'Por confirmar'],
   ['ASISTENCIA',d.attendance||'—'],['FECHA LÍMITE DE ACUERDOS',dateMX(d.deadline)]
  ];
  const section=[['Orden del día',d.agenda],['Acuerdos / minuta',d.agreements],['Pendientes y seguimiento',d.tasks]];
