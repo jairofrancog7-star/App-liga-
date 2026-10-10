@@ -57,12 +57,58 @@
   n.querySelectorAll('[data-cms-kind]').forEach(b=>b.onclick=()=>showList(b.dataset.cmsKind,n));n.querySelector('[data-cms-inbox]').onclick=()=>inbox(n);if(typeof initialKind==='string'&&kindNames[initialKind])await showList(initialKind,n);
  }
  async function showList(kind,n){
-  try{const all=(await api('content?admin=1')).items;const list=n.querySelector('[data-cms-list]');list.replaceChildren();const h=document.createElement('h3');h.textContent=kindNames[kind];list.append(h);
-   const add=document.createElement('button');add.textContent= ['scorers','standings','fixture','sanction'].includes(kind)?'Editar tabla de una categoría':'Crear nuevo';add.onclick=()=>['scorers','standings','fixture','sanction'].includes(kind)?tableEditor(kind,all):kind==='page'?editPage():editor(kind);list.append(add);
-   for(const x of all.filter(x=>x.kind===kind)){const row=document.createElement('div');row.className='cms-record-row';const b=document.createElement('button');b.textContent=(x.payload.title||x.payload.name||cats[x.payload.category]||x.payload.route||'Contenido')+(x.published?'':' · Borrador');b.onclick=()=>Array.isArray(x.payload.rows)?tableEditor(kind,all,x):editor(kind,x);const del=document.createElement('button');del.textContent='Retirar';del.onclick=async()=>{if(!confirm('¿Retirar este contenido?'))return;try{await api('content/'+encodeURIComponent(x.id),{method:'DELETE',body:{revision:x.revision}});await refresh();showList(kind,n)}catch(err){n.querySelector('[data-status]').textContent=err.message}};row.append(b,del);list.append(row)}
-  }catch(err){n.querySelector('[data-status]').textContent=err.message}
+  const list=n?.querySelector('[data-cms-list]');
+  if(!list||!kindNames[kind])return;
+  // Render immediately: do not block opening the editor on an API request.
+  const token=String(Date.now())+'-'+Math.random();
+  list.dataset.cmsRequest=token;
+  list.replaceChildren();
+  n.querySelectorAll('[data-cms-kind]').forEach(button=>{
+    const chosen=button.dataset.cmsKind===kind;
+    button.classList.toggle('is-active',chosen);
+    button.setAttribute('aria-pressed',String(chosen));
+  });
+  const h=document.createElement('h3');h.textContent=kindNames[kind];list.append(h);
+  const add=document.createElement('button');add.type='button';
+  add.textContent=['scorers','standings','fixture','sanction'].includes(kind)?'Entrar al editor de tabla':'Crear nuevo / abrir editor';
+  add.onclick=()=>{
+    if(!media()?.admin){media()?.login?.(()=>open(kind));return}
+    if(['scorers','standings','fixture','sanction'].includes(kind))tableEditor(kind,records.filter(x=>x.kind===kind));
+    else if(kind==='page')editPage();
+    else editor(kind);
+  };
+  list.append(add);
+  const progress=document.createElement('p');progress.className='cms-load-feedback';progress.setAttribute('role','status');
+  progress.textContent='Cargando registros existentes… Puedes abrir el editor desde el botón de arriba.';
+  list.append(progress);
+  try{
+    const response=await api('content?admin=1');
+    if(!n.isConnected||list.dataset.cmsRequest!==token)return;
+    if(!Array.isArray(response?.items))throw Error('El servidor no devolvió los registros.');
+    const all=response.items;
+    progress.remove();
+    const items=all.filter(x=>x.kind===kind);
+    if(!items.length){const empty=document.createElement('p');empty.className='cms-load-feedback';empty.textContent='Aún no hay registros de esta sección. Pulsa el botón de arriba para comenzar.';list.append(empty)}
+    for(const x of items){
+      const row=document.createElement('div');row.className='cms-record-row';
+      const b=document.createElement('button');b.type='button';
+      b.textContent=(x.payload?.title||x.payload?.name||cats[x.payload?.category]||x.payload?.route||'Contenido')+(x.published?'':' · Borrador');
+      b.onclick=()=>Array.isArray(x.payload?.rows)?tableEditor(kind,all,x):editor(kind,x);
+      const del=document.createElement('button');del.type='button';del.textContent='Retirar';
+      del.onclick=async()=>{
+        if(!confirm('¿Retirar este contenido?'))return;
+        try{await api('content/'+encodeURIComponent(x.id),{method:'DELETE',body:{revision:x.revision}});await refresh();showList(kind,n)}
+        catch(err){const status=n.querySelector('[data-status]');if(status)status.textContent=err.message||'No se pudo retirar.'}
+      };
+      row.append(b,del);list.append(row);
+    }
+  }catch(err){
+    if(!n.isConnected||list.dataset.cmsRequest!==token)return;
+    progress.textContent='No se pudieron consultar los registros: '+(err?.message||'sin conexión')+'. El editor se puede abrir arriba; guardar requiere una sesión y conexión válidas.';
+    const status=n.querySelector('[data-status]');if(status)status.textContent='Revisa la conexión con el servidor de administración.';
+  }
  }
- const schemas={
+  const schemas={
   news:[['title','Título'],['scope','Sección','select',['Liga','Equipos','Fichajes']],['body','Texto','textarea'],['image','Imagen','url']],
   document:[['title','Título'],['category','Categoría','category'],['body','Descripción','textarea'],['url','Archivo PDF o enlace','url']],
   transmission:[['title','Título'],['category','Categoría','category'],['body','Descripción','textarea'],['url','Enlace público del directo','url'],['image','Portada','url']],
