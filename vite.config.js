@@ -14,6 +14,7 @@ function copyStaticReferences() {
         ['src/v1167-matchday-centered-official-crests.css', 'dist/src/v1167-matchday-centered-official-crests.css'],
         ['src/v1166-meeting-officers.css', 'dist/src/v1166-meeting-officers.css'],
         ['src/vendor/QRCODE-LICENSE.txt', 'dist/src/vendor/QRCODE-LICENSE.txt'],
+        ['data/account-cloud-config.json', 'dist/data/account-cloud-config.json'],
         ['assets/liga-logo-original.webp', 'dist/assets/liga-logo-original.webp'],
         ['assets/liga-logo.webp', 'dist/assets/liga-logo.webp'],
         ['assets/reference/final-trophy-drive.png', 'dist/assets/reference/final-trophy-drive.png'],
