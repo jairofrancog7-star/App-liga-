@@ -12,9 +12,11 @@ const app=express();app.disable('x-powered-by');app.set('trust proxy',1);
 const E=process.env, origin=E.WEB_ORIGIN||'https://jairofrancog7-star.github.io';
 const publicUrl=(E.PUBLIC_API_ORIGIN||'').replace(/\/$/,'');
 const pool=new pg.Pool({connectionString:E.DATABASE_URL,max:8,connectionTimeoutMillis:7000,ssl:E.DATABASE_URL?.includes('sslmode=require')?{rejectUnauthorized:true}:undefined});
-if(!E.DATABASE_URL||!E.JOB_NOTIFY_TOKEN||E.JOB_NOTIFY_TOKEN.length<32){
- throw new Error('Falta base de datos o secreto JOB_NOTIFY_TOKEN seguro.');
-}
+if(!E.DATABASE_URL)throw new Error('Falta DATABASE_URL. Despliega PostgreSQL primero.');
+if(E.JOB_NOTIFY_TOKEN&&E.JOB_NOTIFY_TOKEN.length<32)throw new Error('JOB_NOTIFY_TOKEN debe tener al menos 32 caracteres.');
+// El programador de avisos funciona en el propio servidor cuando se despliega.
+// Un servicio siempre encendido evita depender de tokens de GitHub Actions.
+const internalDispatchEnabled=E.ENABLE_INTERNAL_DISPATCH!=='false';
 if(!/^https:\/\/[a-z0-9.-]+(?::\d+)?$/i.test(E.LJR_MEDIA_AUTH_BASE||'')){
  throw new Error('Configura LJR_MEDIA_AUTH_BASE=https://servidor-autenticacion; sin acceso de visitante.');
 }
@@ -67,7 +69,8 @@ async function audit(req,action,target,detail={}){
  await pool.query('INSERT INTO ljr_admin_audit(actor,role,action,target,detail) VALUES($1,$2,$3,$4,$5)',
  [req.actor.subject,req.actor.role,action,target,JSON.stringify(detail)]);
 }
-const cron=(req,res,next)=>secretEquals(req.get('X-Job-Token'),E.JOB_NOTIFY_TOKEN)?next():res.status(401).json({error:'Token del programador incorrecto'});
+const cron=(req,res,next)=>!E.JOB_NOTIFY_TOKEN?res.status(503).json({error:'Programador externo no configurado'}):
+ secretEquals(req.get('X-Job-Token'),E.JOB_NOTIFY_TOKEN)?next():res.status(401).json({error:'Token del programador incorrecto'});
 const hash=x=>crypto.createHash('sha256').update(x).digest('hex');
 const phone=x=>/^\+[1-9]\d{7,14}$/.test(String(x||''))?x:null;
 const catAliases={all:'Todas','3':'Primera','5':'Intermedia','4':'Segunda','2':'Veteranos 35+','1':'Veteranos 50+'};
@@ -90,7 +93,12 @@ function matchPreferences(rec,job){
  return true;
 }
 const apiError=(err,res)=>{console.error('Notifier error',err?.message);if(!res.headersSent)res.status(500).json({error:'No se pudo completar la operación'})};
-app.get('/health',(_q,res)=>res.json({ok:true,service:'Liga Juventino Rosas · notificaciones'}));
+app.get('/health',(_q,res)=>res.json({ok:true,service:'Liga Juventino Rosas · notificaciones',schedulerEnabled:internalDispatchEnabled}));
+app.get('/health/ready',async(_req,res)=>{
+ try{await pool.query('SELECT 1');res.json({ready:true,database:'connected',schedulerEnabled:internalDispatchEnabled,
+  pushEnabled:vapidReady,smsEnabled:smsReady,whatsappEnabled:whatsappReady})}
+ catch(_){res.status(503).json({ready:false,database:'unavailable',schedulerEnabled:internalDispatchEnabled})}
+});
 app.get('/api/push/public-key',(_q,res)=>vapidReady?res.json({publicKey:E.VAPID_PUBLIC_KEY}):res.status(503).json({error:'Push sin configurar'}));
 app.get('/config',(_q,res)=>res.json({pushEnabled:vapidReady,twilioEnabled:Boolean(smsReady||whatsappReady),
  vapidPublicKey:vapidReady?E.VAPID_PUBLIC_KEY:null,smsEnabled:smsReady,whatsappEnabled:whatsappReady,channels:['push','sms','whatsapp']}));
@@ -269,29 +277,52 @@ async function deliver(notice,channel,recipient){
   if(channel==='push'&&[404,410].includes(e?.statusCode))await pool.query('DELETE FROM ljr_push_subscriptions WHERE endpoint=$1',[value]);
  }
 }
-app.post('/jobs/dispatch',cron,async(req,res)=>{
- if(!publicUrl.startsWith('https://')&&twilioReady)return res.status(503).json({error:'PUBLIC_API_ORIGIN debe ser HTTPS'});
- try{
-  const jobs=await pool.query(`UPDATE ljr_scheduled_notices SET status='processing'
- ,processing_at=now() WHERE id IN(SELECT id FROM ljr_scheduled_notices
+// Procesa avisos globales desde el servidor, sin que el presidente abra la app.
+// El cambio de queued->processing es atómico y el historial de destinatarios
+// evita duplicados si Railway reinicia el proceso o llega un cron externo.
+async function dispatchDue(){
+ if(!publicUrl.startsWith('https://')&&twilioReady)throw Error('PUBLIC_API_ORIGIN debe ser HTTPS para callbacks de Twilio');
+ const jobs=await pool.query(`UPDATE ljr_scheduled_notices SET status='processing',
+ processing_at=now() WHERE id IN(SELECT id FROM ljr_scheduled_notices
  WHERE (status='queued' OR (status='processing' AND processing_at<now()-interval '30 minutes'))
  AND send_at<=now() ORDER BY send_at LIMIT 10 FOR UPDATE SKIP LOCKED)
  RETURNING id,title,body,category,channels,notice_type,team,field`);
-  let count=0;
-  for(const job of jobs.rows){
-   for(const channel of job.channels){
-    if(channel==='app')continue;
-    const sql=channel==='push'
-     ?'SELECT endpoint,subscription,category,preferences FROM ljr_push_subscriptions ORDER BY created_at LIMIT 1000'
-     :'SELECT phone,category FROM ljr_message_consent WHERE channel=$1 AND opted_out_at IS NULL ORDER BY phone LIMIT 1000';
-    const result=await pool.query(sql,channel==='push'?[]:[channel]);
-    for(const rec of result.rows){if(channel==='push'?matchPreferences(rec,job):matchCat(rec.category,job.category)){await deliver(job,channel,rec);count++}}
+ let attempted=0;
+ for(const job of jobs.rows){
+  for(const channel of job.channels){
+   if(channel==='app')continue;
+   const sql=channel==='push'
+    ?'SELECT endpoint,subscription,category,preferences FROM ljr_push_subscriptions ORDER BY created_at LIMIT 1000'
+    :'SELECT phone,category FROM ljr_message_consent WHERE channel=$1 AND opted_out_at IS NULL ORDER BY phone LIMIT 1000';
+   const r=await pool.query(sql,channel==='push'?[]:[channel]);
+   for(const rec of r.rows){
+    if(channel==='push'?matchPreferences(rec,job):matchCat(rec.category,job.category)){
+     await deliver(job,channel,rec);attempted++;
+    }
    }
-   await pool.query("UPDATE ljr_scheduled_notices SET status='done',published_at=COALESCE(published_at,now()) WHERE id=$1",[job.id]);
   }
-  res.json({ok:true,notices:jobs.rows.length,attempted:count});
- }catch(e){apiError(e,res)}
+  await pool.query("UPDATE ljr_scheduled_notices SET status='done',published_at=COALESCE(published_at,now()) WHERE id=$1",[job.id]);
+ }
+ return {ok:true,notices:jobs.rows.length,attempted};
+}
+let dispatchBusy=false;
+async function safeDispatch(){
+ if(dispatchBusy)return {ok:true,skipped:'already_running'};
+ dispatchBusy=true;
+ try{return await dispatchDue()}finally{dispatchBusy=false}
+}
+app.post('/jobs/dispatch',cron,async(req,res)=>{
+ try{res.json(await safeDispatch())}catch(e){apiError(e,res)}
 });
+// Programa la publicación también cuando GitHub Actions no tiene secretos.
+// El servidor puede reiniciar; los avisos pendientes quedan en PostgreSQL.
+function activateScheduler(){
+ if(!internalDispatchEnabled)return;
+ const tick=()=>safeDispatch().catch(e=>console.error('Error del programador:',e?.code||e?.name||'unknown'));
+ const initial=setTimeout(tick,15000);initial.unref?.();
+ const timer=setInterval(tick,60000);timer.unref?.();
+}
+
 const twilioForm=express.urlencoded({extended:false,limit:'10kb'});
 function signedTwilio(req,res,next){
  if(!E.TWILIO_AUTH_TOKEN||!publicUrl.startsWith('https://'))return res.status(503).end();
@@ -312,4 +343,4 @@ app.post('/twilio/inbound',twilioForm,signedTwilio,async(req,res)=>{
  res.type('text/xml').send('<Response></Response>');
 });
 app.use((_req,res)=>res.status(404).json({error:'Ruta desconocida'}));
-app.listen(Number(E.PORT)||8080,()=>console.log('Liga notifier listening'));
+app.listen(Number(E.PORT)||8080,()=>{console.log('Liga notifier listening');activateScheduler()});
