@@ -1,0 +1,47 @@
+name: Delegados - prueba real Android
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/v105-green-app-bottom.js'
+      - 'src/v1107-control-design-unified.css'
+      - 'tests/delegados-browser-smoke.mjs'
+      - '.github/workflows/delegados-browser-smoke.yml'
+permissions:
+  contents: read
+concurrency:
+  group: delegados-browser-smoke
+  cancel-in-progress: false
+jobs:
+  delegados:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar y compilar para GitHub Pages
+        run: |
+          npm install --no-audit --no-fund
+          npm run build -- --base=/App-liga-/
+      - name: Preparar navegador Chromium
+        run: |
+          npm install --no-save playwright@1.56.1 --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Arrancar copia local de la aplicación
+        run: |
+          npx vite preview --base=/App-liga-/ --host 127.0.0.1 --port 4173 > /tmp/delegados-preview.log 2>&1 &
+          for i in $(seq 1 45); do curl --fail --silent http://127.0.0.1:4173/App-liga-/ > /dev/null && exit 0; sleep 1; done
+          cat /tmp/delegados-preview.log
+          exit 1
+      - name: Probar guardado, filtros, botones y respaldos en Android
+        run: node tests/delegados-browser-smoke.mjs
+      - name: Adjuntar captura si falla
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: delegados-smoke-android
+          path: delegados-test-artifacts
+          if-no-files-found: ignore
