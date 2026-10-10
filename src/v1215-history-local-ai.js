@@ -132,7 +132,52 @@ function findTeam(query,list){
     const hits=keys.filter(n=>n.split(' ').includes(word));
     if(hits.length===1)return hits[0];
   }
-  return '';
+  // Tolerancia a nombres con 1–2 errores sin usar servicios externos.
+  const possible=new Set();
+  for(const word of words){
+    if(word.length<5)continue;
+    for(const name of keys){
+      if(name.split(' ').some(token=>token.length>=5&&distance(word,token)<=Math.min(2,Math.floor(word.length/4))))possible.add(name);
+    }
+  }
+  return possible.size===1?[...possible][0]:'';
+}
+function distance(a,b){
+  if(a===b)return 0;
+  if(Math.abs(a.length-b.length)>2)return 99;
+  let prev=Array.from({length:b.length+1},(_,i)=>i);
+  for(let i=0;i<a.length;i++){
+    const next=[i+1];
+    for(let j=0;j<b.length;j++)next[j+1]=Math.min(next[j]+1,prev[j+1]+1,prev[j]+(a[i]===b[j]?0:1));
+    prev=next;
+  }
+  return prev[b.length];
+}
+function applyNativePrompt(prompt){
+  const root=document.querySelector('[data-v164-history-log]');if(!root)return;
+  const all=entries(),cat=findCategory(prompt,all),team=findTeam(prompt,all);
+  const year=norm(prompt).match(/\b(?:19|20)\d{2}\b/)?.[0]||'';
+  if(!cat&&!team&&!year)return;
+  const change=selector=>{
+    const el=root.querySelector(selector);if(el)el.dispatchEvent(new Event('change',{bubbles:true}));
+  };
+  const catSelect=root.querySelector('[data-v164-category]');
+  if(cat&&catSelect?.querySelector('option[value="'+cat+'"]')){
+    catSelect.value=cat;change('[data-v164-category]');
+  }
+  const yearSelect=root.querySelector('[data-v164-year]');
+  if(year&&yearSelect?.querySelector('option[value="'+year+'"]')){
+    yearSelect.value=year;change('[data-v164-year]');
+  }
+  const teamSelect=root.querySelector('[data-v164-team]');
+  if(team&&teamSelect){
+    const option=[...teamSelect.options].find(o=>o.value===team);
+    if(option){teamSelect.value=option.value;change('[data-v164-team]')}
+  }
+  const search=root.querySelector('[data-v164-search]');
+  if(search&&search.value){
+    search.value='';search.dispatchEvent(new Event('input',{bubbles:true}));
+  }
 }
 function findCategory(query,list){
   const q=norm(query);
@@ -235,6 +280,7 @@ async function ask(prompt){
   const q=String(prompt||'').trim();if(!q){message('Escribe una consulta para buscar en el historial.');return}
   message('Analizando los resultados oficiales de este dispositivo…');
   const intent=(await modelIntent(q))||intentOf(q);
+  applyNativePrompt(q);
   analysisText(summarize(q,intent));
   message(model?'Respuesta mediante IA semántica local y datos oficiales.':'Consulta inteligente local, sin enviar preguntas a servidores.');
 }
