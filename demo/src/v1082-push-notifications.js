@@ -44,7 +44,8 @@ async function server(path,opts={}){
  if(!res.ok)throw Error(data.error||'Error del servidor ('+res.status+')');
  return data;
 }
-function supported(){return isSecureContext&&'Notification'in window&&'serviceWorker'in navigator&&'PushManager'in window;}
+function isNativeApk(){return window.Capacitor?.isNativePlatform?.()===true;}
+function supported(){return !isNativeApk()&&isSecureContext&&'Notification'in window&&'serviceWorker'in navigator&&'PushManager'in window;}
 function keyBytes(str){
  const padding='='.repeat((4-str.length%4)%4),bin=atob((str+padding).replace(/-/g,'+').replace(/_/g,'/'));
  return Uint8Array.from(bin,c=>c.charCodeAt(0));
@@ -110,7 +111,7 @@ async function syncState(root){
  toggle.disabled=false;
  if(testButton)testButton.disabled=true;
  if(!supported()){
-  const native=typeof window!=='undefined'&&window.Capacitor?.isNativePlatform?.()===true;
+  const native=isNativeApk();
   label.textContent=native?'APK Android · falta Push remoto nativo':'Web Push no compatible con este navegador';
   toggle.disabled=true;
   if(native){
