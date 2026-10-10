@@ -40,6 +40,47 @@ function waitForForm(timeout=6000){
   find();
  });
 }
+/* El repositorio puede no incluir el cliente LJR_CMS. Guardado privado mínimo
+   con la misma API de contenido autenticada que usa JR Control para avisos. */
+function openServerDraftForm(row){
+ const media=window.LJR_MEDIA;
+ const esc=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+ const modal=media.modal('Guardar borrador visual en el servidor',
+  '<form class="ljr-studio-server-form" data-studio-server-draft>'+
+  '<p>Revisa la propuesta. Se enviará como <strong>borrador privado</strong>, sin publicar ni alterar los resultados oficiales.</p>'+
+  '<label>Ruta<input name="route" readonly></label><label>Selector<input name="selector" readonly></label>'+
+  '<label>Texto original<input name="original" readonly></label><label>Texto nuevo<textarea name="text" maxlength="250" rows="3"></textarea></label>'+
+  '<label>Color de letra<input name="color" readonly></label><label>Fondo<input name="background" readonly></label>'+
+  '<button type="submit">Guardar borrador en CMS</button>'+
+  '<p data-studio-server-status role="status" aria-live="polite">Requiere una sesión válida del servidor.</p></form>');
+ const form=$('[data-studio-server-draft]',modal),status=$('[data-studio-server-status]',modal);
+ for(const name of fields){const element=field(form,name);if(element)element.value=row[name]||'';}
+ let saving=false;
+ form.addEventListener('submit',async event=>{
+  event.preventDefault();
+  if(saving)return;
+  const btn=form.querySelector('button[type=submit]');saving=true;btn.disabled=true;
+  status.textContent='Verificando credenciales y guardando el borrador…';
+  try{
+   if(!window.LJR_MEDIA?.admin)throw Error('Sesión de administrador requerida.');
+   const session=await media.api('me');
+   if(!session?.admin)throw Error('La sesión no está verificada.');
+   const payload={route:row.route,selector:row.selector,original:row.original,
+    text:field(form,'text').value.trim().slice(0,250),color:row.color,background:row.background};
+   if(!payload.text&&!payload.color&&!payload.background)throw Error('La propuesta está vacía.');
+   const id='content:'+crypto.randomUUID();
+   await media.api('content/'+encodeURIComponent(id),{method:'PUT',
+    body:{kind:'page',payload,revision:0,published:false}});
+   const checked=await media.api('content?admin=1');
+   const record=Array.isArray(checked?.items)?checked.items.find(x=>x?.id===id&&x?.kind==='page'&&x.published===false):null;
+   if(!record)throw Error('El servidor no confirmó el borrador al volver a consultarlo. Revisa JR Control antes de reintentar para evitar duplicados.');
+   status.textContent='Borrador visual guardado y verificado en el servidor. NO está publicado: requiere revisión en el CMS antes de mostrarse a visitantes.';
+   btn.textContent='Borrador guardado ✓';
+  }catch(error){status.textContent='No se pudo confirmar el borrador: '+(error?.message||'Error del servidor');btn.disabled=false;}
+  finally{saving=false}
+ });
+ return modal;
+}
 function fill(form,row){
  if(!form||!form.isConnected)throw Error('El formulario oficial se cerró.');
  for(const name of fields){
@@ -67,12 +108,15 @@ async function transfer(route,history,notify=()=>{}){
  const response=await media.api('me');
  if(!response?.admin||!window.LJR_MEDIA?.admin)throw Error('La sesión del servidor expiró.');
  const cms=window.LJR_CMS;
- if(typeof cms?.open!=='function')throw Error('El CMS oficial no está cargado en esta página; no es seguro simular un guardado.');
  const pick=rows.length===1?0:await choose(rows,unsupported);
  if(pick===null)return {cancelled:true};
- const waiter=waitForForm();
+ if(typeof cms?.open!=='function'){
+  openServerDraftForm(rows[pick]);
+  notify('Se abrió el formulario de borrador privado conectado a la API. Debes pulsar Guardar borrador; la publicación pública requiere el CMS completo.');
+  return {prepared:true,mode:'server-draft',total:rows.length,unsupported};
+ }
  try{cms.open('page')}catch(err){throw Error('No se pudo abrir el CMS: '+(err?.message||'Error'))}
- const form=await waiter;
+ const form=await waitForForm();
  if(!window.LJR_MEDIA?.admin)throw Error('La sesión administrativa terminó antes de completar la transferencia.');
  fill(form,rows[pick]);
  notify('Se transfirió 1 cambio al CMS; revisa y guarda en su formulario. '+(rows.length>1?'Hay '+(rows.length-1)+' elementos adicionales para transferir por separado.':''));
