@@ -15,12 +15,16 @@ const preview=source.slice(end,source.indexOf('function v60Icon(',end));
 
 test('all 14 sites show real geographic mosaic tiles, not broken ArcGIS exports or the same screenshot',()=>{
   assert.equal(fields.length,14);
-  const plans=fields.map(tilePlan);
-  assert.ok(plans.every(Boolean),'Every site must have a location or approximate community coordinates');
+  // Algunas canchas solo tienen enlace verificado por usuario: no fingir un pin exacto.
+  const located=fields.filter(f=>!f.mapLinkUser),linkOnly=fields.filter(f=>f.mapLinkUser);
+  assert.ok(linkOnly.length>0);
+  assert.ok(linkOnly.every(f=>tilePlan(f)===null),'Las sedes con enlace no deben inventar captura aérea');
+  const plans=located.map(tilePlan);
+  assert.ok(plans.every(Boolean),'Las sedes con coordenadas confiables sí muestran mosaico');
   assert.ok(plans.every(p=>p.tiles.length===12),'Each field displays a 4 by 3 mosaic');
   assert.ok(plans.every(p=>p.tiles.every(t=>/World_Imagery\/MapServer\/tile\/18\/\d+\/\d+/.test(t.url))));
   const views=plans.map(p=>JSON.stringify({urls:p.tiles.map(t=>t.url),left:p.left,top:p.top}));
-  assert.equal(new Set(views).size,fields.length,'Every field must use a distinct geographic view');
+  assert.equal(new Set(views).size,located.length,'Every mapped field must use a distinct geographic view');
   assert.ok(!preview.includes('google-streetview-referencia-2014.svg'),'Do not reuse the shared reference image');
   assert.ok(!preview.includes('f=image'),'Do not use failing export endpoint for previews');
   assert.ok(preview.includes('v60MapUrl(f)'),'Preserve the Google Maps action');
