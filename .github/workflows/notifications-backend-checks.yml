@@ -5,12 +5,14 @@ on:
       - 'server/notifications/**'
       - 'tests/notifications-security.test.mjs'
       - 'tests/dual-principals.test.mjs'
+      - 'tests/notifications-roles-bootstrap-v1224.test.mjs'
       - '.github/workflows/notifications-backend-checks.yml'
   pull_request:
     paths:
       - 'server/notifications/**'
       - 'tests/notifications-security.test.mjs'
       - 'tests/dual-principals.test.mjs'
+      - 'tests/notifications-roles-bootstrap-v1224.test.mjs'
       - '.github/workflows/notifications-backend-checks.yml'
   workflow_dispatch:
 permissions:
@@ -30,7 +32,7 @@ jobs:
           node --check server/notifications/bootstrap.mjs
           node --check server/notifications/authorization.mjs
       - name: Ejecutar pruebas de seguridad y permisos
-        run: node --test tests/notifications-security.test.mjs tests/dual-principals.test.mjs
+        run: node --test tests/notifications-security.test.mjs tests/dual-principals.test.mjs tests/notifications-roles-bootstrap-v1224.test.mjs
       - name: Revisar que no se comprometieron credenciales
         shell: bash
         run: |
