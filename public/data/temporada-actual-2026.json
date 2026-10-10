@@ -2343,7 +2343,7 @@
     },
     "Segunda Fuerza": {
       "scope": "Categoría abierta por nivel",
-      "current_phase": "Torneo de Copa · J8 · 11/10/2026",
+      "current_phase": "Torneo de Copa · J7 · 11/10/2026",
       "teams": [
         "Tavera FC",
         "Pachangas FC",
@@ -2564,48 +2564,6 @@
           }
         ],
         "J7": [
-          {
-            "home": "TAPATIO",
-            "away": "PACHANGAS FC",
-            "time": "08:00",
-            "field": "Campo 2",
-            "date": "2026-10-04"
-          },
-          {
-            "home": "TAVERA FC",
-            "away": "SAN JULIAN",
-            "time": "10:00",
-            "field": "San Julian",
-            "date": "2026-10-04"
-          },
-          {
-            "home": "SAN JUAN FC",
-            "away": "SAN JOSE JRS",
-            "time": "10:00",
-            "field": "San Jose  de la Montaña",
-            "date": "2026-10-04"
-          },
-          {
-            "home": "DEP. LA LUZ",
-            "away": "CELTICOS",
-            "time": "12:00",
-            "field": "Campo 1 (Empastado)",
-            "date": "2026-10-04"
-          },
-          {
-            "home": "BARZA",
-            "away": "DEP. ZAPATA",
-            "time": "12:00",
-            "field": "Campo 2",
-            "date": "2026-10-04"
-          },
-          {
-            "home": "SAN ANTONIO FC",
-            "away": "DEP. NOPALERO",
-            "time": "10:00",
-            "field": "Campo 2",
-            "date": "2026-10-04"
-          },
           {
             "home": "PACHANGAS FC",
             "away": "TAPATIO",
