@@ -23,10 +23,16 @@ function go(t){tab=t;render()}
 function line(t){return esc(t).replace(/\n/g,'<br>')}
 function txt(sel){return $(sel,form)?.value?.trim()||''}
 function field(name){return txt('[data-meeting-field="'+name+'"]')}
-function set(sel,value){const el=$(sel,form);if(el){el.value=value||'';el.dispatchEvent(new Event('input',{bubbles:true}))}}
-function snapshot(){return {date:date(),agenda:txt('[data-x="agenda"]'),agreements:txt('[data-x="agreements"]'),attendanceText:txt('[data-x="attendance"]'),time:field('time'),place:field('place'),owner:field('owner'),deadline:field('deadline'),taskNotes:field('tasks')}}
+function set(sel,value){const el=$(sel,form);if(el){
+ // Los cargos pueden variar por temporada; recuperar históricos sin borrar nombres anteriores.
+ if(el.tagName==='SELECT'&&value&&!Array.from(el.options).some(o=>o.value===value)){
+  const option=document.createElement('option');option.value=value;option.textContent=value+' · recuperado';el.add(option);
+ }
+ el.value=value||'';el.dispatchEvent(new Event('input',{bubbles:true}));
+}}
+function snapshot(){return {date:date(),agenda:txt('[data-x="agenda"]'),agreements:txt('[data-x="agreements"]'),attendanceText:txt('[data-x="attendance"]'),time:field('time'),place:field('place'),owner:field('owner'),president:field('president'),secretary:field('secretary'),deadline:field('deadline'),taskNotes:field('tasks')}}
 function preserve(){const d=date();if(!validDate(d))return;const r=item(d);r.minute=snapshot();persist(d)}
-function applyMinute(s){if(!s)return;set('[data-x="agenda"]',s.agenda);set('[data-x="agreements"]',s.agreements);set('[data-x="attendance"]',s.attendanceText);for(const k of ['time','place','owner','deadline'])set('[data-meeting-field="'+k+'"]',s[k]);set('[data-meeting-field="tasks"]',s.taskNotes)}
+function applyMinute(s){if(!s)return;set('[data-x="agenda"]',s.agenda);set('[data-x="agreements"]',s.agreements);set('[data-x="attendance"]',s.attendanceText);for(const k of ['time','place','owner','president','secretary','deadline'])set('[data-meeting-field="'+k+'"]',s[k]);set('[data-meeting-field="tasks"]',s.taskNotes)}
 function button(action,label,more=''){return '<button type="button" data-mh-action="'+action+'" '+more+'>'+label+'</button>'}
 function allNames(){return [...new Set(item().attendance.map(a=>a.team).filter(Boolean))]}
 function qrSvg(text){
@@ -157,7 +163,7 @@ function mount(){
   const old=JSON.parse(localStorage.getItem('v105-meeting')||'null');
   if(old&&validDate(old.date)&&!state[old.date]){
    const oldRecord=empty();
-   oldRecord.minute={date:old.date,agenda:old.agenda||'',agreements:old.agreements||'',attendanceText:old.attendance||'',time:field('time'),place:field('place'),owner:field('owner'),deadline:field('deadline'),taskNotes:field('tasks')};
+   oldRecord.minute={date:old.date,agenda:old.agenda||'',agreements:old.agreements||'',attendanceText:old.attendance||'',time:field('time'),place:field('place'),owner:field('owner'),president:field('president'),secretary:field('secretary'),deadline:field('deadline'),taskNotes:field('tasks')};
    state[old.date]=oldRecord;
    localStorage.setItem(KEY,JSON.stringify(state));
   }
@@ -177,7 +183,17 @@ function mount(){
    r.minute=draft;persist(d);
   },700);
  });
- const dateField=$('[data-x="date"]',form);dateField?.addEventListener('change',()=>{qrValue='';render()});
+ const dateField=$('[data-x="date"]',form);dateField?.addEventListener('change',()=>{
+  qrValue='';
+  const saved=state[date()]?.minute;
+  if(saved)applyMinute(saved);
+  else {
+   set('[data-meeting-field="place"]','Unidad Deportiva Sur, Juventino Rosas, Gto.');
+   set('[data-meeting-field="president"]','Florencio Franco Lerma');
+   set('[data-meeting-field="secretary"]','Javier Gonzalez Lopez');
+  }
+  render();
+ });
  render();
 }
 let timer=0;
