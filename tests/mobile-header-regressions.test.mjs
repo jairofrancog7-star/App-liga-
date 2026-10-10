@@ -66,3 +66,13 @@ test('Teams hides its controls on the real scroll surface and restores them at t
  f.scroll(90);f.go('following','.v28-head',82);
  assert.equal(f.body.classList.contains('v974-teams-compact'),false,'other routes restore their own header');
 });
+
+
+test('statistics header shrinks by the actual scroll distance until its compact height',()=>{
+ const text=fs.readFileSync(new URL('../src/v33-data-statistics-reference.js',import.meta.url),'utf8');
+ const fn=text.slice(text.indexOf('function applyHeaderScroll(){'),text.indexOf('let tick=0;'));
+ const head=node(),page=node(),title={style:{},querySelector:()=>({style:{}})},screen={scrollTop:41.2};head.querySelector=()=>title;
+ const document={body:{scrollTop:0},documentElement:{scrollTop:0},querySelector:s=>({'[data-v33-head]':head,'[data-v33-data]':page,'#screen':screen}[s])};
+ vm.runInNewContext(fn+';applyHeaderScroll();',{document,window:{innerWidth:412,scrollY:0},isDataRoute:()=>true});
+ assert.ok(Math.abs(parseFloat(head.style.getPropertyValue('--v33-head-h'))-(412*.564-41.2))<.11,'header and content move together, keeping the reference gap below the white line');
+});

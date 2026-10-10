@@ -35,6 +35,11 @@ const rect=e=>{const r=e.getBoundingClientRect();return {top:r.top,bottom:r.bott
   const heading=await page.locator('.v33-general-title').first().evaluate(rect);
   assert.ok(heading.top>=tabs.bottom&&heading.top-tabs.bottom<35,'first heading sits just below white line');
   const padding=await page.locator('[data-v33-data]').evaluate(e=>getComputedStyle(e).paddingTop);
+  await page.evaluate(y=>window.scrollTo(0,y),width*.1);
+  await page.waitForTimeout(300);
+  const movingHeading=await page.locator('.v33-general-title').first().evaluate(rect);
+  const movingHeader=await page.locator('[data-v33-head]').evaluate(rect);
+  assert.ok(Math.abs((movingHeading.top-movingHeader.bottom)-(heading.top-tabs.bottom))<1,'white line and content keep the same small gap during collapse');
   console.log('scroll down',width);
   await page.evaluate(()=>window.scrollTo(0,220));await page.waitForTimeout(300);
   const collapsed=await page.locator('[data-v33-head]').evaluate(rect);

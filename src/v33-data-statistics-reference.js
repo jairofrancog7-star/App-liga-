@@ -377,15 +377,16 @@ function applyHeaderScroll(){
    document.documentElement.scrollTop||0,
    document.body.scrollTop||0
  );
- const p=Math.min(1,y/165);
  const vw=Math.min(window.innerWidth,520);
+ const expandedH=vw*0.564;
+ const collapsedH=vw*0.333;
+ // The screenshot's content and header move by the same amount until compact.
+ const p=Math.min(1,y/Math.max(1,expandedH-collapsedH));
  // Horizontal carousel events must not repeatedly mutate the fixed header.
  if(head._v1350ScrollY===y&&head._v1350ScrollWidth===vw)return;
  head._v1350ScrollY=y;head._v1350ScrollWidth=vw;
 
  // Ratios measured from the 691px screenshots, excluding Android's status bar.
- const expandedH=vw*0.564;
- const collapsedH=vw*0.333;
  const expandedLeft=vw*0.047;
  const compactLeft=vw*0.188;
  const expandedTop=vw*0.228;
