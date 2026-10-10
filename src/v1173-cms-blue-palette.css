@@ -1,0 +1,137 @@
+/* V1173 · Los cuatro accesos CMS y las herramientas abiertas desde ellos.
+   Paleta unificada con Liga Juventino Rosas: azul marino, azul real, azul hielo.
+   Exclusivamente presentación; botones, formularios, permisos y listeners intactos. */
+html body.liga-editor #screen > .ljr-cms-entry:has(>button[data-cms-open]){
+  --cms-blue-night:#060c46;
+  --cms-blue-base:#0b1c66;
+  --cms-blue-card:#123583;
+  --cms-blue-focus:#2b61cb;
+  --cms-blue-border:rgba(99,150,242,.48);
+  box-sizing:border-box!important;
+  background:linear-gradient(165deg,#0c216f 0%,#09185e 60%,#060d49 100%)!important;
+  border:1px solid rgba(88,137,238,.43)!important;
+  box-shadow:0 9px 24px rgba(0,2,45,.25),inset 0 1px 0 rgba(155,185,255,.08)!important;
+}
+html body.liga-editor #screen > .ljr-cms-entry:has(>button[data-cms-open]) > button:is([data-cms-open],[data-cms-edit-page],[data-cms-story],[data-cms-design]){
+  background:linear-gradient(150deg,#153d94 0%,#102f7d 52%,#0c1c63 100%)!important;
+  background-color:#102f7d!important;
+  border-color:rgba(106,157,243,.50)!important;
+  color:#fff!important;
+  box-shadow:inset 0 1px 0 rgba(190,212,255,.10)!important;
+  text-shadow:none!important;
+}
+html body.liga-editor #screen > .ljr-cms-entry:has(>button[data-cms-open]) > button:is([data-cms-open],[data-cms-edit-page],[data-cms-story],[data-cms-design]):is(:hover,:focus-visible){
+  background:linear-gradient(145deg,#1c50aa,#123985)!important;
+  border-color:#76a6f4!important;
+}
+html body.liga-editor #screen > .ljr-cms-entry:has(>button[data-cms-open]) > button:is([data-cms-open],[data-cms-edit-page],[data-cms-story],[data-cms-design]):active{
+  background:#1b489a!important;
+}
+html body.liga-editor #screen > .ljr-cms-entry :is(.ljr-cms-quick-icon,.v1108-cms-icon){
+  background:linear-gradient(150deg,#184998,#102c78)!important;
+  background-color:#153985!important;
+  border:1px solid rgba(122,166,243,.42)!important;
+  color:#a6c9ff!important;
+  box-shadow:none!important;
+}
+html body.liga-editor #screen > .ljr-cms-entry :is(.ljr-cms-quick-icon,.v1108-cms-icon) svg{
+  stroke:currentColor!important;fill:none!important;
+}
+html body.liga-editor #screen > .ljr-cms-entry :is(.ljr-cms-quick-title,.v1108-cms-title){
+  color:#f6f9ff!important;
+}
+html body.liga-editor #screen > .ljr-cms-entry :is(.ljr-cms-quick-arrow,.v1108-cms-arrow){
+  color:#94baff!important;
+}
+html body.liga-editor #screen > .ljr-cms-entry :is(button,input,select):focus-visible{
+  outline:2px solid #9ac2ff!important;
+  outline-offset:2px!important;
+}
+/* Interior: administrar contenido, editor, historias y creación de publicaciones.
+   También contempla los formularios del diseño CMS clásico sin tocar sus valores. */
+html body .liga-media-modal > section:is(.ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-editor-dialog,.ljr-admin-v1081),
+html body .liga-media-modal:has(.cms-design-form) > section{
+  --cms-dialog-line:rgba(105,151,233,.45);
+  border-color:#416cbf!important;
+  background:linear-gradient(165deg,#102d80 0%,#0b2067 50%,#070e47 100%)!important;
+  color:#f4f8ff!important;
+}
+html body .liga-media-modal > section:is(.ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-editor-dialog,.ljr-admin-v1081) > header,
+html body .liga-media-modal:has(.cms-design-form) > section > header{
+  background:linear-gradient(180deg,#163981 0%,#10286f 100%)!important;
+  border-bottom-color:rgba(103,154,236,.40)!important;
+}
+html body .liga-media-modal > section:is(.ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-editor-dialog,.ljr-admin-v1081) > header [data-close],
+html body .liga-media-modal:has(.cms-design-form) > section > header [data-close]{
+  background:#183d87!important;
+  border-color:#5b89da!important;
+  color:#bed5ff!important;
+}
+html body .liga-media-modal :is(
+  .ljr-admin-area,.ljr-admin-results-hint,.ljr-editor-hub,.ljr-editor-preview,
+  .ljr-editor-row,.cms-local-ai,.cms-kind-grid,.cms-design-presets,
+  .cms-poster-preview,.ljr-admin-studio,.ljr-admin-section
+){
+  border-color:rgba(89,145,231,.38)!important;
+}
+html body .liga-media-modal :is(.ljr-admin-area,.ljr-editor-preview,.ljr-editor-row,.cms-local-ai,.ljr-admin-results-hint){
+  background:linear-gradient(150deg,#14347d,#0c225e)!important;
+}
+html body .liga-media-modal :is(.ljr-admin-tile-icon,.ljr-editor-hub-grid > button > b){
+  background:#19428b!important;
+  border-color:rgba(114,159,238,.36)!important;
+  color:#a9c9ff!important;
+}
+html body .liga-media-modal :is(.ljr-admin-tile-next,.ljr-admin-eyebrow,.ljr-editor-preview > small,.ljr-editor-hub-grid > button > b){
+  color:#a2c2ff!important;
+}
+html body .liga-media-modal :is(
+  .ljr-admin-tile:not(.ljr-admin-tile-danger),
+  .ljr-editor-hub-grid > button,.ljr-editor-tools button,
+  .ljr-editor-bottom button,.ljr-editor-review button,
+  .cms-kind-grid button,.cms-design-presets button,
+  .ljr-editor-two-choice button
+){
+  border-color:rgba(100,150,236,.56)!important;
+  background:linear-gradient(140deg,#17428f,#102d74)!important;
+  color:#f4f8ff!important;
+}
+html body .liga-media-modal :is(.ljr-admin-tile-primary,.ljr-admin-submit,
+  .ljr-editor-bottom [data-editor-publish],
+  .ljr-editor-tools button[aria-pressed="true"]){
+  border-color:#75a6f8!important;
+  background:linear-gradient(135deg,#205cba,#164497)!important;
+  color:#fff!important;
+}
+html body .liga-media-modal :is(
+  .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,
+  .ljr-editor-dialog,.ljr-admin-v1081
+) :is(input:not([type=checkbox]):not([type=radio]):not([type=color]):not([type=file]),select,textarea){
+  background:#0b205f!important;
+  border-color:#507cc9!important;
+  color:#fff!important;
+}
+html body .liga-media-modal :is(.ljr-editor-form,.cms-design-form) :is(
+  input:not([type=checkbox]):not([type=radio]):not([type=color]):not([type=file]),select,textarea
+){
+  background:#0b205f!important;
+  border-color:#507cc9!important;
+  color:#fff!important;
+}
+html body .liga-media-modal :is(.ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-editor-dialog,.ljr-admin-v1081)
+  :is([data-status],.ljr-admin-section-sub,.ljr-editor-security,.ljr-editor-note){
+  color:#c1d4f5!important;
+}
+html body .liga-media-modal :is(.ljr-admin-tile,.ljr-editor-hub-grid > button,.ljr-editor-tools button,.ljr-editor-bottom button,.cms-design-presets button):focus-visible,
+html body .liga-media-modal :is(input,select,textarea):focus-visible{
+  outline:2px solid #91baff!important;
+  outline-offset:2px!important;
+}
+html body .liga-media-modal :is(.ljr-admin-tile,.ljr-editor-hub-grid > button,.cms-design-presets button):is(:hover,:focus-visible){
+  border-color:#8bb4ff!important;
+}
+@media (prefers-reduced-motion:reduce){
+  html body.liga-editor #screen > .ljr-cms-entry > button{
+    transition:none!important;
+  }
+}
