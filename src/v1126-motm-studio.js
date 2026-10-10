@@ -31,14 +31,21 @@ function officialPlayers(){
  }));
  return out;
 }
+// Los escudos de categoría están en Liga_Futbol, no en App-liga-.
+// Usamos la misma fuente pública que la sección de categorías oficiales.
+const CATEGORY_BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CATEGORY_LOGOS={
- '3':'./assets/branding/primera-fuerza-hd.png',
- '5':'./assets/categories/intermedia.webp',
- '4':'./assets/categories/segunda-fuerza.webp',
- '2':'./assets/categories/veteranos-35-user.png',
- '1':'./assets/categories/veteranos-50.webp'
+ '3':CATEGORY_BASE+'assets/branding/primera-fuerza-hd.png',
+ '5':CATEGORY_BASE+'assets/categories/intermedia.webp',
+ '4':CATEGORY_BASE+'assets/categories/segunda-fuerza.webp',
+ '2':CATEGORY_BASE+'assets/categories/veteranos-35-user.png',
+ '1':CATEGORY_BASE+'assets/categories/veteranos-50.webp'
 };
-const categoryCrest=id=>CATEGORY_LOGOS[String(id)]||'./assets/liga-logo.webp';
+const categoryCrest=id=>{
+ const key=String(id||'');
+ try{const src=window.LJR_SEASON_LOGOS?.category?.(key);if(src)return imageSource(src)||CATEGORY_LOGOS[key]||LEAGUE_CREST}catch(_){}
+ return CATEGORY_LOGOS[key]||LEAGUE_CREST;
+};
 // Misma imagen institucional de «Sobre la Liga», no otro escudo ni un fondo añadido.
 const LEAGUE_CREST='./assets/branding/escudo-liga-camisetas-unificado-v1122.png?v=v1122-mismo-escudo-camisetas';
 function imageSource(value){
@@ -139,9 +146,10 @@ async function buildCanvas(r){
  contain(c,teamImg,823,65,168,145);
  c.textAlign='center';c.fillStyle='#b6d7fc';c.font='bold 32px sans-serif';c.fillText('LIGA JUVENTINO ROSAS',540,242);
  c.fillStyle='#55e5f6';c.font='bold 24px sans-serif';c.fillText('RECONOCIMIENTO DESTACADO',540,272);
- c.fillStyle='#ffffff';c.font='bold 74px sans-serif';c.fillText('JUGADOR DEL',540,290);c.fillText('PARTIDO',540,375);
- c.strokeStyle='#46d5ed';c.lineWidth=4;c.beginPath();c.moveTo(185,414);c.lineTo(895,414);c.stroke();
- photoCircle(c,playerImg,540,637,178);
+ // Separar subtítulo y título para que no se encimen en PNG Android.
+ c.fillStyle='#ffffff';c.font='bold 72px sans-serif';c.fillText('JUGADOR DEL',540,354);c.fillText('PARTIDO',540,432);
+ c.strokeStyle='#46d5ed';c.lineWidth=4;c.beginPath();c.moveTo(185,460);c.lineTo(895,460);c.stroke();
+ photoCircle(c,playerImg,540,666,167);
  c.fillStyle='#ffffff';
  const words=txt(r.player||'Jugador destacado').split(/\s+/);
  const lines=[];let line='';
