@@ -7,6 +7,8 @@ on:
     paths:
       - '.github/workflows/notifications-push-readiness.yml'
       - 'src/v1082-push-notifications.js'
+      - 'demo/src/v1082-push-notifications.js'
+      - 'tests/notification-push-*.test.mjs'
       - 'server/notifications/index.mjs'
 
 permissions:
