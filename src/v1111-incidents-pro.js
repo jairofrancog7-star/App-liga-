@@ -130,9 +130,11 @@ function open(){
     '<small>'+esc([x.team,x.player].filter(Boolean).join(' · ')||'Sin equipo / jugador')+'</small>'+
     (x.secondary?'<small>'+esc(x.type==='Sustitución'?'Entra: ':'Asistencia: ')+esc(x.secondary)+'</small>':'')+
     (x.note?'<small>'+esc(x.note)+'</small>':'')+
+    '<div data-photo-for="'+esc(x.id)+'"></div>'+
     '</div><div class="v1111-event-actions"><button type="button" data-edit="'+esc(x.id)+'" aria-label="Editar incidencia">✎</button>'+
     '<button type="button" data-delete="'+esc(x.id)+'" aria-label="Eliminar incidencia">×</button></div></article>';
   }).join(''):'<p class="v105-footnote">'+(all.length?'No hay eventos con este filtro.':'Sin incidencias locales en esta bitácora.')+'</p>';
+  window.LJR_INCIDENTS_MEDIA?.refresh?.(modal);
   q('[data-undo]').disabled=!undo;
   q('[data-export]').disabled=!all.length;
   q('[data-share]').disabled=!all.length;
@@ -141,11 +143,37 @@ function open(){
   editing=null;q('[data-min]').value='';q('[data-extra]').value='';q('[data-player]').value='';
   q('[data-secondary]').value='';q('[data-note]').value='';
   q('[data-add]').textContent='+ Guardar incidencia';q('[data-cancel]').hidden=true;
+  modal.dispatchEvent(new CustomEvent('ljr:incident:reset'));
  }
  function snapshot(){undo=entries.map(x=>Object.assign({},x))}
  function persist(){
   if(!save(entries)){status('No se pudo guardar en este dispositivo. Revisa el almacenamiento del navegador.');return false}
   render();return true;
+ }
+ // El respaldo manual solo agrega registros validos que no existan. Nunca sobrescribe.
+ function mergeIncoming(incoming){
+  if(!Array.isArray(incoming)||incoming.length>1500){status('Respaldo invalido o demasiado grande.');return {ok:false,added:0}}
+  const known=new Set(entries.map(x=>String(x.id))),add=[];
+  for(const raw of incoming){
+   if(!raw||typeof raw!=='object'||Array.isArray(raw))continue;
+   const id=String(raw.id||'');
+   if(!/^[a-zA-Z0-9_-]{1,80}$/.test(id)||known.has(id))continue;
+   const min=String(raw.min??'').trim(),extra=String(raw.extra??'0').trim();
+   if(min!==''&&(!/^\d{1,3}$/.test(min)||Number(min)>200))continue;
+   if(!/^\d{1,2}$/.test(extra)||Number(extra)>30)continue;
+   const type=String(raw.type||'Observación');
+   if(!ALL_TYPES.includes(type))continue;
+   const bounded=(v,max)=>String(v??'').slice(0,max);
+   add.push({id,min,extra,type,team:bounded(raw.team,120),player:bounded(raw.player,120),
+    secondary:bounded(raw.secondary,120),note:bounded(raw.note,900),matchId:bounded(raw.matchId,400),
+    matchLabel:bounded(raw.matchLabel,280),at:bounded(raw.at,64),updatedAt:bounded(raw.updatedAt,64)});
+   known.add(id);
+  }
+  if(!add.length){status('El respaldo no contiene registros nuevos validos.');return {ok:true,added:0}}
+  const before=entries;entries=[...entries,...add];
+  if(!save(entries)){entries=before;status('No queda espacio para importar el respaldo.');return {ok:false,added:0}}
+  undo=null;reset();render();
+  return {ok:true,added:add.length};
  }
  q('[data-cat]').addEventListener('change',()=>{matchOptions();reset();render()});
  q('[data-match]').addEventListener('change',()=>{teamOptions();reset();render();status('')});
@@ -172,6 +200,7 @@ function open(){
   if(editing)entries=entries.map(x=>x.id===editing?entry:x);else entries.push(entry);
   undo=before;
   if(!persist()){entries=before;undo=null;render();return}
+  modal.dispatchEvent(new CustomEvent('ljr:incident:saved',{detail:{entry}}));
   reset();status('Incidencia guardada en este dispositivo.');
  });
  q('[data-cancel]').addEventListener('click',()=>{reset();status('Edición cancelada.')});
@@ -189,7 +218,8 @@ function open(){
   q('[data-team]').value=item.team||'';fillPlayers();q('[data-player]').value=item.player||'';
   q('[data-secondary]').value=item.secondary||'';q('[data-note]').value=item.note||'';
   q('[data-add]').textContent='✓ Guardar cambios';q('[data-cancel]').hidden=false;
-  status('Editando incidencia '+String(item.min||'')+"'.");q('[data-min]').focus();
+  status('Editando incidencia '+String(item.min||'')+"'.");
+  modal.dispatchEvent(new CustomEvent('ljr:incident:edit',{detail:{entry:item}}));q('[data-min]').focus();
  });
  q('[data-undo]').addEventListener('click',()=>{
   if(!undo)return;const previous=entries;entries=undo;undo=null;
@@ -212,6 +242,7 @@ function open(){
  modal.addEventListener('click',e=>{if(e.target===modal)close()});
  document.addEventListener('keydown',keys);
  matchOptions();secondaryLabel();render();
+ window.LJR_INCIDENTS_MEDIA?.attach?.({modal,getEntries:()=>entries,getVisible:visible,getChosen:chosen,merge:mergeIncoming,status});
  if(!matchList.length)status('Aún no hay partidos oficiales cargados. Puedes usar la bitácora general.');
 }
 const style=document.createElement('style');
