@@ -6,7 +6,7 @@ if(window.__LJR_V1082_PUSH__)return;
 window.__LJR_V1082_PUSH__=true;
 const KEY='ljr-push-preferences-v1082';
 const CATEGORIES=[['all','Todas'],['3','Primera'],['5','Intermedia'],['4','Segunda'],['2','Veteranos 35+'],['1','Veteranos 50+']];
-const FIELDS=['','Campo 1','Campo 2','Campo 3','Campo 4','Fraccionamiento','Romerillo','San Julián','Franco Tavera','Cuenda'];
+const FIELDS=['','Campo 1','Campo 2','Campo 3','Campo 4','Fraccionamiento','Romerillo','San Julián','Franco Tavera','Cuenda','Campo de Fútbol de Pozos','Campo Cerrito de Gasca','Campo San José de la Montaña','Campo San Juan de la Cruz','Campo Rincón de Centeno'];
 const TYPES=[['suspension','Suspensiones'],['cancha','Cambios de cancha'],['horario','Cambios de horario'],['jornada','Jornadas'],['partido','Partidos'],['resultados','Resultados'],['junta','Juntas'],['registro','Inscripciones'],['clima','Clima']];
 const read=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch{return {}}};
 const $=(s,root=document)=>root.querySelector(s);
