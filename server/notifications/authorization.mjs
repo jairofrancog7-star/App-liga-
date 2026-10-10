@@ -5,6 +5,8 @@ export const ROLE_PERMS=Object.freeze({
  editor:Object.freeze(['notices:read','notices:write','cedulas:read','cedulas:write']),
  disciplina:Object.freeze(['notices:read','cedulas:read','cedulas:review']),
  arbitro:Object.freeze(['cedulas:read','cedulas:write','cedulas:sign']),
+ // Delegados: solo lectura de avisos; nunca edición, publicación ni cambios de cargo.
+ delegado:Object.freeze(['notices:read']),
  lector:Object.freeze([])
 });
 export const safeSubject=value=>/^[A-Za-z0-9:_-]{1,128}$/.test(String(value||''));
