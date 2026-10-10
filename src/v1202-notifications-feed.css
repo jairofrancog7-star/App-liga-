@@ -87,3 +87,49 @@ body[data-app-route="notifications"] .v46-ref-device button{font:700 12px/1.2 sy
  body[data-app-route="notifications"] .v840-notice-row{grid-template-columns:49px minmax(0,1fr) 12px!important;gap:5px!important}
  body[data-app-route="notifications"] .v840-logos{transform:scale(.87);transform-origin:left center}
 }
+
+
+/* V1202 — accesos de administración en Notificaciones: iconos visibles, mismas medidas */
+body[data-app-route="notifications"] #screen > .ljr-cms-entry{
+ box-sizing:border-box!important;display:grid!important;
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;
+ grid-auto-rows:minmax(57px,auto)!important;align-items:stretch!important;
+ width:calc(100% - 24px)!important;max-width:880px!important;
+ margin:11px auto 14px!important;padding:10px!important;
+ border:1px solid #3866b5!important;border-radius:17px!important;
+ background:linear-gradient(160deg,#123783,#0a2069)!important;
+ box-shadow:0 8px 20px rgba(0,4,39,.19)!important
+}
+body[data-app-route="notifications"] #screen > .ljr-cms-entry > button.ljr-cms-quick-button{
+ box-sizing:border-box!important;display:grid!important;
+ grid-template-columns:26px minmax(0,1fr) 9px!important;gap:5px!important;
+ align-items:center!important;min-width:0!important;width:100%!important;
+ min-height:56px!important;height:100%!important;margin:0!important;
+ padding:8px!important;border:1px solid #376dbb!important;
+ border-radius:12px!important;background:#173d88!important;color:#fff!important;
+ font:750 11.5px/1.2 system-ui,sans-serif!important;text-align:left!important;
+ white-space:normal!important;overflow:visible!important
+}
+body[data-app-route="notifications"] #screen > .ljr-cms-entry .ljr-cms-quick-icon{
+ display:grid!important;place-items:center!important;width:26px!important;height:26px!important;
+ border-radius:8px!important;background:#2056ab!important;color:#8be9ff!important
+}
+body[data-app-route="notifications"] #screen > .ljr-cms-entry .ljr-cms-quick-icon svg{width:18px!important;height:18px!important}
+body[data-app-route="notifications"] #screen > .ljr-cms-entry .ljr-cms-quick-title{
+ display:block!important;min-width:0!important;overflow-wrap:anywhere!important;
+ white-space:normal!important;font:750 11.5px/1.2 system-ui,sans-serif!important;color:#fff!important
+}
+body[data-app-route="notifications"] #screen > .ljr-cms-entry .ljr-cms-quick-arrow{
+ width:9px!important;color:#88eaff!important;font:750 17px/1 system-ui,sans-serif!important
+}
+body[data-app-route="notifications"] #screen > .ljr-cms-entry > button.ljr-cms-quick-button:focus-visible{
+ outline:2px solid #a5f3ff!important;outline-offset:2px!important
+}
+@media(max-width:365px){
+ body[data-app-route="notifications"] #screen > .ljr-cms-entry{gap:6px!important;padding:8px!important}
+ body[data-app-route="notifications"] #screen > .ljr-cms-entry > button.ljr-cms-quick-button{
+  grid-template-columns:23px minmax(0,1fr) 7px!important;gap:4px!important;padding:6px!important;font-size:10.5px!important
+ }
+ body[data-app-route="notifications"] #screen > .ljr-cms-entry .ljr-cms-quick-icon{width:23px!important;height:23px!important}
+ body[data-app-route="notifications"] #screen > .ljr-cms-entry .ljr-cms-quick-title{font-size:10.5px!important}
+}
