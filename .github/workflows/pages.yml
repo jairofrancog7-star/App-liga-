@@ -40,7 +40,9 @@ jobs:
         run: npm install --prefer-offline --no-audit --no-fund
 
       - name: Test runtime and official data regressions
-        run: node --test tests/*.test.mjs
+        run: |
+          node scripts/ensure-demo-notice-css.mjs
+          node --test tests/*.test.mjs
 
       - name: Build for GitHub Pages
         env:
