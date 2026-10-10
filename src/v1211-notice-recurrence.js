@@ -47,7 +47,7 @@ function repeatFromText(text){
   if(/lunes\s+a\s+viernes|entre semana|dias habiles/.test(t))return 'weekdays';
   if(/todos? los? dias|diari[oa]|cada dia/.test(t))return 'daily';
   if(/cada mes|mensual|todos? los? meses/.test(t))return 'monthly';
-  if(/semanal|cada semana|todos? los? (domingo|lunes|martes|miercoles|jueves|viernes|sabado)\b|cada (domingo|lunes|martes|miercoles|jueves|viernes|sabado)\b/.test(t))return 'weekly';
+  if(/semanal|cada semana|todos? los? (domingos?|lunes|martes|miercoles|jueves|viernes|sabados?)\b|cada (domingos?|lunes|martes|miercoles|jueves|viernes|sabados?)\b/.test(t))return 'weekly';
   return '';
 }
 function spanish(text,now=Date.now()){
@@ -72,8 +72,9 @@ function spanish(text,now=Date.now()){
     else if(/\bmanana\b/.test(raw))data.date=addDays(base,1);
     else if(/\bhoy\b/.test(raw))data.date=base;
     else if((m=raw.match(/\ben\s+(\d{1,2})\s+dias?\b/)))data.date=addDays(base,+m[1]);
-    else if((m=raw.match(/\b(?:el\s+|este\s+|proximo\s+)?(domingo|lunes|martes|miercoles|jueves|viernes|sabado)\b/))){
-      const ms=toUtcDay(base),diff=(DAYS[m[1]]-new Date(ms).getUTCDay()+7)%7;
+    else if((m=raw.match(/\b(?:el\s+|este\s+|proximo\s+)?(domingos?|lunes|martes|miercoles|jueves|viernes|sabados?)\b/))){
+      const weekday=m[1]==='domingos'?'domingo':m[1]==='sabados'?'sabado':m[1];
+      const ms=toUtcDay(base),diff=(DAYS[weekday]-new Date(ms).getUTCDay()+7)%7;
       data.date=addDays(base,diff||(raw.includes('hoy ')?0:7));
     }
   }
