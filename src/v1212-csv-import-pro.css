@@ -188,6 +188,8 @@ html body .v1212-csv-modal .csvpro-warnings{background:#102b75!important;border-
    scroll interno y ningún control queda debajo de barras fijas. */
 @media(max-width:1023px){
  html body > .v105-modal.v1107-admin-modal.v1212-csv-modal{
+   z-index:2147483000!important;
+   pointer-events:auto!important;
    position:fixed!important;
    inset:88px 0 0!important;
    width:100%!important;
