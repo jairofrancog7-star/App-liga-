@@ -83,7 +83,7 @@ function markup(){
  '<details class="v1082-types"><summary>Elegir tipos de aviso</summary><div>'+
  TYPES.map(([id,label])=>'<label><input type="checkbox" value="'+id+'" data-v1082-type '+(p.types.includes(id)?'checked':'')+'>'+esc(label)+'</label>').join('')+
  '</div></details>'+
- '<div class="v1082-actions"><button type="button" data-v1082-toggle>Activar avisos</button><button type="button" data-v1082-save>Guardar filtros</button></div>'+
+ '<div class="v1082-actions"><button type="button" data-v1082-toggle>Activar avisos</button><button type="button" data-v1082-save>Guardar filtros</button><button type="button" data-v1082-self-test disabled>Probar Push con la página cerrada · 15 s</button></div>'+
  '<p class="v1082-status" data-v1082-status aria-live="polite">Publicaciones oficiales de la Liga, verificadas antes del envío.</p>'+
  '<small class="v1082-note">La Liga decide oficialmente los cambios; el pronóstico del tiempo no cancela partidos. Solo se envían avisos si el administrador los publica en el sistema oficial.</small>'+
  '</section>';
@@ -105,8 +105,10 @@ async function subscription(){
 }
 async function syncState(root){
  const label=$('[data-v1082-state]',root),toggle=$('[data-v1082-toggle]',root);
+ const testButton=$('[data-v1082-self-test]',root);
  if(!label||!toggle)return;
  toggle.disabled=false;
+ if(testButton)testButton.disabled=true;
  if(!supported()){
   label.textContent='Web Push no compatible con este navegador';
   toggle.disabled=true;
@@ -139,6 +141,7 @@ async function syncState(root){
    toggle.disabled=true;return;
   }
   const enabled=!!sub;
+  if(testButton)testButton.disabled=!enabled||Notification.permission!=='granted';
   toggle.dataset.active=String(enabled);
   toggle.textContent=enabled?'Desactivar avisos':'Activar avisos';
   if(Notification.permission==='denied'){
@@ -204,6 +207,17 @@ async function saveFilters(root){
  }
 }
 
+// Probar desde el servidor el Push de ESTE teléfono. No publica avisos oficiales.
+async function selfTest(root){
+ if(!supported()||Notification.permission!=='granted')
+  throw Error('Primero concede el permiso de notificaciones de Chrome.');
+ const sub=await subscription();
+ if(!sub)throw Error('Este teléfono aún no tiene suscripción Push. Pulsa Activar avisos.');
+ const answer=await server('self-test',{method:'POST',body:JSON.stringify({subscription:sub.toJSON()})});
+ if(!answer?.scheduled)throw Error('El servidor no confirmó la prueba privada.');
+ status(root,'✓ Prueba privada programada en 15 segundos. Cierra esta pestaña ahora y revisa si llega el aviso. Si no aparece, revisa los permisos de Chrome y batería de Android. El servidor solo confirma el intento, no su recepción.');
+}
+
 /* Reutilizar el panel Push existente dentro del registro, sin segundo proveedor
    ni solicitar permiso del navegador automáticamente. */
 window.LJR_V1082_PUSH_PANEL={
@@ -234,7 +248,7 @@ window.LJR_V1082_PUSH_PANEL={
 };
 
 document.addEventListener('click',async event=>{
- const button=event.target.closest('[data-v1082-toggle],[data-v1082-save]');
+ const button=event.target.closest('[data-v1082-toggle],[data-v1082-save],[data-v1082-self-test]');
  if(!button||working)return;
  const root=button.closest('[data-v1082-push]');if(!root)return;
  event.preventDefault();working=true;
@@ -242,7 +256,8 @@ document.addEventListener('click',async event=>{
  status(root,'Guardando preferencias…');
  let message='',failed=false;
  try{
-  if(button.hasAttribute('data-v1082-save'))await saveFilters(root);
+  if(button.hasAttribute('data-v1082-self-test'))await selfTest(root);
+  else if(button.hasAttribute('data-v1082-save'))await saveFilters(root);
   else{
    const sub=await subscription();
    if(sub)await disable(root);else await enable(root);
