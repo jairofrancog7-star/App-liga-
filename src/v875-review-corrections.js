@@ -119,6 +119,66 @@ function meeting(root){
  let old={};try{old=JSON.parse(localStorage.getItem('ljr-meeting-options-v875')||'{}')}catch{}
  const topics=[['Resultados de jornada','chart'],['Programación y campos','calendar'],['Arbitraje y disciplina','shield'],['Propuestas del buzón','message'],['Equipos y registros','users']];
  wrap.innerHTML='<label><span class="v919-field-label">'+v919MeetingIcon('clock')+'Hora</span><input data-meeting-field="time" type="time" value="'+esc(old.time||'19:00')+'"></label><label><span class="v919-field-label">'+v919MeetingIcon('pin')+'Lugar</span><input data-meeting-field="place" value="'+esc(old.place||'')+'" placeholder="Sede de la junta"></label><label><span class="v919-field-label">'+v919MeetingIcon('user')+'Responsable</span><input data-meeting-field="owner" value="'+esc(old.owner||'')+'" placeholder="Nombre del responsable"></label><label><span class="v919-field-label">'+v919MeetingIcon('flag')+'Fecha límite de acuerdos</span><input data-meeting-field="deadline" type="date" value="'+esc(old.deadline||'')+'"></label><label class="wide"><span class="v919-field-label">'+v919MeetingIcon('list')+'Pendientes y seguimiento</span><textarea data-meeting-field="tasks" rows="4" placeholder="Acuerdo · responsable · fecha límite">'+esc(old.tasks||'')+'</textarea></label><div class="v919-topic-head wide"><span>AGREGAR AL ORDEN DEL DÍA</span><small>Toca un tema para sumarlo a la agenda</small></div><div class="v875-agenda-chips wide">'+topics.map(t=>'<button type="button" data-add-topic="'+esc(t[0])+'"><span>'+v919MeetingIcon(t[1])+'</span><b>'+esc(t[0])+'</b></button>').join('')+'</div>';
+ // V1166 · Datos de sede y mesa directiva, desde el reglamento 2026–2027.
+ // Mantener data-meeting-field para que Guardar/PDF/PNG/historial lean los mismos datos.
+ const STANDARD_VENUE='Unidad Deportiva Sur, Juventino Rosas, Gto.';
+ const venue=wrap.querySelector('[data-meeting-field="place"]');
+ if(venue){
+  venue.value=old.place||STANDARD_VENUE;
+  venue.setAttribute('list','v1166-venue-list');
+  venue.setAttribute('autocomplete','off');
+  venue.placeholder='Escribe o selecciona la sede';
+  const suggestions=document.createElement('datalist');suggestions.id='v1166-venue-list';
+  suggestions.innerHTML='<option value="'+esc(STANDARD_VENUE)+'"></option><option value="Otra sede de la Liga"></option>';
+  venue.after(suggestions);
+  const choose=document.createElement('select');choose.className='v1166-meeting-select';
+  choose.dataset.v1166Venue='1';choose.setAttribute('aria-label','Seleccionar sede de la junta');
+  choose.innerHTML='<option value="'+esc(STANDARD_VENUE)+'">Unidad Deportiva Sur · Sede habitual</option><option value="_custom">Otra sede · escribir abajo</option>';
+  choose.value=venue.value===STANDARD_VENUE?STANDARD_VENUE:'_custom';
+  venue.before(choose);
+  choose.addEventListener('change',()=>{
+   venue.value=choose.value==='_custom'?'':STANDARD_VENUE;
+   venue.dispatchEvent(new Event('input',{bubbles:true}));
+   if(choose.value==='_custom')venue.focus();
+  });
+  venue.addEventListener('input',()=>{choose.value=venue.value===STANDARD_VENUE?STANDARD_VENUE:'_custom'});
+ }
+ const roleNames={president:'Florencio Franco Lerma',secretary:'Javier Gonzalez Lopez'};
+ const roleLabels={president:'Presidente de la Liga',secretary:'Secretario de la Liga'};
+ const roles=document.createElement('div');roles.className='v1166-meeting-roles';
+ roles.setAttribute('aria-label','Mesa directiva de la junta');
+ Object.keys(roleNames).forEach(role=>{
+  const saved=typeof old[role]==='string'?old[role]:roleNames[role];
+  const official=roleNames[role];
+  const label=document.createElement('label');label.className='v1166-meeting-role';
+  const text=document.createElement('span');text.className='v919-field-label';text.textContent=roleLabels[role];
+  const select=document.createElement('select');select.dataset.meetingField=role;select.className='v1166-meeting-select';
+  const entries=[['','Por confirmar'],[official,official]];
+  if(saved&&saved!==official)entries.push([saved,saved+' · registrado']);
+  entries.push(['_custom','Otro nombre…']);
+  entries.forEach(([value,title])=>{const option=document.createElement('option');option.value=value;option.textContent=title;select.append(option)});
+  select.value=saved;
+  const custom=document.createElement('input');custom.type='text';custom.maxLength=120;custom.className='v1166-meeting-other';
+  custom.placeholder='Escribe el nombre completo';custom.setAttribute('aria-label','Otro '+roleLabels[role]);
+  custom.hidden=true;
+  const hint=document.createElement('small');hint.className='v1166-meeting-hint';
+  hint.textContent='Cargo tomado del Reglamento 2026–2027; se puede cambiar para esta junta.';
+  select.addEventListener('change',()=>{
+   if(select.value!=='_custom'){custom.hidden=true;select.dispatchEvent(new Event('input',{bubbles:true}));return}
+   custom.hidden=false;custom.value='';custom.focus();
+  });
+  custom.addEventListener('input',()=>{
+   const value=custom.value.trim();
+   let opt=select.querySelector('[data-v1166-custom-option]');
+   if(!opt){opt=document.createElement('option');opt.dataset.v1166CustomOption='';select.append(opt)}
+   opt.value=value||'_custom';opt.textContent=value||'Escribe el nombre completo';
+   select.value=value||'_custom';
+   select.dispatchEvent(new Event('input',{bubbles:true}));
+  });
+  label.append(text,select,custom,hint);roles.append(label);
+ });
+ const ownerLabel=wrap.querySelector('[data-meeting-field="owner"]')?.closest('label');
+ if(ownerLabel)ownerLabel.before(roles);else wrap.prepend(roles);
  form.append(wrap);
  const dialog=meetingModal?.querySelector('.v105-dialog');
  if(dialog&&!dialog.querySelector('[data-v919-meeting-hero]')){
@@ -156,7 +216,7 @@ function meeting(root){
   const nl=value=>esc(value||'—').replace(/\n/g,'<br>');
   const data={
    date:get('[data-x="date"]'),time:get('[data-meeting-field="time"]'),place:get('[data-meeting-field="place"]'),
-   attendance:get('[data-x="attendance"]'),owner:get('[data-meeting-field="owner"]'),deadline:get('[data-meeting-field="deadline"]'),
+   attendance:get('[data-x="attendance"]'),owner:get('[data-meeting-field="owner"]'),president:get('[data-meeting-field="president"]'),secretary:get('[data-meeting-field="secretary"]'),deadline:get('[data-meeting-field="deadline"]'),
    agenda:get('[data-x="agenda"]'),agreements:get('[data-x="agreements"]'),tasks:get('[data-meeting-field="tasks"]')
   };
   // Imagen ya sin el fondo oscuro, tomada del mismo escudo oficial de la app.
@@ -168,7 +228,7 @@ function meeting(root){
    '.meta{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;margin-bottom:16px}.meta div{border:1px solid #cbd5e1;border-radius:8px;padding:8px 10px;min-height:48px}.meta b{display:block;font-size:8.5pt;color:#0b4fb3;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}.section{break-inside:avoid;margin:0 0 13px}.section h2{margin:0 0 6px;font-size:11pt;color:#0b4fb3;border-bottom:1px solid #dbe3f0;padding-bottom:4px}.box{border:1px solid #cbd5e1;border-radius:8px;padding:10px 12px;min-height:52px;white-space:normal}.footer{margin-top:18px;padding-top:8px;border-top:1px solid #cbd5e1;color:#64748b;font-size:8.5pt;text-align:center}'+
    '@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.page{page-break-after:auto}}</style></head><body><main class="page">'+
    '<header class="head"><img class="head-logo" src="'+esc(leagueLogo)+'" alt="Liga Juventino Rosas"><div class="head-copy"><div class="kicker">LIGA MUNICIPAL DE FÚTBOL JUVENTINO ROSAS</div><h1>Minuta de junta semanal</h1><p>Documento generado desde la aplicación oficial de la Liga.</p></div></header>'+
-   '<section class="meta"><div><b>Fecha de junta</b>'+esc(fmtDate(data.date))+'</div><div><b>Hora</b>'+esc(data.time||'—')+'</div><div><b>Lugar</b>'+esc(data.place||'—')+'</div><div><b>Responsable</b>'+esc(data.owner||'—')+'</div><div><b>Asistencia</b>'+esc(data.attendance||'—')+'</div><div><b>Fecha límite de acuerdos</b>'+esc(fmtDate(data.deadline))+'</div></section>'+
+   '<section class="meta"><div><b>Fecha de junta</b>'+esc(fmtDate(data.date))+'</div><div><b>Hora</b>'+esc(data.time||'—')+'</div><div><b>Sede</b>'+esc(data.place||'—')+'</div><div><b>Responsable</b>'+esc(data.owner||'—')+'</div><div><b>Presidente (registrado)</b>'+esc(data.president||'Por confirmar')+'</div><div><b>Secretario (registrado)</b>'+esc(data.secretary||'Por confirmar')+'</div><div><b>Asistencia</b>'+esc(data.attendance||'—')+'</div><div><b>Fecha límite de acuerdos</b>'+esc(fmtDate(data.deadline))+'</div></section>'+
    '<section class="section"><h2>Orden del día</h2><div class="box">'+nl(data.agenda)+'</div></section>'+
    '<section class="section"><h2>Acuerdos / minuta</h2><div class="box">'+nl(data.agreements)+'</div></section>'+
    '<section class="section"><h2>Pendientes y seguimiento</h2><div class="box">'+nl(data.tasks)+'</div></section>'+
