@@ -32,7 +32,7 @@ body[data-app-route="historyLog"] .v164-history-meta b{font-size:11px!important;
 body[data-app-route="historyLog"] .v164-history-score{grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr)!important;gap:7px!important;padding:15px 10px!important}
 body[data-app-route="historyLog"] .v164-history-score strong{font-size:23px!important;white-space:nowrap!important;letter-spacing:-.04em}
 body[data-app-route="historyLog"] .v164-history-team{display:flex!important;min-width:0!important;gap:6px!important;overflow:visible!important;align-items:center!important}
-body[data-app-route="historyLog"] .v164-history-team em{display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:3!important;line-clamp:3!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:normal!important;overflow-wrap:anywhere!important;font-size:11px!important;line-height:1.25!important;font-style:normal!important;text-align:left!important}
+body[data-app-route="historyLog"] .v164-history-team em{display:block!important;overflow:visible!important;text-overflow:clip!important;white-space:normal!important;overflow-wrap:anywhere!important;font-size:11px!important;line-height:1.25!important;font-style:normal!important;text-align:left!important}
 body[data-app-route="historyLog"] .v164-history-team.away em{text-align:right!important}
 body[data-app-route="historyLog"] .v164-history-logo{flex:0 0 38px!important;width:38px!important;min-width:38px!important;height:38px!important;border:0!important;border-radius:0!important;background:transparent!important;overflow:visible!important}
 body[data-app-route="historyLog"] .v164-history-logo img{display:block;width:100%!important;height:100%!important;object-fit:contain!important;background:transparent!important;filter:none!important}
@@ -65,3 +65,6 @@ body[data-app-route="historyLog"] .v164-history-feedback{margin:0 16px;min-heigh
   body[data-app-route="historyLog"] .v164-history-logo{flex-basis:31px!important;width:31px!important;min-width:31px!important;height:31px!important}
   body[data-app-route="historyLog"] .v164-history-team em{font-size:10px!important}
 }
+
+/* Respetar las iniciales cuando un escudo no carga. */
+body[data-app-route="historyLog"] .v164-history-logo img[style*="display: none"]{display:none!important}
