@@ -902,6 +902,28 @@ function schedule(){
     }
   })});
 }
+/* V1074: hoja de salida independiente del render del partido. Los
+   actualizadores de otras pantallas pueden sustituir el HTML de #v612
+   tras pulsar X; el dialogo persistente en <body> evita que desaparezca. */
+function v1074RemoveStableGameExit(){
+  document.getElementById('v1074-quiz-exit-sheet')?.remove();
+}
+function v1074ShowStableGameExit(){
+  let root=document.getElementById('v1074-quiz-exit-sheet');
+  if(!root){root=document.createElement('div');root.id='v1074-quiz-exit-sheet';document.body.appendChild(root)}
+  root.innerHTML=exitModal('quiz');
+}
+window.addEventListener('click',function(e){
+  if(!(e.target instanceof Element))return;
+  const choice=e.target.closest('#v1074-quiz-exit-sheet [data-v531-exit-confirm],#v1074-quiz-exit-sheet [data-v531-exit-cancel]');
+  if(!choice)return;
+  e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+  const confirmed=choice.hasAttribute('data-v531-exit-confirm');
+  v1074RemoveStableGameExit();
+  if(confirmed){v614ClearQuizCountdown();quiz.mode='hub';quiz.exit=false;quiz.answered=false;render(false)}
+  else{quiz.exit=false}
+},true);
+window.addEventListener('hashchange',v1074RemoveStableGameExit);
 /* V1073: Capturar la X de la partida antes de los manejadores globales.
    En Android otros controles document-level consumían su click y la hoja
    de confirmación no se montaba, aunque funcionaba la X del 3-2-1. */
@@ -910,8 +932,7 @@ window.addEventListener('click',function(e){
   const hit=e.target.closest('#v612-quiz-portal [data-v531-quiz-close]');
   if(!hit)return;
   e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-  document.body.dataset.quizGameCloseCaptured='1';
-  quiz.exit=true;v1050NotifyOpen=false;render(false);
+  quiz.exit=true;v1050NotifyOpen=false;v1074ShowStableGameExit();
 },true);
 document.addEventListener('click',function(e){
   const v766Start=e.target.closest('[data-v766-quiz-open]');
