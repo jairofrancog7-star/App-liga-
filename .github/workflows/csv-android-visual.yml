@@ -5,6 +5,10 @@ on:
     branches: [main]
     paths:
       - 'tests/csv-android-visual.mjs'
+      - 'src/v1212-csv-import-pro.css'
+      - 'src/v1212-csv-import-pro.js'
+      - 'src/v1222-csv-local-ai.js'
+      - 'src/v1222-csv-parser-core.js'
       - '.github/workflows/csv-android-visual.yml'
 permissions:
   contents: read
