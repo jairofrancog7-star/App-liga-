@@ -58,12 +58,12 @@ html body .liga-media-modal .ljr-editor-dialog :is(.ljr-editor-tools,.ljr-editor
 }
 /* Subir CSV: sin azul ajeno, icono centrado y altura correcta. */
 html body > .v105-modal.v1212-csv-modal .v105-dialog{
-  background:linear-gradient(160deg,#112d83,#090e68 56%,#05045f)!important;
-  border-color:var(--ljr-v1340-border)!important;
+  background:linear-gradient(165deg,#0d2557,#091b48)!important;
+  border-color:var(--ljr1310-edge,#426bb0)!important;
 }
 html body .v1212-csv-modal :is(.csvpro-drop,.csvpro-summary>div,.csvpro-status,.csvpro-warnings){
-  background:linear-gradient(155deg,#173484,#0e1f6f)!important;
-  border-color:#567dcc!important;
+  background:linear-gradient(165deg,#0d2557,#091b48)!important;
+  border-color:var(--ljr1310-edge,#426bb0)!important;
 }
 html body .v1212-csv-modal .csvpro-drop{
   min-height:150px!important;gap:10px!important;border-style:dashed!important;
@@ -72,20 +72,20 @@ html body .v1212-csv-modal .csvpro-upload{
   display:grid!important;place-items:center!important;
   width:56px!important;height:56px!important;min-width:56px!important;
   font-size:32px!important;line-height:1!important;
-  background:linear-gradient(155deg,#1c69d4,#0d47a1)!important;
+  background:linear-gradient(155deg,#123367,#0b2455)!important;
   border:1px solid #85b3ed!important;border-radius:15px!important;
 }
 html body .v1212-csv-modal :is(select,.csvpro-filters input){
-  background:var(--ljr-v1340-control)!important;border-color:#557fc9!important;
+  background:#091a46!important;border-color:var(--ljr1310-edge,#426bb0)!important;
 }
 html body .v1212-csv-modal .csvpro-button{
   min-height:46px!important;display:inline-flex!important;
   align-items:center!important;justify-content:center!important;
-  text-align:center!important;background:#153681!important;
-  border-color:#5681cb!important;color:#fff!important;
+  text-align:center!important;background:linear-gradient(155deg,#123367,#0b2455)!important;
+  border-color:var(--ljr1310-edge,#426bb0)!important;color:#fff!important;
 }
 html body .v1212-csv-modal .csvpro-button.csvpro-primary{
-  background:linear-gradient(145deg,#1c69d4,#0d47a1)!important;color:#fff!important;
+  background:linear-gradient(155deg,#19407f,#102b62)!important;color:#fff!important;
 }
 /* Asistente de consulta e historial. */
 html body[data-app-route="historyLog"] .v1215-panel{
@@ -135,33 +135,33 @@ html body:is([data-app-route="venues"],[data-app-route="weatherFields"]) #screen
 }
 /* Encuesta: quitar violetas, evitar separaciones artificiales, iconos equilibrados. */
 html body > .v105-modal.v105-poll-modal > .v105-dialog{
-  background:linear-gradient(160deg,#111d72,#080865 63%,#05045f)!important;
-  border-color:#4d70bf!important;
+  background:linear-gradient(165deg,#0d2557,#091b48)!important;
+  border-color:var(--ljr1310-edge,#426bb0)!important;
 }
 html body > .v105-modal.v105-poll-modal .v105-poll-intro{
   display:block!important;height:auto!important;min-height:0!important;
   max-height:none!important;align-self:auto!important;
-  background:linear-gradient(160deg,#172e7e,#0d1b6c)!important;
-  border-color:#5579c6!important;
+  background:linear-gradient(165deg,#0d2557,#091b48)!important;
+  border-color:var(--ljr1310-edge,#426bb0)!important;
 }
 html body > .v105-modal.v105-poll-modal .v105-poll-grid{
   align-content:start!important;grid-auto-rows:max-content!important;
 }
 html body > .v105-modal.v105-poll-modal .v105-poll-grid > .v105-card{
   min-height:84px!important;
-  background:linear-gradient(160deg,#152d80,#0c196b)!important;
-  border-color:#4f74c3!important;
+  background:linear-gradient(165deg,#0d2557,#091b48)!important;
+  border-color:var(--ljr1310-edge,#426bb0)!important;
 }
 html body > .v105-modal.v105-poll-modal .v105-poll-grid .v105-icon{
   display:grid!important;place-items:center!important;
   width:48px!important;height:48px!important;
-  background:#16398c!important;color:#d4e8ff!important;
+  background:linear-gradient(165deg,#0d2557,#091b48)!important;color:#d4e8ff!important;
 }
 html body > .v105-modal.v105-poll-modal .v105-poll-grid .v105-icon svg{
   width:27px!important;height:27px!important;stroke:currentColor!important;
 }
 html body > .v105-modal.v105-poll-modal .v105-poll-grid .v105-arrow{
-  color:#d9eaff!important;background:#173780!important;
+  color:#d9eaff!important;background:linear-gradient(165deg,#0d2557,#091b48)!important;
 }
 /* Publicaciones: mismos recuadros azul oscuro, iconos proporcionados. */
 html body[data-app-route="publicationCenter"] .v642-publications-card{
@@ -198,51 +198,51 @@ html body[data-app-route="publicationCenter"] .v1004-pub-editor{
 /* Delegados y árbitros: controles y cuadros de una sola gama. */
 html body > .v105-modal.v1126-delegate-modal > .v105-dialog,
 html body > .v105-modal.v1125-officials-modal > .v105-dialog{
-  background:linear-gradient(160deg,#142e82,#0a146a 55%,#05045f)!important;
-  border-color:#5476c6!important;
+  background:linear-gradient(165deg,#0d2557,#091b48)!important;
+  border-color:var(--ljr1310-edge,#426bb0)!important;
 }
 html body > .v105-modal.v1126-delegate-modal :is(.v1126-metrics>span,.v1126-editor,.v1126-extra),
 html body > .v105-modal.v1125-officials-modal :is(.v1125-stats>span,.v1125-editor,.v1126-tool){
-  background:linear-gradient(150deg,#132d7f,#0b186c)!important;
-  border-color:#5279c7!important;
+  background:linear-gradient(165deg,#0d2557,#091b48)!important;
+  border-color:var(--ljr1310-edge,#426bb0)!important;
 }
 html body > .v105-modal.v1126-delegate-modal :is(.v1126-toolbar,.v1126-form,.v1126-extra) :is(input:not([type=checkbox]),select,textarea),
 html body > .v105-modal.v1125-officials-modal :is(.v1125-toolbar,.v1125-form) :is(input,select,textarea){
-  background:#0c175f!important;border-color:#5479c6!important;
+  background:#091a46!important;border-color:var(--ljr1310-edge,#426bb0)!important;
   color:#fff!important;min-width:0!important;
 }
 html body > .v105-modal.v1126-delegate-modal :is(.v1126-tools,.v1126-save) button,
 html body > .v105-modal.v1125-officials-modal :is(.v1125-header,.v1125-form-actions) button{
-  background:linear-gradient(155deg,#193b8b,#0f2472)!important;
-  border-color:#5f84d0!important;color:#fff!important;
+  background:linear-gradient(155deg,#123367,#0b2455)!important;
+  border-color:var(--ljr1310-edge,#426bb0)!important;color:#fff!important;
   min-height:45px!important;line-height:1.25!important;
 }
 html body > .v105-modal.v1126-delegate-modal :is(.v1126-tools,.v1126-save) button:first-child{
-  background:linear-gradient(145deg,#1c69d4,#0d47a1)!important;
+  background:linear-gradient(155deg,#19407f,#102b62)!important;
 }
 html body > .v105-modal.v1126-delegate-modal .v1126-metrics b{
   color:#d4ebff!important;
 }
 /* Incidencias del partido: no tocar tipo, validaciones ni registro. */
 html body > .v105-modal.v1111-incidents-modal > .v105-dialog{
-  background:linear-gradient(160deg,#132f83,#0a166b 58%,#05045f)!important;
-  border-color:#5276c6!important;
+  background:linear-gradient(165deg,#0d2557,#091b48)!important;
+  border-color:var(--ljr1310-edge,#426bb0)!important;
 }
 html body > .v105-modal.v1111-incidents-modal :is(.v1111-context,.v1111-form,.v1230-assistant){
-  background:linear-gradient(160deg,#143080,#0c196d)!important;
-  border-color:#547bc6!important;
+  background:linear-gradient(165deg,#0d2557,#091b48)!important;
+  border-color:var(--ljr1310-edge,#426bb0)!important;
 }
 html body > .v105-modal.v1111-incidents-modal :is(.v1111-shortcuts button,.v1111-filters button,.v1111-bottom button,.v1111-event-actions button){
   min-height:47px!important;
   display:inline-flex!important;align-items:center!important;justify-content:center!important;
   gap:7px!important;line-height:1.3!important;
-  background:#193b8b!important;border-color:#527bc5!important;color:#fff!important;
+  background:linear-gradient(155deg,#123367,#0b2455)!important;border-color:var(--ljr1310-edge,#426bb0)!important;color:#fff!important;
 }
 html body > .v105-modal.v1111-incidents-modal .v1111-shortcuts button.active{
-  background:linear-gradient(145deg,#1c69d4,#0d47a1)!important;
+  background:linear-gradient(155deg,#19407f,#102b62)!important;
 }
 html body > .v105-modal.v1111-incidents-modal :is(input,select,textarea){
-  background:#0c175f!important;border-color:#5479c5!important;color:#fff!important;
+  background:#091a46!important;border-color:var(--ljr1310-edge,#426bb0)!important;color:#fff!important;
 }
 /* Coherencia táctil y accesibilidad sin interceptar acciones. */
 html body :is(.liga-media-modal .ljr-editor-dialog,.v105-modal.v1212-csv-modal,.v105-modal.v105-poll-modal,.v105-modal.v1126-delegate-modal,.v105-modal.v1125-officials-modal,.v105-modal.v1111-incidents-modal) :is(button,summary,a):focus-visible,
