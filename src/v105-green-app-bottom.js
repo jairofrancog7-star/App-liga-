@@ -1679,6 +1679,7 @@ function scheduleMatch(){
  $('[data-s-agenda]',m).onclick=()=>{m.remove();go('agendaBuilder')};
 }
 function newSanction(){
+ if(typeof window.LJR_V1130_SANCTIONS_OPEN==='function')return window.LJR_V1130_SANCTIONS_OPEN();
  // V1126 — formulario mejorado: conservar el editor anterior como respaldo.
  if(typeof window.LJR_SANCTION_ENHANCE==='function'){
   try{return window.LJR_SANCTION_ENHANCE({cats:v160Categories(),players:v160Players(),modal,esc,norm,read,write,toast,log,dl,go})}
