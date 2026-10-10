@@ -377,3 +377,47 @@ html body .ljr-install-overlay .ljr-install-shell{
     gap:9px!important;
   }
 }
+
+
+/* V1175 — Corrección para scroll móvil V768: #screen es FIXED, no fluye
+   con .app-shell. El panel debe ocupar el 100% de ESA superficie, no 100dvh
+   menos offsets supuestos, y su padding inferior no debe duplicar la barra. */
+@media(max-width:1023px){
+ html body.v768-scroll-root[data-app-route="appInstall"] #screen{
+   display:flex!important;
+   flex-direction:column!important;
+   align-items:stretch!important;
+   padding:0!important;
+   margin:0!important;
+   overflow-y:auto!important;
+   scroll-padding-bottom:6px!important;
+ }
+ html body.v768-scroll-root[data-app-route="appInstall"] #screen > .ljr-install-page.v562-page{
+   display:flex!important;
+   flex:1 0 auto!important;
+   flex-direction:column!important;
+   box-sizing:border-box!important;
+   height:auto!important;
+   min-height:100%!important;
+   max-height:none!important;
+   padding:6px 5px 6px!important;
+   margin:0!important;
+ }
+ html body.v768-scroll-root[data-app-route="appInstall"] #screen > .ljr-install-page.v562-page > .ljr-install-shell{
+   display:flex!important;
+   flex:1 0 auto!important;
+   flex-direction:column!important;
+   justify-content:space-between!important;
+   width:100%!important;
+   max-width:none!important;
+   min-height:0!important;
+   margin:0!important;
+ }
+ html body.v768-scroll-root[data-app-route="appInstall"] #screen .ljr-install-guide{
+   flex:1 0 auto!important;
+ }
+ html body.v768-scroll-root[data-app-route="appInstall"] #screen .ljr-install-steps{
+   flex:1 0 auto!important;
+   align-content:space-evenly!important;
+ }
+}
