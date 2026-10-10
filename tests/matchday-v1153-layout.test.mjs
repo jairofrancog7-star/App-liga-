@@ -6,17 +6,18 @@ const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 const live=read('index.html');
 const demo=read('demo/index.html');
 const css=read('src/v1153-matchday-fullwidth-safe-crests.css');
-const demoCss=read('demo/src/v1153-matchday-fullwidth-safe-crests.css');
+const build=read('vite.config.js');
 const renderer=read('src/v1132-matchday-premium.js');
 
 test('Barra de jornada disables the old destructive canvas background filter',()=>{
- for(const html of [live,demo]){
-  assert.match(html,/src\/v1153-matchday-fullwidth-safe-crests\.css/);
-  assert.doesNotMatch(html,/src\/v1152-matchday-clear-crests\.js/);
- }
+ assert.match(live,/src\/v1153-matchday-fullwidth-safe-crests\.css/);
+ assert.match(demo,/src\/v1132-matchday-premium\.js/);
+ assert.match(renderer,/ensureMatchdayStyles/);
+ assert.match(build,/dist\/src\/v1153-matchday-fullwidth-safe-crests\.css/);
+ for(const html of [live,demo])assert.doesNotMatch(html,/src\/v1152-matchday-clear-crests\.js/);
  assert.match(css,/filter:none!important/);
  assert.match(css,/object-fit:contain!important/);
- assert.equal(css,demoCss);
+
 });
 
 test('All matchday category chips reuse the same safe grid',()=>{
