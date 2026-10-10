@@ -1,0 +1,41 @@
+name: V1321 suspension - controles visibles Android
+on:
+  push:
+    branches:
+      - fix/suspension-android-fields-v1321-20261010
+      - main
+    paths:
+      - 'src/v1321-suspension-android-fields.css'
+      - 'tests/suspension-android-fields-v1321.mjs'
+      - '.github/workflows/suspension-fields-mobile-v1321.yml'
+  pull_request:
+    paths:
+      - 'src/v1321-suspension-android-fields.css'
+      - 'tests/suspension-android-fields-v1321.mjs'
+      - '.github/workflows/suspension-fields-mobile-v1321.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  campos-android:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar Chromium móvil
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Comprobar HTML real del formulario en 360 390 y 412 px
+        run: node tests/suspension-android-fields-v1321.mjs
+      - name: Guardar capturas de selectores
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: suspension-categoria-motivo-v1321
+          path: artifacts/v1321-suspension/
+          if-no-files-found: ignore
+          retention-days: 7
