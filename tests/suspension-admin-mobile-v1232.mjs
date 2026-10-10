@@ -20,7 +20,7 @@ input,select,textarea{max-width:100%;width:100%;box-sizing:border-box;min-height
 button{cursor:pointer}
 </style></head><body data-app-route="suspensionTool">
 <main id="screen"><section class="v425-suspension"><div class="v425-panel">
-<h1>Aviso de suspensión</h1><div class="v1074-content">
+<h1>Aviso de suspensión</h1><div class="v1074-content v1074-flow">
 <div class="v1074-progress"><strong>Revisión administrativa</strong></div>
 <fieldset>
 <label>Categoría<input data-v64-susp-cat></label>
@@ -97,7 +97,9 @@ try{
   for(const b of metrics.buttons)assert.ok(b.visible&&b.left>=0&&b.right<=metrics.vw+1,'Botón recortado: '+JSON.stringify(metrics));
   assert.match(metrics.gradient,/linear-gradient/);
   assert.deepEqual(errors,[],'Errores JavaScript: '+JSON.stringify(errors));
+  await panel.scrollIntoViewIfNeeded();
   await page.screenshot({path:resolve(output,'aviso-'+width+'.png'),animations:'disabled'});
+  await panel.screenshot({path:resolve(output,'panel-v1232-'+width+'.png'),animations:'disabled'});
   console.log('V1232 / Android simulado '+width+' px: revisión, redacción, copia, duplicados, azul y ajuste horizontal OK.');
   await context.close();
  }
