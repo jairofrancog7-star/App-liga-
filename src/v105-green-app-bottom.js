@@ -1433,7 +1433,7 @@ function calendarGenerator(){
  render();
 }
 function csvImport(){
- return openCsvImporter({modal,toast,log});
+ return openCsvImporter({modal,toast,log,officialTeams});
 }
 function backupExport(){
  const data={generatedAt:new Date().toISOString(),note:'Respaldo local de herramientas; no contiene datos oficiales descargados.',items:{}};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^(v105-|v100-|v64-|v60-|ljr-)/.test(k))data.items[k]=localStorage.getItem(k)}dl(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'Respaldo_local_Liga_Juventino.json');log('Exportar respaldo local');
