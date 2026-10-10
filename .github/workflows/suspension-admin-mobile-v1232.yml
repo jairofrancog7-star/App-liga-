@@ -1,0 +1,43 @@
+name: V1232 avisos - Android simulado y revisión local
+on:
+  push:
+    branches:
+      - main
+      - test/v1232-suspension-admin-mobile-20261010
+    paths:
+      - 'src/v1232-suspension-quality.js'
+      - 'src/v1232-suspension-official-blue.css'
+      - 'tests/suspension-admin-mobile-v1232.mjs'
+      - '.github/workflows/suspension-admin-mobile-v1232.yml'
+  pull_request:
+    paths:
+      - 'src/v1232-suspension-quality.js'
+      - 'src/v1232-suspension-official-blue.css'
+      - 'tests/suspension-admin-mobile-v1232.mjs'
+      - '.github/workflows/suspension-admin-mobile-v1232.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  avisos-android-simulado:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar Playwright Chromium
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Revisar interfaz y controles táctiles 360/390/412
+        run: node tests/suspension-admin-mobile-v1232.mjs
+      - name: Conservar capturas para revisión
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: capturas-v1232-avisos-android-simulado
+          path: artifacts/v1232-suspension-android/
+          if-no-files-found: warn
+          retention-days: 7
