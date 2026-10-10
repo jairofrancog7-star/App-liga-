@@ -111,7 +111,7 @@ registerCedulaRoutes({app,pool,admin,requirePermission,apiError});
 app.get('/health',(_q,res)=>res.json({ok:true,service:'Liga Juventino Rosas · notificaciones',schedulerEnabled:internalDispatchEnabled}));
 app.get('/health/ready',async(_req,res)=>{
  try{await pool.query('SELECT 1');res.json({ready:true,database:'connected',schedulerEnabled:internalDispatchEnabled,
-  pushEnabled:vapidReady,smsEnabled:smsReady,whatsappEnabled:whatsappReady})}
+  pushEnabled:vapidReady,smsEnabled:smsReady,whatsappEnabled:whatsappReady,approvalRequired:true})}
  catch(_){res.status(503).json({ready:false,database:'unavailable',schedulerEnabled:internalDispatchEnabled})}
 });
 app.get('/api/push/public-key',(_q,res)=>vapidReady?res.json({publicKey:E.VAPID_PUBLIC_KEY}):res.status(503).json({error:'Push sin configurar'}));
@@ -168,10 +168,10 @@ app.post('/admin/notices',admin,requirePermission('notices:write'),async(req,res
  return res.status(503).json({error:'Hay canales sin configurar'});
  const id=crypto.randomUUID();
  try{
- await pool.query('INSERT INTO ljr_scheduled_notices(id,title,body,category,channels,send_at,created_by,notice_type,team,field) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)',
+ await pool.query(`INSERT INTO ljr_scheduled_notices(id,title,body,category,channels,send_at,created_by,notice_type,team,field,status) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'draft')`,
  [id,text(title,120),text(body,700),category(cat),selected,new Date(when).toISOString(),req.actor.subject,type,text(team,90),text(field,100)]);
- await audit(req,'notices:create',id,{category:category(cat),channels:selected});
- res.status(201).json({ok:true,id,sendAt:new Date(when).toISOString(),status:'queued',revision:1});
+ await audit(req,'notices:draft',id,{category:category(cat),channels:selected});
+ res.status(201).json({ok:true,id,sendAt:new Date(when).toISOString(),status:'draft',revision:1});
  }catch(e){apiError(e,res)}
 });
 app.get('/admin/me',admin,(req,res)=>res.json({actor:{id:req.actor.subject,role:req.actor.role,owner:req.actor.owner,secondary:req.actor.secondary,permissions:req.actor.permissions}}));
@@ -259,7 +259,7 @@ app.get('/admin/audit',admin,requirePermission('audit:read'),async(req,res)=>{
  catch(e){apiError(e,res)}
 });
 app.get('/admin/notices',admin,requirePermission('notices:read'),async(req,res)=>{
- try{const r=await pool.query(`SELECT id,title,body,category,channels,send_at,status,revision,created_by,created_at,published_at,notice_type,team,field
+ try{const r=await pool.query(`SELECT id,title,body,category,channels,send_at,status,revision,created_by,created_at,published_at,notice_type,team,field,approved_by,approved_at
  FROM ljr_scheduled_notices ORDER BY created_at DESC LIMIT 120`);res.json({items:r.rows})}
  catch(e){apiError(e,res)}
 });
@@ -292,19 +292,36 @@ app.put('/admin/notices/:id',admin,requirePermission('notices:write'),async(req,
  return res.status(503).json({error:'Hay canales aún no configurados'});
  try{
   const r=await pool.query(`UPDATE ljr_scheduled_notices
- SET title=$2,body=$3,send_at=$4,category=$5,channels=$6,revision=revision+1,notice_type=$8,team=$9,field=$10
- WHERE id=$1 AND revision=$7 AND status='queued' RETURNING revision`,
+ SET title=$2,body=$3,send_at=$4,category=$5,channels=$6,revision=revision+1,notice_type=$8,team=$9,field=$10,
+ status='draft',approved_by=NULL,approved_at=NULL
+ WHERE id=$1 AND revision=$7 AND status IN ('draft','queued') RETURNING revision`,
  [req.params.id,text(title,120),text(body,700),new Date(when).toISOString(),category(cat),selected,revision,type,text(team,90),text(field,100)]);
   if(!r.rowCount)return res.status(409).json({error:'El aviso cambió, se canceló o ya se publicó. Actualiza la lista.'});
   await audit(req,'notices:update',req.params.id,{category:category(cat),revision:r.rows[0].revision});
   res.json({ok:true,revision:r.rows[0].revision});
  }catch(e){apiError(e,res)}
 });
+/* La programación no publica por sí sola: aprobación explícita y auditada por Presidencia.
+   La revisión usa revision optimista y sólo permite avisos aún futuros. */
+app.post('/admin/notices/:id/approve',admin,requirePermission('notices:approve'),async(req,res)=>{
+ const revision=Number(req.body?.revision);
+ if(!Number.isInteger(revision)||revision<1)return res.status(400).json({error:'Revisión del borrador necesaria'});
+ try{
+  const result=await pool.query(`UPDATE ljr_scheduled_notices
+    SET status='queued',approved_by=$3,approved_at=now(),revision=revision+1
+    WHERE id=$1 AND revision=$2 AND status='draft'
+    AND send_at>now()+interval '30 seconds'
+    RETURNING id,revision,send_at`,[req.params.id,revision,req.actor.subject]);
+  if(!result.rowCount)return res.status(409).json({error:'Aviso modificado, vencido o no disponible para aprobar. Actualiza la lista.'});
+  await audit(req,'notices:approve',req.params.id,{revision:result.rows[0].revision});
+  res.json({ok:true,status:'queued',revision:result.rows[0].revision,sendAt:result.rows[0].send_at});
+ }catch(e){apiError(e,res)}
+});
 app.delete('/admin/notices/:id',admin,requirePermission('notices:write'),async(req,res)=>{
  const revision=Number(req.body?.revision);if(!Number.isInteger(revision)||revision<1)return res.status(400).json({error:'Revisión necesaria'});
  try{
   const r=await pool.query(`UPDATE ljr_scheduled_notices SET status='cancelled',revision=revision+1
-  WHERE id=$1 AND revision=$2 AND status='queued' RETURNING id`,[req.params.id,revision]);
+  WHERE id=$1 AND revision=$2 AND status IN ('draft','queued') RETURNING id`,[req.params.id,revision]);
   if(!r.rowCount)return res.status(409).json({error:'No se puede cancelar un aviso ya procesado'});
   await audit(req,'notices:cancel',req.params.id,{revision});
   res.json({ok:true});
@@ -362,7 +379,7 @@ async function dispatchDue(){
  const jobs=await pool.query(`UPDATE ljr_scheduled_notices SET status='processing',
  processing_at=now() WHERE id IN(SELECT id FROM ljr_scheduled_notices
  WHERE (status='queued' OR (status='processing' AND processing_at<now()-interval '30 minutes'))
- AND send_at<=now() ORDER BY send_at LIMIT 10 FOR UPDATE SKIP LOCKED)
+ AND approved_at IS NOT NULL AND send_at<=now() ORDER BY send_at LIMIT 10 FOR UPDATE SKIP LOCKED)
  RETURNING id,title,body,category,channels,notice_type,team,field`);
  let attempted=0;
  for(const job of jobs.rows){

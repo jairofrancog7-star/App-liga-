@@ -72,6 +72,15 @@ def post_facebook(item,png_path):
         return 'sent' if r.ok else f'error:{r.status_code}'
     except Exception as e:return 'error:'+str(e)[:120]
 
+def approved(item):
+    """Solo los registros con revisión explícita pueden salir del repositorio.
+    La identidad real del aprobador debe validarse mediante revisión de PR en GitHub.
+    """
+    a=item.get('approval')
+    return (isinstance(a,dict) and a.get('status')=='approved'
+            and isinstance(a.get('by'),str) and bool(a['by'].strip())
+            and parse_dt(a.get('at')) is not None)
+
 def main():
     now=datetime.now(timezone.utc)
     schedule=load(SCHEDULE,[])
@@ -83,7 +92,7 @@ def main():
     changed=False
     existing={str(x.get('id')) for x in active if x.get('id')}
     for item in schedule:
-        if not isinstance(item,dict):continue
+        if not isinstance(item,dict) or not approved(item):continue
         item_id=str(item.get('id',''))
         if not re.fullmatch(r'[A-Za-z0-9_-]{1,90}',item_id):continue
         if not str(item.get('title','')).strip():continue

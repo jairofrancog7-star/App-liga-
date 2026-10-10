@@ -1,0 +1,72 @@
+name: Revisar datos oficiales (requiere aprobación)
+
+on:
+  schedule:
+    - cron: '15 13 * * *' # 07:15 en Juventino Rosas, Mexico (UTC-6)
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/**'
+      - 'server/notifications/**'
+      - 'src/v1081-global-admin-notices.js'
+      - 'tests/review-official-safety.test.mjs'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/scripts/review-official-data.mjs'
+      - '.github/workflows/official-review-approval.yml'
+      - 'tests/review-official-safety.test.mjs'
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: ljr-official-daily-audit
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Probar aprobación y auditoría de solo lectura
+        run: |
+          node --check server/notifications/index.mjs
+          node --check server/notifications/bootstrap.mjs
+          node --check src/v1081-global-admin-notices.js
+          node --test tests/review-official-safety.test.mjs .github/scripts/dispatch-notifications.test.mjs
+          python3 -m unittest discover -s .github/scripts -p 'test_process_scheduled_notices.py'
+      - name: Generar diagnóstico sin publicar nada
+        id: audit
+        shell: bash
+        run: |
+          node .github/scripts/review-official-data.mjs "$RUNNER_TEMP/review.json" "$RUNNER_TEMP/review.md"
+          cat "$RUNNER_TEMP/review.md" >> "$GITHUB_STEP_SUMMARY"
+          node -e 'const r=require(process.argv[1]); require("node:fs").appendFileSync(process.env.GITHUB_OUTPUT,"needs_review="+(r.warnings.length+r.review.length>0)+"\n")' "$RUNNER_TEMP/review.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: revision-oficial-para-presidencia
+          path: |
+            ${{ runner.temp }}/review.json
+            ${{ runner.temp }}/review.md
+          retention-days: 14
+      - name: Avisar a la directiva en un único issue abierto
+        if: (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && steps.audit.outputs.needs_review == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE='Revisión automática pendiente · Liga Juventino Rosas'
+          NUMBER=$(gh issue list --state open --limit 100 --json number,title --jq '.[] | select(.title=="Revisión automática pendiente · Liga Juventino Rosas") | .number' | head -1)
+          if [ -n "$NUMBER" ]; then
+            gh issue comment "$NUMBER" --body-file "$RUNNER_TEMP/review.md"
+          else
+            gh issue create --title "$TITLE" --body-file "$RUNNER_TEMP/review.md"
+          fi
+          echo 'Se solicitó revisión humana; no se publicaron datos ni avisos.'

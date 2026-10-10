@@ -62,6 +62,19 @@ function activate(section){
   if(!map[k])continue;
   const b=elem('button','',title);b.type='button';b.addEventListener('click',()=>map[k].click());quick.append(b);
  }
+ const notices=elem('button','','Avisos para aprobar');
+ notices.type='button';
+ notices.title='Abrir los avisos globales para revisar borradores y programaciones';
+ notices.addEventListener('click',()=>{
+  const api=window.LJR_GLOBAL_NOTICES;
+  if(typeof api?.open==='function')api.open();
+  else {
+   const original=document.querySelector('[data-v1081-global="global"]');
+   if(original)original.click();
+   else count.textContent='Abre Contenido y datos → Avisos globales cuando el servicio esté disponible.';
+  }
+ });
+ quick.append(notices);
  hub.append(quick);
  const count=elem('small','ljr-smart-count');count.setAttribute('aria-live','polite');hub.append(count);
  const match=elem('div','ljr-smart-recommendation');
