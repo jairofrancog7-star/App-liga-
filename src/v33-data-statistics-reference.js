@@ -363,7 +363,7 @@ function applyHeaderScroll(){
  head.style.setProperty('--v33-head-h',actualHeaderHeight);
  // Mantener el inicio del contenido unido al borde inferior real de la cabecera.
  // Antes el padding de página siempre retenía 184–258 px aun tras compactarse.
- head.closest('.v33-data-page')?.style.setProperty('--v33-actual-head-h',actualHeaderHeight);
+ document.querySelector('[data-v33-data]')?.style.setProperty('--v33-actual-head-h',actualHeaderHeight);
  head.style.setProperty('--v33-tabs-opacity','1');
 
  title.style.left=lerp(expandedLeft,compactLeft,p).toFixed(1)+'px';
