@@ -189,3 +189,8 @@ html body .liga-media-modal>section.ljr-admin-picker [data-pick-element]{display
 @media(max-width:380px){html body .liga-media-modal>section.ljr-admin-v1081{padding:0 12px 14px!important}html body .liga-media-modal>section.ljr-admin-v1081>header{margin:0 -12px 10px!important;padding:11px 12px!important}html body .liga-media-modal>section.ljr-admin-v1081>header h2{font-size:18px!important}html body .liga-media-modal>section.ljr-admin-studio .cms-design-presets button{font-size:11px!important;padding:8px!important}}
 @media(max-width:330px){html body .liga-media-modal>section.ljr-admin-v1081 .liga-media-actions{grid-template-columns:1fr!important}}
 @media(prefers-reduced-motion:reduce){html body .liga-media-modal>section.ljr-admin-v1081 button{transition:none!important}}
+
+/* V1100: los resultados de cada tarjeta quedan inmediatamente a la vista. */
+.liga-media-modal .ljr-admin-results{scroll-margin-top:84px!important}
+.liga-media-modal .ljr-admin-results .cms-load-feedback{font-size:12px!important;line-height:1.45!important;color:#c4ecff!important;background:#102866!important;border:1px solid #5177b8!important;border-radius:10px!important;margin:8px 0!important;padding:10px!important;overflow-wrap:anywhere}
+.liga-media-modal .ljr-admin-cms .cms-kind-grid button[data-cms-kind]{cursor:pointer!important;touch-action:manipulation!important}
