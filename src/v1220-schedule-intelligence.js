@@ -12,7 +12,7 @@ const pad=v=>String(v).padStart(2,'0');
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=(s,r=document)=>r.querySelector(s);
 const all=(s,r=document)=>Array.from(r.querySelectorAll(s));
-let watchRoot=null,options=[],fieldList=null,job=0;
+let watchRoot=null,options=[],fieldList=null;
 function parseDate(raw){
   const m=String(raw||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
   return m?{date:m[3]+'-'+pad(m[2])+'-'+pad(m[1]),time:m[4]?pad(m[4])+':'+m[5]:''}:{date:'',time:''};
@@ -154,7 +154,7 @@ function useLocalQr(root){
   try{
     const code=window.qrcode(0,'L');code.addData(url);code.make();
     q.src=code.createDataURL(5,8);q.alt='Código QR generado localmente';
-  }catch(_){q.alt='Enlace demasiado largo para QR; utiliza Copiar URL';}
+  }catch(_){q.alt='Enlace demasiado largo para QR; utiliza Copiar URL';const caption=$('[data-v129-qr] small',root);if(caption)caption.textContent='Este aviso tiene demasiados detalles para un QR. Utiliza Copiar URL.';}
 }
 function decoratePreview(root){
   const preview=$('[data-v129-preview]',root);
@@ -199,6 +199,8 @@ function init(root){
     '<p class="v1220-feedback" role="status" aria-live="polite" data-v1220-message>Las sugerencias y comprobaciones no publican ni reprograman partidos oficiales.</p>');
   $('[data-v1220-category]',root).addEventListener('change',()=>filter(root));
   $('[data-v1220-search]',root).addEventListener('input',()=>filter(root));
+  if(!root.__ljrV1220EventsBound){
+    root.__ljrV1220EventsBound=true;
   root.addEventListener('input',e=>{if(e.target.closest('.v129-editor'))update(root)});
   root.addEventListener('change',e=>{if(e.target.closest('.v129-editor'))setTimeout(()=>update(root),0)});
   root.addEventListener('click',e=>{
@@ -224,6 +226,7 @@ function init(root){
   },true);
   const observer=new MutationObserver(()=>decoratePreview(root));
   observer.observe(root,{childList:true,subtree:true});
+  }
   update(root);decoratePreview(root);
 }
 function boot(){
