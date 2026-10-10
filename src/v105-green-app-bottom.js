@@ -1751,8 +1751,8 @@ function registerAlerts(){
    notifBox.innerHTML='<div class="v168-inline-head"><b>Avisos dentro de esta página</b><span>Elige qué te interesa recibir.</span></div>'+ 
      '<div class="v1210-presets"><button type="button" data-r-preset="important">Solo importantes</button><button type="button" data-r-preset="all">Todos</button><button type="button" data-r-preset="none">Ninguno</button></div>'+
      rows.map(r=>'<label class="v168-notif-row"><span><b>'+esc(r[1])+'</b><small>'+esc(r[2])+'</small></span><input type="checkbox" data-r-pref="'+r[0]+'" '+(p[r[0]]?'checked':'')+'><i></i></label>').join('');
-   $('[data-r-pref]',notifBox).forEach(x=>x.onchange=()=>{saveNotif({[x.dataset.rPref]:x.checked});toast('Preferencia guardada')});
-   $('[data-r-preset]',notifBox).forEach(button=>button.onclick=()=>{
+   $$('[data-r-pref]',notifBox).forEach(x=>x.onchange=()=>{saveNotif({[x.dataset.rPref]:x.checked});toast('Preferencia guardada')});
+   $$('[data-r-preset]',notifBox).forEach(button=>button.onclick=()=>{
      const preset=button.dataset.rPreset,important=new Set(['goal','kickoff','final','scheduleChanges','venueChanges']);
      const next={};
      rows.forEach(([key])=>{next[key]=preset==='all'||(preset==='important'&&important.has(key));});
