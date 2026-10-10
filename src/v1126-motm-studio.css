@@ -75,3 +75,22 @@ html body .v1126-head p{font-size:11px!important;line-height:1.45!important;colo
 }
 @media(max-width:345px){.v1126-selectors{grid-template-columns:1fr}.v1126-primary-actions{grid-template-columns:1fr 1fr}}
 @media(prefers-reduced-motion:reduce){.v1126-motm-dialog button{transition:none}}
+
+/* V1167: escudos de categoría/equipo y fotografía auténtica del MVP */
+.v1126-profile-brand{display:flex;align-items:center;gap:4px;flex:none}
+.v1126-team-logo,.v1126-category-logo{width:38px!important;height:38px!important;max-width:38px!important;object-fit:contain!important;background:transparent!important;filter:none!important;mix-blend-mode:normal!important}
+.v1126-category-logo{width:32px!important;height:32px!important}
+.v1126-crest{width:29px!important;height:29px!important;object-fit:contain!important;background:transparent!important;filter:none!important}
+.v1126-preview{gap:12px;padding:18px 12px 20px!important;overflow:hidden;background:radial-gradient(circle at 50% 40%,#1a4cab,#102978 48%,#050b36 100%)!important;border:2px solid #45dcf0!important;box-shadow:inset 0 0 25px rgba(41,143,240,.2)}
+.v1126-preview-top{display:grid;grid-template-columns:52px minmax(0,1fr) 52px;align-items:center;gap:8px;width:100%;margin-bottom:7px}
+.v1126-preview-top>span{font-weight:900;font-size:11px!important;line-height:1.35;color:#fff}
+.v1126-preview-top>span small{display:block;color:#67dfee;font-size:8px!important;margin-top:2px}
+.v1126-preview-category,.v1126-preview-team{display:block;width:52px!important;height:52px!important;max-width:100%!important;object-fit:contain!important;background:transparent!important;filter:none!important}
+.v1126-preview>b{font-size:15px!important;color:#f4fcff!important;letter-spacing:.3px}
+.v1126-preview-face{position:relative;display:grid;place-items:center;width:160px;height:160px;overflow:hidden;border-radius:50%;border:4px solid #53e6f1;background:#132d88;box-shadow:0 0 0 7px rgba(62,186,245,.16)}
+.v1126-preview-face span{font-size:74px;color:#bee9ff}
+.v1126-preview-photo{position:absolute;z-index:1;inset:0;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 30%!important;filter:none!important}
+.v1126-preview>strong{font-size:clamp(18px,4.5vw,26px)!important;line-height:1.18;overflow-wrap:anywhere;text-wrap:balance}
+.v1126-preview>span{font-size:12px;color:#65eaf8;font-weight:800}
+.v1126-preview>small{font-size:11px;color:#d9e7ff}
+@media(max-width:365px){.v1126-profile-brand{gap:2px}.v1126-team-logo{width:30px!important;height:30px!important}.v1126-category-logo{width:26px!important;height:26px!important}.v1126-preview-top{grid-template-columns:43px minmax(0,1fr) 43px}.v1126-preview-category,.v1126-preview-team{width:43px!important;height:43px!important}}
