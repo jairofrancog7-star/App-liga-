@@ -319,8 +319,8 @@ function timeText(e){
 function logoPair(e){
   const fallback='<span class="v840-logo-fallback">⚽</span>';
   return '<span class="v840-logos">'+
-    (e.homeLogo?'<img src="'+esc(e.homeLogo)+'" alt="" loading="eager" decoding="async">':fallback)+
-    (e.awayLogo?'<img src="'+esc(e.awayLogo)+'" alt="" loading="eager" decoding="async">':fallback)+
+    (e.homeLogo?'<img src="'+esc(e.homeLogo)+'" alt="" loading="lazy" decoding="async">':fallback)+
+    (e.awayLogo?'<img src="'+esc(e.awayLogo)+'" alt="" loading="lazy" decoding="async">':fallback)+
   '</span>';
 }
 function feedMarkup(){
@@ -442,7 +442,7 @@ function boot(){
   window.addEventListener('focus',refresh);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
   window.addEventListener('ljr:official-data',refresh);
-  refresh();setInterval(refresh,120000);
+  refresh();setInterval(()=>{if(!document.hidden)refresh()},120000);
 }
 window.LJR_V840_NOTIFICATIONS={
   requestPermission,refresh,render:renderFeed,inbox,
