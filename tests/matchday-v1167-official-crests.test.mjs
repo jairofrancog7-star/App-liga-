@@ -6,7 +6,7 @@ const load=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 const js=load('src/v1132-matchday-premium.js');
 const demoJs=load('demo/src/v1132-matchday-premium.js');
 const css=load('src/v1167-matchday-centered-official-crests.css');
-const demoCss=load('demo/src/v1167-matchday-centered-official-crests.css');
+const build=load('vite.config.js');
 const mainHtml=load('index.html');
 
 test('official 2026 team PNGs take priority over flattened WebP images',()=>{
@@ -33,6 +33,6 @@ test('all fixture category chips share safe layout in prod and demo',()=>{
  assert.match(js,/category==='all'\|\|x\.catId===category/);
  assert.match(js,/ensureMatchdayStyles/);
  assert.equal(js,demoJs);
- assert.equal(css,demoCss);
+ assert.match(build,/dist\/src\/v1167-matchday-centered-official-crests\.css/);
  assert.match(mainHtml,/v1167-matchday-centered-official-crests\.css/);
 });
