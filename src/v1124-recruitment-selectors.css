@@ -114,3 +114,30 @@ body.v1124-team-picker-open{overflow:hidden!important}
   .v1124-picker-sheet>header h2{font-size:19px!important}
   .v1124-option{gap:8px!important;padding:7px 8px!important}
 }
+
+
+/* V1151 — ocultar por completo el selector VIEJO (arriba).
+   Se conserva el <select> en el DOM para registrar el equipo elegido;
+   sólo el botón V1124 con escudos debe ocupar espacio visible. */
+html body[data-app-route="recruitment"] #v190-recruitment-page
+.v190-recruit-card .v1124-team-field > select[data-v190-player-team],
+html body[data-app-route="recruitment"] #v190-recruitment-page
+.v190-recruit-card .v1124-team-field select[data-v190-player-team] {
+  display:none!important;
+  visibility:hidden!important;
+  position:absolute!important;
+  width:0!important;height:0!important;
+  min-width:0!important;min-height:0!important;
+  margin:0!important;padding:0!important;
+  border:0!important;overflow:hidden!important;
+  opacity:0!important;pointer-events:none!important;
+}
+html body[data-app-route="recruitment"] #v190-recruitment-page
+.v190-recruit-card .v1124-team-field > :not(:first-child):not(.v1124-team-open){
+  display:none!important;
+}
+html body[data-app-route="recruitment"] #v190-recruitment-page
+.v190-recruit-card .v1124-team-field > .v1124-team-open{
+  display:grid!important;
+  margin-top:0!important;
+}
