@@ -70,9 +70,22 @@ test('APK Android: no confundir avisos locales y Push remoto FCM',async()=>{
  assert.equal(x.requests.server,0);
 });
 
+test('APK WebView: Web Push no se activa aunque exponga APIs de navegador',()=>{
+ const client=readFileSync(new URL('../src/v1082-push-notifications.js',import.meta.url),'utf8');
+ assert.match(client,/function supported\(\)\{return !isNativeApk\(\)/);
+ const from=client.indexOf('function isNativeApk(){');
+ const to=client.indexOf('function keyBytes(',from);
+ assert.ok(from>=0&&to>from);
+ const compiled=new Function('window','navigator','isSecureContext',client.slice(from,to)+'return supported();');
+ const web={Notification:function(){},PushManager:function(){},Capacitor:{isNativePlatform:()=>false}};
+ const navigator={serviceWorker:{}};
+ assert.equal(compiled(web,navigator,true),true);
+ assert.equal(compiled({...web,Capacitor:{isNativePlatform:()=>true}},navigator,true),false);
+});
+
 test('Push: mantiene compatibilidad y cache bust en HTML',()=>{
  assert.doesNotThrow(()=>new Function(source));
- assert.match(html,/v1082-push-notifications\.js\?v=20261010-v1330-native-push-diagnostic/);
+ assert.match(html,/v1082-push-notifications\.js\?v=20261010-v1331-native-webview-guard/);
  assert.match(extracted,/server\('public-key'\)/);
  assert.match(extracted,/Notification\.permission==='denied'/);
 });
