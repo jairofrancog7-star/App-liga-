@@ -88,13 +88,22 @@ try{
     const p=document.querySelector('[data-v1232-qa]'),buttons=[...p.querySelectorAll('.v1232-actions button')];
     return {vw:innerWidth,doc:document.documentElement.scrollWidth,
       rect:(()=>{const r=p.getBoundingClientRect();return {left:r.left,right:r.right}})(),
-      buttons:buttons.map(b=>{const r=b.getBoundingClientRect();return {left:r.left,right:r.right,height:r.height,visible:r.width>0&&r.height>0}}),
+      buttons:buttons.map(b=>{const r=b.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,height:r.height,width:r.width,visible:r.width>0&&r.height>0}}),
       gradient:getComputedStyle(p).backgroundImage};
   });
   assert.ok(metrics.doc<=metrics.vw+1,'Desbordamiento horizontal: '+JSON.stringify(metrics));
   assert.ok(metrics.rect.left>=0&&metrics.rect.right<=metrics.vw+1,'Panel sale de pantalla: '+JSON.stringify(metrics));
   assert.equal(metrics.buttons.length,3);
   for(const b of metrics.buttons)assert.ok(b.visible&&b.left>=0&&b.right<=metrics.vw+1,'Botón recortado: '+JSON.stringify(metrics));
+  for(const b of metrics.buttons)assert.ok(b.height>=44,'Área táctil pequeña: '+JSON.stringify(metrics));
+  if(width===360){
+    const [first,second,last]=metrics.buttons;
+    assert.ok(Math.abs(first.top-second.top)<=1,'Los dos primeros botones deberían compartir fila');
+    assert.ok(last.top>=first.bottom-1,'Copiar revisión debe quedar debajo de los otros botones');
+    assert.ok(last.width>first.width*1.75,'Copiar revisión debe ocupar ambas columnas: '+JSON.stringify(metrics));
+  }else{
+    assert.ok(metrics.buttons.every(b=>Math.abs(b.top-metrics.buttons[0].top)<=1),'A '+width+' px deben caber los 3 botones en una fila');
+  }
   assert.match(metrics.gradient,/linear-gradient/);
   assert.deepEqual(errors,[],'Errores JavaScript: '+JSON.stringify(errors));
   await panel.scrollIntoViewIfNeeded();
