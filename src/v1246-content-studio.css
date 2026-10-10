@@ -17,3 +17,27 @@ html body .ljr-content-preview{width:100%;max-height:280px;object-fit:contain;ba
 html body .liga-media-modal>section.ljr-content-studio .liga-media-actions label{overflow:hidden}
 html body .liga-media-modal>section.ljr-content-studio input[type=file]{font-size:13px;padding:9px;overflow:hidden}
 @media(max-width:600px){html body .liga-media-modal>section.ljr-content-studio .cms-design-presets{grid-template-columns:repeat(2,minmax(0,1fr))}html body .liga-media-modal .ljr-layout-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}html body .ljr-asset-grid{grid-template-columns:repeat(3,minmax(0,1fr))}html body .liga-media-modal>section.ljr-content-studio .cms-design-intro{font-size:14px;line-height:1.5}html body .liga-media-modal>section.ljr-content-studio .cms-design-two{grid-template-columns:1fr}}
+
+/* V1352 · Estudio de publicaciones: hereda el azul marino oficial V1311.
+   Solo superficies y contraste, sin modificar archivos, vistas previas o eventos. */
+html body .liga-media-modal>section.ljr-content-studio{
+ background:#071338!important;background-image:linear-gradient(170deg,#0a1b48,#071338)!important;
+ border-color:#426bb0!important;color:#f5f9ff!important;
+}
+html body .liga-media-modal>section.ljr-content-studio>header{
+ background:#0b2050!important;background-image:linear-gradient(180deg,#102b62,#0b2050)!important;
+ border-bottom-color:#426bb0!important;color:#f5f9ff!important;
+}
+html body .liga-media-modal>section.ljr-content-studio :is(
+ .cms-design-presets button,.cms-design-two button,.ljr-layout-gallery button,
+ .cms-poster-preview,.ljr-content-preview,.ljr-asset-grid img
+){
+ background:#0c2457!important;background-image:none!important;
+ border-color:#426bb0!important;color:#f5f9ff!important;
+}
+html body .liga-media-modal>section.ljr-content-studio :is(
+ .cms-design-presets button[aria-pressed=true],.ljr-layout-gallery button[aria-pressed=true]
+){background:#19407f!important;border-color:#7da2d6!important}
+html body .liga-media-modal>section.ljr-content-studio :is(input,select,textarea){
+ background:#091a46!important;border-color:#426bb0!important;color:#fff!important;
+}
