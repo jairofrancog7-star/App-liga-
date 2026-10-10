@@ -303,3 +303,81 @@ html body > .v105-modal.v168-account-modal.v920-registration-modal .v920-registe
 html body > .v105-modal.v168-account-modal.v920-registration-modal .v920-register-actions .v920-btn-secondary .v920-glyph{
   color:#6ab7ff!important;
 }
+
+
+/* V1210 — Registro de avisos, compacto, accesible y coherente con azul Liga. */
+html body > .v105-modal.v168-account-modal.v920-registration-modal > .v105-dialog{
+  padding-top:18px!important;
+  padding-bottom:calc(60px + env(safe-area-inset-bottom,0px))!important;
+  scroll-padding-bottom:95px!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v105-dialog h3{
+  font-size:clamp(23px,5.4vw,28px)!important;
+  margin-top:8px!important;
+  margin-bottom:9px!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v105-dialog > p{
+  margin-bottom:15px!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v105-form.v920-register-form{
+  gap:11px!important;padding:14px!important;border-radius:18px!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v920-register-form input,
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v920-register-form select{
+  height:50px!important;min-height:50px!important;margin-top:6px!important;
+  font-size:14px!important;border-radius:13px!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v920-register-form .v920-glyph{top:38px!important;}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v105-actions.v920-register-actions{
+  margin-top:12px!important;gap:9px!important;
+}
+html body > .v105-modal.v168-account-modal.v920-registration-modal .v920-register-actions .v105-btn{
+  min-height:49px!important;border-radius:13px!important;padding:11px 12px!important;
+}
+.v920-registration-modal .v1210-alert-summary{
+  display:grid;gap:3px;margin:10px 1px 0;padding:0 3px;
+  color:#dbeaff;font-size:11px;line-height:1.4;
+}
+.v920-registration-modal .v1210-alert-summary strong{font-size:12px;}
+.v920-registration-modal .v1210-alert-summary span{color:#a9c1ed;overflow-wrap:anywhere;}
+.v920-registration-modal .v1210-alert-tools{display:grid;gap:10px;margin-top:11px;}
+.v920-registration-modal .v1210-alert-tools-row{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;
+}
+.v920-registration-modal .v1210-alert-tools-row button{
+  display:flex;align-items:center;justify-content:center;gap:7px;min-width:0;
+  min-height:46px;padding:9px 8px;border:1px solid rgba(100,154,243,.4);
+  border-radius:12px;background:#102b78;color:#fff;font:700 11px/1.25 inherit;
+  text-align:center;cursor:pointer;
+}
+.v920-registration-modal .v1210-alert-tools-row button .v920-glyph{
+  flex:0 0 17px;width:17px;height:17px;color:#86bcff;
+}
+.v920-registration-modal .v1210-official-link{
+  display:flex;justify-content:space-between;align-items:center;
+  min-height:40px;padding:8px 12px;border:1px solid rgba(100,154,243,.22);
+  border-radius:11px;background:rgba(11,35,110,.65);color:#dbe9ff;
+  font:700 11px/1.3 inherit;text-align:left;cursor:pointer;
+}
+.v920-registration-modal .v1210-official-link span{font-size:19px;color:#80b8ff}
+.v920-registration-modal .v1210-notice{
+  margin:0;padding:0 3px;color:#b5c8ef;font-size:11px;line-height:1.5;
+}
+.v920-registration-modal [data-r-push-slot]:not([hidden]){min-width:0;}
+.v920-registration-modal [data-r-push-slot] .v1082-push{
+  width:100%;max-width:100%;margin:0;box-sizing:border-box;
+}
+.v920-registration-modal .v1210-presets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-bottom:8px;}
+.v920-registration-modal .v1210-presets button{
+  min-width:0;min-height:35px;padding:6px 4px;border:1px solid rgba(89,152,242,.45);
+  border-radius:9px;background:#123582;color:#fff;font:700 10px/1.15 inherit;cursor:pointer;
+}
+.v920-registration-modal .v168-notif-row input:focus-visible+i{
+  outline:2px solid #a1d4ff;outline-offset:3px;
+}
+.v920-registration-modal button:focus-visible{outline:2px solid #a1d4ff;outline-offset:2px;}
+.v920-registration-modal [hidden]{display:none!important;}
+@media(max-width:360px){
+ .v920-registration-modal .v1210-alert-tools-row{grid-template-columns:1fr;}
+ .v920-registration-modal .v1210-presets button{font-size:9px;}
+}
