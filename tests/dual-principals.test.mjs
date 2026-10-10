@@ -53,3 +53,22 @@ test('codigo relevante supera comprobacion sintactica real de node',()=>{
   assert.doesNotThrow(()=>execFileSync(process.execPath,['--check',pathname],{stdio:'pipe'}),path);
  }
 });
+
+test('administración de avisos respeta permisos del segundo principal sin confiar en owner local',()=>{
+ const ui=read('src/v1081-global-admin-notices.js');
+ assert.match(ui,/async function showRoles\(\)\{\s*if\(!active\(\)\)return/);
+ assert.match(ui,/async function showAudit\(\)\{\s*if\(!active\(\)\)return/);
+ assert.match(ui,/call\('\/admin\/me'\)/);
+ assert.match(ui,/result\?\.actor\?\.permissions\?\.includes\(permission\)/);
+ assert.doesNotMatch(ui,/media\(\)\.admin\?\.owner\?\[\['roles'/);
+});
+test('diagnóstico de cuentas muestra por separado CMS y Railway',()=>{
+ const ui=read('src/v1208-coadmins-ui.js');
+ const backup=read('src/v1212-official-backup-center.js');
+ assert.match(ui,/media\(\)\.api\('me'\)/);
+ assert.match(ui,/media\(\)\.notifyAPI\('\/admin\/me'\)/);
+ assert.match(ui,/cmsAdmin\.owner===true/);
+ assert.match(ui,/isPrincipal/);
+ assert.match(ui,/Permisos verificados directamente con el CMS y Railway/);
+ assert.match(backup,/response\?\.admin\?\.owner!==true/);
+});
