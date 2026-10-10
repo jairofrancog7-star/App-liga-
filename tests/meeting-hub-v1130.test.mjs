@@ -59,10 +59,11 @@ function fixture(){
 }
 
 test('production and demo load the same scoped meeting hub',()=>{
- for(const html of [root,demo]){
-  assert.match(html,/src\/v1130-meeting-hub\.js/);
-  assert.match(html,/src\/v1130-meeting-hub\.css/);
- }
+ // El origen carga CSS por archivo; Vite empaqueta el de demo en assets/index-*.css.
+ assert.match(root,/src\/v1130-meeting-hub\.js/);
+ assert.match(root,/src\/v1130-meeting-hub\.css/);
+ assert.match(demo,/src\/v1130-meeting-hub\.js/);
+ assert.match(demo,/assets\/index-[A-Za-z0-9_-]+\.css|src\/v1130-meeting-hub\.css/);
  assert.match(style,/grid-column:1\/-1/);
  assert.match(style,/v875-meeting-modal/);
 });
