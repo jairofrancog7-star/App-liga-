@@ -20,7 +20,7 @@ test('Solo POST autenticado a cola con confirmación',async()=>{
  let req;
  const result=await dispatch({NOTIFICATIONS_API_URL:'https://liga-mensajes.up.railway.app',
  NOTIFICATIONS_JOB_TOKEN:'x'.repeat(48)},async(url,opts)=>{
-   req={url,opts};return {ok:true,status:200,json:async()=>({ok:true,notices:2,attempted:4})};
+   req={url,opts};return {ok:true,status:200,json:async()=>url.endsWith('/health/ready')?({ready:true,approvalRequired:true}):({ok:true,notices:2,attempted:4})};
  },()=>{});
  assert.equal(req.url,'https://liga-mensajes.up.railway.app/jobs/dispatch');
  assert.equal(req.opts.method,'POST');
@@ -33,4 +33,16 @@ test('El cron reporta errores sin revelar el token',async()=>{
   NOTIFICATIONS_API_URL:'https://liga-mensajes.up.railway.app',
   NOTIFICATIONS_JOB_TOKEN:'x'.repeat(48)},
   async()=>({ok:false,status:503}),()=>{}),/HTTP 503/);
+});
+
+test('Bloquea un servidor antiguo antes de enviar cualquier aviso',async()=>{
+ let sent=false;
+ await assert.rejects(dispatch({
+  NOTIFICATIONS_API_URL:'https://liga-mensajes.up.railway.app',
+  NOTIFICATIONS_JOB_TOKEN:'x'.repeat(48)
+ },async url=>{
+  if(url.endsWith('/jobs/dispatch')){sent=true;throw Error('NO debe enviar');}
+  return {ok:true,json:async()=>({ready:true,approvalRequired:false})};
+ },()=>{}),/aprobación administrativa/);
+ assert.equal(sent,false);
 });

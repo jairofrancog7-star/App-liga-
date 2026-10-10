@@ -31,6 +31,12 @@ try{
     await client.query(await readFile(new URL('./principals-schema.sql',import.meta.url),'utf8'));
     await client.query('INSERT INTO ljr_schema_migrations(name) VALUES($1)',[principalsMigration]);
   }
+  const approvalMigration='notices-explicit-approval-v20261010';
+  const approvalInstalled=await client.query('SELECT name FROM ljr_schema_migrations WHERE name=$1',[approvalMigration]);
+  if(!approvalInstalled.rowCount){
+    await client.query(await readFile(new URL('./approval-schema.sql',import.meta.url),'utf8'));
+    await client.query('INSERT INTO ljr_schema_migrations(name) VALUES($1)',[approvalMigration]);
+  }
   await client.query('COMMIT');
   console.log('Esquema de avisos verificado.');
 }catch(error){

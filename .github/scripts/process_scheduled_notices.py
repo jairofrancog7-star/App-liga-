@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import json, os, sys, re
+import json, os, sys, re, hmac, hashlib
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -72,6 +72,26 @@ def post_facebook(item,png_path):
         return 'sent' if r.ok else f'error:{r.status_code}'
     except Exception as e:return 'error:'+str(e)[:120]
 
+def approval_signature(item, secret):
+    """Firma todos los campos del aviso menos la autorización y el estado local."""
+    payload={key:item.get(key) for key in
+        ('id','title','body','message','category','channels','publish_at','publishAt','type')}
+    msg=json.dumps(payload,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode('utf-8')
+    return hmac.new(secret.encode('utf-8'),msg,hashlib.sha256).hexdigest()
+
+def approved(item):
+    """Fallar cerrado sin clave HMAC privada configurada en GitHub Secrets.
+    Una etiqueta JSON 'approved' por sí sola no autoriza la publicación.
+    """
+    secret=os.getenv('LJR_OFFICIAL_NOTICE_APPROVAL_SECRET','')
+    a=item.get('approval')
+    if len(secret)<32 or not isinstance(a,dict) or a.get('status')!='approved':
+        return False
+    if not isinstance(a.get('by'),str) or not a['by'].strip() or not parse_dt(a.get('at')):
+        return False
+    signature=str(a.get('signature') or '')
+    return len(signature)==64 and hmac.compare_digest(signature,approval_signature(item,secret))
+
 def main():
     now=datetime.now(timezone.utc)
     schedule=load(SCHEDULE,[])
@@ -83,7 +103,7 @@ def main():
     changed=False
     existing={str(x.get('id')) for x in active if x.get('id')}
     for item in schedule:
-        if not isinstance(item,dict):continue
+        if not isinstance(item,dict) or not approved(item):continue
         item_id=str(item.get('id',''))
         if not re.fullmatch(r'[A-Za-z0-9_-]{1,90}',item_id):continue
         if not str(item.get('title','')).strip():continue

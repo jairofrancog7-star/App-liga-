@@ -26,6 +26,18 @@ export async function dispatch(env, fetcher=fetch, log=console.log) {
   const url=validTarget(env.NOTIFICATIONS_API_URL);
   if(!url) throw Error('NOTIFICATIONS_API_URL debe ser un origen HTTPS público sin rutas ni credenciales.');
   if(env.NOTIFICATIONS_JOB_TOKEN.trim().length<32) throw Error('NOTIFICATIONS_JOB_TOKEN es demasiado corto.');
+  // No ejecutar colas en servidores desactualizados que aún no exigen
+  // aprobación explícita por Presidencia (fallar cerrado).
+  const health=await fetcher(url+'/health/ready',{
+    method:'GET',
+    headers:{Accept:'application/json'},
+    signal:AbortSignal.timeout(20000),
+    redirect:'error'
+  });
+  if(!health.ok)throw Error('No se pudo comprobar la seguridad de aprobación del servidor: HTTP '+health.status);
+  const capability=await health.json();
+  if(capability?.ready!==true||capability?.approvalRequired!==true)
+    throw Error('El servidor todavía no garantiza aprobación administrativa; envío bloqueado hasta actualizarlo.');
   const res=await fetcher(url+'/jobs/dispatch',{
     method:'POST',
     headers:{'X-Job-Token':env.NOTIFICATIONS_JOB_TOKEN,'Accept':'application/json'},
