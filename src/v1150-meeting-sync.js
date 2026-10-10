@@ -1,14 +1,17 @@
 /* V1150: sincronización manual de juntas, solo si hay backend HTTPS con sesión verificada. */
 (()=>{'use strict';if(window.LJR_MEETING_SYNC_V1150)return;
 const $=(s,r=document)=>r?.querySelector?.(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let lastDiagnosis=null; // Só​lo en memoria de la pestaña, no se comparte ni se guarda.
 function view(ctx){
  const r=ctx.item(),n=r.remoteRevision||0;
  return '<div class="mh-overview"><b>Sincronización privada</b><small>Junta '+ctx.fmt(ctx.date())+' · '+(n?'Versión sincronizada '+n:'Sin sincronizar')+'</small></div>'+
  '<p class="mh-tip">Comparte la minuta, asistencia, acuerdos y votaciones entre administradores autorizados cuando esté activo el servidor HTTPS de la Liga. Los archivos y dibujos de firmas permanecen en este dispositivo.</p>'+
- '<div class="mh-buttons"><button type="button" data-mh-action="sync-check">Comprobar servidor</button><button type="button" data-mh-action="sync-upload">Guardar en servidor</button><button type="button" data-mh-action="sync-download">Recuperar del servidor</button></div>'+
+ '<div class="mh-buttons"><button type="button" data-mh-action="sync-check">Verificar mi acceso</button><button type="button" data-mh-action="sync-upload">Guardar en servidor</button><button type="button" data-mh-action="sync-download">Recuperar del servidor</button></div>'+ 
+ (lastDiagnosis?.date===ctx.date()?'<div class="mh-overview" role="status"><b>Diagnóstico de tu sesión</b><small>'+esc(lastDiagnosis.text)+'</small></div>':'')+
  '<p class="mh-tip">Antes de recuperar una versión ajena se descargará una copia JSON de seguridad de la junta actual. No se sobrescribirá otra versión más reciente sin advertencia.</p>'+ 
  '<div class="mh-buttons"><button type="button" data-mh-action="sync-restore-local">Restaurar copia previa</button><input type="file" hidden accept=".json,application/json" data-mh-file="sync-backup"></div>'+
- '<p class="mh-tip">El servicio HTTPS de la Liga ya está configurado. Usa «Comprobar servidor» con una sesión autorizada para confirmar tu acceso antes de sincronizar. Si el servidor no responde, los datos locales siguen disponibles.</p>';
+ '<p class="mh-tip">El servicio HTTPS de la Liga ya está configurado. 1. Verifica tu acceso. 2. Guarda una junta aprobada con el botón de arriba. 3. Abre la misma fecha en otro dispositivo con una sesión autorizada y elige Recuperar del servidor. La prueba de acceso no guarda ni modifica actas.</p>';
 }
 async function authorized(permission,ctx){
  const api=window.LJR_MEDIA?.notifyAPI;
@@ -38,12 +41,31 @@ async function readRemote(api,ctx){
  catch(e){if(e.status===404)return null;throw e}
 }
 async function check(ctx){
- const api=await authorized('meetings:read',ctx);if(!api)return;
+ const api=window.LJR_MEDIA?.notifyAPI;
+ if(!window.LJR_MEDIA?.admin||!api)return ctx.msg('Inicia sesión de administración para probar tu acceso.');
+ if(!ctx.validDate(ctx.date()))return ctx.msg('Elige primero la fecha de martes que quieres comprobar.');
+ lastDiagnosis=null;
  try{
-  const x=await api('/admin/meetings');
-  const rows=Array.isArray(x.items)?x.items:[];
-  ctx.msg('Servidor conectado: '+rows.length+' juntas en el archivo privado. '+(rows[0]?'Última: '+rows[0].date+'.':'Todavía no hay juntas guardadas.'));
- }catch(e){ctx.msg('No se pudo comprobar el servidor: '+String(e.message||e).slice(0,140))}
+  const me=await api('/admin/me');
+  const actor=me?.actor;
+  if(!actor||!Array.isArray(actor.permissions))throw Error('La sesión no devolvió un cargo válido');
+  const canRead=actor.permissions.includes('meetings:read');
+  const canWrite=actor.permissions.includes('meetings:write');
+  if(!canRead){ctx.msg('Sesión validada, pero tu cargo no permite consultar juntas.');return}
+  const list=await api('/admin/meetings');
+  if(!Array.isArray(list?.items))throw Error('El archivo privado no devolvió una lista válida');
+  let remote=null;
+  try{remote=await api('/admin/meetings/'+ctx.date())}
+  catch(e){if(e?.status!==404)throw e}
+  const version=remote?'v'+remote.revision:'sin registro remoto';
+  const desc='Cargo: '+(actor.role||'sin cargo')+
+   '. Lectura: autorizada. Edición: '+(canWrite?'permitida':'sin permiso')+
+   '. Archivo: '+list.items.length+' fechas. Junta '+ctx.fmt(ctx.date())+': '+version+
+   '. Solo lectura; no se modificaron acuerdos ni actas.';
+  lastDiagnosis={date:ctx.date(),text:desc};
+  ctx.render();
+  ctx.msg('Acceso verificado con tu sesión real. '+(canWrite?'Puedes guardar una junta después de revisarla.':'Este cargo no puede guardar juntas.'));
+ }catch(e){lastDiagnosis=null;ctx.msg('No se pudo verificar la sesión y el archivo privado: '+String(e?.message||e).slice(0,160))}
 }
 async function upload(ctx){
  const api=await authorized('meetings:write',ctx);if(!api)return;
