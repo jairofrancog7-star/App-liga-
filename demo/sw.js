@@ -1,5 +1,5 @@
 /* V1072: evitar que la PWA Android conserve estilos y módulos obsoletos. */
-const CACHE='liga-juventino-v1130-referee-ready';
+const CACHE='liga-juventino-v1130-referee-ready-tablet-width-r2';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
