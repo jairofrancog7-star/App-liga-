@@ -104,7 +104,7 @@ function open(options={}){
   const saved=recordFor(match?.key||'');
   const teams=match?[match.home,match.away]:teamNames(state.catId);
   if(!teams.some(t=>norm(t)===norm(state.team)))state.team=teams[0]||'';
-  const players=playerData(state);
+  const players=playerData(state).filter(p=>norm(p.name+' '+(p.dorsal||'')).includes(norm(state.filter)));
   if(!players.some(p=>p.name===state.player))state.player=saved&&norm(saved.team)===norm(state.team)&&players.some(p=>p.name===saved.player)?saved.player:(players[0]?.name||'');
  }
  if(!match)state.matchKey=matchChoices()[0]?.key||'';
