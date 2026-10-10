@@ -158,3 +158,9 @@
  .liga-media-modal .ljr-editor-compose .ljr-editor-two{grid-template-columns:1fr!important}
  .liga-media-modal .ljr-editor-compose .ljr-editor-two>label:nth-child(n+6){grid-column:auto}
 }
+
+.liga-media-modal .ljr-editor-compose .ljr-editor-progress{
+ margin:0!important;color:#d5edff!important;font-size:11px!important;
+ line-height:1.35!important;overflow-wrap:anywhere!important
+}
+.liga-media-modal .ljr-editor-compose .ljr-editor-progress:empty{display:none!important}
