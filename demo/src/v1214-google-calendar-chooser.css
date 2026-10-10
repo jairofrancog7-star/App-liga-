@@ -35,7 +35,7 @@ html body .ljr-gcal-chooser .ljr-gcal-dialog{
   gap:10px!important;
   overflow:hidden!important;
   color:#f5f9ff!important;
-  background:linear-gradient(160deg,#11346e 0%,#0b2857 36%,#081938 100%)!important;
+  background:linear-gradient(160deg,#153b91 0%,#101f70 36%,#090e53 100%)!important;
   border:1px solid #3677c1!important;
   border-radius:17px!important;
   box-shadow:0 16px 55px rgba(0,5,21,.65)!important;
@@ -80,7 +80,7 @@ html body .ljr-gcal-chooser button.ljr-gcal-close{
   max-height:32px!important;
   padding:0 11px!important;
   margin:0!important;
-  background:#102d60!important;
+  background:#19367e!important;
   border:1px solid #3e73b6!important;
   border-radius:9px!important;
   color:#eaf4ff!important;
@@ -120,7 +120,7 @@ html body .ljr-gcal-chooser input.ljr-gcal-search{
   outline:0!important;
   border:1px solid #3a6dad!important;
   border-radius:9px!important;
-  background:#061b42!important;
+  background:#0d1a60!important;
   color:#fff!important;
   font-family:inherit!important;font-size:12px!important;font-weight:500!important;line-height:1.25!important;
   text-align:left!important;
@@ -176,7 +176,7 @@ html body .ljr-gcal-chooser button.ljr-gcal-event{
   overflow:visible!important;
   border:1px solid #3567a8!important;
   border-radius:11px!important;
-  background:#0a2653!important;
+  background:#122670!important;
   color:#f3f8ff!important;
   text-align:left!important;
   text-transform:none!important;
@@ -188,7 +188,7 @@ html body .ljr-gcal-chooser button.ljr-gcal-event{
 }
 html body .ljr-gcal-chooser button.ljr-gcal-event:hover,
 html body .ljr-gcal-chooser button.ljr-gcal-event:active{
-  background:#10346d!important;
+  background:#1c3984!important;
   border-color:#61a3ec!important;
 }
 html body .ljr-gcal-chooser .ljr-gcal-event-title{
