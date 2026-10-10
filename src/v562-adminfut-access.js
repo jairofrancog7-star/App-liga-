@@ -152,6 +152,7 @@ function controlMarkup(){
  '</section>';
 }
 function installMarkup(){
+ if(window.LJR_INSTALL_HUB?.page)return window.LJR_INSTALL_HUB.page();
  return '<section class="v562-page" data-v563-install-page>'+
   '<header class="v562-hero"><small>INSTALACIÓN OFICIAL</small><h1>Instalar Liga Juventino</h1><p>Elige la opción para tu teléfono. Puedes instalar desde el navegador o descargar el APK de Android.</p></header>'+
   '<section class="v562-panel"><div class="v562-title"><span><small>ANDROID</small><h2>APK propia</h2></span></div>'+
@@ -176,6 +177,7 @@ function openDiscipline(kind){
  go('discipline');
 }
 async function install(){
+ if(window.LJR_INSTALL_HUB?.open){window.LJR_INSTALL_HUB.open();return}
  if(window.LJR_V100?.installApp){window.LJR_V100.installApp();return}
  alert(/iphone|ipad|ipod/i.test(navigator.userAgent||'')?'Safari → Compartir → Añadir a pantalla de inicio.':'Chrome → menú → Instalar aplicación / Añadir a pantalla de inicio.');
 }
