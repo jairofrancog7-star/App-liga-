@@ -15,6 +15,7 @@ const instructions={
  news:{icon:'📰',intro:'Crea noticias y avisos oficiales con título, texto e imagen opcional.',steps:['Escribe el título y el mensaje.','Si quieres, añade una imagen desde el teléfono.','Revisa Publicar para todos y pulsa Guardar cambios.']},
  transmission:{icon:'▶️',intro:'Comparte una transmisión autorizada con su enlace público.',steps:['Escribe título, categoría y descripción.','Pega el enlace público de la transmisión y añade portada si la tienes.','Pulsa Guardar cambios.']},
  product:{icon:'🛍️',intro:'Agrega artículos de la tienda con nombre, precio, foto y enlace de pedido.',steps:['Escribe el nombre y la descripción.','Indica precio, imagen y enlace de pedido.','Pulsa Guardar cambios.']},
+ cms:{icon:'📋',intro:'Selecciona el apartado que quieres actualizar. Cada opción tiene una explicación y conserva su guardado oficial.',steps:['Toca Noticias, Equipos, Jugadores o el apartado que vas a administrar.','Pulsa Crear nuevo o Editar tabla de una categoría.','Completa los campos siguiendo la ayuda y guarda para publicar.']},
  manage:{icon:'⚙️',intro:'Elige una función con su icono. Todos los cambios oficiales siguen protegidos por la sesión del administrador.',steps:['Toca Contenido y datos para elegir qué modificar.','Selecciona la herramienta y completa los campos explicados.','Guarda los cambios al terminar. Para administradores nuevos, abre Añadir administrador.']}
 };
 const safe=s=>String(s||'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -36,6 +37,7 @@ function getKind(section){
   if(form.querySelector('[name=image]')&&form.querySelector('[name=title]'))return 'design';
   if(form.querySelector('[name=body]'))return 'news';
  }
+ if(section.querySelector('.cms-kind-grid'))return 'cms';
  return section.classList.contains('ljr-admin-manage')?'manage':null;
 }
 function addGuide(section,kind){
@@ -102,6 +104,25 @@ function prettifyTable(section,kind){
  section.querySelector('[data-add-row]')?.setAttribute('aria-label','Añadir una fila nueva a la tabla');
  section.querySelector('[data-save-table]')?.setAttribute('aria-label','Guardar y publicar la tabla de esta categoría');
 }
+const tileNotes={
+ news:'Avisos y comunicados',scorers:'Goles de jugadores',standings:'Posiciones y puntos',
+ fixture:'Partidos por jornada',sanction:'Castigos y expulsiones',document:'Archivos y cédulas',
+ transmission:'Enlaces de los directos',product:'Artículos de la tienda',
+ player:'Altas de jugadores',team:'Registro de equipos',page:'Texto, fotos y colores',
+ design:'Diseños para compartir'
+};
+function prettifyMenu(section){
+ const grid=section.querySelector('.cms-kind-grid');if(!grid)return;
+ grid.querySelectorAll('button[data-cms-kind]').forEach(button=>{
+  const kind=button.dataset.cmsKind;
+  if(button.dataset.ljrTileHelp)return;
+  button.dataset.ljrTileHelp='1';
+  const label=button.querySelector('.ljr-admin-tile-label')||button;
+  const small=document.createElement('small');small.className='ljr-simple-tile-note';
+  small.textContent=tileNotes[kind]||'Seleccionar herramienta';
+  label.append(small);
+ });
+}
 function decorate(section){
  if(section.dataset.ljrAdminFriendly==='1'||!window.LJR_MEDIA?.admin)return;
  const kind=getKind(section);
@@ -112,6 +133,7 @@ function decorate(section){
  addGuide(section,kind);
  if(section.querySelector('form.cms-form'))prettifyForm(section,kind);
  if(section.querySelector('.cms-table-wrap'))prettifyTable(section,kind);
+ if(kind==='cms')prettifyMenu(section);
 }
 let queued=false;
 function scan(){
