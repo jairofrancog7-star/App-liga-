@@ -49,6 +49,8 @@ function compatibleCategory(stored,id){
  if(!stored)return true;
  const expected=categories.find(c=>c[0]===id)?.[1]||'';
  const a=normal(stored),b=normal(expected);
+ // Los árbitros registrados para todas las categorías nunca se ocultan por categoría.
+ if(['todas','todas las categorias','sin categoria'].includes(a))return true;
  return !expected||a===b||a.replace(' fuerza','')===b.replace(' fuerza','')||a.includes(b)||b.includes(a);
 }
 function openDirectory(kind,dialog,feedback){
@@ -105,14 +107,14 @@ function mountOffices(dialog){
   if(before&&values.includes(before))sel.value=before;
  };
  const updatePeople=()=>{
+  // Los oficiales son imparciales: se filtran por categoría, no por el equipo.
   const members=localList(kind.value).filter(x=>
    compatibleCategory(x.category,cat.value)&&
-   (!team.value||normal(x.team)===normal(team.value))
+   (kind.value==='officials'||!team.value||normal(x.team)===normal(team.value))
   );
-  const before=person.value;
   person.replaceChildren(new Option('Selecciona una persona',''));
   members.forEach((x,i)=>person.add(new Option(x.name+(x.role?' · '+x.role:''),String(i))));
-  person.value=before&&+before<members.length?before:'';
+  person.value='';
   feedback.textContent=members.length?members.length+' persona(s) registrada(s) en este teléfono. No se comparte información privada al publicar avisos.':'No hay contactos locales con los filtros seleccionados. Abre el directorio para agregarlos.';
  };
  const updateTeams=()=>{
@@ -127,16 +129,25 @@ function mountOffices(dialog){
  });
  cat.addEventListener('change',updateTeams);
  team.addEventListener('change',updatePeople);
- kind.addEventListener('change',updatePeople);
+ const syncResponsibleType=()=>{
+  const referee=kind.value==='officials';
+  const teamLabel=team.closest('label');
+  if(teamLabel)teamLabel.hidden=referee;
+  team.disabled=referee;
+  if(referee)team.value='';
+  updatePeople();
+ };
+ kind.addEventListener('change',syncResponsibleType);
  person.addEventListener('change',()=>{
   if(person.value==='')return;
-  const list=localList(kind.value).filter(x=>compatibleCategory(x.category,cat.value)&&(!team.value||normal(x.team)===normal(team.value)));
+  const list=localList(kind.value).filter(x=>compatibleCategory(x.category,cat.value)&&(kind.value==='officials'||!team.value||normal(x.team)===normal(team.value)));
   const selected=list[Number(person.value)];
   if(selected)feedback.textContent=[selected.name,selected.role,selected.team,selected.category].filter(Boolean).join(' · ')+' · Contacto local privado.';
  });
  $('[data-v1222-open]',box).addEventListener('click',()=>openDirectory(kind.value,dialog,feedback));
  // Volviendo desde el directorio, leer otra vez el almacenamiento, sin copias.
- box.addEventListener('focusin',e=>{if(e.target===person)updatePeople()});
+ box.addEventListener('focusin',e=>{if(e.target===person&&person.options.length===1)updatePeople()});
+ syncResponsibleType();
 }
 let queued=false;
 function scan(){
