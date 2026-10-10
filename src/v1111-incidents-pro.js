@@ -112,6 +112,13 @@ function open(){
  '<label><span>Jugador (opcional)</span><input data-player list="v1111-players" placeholder="Elegir o escribir nombre" autocomplete="off"><datalist id="v1111-players"></datalist></label>'+
  '<label class="v1111-span" data-secondary-wrap><span data-secondary-label>Asistencia / participante</span><input data-secondary placeholder="Nombre del jugador (opcional)"></label>'+
  '<label class="v1111-span"><span>Detalle (opcional)</span><textarea data-note rows="2" maxlength="900" placeholder="Qué sucedió durante el partido..."></textarea></label></div>'+
+ '<section class="v1230-assistant" aria-label="Asistente de revisión local">'+
+ '<div class="v1230-assistant-head"><div><strong>Revisión inteligente</strong><small>Automática · privada · sin internet</small></div><span>EN ESTE CELULAR</span></div>'+
+ '<p data-ai-hint role="status" aria-live="polite">Completa los datos para recibir sugerencias.</p>'+
+ '<button type="button" data-ai-apply hidden></button>'+
+ '<div class="v1230-assistant-actions"><button type="button" data-ai-check>Revisar ahora</button>'+
+ '<button type="button" data-ai-model>IA del dispositivo (opcional)</button></div>'+
+ '<small data-ai-info>Las sugerencias no modifican registros ni resultados oficiales.</small></section>'+
  '<div class="v105-actions v1111-save-actions"><button type="button" class="v105-btn" data-add>+ Guardar incidencia</button>'+
  '<button type="button" class="v105-btn alt" data-cancel hidden>Cancelar edición</button></div>'+
  '<div class="v1111-notice" data-status role="status" aria-live="polite"></div>'+
@@ -154,6 +161,122 @@ function open(){
   q('[data-secondary]').placeholder=t==='Sustitución'?'Jugador que entra':'Nombre del asistente';
   modal.querySelectorAll('[data-quick]').forEach(b=>b.classList.toggle('active',b.dataset.quick===t));
  }
+
+ // Revisión ligera 100% local. Nunca publica ni corrige datos sin un toque explícito.
+ function suggestType(note){
+  const n=norm(note);
+  if(!n)return '';
+  const rules=[
+   [/gol anulado|anularon el gol|anulo el gol/,'Gol anulado'],
+   [/autogol|propia puerta|gol en contra/,'Gol en propia puerta'],
+   [/penal.{0,35}(fall|erro|ataj|fuera|desvi)|fallo el penal/,'Penal fallado'],
+   [/penal.{0,35}(marc|anot|convirt|gol)/,'Penal marcado'],
+   [/segunda amarilla|doble amarilla/,'Segunda amarilla'],
+   [/tarjeta roja|expulsion|expulsad/,'Tarjeta roja'],
+   [/tarjeta amarilla|amonest/,'Tarjeta amarilla'],
+   [/sustituci|sustitu|entra por|sale por|cambio de jugador/,'Sustitución'],
+   [/lesion|lesionado|molestia muscular/,'Lesión'],
+   [/suspension por lluvia|suspendido por lluvia/,'Suspensión por lluvia'],
+   [/gol|anotacion|anoto|marco el tanto/,'Gol']
+  ];
+  return rules.find(rule=>rule[0].test(n))?.[1]||'';
+ }
+ function localReview(){
+  const type=q('[data-type]').value,team=q('[data-team]').value,
+   player=q('[data-player]').value.trim(),note=q('[data-note]').value.trim(),
+   min=q('[data-min]').value.trim(),extra=q('[data-extra]').value.trim(),
+   m=chosen(),cat=m?.cat||q('[data-cat]').value,warnings=[];
+  if(!min)warnings.push('Indica el minuto del evento.');
+  else if(!/^\d+$/.test(min)||Number(min)>130)warnings.push('El minuto debe estar entre 0 y 130.');
+  if(extra&&(!/^\d+$/.test(extra)||Number(extra)>30))warnings.push('El tiempo añadido debe estar entre 0 y 30.');
+  if(/^(Gol|Gol en propia puerta|Penal marcado|Penal fallado|Tarjeta amarilla|Segunda amarilla|Tarjeta roja|Sustitución)$/.test(type)&&!team)
+   warnings.push('Elige el equipo para esta incidencia.');
+  if(team&&player){
+   const found=players(team,cat).some(n=>norm(n)===norm(player));
+   if(!found)warnings.push('El jugador escrito no figura en la plantilla consultada. Confirma su nombre.');
+  }
+  if(team&&m&&![m.home,m.away].some(n=>norm(n)===norm(team)))
+   warnings.push('El equipo elegido no pertenece al partido seleccionado.');
+  if(team&&min&&entries.some(x=>x.id!==editing&&
+   String(x.matchId||'')===String(m?.id||'')&&x.type===type&&norm(x.team)===norm(team)&&
+   norm(x.player)===norm(player)&&Math.abs(Number(x.min||0)-Number(min))<=1&&Number(x.extra||0)===Number(extra||0)))
+   warnings.push('Posible incidencia repetida en este mismo minuto.');
+  const suggestion=suggestType(note);
+  if(suggestion&&suggestion!==type)warnings.push('El detalle parece describir: '+suggestion+'.');
+  const line=warnings.length?warnings.slice(0,3).join(' '):
+    (min?'Sin alertas en esta revisión local. Comprueba los datos antes de guardar.':
+     'Escribe el minuto, equipo y detalle para revisar.');
+  q('[data-ai-hint]').textContent=line;
+  const apply=q('[data-ai-apply]');
+  apply.hidden=!(suggestion&&suggestion!==type);
+  if(!apply.hidden){apply.textContent='Usar tipo sugerido: '+suggestion;apply.dataset.aiSuggestedType=suggestion;}
+  else delete apply.dataset.aiSuggestedType;
+  return {warnings,suggestion,line};
+ }
+ let aiReviewTimer=0,aiSession=null,aiBusy=false,modelState='checking';
+ function scheduleLocalReview(){
+  clearTimeout(aiReviewTimer);
+  aiReviewTimer=setTimeout(localReview,140);
+ }
+ function deviceAIAvailability(){
+  const LM=window.LanguageModel;
+  if(typeof LM?.availability!=='function'||typeof LM?.create!=='function'){
+   modelState='unavailable';return;
+  }
+  Promise.resolve().then(()=>LM.availability()).then(state=>{
+   modelState=state==='available'?'available':String(state||'unavailable');
+   const info=q('[data-ai-info]');
+   if(!info)return;
+   if(modelState==='available')info.textContent='IA integrada disponible en este navegador. Se ejecuta solo al tocar el botón; no publica cambios.';
+   else if(modelState==='downloadable'||modelState==='downloading')
+    info.textContent='El modelo requiere descarga. No se descargará automáticamente; funciona la revisión local sin modelo.';
+  }).catch(()=>{modelState='unavailable';});
+ }
+ q('[data-ai-check]').addEventListener('click',()=>{clearTimeout(aiReviewTimer);localReview();});
+ q('[data-ai-apply]').addEventListener('click',()=>{
+  const type=q('[data-ai-apply]').dataset.aiSuggestedType;
+  if(!ALL_TYPES.includes(type))return;
+  q('[data-type]').value=type;secondaryLabel();localReview();
+ });
+ q('[data-ai-model]').addEventListener('click',async()=>{
+  if(aiBusy)return;
+  localReview();
+  const LM=window.LanguageModel;
+  if(modelState!=='available'||!LM?.create){
+   q('[data-ai-info]').textContent='Modelo de IA no disponible sin descarga en este navegador. La revisión automática local continúa funcionando.';
+   return;
+  }
+  aiBusy=true;
+  const btn=q('[data-ai-model]');btn.disabled=true;btn.textContent='Analizando...';
+  try{
+   // La creación parte del toque del usuario; no se descarga ni llama a servicios externos.
+   aiSession=await LM.create();
+   if(!modal.isConnected)return;
+   const input={
+    minuto:q('[data-min]').value,adicional:q('[data-extra]').value,
+    tipo:q('[data-type]').value,
+    detalle:q('[data-note]').value.trim().slice(0,450)
+   };
+   const text='Analiza esta incidencia de futbol como asistente local. '
+    +'Responde en español en 1 o 2 frases; indica inconsistencias o un tipo probable. '
+    +'No inventes jugadores, marcadores ni hechos. No des por oficial ningún dato. Datos: '
+    +JSON.stringify(input);
+   const response=await aiSession.prompt(text);
+   if(modal.isConnected)q('[data-ai-info]').textContent=String(response||'Sin sugerencia adicional.').slice(0,650);
+  }catch(_){
+   if(modal.isConnected)q('[data-ai-info]').textContent='No se pudo iniciar el modelo del navegador. Revisión local disponible sin IA generativa.';
+  }finally{
+   try{aiSession?.destroy?.();}catch(_){}
+   aiSession=null;aiBusy=false;
+   if(modal.isConnected){btn.disabled=false;btn.textContent='IA del dispositivo (opcional)';}
+  }
+ });
+ modal.querySelectorAll('[data-min],[data-extra],[data-type],[data-team],[data-player],[data-note],[data-cat],[data-match]')
+  .forEach(el=>{
+   el.addEventListener(el.matches('[data-min],[data-extra],[data-player],[data-note]')?'input':'change',scheduleLocalReview);
+  });
+ deviceAIAvailability();
+
  function visible(){
   const id=q('[data-match]').value;
   return entries.filter(x=>id?x.matchId===id:!x.matchId);
@@ -276,7 +399,13 @@ function open(){
   catch(err){if(err?.name==='AbortError')return}
   window.prompt('Copia el resumen local:',txt);
  });
- function close(){document.removeEventListener('keydown',keys);window.removeEventListener('ljr:official-data',refreshOfficial);modal.remove()}
+ function close(){
+  clearTimeout(aiReviewTimer);
+  try{aiSession?.destroy?.();}catch(_){}
+  document.removeEventListener('keydown',keys);
+  window.removeEventListener('ljr:official-data',refreshOfficial);
+  modal.remove();
+ }
  function refreshOfficial(){
   const selectedCat=q('[data-cat]').value;
   matchList=fixtures();
@@ -289,7 +418,7 @@ function open(){
  q('[data-close]').addEventListener('click',close);
  modal.addEventListener('click',e=>{if(e.target===modal)close()});
  document.addEventListener('keydown',keys);
- matchOptions();secondaryLabel();render();
+ matchOptions();secondaryLabel();render();localReview();
  window.addEventListener('ljr:official-data',refreshOfficial);
  window.LJR_INCIDENTS_MEDIA?.attach?.({modal,getEntries:()=>entries,getVisible:visible,getChosen:chosen,merge:mergeIncoming,status});
  if(!matchList.length)status('Aún no hay partidos oficiales cargados. Puedes usar la bitácora general.');
