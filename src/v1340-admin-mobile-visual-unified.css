@@ -259,3 +259,11 @@ html body[data-app-route="publicationCenter"] .v1004-pub-hub button:focus-visibl
   html body .v105-poll-modal .v105-card,
   html body[data-app-route="publicationCenter"] .v1004-pub-hub button{transition:none!important}
 }
+
+/* Ajustes de seguridad visual: nunca mostrar acciones ocultas por la lógica. */
+html body :is(.liga-media-modal .ljr-editor-dialog,.v105-modal.v1212-csv-modal,.v105-modal.v105-poll-modal,.v105-modal.v1126-delegate-modal,.v105-modal.v1125-officials-modal,.v105-modal.v1111-incidents-modal) [hidden]{
+  display:none!important;
+}
+html body > .v105-modal.v105-poll-modal .v105-poll-grid > .v105-card{
+  grid-template-columns:48px minmax(0,1fr) 26px!important;
+}
