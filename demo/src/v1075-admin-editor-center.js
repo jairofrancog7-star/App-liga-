@@ -215,53 +215,173 @@ const SECTIONS=[
  ['Tienda','club-store','product'],['Match Center','match','fixture'],
  ['Más y herramientas','more','page']
 ];
+/* Auditoria local: solo analiza la pantalla; no lee ni transmite datos privados. */
+function inspectEditorScreen(item){
+ const scope=document.querySelector('#screen')||document.querySelector('main');
+ if(!scope)return {title:item[0],metrics:{},tips:['No se encontró la pantalla para analizar.'],details:'La página todavía no terminó de abrir.'};
+ const visible=node=>{
+  const box=node.getBoundingClientRect(),css=getComputedStyle(node);
+  return box.width>0&&box.height>0&&css.visibility!=='hidden'&&css.display!=='none';
+ };
+ const imgs=[...scope.querySelectorAll('img')].filter(visible);
+ const broken=imgs.filter(img=>img.complete&&img.naturalWidth===0&&!!img.getAttribute('src')).length;
+ const unlabelled=imgs.filter(img=>!img.hasAttribute('alt')&&!img.hasAttribute('aria-label')&&img.getAttribute('role')!=='presentation'&&img.getAttribute('aria-hidden')!=='true').length;
+ const actions=[...scope.querySelectorAll('button,a,select,[role="button"]')].filter(visible);
+ const small=actions.filter(node=>{const r=node.getBoundingClientRect();return r.width<36||r.height<36}).length;
+ const nameless=actions.filter(node=>node.matches('button,[role="button"]')&&!String(node.innerText||node.textContent||'').trim()&&!node.getAttribute('aria-label')&&!node.getAttribute('title')).length;
+ const emptyLinks=actions.filter(node=>node.tagName==='A'&&(!node.getAttribute('href')||node.getAttribute('href')==='#')).length;
+ const overflowing=scope.scrollWidth>scope.clientWidth+8||document.documentElement.scrollWidth>window.innerWidth+8;
+ const metrics={imagenes:imgs.length,botonesYEnlaces:actions.length,imagenesSinCargar:broken,imagenesSinDescripcion:unlabelled,controlesPequenos:small,controlesSinNombre:nameless,enlacesIncompletos:emptyLinks,desbordeHorizontal:overflowing};
+ const tips=[];
+ if(broken)tips.push('Revisar '+broken+' imagen(es) que no cargan y verificar sus rutas.');
+ if(unlabelled)tips.push('Agregar descripciones accesibles a '+unlabelled+' imagen(es) o marcarlas como decorativas.');
+ if(small)tips.push('Ampliar '+small+' control(es) táctiles a 40–44 px sin tapar el contenido.');
+ if(nameless)tips.push('Dar un nombre accesible a '+nameless+' botón(es) con solo icono.');
+ if(emptyLinks)tips.push('Revisar '+emptyLinks+' enlace(s) sin destino válido.');
+ if(overflowing)tips.push('Corregir el desplazamiento horizontal y los elementos que salen de la pantalla.');
+ if(!tips.length)tips.push('No se detectaron fallas básicas. Revisar legibilidad, contraste y separación de elementos antes de publicar.');
+ tips.push('Conservar el degradado azul de la Liga y los logos originales sin fondo.');
+ return {title:item[0],metrics,tips,details:'Revisión automática de la pantalla visible. Los resultados son orientativos; no modifican datos oficiales.'};
+}
+function showEditorAudit(item){
+ if(!admin())return;
+ const result=inspectEditorScreen(item);
+ const modal=createModal('Revisión · '+item[0],'<section class="ljr-editor-review ljr-editor-audit">'+
+  '<p class="ljr-editor-note">Análisis local y de solo lectura. No publica nada ni envía información a servicios externos.</p>'+
+  '<div class="ljr-editor-audit-summary" data-audit-summary></div>'+
+  '<h3>Mejoras recomendadas</h3><ul data-audit-tips></ul>'+
+  '<div class="ljr-editor-audit-actions"><button type="button" data-audit-copy>Copiar diagnóstico</button>'+
+  '<button type="button" data-audit-ai>IA del dispositivo</button>'+
+  '<button type="button" data-audit-back>Volver al editor</button></div>'+
+  '<p class="ljr-editor-note" data-audit-status aria-live="polite">La IA generativa local es opcional y depende del navegador; el diagnóstico anterior funciona sin ella.</p>'+
+  '<pre data-audit-output hidden></pre></section>','ljr-editor-audit-dialog');
+ const box=$('[data-audit-summary]',modal),list=$('[data-audit-tips]',modal),message=$('[data-audit-status]',modal),aiOutput=$('[data-audit-output]',modal);
+ const m=result.metrics;
+ box.textContent='Pantalla: '+result.title+' · '+(m.imagenes||0)+' imágenes · '+(m.botonesYEnlaces||0)+' controles · '+(m.controlesPequenos||0)+' controles pequeños.';
+ result.tips.forEach(tip=>{const li=document.createElement('li');li.textContent=tip;list.append(li)});
+ const printable=()=>result.title+'\n'+result.details+'\n'+Object.entries(m).map(([k,v])=>k+': '+v).join('\n')+'\n'+result.tips.map(t=>'- '+t).join('\n')+(aiOutput.hidden?'':'\nIA local:\n'+aiOutput.textContent);
+ $('[data-audit-copy]',modal).onclick=async()=>{
+  try{await navigator.clipboard.writeText(printable());message.textContent='Diagnóstico copiado. No se ha publicado nada.'}
+  catch(_){message.textContent='No se pudo copiar automáticamente. Selecciona y copia el texto del diagnóstico.';aiOutput.hidden=false;aiOutput.textContent=printable()}
+ };
+ $('[data-audit-back]',modal).onclick=()=>{modal.querySelector('[data-close]')?.click();openPages()};
+ $('[data-audit-ai]',modal).onclick=async event=>{
+  const button=event.currentTarget,API=window.LanguageModel;
+  if(!API||typeof API.availability!=='function'){
+   message.textContent='Este navegador no dispone de IA generativa integrada. El diagnóstico local anterior sí está disponible (en Android también).';
+   return;
+  }
+  button.disabled=true;message.textContent='Comprobando el modelo local del navegador…';
+  let session;
+  try{
+   const options={expectedInputs:[{type:'text',languages:['es']}],expectedOutputs:[{type:'text',languages:['es']}]};
+   const availability=await API.availability(options);
+   if(availability!=='available'){
+    message.textContent='El modelo no está listo ('+availability+'). No se descargará sin tu decisión. Usa las recomendaciones locales.';
+    return;
+   }
+   session=await API.create(options);
+   const prompt='Actúa como auditor UX de una app de fútbol. Responde en español con máximo 5 acciones concretas, sin inventar datos deportivos ni decir que se cambiaron cosas. Solo tienes métricas de diseño, no datos personales. Sección: '+item[0]+'. Métricas: '+JSON.stringify(m)+'. Observaciones: '+result.tips.join(' ');
+   const answer=await session.prompt(prompt);
+   aiOutput.textContent=String(answer||'Sin recomendaciones adicionales.').slice(0,2400);
+   aiOutput.hidden=false;
+   message.textContent='Sugerencias generadas en el modelo integrado del dispositivo. Revísalas antes de hacer cambios.';
+  }catch(err){message.textContent='No se pudo iniciar la IA del dispositivo: '+(err?.message||'No compatible')+'. Se mantienen las recomendaciones automáticas.'}
+  finally{try{session?.destroy?.()}catch(_){} button.disabled=false}
+ };
+}
 function openPages(){
  if(!admin())return media()?.login?.(openPages);
- const options=SECTIONS.map((x,i)=>'<option value="'+i+'">'+esc(x[0])+'</option>').join('');
- const modal=createModal('Editar mi página','<section class="ljr-editor-review">'+
- '<p class="ljr-editor-note">Elige una sección. Puedes modificar su información oficial o tocar directamente textos, imágenes y tarjetas sin programar.</p>'+
- '<label class="ljr-editor-target">Sección de la aplicación<select data-section>'+options+'</select></label>'+
- '<div class="ljr-editor-two-choice">'+
- '<button type="button" data-page-content>Editar información</button>'+
- '<button type="button" data-page-visual>Editar diseño en pantalla</button></div>'+
- '<small class="ljr-editor-note">Solo se publican cambios cuando los guardas. Las ediciones necesitan una sesión verificada por el servidor.</small>'+
- '</section>','ljr-editor-page-picker');
- const select=$('[data-section]',modal);
+ const stored=(()=>{try{return Number(localStorage.getItem('ljr-editor-last-section-v1'))}catch(_){return NaN}})();
+ const route=String(location.hash||'').replace(/^#\/?/,'').split(/[/?]/)[0];
+ const currentIndex=SECTIONS.findIndex(x=>x[1]===route);
+ let picked=Number.isInteger(stored)&&stored>=0&&stored<SECTIONS.length?stored:Math.max(0,currentIndex);
+ const modal=createModal('Editar mi página','<section class="ljr-editor-review ljr-editor-page-panel">'+
+  '<p class="ljr-editor-note">Elige una sección para editar información oficial o modificar elementos en pantalla sin programar.</p>'+
+  '<label class="ljr-editor-target">Buscar sección<input type="search" data-page-search placeholder="Ej. Goleadores, equipos, historia" autocomplete="off"></label>'+
+  '<label class="ljr-editor-target">Sección de la aplicación<select data-section aria-label="Sección a editar"></select></label>'+
+  '<p class="ljr-editor-section-info" data-page-detail aria-live="polite"></p>'+
+  '<div class="ljr-editor-two-choice">'+
+  '<button type="button" data-page-content><span aria-hidden="true">✎</span>Editar información</button>'+
+  '<button type="button" data-page-visual><span aria-hidden="true">▣</span>Editar diseño en pantalla</button></div>'+
+  '<div class="ljr-editor-extra-actions">'+
+  '<button type="button" data-page-preview>◉ Ver sección</button>'+
+  '<button type="button" data-page-analyze>◇ Revisar diseño</button>'+
+  '<button type="button" data-page-copy>↗ Copiar enlace</button></div>'+
+  '<small class="ljr-editor-note">La revisión detecta problemas visuales en tu dispositivo. Solo se publica al guardar con una sesión autorizada por el servidor.</small>'+
+  '<p data-status aria-live="polite"></p>'+
+  '</section>','ljr-editor-page-picker');
+ const select=$('[data-section]',modal),search=$('[data-page-search]',modal),detail=$('[data-page-detail]',modal);
+ const buttons=[...modal.querySelectorAll('[data-page-content],[data-page-visual],[data-page-preview],[data-page-analyze],[data-page-copy]')];
+ const fold=t=>String(t).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+ function describe(){
+  const item=select.options.length?SECTIONS[Number(select.value)]:null;
+  detail.textContent=item?'Pantalla: '+item[0]+' · '+item[1]+' · '+(item[2]==='fixture'?'Partidos y jornadas':item[2]==='team'?'Equipos':item[2]==='player'?'Jugadores':'Contenido de la Liga'):'No se encontraron secciones. Prueba con otra palabra.';
+  buttons.forEach(b=>b.disabled=!item);
+ }
+ function paint(){
+  const matches=SECTIONS.map((item,i)=>({item,i})).filter(x=>fold(x.item[0]+' '+x.item[1]+' '+x.item[2]).includes(fold(search.value.trim())));
+  select.innerHTML=matches.map(x=>'<option value="'+x.i+'">'+esc(x.item[0])+'</option>').join('');
+  if(matches.length){if(!matches.some(x=>x.i===picked))picked=matches[0].i;select.value=String(picked)}
+  describe();
+ }
+ function remember(){picked=Number(select.value);try{localStorage.setItem('ljr-editor-last-section-v1',String(picked))}catch(_){}describe()}
+ select.addEventListener('change',remember);search.addEventListener('input',paint);paint();
  async function execute(mode){
-  const item=SECTIONS[Number(select.value)];
-  if(!item)return;
+  const item=select.options.length?SECTIONS[Number(select.value)]:null;if(!item||!select.options.length)return;
   try{
-   await verified();
+   await verified();remember();
    if(mode==='content'){
-    window.LJR_CMS?.open?.(item[2]);
-    modal.querySelector('[data-close]')?.click();
-   }else{
-    modal.querySelector('[data-close]')?.click();
-    location.hash='#/'+item[1];
-    setTimeout(()=>{
-     if(!admin()||!window.LJR_CMS?.editPage)return;
-     window.LJR_CMS.editPage();
-    },550);
+    if(typeof window.LJR_CMS?.open!=='function')throw Error('Editor de contenido no disponible.');
+    modal.querySelector('[data-close]')?.click();window.LJR_CMS.open(item[2]);return;
    }
-  }catch(err){status(modal,'No se puede editar: '+(err?.message||'Error de sesión'))}
+   modal.querySelector('[data-close]')?.click();
+   location.hash='#/'+item[1];
+   if(mode==='preview')return;
+   setTimeout(()=>{
+    if(!admin())return;
+    if(mode==='analyze'){showEditorAudit(item);return}
+    if(typeof window.LJR_CMS?.editPage==='function')window.LJR_CMS.editPage();
+    else media()?.modal?.('Edición visual','La herramienta de edición visual no está disponible en este momento.');
+   },850);
+  }catch(err){status(modal,'No se puede abrir: '+(err?.message||'Error de sesión'))}
  }
  $('[data-page-content]',modal).onclick=()=>execute('content');
  $('[data-page-visual]',modal).onclick=()=>execute('visual');
+ $('[data-page-preview]',modal).onclick=()=>execute('preview');
+ $('[data-page-analyze]',modal).onclick=()=>execute('analyze');
+ $('[data-page-copy]',modal).onclick=async()=>{
+  const item=select.options.length?SECTIONS[Number(select.value)]:null;if(!item||!select.options.length)return;
+  try{await verified();const url=new URL(location.href);url.hash='#/'+item[1];await navigator.clipboard.writeText(url.href);remember();status(modal,'Enlace de la sección copiado.')}
+  catch(err){status(modal,'No se pudo copiar el enlace: '+(err?.message||'Permiso denegado'))}
+ };
 }
-/* Exportación voluntaria de respaldo, nunca a una dirección externa. */
+/* Respaldo oficial V1212: un panel cifrado sustituye a la descarga JSON abierta.
+   El servidor debe imponer autorización también en la petición de contenido. */
 async function exportBackup(){
  if(!admin())return media()?.login?.(exportBackup);
- if(!confirm('Se descargará un archivo JSON con contenido de administración que podría incluir datos personales de jugadores. Guárdalo en un lugar privado. ¿Continuar?'))return;
  try{
   const who=await verified();
-  if(!who.owner)throw Error('El respaldo completo solo pueden exportarlo las cuentas principales autorizadas por el servidor.');
-  const data=await media().api('content?admin=1');
-  if(!Array.isArray(data.items))throw Error('El servidor no devolvió los registros esperados.');
-  const dump={schema:'ljr-admin-backup-v1',exportedAt:new Date().toISOString(),records:data.items};
-  const url=URL.createObjectURL(new Blob([JSON.stringify(dump,null,2)],{type:'application/json'}));
-  const link=document.createElement('a');link.href=url;link.download='liga-juventino-respaldo-'+new Date().toISOString().slice(0,10)+'.json';
-  document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
- }catch(err){alert('No se pudo descargar el respaldo: '+(err?.message||'Error'))}
+  if(who.owner!==true)throw Error('Solo las cuentas principales autorizadas por el servidor pueden consultar este respaldo.');
+  if(!document.querySelector('[data-ljr-backup-v1212-css]')){
+   const css=document.createElement('link');css.rel='stylesheet';
+   css.href=new URL('./src/v1212-official-backup-center.css?v=20261010-v1212',document.baseURI).href;
+   css.setAttribute('data-ljr-backup-v1212-css','');document.head.append(css);
+  }
+  if(!window.LJR_BACKUP_CENTER?.open){
+   if(!window.__LJR_BACKUP_CENTER_LOADING){
+    window.__LJR_BACKUP_CENTER_LOADING=new Promise((resolve,reject)=>{
+     const script=document.createElement('script');script.async=true;
+     script.src=new URL('./src/v1212-official-backup-center.js?v=20261010-v1212',document.baseURI).href;
+     script.onload=()=>window.LJR_BACKUP_CENTER?.open?resolve():reject(Error('El módulo de respaldo no pudo iniciarse.'));
+     script.onerror=()=>reject(Error('No se pudo cargar el respaldo protegido.'));
+     document.head.append(script);
+    }).catch(error=>{window.__LJR_BACKUP_CENTER_LOADING=null;throw error});
+   }
+   await window.__LJR_BACKUP_CENTER_LOADING;
+  }
+  await window.LJR_BACKUP_CENTER.open();
+ }catch(err){alert('Respaldo oficial: '+(err?.message||'No se pudo abrir.'))}
 }
 
 function openScheduler(origin){
