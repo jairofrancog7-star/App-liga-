@@ -23,9 +23,11 @@ function localEngine(){
 test('Asistente cargado en la app principal y demo, sin dependencias remotas',()=>{
   assert.doesNotThrow(()=>new Function(source));
   assert.equal(source,demo);
-  for(const html of ['index.html','demo/index.html']){
-    assert.match(read(html),/v1210-notice-local-assistant\.css/);
-    assert.match(read(html),/v1210-notice-local-assistant\.js/);
+  for(const page of ['index.html','demo/index.html']){
+    const html=read(page);
+    // La demo Vite combina las hojas CSS en assets/index-*.css.
+    assert.match(html,page==='index.html' ? /v1210-notice-local-assistant\.css/ : /assets\/index-[^" ]+\.css/);
+    assert.match(html,/v1210-notice-local-assistant\.js/);
   }
   assert.doesNotMatch(source,/fetch\s*\(/);
   assert.match(source,/solo en este dispositivo/i);
