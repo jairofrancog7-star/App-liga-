@@ -1108,15 +1108,11 @@ function officials(){
    const o=nameOf(a.officialId);if(o)whatsapp(o.phone,'Hola '+o.name+', la Liga Juventino Rosas preparó tu designación para '+a.game+' ('+a.category+'), el '+a.date+' a las '+a.time+' en '+a.field+'. ¿Puedes confirmar? Este mensaje no representa una publicación oficial.');return;
   }
   if(action==='ics'){
-   const start=onDateTime(a.date,a.time),end=new Date(start.getTime()+120*60000);
-   const stamp=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('')+'T'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0')+'00';
-   const safeText=t=>String(t||'').replace(/\\/g,'\\\\').replace(/\r?\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');
-   const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Liga Juventino Rosas//Designacion local//ES','BEGIN:VEVENT',
-    'UID:ljr-'+a.id.replace(/[^a-zA-Z0-9-]/g,'')+'@local','DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,''),
-    'DTSTART:'+stamp(start),'DTEND:'+stamp(end),'SUMMARY:'+safeText('Designación arbitral · '+a.game),
-    'LOCATION:'+safeText(a.field),'DESCRIPTION:'+safeText('Oficial: '+(nameOf(a.officialId)?.name||a.officialName)+' · '+a.category+' · Designación local'), 'END:VEVENT','END:VCALENDAR'];
-   download('designacion-'+a.date+'.ics',lines.join('\r\n')+'\r\n','text/calendar;charset=utf-8');
-   toast('Evento listo para importar en el calendario');return;
+   window.LJR_GOOGLE_CALENDAR_GLOBAL.open({
+    title:'Designación arbitral · '+a.game,iso:a.date,time:a.time,duration:120,
+    venue:a.field,description:'Liga Juventino Rosas · '+a.category+' · Oficial: '+(nameOf(a.officialId)?.name||a.officialName)+' · Designación local por confirmar.'
+   });
+   return;
   }
  });
  resetEditor();editorVisible(list.length===0);switchTab('directory');
@@ -1183,7 +1179,7 @@ function calendarGenerator(){
      '<button type="button" class="v105-btn" data-open aria-pressed="false">Abrir rol oficial aquí</button>'+
      '<button type="button" class="v105-btn alt" data-pdf>Descargar PDF</button>'+
      '<button type="button" class="v105-btn alt" data-img>Descargar PNG</button>'+
-     '<button type="button" class="v105-btn alt" data-ics>Calendario .ics</button>'+
+     '<button type="button" class="v105-btn alt" data-ics>Google Calendar</button>'+
    '</div>'+
    '<p class="v1130-notice">Descargas y recordatorios usan los filtros elegidos. Las fechas sin hora confirmada no se exportan al calendario. Los avisos de cambios dependen de las publicaciones oficiales.</p>');
  m.classList.add('v1130-calendar-pro');
@@ -1423,24 +1419,14 @@ function calendarGenerator(){
    canvas.toBlob(blob=>{if(!blob)return toast('No se pudo crear la imagen');dl(blob,'Calendario_'+fileStem()+'.png');log('Descargar calendario filtrado PNG '+current().name)},'image/png');
  };
  $('[data-ics]',m).onclick=()=>{
-   const pad=n=>String(n).padStart(2,'0');
-   const stamp=d=>d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'T'+pad(d.getHours())+pad(d.getMinutes())+'00';
-   const protect=s=>String(s||'').replace(/\\/g,'\\\\').replace(/\r?\n/g,'\\n').replace(/[,;]/g,c=>'\\'+c);
-   let count=0;const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//LJR//Calendario Oficial//ES','CALSCALE:GREGORIAN','METHOD:PUBLISH'];
-   filtered.forEach((r,i)=>{
-     const f=fixture(r),ds=eventDates(f);if(!ds)return;
-     count++;
-     const uid='ljr-'+current().id+'-'+safeName([f.round,f.home,f.away,f.when,i].join('-'))+'@juventinorosasliga.com';
-     lines.push('BEGIN:VEVENT','UID:'+uid,'DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,''),
-       'DTSTART;TZID=America/Mexico_City:'+ds[0],'DTEND;TZID=America/Mexico_City:'+ds[1],
-       'SUMMARY:'+protect(f.home+' vs '+f.away+' · Liga Juventino Rosas'),
-       'DESCRIPTION:'+protect('Jornada '+f.round+' · '+current().name+'; verifica cambios en '+officialUrl(current())),
-       'LOCATION:'+protect(f.field),'END:VEVENT');
-   });
-   if(!count)return toast('No hay partidos con hora confirmada para exportar');
-   lines.push('END:VCALENDAR');
-   dl(new Blob([lines.join('\r\n')+'\r\n'],{type:'text/calendar;charset=utf-8'}),'Calendario_'+fileStem()+'.ics');
-   toast(count+' partidos exportados a calendario');
+  const events=filtered.map(r=>{
+   const f=fixture(r);
+   const match=String(f.when||'').match(/^(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2})/);
+   if(!match||!f.date?.hasTime)return null;
+   return {title:f.home+' - '+f.away,iso:match[3]+'-'+match[2]+'-'+match[1],time:match[4]+':'+match[5],
+    venue:f.field,duration:120,description:'Liga Juventino Rosas · '+current().name+' · Jornada '+f.round+' · Comprueba el rol oficial.'};
+  }).filter(Boolean);
+  window.LJR_GOOGLE_CALENDAR_GLOBAL.choose(events,'Elige un partido para Google Calendar');
  };
  fillOptions();
  render();
