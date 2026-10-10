@@ -21,8 +21,8 @@ if(!/^https:\/\/[a-z0-9.-]+(?::\d+)?$/i.test(E.LJR_MEDIA_AUTH_BASE||'')){
 const vapidReady=Boolean(E.VAPID_PUBLIC_KEY&&E.VAPID_PRIVATE_KEY&&E.VAPID_SUBJECT);
 if(vapidReady)webpush.setVapidDetails(E.VAPID_SUBJECT,E.VAPID_PUBLIC_KEY,E.VAPID_PRIVATE_KEY);
 const twilioReady=Boolean(E.TWILIO_ACCOUNT_SID&&E.TWILIO_API_KEY&&E.TWILIO_API_SECRET);
-const smsReady=twilioReady&&Boolean(E.TWILIO_MESSAGING_SERVICE_SID);
-const whatsappReady=twilioReady&&Boolean(E.TWILIO_WHATSAPP_SENDER&&E.TWILIO_WHATSAPP_CONTENT_SID);
+const smsReady=twilioReady&&/^MG[0-9a-f]{32}$/i.test(E.TWILIO_MESSAGING_SERVICE_SID||'');
+const whatsappReady=twilioReady&&/^whatsapp:\\+[1-9]\\d{7,14}$/.test(E.TWILIO_WHATSAPP_SENDER||'')&&/^HX[0-9a-f]{32}$/i.test(E.TWILIO_WHATSAPP_CONTENT_SID||'');
 const client=twilioReady?twilio(E.TWILIO_API_KEY,E.TWILIO_API_SECRET,{accountSid:E.TWILIO_ACCOUNT_SID}):null;
 app.use((req,res,next)=>{res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Cache-Control','no-store');
  const requestOrigin=req.get('Origin');
@@ -120,7 +120,7 @@ app.post('/push/unsubscribe',throttle,unsubscribe);
 app.post('/api/push/unsubscribe',throttle,unsubscribe);
 app.post('/admin/recipients',admin,requirePermission('recipients:write'),async(req,res)=>{
  const {number,channel,consentAt,consentSource,contactRole='general',category:cat}=req.body||{};
- if(!phone(number)||!['sms','whatsapp'].includes(channel)||!['general','delegado','presidencia'].includes(contactRole)||!consentSource||!consentAt||!Number.isFinite(Date.parse(consentAt)))
+ if(!phone(number)||!['sms','whatsapp'].includes(channel)||!['general','delegado','presidencia'].includes(contactRole)||!String(consentSource||'').trim()||!consentAt||!Number.isFinite(Date.parse(consentAt))||Date.parse(consentAt)>Date.now()+300000)
  return res.status(400).json({error:'Requiere teléfono E.164, canal y consentimiento documentado'});
  try{await pool.query(`INSERT INTO ljr_message_consent(phone,channel,category,consent_at,consent_source,opted_out_at,contact_role)
  VALUES($1,$2,$3,$4,$5,NULL,$6)
@@ -178,6 +178,24 @@ app.get('/admin/notices',admin,requirePermission('notices:read'),async(req,res)=
  FROM ljr_scheduled_notices ORDER BY created_at DESC LIMIT 120`);res.json({items:r.rows})}
  catch(e){apiError(e,res)}
 });
+
+/* Resumen de envíos para la directiva. No devolver números ni claves Push.
+   Los estados "delivered/read" sólo proceden de callbacks firmados de Twilio;
+   el estado "sent" de Push significa aceptado por el proveedor, no leído. */
+app.get('/admin/notices/:id/deliveries',admin,requirePermission('notices:read'),async(req,res)=>{
+ const id=String(req.params.id||'');
+ if(!/^[0-9a-f-]{32,40}$/i.test(id))return res.status(400).json({error:'Identificador no válido'});
+ try{
+  const existing=await pool.query('SELECT id,status,channels FROM ljr_scheduled_notices WHERE id=$1',[id]);
+  if(!existing.rowCount)return res.status(404).json({error:'Aviso no encontrado'});
+  const result=await pool.query(`SELECT channel,status,COUNT(*)::integer AS count
+   FROM ljr_delivery_log WHERE notice_id=$1 GROUP BY channel,status ORDER BY channel,status`,[id]);
+  res.json({id,noticeStatus:existing.rows[0].status,channels:existing.rows[0].channels,
+   deliveryStates:result.rows,checkedAt:new Date().toISOString(),
+   note:'Push enviado no significa leído; solo Twilio informa estados de entrega.'});
+ }catch(e){apiError(e,res)}
+});
+
 app.put('/admin/notices/:id',admin,requirePermission('notices:write'),async(req,res)=>{
  const {title,body,sendAt,category:cat,channels,revision,type='general',team='',field=''}=req.body||{};
  const allowed=['app','push','sms','whatsapp'],when=Date.parse(sendAt||'');
