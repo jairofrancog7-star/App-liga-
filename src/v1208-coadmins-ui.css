@@ -1,0 +1,17 @@
+/* Administración compacta · dos responsables principales */
+.liga-media-modal .v1208-entry{display:flex;align-items:center;gap:10px;min-height:52px;width:100%;background:linear-gradient(120deg,#0d47a1,#08336b);border:1px solid #3679d8;color:#fff;border-radius:12px;padding:9px 12px;text-align:left}
+.liga-media-modal .v1208-entry[hidden]{display:none!important}
+.liga-media-modal .v1208-entry>b{font-size:25px;color:#dceaff}
+.liga-media-modal .v1208-entry span{display:grid;gap:2px;font-weight:700;font-size:13px}
+.liga-media-modal .v1208-entry small{font-size:11px;font-weight:500;line-height:1.3;color:#dbe9ff}
+.v1208-dialog .v1208-body{display:grid;gap:12px;padding:12px;max-height:min(75dvh,620px);overflow:auto}
+.v1208-dialog .v1208-body p,.v1208-dialog .v1208-body small{font-size:12px;line-height:1.5;margin:0;color:#d9e9ff}
+.v1208-dialog .v1208-count{display:flex;align-items:center;gap:15px;padding:12px;border-radius:12px;background:#0d3985;color:#fff}
+.v1208-dialog .v1208-count b{font-size:26px;font-variant-numeric:tabular-nums;color:#f5faff}
+.v1208-dialog .v1208-count span{font-size:12px}
+.v1208-dialog .v1208-body button,.v1208-dialog .v1208-body select{padding:10px 12px;border-radius:10px;border:1px solid #6da6fa;background:#133a81;color:#fff;font-size:12px;min-height:39px;width:100%}
+.v1208-dialog .v1208-body button{cursor:pointer}
+.v1208-dialog .v1208-body button:disabled{opacity:.6;cursor:wait}
+.v1208-dialog .v1208-history{max-height:160px;overflow:auto;display:grid;gap:5px}
+.v1208-dialog .v1208-history p{padding:6px 8px;border:1px solid #2762af;border-radius:8px}
+@media(max-width:420px){.v1208-dialog .v1208-body{padding:8px}}
