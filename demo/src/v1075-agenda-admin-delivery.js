@@ -32,13 +32,14 @@
  async function send(endpoint,payload){
   const api=await getAPI(),panel=$('[data-ag1075]'),status=$('[data-ag1075-status]',panel);
   if(!api){status.textContent='Primero configura el servidor de notificaciones.';return}
-  const secret=$('[data-ag1075-token]',panel)?.value||'';
-  if(secret.length<32){status.textContent='Falta la clave de autorización del servidor.';return}
-  const b=$('[data-ag1075-submit]',panel);if(b)b.disabled=true;status.textContent='Enviando al servidor seguro…';
-  try{const r=await fetch(api+endpoint,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+secret},body:JSON.stringify(payload)});
-   const result=await r.json().catch(()=>({}));
-   status.textContent=r.ok?'✓ Solicitud registrada. '+(result.id?'ID '+result.id.slice(0,8):'Autorizada'):'No se completó: '+(result.error||'Error '+r.status);
-  }catch(err){status.textContent='No se pudo conectar con el servidor: '+err.message}finally{if(b)b.disabled=false}
+  if(!window.LJR_MEDIA?.admin||!window.LJR_MEDIA?.notifyAPI){status.textContent='Inicia sesión de administración para programar.';return}
+  const button=$('[data-ag1075-submit]',panel);if(button)button.disabled=true;
+  status.textContent='Verificando permisos y programando…';
+  try{
+   const result=await window.LJR_MEDIA.notifyAPI(endpoint,{method:'POST',body:payload});
+   status.textContent='✓ Solicitud aceptada. '+(result.id?'ID '+result.id.slice(0,8):'Registrada');
+  }catch(err){status.textContent='No se pudo programar: '+(err.message||'Servidor no disponible')}
+  finally{if(button)button.disabled=false}
  }
  function mount(){
   if(route()!=='agendaBuilder'||!window.LJR_MEDIA?.admin)return;
@@ -47,7 +48,7 @@
   const s=document.createElement('section');s.className='ag1075';s.dataset.ag1075='';
   s.innerHTML='<div class="ag1075-title"><strong>Administrar envíos programados</strong><small>Solo directiva</small></div>'+
    '<p class="ag1075-note">Los envíos se programan en el servidor; no se envía nada al pulsar Guardar. Requiere destinatarios registrados con consentimiento explícito.</p>'+
-   '<label>Clave de autorización del servidor<input type="password" data-ag1075-token autocomplete="off" placeholder="Clave segura de administración"></label>'+
+   '<p class="ag1075-note">Autorización mediante tu sesión oficial. No se solicitan contraseñas ni claves de servidor.</p>'+
    '<label>Título del aviso<input data-ag1075-title maxlength="120" value="Recordatorio de partido"></label>'+
    '<label>Mensaje<textarea data-ag1075-body maxlength="700" rows="3" placeholder="Datos oficiales, cambios, recordatorios"></textarea></label>'+
    '<label>Envío · hora de Juventino Rosas<input type="datetime-local" data-ag1075-when></label>'+

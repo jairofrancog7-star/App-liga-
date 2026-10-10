@@ -178,7 +178,28 @@ const normalize=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'')
 document.addEventListener('click',event=>{const circle=event.target.closest('.story,.v20-story');if(!circle)return;const label=normalize(circle.querySelector('small')?.textContent);const story=items.find(x=>x.kind==='story'&&x.expires>Date.now()&&x.subject&&normalize(x.subject)===label);if(story){event.preventDefault();event.stopImmediatePropagation();view(story)}},true);
 document.addEventListener('contextmenu',event=>{const circle=event.target.closest('.story,.v20-story');if(circle&&admin){event.preventDefault();edit(circle.querySelector('small')?.textContent||'')}});
 
-window.LJR_MEDIA={api,get admin(){return admin},get authReady(){return authReady},login,manage,edit,broadcast,transmit,invitations,refresh,base,modal,view,get items(){return items},restoreAdminSession,deviceRemembered,hasSession:()=>!!token};
+// Requests to the separately configured notifications service reuse the verified
+// existing Liga login. Never store an extra password in the browser or GitHub.
+async function notifyAPI(path,options={}){
+ if(!admin||!token)throw Error('Inicia sesión de administración.');
+ if(!/^\/(?:admin|push)\/[a-zA-Z0-9_:/-]+$/.test(path))throw Error('Ruta administrativa inválida');
+ const cfg=await fetch('./data/notifications-client.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('Falta la configuración del servicio');return r.json()});
+ const base=String(cfg.apiBaseUrl||'').replace(/\/$/,'');
+ const url=new URL(base+path);
+ if(!base||!/^https:\/\//.test(base)||url.username||url.password||url.origin!==new URL(base).origin)
+  throw Error('Configura primero el servidor privado de notificaciones.');
+ const headers=new Headers(options.headers);
+ headers.set('Authorization','Bearer '+token);
+ if(options.body&&typeof options.body==='object'&&!(options.body instanceof Blob)){
+  options.body=JSON.stringify(options.body);
+  headers.set('Content-Type','application/json');
+ }
+ const response=await fetch(url.href,{...options,headers,cache:'no-store',redirect:'error'});
+ const body=await response.json().catch(()=>({}));
+ if(!response.ok)throw Object.assign(Error(body.error||('Error de servicio '+response.status)),{status:response.status});
+ return body;
+}
+window.LJR_MEDIA={api,notifyAPI,get admin(){return admin},get authReady(){return authReady},login,manage,edit,broadcast,transmit,invitations,refresh,base,modal,view,get items(){return items},restoreAdminSession,deviceRemembered,hasSession:()=>!!token};
 restoreAdminSession().catch(err=>console.warn('Restauración de administración:',err?.message||err));
 refresh();window.addEventListener('hashchange',()=>setTimeout(mount,150));new MutationObserver(()=>mount()).observe(document.querySelector('#screen')||document.querySelector('[data-media-page]')||document.body,{childList:true});setInterval(refresh,60000);const live=new URL(location.href).searchParams.get('live');if(live)watch(live);
 })();
