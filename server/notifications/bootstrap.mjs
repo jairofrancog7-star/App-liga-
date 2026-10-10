@@ -19,6 +19,12 @@ try{
     await client.query(ddl);
     await client.query('INSERT INTO ljr_schema_migrations(name) VALUES($1)',[v]);
   }
+  const c='cedulas-schema-v1181';
+  const installed=await client.query('SELECT name FROM ljr_schema_migrations WHERE name=$1',[c]);
+  if(!installed.rowCount){
+    await client.query(await readFile(new URL('./cedula-schema.sql',import.meta.url),'utf8'));
+    await client.query('INSERT INTO ljr_schema_migrations(name) VALUES($1)',[c]);
+  }
   await client.query('COMMIT');
   console.log('Esquema de avisos verificado.');
 }catch(error){
