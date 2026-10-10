@@ -15,10 +15,11 @@ const standalone=()=>!!(window.matchMedia?.('(display-mode: standalone)')?.match
 const home=()=>location.origin+location.pathname+'#/home';
 const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const svg=(name,size=20)=>{
+ // Icono Apple oficial: silueta rellena para evitar una manzana deformada.
+ if(name==='apple')return '<svg class="ljr-install-apple-symbol" aria-hidden="true" width="'+size+'" height="'+size+'" viewBox="0 0 24 24" style="fill:#fff;stroke:none" fill="#fff" stroke="none"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>';
  const paths={
  phone:'<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
  download:'<path d="M12 3v12m-4-4 4 4 4-4"/><path d="M5 17v4h14v-4"/>',
- apple:'<path d="M12 7c-1.5-2-3.5-2-5 0-3 1-5 5-5 7 0 3 1 5 4 5-1 2-2 3-1 5 1 2 3 2 5 0 2-1 3-4 2-6-2-3-3-4-2-8-1-1-2-2-4-2Z"/><path d="M13 6c0-2 2-4 4-4"/>',
  monitor:'<rect x="2" y="3" width="20" height="15" rx="2"/><path d="M8 22h8m-4-4v4"/>',
  check:'<path d="m5 12 5 5L20 7"/>',shield:'<path d="M12 2 20 5v6c0 5-3 8-8 11-5-3-8-6-8-11V5z"/><path d="m9 12 2 2 4-4"/>',
  share:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.7 6.6-4.4M8.7 13.3l6.6 4.4"/>',
@@ -70,7 +71,7 @@ const explanation={
 function markup(mode,modal=false){
  const m=MODES.some(x=>x.id===mode)?mode:initial(),o=explanation[m],installed=standalone();
  const cards=MODES.map(x=>'<button type="button" class="ljr-install-choice '+(x.id===m?'is-active':'')+'" data-ljr-action="mode" data-ljr-mode="'+x.id+'" aria-pressed="'+(x.id===m)+'">'+
-  '<span class="ljr-install-choice-icon">'+svg(x.icon,20)+'</span><span><b>'+x.name+'</b><small>'+x.detail+'</small></span></button>').join('');
+  '<span class="ljr-install-choice-icon">'+svg(x.icon,x.id==='ios'?28:22)+'</span><span><b>'+x.name+'</b><small>'+x.detail+'</small></span></button>').join('');
  const steps=instructions[m].map((s,i)=>'<li><span class="ljr-install-step-num">'+(i+1)+'</span><span>'+esc(s)+'</span></li>').join('');
  const cta=m==='apk'
  ?'<a class="ljr-install-primary" href="'+APK+'" target="_blank" rel="noopener noreferrer" data-ljr-action="apk">'+svg('download',18)+'<span>Descargar APK desde GitHub</span>'+svg('arrow',16)+'</a>'
@@ -87,7 +88,7 @@ function markup(mode,modal=false){
    '<small>'+(installed?'Puedes volver al inicio y utilizar Liga Juventino.':'Opciones para Android, iPhone, iPad y computadora.')+'</small></div></div>'+
   '<div class="ljr-install-choices" role="group" aria-label="Elige tu dispositivo">'+cards+'</div>'+
   '<section class="ljr-install-guide" aria-label="Guía paso a paso">'+
-   '<div class="ljr-install-guide-heading"><span class="ljr-install-guide-icon">'+svg(MODES.find(x=>x.id===m).icon,22)+'</span><div><small>PASO A PASO</small><h3>'+o.title+'</h3><p>'+o.copy+'</p></div></div>'+
+   '<div class="ljr-install-guide-heading"><span class="ljr-install-guide-icon">'+svg(MODES.find(x=>x.id===m).icon,m==='ios'?30:24)+'</span><div><small>PASO A PASO</small><h3>'+o.title+'</h3><p>'+o.copy+'</p></div></div>'+
    '<ol class="ljr-install-steps">'+steps+'</ol>'+
    '<div class="ljr-install-cta">'+cta+
     (m==='apk'?'<a class="ljr-install-secondary" href="'+RELEASE+'" target="_blank" rel="noopener noreferrer">'+svg('shield',17)+' Ver versión y detalles</a>':
