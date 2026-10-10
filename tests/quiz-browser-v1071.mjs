@@ -53,7 +53,7 @@ try{
       bodyClass:document.body.className.slice(0,250)};
   });
   console.log('GAME X DIAGNOSTICS',JSON.stringify(afterGameX));
-  await page.locator('#v612-quiz-portal [data-v531-exit-confirm="quiz"]').click({timeout:5000});
+  await page.locator('#v1074-quiz-exit-sheet [data-v531-exit-confirm="quiz"]').click({timeout:10000});
   await page.locator('#v612-quiz-portal [data-v531-view="hub"]').waitFor({state:'visible',timeout:15000});
   console.log('PASS: splash -> hub -> close -> splash -> hub -> countdown -> cancel dialog -> game -> exit');
   console.log('splash computed backdrop', display.bg.slice(0,160));
