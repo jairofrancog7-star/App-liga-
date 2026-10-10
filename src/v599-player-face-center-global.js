@@ -382,6 +382,18 @@ function applyHeroCrop(img,profile){
   return true;
 }
 async function processHero(img){
+  /* V1102: las tarjetas de Máximo goleador muestran la fotografía completa.
+     Nunca aplicar zoom automático a un selfie vertical: puede dejar solo la
+     frente/ojos visibles cuando el detector devuelve un recorte erróneo.
+     El fondo de la tarjeta reutiliza esa misma foto, suavizada. */
+  if(img.closest('.v391-feature-photo,.v390-scorer-photo') &&
+     (document.body?.dataset?.appRoute==='scorers'||location.hash.startsWith('#/scorers'))){
+    const safeKey=sourceKey(img)+'|v1102-scorers-original';
+    if(img.dataset.ljrHeroFaceKey===safeKey)return;
+    prepareHeroFallback(img);
+    img.dataset.ljrHeroFaceKey=safeKey;
+    return;
+  }
   const frame=frameSize(img),key=sourceKey(img)+'|'+frame.w+'x'+frame.h;
   if(img.dataset.ljrHeroFaceKey===key)return;
   prepareHeroFallback(img);
