@@ -1,0 +1,130 @@
+/* V1374 · Portada original de More or Less.
+   Exclusivo #/moreLess; no modifica el juego, temporizadores, botones ni el flip V1373.
+   La imagen de referencia NO contiene barra de navegación: no debe recortarse. */
+html body[data-app-route="moreLess"] {
+  --v1374-home-height:calc(100dvh - var(--v34-nav-h,69px) - env(safe-area-inset-bottom,0px));
+  overflow:hidden!important;
+}
+html body[data-app-route="moreLess"] #screen{
+  position:relative!important;
+  top:0!important;
+  box-sizing:border-box!important;
+  width:100%!important;max-width:520px!important;
+  height:var(--v1374-home-height)!important;
+  min-height:0!important;
+  margin:0 auto!important;padding:0!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior-y:contain;
+}
+html body[data-app-route="moreLess"] #screen > [data-v12-moreless]{
+  position:relative!important;
+  box-sizing:border-box!important;
+  inset:auto!important;
+  display:block!important;
+  width:100%!important;max-width:520px!important;
+  height:var(--v1374-home-height)!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0 auto!important;padding:0!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(ellipse 74% 39% at 46% 3%,rgba(35,78,255,.44),transparent 91%),
+    linear-gradient(180deg,#1035e7 0%,#0a21b9 25%,#060f84 47%,#060665 69%,#04044a 100%)!important;
+}
+/* El JPG original ya trae retratos, flechas y estadio completos, sin barra inferior.
+   Mantener su proporción 1076:913, pegado a la línea superior de la navegación real. */
+html body[data-app-route="moreLess"] #screen > [data-v12-moreless].v12-moreless::after{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  left:0!important;right:0!important;
+  top:auto!important;bottom:0!important;
+  width:100%!important;
+  height:min(47%, 84.85vw)!important;
+  max-height:calc(520px * 913 / 1076)!important;
+  min-height:0!important;
+  background-image:url("../public/moreless-drive-reference.jpg")!important;
+  background-repeat:no-repeat!important;
+  background-position:center bottom!important;
+  background-size:contain!important;
+  opacity:1!important;
+  -webkit-clip-path:none!important;clip-path:none!important;
+  -webkit-mask-image:none!important;mask-image:none!important;
+  pointer-events:none!important;
+  z-index:3!important;
+}
+/* No dibujar una segunda copia del estadio ni de los avatares del JPG.
+   Los botones transparentes de los dos avatares permanecen operativos. */
+html body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-stadium{
+  display:none!important;
+}
+html body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-avatar{
+  visibility:hidden!important;
+  opacity:0!important;
+}
+html body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-mid button::before{
+  opacity:0!important;
+}
+/* Título restaurado como la captura MORE / OR / LESS, en blanco y sin escudo intermedio. */
+html body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-title{
+  left:50%!important;
+  top:15.8%!important;
+  width:min(55vw,260px)!important;
+  height:auto!important;
+  transform:translateX(-50%) skewX(-6deg)!important;
+  font-family:Impact,Haettenschweiler,"Arial Narrow Bold",Arial,sans-serif!important;
+  line-height:.9!important;
+  font-style:italic!important;
+  text-align:center!important;
+  z-index:9!important;
+}
+html body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-title span{
+  font-size:clamp(43px,11.8vw,68px)!important;
+  line-height:.94!important;
+  letter-spacing:-.035em!important;
+  white-space:nowrap!important;
+}
+html body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-title small{
+  left:-3%!important;
+  top:52%!important;
+  font-size:clamp(22px,6vw,36px)!important;
+  line-height:1!important;
+}
+html body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-logo{
+  display:none!important;visibility:hidden!important;
+}
+html body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-curves{
+  z-index:8!important;
+  pointer-events:none!important;
+}
+html body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-choice{
+  left:50%!important;
+  top:63%!important;
+  width:min(52vw,265px)!important;
+  height:auto!important;
+  transform:translateX(-50%)!important;
+  z-index:10!important;
+  pointer-events:none!important;
+}
+html body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-choice > button{
+  visibility:visible!important;opacity:1!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+}
+/* Ningún segundo menú duplicado dentro de la portada. El menú GLOBAL queda fijo. */
+html body[data-app-route="moreLess"] #screen .bottom-nav,
+html body[data-app-route="moreLess"] #screen nav[aria-label="Navegación principal"]{
+  display:none!important;
+}
+html body[data-app-route="moreLess"] #app > .bottom-nav,
+html body[data-app-route="moreLess"] .app-shell > .bottom-nav{
+  z-index:2147483000!important;
+}
+@media(max-height:650px) and (orientation:portrait){
+  html body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-title{top:10%!important}
+  html body[data-app-route="moreLess"] #screen > [data-v12-moreless] .v12-ml-choice{top:59%!important}
+  html body[data-app-route="moreLess"] #screen > [data-v12-moreless].v12-moreless::after{
+    height:min(51%, 84.85vw)!important;
+  }
+}
