@@ -3805,31 +3805,11 @@ const players = [
   }
 ];
 const matches = [
-  {
-    "id":"m1","day":"Domingo","date":"4 oct","jornada":7,"category":"Primera Fuerza",
-    "home":"HER","away":"LOB","time":"10:00","status":"SCHEDULED","score":null,"minute":null,
-    "venue":"Campo 3","referee":"Por confirmar"
-  },
-  {
-    "id":"m2","day":"Domingo","date":"4 oct","jornada":7,"category":"Primera Fuerza",
-    "home":"HFC","away":"ABE","time":"10:00","status":"SCHEDULED","score":null,"minute":null,
-    "venue":"Pozos","referee":"Por confirmar"
-  },
-  {
-    "id":"m3","day":"Domingo","date":"4 oct","jornada":7,"category":"Primera Fuerza",
-    "home":"TER","away":"NAP","time":"08:00","status":"SCHEDULED","score":null,"minute":null,
-    "venue":"Campo 3","referee":"Por confirmar"
-  },
-  {
-    "id":"m4","day":"Domingo","date":"4 oct","jornada":7,"category":"Primera Fuerza",
-    "home":"FRA","away":"SJO","time":"12:00","status":"SCHEDULED","score":null,"minute":null,
-    "venue":"San José","referee":"Por confirmar"
-  },
-  {
-    "id":"m5","day":"Domingo","date":"4 oct","jornada":7,"category":"Primera Fuerza",
-    "home":"LIN","away":"GAC","time":"Gana Linces","status":"FINAL","score":null,"minute":null,
-    "venue":"Resolución oficial","referee":"No aplica"
-  }
+  {"id":"m1","day":"Domingo","date":"11 oct","jornada":7,"category":"Primera Fuerza","home":"HER","away":"LOB","time":"10:00","status":"SCHEDULED","score":null,"minute":null,"venue":"Campo 3","referee":"Por confirmar"},
+  {"id":"m2","day":"Domingo","date":"11 oct","jornada":7,"category":"Primera Fuerza","home":"ABE","away":"HFC","time":"10:00","status":"SCHEDULED","score":null,"minute":null,"venue":"Pozos","referee":"Por confirmar"},
+  {"id":"m3","day":"Domingo","date":"11 oct","jornada":7,"category":"Primera Fuerza","home":"TER","away":"NAP","time":"08:00","status":"SCHEDULED","score":null,"minute":null,"venue":"Campo 3","referee":"Por confirmar"},
+  {"id":"m4","day":"Domingo","date":"11 oct","jornada":7,"category":"Primera Fuerza","home":"SJO","away":"FRA","time":"12:00","status":"SCHEDULED","score":null,"minute":null,"venue":"San Jose de la Montaña","referee":"Por confirmar"},
+  {"id":"m5","day":"Domingo","date":"11 oct","jornada":7,"category":"Primera Fuerza","home":"GAC","away":"LIN","time":"09:00","status":"SCHEDULED","score":null,"minute":null,"venue":"Pozos","referee":"Gana LINCES por DEFAULT, según aviso oficial"}
 ];
 const news = [
   {
@@ -3838,16 +3818,16 @@ const news = [
     "scope": "Liga",
     "date": "Actualizado hoy",
     "title": "Primera Fuerza: 11 equipos registrados",
-    "subtitle": "Liga Juventino Rosas reporta 291 jugadores registrados en la categoría.",
+    "subtitle": "Liga Juventino Rosas reporta 292 jugadores registrados en la categoría.",
     "content": "Datos deportivos públicos sincronizados desde juventinorosasliga.com."
   },
   {
     "id": "n2",
     "category": "Jornada",
     "scope": "Liga",
-    "date": "4 oct 2026",
+    "date": "9 oct 2026",
     "title": "Jornada 7 · Torneo de Copa",
-    "subtitle": "El nuevo rol oficial ya está publicado para todas las categorías.",
+    "subtitle": "Rol del 11 de octubre confirmado en Primera, Intermedia y Segunda; Veteranos 50+ disputa J8 el día 10.",
     "content": "Consulta horarios, campos, descansos y resoluciones oficiales en Competición y Calendario."
   },
   {
@@ -3963,7 +3943,7 @@ function homeView(){
     </section>
 
     <section class="section">${sectionHead('Próximos partidos','competition','Calendario')}
-      <div class="card match-card"><div class="match-meta"><span class="live">ROL OFICIAL · Jornada 7</span><span>4 OCT</span></div>${matchRow(matches[0])}${matchRow(matches[1])}</div>
+      <div class="card match-card"><div class="match-meta"><span class="live">ROL OFICIAL · Jornada 7</span><span>11 OCT</span></div>${matchRow(matches[0])}${matchRow(matches[1])}</div>
     </section>
 
     <section class="section">${sectionHead('Noticias','news')}
@@ -5183,46 +5163,47 @@ function v567WeekCategoryLogo(key){
   return map[key]||V567_WEEK_LIGA_LOGO;
 }
 function v38WeeklyView(){
+  // Fuente: https://www.juventinorosasliga.com/reporte-semanal/ (05-11 octubre 2026).
   const rows={
     primera:[
-      ['04/10/2026','08:00','TERRICOLAS','NAPOLI','Campo 3','Jornada 7'],
-      ['04/10/2026','09:00','GALACTICOS','LINCES','Pozos','Jornada 7'],
-      ['04/10/2026','10:00','ABEJAS','HERRERAS FC','Pozos','Jornada 7'],
-      ['04/10/2026','10:00','HERMANOS','LOBOS CDG','Campo 3','Jornada 7'],
-      ['04/10/2026','12:00','SAN JOSE FC','FRANCO FC','San Jose de la Montaña','Jornada 7']
+      ['11/10/2026','08:00','TERRICOLAS','NAPOLI','Campo 3','Jornada 7'],
+      ['11/10/2026','09:00','GALACTICOS','LINCES','Pozos','Jornada 7'],
+      ['11/10/2026','10:00','ABEJAS','HERRERAS FC','Pozos','Jornada 7'],
+      ['11/10/2026','10:00','HERMANOS','LOBOS CDG','Campo 3','Jornada 7'],
+      ['11/10/2026','12:00','SAN JOSE FC','FRANCO FC','San Jose de la Montaña','Jornada 7']
     ],
     intermedia:[
-      ['04/10/2026','08:00','OSASUNA','POPULARES','Campo 1 (Empastado)','Jornada 7'],
-      ['04/10/2026','08:00','LA CUADRILLA','MAZACOTES FC','Fraccionamiento','Jornada 7'],
-      ['04/10/2026','10:00','PROMESAS FC','LA HUERTA','Fraccionamiento','Jornada 7'],
-      ['04/10/2026','10:00','SAN ANTONIO JRS','CAPIBARAS','Romerillo','Jornada 7'],
-      ['04/10/2026','10:00','MALVINAS','LA CANCHITA DEPORTES','Campo 1 (Empastado)','Jornada 7'],
-      ['04/10/2026','12:00','DEP. MARAVILLAS','ATL. GALEANA','Campo 3','Jornada 7']
+      ['11/10/2026','08:00','OSASUNA','POPULARES','Campo 1 (Empastado)','Jornada 7'],
+      ['11/10/2026','08:00','LA CUADRILLA','MAZACOTES FC','Fraccionamiento','Jornada 7'],
+      ['11/10/2026','10:00','PROMESAS FC','LA HUERTA','Fraccionamiento','Jornada 7'],
+      ['11/10/2026','10:00','SAN ANTONIO JRS','CAPIBARAS','Romerillo','Jornada 7'],
+      ['11/10/2026','10:00','MALVINAS','LA CANCHITA DEPORTES','Campo 1 (Empastado)','Jornada 7'],
+      ['11/10/2026','12:00','DEP. MARAVILLAS','ATL. GALEANA','Campo 3','Jornada 7']
     ],
     segunda:[
-      ['04/10/2026','08:00','PACHANGAS FC','TAPATIO','Campo 2','Jornada 7'],
-      ['04/10/2026','10:00','TAVERA FC','SAN JULIAN','San Julian','Jornada 7'],
-      ['04/10/2026','10:00','DEP. NOPALERO','SAN ANTONIO FC','Campo 2','Jornada 7'],
-      ['04/10/2026','10:00','SAN JOSE JRS','SAN JUAN FC','San Jose de la Montaña','Jornada 7'],
-      ['04/10/2026','12:00','BARZA','DEP. ZAPATA','Campo 2','Jornada 7'],
-      ['04/10/2026','12:00','CELTICOS','DEP. LA LUZ','Campo 1 (Empastado)','Jornada 7']
+      ['11/10/2026','08:00','PACHANGAS FC','TAPATIO','Campo 2','Jornada 7'],
+      ['11/10/2026','10:00','TAVERA FC','SAN JULIAN','San Julian','Jornada 7'],
+      ['11/10/2026','10:00','DEP. NOPALERO','SAN ANTONIO FC','Campo 2','Jornada 7'],
+      ['11/10/2026','10:00','SAN JOSE JRS','SAN JUAN FC','San Jose de la Montaña','Jornada 7'],
+      ['11/10/2026','12:00','BARZA','DEP. ZAPATA','Campo 2','Jornada 7'],
+      ['11/10/2026','12:00','CELTICOS','DEP. LA LUZ','Campo 1 (Empastado)','Jornada 7']
     ],
     veteranos:[
-      ['03/10/2026','15:30','MANCHESTER','BOCA JRS','Campo 2','Jornada 7'],
-      ['03/10/2026','15:30','DYNAMO','BOAVISTA','Campo 1 (Empastado)','Jornada 7'],
-      ['03/10/2026','17:00','TOROS DE CUENDA','LA ESPERANZA','Campo 1 (Empastado)','Jornada 7']
+      ['10/10/2026','15:30','BOAVISTA','BOCA JRS','Campo 3','Jornada 8'],
+      ['10/10/2026','15:30','LA ESPERANZA','MANCHESTER','Campo 1 (Empastado)','Jornada 8'],
+      ['10/10/2026','17:00','TOROS DE CUENDA','DYNAMO','Campo 1 (Empastado)','Jornada 8']
     ]
   };
   const titles={primera:'Primera Fuerza',intermedia:'Intermedia',segunda:'Segunda Fuerza',veteranos:'Veteranos 50+'};
-  const group=(title,list,key)=>'<section class="v553-week-group" data-week-group="'+key+'"><div class="v553-week-title"><span class="v567-week-cat"><img src="'+v567WeekCategoryLogo(key)+'" alt="" loading="lazy" decoding="async"><span>'+title+'</span></span><b>'+list.length+' partido(s)</b></div><div class="v553-week-scroll"><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Jornada</th></tr></thead><tbody>'+list.map(r=>{const home=v567WeekLogo(r[2]);const away=v567WeekLogo(r[3]);return '<tr data-week-date="'+r[0]+'"><td>'+r[0]+'</td><td>'+r[1]+'</td><td><span class="v567-week-team">'+(home?'<img src="'+home+'" alt="" loading="lazy" decoding="async">':'')+'<span>'+r[2]+'</span></span></td><td>vs</td><td><span class="v567-week-team">'+(away?'<img src="'+away+'" alt="" loading="lazy" decoding="async">':'')+'<span>'+r[3]+'</span></span></td><td>Jornada 7</td></tr>'}).join('')+'</tbody></table></div></section>';
+  const group=(title,list,key)=>'<section class="v553-week-group" data-week-group="'+key+'"><div class="v553-week-title"><span class="v567-week-cat"><img src="'+v567WeekCategoryLogo(key)+'" alt="" loading="lazy" decoding="async"><span>'+title+'</span></span><b>'+list.length+' partido(s)</b></div><div class="v553-week-scroll"><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Campo</th><th>Jornada</th></tr></thead><tbody>'+list.map(r=>{const home=v567WeekLogo(r[2]);const away=v567WeekLogo(r[3]);return '<tr data-week-date="'+r[0]+'"><td>'+r[0]+'</td><td>'+r[1]+'</td><td><span class="v567-week-team">'+(home?'<img src="'+home+'" alt="" loading="lazy" decoding="async">':'')+'<span>'+r[2]+'</span></span></td><td>vs</td><td><span class="v567-week-team">'+(away?'<img src="'+away+'" alt="" loading="lazy" decoding="async">':'')+'<span>'+r[3]+'</span></span></td><td>'+r[4]+'</td><td>'+r[5]+'</td></tr>'}).join('')+'</tbody></table></div></section>';
   return '<section class="v60-tool-page v63-page v188-weekly-page v553-weekly-report" data-v553-weekly>'+
     v60Header('JUEGOS DE LA SEMANA','TORNEO DE COPA 2026','Consulta partidos por categoría, temporada y rango de fechas.')+
     '<div class="v553-week-filter">'+
-      '<div class="v553-week-range" data-v553-range>Semana del 28/09/2026 al 04/10/2026</div>'+
+      '<div class="v553-week-range" data-v553-range>Semana del 05/10/2026 al 11/10/2026</div>'+
       '<label>Categoría<select data-v553-category><option value="all">Todas</option><option value="primera">Primera Fuerza</option><option value="intermedia">Intermedia</option><option value="segunda">Segunda Fuerza</option><option value="veteranos">Veteranos 50+</option></select></label>'+
       '<label>Temporada<select data-v553-season><option value="all">Todas</option><option value="35">TORNEO DE COPA 2026 35+</option><option value="50">TORNEO DE COPA 2026 50+</option><option value="intermedia">TORNEO DE COPA 2026 INTERMEDIA</option><option value="primera">TORNEO DE COPA 2026 PRIMERA</option><option value="segunda">TORNEO DE COPA 2026 SEGUNDA</option></select></label>'+
-      '<label>Fecha inicio<input data-v553-start type="date" value="2026-09-28"></label>'+
-      '<label>Fecha fin<input data-v553-end type="date" value="2026-10-04"></label>'+
+      '<label>Fecha inicio<input data-v553-start type="date" value="2026-10-05"></label>'+
+      '<label>Fecha fin<input data-v553-end type="date" value="2026-10-11"></label>'+
       '<div class="v553-week-actions"><button type="button" data-v553-consult>Consultar</button><button type="button" data-v553-clear>Limpiar</button><button type="button" data-v553-print>Descargar PDF</button></div>'+
     '</div>'+
     group(titles.primera,rows.primera,'primera')+
@@ -5271,16 +5252,16 @@ function bindV553Weekly(){
   root.querySelector('[data-v553-clear]')?.addEventListener('click',()=>{
     if(cat)cat.value='all';
     const season=root.querySelector('[data-v553-season]'); if(season)season.value='all';
-    if(start)start.value='2026-09-28';
-    if(end)end.value='2026-10-04';
+    if(start)start.value='2026-10-05';
+    if(end)end.value='2026-10-11';
     apply();
   });
   root.querySelector('[data-v553-print]')?.addEventListener('click',()=>{
     apply();
     const catText=root.querySelector('[data-v553-category]')?.selectedOptions?.[0]?.textContent||'Todas';
     const seasonText=root.querySelector('[data-v553-season]')?.selectedOptions?.[0]?.textContent||'TORNEO DE COPA 2026';
-    const from=start?.value||'2026-09-28';
-    const to=end?.value||'2026-10-04';
+    const from=start?.value||'2026-10-05';
+    const to=end?.value||'2026-10-11';
     const visibleGroups=[...root.querySelectorAll('[data-week-group]')].filter(g=>g.style.display!=='none');
     const groupsHtml=visibleGroups.map(g=>{
       const title=g.querySelector('.v553-week-title span')?.textContent?.replace('🏆 ','')||'';
@@ -5289,9 +5270,18 @@ function bindV553Weekly(){
         const t=[...tr.children].map(td=>td.textContent.trim());
         const home=v567WeekLogo(t[2]);
         const away=v567WeekLogo(t[4]);
-        return '<tr><td>'+t[0]+'</td><td>'+t[1]+'</td><td><span class="v567-pdf-team">'+(home?'<img src="'+home+'" alt="">':'')+'<span>'+t[2]+'</span></span></td><td>'+t[3]+'</td><td><span class="v567-pdf-team">'+(away?'<img src="'+away+'" alt="">':'')+'<span>'+t[4]+'</span></span></td><td>Jornada 7</td></tr>';
+        return '<tr><td>'+t[0]+'</td><td>'+t[1]+'</td><td><span class="v567-pdf-team">'+(home?'<img src="'+home+'" alt="">':'')+'<span>'+t[2]+'</span></span></td><td>'+t[3]+'</td><td><span class="v567-pdf-team">'+(away?'<img src="'+away+'" alt="">':'')+'<span>'+t[4]+'</span></span></td><td>'+t[5]+'</td><td>'+t[6]+'</td></tr>';
       }).join('');
-      return '<section class="v559-pdf-group"><div class="v559-pdf-grouphead"><h2><img class="v567-pdf-cat" src="'+v567WeekCategoryLogo(g.dataset.weekGroup||'')+'" alt="">'+title+'</h2><span>'+badge+'</span></div><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Jornada</th></tr></thead><tbody>'+rows+'</tbody></table></section>';
+      return '<section class="v559-pdf-group"><div class="v559-pdf-grouphead"><h2><img class="v567-pdf-cat" src="'+v567WeekCategoryLogo(g.dataset.weekGroup||'')+'" alt="">'+title+'</h2><span>'+badge+'</span></div><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th>const groupsHtml=visibleGroups.map(g=>{
+      const title=g.querySelector('.v553-week-title span')?.textContent?.replace('🏆 ','')||'';
+      const badge=g.querySelector('.v553-week-title b')?.textContent||'';
+      const rows=[...g.querySelectorAll('tbody tr')].filter(tr=>tr.style.display!=='none').map(tr=>{
+        const t=[...tr.children].map(td=>td.textContent.trim());
+        const home=v567WeekLogo(t[2]);
+        const away=v567WeekLogo(t[4]);
+        return '<tr><td>'+t[0]+'</td><td>'+t[1]+'</td><td><span class="v567-pdf-team">'+(home?'<img src="'+home+'" alt="">':'')+'<span>'+t[2]+'</span></span></td><td>'+t[3]+'</td><td><span class="v567-pdf-team">'+(away?'<img src="'+away+'" alt="">':'')+'<span>'+t[4]+'</span></span></td><td>'+t[5]+'</td><td>'+t[6]+'</td></tr>';
+      }).join('');
+      return '<section class="v559-pdf-group"><div class="v559-pdf-grouphead"><h2><img class="v567-pdf-cat" src="'+v567WeekCategoryLogo(g.dataset.weekGroup||'')+'" alt="">'+title+'</h2><span>'+badge+'</span></div><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Campo</th><th>Jornada</th></tr></thead><tbody>'+rows+'</tbody></table></section>';
     }).join('');
     const html='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reporte Semanal - Liga Juventino</title><style>'+
       'html,body{margin:0;padding:0;background:#fff;color:#111;font-family:Arial,Helvetica,sans-serif}'+
