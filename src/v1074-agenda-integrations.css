@@ -14,3 +14,20 @@ body[data-app-route="agendaBuilder"] .ag1074-twilio{padding:8px 0 0;border-top:1
 body[data-app-route="agendaBuilder"] .ag1074-twilio summary{display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-weight:750;color:#e4f6ff}
 body[data-app-route="agendaBuilder"] .ag1074-twilio summary span{color:#6ae9ff}
 body[data-app-route="agendaBuilder"] .ag1074-twilio p{margin:7px 0 0}
+
+
+/* V1191: acceso a calendarios y notificaciones con iconos vectoriales */
+body[data-app-route="agendaBuilder"] .ag1074-actions button{
+  min-height:53px;display:flex;align-items:center;justify-content:center;
+  gap:9px;padding:10px 8px;border-radius:14px;font-size:12px;
+  box-shadow:inset 0 1px rgba(255,255,255,.16);transition:transform .15s,border-color .15s
+}
+body[data-app-route="agendaBuilder"] .ag1074-actions button:active{transform:scale(.97);border-color:#79efff}
+body[data-app-route="agendaBuilder"] .ag1074-actions button[data-available="false"]{opacity:.82}
+body[data-app-route="agendaBuilder"] .ag1074-actions .ljr-ag-icon{display:block;flex:0 0 20px;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+body[data-app-route="agendaBuilder"] .ag1074-twilio summary{gap:8px;justify-content:flex-start}
+body[data-app-route="agendaBuilder"] .ag1074-twilio summary .ljr-ag-icon{width:19px;height:19px;flex:0 0 19px;color:#78e9ff}
+body[data-app-route="agendaBuilder"] .ag1074-chevron{margin-left:auto;transition:transform .15s}
+body[data-app-route="agendaBuilder"] .ag1074-twilio[open] .ag1074-chevron{transform:rotate(180deg)}
+@media(max-width:390px){body[data-app-route="agendaBuilder"] .ag1074-actions button{font-size:11px;gap:6px;padding:9px 5px}}
+@media(prefers-reduced-motion:reduce){body[data-app-route="agendaBuilder"] .ag1074-actions button{transition:none}}
