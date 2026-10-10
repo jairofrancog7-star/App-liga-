@@ -18,12 +18,14 @@ function harness(){
 test('Módulo de avisos recurrentes cargado sin romper el anterior',()=>{
  assert.doesNotThrow(()=>new Function(source));
  assert.equal(source,read('demo/src/v1211-notice-recurrence.js'));
- for(const page of ['index.html','demo/index.html']){
-   const html=read(page);
-   assert.match(html,/v1211-notice-recurrence\.js/);
-   assert.match(html,/v1211-notice-recurrence\.css/);
- }
- const html=read('index.html');
+ const html=read('index.html'),demoHtml=read('demo/index.html');
+ assert.match(html,/v1211-notice-recurrence\.js/);
+ assert.match(html,/v1211-notice-recurrence\.css/);
+ assert.match(demoHtml,/v1211-notice-recurrence\.js/);
+ // Vite empaqueta las hojas CSS en demo/assets/index-*.css en lugar de
+ // conservar la ruta original. Validar la referencia compilada, no el nombre antiguo.
+ assert.match(demoHtml,/href="\.\/assets\/index-[A-Za-z0-9_-]+\.css"/);
+ assert.match(read('src/v1211-notice-recurrence.css'),/\.v1211-recurrence/);
  assert.match(html,/v1211-notice-libs\.mjs/);
  const module=read('src/v1211-notice-libs.mjs');
  assert.match(module,/from 'rrule'/);
