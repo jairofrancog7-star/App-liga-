@@ -46,7 +46,7 @@ function fixture(){
    querySelector:k=>k==='[data-mh-status]'?{textContent:''}:k in fields?{value:fields[k]}:null
   })
  };
- const window={};
+ const window={LJR_MEDIA:{admin:{role:'secretario'}}};
  const localStorage={getItem:k=>data[k]||null,setItem:(k,v)=>{data[k]=v}};
  class MutationObserver{observe(){}}
  runInNewContext(src,{window,document,localStorage,navigator:{},MutationObserver,setTimeout:()=>0});
