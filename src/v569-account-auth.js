@@ -363,8 +363,8 @@ function profileRegisterMarkup(){
     '<div class="v569-form">'+
       field('NOMBRE',input('text','data-v569-name','Tu nombre','','autocomplete="name"'))+
       field('ALIAS DEL PERFIL','<div class="v569-inline">'+input('text','data-v569-alias','Se crea con tu nombre')+'<button type="button" data-v569-generate-alias><span>↻</span> Otro</button></div><small>La app te propone un alias usando tu nombre. Si no te gusta, toca “Otro” o escribe el que quieras.</small>')+
-      '<div data-v569-phone-wrap>'+field('NÚMERO TELEFÓNICO',input('tel','data-v569-phone','Ej. 461 123 4567','','inputmode="tel" autocomplete="tel"'))+'</div>'+
-      '<div data-v569-email-wrap hidden>'+field('GMAIL / CORREO',input('email','data-v569-email','nombre@gmail.com','','autocomplete="email"'))+'</div>'+
+      '<div data-v569-phone-wrap>'+field('NÚMERO TELEFÓNICO (opcional si usas correo)',input('tel','data-v569-phone','Ej. 461 123 4567','','inputmode="tel" autocomplete="tel"'))+'</div>'+
+      '<div data-v569-email-wrap>'+field('GMAIL / CORREO (opcional si usas teléfono)',input('email','data-v569-email','nombre@gmail.com','','autocomplete="email"'))+'</div>'+
       field('CONTRASEÑA','<div class="v569-inline">'+input('password','data-v569-password','Mínimo 8 caracteres','','autocomplete="new-password"')+'<button type="button" data-v569-generate-password><span>✦</span> Generar</button></div>')+
       field('CONFIRMAR CONTRASEÑA',input('password','data-v569-confirm','Repite la contraseña','','autocomplete="new-password"'))+
       '<label class="v569-check"><input type="checkbox" data-v569-face><i></i><span><b>Configurar rostro / Face ID después de crear la cuenta</b><small>Android/Chrome abrirá la seguridad del teléfono. La app no toma ni guarda una foto de tu cara.</small></span></label>'+      '<label class="v569-check"><input type="checkbox" data-v569-bio><i></i><span><b>Usar huella / biometría</b><small>Activa el acceso rápido con la seguridad biométrica del dispositivo.</small></span></label>'+      '<label class="v569-check v577-remember-device"><input type="checkbox" data-v569-remember-device checked><i></i><span><b>Recordar este dispositivo</b><small>Vincula esta instalación con tu perfil para reconocerla en próximos accesos.</small></span></label>'+
@@ -395,6 +395,8 @@ function profileSuccessMarkup(account){
     '<p>Tu cuenta quedó lista y permanece dentro de la sección Perfil.</p>'+
     '<div class="v569-success-data"><span><small>ALIAS</small><b>@'+esc(account.alias)+'</b></span><span><small>CONTACTO</small><b>'+esc(contactText(account))+'</b></span><span><small>SEGURIDAD</small><b>'+(biometricEnabled(account)?biometricAccessLabel(account)+' activado':'Contraseña activa')+'</b></span><span><small>DISPOSITIVO</small><b>'+(isRememberedDevice(account)?'✓ Este dispositivo quedó recordado':'No recordado')+'</b></span></div>'+
     '<button class="v569-primary" type="button" data-v569-profile-finish>Ver mi perfil</button>'+
+    '<button class="v569-secondary" type="button" data-v569-admin-link>Acceder a administración verificada</button>'+
+    '<small>El cargo y los permisos se comprueban en el servidor. El teléfono y el correo no dan privilegios automáticamente.</small>'+
     '<button class="v569-secondary" type="button" data-v569-copy-alias>Copiar alias</button>'+
   '</section>';
 }
@@ -430,6 +432,12 @@ function renderLoggedProfile(account=currentAccount()){
   card.removeAttribute('data-v569-inline');
   card.dataset.v569Owned='1';
   card.innerHTML=loggedProfileMarkup(account);
+  if(!card.querySelector('[data-v569-admin-link]')){
+    const adminBtn=document.createElement('button');
+    adminBtn.type='button';adminBtn.className='v569-secondary';
+    adminBtn.dataset.v569AdminLink='';adminBtn.textContent='Administración de la Liga · acceso verificado';
+    card.append(adminBtn);
+  }
   enhanceProfile();
   return true;
 }
@@ -451,8 +459,8 @@ function authShell(kind){
         '<div class="v569-form">'+
           field('NOMBRE',input('text','data-v569-name','Tu nombre','','autocomplete="name"'))+
           field('ALIAS DEL PERFIL','<div class="v569-inline">'+input('text','data-v569-alias','Se crea con tu nombre')+'<button type="button" data-v569-generate-alias><span>↻</span> Otro</button></div><small>La app te propone un alias usando tu nombre. Si no te gusta, toca “Otro” o escribe el que quieras.</small>')+
-          '<div data-v569-phone-wrap>'+field('NÚMERO TELEFÓNICO',input('tel','data-v569-phone','Ej. 461 123 4567','','inputmode="tel" autocomplete="tel"'))+'</div>'+
-          '<div data-v569-email-wrap hidden>'+field('GMAIL / CORREO',input('email','data-v569-email','nombre@gmail.com','','autocomplete="email"'))+'</div>'+
+          '<div data-v569-phone-wrap>'+field('NÚMERO TELEFÓNICO (opcional si usas correo)',input('tel','data-v569-phone','Ej. 461 123 4567','','inputmode="tel" autocomplete="tel"'))+'</div>'+
+          '<div data-v569-email-wrap>'+field('GMAIL / CORREO (opcional si usas teléfono)',input('email','data-v569-email','nombre@gmail.com','','autocomplete="email"'))+'</div>'+
           field('CONTRASEÑA','<div class="v569-inline">'+input('password','data-v569-password','Mínimo 8 caracteres','','autocomplete="new-password"')+'<button type="button" data-v569-generate-password><span>✦</span> Generar</button></div>')+
           field('CONFIRMAR CONTRASEÑA',input('password','data-v569-confirm','Repite la contraseña','','autocomplete="new-password"'))+
           '<label class="v569-check"><input type="checkbox" data-v569-face><i></i><span><b>Configurar rostro / Face ID después de crear la cuenta</b><small>La verificación la hace la seguridad del teléfono; la app no guarda tu rostro.</small></span></label>'+          '<label class="v569-check"><input type="checkbox" data-v569-bio><i></i><span><b>Activar huella / biometría</b><small>También puedes usar huella o el método biométrico seguro del dispositivo.</small></span></label>'+          '<label class="v569-check v577-remember-device"><input type="checkbox" data-v569-remember-device checked><i></i><span><b>Recordar este dispositivo</b><small>Vincula esta instalación con tu perfil para reconocerla en próximos accesos.</small></span></label>'+
@@ -547,6 +555,8 @@ async function registerFromPage(root){
   if(name.length<2)return toast('Escribe tu nombre');
   if(method==='phone'&&phone.length<10)return toast('Escribe un número telefónico válido');
   if(method==='email'&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return toast('Escribe un Gmail o correo válido');
+  if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return toast('El correo adicional no es válido');
+  if(phone&&phone.length!==10)return toast('Escribe un teléfono de 10 dígitos');
   if(pass.length<8)return toast('La contraseña debe tener al menos 8 caracteres');
   if(pass!==confirm)return toast('Las contraseñas no coinciden');
   if(!$('[data-v569-terms]',root)?.checked)return toast('Acepta guardar la cuenta en este dispositivo');
@@ -556,7 +566,7 @@ async function registerFromPage(root){
   alias=alias||generateAlias(name,phone,email);
   if(contactExists(email,phone))return toast('Ese teléfono o correo ya está registrado');
   const remember=$('[data-v569-remember-device]',root)?.checked!==false;
-  const rec={id:randomId(),name,alias,phone:method==='phone'?phone:'',email:method==='email'?email:'',createdAt:nowIso(),updatedAt:nowIso(),lastLoginAt:nowIso(),password:await newPasswordRecord(pass),biometric:null,devices:[]};
+  const rec={id:randomId(),name,alias,phone,email,createdAt:nowIso(),updatedAt:nowIso(),lastLoginAt:nowIso(),password:await newPasswordRecord(pass),biometric:null,devices:[]};
   const auth=authState();auth.accounts.push(rec);auth.currentId=rec.id;saveAuth(auth);
   const active=remember?rememberDevice(rec,{verified:false,method:'registration'}):rec;setAppUser(active);
   const faceRequested=$('[data-v569-face]',root)?.checked===true;
@@ -580,7 +590,7 @@ function showCredentials(account){
   }
   $('.v569-credentials')?.remove();
   const el=document.createElement('div');el.className='v569-credentials';
-  el.innerHTML='<section><header><span>🔑</span><h2>Cuenta creada</h2><button type="button" data-v569-close-creds>×</button></header><div class="v569-cred-body"><p>Guarda tu alias. Puedes iniciar sesión con el alias, teléfono o Gmail/correo registrado.</p><div><small>ALIAS</small><b>@'+esc(account.alias)+'</b></div><div><small>CONTACTO</small><b>'+esc(contactText(account))+'</b></div></div><footer><button type="button" data-v569-copy-alias>Copiar alias</button><button class="primary" type="button" data-v569-finish>Ir a mi perfil</button></footer></section>';
+  el.innerHTML='<section><header><span>🔑</span><h2>Cuenta creada</h2><button type="button" data-v569-close-creds>×</button></header><div class="v569-cred-body"><p>Guarda tu alias. Puedes iniciar sesión con el alias, teléfono o Gmail/correo registrado.</p><div><small>ALIAS</small><b>@'+esc(account.alias)+'</b></div><div><small>CONTACTO</small><b>'+esc(contactText(account))+'</b></div></div><footer><button type="button" data-v569-copy-alias>Copiar alias</button><button type="button" data-v569-admin-link>Administración verificada</button><button class="primary" type="button" data-v569-finish>Ir a mi perfil</button></footer></section>';
   document.body.appendChild(el);
   $('[data-v569-close-creds]',el).onclick=()=>{el.remove();go('profile')};
   $('[data-v569-finish]',el).onclick=()=>{el.remove();go('profile')};
@@ -742,7 +752,7 @@ document.addEventListener('click',async e=>{
   const routeBtn=e.target.closest('[data-v569-route]');
   if(routeBtn){e.preventDefault();e.stopPropagation();go(routeBtn.dataset.v569Route);return}
   const method=e.target.closest('[data-v569-method]');
-  if(method){e.preventDefault();const root=method.closest('[data-v569-page]');root.dataset.method=method.dataset.v569Method;$$('[data-v569-method]',root).forEach(b=>b.classList.toggle('active',b===method));$('[data-v569-phone-wrap]',root).hidden=method.dataset.v569Method!=='phone';$('[data-v569-email-wrap]',root).hidden=method.dataset.v569Method!=='email';return}
+  if(method){e.preventDefault();const root=method.closest('[data-v569-page]');root.dataset.method=method.dataset.v569Method;$$('[data-v569-method]',root).forEach(b=>b.classList.toggle('active',b===method));$('[data-v569-phone-wrap]',root).hidden=false;$('[data-v569-email-wrap]',root).hidden=false;return}
   if(e.target.closest('[data-v569-generate-alias]')){
     const root=e.target.closest('[data-v569-page]'),alias=$('[data-v569-alias]',root);
     if(!($('[data-v569-name]',root)?.value||'').trim()){toast('Primero escribe tu nombre');return}
@@ -752,6 +762,17 @@ document.addEventListener('click',async e=>{
     return;
   }
   if(e.target.closest('[data-v569-generate-password]')){const root=e.target.closest('[data-v569-page]'),p=generatedPassword();$('[data-v569-password]',root).value=p;$('[data-v569-confirm]',root).value=p;toast('Contraseña segura generada');return}
+  if(e.target.closest('[data-v569-admin-link]')){
+    e.preventDefault();
+    const media=window.LJR_MEDIA;
+    if(!media?.login){toast('El servicio de administración no está disponible');return}
+    try{
+      const verified=media.admin||await media.restoreAdminSession?.();
+      if(verified)media.manage();
+      else media.login(()=>media.manage());
+    }catch(_){toast('No se pudo comprobar el acceso. Revisa tu conexión.')}
+    return;
+  }
   if(e.target.closest('[data-v569-register]')){e.preventDefault();await registerFromPage(e.target.closest('[data-v569-page]'));return}
   if(e.target.closest('[data-v569-login]')){e.preventDefault();await loginFromPage(e.target.closest('[data-v569-page]'));return}
   if(e.target.closest('[data-v569-login-bio]')){e.preventDefault();await biometricLogin(e.target.closest('[data-v569-page]'));return}
