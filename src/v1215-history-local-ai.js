@@ -20,6 +20,7 @@ const PHRASES=[
   ['audit','Revisa registros duplicados, canchas pendientes y datos incompletos']
 ];
 let model=null,modelPromise=null,mountPending=false,refreshing=false,lastCheck=0;
+let lastFindings=null,lastMessage='';
 const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safeGet=(key,def)=>{try{return localStorage.getItem(key)??def}catch(_){return def}};
@@ -92,8 +93,9 @@ function inspect(list,save=true){
   return {...missing,fresh,changed,previous:!!previous};
 }
 function message(text){
+  lastMessage=String(text||'');
   const p=document.querySelector('[data-v1215-status]');
-  if(p)p.textContent=String(text||'');
+  if(p)p.textContent=lastMessage;
 }
 function analysisText(textValue){
   const out=document.querySelector('[data-v1215-answer]');
@@ -101,6 +103,7 @@ function analysisText(textValue){
 }
 function renderAudit(){
   const list=entries(),info=inspect(list,true);
+  const noticeCounts=lastFindings||{fresh:info.fresh.length,changed:info.changed.length};
   const box=document.querySelector('[data-v1215-audit]');
   if(box){
     box.hidden=false;
@@ -108,8 +111,8 @@ function renderAudit(){
       '<strong>Revisión del archivo</strong>'+
       '<div class="v1215-audit-stats">'+
         '<span><b>'+list.length+'</b> partidos</span>'+
-        '<span><b>'+info.fresh.length+'</b> nuevos</span>'+
-        '<span><b>'+info.changed.length+'</b> marcadores modificados</span>'+
+        '<span><b>'+noticeCounts.fresh+'</b> nuevos</span>'+
+        '<span><b>'+noticeCounts.changed+'</b> marcadores modificados</span>'+
       '</div>'+
       '<p>'+info.duplicates.length+' posibles duplicados · '+
       info.venues.length+' canchas por confirmar · '+
@@ -266,11 +269,12 @@ async function fetchNewest(){
     const latest=choices[0],nextAt=Date.parse(latest.captured_at_utc||0)||0;
     if(!current||nextAt>currentAt){
       const changes=inspect(entries(latest),false);
+      lastFindings={fresh:changes.fresh.length,changed:changes.changed.length};
       window.LJR_OFFICIAL_DATA=latest;
       window.dispatchEvent(new Event('ljr:official-data'));
       message('Datos oficiales actualizados: '+changes.fresh.length+' partidos nuevos y '+changes.changed.length+' marcadores cambiados.');
       scheduleMount();
-    }else{message('Revisión completada: ya tienes la versión oficial disponible.');}
+    }else{if(!lastFindings)lastFindings={fresh:0,changed:0};message('Revisión completada: ya tienes la versión oficial disponible.');}
     renderAudit();
   }catch(_){message('No se pudo completar la revisión automática; los marcadores no fueron modificados.');}
   finally{refreshing=false}
@@ -326,6 +330,7 @@ function mount(){
   const holder=document.createElement('div');holder.innerHTML=panelMarkup();
   const panel=holder.firstElementChild;host.after(panel);bind(panel);
   if(getDb())renderAudit();
+  if(lastMessage)message(lastMessage);
   if(safeGet(PREF,'1')==='1'&&Date.now()-lastCheck>300000)fetchNewest();
 }
 function scheduleMount(){
