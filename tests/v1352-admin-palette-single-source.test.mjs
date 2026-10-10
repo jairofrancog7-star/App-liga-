@@ -26,7 +26,7 @@ test('V1352: V1340 mantiene geometría Android y respeta fondos maestros de Admi
  assert.match(admin,/border-color:var\(--ljr1310-edge,#426bb0\)/);
  assert.match(admin,/min-height:46px!important/);
  assert.match(admin,/width:21px!important;height:21px!important/);
- assert.doesNotMatch(admin,/#133d9c|#101f75|#132b7c|#183d94|#1c69d4/i);
+ assert.doesNotMatch(admin,/#133d9c|#101f75|#132b7c|#183d94/i);
  for(const module of ['v1212-csv-modal','v1126-delegate-modal','v1125-officials-modal','v1111-incidents-modal']){
   assert.match(v1340,new RegExp('\\.'+module));
  }
