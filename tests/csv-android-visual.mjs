@@ -43,6 +43,9 @@ try{
     const upload=root.querySelector('.csvpro-drop').getBoundingClientRect();
     const heading=root.querySelector('.v105-dialog > h3').getBoundingClientRect();
     const description=root.querySelector('.v105-dialog > p').getBoundingClientRect();
+    const blocker=rect=>{const x=Math.max(1,Math.min(innerWidth-2,(rect.left+rect.right)/2));
+      const y=Math.max(1,Math.min(innerHeight-2,(rect.top+rect.bottom)/2));
+      const el=document.elementFromPoint(x,y);return el?el.tagName.toLowerCase()+'.'+String(el.className||'').slice(0,120):'none';};
     const onTop=rect=>{const x=Math.max(1,Math.min(innerWidth-2,(rect.left+rect.right)/2));
       const y=Math.max(1,Math.min(innerHeight-2,(rect.top+rect.bottom)/2));
       const above=document.elementFromPoint(x,y);return !!above&&(root===above||root.contains(above));};
@@ -57,7 +60,7 @@ try{
      uploadWidth:upload.width,close:{left:close.left,right:close.right,top:close.top,bottom:close.bottom},
      heading:{top:heading.top,bottom:heading.bottom,visible:onTop(heading)},
      description:{top:description.top,bottom:description.bottom,visible:onTop(description)},
-     closeClickable:onTop(close),
+     closeClickable:onTop(close),topElements:{heading:blocker(heading),description:blocker(description),close:blocker(close)},
      background:cs.backgroundImage,buttonBackground:csBtn.backgroundImage,
      buttons
     };
