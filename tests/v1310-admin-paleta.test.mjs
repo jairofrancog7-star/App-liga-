@@ -5,11 +5,11 @@ const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
 const css=read('src/v1310-admin-paleta-unificada.css');
 test('V1310 paleta administrativa igual en producción y demo',()=>{
  assert.equal(css,read('demo/src/v1310-admin-paleta-unificada.css'));
- for(const html of ['index.html','demo/index.html']){
-  const src=read(html);
-  assert.match(src,html==='index.html'?/src\/v1310-admin-paleta-unificada\.css\?v=20261010-v1352-unified-navy/:/src\/v1310-admin-paleta-unificada\.css\?v=/);
-  assert.ok(src.indexOf('src/v1310-admin-paleta-unificada.css')>src.indexOf('src/v1242-modals-liga-blue-controls.css')||html==='demo/index.html');
- }
+ const production=read('index.html'),demo=read('demo/index.html');
+ const palette=production.match(/src\/v1310-admin-paleta-unificada\.css\?v=[^"'<>\s]+/)?.[0];
+ assert.ok(palette,'Falta enlace versionado a la paleta oficial en producción');
+ assert.ok(demo.includes(palette),'La demo debe usar exactamente la versión publicada de la paleta');
+ assert.ok(production.indexOf(palette)>production.indexOf('src/v1242-modals-liga-blue-controls.css'));
 });
 test('V1310 cubre todas las ventanas administrativas sin tocar el backend',()=>{
  for(const cls of [
@@ -41,8 +41,8 @@ test('V1311 confirma fondo azul marino real de todas las ventanas y tonos oscuro
  assert.match(css,/\.cms-kind-grid>button/);
  assert.match(css,/\.ljr-review-stats>div/);
  assert.match(css,/\.ljr-review-device-results/);
- assert.match(read('index.html'),/v1310-admin-paleta-unificada\.css\?v=20261010-v1352-unified-navy/);
- // demo/index.html es reconstruido por Vite; su query string puede ser anterior.
+ // La versión de caché cambia con las mejoras visuales y no debe estar fijada.
+ assert.match(read('index.html'),/v1310-admin-paleta-unificada\.css\?v=/);
  assert.match(read('demo/index.html'),/v1310-admin-paleta-unificada\.css\?v=/);
 });
 test('V1311 cubre al asistente local de Suspensión, que no usa el modal de Administración',()=>{
