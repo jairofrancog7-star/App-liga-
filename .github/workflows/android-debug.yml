@@ -17,9 +17,11 @@ on:
     branches:
       - main
 
+# Las compilaciones manuales usan un grupo propio y no son canceladas por
+# nuevos pushes. Las compilaciones automáticas continúan priorizando la más reciente.
 concurrency:
-  group: android-debug-${{ github.ref }}
-  cancel-in-progress: true
+  group: android-debug-${{ github.ref }}-${{ github.event_name == 'workflow_dispatch' && github.run_id || 'auto' }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 
 jobs:
   build-apk:
