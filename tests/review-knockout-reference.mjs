@@ -28,6 +28,10 @@ try{
     const root=document.querySelector('.ljr-knockout'),sc=root?.querySelector('.ljr-ko-scroll'),col=root?.querySelector(`[data-ko-column="${s}"]`);
     return root?.dataset.koStage===s&&sc&&col&&Math.abs(sc.scrollLeft-col.offsetLeft)<2;
    },stage);
+   if(width<1024){
+    const header=await page.locator('.v501-top').boundingBox();
+    assert.ok(header&&Math.abs(header.y)<2,`${name}: simulator header remains visible (${header?.y})`);
+   }
    await page.screenshot({path:`${folder}/${name}-${stage}.png`});
   }
   const layout=await root.evaluate(el=>({width:el.clientWidth,color:getComputedStyle(el).backgroundColor,clubs:[...el.querySelectorAll('.ljr-ko-club')].map(n=>({width:n.clientWidth,height:n.clientHeight,overflow:n.scrollWidth>n.clientWidth}))}));

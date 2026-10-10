@@ -35,8 +35,8 @@ html body #screen .ljr-knockout .ljr-ko-club{
  mask-image:radial-gradient(circle 12px at right center,transparent 11px,#000 12px);
 }
 html body #screen .ljr-knockout .ljr-ko-club:last-child{padding:0 4px 0 11px;mask-image:radial-gradient(circle 12px at left center,transparent 11px,#000 12px)}
-html body #screen .ljr-knockout .ljr-ko-club small{flex:0 0 auto;font:500 8px/1 Roboto,Arial,sans-serif}
-html body #screen .ljr-knockout .ljr-ko-club strong{min-width:0;white-space:nowrap;font:700 12px/1 Roboto,Arial,sans-serif;letter-spacing:-.2px}
+html body #screen .ljr-knockout .ljr-ko-club small{flex:0 0 auto;font:500 9px/1 Roboto,Arial,sans-serif}
+html body #screen .ljr-knockout .ljr-ko-club strong{min-width:0;white-space:nowrap;font:700 13px/1 Roboto,Arial,sans-serif;letter-spacing:-.2px}
 html body #screen .ljr-knockout img,
 html body #screen .ljr-knockout .ljr-ko-shield{display:inline-flex;flex:0 0 18px;align-items:center;width:18px;height:22px;object-fit:contain;background:transparent;color:#898bb5}
 html body #screen .ljr-knockout .ljr-ko-shield svg{display:block;width:18px;height:22px}
@@ -137,3 +137,6 @@ html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-t
 }
 html body #screen .ljr-knockout .ljr-ko-rail span{left:-4px;writing-mode:vertical-rl;transform:translateY(-50%) rotate(180deg);padding:8px 0}
 html body #screen .ljr-knockout .ljr-ko-scroll{touch-action:auto!important}
+
+/* An old overflow:hidden wrapper prevented the header from sticking to #screen. */
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator]{overflow:visible!important}
