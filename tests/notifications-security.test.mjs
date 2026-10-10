@@ -92,3 +92,16 @@ test('programación global interna y salud real sin secretos visibles',()=>{
  assert.match(ui,/Servidor de avisos/);
  assert.match(ui,/Permisos de toda la página/);
 });
+
+test('WhatsApp personal solo abre compositor manual y no habilita Twilio',()=>{
+ const flow=read('src/v1074-suspension-approval-workflow.js');
+ const editor=read('src/v1081-global-admin-notices.js');
+ const backend=read('server/notifications/index.mjs');
+ assert.match(flow,/data-v1074-wa-manual/);
+ assert.match(flow,/https:\/\/api\.whatsapp\.com\/send\?text=/);
+ assert.match(flow,/function shareNormalWhatsApp\(/);
+ assert.match(editor,/data-v1093-wa-personal/);
+ assert.match(editor,/link\.href='https:\/\/api\.whatsapp\.com\/send\?text='/);
+ assert.match(backend,/TWILIO_WHATSAPP_ACTIVATED==='true'/);
+ assert.doesNotMatch(flow,/client\.messages\.create\(/);
+});
