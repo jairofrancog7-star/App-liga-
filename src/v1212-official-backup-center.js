@@ -7,6 +7,9 @@ const FORMAT='ljr-admin-backup-encrypted-v2';
 const META_KEY='ljr-official-backup-download-v1212';
 const REMINDER_KEY='ljr-official-backup-reminder-v1212';
 const SUMMARY_KEY='ljr-official-backup-summaries-v1212';
+const AUTO_KEY='ljr-backup-auto-v1213';
+const AUTO_LAST_KEY='ljr-backup-auto-last-v1213';
+const HISTORY_LIMIT=14;
 const MAX_PLAIN=32*1024*1024;
 const MAX_FILE=48*1024*1024;
 const ITERATIONS=310000;
@@ -66,6 +69,14 @@ async function records(){
  if(!Array.isArray(response?.items))throw Error('El servidor no entregó los registros de respaldo.');
  return response.items;
 }
+/* Modelo estadistico adaptativo sin paquetes pesados ni datos personales. */
+function median(values){const x=values.slice().sort((a,b)=>a-b),mid=Math.floor(x.length/2);return x.length%2?x[mid]:(x[mid-1]+x[mid])/2}
+function trendModel(count,history){
+ const samples=(Array.isArray(history)?history:[]).slice(-HISTORY_LIMIT).map(x=>Number(x?.count)).filter(x=>Number.isSafeInteger(x)&&x>=0);
+ if(samples.length<4)return {ready:false,samples:samples.length};
+ const baseline=median(samples),mad=median(samples.map(x=>Math.abs(x-baseline)));
+ return {ready:true,samples:samples.length,baseline,abnormal:Math.abs(count-baseline)>Math.max(3,baseline*.18,mad*3.5)};
+}
 function inspect(rows){
  const seen=new Set();let duplicates=0,missing=0,invalid=0;
  for(const item of rows){
@@ -77,8 +88,15 @@ function inspect(rows){
  }
  const history=read(SUMMARY_KEY,[]);
  const previous=Array.isArray(history)&&history.length?history[history.length-1]:null;
- const fall=previous&&previous.count>0&&rows.length<previous.count*0.75;
- return {count:rows.length,duplicates,missing,invalid,fall,previous};
+ const fall=previous&&previous.count>0&&rows.length<previous.count*.75;
+ return {count:rows.length,duplicates,missing,invalid,fall,previous,model:trendModel(rows.length,history)};
+}
+function recordHistory(count){
+ const history=read(SUMMARY_KEY,[]),series=Array.isArray(history)?history.slice(-HISTORY_LIMIT):[];
+ const item={at:new Date().toISOString(),count},last=series[series.length-1];
+ if(last?.at?.slice(0,10)===item.at.slice(0,10))series[series.length-1]=item;
+ else series.push(item);
+ write(SUMMARY_KEY,series.slice(-HISTORY_LIMIT));
 }
 function download(content,name){
  const url=URL.createObjectURL(new Blob([JSON.stringify(content)],{type:'application/json'}));
@@ -89,8 +107,8 @@ function open(){
  const d=media()?.modal?.('Respaldo oficial','<div class="ljr-backup-center">'+
   '<p class="ljr-backup-lead">Protege la información administrativa con una copia cifrada que solo se descarga en este dispositivo. Ningún dato se envía a servicios de IA.</p>'+
   '<div class="ljr-backup-stats"><article><small>ÚLTIMA DESCARGA SOLICITADA</small><strong data-backup-last>Sin registro</strong></article><article><small>PRÓXIMA REVISIÓN</small><strong data-backup-next>Sin programar</strong></article></div>'+
-  '<div class="ljr-backup-section"><h3>Diagnóstico inteligente local</h3><p>Detecta conteos inusuales, identificadores repetidos y campos vacíos. No cambia datos oficiales.</p>'+
-  '<button type="button" class="ljr-backup-secondary" data-backup-analyze>Analizar registros privados</button><div class="ljr-backup-diagnosis" data-backup-diagnosis aria-live="polite">El análisis comienza cuando autorizas la consulta.</div></div>'+
+  '<div class="ljr-backup-section"><h3>IA local y diagnóstico inteligente</h3><p>Detector estadístico adaptativo que aprende de los conteos de días anteriores. Sin IA externa ni cambios en datos oficiales.</p>'+
+  '<button type="button" class="ljr-backup-secondary" data-backup-analyze>Analizar registros privados</button><div class="ljr-backup-diagnosis" data-backup-diagnosis aria-live="polite">El análisis comienza cuando autorizas la consulta.</div><label class="ljr-backup-auto"><input type="checkbox" data-backup-auto> Análisis automático al abrir (máximo una vez al día)</label><small class="ljr-backup-hint">Solo al abrir esta sección con una cuenta principal válida. No crea descargas en segundo plano.</small></div>'+
   '<form class="ljr-backup-section" data-backup-export><h3>Crear copia protegida</h3><p>La contraseña no se guarda. Debes conservarla para abrir el archivo en el futuro.</p>'+
   '<label>Contraseña de cifrado (mínimo 12 caracteres)<input type="password" autocomplete="new-password" minlength="12" maxlength="256" data-backup-pass required></label>'+
   '<label>Repetir contraseña<input type="password" autocomplete="new-password" minlength="12" maxlength="256" data-backup-confirm required></label>'+
@@ -130,24 +148,36 @@ function open(){
   if(r.duplicates)warnings.push(r.duplicates+' identificadores repetidos');
   if(r.missing)warnings.push(r.missing+' nombres o títulos vacíos');
   if(r.fall)warnings.push('caída superior al 25 % frente al último análisis');
+  if(r.model.ready&&r.model.abnormal)warnings.push('variación atípica frente a lo aprendido');
   const box=$('[data-backup-diagnosis]',root);
-  box.textContent=r.count+' registros consultados. '+(warnings.length?'Revisar: '+warnings.join('; ')+'.':'Sin alertas detectadas con las reglas locales.');
+  const model=r.model.ready?'Modelo adaptativo activo ('+r.model.samples+' días, referencia: '+Math.round(r.model.baseline)+').':'Aprendizaje local: '+r.model.samples+'/4 días distintos.';
+  box.textContent=r.count+' registros consultados. '+model+' '+(warnings.length?'Revisar: '+warnings.join('; ')+'.':'Sin alertas detectadas.');
   box.classList.toggle('is-warning',warnings.length>0);
   return r;
  }
  $('[data-backup-period]',root).value=String(read(REMINDER_KEY,7));
+ const auto=$('[data-backup-auto]',root);
+ auto.checked=read(AUTO_KEY,false)===true;
  summary();
  if(!crypto?.subtle)say('El cifrado solo está disponible en navegadores compatibles y con HTTPS.',true);
- $('[data-backup-analyze]',root).onclick=e=>perform(e.currentTarget,async()=>{
-  say('Consultando datos con la sesión autorizada…');
-  const rows=await records();
-  const stats=renderDiagnosis(rows);
-  const history=read(SUMMARY_KEY,[]);
-  const series=Array.isArray(history)?history.slice(-4):[];
-  series.push({at:new Date().toISOString(),count:stats.count});
-  write(SUMMARY_KEY,series);
-  say('Diagnóstico local completado. Ningún registro se ha modificado.');
- });
+ async function analyze(automatic){
+  say(automatic?'Revisión local automática autorizada…':'Analizando registros privados…');
+  const rows=await records(),stats=renderDiagnosis(rows);
+  recordHistory(stats.count);
+  if(automatic)write(AUTO_LAST_KEY,new Date().toISOString());
+  say('Análisis local completo. '+(stats.model.ready?'Modelo estadístico actualizado.':'Aprendizaje en curso.')+' Sin cambios en datos oficiales.');
+ }
+ const analyzeButton=$('[data-backup-analyze]',root);
+ analyzeButton.onclick=e=>perform(e.currentTarget,()=>analyze(false));
+ auto.onchange=()=>{
+  write(AUTO_KEY,auto.checked);
+  if(auto.checked)perform(analyzeButton,()=>analyze(true));
+  else say('Análisis automático desactivado. La revisión manual sigue disponible.');
+ };
+ const lastAuto=Date.parse(read(AUTO_LAST_KEY,''));
+ if(auto.checked&&(!Number.isFinite(lastAuto)||Date.now()-lastAuto>=86400000)){
+  perform(analyzeButton,()=>analyze(true));
+ }
  $('[data-backup-export]',root).onsubmit=e=>{
   e.preventDefault();
   const button=$('button[type="submit"]',e.currentTarget);
@@ -158,7 +188,8 @@ function open(){
    if(!window.confirm('Se descargará información de administración protegida con tu contraseña. Guárdala en un lugar privado. ¿Continuar?'))return;
    say('Generando copia cifrada en este dispositivo…');
    const rows=await records();
-   renderDiagnosis(rows);
+   const stats=renderDiagnosis(rows);
+   recordHistory(stats.count);
    let encrypted;
    try{
     encrypted=await encrypt(rows,pass.value);
