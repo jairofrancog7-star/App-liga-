@@ -164,6 +164,27 @@ async function saveFilters(root){
   status(root,'Filtros actualizados. Solo recibirás las categorías seleccionadas.');
  }else status(root,'Filtros guardados en este dispositivo. Activa avisos cuando el servidor esté disponible.');
 }
+
+/* Reutilizar el panel Push existente dentro del registro, sin segundo proveedor
+   ni solicitar permiso del navegador automáticamente. */
+window.LJR_V1082_PUSH_PANEL={
+ async mountInto(host,profile={}){
+  if(!host)return false;
+  let panel=host.querySelector('[data-v1082-push]');
+  if(!panel){
+   const fragment=document.createElement('div');
+   fragment.innerHTML=markup();
+   panel=fragment.firstElementChild;
+   host.replaceChildren(panel);
+  }
+  const cat=$('[data-v1082-category]',panel),team=$('[data-v1082-team]',panel);
+  if(cat&&CATEGORIES.some(([id])=>id===String(profile.category||'')))cat.value=String(profile.category);
+  if(team&&profile.team!==undefined)team.value=String(profile.team||'').slice(0,90);
+  await syncState(panel);
+  return true;
+ }
+};
+
 document.addEventListener('click',async event=>{
  const button=event.target.closest('[data-v1082-toggle],[data-v1082-save]');
  if(!button||working)return;
