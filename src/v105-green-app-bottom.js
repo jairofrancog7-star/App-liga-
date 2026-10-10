@@ -599,7 +599,7 @@ function delegates(){
  let modified=false;
  const makeId=()=>Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10);
  list.forEach(item=>{if(!item.id){item.id=makeId();modified=true}});
- if(modified)write(key,list);
+ if(modified){try{localStorage.setItem(key,JSON.stringify(list))}catch(_){/* Sigue mostrando los contactos originales sin perderlos. */}}
  const roleNames=['Delegado titular','Subdelegado','Entrenador','Encargado de equipo','Presidente','Representante','Otro'];
  const categoryNames=['Primera','Intermedia','Segunda','Veteranos 35+','Veteranos 50+'];
  try{v160Categories().forEach(c=>{if(c.name&&!categoryNames.includes(c.name))categoryNames.push(c.name)})}catch(_){}
@@ -638,7 +638,7 @@ function delegates(){
  '<details class="v1126-extra"><summary>Preparar avisos y juntas</summary>'+
  '<label class="v1126-small-label">Tipo de aviso<select data-d-notice-type><option value="jornada">Próxima jornada</option><option value="junta">Junta de delegados</option><option value="sede">Cambio de cancha u horario</option><option value="suspension">Suspensión</option><option value="general">Comunicado general</option></select></label>'+
  '<label class="v1126-small-label">Mensaje para revisar<textarea data-d-notice rows="3" maxlength="1200"></textarea></label>'+
- '<div class="v1126-tools"><button type="button" class="v105-btn alt" data-d-copy>Abrir para copiar aviso</button></div>'+
+ '<div class="v1126-tools"><button type="button" class="v105-btn alt" data-d-copy>Copiar borrador del aviso</button></div>'+
  '<label class="v1126-small-label">Fecha y hora de junta (opcional)<input type="datetime-local" data-d-meeting-date></label>'+
  '<div class="v1126-tools"><button type="button" class="v105-btn alt" data-d-calendar>Crear en Google Calendar</button></div>'+
  '<small>Los mensajes se abren individualmente en WhatsApp para revisarlos y enviarlos manualmente. No se envían automáticamente.</small></details>'+
@@ -652,7 +652,7 @@ function delegates(){
  m.classList.add('v1107-admin-modal','v1126-delegate-modal');
  let editingId=null;
  const q=s=>$(s,m);
- const persist=action=>{write(key,list);log(action)};
+ const persist=action=>{try{localStorage.setItem(key,JSON.stringify(list));log(action);return true}catch(_){toast('No se pudo guardar. Revisa el espacio o permisos del navegador.');return false}};
  const reset=()=>{
   editingId=null;
   ['name','team','phone','email','notes'].forEach(k=>q('[data-d-'+k+']').value='');
@@ -722,8 +722,10 @@ function delegates(){
   $$('[data-d-delete]',m).forEach(btn=>btn.onclick=()=>{
     const i=list.findIndex(d=>d.id===btn.dataset.dDelete);if(i<0)return;
     if(!confirm('¿Quitar a '+list[i].name+' del directorio de este dispositivo?'))return;
-    if(editingId===list[i].id){reset();q('[data-d-editor]').open=false}
-    list.splice(i,1);persist('Eliminar delegado local');render();
+    const previous=list.slice();const wasEditing=editingId===list[i].id;
+    list.splice(i,1);if(!persist('Eliminar delegado local')){list=previous;return}
+    if(wasEditing){reset();q('[data-d-editor]').open=false}
+    render();
   });
   $$('[data-d-contact-vcf]',m).forEach(btn=>btn.onclick=()=>{
     const item=list.find(x=>x.id===btn.dataset.dContactVcf);if(!item)return;
@@ -756,9 +758,9 @@ function delegates(){
    role:q('[data-d-role]').value,category:q('[data-d-category]').value,
    email,notes:clean(q('[data-d-notes]').value),consent:q('[data-d-consent]').checked,
    updatedAt:new Date().toISOString()};
-  const idx=list.findIndex(x=>x.id===editingId);
+  const idx=list.findIndex(x=>x.id===editingId),previous=list.slice();
   if(idx>=0)list[idx]=item;else list.push(item);
-  persist(idx>=0?'Editar delegado local':'Agregar delegado local');
+  if(!persist(idx>=0?'Editar delegado local':'Agregar delegado local')){list=previous;return}
   reset();q('[data-d-editor]').open=false;render();toast(idx>=0?'Cambios guardados':'Contacto guardado');
  };
  q('[data-d-csv]').onclick=()=>{
@@ -853,7 +855,9 @@ function delegates(){
    });
    if(!valid.length)return toast('No hay contactos nuevos válidos');
    if(!confirm('Se agregarán '+valid.length+' contactos privados en este dispositivo. Los existentes se conservarán. ¿Continuar?'))return;
-   list.push(...valid);persist('Importar delegados privados');render();toast(valid.length+' contactos importados');
+   const previous=list.slice();list.push(...valid);
+   if(!persist('Importar delegados privados')){list=previous;return}
+   render();toast(valid.length+' contactos importados');
   }catch(err){toast(err.message||'No se pudo leer el archivo')}
   finally{input.value=''}
  };
