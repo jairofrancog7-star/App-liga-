@@ -182,7 +182,7 @@ export function compareCsvTeams(parsed,type,mapping,teams){
    const similarity=dice(entry.name,team.name);
    if(similarity>bestScore){bestScore=similarity;best=team;}
   }
-  if(best&&bestScore>=.78)suggestions.push({name:entry.name,suggested:best.name,score:Math.round(bestScore*100)});
+  if(best&&bestScore>=.75)suggestions.push({name:entry.name,suggested:best.name,score:Math.round(bestScore*100)});
  }
  suggestions.sort((a,b)=>b.score-a.score);
  return {available:true,checked,exact,notFound:checked-exact,
