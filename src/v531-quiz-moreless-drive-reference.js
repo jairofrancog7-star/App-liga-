@@ -977,6 +977,17 @@ window.addEventListener('click',function(e){
   else{quiz.exit=false}
 },true);
 window.addEventListener('hashchange',v1074RemoveStableGameExit);
+/* V1380: La flecha visible del hub vuelve a la portada de Quiz Arena.
+   Otros manejadores globales de navegación procesaban este botón como
+   "volver a Inicio" antes del controlador del Quiz. Interceptar únicamente
+   este clic, sin reactivar la X duplicada que V1360 oculta. */
+window.addEventListener('click',function(e){
+  if(route()!=='quizArena'||!(e.target instanceof Element))return;
+  const back=e.target.closest('#v612-quiz-portal [data-v531-view="hub"] [data-v531-quiz-back]');
+  if(!back)return;
+  e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+  v614ClearQuizCountdown();quiz.mode='splash';quiz.exit=false;render(false);
+},true);
 /* V1073: Capturar la X de la partida antes de los manejadores globales.
    En Android otros controles document-level consumían su click y la hoja
    de confirmación no se montaba, aunque funcionaba la X del 3-2-1. */

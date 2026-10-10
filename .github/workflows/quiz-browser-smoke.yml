@@ -10,6 +10,15 @@ on:
       - 'src/v1063-quiz-drive-pixel-perfect.css'
       - 'tests/quiz-browser-v1071.mjs'
       - '.github/workflows/quiz-browser-smoke.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'src/v531-quiz-moreless-drive-reference.js'
+      - 'src/v1360-mobile-visual-fixes.css'
+      - 'tests/v1380-quiz-back-capture.test.mjs'
+      - 'tests/quiz-browser-v1071.mjs'
+      - '.github/workflows/quiz-browser-smoke.yml'
 permissions:
   contents: read
 concurrency:
@@ -38,8 +47,10 @@ jobs:
           for i in $(seq 1 40); do curl --fail --silent http://127.0.0.1:4173/App-liga-/ > /dev/null && exit 0; sleep 1; done
           cat /tmp/quiz-preview.log
           exit 1
-      - name: Verificar el recorrido A-D, X, 3-2-1, confirmar salida
-        run: node tests/quiz-browser-v1071.mjs
+      - name: Verificar flecha Volver, A-D, 3-2-1 y salida
+        run: |
+          node --test tests/v1380-quiz-back-capture.test.mjs
+          node tests/quiz-browser-v1071.mjs
       - name: Adjuntar captura si falla
         if: failure()
         uses: actions/upload-artifact@v4
