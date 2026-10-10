@@ -233,6 +233,79 @@ function v1108ControlClick(event){
 }
 window.addEventListener('click',v1108ControlClick,true);
 
+
+/* V1108 — Delegación de eventos resistente a repintados del panel.
+   Captura clics en el botón completo, sus iconos o su texto; cada toque se
+   resuelve una vez y conserva la autorización original. */
+const V1108_PRIVATE_TOOLS=new Set(['sponsors','meeting','delegates','officials','incidents','csv-import','backup-export','audit','schedule-match','new-sanction','motm']);
+const V1108_TOOL_NAMES=new Set(['sponsors','meeting','delegates','officials','incidents','calendar-generator','csv-import','backup-export','audit','poll','schedule-match','new-sanction','motm','register-alerts']);
+function v1108OpenTool(name){
+ if(!V1108_TOOL_NAMES.has(name))return toast('Herramienta no reconocida');
+ try{
+   if(typeof window.LJR_V105_OPEN_TOOL==='function'&&window.LJR_V105_OPEN_TOOL(name))return;
+ }catch(error){console.error('[JR Control] Error al abrir herramienta',name,error)}
+ toast('La herramienta no está disponible en este momento. Actualiza la página.');
+}
+function v1108AuthorizeTool(name){
+ if(!V1108_PRIVATE_TOOLS.has(name)||window.LJR_MEDIA?.admin){v1108OpenTool(name);return}
+ const media=window.LJR_MEDIA;
+ if(typeof media?.login!=='function'){toast('Inicia sesión como administrador para continuar');return}
+ try{
+   let opened=false;
+   const afterLogin=()=>{if(!opened&&window.LJR_MEDIA?.admin){opened=true;v1108OpenTool(name)}};
+   const result=media.login(afterLogin);
+   if(result&&typeof result.then==='function')result.then(afterLogin).catch(error=>console.error('[JR Control] Inicio de sesión',error));
+ }catch(error){console.error('[JR Control] No se pudo iniciar sesión',error);toast('No fue posible iniciar sesión')}
+}
+function v1108Cms(name){
+ const media=window.LJR_MEDIA;
+ if(!media?.admin){toast('Inicia sesión como administrador para continuar');media?.login?.();return}
+ if(name==='backup'&&!media.admin.owner){toast('Solo el presidente puede exportar el respaldo oficial');return}
+ const center=window.LJR_EDITOR_CENTER;
+ const entries={compose:[center,'openNotice'],review:[center,'openReview'],pages:[center,'openPages'],manage:[media,'manage'],backup:[center,'exportBackup']};
+ const [owner,method]=entries[name]||[];
+ if(typeof owner?.[method]!=='function'){toast('Opción no disponible; recarga la aplicación');return}
+ try{owner[method]()}catch(error){console.error('[JR Control] Acción administrativa',name,error);toast('No fue posible abrir esta función')}
+}
+function v1108Dispatch(button){
+ const d=button.dataset;
+ if(d.v563Route){go(d.v563Route);return}
+ if(d.v563Tool){v1108AuthorizeTool(d.v563Tool);return}
+ if(d.v563Cms){v1108Cms(d.v563Cms);return}
+ if(d.v563Action){
+   if(d.v563Action==='positions')openPositions();
+   else if(d.v563Action==='fixtures')openFixtures();
+   else if(d.v563Action==='cards')openDiscipline('cards');
+   else if(d.v563Action==='suspensions')openDiscipline('suspensions');
+   return;
+ }
+ if('v563Install' in d){install();return}
+ if('v563Share' in d){share();return}
+ if('v563Builds' in d){window.open(ACTIONS,'_blank','noopener,noreferrer');return}
+ if('v563Apk' in d){window.open(APK,'_blank','noopener,noreferrer');return}
+ if('v563Ios' in d){
+   (async()=>{try{
+     if(window.LJR_V100?.installIosShortcut){await window.LJR_V100.installIosShortcut();return}
+     const url=location.origin+location.pathname+'?source=ios-home#/home';
+     if(navigator.share)await navigator.share({title:'Liga Juventino',text:'Liga Juventino',url});
+     else location.href=url;
+   }catch(error){console.error('[JR Control] acceso iOS',error)}})();
+   return;
+ }
+ if('v563Appmode' in d)location.href=location.origin+location.pathname+'?mode=apk#/home';
+}
+window.addEventListener('click',event=>{
+ const target=event.target;
+ if(!target||typeof target.closest!=='function')return;
+ const button=target.closest('button[data-v563-route],button[data-v563-tool],button[data-v563-cms],button[data-v563-action],button[data-v563-install],button[data-v563-share],button[data-v563-builds],button[data-v563-apk],button[data-v563-ios],button[data-v563-appmode]');
+ if(!button||button.disabled||button.hidden)return;
+ const root=button.closest('[data-v563-control],[data-v563-install-page]');
+ if(!root)return;
+ event.preventDefault();
+ event.stopImmediatePropagation();
+ v1108Dispatch(button);
+},true);
+
 function bind(root){
  function syncAdmin(){
    const section=$('[data-v563-admin-direct]',root);
@@ -240,8 +313,9 @@ function bind(root){
    const backup=$('[data-v563-cms="backup"]',root);
    if(backup)backup.hidden=!Boolean(window.LJR_MEDIA?.admin?.owner);
  }
- syncAdmin();window.addEventListener('liga:admin',syncAdmin,{signal:root.v563Controller?.signal});
- $$('[data-v563-route]',root).forEach(b=>b.addEventListener('click',()=>go(b.dataset.v563Route)));
+ syncAdmin();
+ /* Keep the controller alive until the panel disappears. */
+ window.addEventListener('liga:admin',syncAdmin,{signal:root.v563Controller?.signal});
  const search=$('[data-v563-tool-search]',root);
  if(search){
    const cards=()=>[...root.querySelectorAll('[data-v563-management-list] > .v562-card, [data-v563-admin-direct] .v562-card')];
@@ -254,47 +328,6 @@ function bind(root){
      });
    });
  }
- const privateTools=new Set(['sponsors','meeting','delegates','officials','incidents','csv-import','backup-export','audit','schedule-match','new-sanction','motm']);
- const openTool=name=>{
-   if(typeof window.LJR_V105_OPEN_TOOL==='function'&&window.LJR_V105_OPEN_TOOL(name))return;
-   toast('La herramienta no pudo abrirse. Actualiza la página e inténtalo de nuevo.');
- };
- $$('[data-v563-tool]',root).forEach(b=>b.addEventListener('click',()=>{
-   const name=b.dataset.v563Tool;
-   if(!name)return;
-   if(privateTools.has(name)&&!window.LJR_MEDIA?.admin){
-     const login=window.LJR_MEDIA?.login;
-     if(typeof login==='function'){
-       login(()=>{if(window.LJR_MEDIA?.admin)openTool(name);else toast('Se requiere acceso de administración')});
-     }else toast('Inicia sesión como administrador para abrir esta herramienta');
-     return;
-   }
-   openTool(name);
- }));
- const cmsActions={
-   compose:()=>window.LJR_EDITOR_CENTER?.openNotice,
-   review:()=>window.LJR_EDITOR_CENTER?.openReview,
-   pages:()=>window.LJR_EDITOR_CENTER?.openPages,
-   manage:()=>window.LJR_MEDIA?.manage,
-   backup:()=>window.LJR_EDITOR_CENTER?.exportBackup
- };
- $$('[data-v563-cms]',root).forEach(b=>b.addEventListener('click',()=>{
-   if(!window.LJR_MEDIA?.admin){toast('Inicia sesión como administrador para continuar');return}
-   const name=b.dataset.v563Cms;
-   if(name==='backup'&&!window.LJR_MEDIA.admin.owner){toast('Solo el presidente puede exportar el respaldo oficial');return}
-   try{
-     const handler=cmsActions[name]?.();
-     if(typeof handler!=='function'){toast('Opción no disponible; recarga la aplicación');return}
-     handler.call(name==='manage'?window.LJR_MEDIA:window.LJR_EDITOR_CENTER);
-   }catch(error){console.error('[JR Control] Acción administrativa',error);toast('No fue posible abrir esta función')}
- }));
- $$('[data-v563-action]',root).forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.v563Action;if(a==='positions')openPositions();else if(a==='fixtures')openFixtures();else if(a==='cards')openDiscipline('cards');else if(a==='suspensions')openDiscipline('suspensions')}));
- $$('[data-v563-install]',root).forEach(b=>b.addEventListener('click',install));
- $('[data-v563-share]',root)?.addEventListener('click',share);
- $('[data-v563-builds]',root)?.addEventListener('click',()=>window.open(ACTIONS,'_blank','noopener,noreferrer'));
- $('[data-v563-apk]',root)?.addEventListener('click',()=>window.open(APK,'_blank','noopener,noreferrer'));
- $('[data-v563-ios]',root)?.addEventListener('click',async()=>{try{if(window.LJR_V100?.installIosShortcut){await window.LJR_V100.installIosShortcut();return}const url=location.origin+location.pathname+'?source=ios-home#/home';if(navigator.share){await navigator.share({title:'Liga Juventino',text:'Liga Juventino',url});return}location.href=url}catch(_){}});
- $('[data-v563-appmode]',root)?.addEventListener('click',()=>{location.href=location.origin+location.pathname+'?mode=apk#/home'});
 }
 function mount(){
  const r=route();
