@@ -1656,6 +1656,7 @@ function registerAlerts(){
    '<div class="v168-inline-notifications" data-r-inline-notif hidden></div>');
  m.classList.add('v168-account-modal','v920-registration-modal');
 
+ const cat=$('[data-r-cat]',m),team=$('[data-r-team]',m);
  const form=$('.v920-register-form',m),actions=$('.v920-register-actions',m);
  const summary=document.createElement('div');
  summary.className='v1210-alert-summary';
@@ -1715,8 +1716,7 @@ function registerAlerts(){
  };
  $('[data-r-news]',m).onclick=()=>{m.remove();location.hash='#/notifications';};
 
- const cat=$('[data-r-cat]',m),team=$('[data-r-team]',m);
- const fill=()=>{const list=v160Teams(cat.value);team.innerHTML=list.map(n=>'<option '+(norm(n)===norm(old.team)?'selected':'')+'>'+esc(n)+'</option>').join('')||'<option>Sin equipos publicados</option>'};fill();
+ const fill=()=>{const list=v160Teams(cat.value);team.innerHTML=list.map(n=>'<option '+(norm(n)===norm(old.team)?'selected':'')+'>'+esc(n)+'</option>').join('')||'<option>Sin equipos publicados</option>'};fill();updateSummary();
  cat.onchange=()=>{old.team='';fill()};
  $('[data-r-save]',m).onclick=()=>{
    const name=inputName.value.trim(),email=inputEmail.value.trim();
