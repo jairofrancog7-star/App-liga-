@@ -6,7 +6,8 @@ function view(ctx){
  return '<div class="mh-overview"><b>Sincronización privada</b><small>Junta '+ctx.fmt(ctx.date())+' · '+(n?'Versión sincronizada '+n:'Sin sincronizar')+'</small></div>'+
  '<p class="mh-tip">Comparte la minuta, asistencia, acuerdos y votaciones entre administradores autorizados cuando esté activo el servidor HTTPS de la Liga. Los archivos y dibujos de firmas permanecen en este dispositivo.</p>'+
  '<div class="mh-buttons"><button type="button" data-mh-action="sync-check">Comprobar servidor</button><button type="button" data-mh-action="sync-upload">Guardar en servidor</button><button type="button" data-mh-action="sync-download">Recuperar del servidor</button></div>'+
- '<p class="mh-tip">Antes de recuperar una versión ajena se descargará una copia JSON de seguridad de la junta actual. No se sobrescribirá otra versión más reciente sin advertencia.</p>'+
+ '<p class="mh-tip">Antes de recuperar una versión ajena se descargará una copia JSON de seguridad de la junta actual. No se sobrescribirá otra versión más reciente sin advertencia.</p>'+ 
+ '<div class="mh-buttons"><button type="button" data-mh-action="sync-restore-local">Restaurar copia previa</button><input type="file" hidden accept=".json,application/json" data-mh-file="sync-backup"></div>'+
  '<p class="mh-tip">Necesita que la presidencia active una única instancia privada con PostgreSQL y configure la URL HTTPS en la app. Hasta entonces, sigue funcionando el modo local.</p>';
 }
 async function authorized(permission,ctx){
@@ -84,11 +85,33 @@ async function download(ctx){
   ctx.render();ctx.msg('Versión '+remote.revision+' recuperada. Firmas locales y archivos conservados.');
  }catch(e){ctx.msg('No se recuperó la junta: '+String(e.message||e).slice(0,180))}
 }
+async function restoreBackup(file,ctx){
+ if(!file||file.size>2*1024*1024)return ctx.msg('Selecciona una copia JSON válida de máximo 2 MB.');
+ try{
+  const backup=JSON.parse(await file.text());
+  if(backup.format!=='LJR-meeting-local-backup-v1150'||backup.date!==ctx.date()||!backup.original||typeof backup.original!=='object'||Array.isArray(backup.original))throw Error('No corresponde a la junta abierta');
+  if(!window.confirm('¿Restaurar la copia guardada de esta fecha? Se descargará otra copia de la versión actual por seguridad.'))return;
+  const current=ctx.item();
+  ctx.download('junta-copia-actual-'+ctx.date()+'.json',JSON.stringify({format:'LJR-meeting-local-backup-v1150',date:ctx.date(),original:current},null,2),'application/json;charset=utf-8');
+  const prior=ctx.state[ctx.date()];
+  ctx.state[ctx.date()]=backup.original;
+  try{localStorage.setItem(ctx.KEY,JSON.stringify(ctx.state))}catch(e){ctx.state[ctx.date()]=prior;throw Error('No hay espacio local')}
+  ctx.applyMinute?.(backup.original.minute);
+  ctx.render();ctx.msg('Copia local restaurada. Los demás martes no se modificaron.');
+ }catch(e){ctx.msg('No se recuperó la copia: '+String(e.message||e).slice(0,140))}
+}
+function onChange(e,ctx){
+ if(!e.target?.matches?.('[data-mh-file="sync-backup"]'))return false;
+ if(!window.LJR_MEDIA?.admin){ctx.msg('Inicia sesión administrativa.');return true}
+ restoreBackup(e.target.files?.[0],ctx);
+ return true;
+}
 function handle(action,target,ctx){
+ if(action==='sync-restore-local'){ $('[data-mh-file="sync-backup"]',ctx.host)?.click();return true }
  if(!['sync-check','sync-upload','sync-download'].includes(action))return false;
  const work=action==='sync-check'?check:action==='sync-upload'?upload:download;
  work(ctx).catch(e=>ctx.msg('Error de sincronización: '+String(e.message||e).slice(0,140)));
  return true;
 }
-window.LJR_MEETING_SYNC_V1150={view,handle,exportable};
+window.LJR_MEETING_SYNC_V1150={view,handle,onChange,exportable};
 })();
