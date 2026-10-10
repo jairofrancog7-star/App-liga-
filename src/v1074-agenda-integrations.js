@@ -46,20 +46,16 @@
   notify('Google Calendar: revisa el evento y pulsa Guardar para añadirlo a tu cuenta.');
  }
  function downloadCalendar(){
-  const games=read().filter(check);const current=input();
-  if(!games.length&&check(current))games.push(current);
-  if(!games.length)return notify('Guarda un partido con equipos, campo y fecha/hora antes de descargar.');
-  const list=['BEGIN:VCALENDAR','VERSION:2.0','CALSCALE:GREGORIAN','PRODID:-//Liga Juventino Rosas//Avisos de agenda//ES'];
-  games.forEach((g,i)=>{const from=parseDateTime(g.start),to=from+Math.max(30,Math.min(360,Number(g.duration)||120))*60000;
-   list.push('BEGIN:VEVENT','UID:agenda-'+utcStamp(from)+'-'+i+'@juventinorosasliga.com','DTSTAMP:'+utcStamp(Date.now()),
-   'DTSTART:'+utcStamp(from),'DTEND:'+utcStamp(to),'SUMMARY:'+icsEscape(g.home+' vs '+g.away),
-   'LOCATION:'+icsEscape(g.field),'DESCRIPTION:'+icsEscape('Borrador de jornada. Verifica los datos oficiales.'),
-   ...[1440,120,30].flatMap(t=>['BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+icsEscape('Recordatorio '+g.home+' vs '+g.away),
-      'TRIGGER:-PT'+t+'M','END:VALARM']),'END:VEVENT')});
-  list.push('END:VCALENDAR','');
-  const blob=new Blob([list.join('\r\n')],{type:'text/calendar;charset=utf-8'});
-  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Agenda_Liga_Juventino_Alertas.ics';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),900);
-  notify('Agenda descargada: contiene avisos 24h, 2h y 30min antes (según el calendario que la importe).');
+  const current=input(),saved=read().filter(check);
+  const games=(check(current)?[current,...saved.filter(g=>g.start!==current.start||g.home!==current.home||g.away!==current.away)]:saved);
+  if(!games.length)return notify('Primero indica equipos, cancha, fecha y hora válidos.');
+  const events=games.map(g=>({
+   title:g.home+' - '+g.away,iso:g.start.slice(0,10),time:g.start.slice(11,16),
+   duration:Math.max(30,Math.min(360,Number(g.duration)||120)),venue:g.field,
+   description:'Liga Juventino Rosas · Borrador local. Confirma la programación oficial antes de acudir.'
+  }));
+  window.LJR_GOOGLE_CALENDAR_GLOBAL.choose(events,'Partidos de la agenda');
+  notify('Selecciona un partido y pulsa Guardar en Google Calendar. Los avisos se configuran allí.');
  }
  let configPromise;
  async function config(){
@@ -125,7 +121,7 @@
   box.innerHTML='<div class="ag1074-title"><b>Calendario y notificaciones</b><small>Integraciones</small></div>'+
    '<div class="ag1074-actions">'+
    '<button type="button" data-ag1074="google" aria-label="Guardar partido en Google Calendar">'+agAction('google','Google Calendar')+'</button>'+
-   '<button type="button" data-ag1074="ics">'+agAction('ics','Agenda con alertas')+'</button>'+
+   '<button type="button" data-ag1074="ics">'+agAction('ics','Guardar partido')+'</button>'+
    '<button type="button" data-ag1074="push">'+agAction('push','Activar push')+'</button>'+
    '<button type="button" data-ag1074="off" hidden>'+agAction('off','Desactivar push')+'</button></div>'+
    '<p data-ag1074-backend-status class="ag1074-backend">Consultando disponibilidad de notificaciones…</p>'+
