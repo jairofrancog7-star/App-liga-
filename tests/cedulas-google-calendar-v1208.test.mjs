@@ -34,7 +34,7 @@ test('botón Calendario de Cédulas usa Google Calendar y conserva su diseño',(
 test('el partido filtrado abre con equipos fecha hora cancha categoría y jornada',()=>{
  const calls=[],msgs=[];
  const fn=makeHandler();
- fn({},()=>[fixture('BOAVISTA','BOCA JRS')],v=>msgs.push(v),
+ fn({},()=>[fixture('BOAVISTA','BOCA JRS')],(_root,v)=>msgs.push(v),
  {LJR_GOOGLE_CALENDAR_GLOBAL:{choose:(events,heading)=>{calls.push({events,heading});return true}}});
  assert.equal(calls.length,1);
  assert.equal(calls[0].events.length,1);
@@ -50,7 +50,7 @@ test('varios partidos abren selector y las fechas sin hora se excluyen',()=>{
  const calls=[];
  const unknown=fixture('Sin','Hora');unknown.when.hasTime=false;
  makeHandler()({},()=>[fixture('Boavista','Boca Jrs'),unknown,fixture('Franco','Napoli')],
- ()=>{}, {LJR_GOOGLE_CALENDAR_GLOBAL:{choose:(events)=>{calls.push(events);return true}}});
+ (_root,_message)=>{}, {LJR_GOOGLE_CALENDAR_GLOBAL:{choose:(events)=>{calls.push(events);return true}}});
  assert.equal(calls.length,1);
  assert.deepEqual(calls[0].map(e=>e.title),['Boavista - Boca Jrs','Franco - Napoli']);
 });
@@ -58,6 +58,6 @@ test('varios partidos abren selector y las fechas sin hora se excluyen',()=>{
 test('nunca inventa fechas o horas y informa si faltan datos',()=>{
  const messages=[];
  makeHandler()({},()=>[{home:'Boavista',away:'Boca',when:{hasTime:false}}],
- v=>messages.push(v),{LJR_GOOGLE_CALENDAR_GLOBAL:{choose:()=>{throw Error('No debería abrir calendario')}}});
+ (_root,v)=>messages.push(v),{LJR_GOOGLE_CALENDAR_GLOBAL:{choose:()=>{throw Error('No debería abrir calendario')}}});
  assert.match(messages[0],/fecha y hora confirmadas/);
 });
