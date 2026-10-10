@@ -1,3 +1,20 @@
+## Remitente WhatsApp México — pendiente de autorización
+
+El responsable de la Liga confirmó que desea usar un número mexicano como **remitente oficial**. Se cargó el candidato **solo como variable privada y STAGED de Railway** (nunca en GitHub Pages, este README ni los archivos públicos), con el prefijo E.164 `whatsapp:+52`.
+
+**Estado actual:** `TWILIO_WHATSAPP_ACTIVATED=false`. Esta bandera impide activar el canal aun con credenciales Twilio y plantilla configuradas. No se comprobó la titularidad del número, su registro WhatsApp Business ni la aprobación de Meta. Ningún mensaje se ha enviado.
+
+**Para activarlo**, el propietario autorizado deberá:
+
+1. Abrir [Twilio Console](https://console.twilio.com/) y conectar o registrar ese número en **WhatsApp Senders**, siguiendo las verificaciones de Meta y comprobando que está autorizado para uso empresarial. Si ya está asociado a otra cuenta WhatsApp, respetar el procedimiento oficial de migración de Twilio.
+2. Aprobar en Meta una plantilla de tipo utilidad compatible con las variables `{{1}}` (título del aviso) y `{{2}}` (cuerpo), y guardar el `Content SID` (`HX...`) en las variables privadas de Railway.
+3. Configurar las credenciales de Twilio exclusivamente en Railway: `TWILIO_ACCOUNT_SID`, `TWILIO_API_KEY`, `TWILIO_API_SECRET` y `TWILIO_AUTH_TOKEN` para verificar webhooks.
+4. Verificar `PUBLIC_API_ORIGIN` HTTPS para las devoluciones de estado, el consentimiento voluntario de los delegados por canal y las pruebas de mensajes a contactos de prueba que hayan aceptado recibirlos.
+5. Solo después de validar todo, cambiar `TWILIO_WHATSAPP_ACTIVATED=true` **en Railway**. No modificar el código para saltarse la comprobación.
+6. Aplicar el despliegue STAGED cuando se acepten los costos de infraestructura y mensajería, comprobar `GET /health/ready` y `GET /config`, y verificar un mensaje de prueba y su estado.
+
+**Importante:** El candidato a remitente no se debe registrar como destinatario ni agregar a la tabla de consentimiento automáticamente. Son operaciones separadas. El contacto privado no se añade a `data/notifications-client.json`, `index.html` ni a ningún JavaScript público.
+
 ## Estado actualizado de las funciones pendientes (10 de octubre de 2026)
 
 - **Código listo para activación, sin servicios desplegados todavía.** Se encontró más de un proyecto Railway preparado. Para evitar facturar contenedores duplicados, usar únicamente el proyecto que incluye `liga-avisos-api` y `Postgres`; no aceptar simultáneamente los dos despliegues.
