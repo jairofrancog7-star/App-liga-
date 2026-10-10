@@ -114,7 +114,7 @@
     overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
     overlay.addEventListener('keydown', e => { if (e.key === 'Escape') overlay.remove(); });
     document.body.appendChild(overlay);
-    // No forzar el teclado de Android ni desplazar la lista al abrir el selector.
+    // No forzar foco: en Android abría el teclado y desplazaba/cortaba la primera ficha.
     list.scrollTop = 0;
     return true;
   }
