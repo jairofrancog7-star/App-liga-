@@ -41,6 +41,11 @@ try{
     const box=dialog.getBoundingClientRect();
     const close=root.querySelector('.v105-close').getBoundingClientRect();
     const upload=root.querySelector('.csvpro-drop').getBoundingClientRect();
+    const heading=root.querySelector('.v105-dialog > h3').getBoundingClientRect();
+    const description=root.querySelector('.v105-dialog > p').getBoundingClientRect();
+    const onTop=rect=>{const x=Math.max(1,Math.min(innerWidth-2,(rect.left+rect.right)/2));
+      const y=Math.max(1,Math.min(innerHeight-2,(rect.top+rect.bottom)/2));
+      const above=document.elementFromPoint(x,y);return !!above&&(root===above||root.contains(above));};
     const buttons=[...root.querySelectorAll('.csvpro-button')].map(b=>({name:b.innerText.trim(),width:b.getBoundingClientRect().width,visible:b.getBoundingClientRect().width>10}));
     const cs=getComputedStyle(dialog);
     const csBtn=getComputedStyle(root.querySelector('.csvpro-primary'));
@@ -50,6 +55,9 @@ try{
      innerOverflow:dialog.scrollWidth-dialog.clientWidth,
      scrollable:dialog.scrollHeight>dialog.clientHeight,
      uploadWidth:upload.width,close:{left:close.left,right:close.right,top:close.top,bottom:close.bottom},
+     heading:{top:heading.top,bottom:heading.bottom,visible:onTop(heading)},
+     description:{top:description.top,bottom:description.bottom,visible:onTop(description)},
+     closeClickable:onTop(close),
      background:cs.backgroundImage,buttonBackground:csBtn.backgroundImage,
      buttons
     };
@@ -59,6 +67,9 @@ try{
    assert.ok(metrics.box.top>=-1&&metrics.box.bottom<=height+1,'Dialog height fits viewport '+width);
    assert.ok(metrics.innerOverflow<=3,'No unintended horizontal overflow in modal '+width+': '+metrics.innerOverflow);
    assert.ok(metrics.close.left>=0&&metrics.close.right<=width+1&&metrics.close.top>=0,'Close button visible '+width);
+   assert.ok(metrics.heading.top>=85&&metrics.heading.visible,'Título Importar CSV visible sin la barra Más encima '+width);
+   assert.ok(metrics.description.visible,'Descripción del CSV visible '+width);
+   assert.equal(metrics.closeClickable,true,'Botón de cerrar accesible sin la barra Más encima '+width);
    assert.ok(metrics.uploadWidth>180,'CSV upload control legible '+width);
    assert.ok(metrics.buttons.some(b=>/Analizar/.test(b.name)&&b.visible));
    assert.match(metrics.background,/16,\s*43,\s*123|11,\s*29,\s*101|7,\s*14,\s*68/,'Official night-blue gradient '+width);
