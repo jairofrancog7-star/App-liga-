@@ -12,6 +12,32 @@ const state=read();
 const drafts={};
 const advanced=()=>window.LJR_MEETING_ADVANCED_V1140;
 const sync=()=>window.LJR_MEETING_SYNC_V1150;
+/* Selector de asistencia: reutiliza el catálogo activo de Equipos. */
+const MH_CATEGORIES=[['3','Primera Fuerza'],['5','Intermedia'],['4','Segunda Fuerza'],['2','Veteranos 35+'],['1','Veteranos 50+']];
+const mhNorm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('es-MX').replace(/\s+/g,' ').trim();
+const teamKey=t=>t.cat+'|'+t.name;
+let selectedCategory='all',teamFilter='',selectedTeam='';
+function meetingTeams(){
+ const records=window.LJR_V812_TEAM_CATALOG?.registrations?.();
+ if(!Array.isArray(records))return [];
+ const seen=new Set();
+ return records.filter(t=>{
+  if(!t||!MH_CATEGORIES.some(c=>c[0]===String(t.cat))||typeof t.name!=='string'||!t.name.trim())return false;
+  const key=t.cat+'|'+mhNorm(t.name);if(seen.has(key))return false;seen.add(key);return true;
+ }).map(t=>({cat:String(t.cat),name:t.name.trim(),category:MH_CATEGORIES.find(c=>c[0]===String(t.cat))[1]}))
+ .sort((a,b)=>MH_CATEGORIES.findIndex(c=>c[0]===a.cat)-MH_CATEGORIES.findIndex(c=>c[0]===b.cat)||a.name.localeCompare(b.name,'es-MX'));
+}
+function updateTeamOptions(){
+ const select=$('[data-mh-input="team"]',host);if(!select)return;
+ const all=meetingTeams(),visible=all.filter(t=>(selectedCategory==='all'||t.cat===selectedCategory)&&mhNorm(t.name).includes(mhNorm(teamFilter)));
+ const placeholder=document.createElement('option');placeholder.value='';placeholder.textContent=all.length?'Selecciona un equipo':'Catálogo de equipos no disponible';
+ select.replaceChildren(placeholder);
+ visible.forEach(t=>{const option=document.createElement('option');option.value=teamKey(t);option.textContent=t.name+(selectedCategory==='all'?' · '+t.category:'');select.add(option)});
+ select.value=visible.some(t=>teamKey(t)===selectedTeam)?selectedTeam:'';
+ if(!select.value)selectedTeam='';
+ const count=$('[data-mh-team-counter]',host);
+ if(count)count.textContent=all.length?(visible.length+' equipos disponibles'+(teamFilter?' para tu búsqueda':'')):'No se ha cargado el directorio oficial de equipos.';
+}
 let form=null,host=null,tab='attendance',qrValue='',scanner=null,search='';
 function date(){return $('input[data-x="date"]',form)?.value||''}
 function validDate(d){if(!/^\d{4}-\d{2}-\d{2}$/.test(d))return false;const x=new Date(d+'T12:00:00');return !isNaN(x)&&x.getDay()===2}
@@ -41,18 +67,18 @@ function qrSvg(text){
  for(let y=0;y<n;y++)for(let x=0;x<n;x++)if(qr.isDark(y,x))a.push('M'+(x+4)+' '+(y+4)+'h1v1h-1z');
  return '<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Código QR de asistencia" viewBox="0 0 '+(n+8)+' '+(n+8)+'"><rect width="100%" height="100%" fill="#fff"/><path d="'+a.join('')+'" fill="#072054"/></svg>'}catch(e){return ''}
 }
-function code(d,team,delegate){return 'LJR-JUNTA|'+d+'|'+encodeURIComponent(team)+'|'+encodeURIComponent(delegate)}
-function parseCode(s){const p=String(s||'').trim().split('|');if(p.length!==4||p[0]!=='LJR-JUNTA'||!validDate(p[1]))return null;try{return {date:p[1],team:clean(decodeURIComponent(p[2])),delegate:clean(decodeURIComponent(p[3]))}}catch(_){return null}}
-function checkin(raw){const data=parseCode(raw);if(!data||!data.team||!data.delegate)return msg('Código de junta no válido.');if(data.date!==date())return msg('Este pase corresponde a otra fecha.');let r=item();const id=data.team.toLocaleLowerCase('es-MX');const prev=r.attendance.find(x=>x.team.toLocaleLowerCase('es-MX')===id);if(prev){prev.delegate=data.delegate;prev.status='Presente';prev.at=new Date().toISOString()}else r.attendance.push({id:uid(),team:data.team,delegate:data.delegate,status:'Presente',at:new Date().toISOString()});persist();qrValue='';go('attendance')}
+function code(d,team,delegate,category=''){return 'LJR-JUNTA|'+d+'|'+encodeURIComponent(team)+'|'+encodeURIComponent(delegate)+(MH_CATEGORIES.some(c=>c[0]===category)?'|'+category:'')}
+function parseCode(s){const p=String(s||'').trim().split('|');if(![4,5].includes(p.length)||p[0]!=='LJR-JUNTA'||!validDate(p[1]))return null;try{return {date:p[1],team:clean(decodeURIComponent(p[2])),delegate:clean(decodeURIComponent(p[3])),category:p.length===5&&MH_CATEGORIES.some(c=>c[0]===p[4])?p[4]:''}}catch(_){return null}}
+function checkin(raw){const data=parseCode(raw);if(!data||!data.team||!data.delegate)return msg('Código de junta no válido.');if(data.date!==date())return msg('Este pase corresponde a otra fecha.');const a=item().attendance,cat=data.category||'';const prev=a.find(x=>mhNorm(x.team)===mhNorm(data.team)&&(x.category||'')===cat);if(prev){prev.delegate=data.delegate;prev.status='Presente';prev.at=new Date().toISOString()}else a.push({id:uid(),team:data.team,category:cat,delegate:data.delegate,status:'Presente',at:new Date().toISOString()});persist();qrValue='';go('attendance')}
 function attendance(){
  const a=item().attendance;
  return '<div class="mh-stats">'+[['Equipos',a.length],['Presentes',a.filter(x=>x.status==='Presente').length],['Tarde',a.filter(x=>x.status==='Tarde').length],['Ausentes',a.filter(x=>x.status==='Ausente').length]].map(x=>'<div><small>'+x[0]+'</small><b>'+x[1]+'</b></div>').join('')+'</div>'+
  '<p class="mh-tip">Registra un delegado por equipo. El QR se lee en el dispositivo del administrador; no registra asistencia a distancia sin servidor.</p>'+
- '<div class="mh-fields"><label>Equipo<input data-mh-input="team" placeholder="Nombre del equipo" maxlength="90"></label><label>Delegado<input data-mh-input="delegate" placeholder="Nombre del delegado" maxlength="120"></label><label>Estado<select data-mh-input="status"><option>Presente</option><option>Tarde</option><option>Ausente</option></select></label></div>'+
+ '<div class="mh-fields"><div class="mh-full mh-team-picker"><div class="mh-team-filters"><label>Categoría<select data-mh-input="team-category"><option value="all">Todas las categorías</option>'+MH_CATEGORIES.map(c=>'<option value="'+c[0]+'" '+(selectedCategory===c[0]?'selected':'')+'>'+c[1]+'</option>').join('')+'</select></label><label>Buscar equipo<input type="search" data-mh-input="team-filter" placeholder="Escribe el nombre…" value="'+esc(teamFilter)+'" autocomplete="off"></label></div><label>Equipo<select data-mh-input="team" aria-describedby="mh-team-counter"><option value="">Selecciona un equipo</option></select></label><small id="mh-team-counter" data-mh-team-counter aria-live="polite"></small></div><label>Delegado<input data-mh-input="delegate" placeholder="Nombre del delegado" maxlength="120"></label><label>Estado<select data-mh-input="status"><option>Presente</option><option>Tarde</option><option>Ausente</option></select></label></div>'+
  '<div class="mh-buttons">'+button('add-attendee','Agregar / actualizar')+button('make-qr','Generar pase QR')+button('camera','Escanear QR')+'</div>'+
  (qrValue?'<div class="mh-qr">'+qrSvg(qrValue)+'<small>Presenta este pase al administrador para registrar asistencia.</small>'+button('copy-qr','Copiar código')+'</div>':'')+
  '<label>Introducir código QR manualmente<input data-mh-input="qrtext" placeholder="Pega el código de asistencia"></label>'+button('paste-qr','Registrar código')+
- '<div class="mh-records">'+(a.length?a.map(p=>'<div class="mh-record"><div><b>'+esc(p.team)+'</b><small>'+esc(p.delegate)+' · '+esc(p.status)+'</small></div><div class="mh-mini">'+button('cycle-attendee','Cambiar', 'data-id="'+esc(p.id)+'"')+button('remove-attendee','Quitar','data-id="'+esc(p.id)+'"')+'</div></div>').join(''):'<p class="mh-empty">Todavía no hay delegados registrados.</p>')+'</div>';
+ '<div class="mh-records">'+(a.length?a.map(p=>'<div class="mh-record"><div><b>'+esc(p.team)+'</b><small>'+(MH_CATEGORIES.find(c=>c[0]===p.category)?esc(MH_CATEGORIES.find(c=>c[0]===p.category)[1])+' · ':'')+esc(p.delegate)+' · '+esc(p.status)+'</small></div><div class="mh-mini">'+button('cycle-attendee','Cambiar', 'data-id="'+esc(p.id)+'"')+button('remove-attendee','Quitar','data-id="'+esc(p.id)+'"')+'</div></div>').join(''):'<p class="mh-empty">Todavía no hay delegados registrados.</p>')+'</div>';
 }
 function tasks(){
  const a=item().tasks;
@@ -90,6 +116,7 @@ function render(){
  const replacement=tab==='sync'?sync()?.view?.(advancedCtx):advanced()?.view?.(tab,advancedCtx,base);
  const body=replacement??base;
  host.innerHTML='<div class="mh-header"><div><small>GESTIÓN DE JUNTAS</small><h4>Control de delegados</h4></div><span>Local</span></div><div class="mh-tabs" role="tablist" aria-label="Herramientas de junta">'+choices.map(([id,label])=>'<button type="button" role="tab" aria-selected="'+(id===tab)+'" data-mh-action="tab" data-tab="'+id+'" class="'+(id===tab?'active':'')+'">'+label+'</button>').join('')+'</div><div class="mh-body">'+body+'</div><p class="mh-status" aria-live="polite" data-mh-status>Los registros nuevos se guardan solo en este navegador.</p>';
+ if(tab==='attendance')updateTeamOptions();
  advanced()?.afterRender?.(tab,advancedCtx);
 }
 function download(file,content,type){const b=new Blob([content],{type}),url=URL.createObjectURL(b),a=document.createElement('a');a.href=url;a.download=file;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200)}
@@ -143,10 +170,14 @@ function handle(action,target){
  if(action==='close-camera'){stopCamera();return}
  if(action==='camera')return camera();
  if(action==='add-attendee'||action==='make-qr'){
- const team=clean($('[data-mh-input="team"]',host)?.value),delegate=clean($('[data-mh-input="delegate"]',host)?.value),status=$('[data-mh-input="status"]',host)?.value||'Presente';
- if(!team||!delegate)return msg('Escribe equipo y delegado.');
- if(action==='make-qr'){qrValue=code(date(),team,delegate);return render()}
- const a=item().attendance,prev=a.find(p=>p.team.toLocaleLowerCase('es-MX')===team.toLocaleLowerCase('es-MX'));if(prev)Object.assign(prev,{delegate,status,at:new Date().toISOString()});else a.push({id:uid(),team,delegate,status,at:new Date().toISOString()});persist();return render();
+  const selected=meetingTeams().find(t=>teamKey(t)===$('[data-mh-input="team"]',host)?.value);
+  const team=clean(selected?.name),category=selected?.cat||'',delegate=clean($('[data-mh-input="delegate"]',host)?.value),status=$('[data-mh-input="status"]',host)?.value||'Presente';
+  if(!team||!delegate)return msg('Selecciona un equipo de su categoría y escribe el nombre del delegado.');
+  if(action==='make-qr'){qrValue=code(date(),team,delegate,category);return render()}
+  const a=item().attendance,prev=a.find(p=>mhNorm(p.team)===mhNorm(team)&&(p.category===category||(!p.category&&meetingTeams().filter(t=>mhNorm(t.name)===mhNorm(team)).length===1)));
+  if(prev)Object.assign(prev,{team,category,delegate,status,at:new Date().toISOString()});
+  else a.push({id:uid(),team,category,delegate,status,at:new Date().toISOString()});
+  persist();selectedTeam='';return render();
  }
  if(action==='copy-qr')return navigator.clipboard?.writeText(qrValue).then(()=>msg('Código copiado.')).catch(()=>msg('No se pudo copiar.'))||msg('Copia el código manualmente.');
  if(action==='paste-qr')return checkin($('[data-mh-input="qrtext"]',host)?.value);
@@ -183,8 +214,8 @@ function mount(){
  // Al reabrir una fecha, restaurar su minuta (sede y cargos) antes de editarla.
  if(state[date()]?.minute)applyMinute(state[date()].minute);
  host.addEventListener('click',e=>{const b=e.target.closest('[data-mh-action]');if(b){e.preventDefault();handle(b.dataset.mhAction,b)}});
- host.addEventListener('change',e=>{if(sync()?.onChange?.(e,advancedCtx))return;advanced()?.onChange?.(e,advancedCtx)});
- host.addEventListener('input',e=>{if(e.target.matches('[data-mh-input="search"]')){search=e.target.value.toLocaleLowerCase('es-MX');const start=e.target.selectionStart;render();const input=$('[data-mh-input="search"]',host);input?.focus();input?.setSelectionRange(start,start)}});
+ host.addEventListener('change',e=>{if(e.target.matches('[data-mh-input="team-category"]')){selectedCategory=e.target.value;selectedTeam='';updateTeamOptions();return}if(e.target.matches('[data-mh-input="team"]')){selectedTeam=e.target.value;return}if(sync()?.onChange?.(e,advancedCtx))return;advanced()?.onChange?.(e,advancedCtx)});
+ host.addEventListener('input',e=>{if(e.target.matches('[data-mh-input="team-filter"]')){teamFilter=e.target.value;updateTeamOptions();return}if(e.target.matches('[data-mh-input="search"]')){search=e.target.value.toLocaleLowerCase('es-MX');const start=e.target.selectionStart;render();const input=$('[data-mh-input="search"]',host);input?.focus();input?.setSelectionRange(start,start)}});
  const save=$('[data-save]',form.closest('.v105-dialog'));save?.addEventListener('click',()=>{if(validDate(date())){const r=item();r.minute=snapshot();persist()}});
  // Borrador automático de agenda y minuta: no sobrescribir otra fecha.
  let minuteTimer=0;
