@@ -1053,3 +1053,198 @@ html body > .v105-modal.v105-schedule-modal .v105-actions {
     padding-bottom:8px!important;
   }
 }
+
+/* V1203 — Junta de la Liga: ancho útil, lectura accesible y scroll sin cortes.
+   Se limita al modal de juntas para no cambiar otros formularios. */
+html body > .v105-modal.v875-meeting-modal{
+  box-sizing:border-box!important;
+  position:fixed!important;
+  inset:0 0 calc(var(--v34-nav-h,69px) + env(safe-area-inset-bottom,0px)) 0!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  place-items:unset!important;
+  overflow:hidden!important;
+  padding:max(9px,env(safe-area-inset-top,0px)) 9px 10px!important;
+}
+html body > .v105-modal.v875-meeting-modal > .v105-dialog{
+  box-sizing:border-box!important;
+  position:relative!important;
+  flex:0 1 720px!important;
+  width:min(720px,100%)!important;
+  min-width:0!important;
+  max-width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:100%!important;
+  margin:0!important;
+  padding:17px 16px 22px!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior-y:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+  scrollbar-width:thin!important;
+  scrollbar-color:rgba(93,170,242,.55) transparent!important;
+  scroll-padding-bottom:30px!important;
+}
+html body > .v105-modal.v875-meeting-modal .v919-meeting-hero{
+  grid-template-columns:56px minmax(0,1fr) 44px;
+  gap:10px;
+  padding:5px 42px 14px 0;
+}
+html body > .v105-modal.v875-meeting-modal .v919-hero-copy small{
+  font-size:11px!important;
+  line-height:1.3!important;
+  letter-spacing:.07em!important;
+}
+html body > .v105-modal.v875-meeting-modal .v919-hero-copy b{
+  font-size:clamp(22px,3.8vw,28px)!important;
+  line-height:1.1!important;
+  overflow-wrap:normal;
+}
+html body > .v105-modal.v875-meeting-modal .v919-hero-copy em{
+  font-size:13px!important;
+  line-height:1.35!important;
+}
+html body > .v105-modal.v875-meeting-modal .v919-hero-day{
+  font-size:12px!important;
+}
+html body > .v105-modal.v875-meeting-modal .v919-meeting-intro{
+  font-size:14px!important;
+  line-height:1.5!important;
+  margin:10px 2px 14px!important;
+}
+html body > .v105-modal.v875-meeting-modal .v105-meeting-notice{
+  gap:7px!important;
+  padding:15px 14px!important;
+  margin-bottom:14px!important;
+}
+html body > .v105-modal.v875-meeting-modal .v105-meeting-notice b{
+  font-size:15px!important;
+  line-height:1.4!important;
+}
+html body > .v105-modal.v875-meeting-modal .v105-meeting-notice span{
+  font-size:13px!important;
+  line-height:1.45!important;
+}
+html body > .v105-modal.v875-meeting-modal .v105-meeting-form{
+  min-width:0!important;
+  gap:12px!important;
+}
+html body > .v105-modal.v875-meeting-modal .v105-meeting-form > label{
+  min-width:0!important;
+  padding:12px!important;
+  gap:8px!important;
+}
+html body > .v105-modal.v875-meeting-modal .v105-meeting-form label>span,
+html body > .v105-modal.v875-meeting-modal .v919-field-label{
+  font-size:13px!important;
+  line-height:1.4!important;
+  letter-spacing:0!important;
+}
+html body > .v105-modal.v875-meeting-modal .v105-meeting-form :is(input,select,textarea){
+  box-sizing:border-box!important;
+  min-width:0!important;
+  max-width:100%!important;
+  width:100%!important;
+  min-height:52px!important;
+  padding:11px 12px!important;
+  font-size:16px!important;
+  line-height:1.35!important;
+  color:#fff!important;
+}
+html body > .v105-modal.v875-meeting-modal .v105-meeting-form textarea{
+  min-height:114px!important;
+  line-height:1.5!important;
+  resize:vertical!important;
+}
+html body > .v105-modal.v875-meeting-modal .v105-meeting-form :is(input,textarea)::placeholder{
+  color:#a6b8dc!important;
+  opacity:1!important;
+}
+html body > .v105-modal.v875-meeting-modal .v875-meeting-options{
+  min-width:0!important;
+  column-gap:12px!important;
+  row-gap:11px!important;
+}
+html body > .v105-modal.v875-meeting-modal .v875-meeting-options .v1166-meeting-hint{
+  font-size:12px!important;
+  line-height:1.45!important;
+}
+html body > .v105-modal.v875-meeting-modal .v919-topic-head span{
+  font-size:12px!important;
+  letter-spacing:.06em!important;
+}
+html body > .v105-modal.v875-meeting-modal .v919-topic-head small{
+  font-size:12px!important;
+  line-height:1.4!important;
+}
+html body > .v105-modal.v875-meeting-modal .v875-agenda-chips button{
+  min-height:52px!important;
+  padding:10px 12px!important;
+}
+html body > .v105-modal.v875-meeting-modal .v875-agenda-chips b{
+  font-size:12px!important;
+  line-height:1.35!important;
+}
+html body > .v105-modal.v875-meeting-modal .v105-actions{
+  position:static!important;
+  inset:auto!important;
+  transform:none!important;
+  margin:14px 0 0!important;
+  padding:10px 0 16px!important;
+}
+html body > .v105-modal.v875-meeting-modal .v919-action{
+  min-width:0!important;
+  min-height:51px!important;
+  font-size:13px!important;
+  line-height:1.2!important;
+  white-space:normal!important;
+  padding:10px!important;
+}
+@media(max-width:600px){
+  html body > .v105-modal.v875-meeting-modal{
+    padding:max(8px,env(safe-area-inset-top,0px)) 7px 9px!important;
+  }
+  html body > .v105-modal.v875-meeting-modal > .v105-dialog{
+    flex:1 1 auto!important;
+    width:100%!important;
+    max-height:100%!important;
+    padding:15px 12px 22px!important;
+    border-radius:21px!important;
+  }
+  html body > .v105-modal.v875-meeting-modal .v919-meeting-hero{
+    grid-template-columns:49px minmax(0,1fr) 39px;
+    gap:9px;
+    padding:5px 42px 12px 0;
+  }
+  html body > .v105-modal.v875-meeting-modal .v919-hero-logo{
+    width:49px;height:49px;
+  }
+  html body > .v105-modal.v875-meeting-modal .v919-hero-copy b{
+    font-size:clamp(21px,5.4vw,24px)!important;
+  }
+  html body > .v105-modal.v875-meeting-modal .v875-meeting-options{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  html body > .v105-modal.v875-meeting-modal .v875-meeting-options :is(.wide,.v1166-meeting-roles){
+    grid-column:1/-1!important;
+  }
+  html body > .v105-modal.v875-meeting-modal .v105-actions{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+@media(max-width:350px){
+  html body > .v105-modal.v875-meeting-modal .v919-meeting-hero{
+    grid-template-columns:45px minmax(0,1fr);
+    padding-right:42px;
+  }
+  html body > .v105-modal.v875-meeting-modal .v919-hero-day{
+    grid-column:2;
+    justify-self:start;
+  }
+}
