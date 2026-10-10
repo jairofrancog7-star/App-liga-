@@ -5,7 +5,7 @@
 if(window.LJR_EDITOR_STUDIO)return;
 const $=(s,root=document)=>root.querySelector(s);
 const esc=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-const allowed=new Set(['textContent','color','fontSize','background','minHeight']);
+const allowed=new Set(['textContent','color','fontSize','background','minHeight','objectFit']);
 const cleanRoute=r=>String(r||'home').replace(/[^a-z0-9_-]/gi,'').slice(0,45)||'home';
 const pathFor=(node,scope)=>{
  const list=[];
@@ -30,7 +30,7 @@ function open(item){
  // La autorización la confirma el servidor ANTES de habilitar los controles.
  Promise.resolve().then(()=>window.LJR_MEDIA.api('me')).then(result=>{
   if(!result?.admin||!window.LJR_MEDIA?.admin)throw Error('La sesión del administrador no está verificada.');
-  if(document.querySelector('[data-ljr-studio]'))return;
+  if(document.querySelector('[data-ljr-studio]')||document.querySelector('#screen')!==scope)return;
   begin(scope,route,label);
  }).catch(err=>window.LJR_MEDIA?.modal?.('Edición visual',esc(err?.message||'No se pudo verificar la sesión.')));
 }
@@ -42,7 +42,7 @@ function begin(scope,route,label){
  panel.innerHTML='<div class="ljr-studio-head"><div><strong>Editar diseño · '+esc(label)+'</strong><small>Vista previa · toca un elemento de la página</small></div><button type="button" data-studio-close aria-label="Cerrar estudio visual">✕</button></div>'+
  '<p class="ljr-studio-note" data-studio-note role="status" aria-live="polite">Selecciona un texto, imagen, tarjeta o botón. No se publicará nada automáticamente.</p>'+
  '<div class="ljr-studio-fields"><label>Texto seleccionado<input data-studio-text maxlength="250" placeholder="Selecciona un texto para editar"></label><label>Tamaño del texto<select data-studio-size><option value="">Sin cambio</option><option value="12px">12 px</option><option value="14px">14 px</option><option value="16px">16 px</option><option value="18px">18 px</option><option value="22px">22 px</option></select></label></div>'+
- '<div class="ljr-studio-actions"><button type="button" data-studio-apply>Aplicar texto</button><button type="button" data-studio-color>Texto legible</button><button type="button" data-studio-blue>Fondo azul</button><button type="button" data-studio-touch>Botón 44 px</button></div>'+
+ '<div class="ljr-studio-actions"><button type="button" data-studio-apply>Aplicar texto</button><button type="button" data-studio-color>Texto legible</button><button type="button" data-studio-blue>Fondo azul</button><button type="button" data-studio-touch>Botón 44 px</button><button type="button" data-studio-img>Imagen completa</button><button type="button" data-studio-auto>Mejora local</button></div>'+
  '<div class="ljr-studio-actions"><button type="button" data-studio-undo>↶ Deshacer</button><button type="button" data-studio-redo>↷ Rehacer</button><button type="button" data-studio-reset>Restablecer</button></div>'+
  '<div class="ljr-studio-actions"><button type="button" data-studio-save>Guardar borrador local</button><button type="button" data-studio-restore>Recuperar borrador</button><button type="button" data-studio-cms>Abrir editor oficial</button></div>'+
  '<small class="ljr-studio-disclaimer">Los borradores se guardan solamente en esta pestaña. Al salir se revierte la vista previa; para publicar se necesita el editor oficial y una sesión verificada.</small>';
@@ -114,6 +114,20 @@ function begin(scope,route,label){
   modify(node,'minHeight','44px');
  };
  size.onchange=()=>{if(selected&&size.value)modify(selected,'fontSize',size.value)};
+ $('[data-studio-img]',panel).onclick=()=>{
+  if(selected?.tagName==='IMG')modify(selected,'objectFit','contain');
+  else message('Selecciona un escudo o una fotografía para ver la imagen completa.');
+ };
+ $('[data-studio-auto]',panel).onclick=()=>{
+  if(!selected)return message('Toca primero un texto, botón, imagen o tarjeta.');
+  const css=getComputedStyle(selected),font=parseFloat(css.fontSize)||16;
+  if(selected.tagName==='IMG')modify(selected,'objectFit','contain');
+  else if(selected.matches('button,a,[role="button"]'))modify(selected,'minHeight','44px');
+  else if(textEligible(selected)&&font<14)modify(selected,'fontSize','14px');
+  else if(selected.matches('article,section'))modify(selected,'background','linear-gradient(145deg, #143b87, #09255b)');
+  else return message('Esta selección no requiere un ajuste básico. Revisa contraste y legibilidad manualmente.');
+  message('Mejora sugerida por reglas locales y aplicada solo a la vista previa. No utiliza Internet ni publica.');
+ };
  $('[data-studio-undo]',panel).onclick=()=>{if(position>0){position--;apply(history[position],false);reflect();message('Cambio deshecho.')}};
  $('[data-studio-redo]',panel).onclick=()=>{if(position<history.length){apply(history[position],true);position++;reflect();message('Cambio restaurado.')}};
  $('[data-studio-reset]',panel).onclick=()=>{if(!history.length)return;revert();message('Vista previa restablecida. No se cambió la información oficial.')};
