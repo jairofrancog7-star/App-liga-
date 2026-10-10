@@ -39,6 +39,8 @@ test('App y demo comparten archivos y estilo azul',()=>{
   assert.equal(get('demo/src/'+file),get('src/'+file),file);
   new Function(get('src/'+file));
  }
- for(const html of ['index.html','demo/index.html'])assert.match(get(html),/v1166-meeting-officers\.css/);
+ // El demo se genera sin links CSS; se valida su archivo de estilo idéntico.
+ assert.match(get('index.html'),/v1166-meeting-officers\.css/);
+ assert.equal(get('src/v1166-meeting-officers.css'),get('demo/src/v1166-meeting-officers.css'));
  assert.match(get('src/v1166-meeting-officers.css'),/\.v1166-meeting-roles/);
 });
