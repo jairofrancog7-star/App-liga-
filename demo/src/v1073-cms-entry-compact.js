@@ -34,7 +34,7 @@
     if(!screen)return;
     const entry=screen.querySelector(':scope > .ljr-cms-entry');
     if(!entry||entry.dataset.ljrCmsV1073==='1')return;
-    if(!['ligaControl','adminFut','players'].includes(route())&&!screen.querySelector('[data-v563-control]'))return;
+    if(!['ligaControl','adminFut','players','notifications'].includes(route())&&!screen.querySelector('[data-v563-control]'))return;
     entry.dataset.ljrCmsV1073='1';
     entry.setAttribute('role','group');
     entry.setAttribute('aria-label','Herramientas privadas de la Liga');
