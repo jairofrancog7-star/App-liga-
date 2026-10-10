@@ -122,6 +122,44 @@ function makeAdminForm(){
      };
      buttons.append(edit,cancel);card.append(buttons);
     }
+    // Sólo la administración autenticada consulta los estados del proveedor.
+    // No se muestran teléfonos, endpoints de Push ni credenciales privadas.
+    if(item.status==='done'||item.status==='processing'){
+     const detail=document.createElement('details');detail.className='v1081-deliveries';
+     const summary=document.createElement('summary');summary.textContent='Estado de entregas';
+     const data=document.createElement('div');data.className='v1081-delivery-data';
+     detail.append(summary,data);
+     detail.addEventListener('toggle',async()=>{
+      if(!detail.open)return;
+      data.textContent='Consultando los estados de entrega…';
+      try{
+       const result=await call('/admin/notices/'+encodeURIComponent(item.id)+'/deliveries');
+       if(!detail.open)return;
+       data.replaceChildren();
+       const entries=Array.isArray(result.deliveryStates)?result.deliveryStates:[];
+       if(!entries.length){
+        const empty=document.createElement('p');
+        empty.textContent='Sin entregas externas registradas. Los avisos internos de la app no generan recibos de lectura.';
+        data.append(empty);
+       }else{
+        const labels={push:'Notificación',sms:'SMS',whatsapp:'WhatsApp',
+         queued:'En cola',accepted:'Aceptado',sending:'Enviando',sent:'Enviado',delivered:'Entregado',
+         read:'Leído (si el proveedor lo confirma)',undelivered:'No entregado',failed:'Falló'};
+        for(const rec of entries){
+         const row=document.createElement('p');row.className='v1081-delivery-row';
+         const channel=labels[rec.channel]||String(rec.channel||'Canal');
+         const status=labels[rec.status]||String(rec.status||'Estado');
+         row.textContent=channel+' · '+status+': '+Number(rec.count||0).toLocaleString('es-MX');
+         data.append(row);
+        }
+       }
+       const note=document.createElement('small');
+       note.textContent='Datos de Twilio cuando existan; Push aceptado no significa leído.';
+       data.append(note);
+      }catch(error){data.textContent='No se pudieron consultar las entregas: '+String(error?.message||'Servidor no disponible');}
+     });
+     card.append(detail);
+    }
     list.append(card);
    }
   }catch(err){list.textContent='No se pueden consultar avisos: '+err.message}
