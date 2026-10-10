@@ -1,4 +1,4 @@
 {
-  "apiBaseUrl": "",
-  "note": "Para activar Web Push/SMS/WhatsApp, desplegar server/notifications y sustituir apiBaseUrl por la URL HTTPS del backend. No añadir secretos."
+  "apiBaseUrl": "https://liga-avisos-api-production.up.railway.app",
+  "note": "API privada de avisos y juntas en Railway. Requiere sesión administrativa; WhatsApp/SMS desactivados hasta aprobación del remitente y consentimiento."
 }
