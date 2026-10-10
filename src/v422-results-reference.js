@@ -71,7 +71,7 @@ function resultsTabActive(){
 }
 function icon(name){
  const p={search:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/>',calendar:'<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M7.5 3v4M16.5 3v4M3.5 9.5h17"/>',star:'<path d="m12 3 2.8 5.6 6.2.9-4.5 4.4 1.1 6.1-5.6-2.9L6.4 20l1.1-6.1L3 9.5l6.2-.9z"/>'};
- return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(p[name]||p.star)+'</svg>';
+ return window.LJR_ICONS?.decorate('<svg viewBox="0 0 24 24" aria-hidden="true">'+(p[name]||p.star)+'</svg>',name) || '<svg viewBox="0 0 24 24" aria-hidden="true">'+(p[name]||p.star)+'</svg>';
 }
 function statusText(m){
  if(m.status==='LIVE')return '<span class="v422-live-status"><i></i>'+(Number.isFinite(m.minute)?esc(m.minute)+"'":'EN VIVO')+'</span>';

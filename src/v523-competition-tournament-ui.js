@@ -66,7 +66,7 @@ function icon(name){
     trophy:'<path d="M8 4h8v3a4 4 0 0 1-8 0V4Zm0 1H4v2a4 4 0 0 0 4 4m8-6h4v2a4 4 0 0 1-4 4M12 11v4m-3 4h6m-5-4h4v4h-4z"/>',
     category:'<path d="M4 5h7v6H4zM13 5h7v6h-7zM4 13h7v6H4zM13 13h7v6h-7z"/>'
   };
-  return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(map[name]||map.calendar)+'</svg>';
+  return window.LJR_ICONS?.decorate('<svg viewBox="0 0 24 24" aria-hidden="true">'+(map[name]||map.calendar)+'</svg>',name) || '<svg viewBox="0 0 24 24" aria-hidden="true">'+(map[name]||map.calendar)+'</svg>';
 }
 function lowerTitle(kicker,title,sub){
   return '<header class="v566-head"><span><small>'+esc(kicker)+'</small><b>'+esc(title)+'</b><em>'+esc(sub)+'</em></span><img src="'+esc(catLogo())+'" alt=""></header>';

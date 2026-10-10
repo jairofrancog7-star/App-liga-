@@ -109,6 +109,7 @@
  }
  function init(root){
   if(!root||root.dataset.koReady)return;root.dataset.koReady='1';
+  fillParent(root);
   requestAnimationFrame(()=>select(root,root.dataset.koStage,false));
   let frame;
   const scroller=root.querySelector('.ljr-ko-scroll');
@@ -129,11 +130,19 @@
    });
   },{passive:true});
  }
+ function fillParent(root){
+  // Expand only the board, leaving the Competition tabs and screen padding intact.
+  const parent=root?.parentElement;
+  if(!parent||root.dataset.koMode!=='competition')return;
+  const style=getComputedStyle(parent);
+  root.style.setProperty('--ko-bleed-left',style.paddingLeft);
+  root.style.setProperty('--ko-bleed-right',style.paddingRight);
+ }
  window.LJR_KNOCKOUT={render,model,official,init,select,code};
  if(typeof document!=='undefined'){
   document.addEventListener('click',e=>{const b=e.target.closest?.('.ljr-ko-tabs [data-ko-stage]');if(b){e.preventDefault();select(b.closest('.ljr-knockout'),b.dataset.koStage);}});
   document.addEventListener('keydown',e=>{const b=e.target.closest?.('.ljr-ko-tabs button');if(!b||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const i=stages.indexOf(b.dataset.koStage),n=e.key==='Home'?0:e.key==='End'?4:(i+(e.key==='ArrowRight'?1:4))%5;const root=b.closest('.ljr-knockout');select(root,stages[n]);root.querySelector('[data-ko-stage="'+stages[n]+'"]').focus({preventScroll:true});});
-  window.addEventListener('resize',()=>document.querySelectorAll('.ljr-knockout').forEach(root=>select(root,root.dataset.koStage,false)),{passive:true});
+  window.addEventListener('resize',()=>document.querySelectorAll('.ljr-knockout').forEach(root=>{fillParent(root);select(root,root.dataset.koStage,false)}),{passive:true});
   document.addEventListener('error',e=>{const img=e.target;if(img?.matches?.('.ljr-knockout img')){img.outerHTML='<span class="ljr-ko-shield" aria-label="Escudo no disponible">'+shield+'</span>';}},true);
  }
 })();

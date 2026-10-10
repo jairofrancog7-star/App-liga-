@@ -24,7 +24,7 @@ function controls(video){
   timer:'<circle cx="12" cy="13" r="9"/><path d="M12 8v5l3 2M9 2h6"/>',
   menu:'<path d="M4 7h16M4 12h16M4 17h16"/>'
  };
- const svg=name=>'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">'+icons[name]+'</svg>';
+ const svg=name=>window.LJR_ICONS?.svg(({back:'replay10',next:'forward10',full:'fullscreen',menu:'overflow'})[name]||name)||'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">'+icons[name]+'</svg>';
  const button=(action,label,inner)=>'<button type="button" data-v777-action="'+action+'" aria-label="'+label+'" title="'+label+'">'+inner+'</button>';
  const bar=document.createElement('div');bar.className='ljr-video-controls';
  bar.innerHTML='<div class="ljr-video-quick">'+

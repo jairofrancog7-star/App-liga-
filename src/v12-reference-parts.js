@@ -303,7 +303,7 @@ const V12_FIXTURE_LOGOS={
   "LOBOS CDG":"assets/official-logos/lobos-cdg.png",
   "NAPOLI":"assets/official-logos/napoli.png"
 };
-const V12_FIXTURE_BUILD='20261001-v493-official-all-categories';
+const V12_FIXTURE_BUILD='20261010-v1100-category-scroll-reference';
 const V12_FIXTURE_ORDER=['3','4','5','2','1'];
 const V12_FIXTURE_LABELS={'1':'Veteranos 50+','2':'Veteranos 35+','3':'Primera Fuerza','4':'Segunda Fuerza','5':'Intermedia'};
 const V12_FIXTURE_CATEGORY_LOGOS={
@@ -511,14 +511,16 @@ function v12FixtureModel(row,catId,catName){
     catId:String(catId),
     dateLabel:String(row?.__v12LongLabel||v12DateLong(info)),
     played,
+    homeScore:played?hg:'',
+    awayScore:played?ag:'',
     score:played?(hg+' - '+ag):''
   };
 }
 function v12UpcomingRow(m){
-  const primary=m.played?m.score:m.time;
+  const primary=m.played?'Final':m.time;
   return '<div class="v12-schedule-match v12-result-match v76-upcoming-match" data-v12-category="'+v12Esc(m.category)+'" data-v12-cat-id="'+v12Esc(m.catId)+'" data-v12-jornada="'+v12Esc(m.jornada)+'" data-v12-venue="'+v12Esc(m.venue)+'" data-v12-date-label="'+v12Esc(m.dateLabel)+'" data-v12-time="'+v12Esc(m.time)+'">'+
-    '<div class="v12-schedule-clubs"><div class="v12-result-team">'+v12FixtureLogo(m.home)+'<b>'+v12Esc(m.home)+'</b></div>'+
-    '<div class="v12-result-team">'+v12FixtureLogo(m.away)+'<b>'+v12Esc(m.away)+'</b></div></div>'+
+    '<div class="v12-schedule-clubs"><div class="v12-result-team">'+v12FixtureLogo(m.home)+'<b>'+v12Esc(m.home)+'</b>'+(m.played?'<strong class="v12-team-score">'+v12Esc(m.homeScore)+'</strong>':'')+'</div>'+
+    '<div class="v12-result-team">'+v12FixtureLogo(m.away)+'<b>'+v12Esc(m.away)+'</b>'+(m.played?'<strong class="v12-team-score">'+v12Esc(m.awayScore)+'</strong>':'')+'</div></div>'+
     '<div class="v12-schedule-meta"><time class="'+(m.played?'v12-score-time':'')+'">'+v12Esc(primary)+'</time><small class="v76-match-venue">'+v12Esc(m.venue)+'</small><button data-match="'+v12Esc(m.id)+'">Ver detalles</button></div></div>';
 }
 function v12FixturesMarkup(){
@@ -539,16 +541,19 @@ function v12FixturesMarkup(){
     const jornada=g.label||[...new Set(g.rows.map(r=>String(r?.[1]||'—')))].join('/');
     const top=g.shortLabel||v12DateShort(g.info);
     const bottom=g.label?g.label:('Jornada '+jornada);
-    return '<button class="'+(g.key===selected.key?'active':'')+'" data-v12-date="'+v12Esc(g.key)+'"><span>'+v12Esc(top)+'</span><small>'+v12Esc(bottom)+'</small></button>';
+    return '<button class="'+(g.key===selected.key?'active':'')+'" aria-pressed="'+(g.key===selected.key?'true':'false')+'" data-v12-date="'+v12Esc(g.key)+'"><span>'+v12Esc(top)+'</span><small>'+v12Esc(bottom)+'</small></button>';
   }).join('')+'</div>';
-  const jornadas=selected.label||[...new Set(selected.rows.map(r=>String(r?.[1]||'—')))].join(' / ');
-  const games=selected.rows.map(r=>v12FixtureModel(r,cat.id,cat.name));
-  const longDate=selected.longLabel||v12DateLong(selected.info);
-  const title=selected.label?(selected.label+' · '+cat.name):('Jornada '+jornadas+' · '+cat.name);
-  return '<section class="v12-fixtures-reference" data-v12-fixtures data-v12-version="'+V12_FIXTURE_BUILD+'">'+
-    weekStrip+
-    '<h2 id="v12-day-'+v12Esc(selected.key)+'">'+v12Esc(longDate)+'</h2>'+
-    '<section class="v12-schedule-card"><h3>'+v12Esc(title)+'</h3><div>'+games.map(v12UpcomingRow).join('')+'</div></section>'+
+  const days=groups.map(g=>{
+    const jornadas=g.label||[...new Set(g.rows.map(r=>String(r?.[1]||'—')))].join(' / ');
+    const games=g.rows.map(r=>v12FixtureModel(r,cat.id,cat.name));
+    const longDate=g.longLabel||v12DateLong(g.info);
+    const title=g.label?(g.label+' · '+cat.name):('Jornada '+jornadas+' · '+cat.name);
+    return '<section class="v12-fixture-day" data-v12-group="'+v12Esc(g.key)+'">'+
+      '<h2 id="v12-day-'+v12Esc(g.key)+'">'+v12Esc(longDate)+'</h2>'+
+      '<section class="v12-schedule-card"><h3>'+v12Esc(title)+'</h3><div>'+games.map(v12UpcomingRow).join('')+'</div></section></section>';
+  }).join('');
+  return '<section class="v12-fixtures-reference" data-v12-fixtures data-v12-current-cat="'+v12Esc(cat.id)+'" data-v12-selected="'+v12Esc(selected.key)+'" data-v12-version="'+V12_FIXTURE_BUILD+'">'+
+    weekStrip+days+
     catStrip+
     '<p class="v12-fixture-rule">'+v12Esc(v12CategoryRule(cat.name))+'</p>'+
   '</section>';
@@ -560,9 +565,10 @@ function v12RefreshFixtures(){
   const active=tabs.querySelector('.tab.active');
   if(!active||!/Partidos/i.test(active.textContent||''))return;
   const old=screen.querySelector('[data-v12-fixtures]');
-  if(old){old.outerHTML=v12FixturesMarkup();return}
+  if(old){old.__fixtureScroll?.destroy();old.outerHTML=v12FixturesMarkup();window.LJR_FIXTURE_SCROLL?.mount(screen.querySelector('[data-v12-fixtures]'));return}
   let node=tabs.nextSibling;while(node){const next=node.nextSibling;node.remove();node=next}
   tabs.insertAdjacentHTML('afterend',v12FixturesMarkup());
+  window.LJR_FIXTURE_SCROLL?.mount(screen.querySelector('[data-v12-fixtures]'));
 }
 function patchFixturesReference(){
   if(v12Route()!=='competition')return;
@@ -900,7 +906,7 @@ document.addEventListener('click',e=>{
   if(dateBtn){
     const cat=v12StoredCat();
     localStorage.setItem('v12-fixture-date-'+cat,dateBtn.dataset.v12Date||'');
-    requestAnimationFrame(v12RefreshFixtures);
+    dateBtn.closest('[data-v12-fixtures]')?.__fixtureScroll?.go(dateBtn.dataset.v12Date||'',true);
     return;
   }
   const route=e.target.closest('[data-v12-route]');

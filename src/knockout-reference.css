@@ -208,3 +208,9 @@ html body.lj-desktop[data-app-route="simulator"]:has(#ljpc-native-toolbar) #app 
 html body.lj-desktop[data-app-route="simulator"],html body.lj-desktop[data-app-route="simulator"] #app{overflow:visible!important}
 html body.lj-desktop[data-app-route="simulator"] #ljpc-native-toolbar{z-index:2147483647!important;background:#000040!important;background-image:none!important}
 html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v1051-stat{background:#0a0a60!important;background-image:none!important;border-color:#252552!important}
+
+/* The board reaches both screen edges without changing the three native tabs. */
+html body #screen .ljr-knockout[data-ko-mode="competition"]{
+ width:calc(100% + var(--ko-bleed-left,0px) + var(--ko-bleed-right,0px));
+ margin-left:calc(-1 * var(--ko-bleed-left,0px));margin-right:calc(-1 * var(--ko-bleed-right,0px));
+}

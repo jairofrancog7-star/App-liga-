@@ -1,0 +1,317 @@
+{
+  "source": "User attachment Miapp_imagenes_iconos.zip",
+  "icons": {
+    "back": {
+      "source": "navigation_back_android.svg",
+      "sha256": "02084efb84747e215a85a84d2aa4464690cc8745a2727f75866a0e617d5c06e4"
+    },
+    "user": {
+      "source": "actions_profile.svg",
+      "sha256": "841594cb334e9023033cec4eba6819f13c82ab48c161e51ea02a43059fa55ad2"
+    },
+    "home": {
+      "source": "tab_bar_home.svg",
+      "sha256": "76db1879f570a729f44e95eb9aaf92c2eedc57464c4b8ed4b9b9f74a700f3075"
+    },
+    "competition": {
+      "source": "ic_bottom_nav_matches.svg",
+      "sha256": "d1536e52b50c25b116d700ccfe81df23dbb579c50df17fc43fe1cabd63a836a1"
+    },
+    "video": {
+      "source": "av_play_video_off.svg",
+      "sha256": "03ab1e107a711ab9b316f693e33fe2586acbcad3bc98595a420b85e2c33bf479"
+    },
+    "fantasy": {
+      "source": "tab_bar_fantasy.svg",
+      "sha256": "f96e85ddca359267cc56fda2acaea0c31a28deb13087e40d6528c5c2c9fdc630"
+    },
+    "more": {
+      "source": "tab_bar_more.svg",
+      "sha256": "42794e67d92d1fda3b415e7584b2795f38dd0d8d387af58f38645bd95d0dfe00"
+    },
+    "trophy": {
+      "source": "ic_trophy.svg",
+      "sha256": "c1415f495907e0e3a0a99b7ce126c8c56e80b94c2a35ad8a1ca26b29a60cde59"
+    },
+    "play": {
+      "source": "av_play.svg",
+      "sha256": "0aed1f730160ceb9321f4b1c7a21f9755459593e95a5abdf44f077cbde685f80"
+    },
+    "pause": {
+      "source": "av_pause.svg",
+      "sha256": "2745da317b91ce9793eaaac3df04a0dbbe0b6d301b1cbfac682303fc72f570cc"
+    },
+    "stop": {
+      "source": "av_stop.svg",
+      "sha256": "828eb63dbf7a78619dec78d0fd6de249a69b91d60885714c2191c48c48b12033"
+    },
+    "replay10": {
+      "source": "av_replay_10.svg",
+      "sha256": "f81f98c19886f4f49c513c908bc3c7355ee77f8d83dd53acd7e332aa6057e781"
+    },
+    "forward10": {
+      "source": "av_forward_10.svg",
+      "sha256": "674f26cc9d84712cfe6a23f335bbd8a4682ee9828c7d0bee4f4fd6a5a0537af6"
+    },
+    "mute": {
+      "source": "av_sound_off.svg",
+      "sha256": "8cfbece3e5dd8e1df2103b678ea923d6b0984c7781a2c608c13e887b76fdfdb3"
+    },
+    "volume": {
+      "source": "av_sound_up.svg",
+      "sha256": "fa55611881e7547d460917d202d6d64b3adb04b150080e25d536b865ed836aa3"
+    },
+    "fullscreen": {
+      "source": "av_fullscreen.svg",
+      "sha256": "b5eda852512cbc587e99e2c1ae66e2fc84143de5137797b99637982430a337e4"
+    },
+    "pip": {
+      "source": "ic_pip_empty.svg",
+      "sha256": "facd4483113be4c29932a3fdd2d56714f2ae64f021369c77587e2424dc2418c7"
+    },
+    "cast": {
+      "source": "av_chromecast.svg",
+      "sha256": "29b25fa315e768f1a1021df56a2cf8c2d77c8dd3ce13a6a46f68d86e3bd29435"
+    },
+    "airplay": {
+      "source": "av_airplay.svg",
+      "sha256": "24d4d8dc156d0ba6611fc52eaccbe5397dd69c8adfdacef2a35c5c998781158e"
+    },
+    "repeat": {
+      "source": "actions_restart.svg",
+      "sha256": "0fa6939ab7ebd482f3ca19ac08fcd32167b8943de65418c25d700f26131e2e79"
+    },
+    "rotate": {
+      "source": "support_rotate_device.svg",
+      "sha256": "76a315bb56c9b4189c50613212115da7de63acee64f6f37e98424fa6f28ae375"
+    },
+    "timer": {
+      "source": "support_time.svg",
+      "sha256": "46ef170c5ac79f1b1277bc08b25bad9a9c400cc3dc8389f15ac9ca3220d1df42"
+    },
+    "menu": {
+      "source": "navigation_menu.svg",
+      "sha256": "6bdff34101a1df0f2b4adde2b50f038c5b8ccf21a6220ecc96e9114a81e81d66"
+    },
+    "overflow": {
+      "source": "navigation_menu_overflow.svg",
+      "sha256": "14e420acba6cd1e6d4587e05b7d7c10cd5e78b878cbfe5cd73638d9156d2da87"
+    },
+    "search": {
+      "source": "actions_search.svg",
+      "sha256": "0667a844160e572b6e648de2571791852798c55dbcbfd8a5392e66afdbb649a6"
+    },
+    "star": {
+      "source": "actions_favourite.svg",
+      "sha256": "5ddffd407f344abc69db45c467a66579a69c081410be0151cd3f34c7d973ec2b"
+    },
+    "starActive": {
+      "source": "actions_favourite_active.svg",
+      "sha256": "93468a7ef3b530bd5cdb59ad63ad5bb58b68c4bcb1c272e5d77d2f2dd831f3bb"
+    },
+    "share": {
+      "source": "actions_share_android.svg",
+      "sha256": "8570aecb35b3195a6433af67a18d6b6753d7d825f5dfa65ca8e840d9be17dc56"
+    },
+    "download": {
+      "source": "actions_download.svg",
+      "sha256": "dc232aee5a72e7bfbc8db9f2216175034232d9c0170ac75c4121344f431b11a3"
+    },
+    "close": {
+      "source": "navigation_close.svg",
+      "sha256": "5117004465440ec5e2c4502a8df7d8ffa01b44420249b91e9ffeda6448b8aa92"
+    },
+    "filter": {
+      "source": "actions_filter.svg",
+      "sha256": "763bc17e3e378ec96fbacd0bb7fef525b1389d3e0c5232283765ff8ad708ccc4"
+    },
+    "sort": {
+      "source": "actions_sorting.svg",
+      "sha256": "e443b284bbec92a18630319af4357338ce7f01ff7ea6ac0cc5b0b37bd624b49d"
+    },
+    "calendar": {
+      "source": "material_ic_calendar_black_24dp.svg",
+      "sha256": "42d80a6869e3510f46324481bb5af392ff2e30452687b9b99bae24c44cedeee8"
+    },
+    "calendarAdd": {
+      "source": "actions_add_to_calendar.svg",
+      "sha256": "e693e5bf71cc9b18fbd96bd86339382077c7af795d4add10ded2d6f08bd8ddfd"
+    },
+    "edit": {
+      "source": "actions_edit.svg",
+      "sha256": "b4eece86a65e4d7b2fef477f5c9fd60af50447498e4b492a840ca81b71baf295"
+    },
+    "save": {
+      "source": "actions_save.svg",
+      "sha256": "77de0d0b651dd94e90ce70472fc4c74dbf826aca193452e85c079b06487c8be1"
+    },
+    "add": {
+      "source": "actions_add.svg",
+      "sha256": "8cf3208e583b32a8186f190791dac2d81ef0f3d1c4ee076b55895f0d667a5243"
+    },
+    "remove": {
+      "source": "actions_remove.svg",
+      "sha256": "4e7bda84eae577bfcaa87d26e68485562c2e3c646b382eeb45ec73a691d32eb8"
+    },
+    "check": {
+      "source": "actions_check.svg",
+      "sha256": "e3fee064ee115798202b2aa6035812ec8f0d412d29511df39c300793bb012fd5"
+    },
+    "checkCircle": {
+      "source": "actions_check_circle.svg",
+      "sha256": "81001539b92e7cdbd5dcadf5bd13cefa4fb493ecd0dbbfcb6915d3448d179cf1"
+    },
+    "left": {
+      "source": "navigation_chevron_left.svg",
+      "sha256": "f6226fc0a657d8ae5cf671add76da63d61183c5d5b04fd1ab99a5c1f3d2c458b"
+    },
+    "right": {
+      "source": "navigation_chevron_right.svg",
+      "sha256": "5a001d5fcff0eacd8539eaa3ecb31835cc0d033ab0be11328b8d510032b1f563"
+    },
+    "up": {
+      "source": "navigation_chevron_up.svg",
+      "sha256": "08a9b3944af18e481a11dac8f6cd642185beb8030d06b838c2cfd35413f1e294"
+    },
+    "down": {
+      "source": "navigation_chevron_down.svg",
+      "sha256": "16c134041e3f6fd7ba66baa9ae0d6393ae488320b657b0a6ed6e2a20c516f2a3"
+    },
+    "logout": {
+      "source": "navigation_logout.svg",
+      "sha256": "4a974a48a9b97e93240ca52401949de6eee3d66a482906ee1a54ae21588e2689"
+    },
+    "settings": {
+      "source": "actions_settings.svg",
+      "sha256": "aa2ae954a6ff5d7cfad268b509c5914173f6468cfcded83b8cf11765ebc19dbb"
+    },
+    "map": {
+      "source": "actions_map.svg",
+      "sha256": "8c14d583d60198309ee24c29d462d3a07ee4308e2ae5ef14f25d62f2a1363894"
+    },
+    "location": {
+      "source": "actions_location.svg",
+      "sha256": "baaa453067b955abcd1a46de1471a1c07afc3896ba5e30affc5859256c8786f9"
+    },
+    "compare": {
+      "source": "actions_compare.svg",
+      "sha256": "5907e150f1c3cb329042d31f373e43c78f2715a6d9d2e672e4c61e032512f43a"
+    },
+    "team": {
+      "source": "tab_bar_teams.svg",
+      "sha256": "9ed5425f1beeb08f77b409f61759d746dacbdfe44917dde3afd1886e6cc85ba6"
+    },
+    "standings": {
+      "source": "tab_bar_standings.svg",
+      "sha256": "6000d12c832af1747f383cef3996e77614ec8e290c846cd0746ed06eced4eeb5"
+    },
+    "shield": {
+      "source": "placeholder_club.svg",
+      "sha256": "b5e7b7d9649e6ce99e02a33dd2067f58ea676b50eb2295fd210a36e0e2ed56f3"
+    },
+    "player": {
+      "source": "placeholder_person_rounded.svg",
+      "sha256": "4c7481e4f7552aaa997c994634addfeb43ce33960142b387ecaecd5bc9a948e7"
+    },
+    "notification": {
+      "source": "notifications_none.svg",
+      "sha256": "d8ef3190d0edee89c866cd5a6864b54b21026e29a68095a5bec83b0e90dd00ab"
+    },
+    "notificationActive": {
+      "source": "notifications_active.svg",
+      "sha256": "aa4bce3df960e7e23be3f332c0df749466e591d3a74bfa21fd1ad0663084a0ff"
+    },
+    "notificationDisabled": {
+      "source": "notifications_disabled.svg",
+      "sha256": "29533bf4e504995bda23a83e4a6f0e52daa4e7d847398b7770da5d5f51538077"
+    },
+    "heart": {
+      "source": "actions_like.svg",
+      "sha256": "e11aff1139e5093b7ba083105d89f0c8427fad9ff17200b6ea7301c3ec3559e8"
+    },
+    "heartActive": {
+      "source": "actions_like_filled.svg",
+      "sha256": "08a5214f261c682bf5d23008995bca940fd5ac30420792191fac09699669c787"
+    },
+    "follow": {
+      "source": "actions_followed.svg",
+      "sha256": "47f5e8eb47e4de8506ca0ba852486ef0c784ffdf2eaccbadbbee3c07e57c7e7c"
+    },
+    "followActive": {
+      "source": "actions_followed_active.svg",
+      "sha256": "7c681793537086859b3f73f49af0c4a4c8123fa93409d3db3431c1ee44addafd"
+    },
+    "scan": {
+      "source": "actions_scan.svg",
+      "sha256": "ae1f0eb6a3fe383a04242087a9137d4d0598a29384a740451f1634603c67d7c8"
+    },
+    "language": {
+      "source": "actions_language.svg",
+      "sha256": "278311ea893404d80167c7d8db2f7dfa60e8f54a1bc0d7694455d3322e042a42"
+    },
+    "sync": {
+      "source": "actions_sync.svg",
+      "sha256": "4bf5c392fabc2c931c054858ff27c883de60ee37378be7fea1ebf2aed620e96f"
+    },
+    "live": {
+      "source": "ic_live_indicator.svg",
+      "sha256": "18e4df3f0248d3382eb71717fb88c58cd89c4114aa0a347b148f9cd42b177709"
+    },
+    "goal": {
+      "source": "football_goal_regular.svg",
+      "sha256": "0ad31e08901b31798f4c48a724e03390e641114ca7de2bfb26d4496b689a73cf"
+    },
+    "yellowCard": {
+      "source": "football_card_single_card_yellow.svg",
+      "sha256": "befc1518ea6eb0d56327b34b644726c85d373c6a2a35b7d48b178b0b13a1d07d"
+    },
+    "redCard": {
+      "source": "football_card_single_card_red.svg",
+      "sha256": "0b851ecf521a0ad3fa2749b822d69399832c9ad1f6aa2e1b730062bfc0c3eb88"
+    },
+    "substitution": {
+      "source": "football_substitution_both.svg",
+      "sha256": "14e8c0679f699c765e6fd4f918270f4ebeacd8a16f9868663a8dbcfc0747d666"
+    },
+    "warning": {
+      "source": "video_support_warning.svg",
+      "sha256": "a12bda2c1ec210d8fe1b50f13d1206b377c7daf28fa0c1b249f7ca281de16323"
+    },
+    "clock": {
+      "source": "ic_time.svg",
+      "sha256": "5b001910e957a653ade255bad3dc156f61da8963f775020dbed933980844f23a"
+    },
+    "fixture": {
+      "source": "tab_bar_matches.svg",
+      "sha256": "d7946cc909c89880ba19d08e3f650138af31c3fc3322426cb08bb3cb572e9455"
+    },
+    "stats": {
+      "source": "features_stats.svg",
+      "sha256": "88a252357583f6105d48b3a561d14bcd01ea661737d28cbd84c1e4549c2485dd"
+    },
+    "lineup": {
+      "source": "ic_channel_lineups.svg",
+      "sha256": "0c9e991d0781c7048103ced6743ef8f00a54d6416b33a8534c947c08db93775d"
+    },
+    "events": {
+      "source": "spectator_event.svg",
+      "sha256": "62f516a6ef20a0db482f639df757b7af6c876ffbbaceee3c6e4aac865647c23b"
+    },
+    "referee": {
+      "source": "ic_event_whistle.svg",
+      "sha256": "1dec8c0ac26d08d799d9f9eb12ffef7f6982c7bdb650023ea92e23ccbab4d985"
+    },
+    "passes": {
+      "source": "ic_passes.svg",
+      "sha256": "9a6ee9f7ae2f4084bf2a567bbbc9b2420be46731ce83e0ddd7278c729868cdef"
+    },
+    "lock": {
+      "source": "support_lock_closed.svg",
+      "sha256": "937604e711528b6b58851ccd468097b4489dae72aa7117fd8e1c562a5222d6d6"
+    },
+    "mail": {
+      "source": "support_mail.svg",
+      "sha256": "d47c3e8ab8dede4cefd6ff3478b32afd03e946cbd4dc855b9ccc545e24b906fa"
+    }
+  }
+}

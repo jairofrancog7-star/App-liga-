@@ -113,7 +113,7 @@ function icon(name){
     referee:'<circle cx="12" cy="8" r="3"/><path d="M6 20c1-4 3-6 6-6s5 2 6 6"/>',
     stats:'<path d="M5 19V9m5 10V5m5 14v-7m4 7V7"/>'
   };
-  return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(map[name]||map.match)+'</svg>';
+  return window.LJR_ICONS?.decorate('<svg viewBox="0 0 24 24" aria-hidden="true">'+(map[name]||map.match)+'</svg>',name) || '<svg viewBox="0 0 24 24" aria-hidden="true">'+(map[name]||map.match)+'</svg>';
 }
 function teamLogo(name){return '<img src="'+esc(logo(name))+'" alt="'+esc(name)+'">';}
 

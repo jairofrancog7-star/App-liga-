@@ -202,8 +202,8 @@ function setBracketStage(s){
 }
 function simulatedCount(){const s=simState();return simFixtures().filter(f=>scoreOf(f,s)).length}
 
-function svgBack(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7M8 12h12"/></svg>'}
-function svgShare(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.3"/><circle cx="6" cy="12" r="2.3"/><circle cx="18" cy="19" r="2.3"/><path d="m8 11 8-5M8 13l8 5"/></svg>'}
+function svgBack(){return window.LJR_ICONS?.svg('back') || '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7M8 12h12"/></svg>'}
+function svgShare(){return window.LJR_ICONS?.svg('share') || '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.3"/><circle cx="6" cy="12" r="2.3"/><circle cx="18" cy="19" r="2.3"/><path d="m8 11 8-5M8 13l8 5"/></svg>'}
 function top(){
  const v=view();
  return '<header class="v501-top">'+

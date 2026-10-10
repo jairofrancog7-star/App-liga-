@@ -15,7 +15,7 @@ function icon(name){
   shots:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 1v4m0 14v4M1 12h4m14 0h4"/>',
   passes:'<path d="M4 8h12"/><path d="m13 5 3 3-3 3"/><path d="M20 16H8"/><path d="m11 13-3 3 3 3"/>'
  };
- return '<span class="v931-filter-icon"><svg viewBox="0 0 24 24" aria-hidden="true">'+(p[name]||p.category)+'</svg></span>';
+ return window.LJR_ICONS?.decorate('<span class="v931-filter-icon"><svg viewBox="0 0 24 24" aria-hidden="true">'+(p[name]||p.category)+'</svg></span>',name) || '<span class="v931-filter-icon"><svg viewBox="0 0 24 24" aria-hidden="true">'+(p[name]||p.category)+'</svg></span>';
 }
 function cat(){const v=String(localStorage.getItem('v62-category')||'3');return CATS.some(x=>x[0]===v)?v:'3'}
 function stat(){const v=String(localStorage.getItem('v504-scorer-ranking-stat')||'goals');return STATS.some(x=>x[0]===v)?v:'goals'}

@@ -63,7 +63,7 @@ function icon(name){
     user:'<circle cx="12" cy="7.5" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/>',
     facebook:'<path d="M13.8 21v-8h2.8l.4-3h-3.2V8.1c0-.9.3-1.6 1.7-1.6H17V3.8c-.5-.1-1.4-.2-2.5-.2-2.5 0-4.2 1.5-4.2 4.3V10H7.5v3h2.8v8h3.5Z"/>'
   };
-  return '<span class="v411-icon"><svg viewBox="0 0 24 24" aria-hidden="true">'+(p[name]||p.news)+'</svg></span>';
+  return window.LJR_ICONS?.decorate('<span class="v411-icon"><svg viewBox="0 0 24 24" aria-hidden="true">'+(p[name]||p.news)+'</svg></span>',name) || '<span class="v411-icon"><svg viewBox="0 0 24 24" aria-hidden="true">'+(p[name]||p.news)+'</svg></span>';
 }
 function card(i,title,sub,r){
   return '<button type="button" class="v411-card" data-v411-route="'+esc(r)+'">'+icon(i)+'<span><b>'+esc(title)+'</b><small>'+esc(sub)+'</small></span><i>›</i></button>';

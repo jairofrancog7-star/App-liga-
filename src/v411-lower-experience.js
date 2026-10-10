@@ -45,7 +45,7 @@ function icon(name){
     comment:'<path d="M4 5h16v11H9l-5 4z"/>',
     news:'<path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/>'
   };
-  return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(p[name]||p.match)+'</svg>';
+  return window.LJR_ICONS?.decorate('<svg viewBox="0 0 24 24" aria-hidden="true">'+(p[name]||p.match)+'</svg>',name) || '<svg viewBox="0 0 24 24" aria-hidden="true">'+(p[name]||p.match)+'</svg>';
 }
 function go(r){if(r)location.hash='#/'+r}
 function toast(msg){
