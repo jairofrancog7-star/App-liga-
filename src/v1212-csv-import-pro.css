@@ -181,3 +181,39 @@ html body .v1212-csv-modal .csvpro-warnings{background:#102b75!important;border-
 @media(prefers-reduced-motion:reduce){
  html body .v1212-csv-modal .csvpro-meter span{transition:none}
 }
+
+/* V1223 — Corrección comprobada en screenshot Android:
+   el header "Más" de la app se dibuja encima de los primeros 88px del modal.
+   Desplazar SOLO esta herramienta bajo la barra principal; el dialog conserva
+   scroll interno y ningún control queda debajo de barras fijas. */
+@media(max-width:1023px){
+ html body > .v105-modal.v1107-admin-modal.v1212-csv-modal{
+   position:fixed!important;
+   inset:88px 0 0!important;
+   width:100%!important;
+   height:calc(100dvh - 88px)!important;
+   min-height:0!important;
+   overflow:hidden!important;
+   display:flex!important;
+   align-items:flex-start!important;
+   justify-content:center!important;
+   padding:8px 8px max(8px,env(safe-area-inset-bottom,0px))!important;
+   background:rgba(2,7,42,.89)!important;
+ }
+ html body > .v105-modal.v1107-admin-modal.v1212-csv-modal > .v105-dialog{
+   box-sizing:border-box!important;
+   flex:0 1 760px!important;
+   margin:0 auto!important;
+   width:100%!important;
+   max-width:760px!important;
+   height:auto!important;
+   max-height:calc(100dvh - 104px - env(safe-area-inset-bottom,0px))!important;
+   overflow-y:auto!important;
+   overflow-x:hidden!important;
+   background:radial-gradient(80% 36% at 94% 0%,rgba(35,104,226,.20),transparent 75%),
+     linear-gradient(170deg,#102b7b 0%,#0b1d65 54%,#070e44 100%)!important;
+   border-color:rgba(95,149,241,.5)!important;
+   overscroll-behavior:contain!important;
+   -webkit-overflow-scrolling:touch!important;
+ }
+}
