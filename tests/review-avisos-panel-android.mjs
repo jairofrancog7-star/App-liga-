@@ -95,6 +95,11 @@ try{
   assert.ok(layout.docOverflow<=2 && layout.overflow<=5 && layout.boxLeft>=-2 &&
     layout.boxRight<=viewport.width+2 && !layout.broken.length,'Desbordamiento Android '+JSON.stringify(layout));
   await modal.screenshot({path:path.join(output,'revisar-'+viewport.width+'-inicial.png'),animations:'disabled'});
+  // Comprobar el teléfono sin modificar los datos ni realizar peticiones externas.
+  await page.locator('[data-review-device]').click();
+  await page.locator('[data-review-device-results]').getByText('Diagnóstico local completado').waitFor({state:'visible'});
+  assert.equal(await page.locator('[data-review-device-results] li[data-passed="true"]').count(),5);
+  assert.deepEqual(await page.evaluate(()=>window.__writes),[]);
   // Filtro real: búsqueda, categoría, tipo y estado; después restaurar.
   await page.locator('[data-review-category]').selectOption('2');
   assert.equal(await page.locator('.ljr-review-card').count(),1);
