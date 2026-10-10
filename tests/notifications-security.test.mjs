@@ -72,3 +72,21 @@ test('La vista compacta consulta estados y no muestra teléfonos',()=>{
  assert.match(src,/deliveryStates/);
  assert.doesNotMatch(src,/rec\.phone|rec\.endpoint/);
 });
+
+test('programación global interna y salud real sin secretos visibles',()=>{
+ const backend=read('server/notifications/index.mjs');
+ const bootstrap=read('server/notifications/bootstrap.mjs');
+ assert.match(backend,/const internalDispatchEnabled=E\.ENABLE_INTERNAL_DISPATCH!=='false'/);
+ assert.match(backend,/app\.get\('\/health\/ready'/);
+ assert.match(backend,/async function dispatchDue\(/);
+ assert.match(backend,/function activateScheduler\(/);
+ assert.match(backend,/setInterval\(tick,60000\)/);
+ assert.match(backend,/app\.listen\(Number\(E\.PORT\)\|\|8080,\(\)=>\{console\.log\('Liga notifier listening'\);activateScheduler\(\)\}\)/);
+ assert.match(backend,/if\(!E\.JOB_NOTIFY_TOKEN\)\?/);
+ assert.match(bootstrap,/notifications-schema-v1084/);
+ const ui=read('src/v1081-global-admin-notices.js');
+ assert.match(ui,/showSystemStatus\(/);
+ assert.match(ui,/Estado del sistema/);
+ assert.match(ui,/Servidor de avisos/);
+ assert.match(ui,/Permisos de toda la página/);
+});
