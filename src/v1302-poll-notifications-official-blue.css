@@ -1,0 +1,211 @@
+/* V1302 · Encuesta y notificaciones: misma paleta azul oficial, móviles sin huecos.
+   Reglas limitadas al modal de Encuesta y #/notifications: no modifica otras rutas. */
+html body > .v105-modal.v105-poll-modal{
+  background:rgba(2,5,43,.86)!important;
+}
+html body > .v105-modal.v105-poll-modal > .v105-dialog{
+  --ljr-panel:#0d1d57;
+  --ljr-surface:#10245f;
+  --ljr-border:rgba(103,145,218,.36);
+  display:block!important;
+  background:#05045f!important;
+  background-image:none!important;
+  border-color:var(--ljr-border)!important;
+  color:#f6f9ff!important;
+}
+html body > .v105-modal.v105-poll-modal .v105-poll-intro{
+  box-sizing:border-box!important;
+  display:block!important;
+  position:relative!important;
+  flex:none!important;
+  align-self:auto!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:12px 0!important;
+  padding:16px!important;
+  border:1px solid var(--ljr-border)!important;
+  border-radius:18px!important;
+  background:linear-gradient(155deg,#112965,#0d1d57)!important;
+  box-shadow:none!important;
+}
+html body > .v105-modal.v105-poll-modal .v105-poll-intro :is(small,b,p),
+html body > .v105-modal.v105-poll-modal .v105-poll-meta{
+  height:auto!important;min-height:0!important;max-height:none!important;
+}
+html body > .v105-modal.v105-poll-modal .v105-poll-meta{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:8px!important;
+}
+html body > .v105-modal.v105-poll-modal .v105-poll-grid{
+  display:grid!important;
+  grid-auto-rows:max-content!important;
+  align-content:start!important;
+  height:auto!important;
+  min-height:0!important;
+  margin:0!important;
+}
+html body > .v105-modal.v105-poll-modal .v105-poll-grid > .v105-card{
+  background:linear-gradient(155deg,#132963,#0d1d57)!important;
+  border:1px solid var(--ljr-border)!important;
+  box-shadow:none!important;
+  touch-action:manipulation;
+}
+html body > .v105-modal.v105-poll-modal .v105-poll-grid > .v105-card.is-selected{
+  background:linear-gradient(155deg,#17438b,#10366e)!important;
+  border-color:#42ccea!important;
+}
+html body > .v105-modal.v105-poll-modal .v105-poll-grid .v105-icon,
+html body > .v105-modal.v105-poll-modal .v105-poll-grid .v105-arrow{
+  background:#173779!important;
+  color:#45dbea!important;
+}
+html body > .v105-modal.v105-poll-modal .v105-poll-meta > strong{
+  background:#14336e!important;
+  border-color:var(--ljr-border)!important;
+}
+html body > .v105-modal.v105-poll-modal .v105-poll-status,
+html body > .v105-modal.v105-poll-modal .v875-mailbox{
+  background:#0d1d57!important;
+  background-image:none!important;
+  border-color:var(--ljr-border)!important;
+  box-shadow:none!important;
+}
+html body > .v105-modal.v105-poll-modal .v105-close{
+  background:#112967!important;
+  border-color:var(--ljr-border)!important;
+  color:#fff!important;
+}
+html body > .v105-modal.v105-poll-modal .v875-mailbox textarea{
+  background:#09174b!important;
+  border-color:var(--ljr-border)!important;
+}
+html body > .v105-modal.v105-poll-modal .v875-mailbox button[type="submit"]{
+  background:linear-gradient(150deg,#1c69d4,#0d47a1)!important;
+  color:#fff!important;
+  box-shadow:none!important;
+}
+@media(max-width:620px){
+  html body > .v105-modal.v105-poll-modal .v105-poll-intro{
+    padding:13px!important;margin:10px 0!important;
+  }
+  html body > .v105-modal.v105-poll-modal .v105-poll-grid{
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:8px!important;
+  }
+  html body > .v105-modal.v105-poll-modal .v105-poll-meta{
+    align-items:flex-start!important;
+  }
+}
+
+/* El antiguo min-height:100dvh y padding-bottom:110px de V46 hacían que
+   "Notificaciones de la Liga" quedara alejada de la última tarjeta. */
+html body[data-app-route="notifications"].v46-notifications-active .v46-notifications{
+  display:block!important;
+  height:auto!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  background:#05045f!important;
+  background-image:none!important;
+}
+html body[data-app-route="notifications"] .v46-ref-notifications-main{
+  display:block!important;
+  height:auto!important;
+  min-height:0!important;
+  padding-bottom:3px!important;
+  background:#05045f!important;
+}
+html body[data-app-route="notifications"] .v46-ref-notifications-main > :is(.v46-ref-device,.v46-ref-master,.v46-ref-settings,.v46-ref-categories){
+  margin-bottom:10px!important;
+  background:#0d1d57!important;
+  border:1px solid rgba(103,145,218,.36)!important;
+  box-shadow:none!important;
+}
+html body[data-app-route="notifications"] .v46-ref-notifications-main > :last-child{
+  margin-bottom:0!important;
+}
+html body[data-app-route="notifications"] :is(.v46-ref-setting,.v46-ref-category,.v46-ref-category-head,.v46-ref-dnd,.v46-ref-hours,.v46-ref-category-panel){
+  background:#0d1d57!important;
+  border-color:rgba(103,145,218,.18)!important;
+}
+html body[data-app-route="notifications"] .v46-ref-setting input:checked + i,
+html body[data-app-route="notifications"] .v46-ref-category-panel input:checked + i{
+  background:#1c69d4!important;
+}
+html body[data-app-route="notifications"] :is(.v840-match-feed,.v852-feed,.v1082-push){
+  background:#0d1d57!important;
+  background-image:none!important;
+  border:1px solid rgba(103,145,218,.36)!important;
+  box-shadow:none!important;
+  color:#f6f9ff!important;
+}
+html body[data-app-route="notifications"] #screen > .v1082-push{
+  width:calc(100% - 22px)!important;
+  max-width:520px!important;
+  margin:10px auto 12px!important;
+  padding:13px!important;
+}
+html body[data-app-route="notifications"] .v840-match-feed{
+  margin:10px 0!important;
+  padding:13px!important;
+}
+html body[data-app-route="notifications"] .v840-head-actions button,
+html body[data-app-route="notifications"] .v840-feed-tabs button,
+html body[data-app-route="notifications"] .v840-feed-category select,
+html body[data-app-route="notifications"] .v1082-filters :is(input,select),
+html body[data-app-route="notifications"] .v1082-types{
+  background:#10245f!important;
+  border:1px solid rgba(103,145,218,.42)!important;
+  color:#fff!important;
+}
+html body[data-app-route="notifications"] .v840-feed-tabs button.selected,
+html body[data-app-route="notifications"] .v840-head-actions button.on{
+  background:#17438b!important;
+  border-color:#429bdb!important;
+}
+html body[data-app-route="notifications"] .v840-head-actions button,
+html body[data-app-route="notifications"] .v840-feed-tabs button{
+  touch-action:manipulation!important;
+  min-height:44px!important;
+}
+html body[data-app-route="notifications"] .v840-feedback{
+  margin:8px 0 0!important;
+  padding:9px 11px!important;
+  border:1px solid rgba(103,145,218,.36)!important;
+  border-radius:10px!important;
+  background:#10245f!important;
+  color:#d5eaff!important;
+  font:600 11px/1.45 system-ui,sans-serif!important;
+}
+html body[data-app-route="notifications"] .v840-feedback:empty{
+  display:none!important;
+}
+html body[data-app-route="notifications"] .v840-feed-category{
+  min-width:0!important;
+}
+html body[data-app-route="notifications"] .v840-feed-category select{
+  min-width:0!important;
+  text-overflow:ellipsis!important;
+}
+html body[data-app-route="notifications"] .v840-feed-tabs button:focus-visible,
+html body[data-app-route="notifications"] .v840-head-actions button:focus-visible,
+html body[data-app-route="notifications"] .v46-ref-category-head:focus-visible,
+html body[data-app-route="notifications"] .v46-ref-setting:focus-within{
+  outline:2px solid #52d9f0!important;
+  outline-offset:2px!important;
+}
+@media(max-width:390px){
+  html body[data-app-route="notifications"] .v840-feed-tabs{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:6px!important;
+  }
+  html body[data-app-route="notifications"] .v840-feed-category{
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:6px!important;
+  }
+}
