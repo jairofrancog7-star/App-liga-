@@ -154,38 +154,64 @@ async function buildCanvas(r){
  c.fillStyle='rgba(43,153,234,.12)';c.beginPath();c.arc(540,570,410,0,Math.PI*2);c.fill();
  c.strokeStyle='#36d9ee';c.lineWidth=7;c.strokeRect(26,26,1028,1298);
  c.strokeStyle='rgba(157,217,255,.27)';c.lineWidth=2;c.strokeRect(41,41,998,1268);
- // Solo tres escudos arriba: Liga, categoría y equipo (el de Equipos).
- // PNG y vista previa comparten esas mismas fuentes, sin repetir el del equipo.
- contain(c,leagueImg,89,65,168,145);
- contain(c,catImg,456,65,168,145);
- contain(c,teamImg,823,65,168,145);
- c.textAlign='center';c.fillStyle='#b6d7fc';c.font='bold 32px sans-serif';c.fillText('LIGA JUVENTINO ROSAS',540,242);
- c.fillStyle='#55e5f6';c.font='bold 24px sans-serif';c.fillText('RECONOCIMIENTO DESTACADO',540,272);
- // Separar subtítulo y título para que no se encimen en PNG Android.
- c.fillStyle='#ffffff';c.font='bold 72px sans-serif';c.fillText('JUGADOR DEL',540,354);c.fillText('PARTIDO',540,432);
- c.strokeStyle='#46d5ed';c.lineWidth=4;c.beginPath();c.moveTo(185,460);c.lineTo(895,460);c.stroke();
- photoCircle(c,playerImg,540,666,167);
- c.fillStyle='#ffffff';
- const words=txt(r.player||'Jugador destacado').split(/\s+/);
- const lines=[];let line='';
- c.font='bold 58px sans-serif';
- for(const word of words){
-  const next=(line+' '+word).trim();
-  if(c.measureText(next).width>900&&line){lines.push(line);line=word}else line=next;
+ // Tres escudos en una franja reservada. Ningún rótulo invade los logos.
+ contain(c,leagueImg,89,60,168,150);
+ contain(c,catImg,456,60,168,150);
+ contain(c,teamImg,823,60,168,150);
+
+ // Las líneas institucionales terminan antes de que comience el título.
+ // Coordenadas sobre PNG 1080×1350, separadas también para Android.
+ c.textAlign='center';
+ c.textBaseline='alphabetic';
+ c.fillStyle='#b6d7fc';c.font='bold 31px sans-serif';
+ c.fillText('LIGA JUVENTINO ROSAS',540,265,910);
+ c.fillStyle='#55e5f6';c.font='bold 23px sans-serif';
+ c.fillText('RECONOCIMIENTO DESTACADO',540,304,920);
+
+ // Bloque principal independiente: el ascendente de las letras empieza bajo y=344.
+ c.fillStyle='#ffffff';c.font='bold 69px sans-serif';
+ c.fillText('JUGADOR DEL',540,403,940);
+ c.fillText('PARTIDO',540,480,940);
+ c.strokeStyle='#46d5ed';c.lineWidth=4;c.beginPath();c.moveTo(185,514);c.lineTo(895,514);c.stroke();
+
+ // La foto no invade ni el título ni la información inferior.
+ photoCircle(c,playerImg,540,701,148);
+
+ // Ajuste automático de nombre: hasta dos líneas sin salir de la tarjeta.
+ const name=txt(r.player||'Jugador destacado').replace(/\\s+/g,' ');
+ const words=name.split(' ').filter(Boolean);
+ const width=920;
+ const wrap=(size)=>{
+  c.font='bold '+size+'px sans-serif';
+  const rows=[];let line='';
+  for(const word of words){
+   const next=(line?line+' ':'')+word;
+   if(line&&c.measureText(next).width>width){rows.push(line);line=word}
+   else line=next;
+  }
+  if(line)rows.push(line);
+  return rows;
+ };
+ let nameSize=56,nameLines=wrap(nameSize);
+ while(nameSize>32&&(nameLines.length>2||nameLines.some(line=>c.measureText(line).width>width))){
+  nameSize-=2;nameLines=wrap(nameSize);
  }
- if(line)lines.push(line);
- const display=lines.slice(0,3);
- const beginY=display.length===1?948:display.length===2?909:874;
- display.forEach((txt,i)=>{c.font='bold 56px sans-serif';c.fillText(txt,540,beginY+i*67)});
+ if(nameLines.length>2)nameLines=[nameLines[0],nameLines.slice(1).join(' ')];
+ c.fillStyle='#ffffff';c.font='bold '+nameSize+'px sans-serif';
+ const nameY=nameLines.length===1?[954]:[929,990];
+ nameLines.forEach((line,i)=>c.fillText(line,540,nameY[i],width));
+
+ // Pie distribuido en renglones completos, lejos del nombre y del borde inferior.
  c.fillStyle='#53e7f1';c.font='bold 39px sans-serif';
  const teamName=txt(r.team||'');
- for(let size=39;size>=24;size-=3){c.font='bold '+size+'px sans-serif';if(c.measureText(teamName).width<=920)break}
- c.fillText(teamName,540,1090);
- c.fillStyle='#dceaff';c.font='bold 32px sans-serif';
- c.fillText((r.category||'Liga Juventino Rosas')+(r.round?' · Jornada '+r.round:''),540,1153);
+ for(let size=39;size>=25;size-=2){c.font='bold '+size+'px sans-serif';if(c.measureText(teamName).width<=930)break}
+ c.fillText(teamName,540,1080,930);
+ c.fillStyle='#dceaff';c.font='bold 31px sans-serif';
+ c.fillText((r.category||'Liga Juventino Rosas')+(r.round?' · Jornada '+r.round:''),540,1146,940);
  const matchup=r.home&&r.away?r.home+'  VS  '+r.away:'';
- if(matchup){c.font='27px sans-serif';for(let size=27;size>=18;size-=2){c.font=size+'px sans-serif';if(c.measureText(matchup).width<900)break}c.fillText(matchup,540,1214)}
- c.fillStyle='#a8d6f9';c.font='26px sans-serif';c.fillText(r.reason||'Rendimiento destacado',540,1265);
+ if(matchup){c.font='27px sans-serif';c.fillText(matchup,540,1209,940)}
+ c.fillStyle='#a8d6f9';c.font='26px sans-serif';
+ c.fillText(r.reason||'Rendimiento destacado',540,1272,940);
  return canvas;
 }
 const png=async r=>new Promise(async(resolve,reject)=>{
