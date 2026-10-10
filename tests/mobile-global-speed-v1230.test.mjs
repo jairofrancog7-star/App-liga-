@@ -71,5 +71,29 @@ test('página principal y JSON de partidos no usan caché antigua',async()=>{
   respondWith:p=>{response=p;},waitUntil:()=>{}
  });
  await response;
- assert.equal(w.calls[1].opts.cache,'default');
+ assert.equal(w.calls[1].opts.cache,'no-cache');
+});
+
+
+test('optimizador mantiene visibles escudos e imágenes y difiere sólo imágenes lejanas',()=>{
+  const frames=[];
+  const fakeImage=(top)=>({
+    tagName:'IMG',nodeType:1,isConnected:true,fetchPriority:'auto',
+    hasAttribute:()=>false,closest:()=>null,
+    getBoundingClientRect:()=>({top,bottom:top+80,left:20,right:100})
+  });
+  const visible=fakeImage(120),distant=fakeImage(2300);
+  const screen={nodeType:1,querySelectorAll:()=>[visible,distant]};
+  const document={
+    readyState:'complete',hidden:false,body:{},
+    getElementById:()=>screen,addEventListener:()=>{}
+  };
+  const window={innerHeight:800,innerWidth:400};
+  class MutationObserver { observe(){} }
+  runInNewContext(media,{window,document,MutationObserver,requestAnimationFrame:fn=>frames.push(fn),Set});
+  assert.equal(frames.length,1);
+  frames.shift()();
+  assert.equal(visible.loading,undefined,'la foto visible no debe quedar diferida');
+  assert.equal(distant.loading,'lazy');
+  assert.equal(distant.fetchPriority,'low');
 });
