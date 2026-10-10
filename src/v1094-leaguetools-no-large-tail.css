@@ -111,3 +111,38 @@
     padding-bottom:12px!important;
   }
 }
+
+/* V1098 — fixed-scroll route: evita reservar otra vez la altura de la barra.
+   v768-scroll-chrome sitúa #screen ENTRE encabezado y navegación; por ello
+   los 72–118px de padding del antiguo documento ya no son necesarios. */
+@media(max-width:1023px){
+  html body.v768-scroll-root[data-app-route="leagueTools"] #app #screen {
+    position:fixed!important;
+    top:var(--v768-head-h,64px)!important;
+    bottom:var(--ui-master-bottom-nav-h,69px)!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow-y:auto!important;
+    overscroll-behavior-y:contain!important;
+    padding:0 0 10px!important;
+    scroll-padding-bottom:10px!important;
+    margin:0!important;
+  }
+  html body.v768-scroll-root[data-app-route="leagueTools"] #app #screen > .v60-tool-page.v726-tools-page {
+    box-sizing:border-box!important;
+    min-height:0!important;
+    max-height:none!important;
+    padding-bottom:0!important;
+    margin-bottom:0!important;
+  }
+  html body.v768-scroll-root[data-app-route="leagueTools"] #app #screen .v726-tools-page > [data-v74-facebook-source="tools"]:last-child{
+    box-sizing:border-box!important;
+    margin-top:10px!important;
+    margin-bottom:0!important;
+  }
+  /* Respaldo si el navegador usa desplazamiento de documento. */
+  html body[data-app-route="leagueTools"]:not(.v768-scroll-root) #app #screen{
+    padding-bottom:calc(var(--ui-master-bottom-nav-h,69px) + 10px + env(safe-area-inset-bottom,0px))!important;
+  }
+}
