@@ -10,7 +10,8 @@ const meeting=readFileSync(new URL('../src/v105-green-app-bottom.js',import.meta
 const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
 
 function fixture(){
- const window={LJR_MEDIA:{admin:{role:'presidente'},notifyAPI:async()=>({actor:{permissions:[]}})},confirm:()=>true};
+ const opened=[];
+ const window={LJR_GOOGLE_CALENDAR_GLOBAL:{open:event=>{opened.push(event);return true}},LJR_MEDIA:{admin:{role:'presidente'},notifyAPI:async()=>({actor:{permissions:[]}})},confirm:()=>true};
  const document={querySelector:()=>null};
  runInNewContext(source,{window,document,navigator:{},localStorage:{}});
  const api=window.LJR_MEETING_ADVANCED_V1140;
@@ -31,7 +32,7 @@ function fixture(){
  download:(name,content,type)=>files.push({name,content,type}),
  msg:s=>{status=s},persist:()=>{},preserve:()=>{},render:()=>{},
  };
- return {window,api,record,ctx,files,get status(){return status}};
+ return {window,api,record,ctx,files,opened,get status(){return status}};
 }
 test('scripts linked and administrative gate protects the meeting modal',()=>{
  new Function(source);
@@ -62,15 +63,19 @@ test('minutes offer handwritten signatures but never claim certified signatures'
  assert.match(page,/no son una firma electrónica certificada/);
  assert.match(oldHub,/signature\(r\.sign\?\.images\?\.president\)/);
 });
-test('calendar .ics alarms and weekly Tuesday recurrence work without backend',()=>{
+test('meeting calendar opens prefilled Google event with optional Tuesday recurrence',()=>{
  const x=fixture();
  const handled=x.api.handle('adv-ics-reminders',{},x.ctx);
  assert.equal(handled,true);
- assert.equal(x.files.length,1);
- assert.match(x.files[0].name,/\.ics$/);
- assert.match(x.files[0].content,/TRIGGER:-PT24H/);
- assert.match(x.files[0].content,/RRULE:FREQ=WEEKLY;BYDAY=TU/);
- assert.match(x.files[0].content,/TZID=America\/Mexico_City/);
+ assert.equal(x.files.length,0);
+ assert.equal(x.opened.length,1);
+ assert.equal(x.opened[0].title,'Junta de la Liga Juventino Rosas');
+ assert.equal(x.opened[0].iso,'2099-01-13');
+ assert.equal(x.opened[0].time,'19:00');
+ assert.equal(x.opened[0].weekly,true);
+ assert.equal(x.opened[0].venue,'Campo Municipal');
+ assert.match(x.status,/Pulsa Guardar/);
+ assert.match(x.api.view('calendar',x.ctx,''),/Guardar junta en Google Calendar/);
 });
 test('automatic app reminder calls a role-checked server endpoint only',async()=>{
  const x=fixture(),calls=[];
