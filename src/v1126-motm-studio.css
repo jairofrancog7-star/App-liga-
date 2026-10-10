@@ -31,7 +31,7 @@ html body .v1126-head p{font-size:11px!important;line-height:1.45!important;colo
 .v1126-match>div>strong{color:#50e9ef;font-size:17px}
 .v1126-crest{width:24px!important;height:24px!important;object-fit:contain!important;flex:none}
 .v1126-team-rail{display:flex;gap:8px;overflow-x:auto;scrollbar-width:thin}
-.v1126-team-rail button{flex:1;min-width:0;padding:9px 7px;min-height:40px;cursor:pointer;border:1px solid #4159a5;border-radius:10px;background:#081758;color:#d5e2ff;font:800 11px inherit;overflow-wrap:anywhere}
+.v1126-team-rail button{flex:1;min-width:0;padding:9px 7px;min-height:40px;cursor:pointer;border:1px solid #4159a5;border-radius:10px;background:#081758;color:#d5e2ff;font-size:11px;font-weight:800;font-family:inherit;overflow-wrap:anywhere}
 .v1126-team-rail button.active{color:#001a47;background:#53dcea;border-color:#60f5fe}
 .v1126-profile{display:flex;gap:10px;align-items:center;padding:9px;border:1px solid #36529e;border-radius:13px;background:#102777;min-height:72px}
 .v1126-profile>div:nth-child(2){display:grid;gap:4px;flex:1;min-width:0}
