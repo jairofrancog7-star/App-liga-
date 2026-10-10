@@ -67,3 +67,13 @@ test('simulated knockout scores appear in the bracket without changing published
  const html=api.render({category:result,simulate:true});
  assert.match(html,/ljr-ko-score">2/);assert.match(html,/ljr-ko-score">1/);
 });
+
+test('Competition can show real ranked entrants while clearly marking unpublished pairings',()=>{
+ const category={standings:[{rows:[[1,'SAN JOSE FC'],[2,'JUVENTUS'],[3,'LINCES'],[4,'NAPOLI'],[5,'HERMANOS'],[6,'FRANCO FC'],[7,'TERRICOLAS'],[8,'ABEJAS'],[9,'HERRERAS FC'],[10,'LOBOS CDG'],[11,'GALACTICOS']]}],fixtures:[]};
+ const html=api.render({category,showEntrants:true});
+ assert.ok(html.includes('data-ko-mode="competition"'));assert.ok(html.includes('Equipos según clasificación · Cruces oficiales por definir'));
+ for(const row of category.standings[0].rows)assert.equal(html.split('aria-label="'+row[1]+'"').length-1,1);
+ assert.ok(html.includes('data-ko-stage="playoff"'));
+ const official={...category,fixtures:[{rows:[['','Cuartos de final','Juventus',2,'vs',1,'Boavista','','11/10/2026']]}]};
+ const published=api.render({category:official,showEntrants:true});assert.ok(!published.includes('Equipos según clasificación'));assert.ok(!published.includes('HERRERAS FC'));
+});

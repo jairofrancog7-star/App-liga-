@@ -58,12 +58,13 @@ html body #screen .ljr-knockout .ljr-ko-rail.blue{top:356px}
 html body #screen .ljr-knockout .ljr-ko-rail span{position:absolute;top:50%;left:-4px;transform:translate(-50%,-50%) rotate(-90deg);padding:3px 8px;background:var(--ko-ground);white-space:nowrap;font:700 8px/1 Roboto,Arial,sans-serif}
 html body #screen .ljr-knockout .ljr-ko-final{flex-basis:100%}
 html body #screen .ljr-knockout .ljr-ko-final .ljr-ko-card{right:auto;width:var(--ko-column);height:110px}
-/* Exact trophy pixels from the supplied reference, displayed as a CSS sprite.
-   The sprite window excludes all headers, clubs, labels and navigation. */
+/* Restore the league's crown trophy from the supplied reference.
+   The CSS sprite excludes the card, header and navigation. */
 html body #screen .ljr-knockout .ljr-ko-trophy{
  position:absolute;top:360px;left:calc(var(--ko-column) + 8px);transform:translateY(-50%);
- width:106px;height:167px;background-image:url('../assets/reference/knockout-trophy-reference.jpg');
- background-size:385.98px 858px;background-position:-181px -512px;background-repeat:no-repeat;
+ width:148px;height:260px;max-width:calc(100% - var(--ko-column) - 8px);
+ background-image:url('../assets/reference/knockout-crown-reference.jpg');
+ background-size:475.2px 844.8px;background-position:-239.8px -470.8px;background-repeat:no-repeat;
 }
 @media(min-width:760px){
  html body #screen .ljr-knockout{--ko-column:230px;padding-left:24px;padding-right:24px}
@@ -150,3 +151,31 @@ html body[data-app-route="simulator"] #app #screen [data-v501-simulator]{overflo
   transform:translate3d(-50%,var(--v515-sheet-y,calc(100dvh - 110px)),0)!important;
  }
 }
+
+/* Keep the selector, back and share on the reference's single dark row. */
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator],
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] :is(.v501-category,.v501-standings,.v501-sheet){background:#000040!important}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-top{height:80px!important;min-height:80px!important;max-height:80px!important}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-top .v501-tabs{
+ inset:16px 60px auto!important;width:calc(100% - 120px)!important;height:48px!important;min-height:48px!important;
+ background:#000040!important;border:1.5px solid #737fae!important;border-radius:28px!important;overflow:hidden!important;box-shadow:none!important;
+}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-tabs button{
+ flex:1!important;min-width:0!important;height:100%!important;margin:0!important;padding:0 4px!important;
+ background:transparent!important;color:#fff!important;border:0!important;border-radius:0!important;font:700 13px/1 Roboto,Arial,sans-serif!important;box-shadow:none!important;
+}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-tabs button.active{background:#fff!important;color:#080828!important}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-top > .v501-icon{left:12px!important;top:24px!important}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-top .v774-sim-icons{inset:24px 12px auto auto!important;gap:0!important}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] [data-v501-account]{display:none!important}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-top .ljr-chrome-actions{inset:24px 12px auto!important}
+html body[data-app-route="competition"] #screen:has(.ljr-knockout) > .tabs{
+ background:#000040!important;border:1.5px solid #737fae!important;border-radius:28px!important;overflow:hidden!important;margin:8px 16px!important;
+}
+html body[data-app-route="competition"] #screen:has(.ljr-knockout) > .tabs .tab{background:transparent!important;color:#fff!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+html body[data-app-route="competition"] #screen:has(.ljr-knockout) > .tabs .tab.active{background:#fff!important;color:#080828!important}
+html body[data-app-route="competition"] #screen:has(.ljr-knockout) > .tabs .tab::after{display:none!important}
+@media(max-width:359px){html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-tabs button{font-size:11px!important}}
+
+html body[data-app-route="competition"]:has(.ljr-knockout) #app > .topbar{background:#000040!important;background-image:none!important}
+html body[data-app-route="competition"] #screen:has(.ljr-knockout) > .tabs .tab.active{border-bottom:0!important}

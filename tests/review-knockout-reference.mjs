@@ -20,6 +20,10 @@ try{
   await page.locator('.v501-tabs [data-v501-view="bracket"]').click();
   await page.locator('.ljr-knockout').waitFor();
   const root=page.locator('.ljr-knockout');
+  const headerRow=await page.locator('.v501-top').evaluate(el=>({tabs:el.querySelector('.v501-tabs').getBoundingClientRect().toJSON(),back:el.querySelector('[data-v501-back]').getBoundingClientRect().toJSON(),share:el.querySelector('[data-v501-share]').getBoundingClientRect().toJSON(),color:getComputedStyle(el.querySelector('.v501-tabs')).backgroundColor}));
+  assert.ok(headerRow.back.x+headerRow.back.width<=headerRow.tabs.x);
+  assert.ok(headerRow.share.x>=headerRow.tabs.x+headerRow.tabs.width);
+  assert.equal(headerRow.color,'rgb(0, 0, 64)');
   for(const stage of ['playoff','octavos','cuartos','semifinal','final']){
    await page.locator(`.ljr-ko-tabs [data-ko-stage="${stage}"]`).click();
    await page.waitForTimeout(750);
@@ -60,7 +64,8 @@ try{
   else await page.locator('#screen > .tabs .tab').filter({hasText:/^Cuadro$/}).click();
   await page.locator('.ljr-knockout[data-ko-mode="competition"]').waitFor();
   assert.equal(await page.locator('.ljr-knockout[data-ko-mode="competition"]').count(),1);
-  assert.equal(await page.locator('.ljr-ko-note').textContent(),'Cruces oficiales por definir');
+  assert.match(await page.locator('.ljr-ko-note').textContent(),/Cruces oficiales por definir/);
+  assert.ok(await page.locator('.ljr-ko-club img').count()>0,'Competition starts with real league entrants');
   for(const stage of ['playoff','octavos','cuartos','semifinal','final']){
    await page.locator(`.ljr-ko-tabs [data-ko-stage="${stage}"]`).click();
    await page.waitForFunction(s=>{const root=document.querySelector('.ljr-knockout'),sc=root?.querySelector('.ljr-ko-scroll'),col=root?.querySelector(`[data-ko-column="${s}"]`);return root?.dataset.koStage===s&&sc&&col&&Math.abs(sc.scrollLeft-col.offsetLeft)<2;},stage);

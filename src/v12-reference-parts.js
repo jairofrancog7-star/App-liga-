@@ -805,7 +805,7 @@ function v12StagePanels(routes){
 function v12BracketMarkup(){
  const routes=v12BracketRoutes(),category=v12StoredCat(),db=v12FixtureDb();
  const sig=String(db?.captured_at_utc||'')+':'+Object.values(routes.matches).map(x=>x.length).join(',');
- return window.LJR_KNOCKOUT.render({category:db?.categories?.[category],categoryId:category,signature:sig,
+ return window.LJR_KNOCKOUT.render({showEntrants:true,category:db?.categories?.[category],categoryId:category,signature:sig,
    logoFor:name=>{try{return window.LJR_SEASON_LOGOS?.get?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||''}catch(_){return ''}}});
 }
 

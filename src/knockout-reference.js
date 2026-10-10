@@ -71,9 +71,10 @@
   }).join('')+'</svg>';
  }
  function rail(){return '<div class="ljr-ko-rail silver"><span>RUTA PLATEADA</span></div><div class="ljr-ko-rail blue"><span>RUTA AZUL</span></div>';}
- function render({category,rows=[],simulate=false,logoFor=()=>'',stage='playoff',categoryId='3',signature=''}){
-  const m=model(category,rows,simulate),mode=simulate?'simulator':'competition';
-  try{stage=localStorage.getItem('ljr-ko-stage:'+mode+':'+categoryId)||stage;}catch(_){}
+ function render({category,rows=[],simulate=false,showEntrants=false,logoFor=()=>'',stage='playoff',categoryId='3',signature=''}){
+  const entrants=rows.length?rows:(category?.standings||[]).flatMap(b=>b.rows||[]).filter(r=>Array.isArray(r)&&r[1]).map(r=>({name:String(r[1]).trim(),pos:Number(r[0])||0}));
+  const m=model(category,entrants,simulate||showEntrants),mode=simulate?'simulator':'competition';
+  if(simulate)try{stage=localStorage.getItem('ljr-ko-stage:'+mode+':'+categoryId)||stage;}catch(_){}
   if(!stages.includes(stage))stage='playoff';
   const playoff=m.projection?m.playoffs:m.games.playoff;
   const projectedSeedPair=i=>({teams:[m.seeds[i*2],m.seeds[i*2+1]],date:''});
@@ -90,7 +91,7 @@
   }).join('');
   return '<section class="ljr-knockout" data-v12-bracket'+(simulate?' data-v512-bracket':'')+' data-ko-mode="'+mode+'" data-ko-category="'+esc(categoryId)+'" data-ko-stage="'+stage+'" data-v1064-cat="'+esc(categoryId)+'" data-v1064-sig="'+esc(signature)+'">'+
    '<div class="ljr-ko-tabs" role="tablist" aria-label="Etapas del cuadro">'+stages.map((s,i)=>'<button type="button" role="tab" aria-selected="'+(s===stage)+'" class="'+(s===stage?'active':'')+'" data-ko-stage="'+s+'">'+labels[i]+'</button>').join('')+'</div>'+
-   (simulate?'<p class="ljr-ko-note" role="note">'+(m.projection?'Proyección del simulador · No son cruces oficiales':'Cruces publicados por la liga · Otros por definir')+'</p>':!m.published?'<p class="ljr-ko-note" role="status">Cruces oficiales por definir</p>':'')+
+   (simulate?'<p class="ljr-ko-note" role="note">'+(m.projection?'Proyección del simulador · No son cruces oficiales':'Cruces publicados por la liga · Otros por definir')+'</p>':m.projection?'<p class="ljr-ko-note" role="note">Equipos según clasificación · Cruces oficiales por definir</p>':!m.published?'<p class="ljr-ko-note" role="status">Cruces oficiales por definir</p>':'')+
    '<div class="ljr-ko-board"><div class="ljr-ko-routes">'+rail()+'</div><div class="ljr-ko-scroll" aria-label="Cuadro de eliminatorias"><div class="ljr-ko-track">'+columns+'</div></div></div></section>';
  }
  function select(root,stage,animate=true){
