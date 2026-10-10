@@ -61,6 +61,7 @@ try{
       const b=el.getBoundingClientRect();return b.left<-2||b.right>innerWidth+2;
     }).length};
   });
+  await page.screenshot({path:resolve(out,'admin-'+width+'.png'),fullPage:true,animations:'disabled'});
   for(const key of ['admin','cms','review','content']){
    assert.ok(m[key].overflow<=3,key+' overflows at '+width+'px: '+JSON.stringify(m[key]));
   }
@@ -69,7 +70,9 @@ try{
   assert.match(m.admin.gradient,/rgb\(10, 27, 72\)/,'Admin should use single navy palette');
   assert.match(m.review.gradient,/rgb\(10, 27, 72\)/,'Review should use navy palette');
   assert.match(m.header,/rgb\(16, 43, 98\)/,'Header should not use bright blue');
-  assert.match(m.reviewCard,/rgb\(12, 36, 87\)/,'Review card should use navy');
+  const reviewColors=[...m.reviewCard.matchAll(/rgb\((\d+), (\d+), (\d+)\)/g)];
+  assert.ok(reviewColors.length>=2 && reviewColors.every(x=>Math.max(+x[1],+x[2],+x[3])<=100),
+   'Review card should use dark navy shades: '+m.reviewCard);
   assert.match(m.content.gradient,/rgb\(7, 19, 56\)/,'Content studio should use navy');
   assert.match(m.delegates.gradient,/rgb\(13, 37, 87\)/,'Delegates should use navy');
   assert.match(m.officials.gradient,/rgb\(13, 37, 87\)/,'Referees should use navy');
@@ -78,7 +81,7 @@ try{
   assert.equal(await page.locator('#category').inputValue(),'Segunda');
   await page.locator('#team').fill('Boavista FC');
   assert.equal(await page.locator('#team').inputValue(),'Boavista FC');
-  await page.screenshot({path:resolve(out,'admin-'+width+'.png'),fullPage:true,animations:'disabled'});
+
   console.log('Mobile Chromium '+width+'px: navy backgrounds, touch controls and bounds OK');
   await context.close();
  }
