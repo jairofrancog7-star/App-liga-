@@ -87,7 +87,7 @@ try{
   assert.equal(await page.locator('.ljr-knockout[data-ko-mode="competition"]').count(),1);
   if(width<1024){
    const tabs=await page.locator('#screen > .tabs').evaluate(el=>({radius:getComputedStyle(el).borderRadius,background:getComputedStyle(el.querySelector('.tab.active')).backgroundColor,color:getComputedStyle(el.querySelector('.tab.active')).color}));
-   assert.equal(tabs.radius,'0px');assert.equal(tabs.background,'rgba(0, 0, 0, 0)');assert.equal(tabs.color,'rgb(0, 222, 239)');
+   assert.equal(tabs.radius,'0px');assert.equal(tabs.background,'rgba(0, 0, 0, 0)');assert.equal(tabs.color,'rgb(34, 229, 239)');
   }
   assert.match(await page.locator('.ljr-ko-note').textContent(),/Cruces oficiales por definir/);
   assert.ok(await page.locator('.ljr-ko-club img').count()>0,'Competition starts with real league entrants');
