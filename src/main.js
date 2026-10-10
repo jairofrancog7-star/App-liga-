@@ -4540,15 +4540,15 @@ const V60_FIELDS=[
   {id:'sur-3',name:'Campo 3 · Unidad Deportiva Sur',community:'Juventino Rosas',address:'Unidad Deportiva Sur, Juventino Rosas, Guanajuato',maps:'Unidad Deportiva Sur, Juventino Rosas, Guanajuato',lat:20.63753,lon:-100.99297,weather:true},
   {id:'zapata-4',name:'Campo 4 · Emiliano Zapata',community:'Juventino Rosas',address:'Prolongación Emiliano Zapata, Juventino Rosas, Guanajuato',maps:'https://maps.app.goo.gl/vTCjxxked88JuKCY6',lat:null,lon:null,weather:true,weatherLat:20.64337,weatherLon:-100.99286,weatherPrecision:'regional'},
   {id:'cerrito',name:'Campo Cerrito de Gasca',community:'Cerrito de Gasca',address:'Cerrito de Gasca, Santa Cruz de Juventino Rosas, Guanajuato',maps:'Campo de futbol Cerrito de Gasca, Guanajuato',lat:20.617778,lon:-101.0625,weather:true},
-  {id:'tavera',name:'Campo de Tavera',community:'Franco Tavera',address:'Franco Tavera, Santa Cruz de Juventino Rosas, Guanajuato',maps:'https://maps.app.goo.gl/pDsYt63hKVwRTUWS9',lat:20.60839,lon:-100.93238,weather:true},
-  {id:'san-juan',name:'Campo San Juan de la Cruz',community:'San Juan de la Cruz',address:'San Juan de la Cruz, Santa Cruz de Juventino Rosas, Guanajuato 38250',maps:'https://maps.app.goo.gl/VJkp1fRa9t5yzfkb9',streetViewQuery:'Campo San Juan de la Cruz, Santa Cruz de Juventino Rosas, Guanajuato',lat:null,lon:null,weather:true,weatherLat:20.63379,weatherLon:-100.911569,weatherPrecision:'community'},
+  {id:'tavera',name:'Campo de Tavera',community:'Franco Tavera',address:'Franco Tavera, Santa Cruz de Juventino Rosas, Guanajuato',maps:'https://maps.app.goo.gl/yBhVkMrXzL3Npv3WA',lat:null,lon:null,weather:true,weatherLat:20.60839,weatherLon:-100.93238,weatherPrecision:'community',mapLinkUser:true},
+  {id:'san-juan',name:'Campo San Juan de la Cruz',community:'San Juan de la Cruz',address:'San Juan de la Cruz, Santa Cruz de Juventino Rosas, Guanajuato 38250',maps:'https://maps.app.goo.gl/mcc7DpevkPW5mW4M9',streetViewQuery:'Campo San Juan de la Cruz, Santa Cruz de Juventino Rosas, Guanajuato',lat:null,lon:null,weather:true,weatherLat:20.63379,weatherLon:-100.911569,weatherPrecision:'community',mapLinkUser:true},
   {id:'cuenda',name:'Unidad Deportiva Santiago de Cuenda',community:'Santiago de Cuenda',address:'38253 Santiago de Cuenda, Santa Cruz de Juventino Rosas, Guanajuato',maps:'Unidad Deportiva Santiago de Cuenda, Guanajuato',lat:20.59793,lon:-100.99663,weather:true},
   {id:'romerillo',name:'Campo San Antonio de Romerillo',community:'San Antonio de Romerillo',address:'San Antonio de Romerillo, Santa Cruz de Juventino Rosas, Guanajuato 38255',maps:'https://maps.app.goo.gl/K46mpaJvHMMtnUq27',lat:20.60784,lon:-100.94854,weather:true},
-  {id:'fraccionamiento',name:'Campo Fraccionamiento Comontuoso',community:'Comontuoso / Santiago de Cuenda',address:'Fraccionamiento Comontuoso, Santa Cruz de Juventino Rosas, Guanajuato',maps:'https://maps.app.goo.gl/frhHxqfK9TAd3NhE8',lat:null,lon:null,weather:true,weatherLat:20.59793,weatherLon:-100.99663,weatherPrecision:'community'},
-  {id:'pozos',name:'Campo de Fútbol de Pozos',community:'Pozos',address:'Campo de Fútbol de Pozos, Santa Cruz de Juventino Rosas, Guanajuato',maps:'20.61767,-100.90033',lat:20.61767,lon:-100.90033,weather:true},
+  {id:'fraccionamiento',name:'Campo Fraccionamiento Comontuoso',community:'Comontuoso / Santiago de Cuenda',address:'Fraccionamiento Comontuoso, Santa Cruz de Juventino Rosas, Guanajuato',maps:'https://maps.app.goo.gl/Y1ZGLTpGJ7XmGCKT7',lat:null,lon:null,weather:true,weatherLat:20.59793,weatherLon:-100.99663,weatherPrecision:'community',mapLinkUser:true},
+  {id:'pozos',name:'Campo de Fútbol de Pozos',community:'Pozos',address:'Campo de Fútbol de Pozos, Santa Cruz de Juventino Rosas, Guanajuato',maps:'https://goo.gl/maps/BF9dnqf5SaBfu41PA',lat:null,lon:null,weather:true,weatherLat:20.61767,weatherLon:-100.90033,weatherPrecision:'community',mapLinkUser:true},
   {id:'rincon',name:'Campo Rincón de Centeno',community:'Rincón de Centeno',address:'Campo Rincón de Centeno · ubicación exacta en Google Maps',maps:'https://maps.app.goo.gl/RzxJokJsPw86ZePC9',streetViewQuery:'Campo Rincón de Centeno, Santa Cruz de Juventino Rosas, Guanajuato',lat:null,lon:null,weather:true,weatherLat:20.660153,weatherLon:-100.886766,weatherPrecision:'community'},
   {id:'san-jose',name:'Campo San José de la Montaña',community:'San José de la Montaña',address:'San José de la Montaña, Salamanca, Guanajuato 36867',maps:'Campo de futbol San José de la Montaña, Guanajuato',lat:20.60102,lon:-101.07242,weather:true},
-  {id:'san-julian',name:'Campo San Julián Tierra Blanca',community:'San Julián Tierra Blanca',address:'Los Fundadores 100, San Julián Tierra Blanca, Santa Cruz de Juventino Rosas, Guanajuato',maps:'https://maps.app.goo.gl/Rkb9PH3LF5pVu2FTA',lat:20.591403,lon:-101.040358,weather:true}
+  {id:'san-julian',name:'Campo San Julián Tierra Blanca',community:'San Julián Tierra Blanca',address:'Los Fundadores 100, San Julián Tierra Blanca, Santa Cruz de Juventino Rosas, Guanajuato',maps:'https://maps.app.goo.gl/5yfZH7nGMtw2Cqqf7',lat:null,lon:null,weather:true,weatherLat:20.591403,weatherLon:-101.040358,weatherPrecision:'community',mapLinkUser:true}
 ];
 function v60Field(id){return V60_FIELDS.find(f=>f.id===id)||V60_FIELDS[0]}
 function v60MapUrl(f){const m=f.maps||f.address||f.name;return /^https?:\/\//i.test(m)?m:'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(m)}
@@ -4565,6 +4565,8 @@ function v60StreetViewUrl(f){
   return v60MapUrl(f);
 }
 function v60FieldTilePlan(f){
+  // No convertir una referencia meteorológica en fotografía supuestamente exacta de la cancha.
+  if(f?.mapLinkUser)return null;
   // El endpoint ArcGIS .../export?f=image devuelve error HTTP 500.
   // World Imagery ofrece mosaicos JPEG (tile/z/y/x), verificados HTTP 200.
   // Los campos UDS comparten coordenada de complejo: estos pequeños desplazamientos
@@ -4609,7 +4611,7 @@ function v60FieldPreview(f,cls=''){
   const fallback='<a class="v923-google-photo-empty v923-google-photo-link" href="'+mapsLink+
     '" target="_blank" rel="noopener noreferrer" aria-label="Consultar la ubicación de '+name+' en Google Maps">'+
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="3"/><circle cx="12" cy="13" r="3.5"/><path d="m8 6 1.2-2h5.6L16 6"/></svg>'+
-    '<b>Vista aérea de la zona</b><span>'+(plan?'Si la imagen tarda, consulta Google Maps.':'Ubicación sin coordenadas verificadas')+'</span></a>';
+    '<b>Vista aérea de la zona</b><span>'+(plan?'Si la imagen tarda, consulta Google Maps.':(f?.mapLinkUser?'Abrir ubicación proporcionada en Google Maps':'Ubicación sin coordenadas verificadas'))+'</span></a>';
   const aerial=plan?'<span class="v928-tile-grid" aria-hidden="true" style="left:calc(50% - '+plan.left+'px);top:calc(50% - '+plan.top+'px)">'+
     plan.tiles.map(tile=>'<img class="v928-imagery-tile" src="'+v64Esc(tile.url)+
     '" alt="" loading="lazy" decoding="async" style="left:'+tile.x+'px;top:'+tile.y+'px"'+
@@ -4863,7 +4865,7 @@ function weatherFieldsView(){
 function v60VenuesView(){
   return '<section class="v60-tool-page v921-field-page">'+v60Header('SEDES','Dónde se juega','Campos y comunidades de la Liga con acceso directo a su ubicación.')+
     '<div class="v60-field-list v921-field-list">'+V60_FIELDS.map(f=>
-      '<article class="v60-field-card v921-field-card">'+v60FieldPreview(f,'v60-field-preview-card')+
+      '<article class="v60-field-card v921-field-card" data-v921-field="'+v64Esc(f.id)+'">'+v60FieldPreview(f,'v60-field-preview-card')+
         '<div class="v60-field-top"><h3>'+v64Esc(f.name)+'</h3><span>'+v64Esc(f.community)+'</span></div>'+
         '<p class="v921-field-address">'+v60Icon('field')+'<span>'+v64Esc(f.address)+'</span></p>'+
         '<div class="v60-actions v921-field-actions"><a class="v60-link" href="'+v64Esc(v60MapUrl(f))+
