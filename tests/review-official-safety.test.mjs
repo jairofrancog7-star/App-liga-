@@ -89,7 +89,8 @@ test('Borradores sin autorización se incluyen como pendientes, nunca elegibles'
    approval:{status:'approved',by:'presidencia',at:'2026-10-10T12:00:00Z'}}
  ];
  const res=audit(data,new Date('2026-10-10T16:00:00Z'));
- assert.equal(res.counts.unapprovedNotices,1);
+ // Ambos son pendientes: el segundo declara "approved", pero no trae una firma válida.
+ assert.equal(res.counts.unapprovedNotices,2);
  assert.ok(res.review.some(v=>v.includes('pendientes de aprobación')));
  assert.ok(res.checks.some(v=>v.includes('0 aviso(s) con firma HMAC válida')));
 });
