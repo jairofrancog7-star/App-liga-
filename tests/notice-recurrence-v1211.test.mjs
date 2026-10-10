@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
+import {readFileSync,existsSync} from 'node:fs';
 import {resolve} from 'node:path';
 const root=resolve(import.meta.dirname,'..');
 const read=path=>readFileSync(resolve(root,path),'utf8');
@@ -92,6 +92,13 @@ test('El control requiere sesión administrativa, confirmación y usa el mismo r
  assert.match(source,/cancelFutureSeries\(readItems\(\),groupId,Date\.now\(\)\)/);
  assert.match(source,/LJR_V713_NOTICE_SCHEDULER_REFRESH/);
  assert.match(read('src/v1211-notice-recurrence.css'),/v1212-cancel-series/);
- assert.equal(read('demo/src/v1211-notice-recurrence.css'),read('src/v1211-notice-recurrence.css'));
- assert.match(read('demo/index.html'),/v1211-notice-recurrence\.css/);
+ // En la demo, Vite puede integrar este CSS en assets/index-*.css.
+ const standalone='demo/src/v1211-notice-recurrence.css',html=read('demo/index.html');
+ if(existsSync(resolve(root,standalone))){
+   assert.equal(read(standalone),read('src/v1211-notice-recurrence.css'));
+ }else{
+   const css=html.match(/href="\.\/assets\/([^"]+\.css)"/)?.[1];
+   assert.ok(css,'Debe existir el archivo CSS de la demo');
+   assert.match(read('demo/assets/'+css),/v1212-cancel-series/);
+ }
 });
