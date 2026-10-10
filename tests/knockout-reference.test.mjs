@@ -77,3 +77,18 @@ test('Competition can show real ranked entrants while clearly marking unpublishe
  const official={...category,fixtures:[{rows:[['','Cuartos de final','Juventus',2,'vs',1,'Boavista','','11/10/2026']]}]};
  const published=api.render({category:official,showEntrants:true});assert.ok(!published.includes('Equipos según clasificación'));assert.ok(!published.includes('HERRERAS FC'));
 });
+
+test('standings separates seeded and unseeded play-offs and elimination without repeating teams',()=>{
+ const start=sim.indexOf('function tableView(){'),end=sim.indexOf('/* Explains the simulator',start);
+ const renderTable=new Function('simulatedStandings','tableRow','classificationGuide','esc',sim.slice(start,end)+';return tableView()');
+ const teams=Array.from({length:36},(_,i)=>({name:'Club '+(i+1),pos:i+1}));
+ const html=renderTable(()=>teams,r=>'<p>'+r.name+'</p>',()=>'',s=>s);
+ assert.ok(html.includes('PLAY-OFFS ELIMINATORIOS (CABEZA DE SERIE)'));
+ assert.ok(html.includes('PLAY-OFFS ELIMINATORIOS (NO CABEZA DE SERIE)'));
+ assert.ok(html.includes('PLAZAS DE ELIMINACIÓN'));
+ for(const team of teams)assert.equal(html.split('<p>'+team.name+'</p>').length-1,1);
+ const groups=html.split('class="v501-table-group"').slice(1);
+ assert.equal(groups.length,4);
+ assert.ok(groups[1].includes('<p>Club 9</p>'));assert.ok(groups[1].includes('<p>Club 16</p>'));assert.ok(!groups[1].includes('<p>Club 17</p>'));
+ assert.ok(groups[2].includes('<p>Club 17</p>'));assert.ok(groups[2].includes('<p>Club 24</p>'));assert.ok(!groups[2].includes('<p>Club 25</p>'));
+});

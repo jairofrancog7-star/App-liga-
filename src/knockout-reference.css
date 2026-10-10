@@ -169,13 +169,64 @@ html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-t
 html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-top .v774-sim-icons{inset:24px 12px auto auto!important;gap:0!important}
 html body[data-app-route="simulator"] #app #screen [data-v501-simulator] [data-v501-account]{display:none!important}
 html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-top .ljr-chrome-actions{inset:24px 12px auto!important}
-html body[data-app-route="competition"] #screen:has(.ljr-knockout) > .tabs{
- background:#000040!important;border:1.5px solid #737fae!important;border-radius:28px!important;overflow:hidden!important;margin:8px 16px!important;
-}
-html body[data-app-route="competition"] #screen:has(.ljr-knockout) > .tabs .tab{background:transparent!important;color:#fff!important;border:0!important;border-radius:0!important;box-shadow:none!important}
-html body[data-app-route="competition"] #screen:has(.ljr-knockout) > .tabs .tab.active{background:#fff!important;color:#080828!important}
-html body[data-app-route="competition"] #screen:has(.ljr-knockout) > .tabs .tab::after{display:none!important}
 @media(max-width:359px){html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-tabs button{font-size:11px!important}}
 
 html body[data-app-route="competition"]:has(.ljr-knockout) #app > .topbar{background:#000040!important;background-image:none!important}
-html body[data-app-route="competition"] #screen:has(.ljr-knockout) > .tabs .tab.active{border-bottom:0!important}
+
+
+/* Restore Competition's original text tabs and cyan underline. */
+html body[data-app-route="competition"] #app #screen > .tabs{
+ display:flex!important;gap:0!important;justify-content:space-between!important;align-items:stretch!important;
+ margin:0!important;padding:0 10px!important;border:0!important;border-bottom:1px solid #292954!important;
+ border-radius:0!important;background:#000040!important;background-image:none!important;box-shadow:none!important;overflow:visible!important;
+}
+html body[data-app-route="competition"] #app #screen > .tabs .tab,
+html body[data-app-route="competition"] #app #screen > .tabs .tab.active{
+ position:relative!important;flex:1 1 0!important;min-width:0!important;height:52px!important;padding:0 5px!important;
+ background:transparent!important;background-image:none!important;color:#adaecb!important;
+ border:0!important;border-radius:0!important;box-shadow:none!important;font:700 12px/1.15 Roboto,Arial,sans-serif!important;white-space:nowrap!important;
+}
+html body[data-app-route="competition"] #app #screen > .tabs .tab:first-child{flex-grow:1.7!important}
+html body[data-app-route="competition"] #app #screen > .tabs .tab.active{color:#00deef!important}
+html body[data-app-route="competition"] #app #screen > .tabs .tab::after{content:none!important;display:none!important}
+html body[data-app-route="competition"] #app #screen > .tabs .tab :is(.v86-tab-line,.v1051-tab-line){display:none!important}
+html body[data-app-route="competition"] #app #screen > .tabs .tab.active::after{
+ content:''!important;display:block!important;position:absolute!important;bottom:0!important;left:20%!important;right:20%!important;
+ width:auto!important;height:4px!important;background:#00deef!important;border-radius:4px 4px 0 0!important;transform:none!important;
+}
+/* Table, section headings and guide share the same navy surface. */
+html body[data-app-route="simulator"],html body[data-app-route="simulator"] #app #screen{background:#000040!important;background-image:none!important}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] :is(.v501-board,.v501-table-head,.v501-table-body,.v501-table-group,.v501-table-label,.v501-table-row,.v501-category,.v1051-guide){
+ background:#000040!important;background-image:none!important;box-shadow:none!important;
+}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] :is(.v501-standings,.v501-table-body,.v501-table-group){overflow:visible!important}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-table-head{
+ position:sticky!important;top:80px!important;z-index:16!important;height:26px!important;min-height:26px!important;
+ margin:0!important;padding-top:0!important;padding-bottom:0!important;
+}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-table-label{
+ position:sticky!important;top:106px!important;z-index:15!important;min-height:31px!important;
+ margin:0!important;padding:10px 1px 7px!important;color:#adaecb!important;
+ border:0!important;border-bottom:1px solid #8586ae!important;
+}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-table-group{position:relative!important;margin:0!important;padding:0!important}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-table-row{border-color:#252552!important}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v501-table-row .pill{background:#252560!important;color:#fff!important}
+html body[data-app-route="simulator"] #app #screen .ljr-knockout{overflow:visible!important}
+html body[data-app-route="simulator"] #app #screen .ljr-knockout .ljr-ko-tabs{
+ position:sticky!important;top:80px!important;z-index:16!important;background:#000040!important;
+ padding-top:8px!important;padding-bottom:8px!important;
+}
+@media(max-width:359px){html body[data-app-route="competition"] #app #screen > .tabs .tab{font-size:10px!important}}
+
+html body #screen .ljr-knockout .ljr-ko-scroll{scroll-snap-type:none!important}
+
+/* Desktop's native toolbar takes the first 54px of the viewport. */
+html body.lj-desktop[data-app-route="simulator"]:has(#ljpc-native-toolbar) #app #screen [data-v501-simulator] .v501-top{top:54px!important}
+html body.lj-desktop[data-app-route="simulator"]:has(#ljpc-native-toolbar) #app #screen [data-v501-simulator] .v501-table-head{top:134px!important}
+html body.lj-desktop[data-app-route="simulator"]:has(#ljpc-native-toolbar) #app #screen [data-v501-simulator] .v501-table-label{top:160px!important}
+html body.lj-desktop[data-app-route="simulator"]:has(#ljpc-native-toolbar) #app #screen .ljr-knockout .ljr-ko-tabs{top:134px!important}
+
+html body.lj-desktop[data-app-route="simulator"],html body.lj-desktop[data-app-route="simulator"] #app{overflow:visible!important}
+html body.lj-desktop[data-app-route="simulator"] #ljpc-native-toolbar{z-index:2147483647!important;background:#000040!important;background-image:none!important}
+html body[data-app-route="simulator"] #app #screen [data-v501-simulator] .v1051-stat{background:#0a0a60!important;background-image:none!important;border-color:#252552!important}

@@ -235,7 +235,8 @@ function tableView(){
    groups.push({from:1,to:n,label:'DIRECTOS A OCTAVOS'});
  }else{
    groups.push({from:1,to:Math.min(8,n),label:'DIRECTOS A OCTAVOS'});
-   if(n>8)groups.push({from:9,to:Math.min(24,n),label:'PLAY-OFFS ELIMINATORIOS (NO CABEZA DE SERIE)'});
+   if(n>8)groups.push({from:9,to:Math.min(16,n),label:'PLAY-OFFS ELIMINATORIOS (CABEZA DE SERIE)'});
+   if(n>16)groups.push({from:17,to:Math.min(24,n),label:'PLAY-OFFS ELIMINATORIOS (NO CABEZA DE SERIE)'});
    if(n>24)groups.push({from:25,to:n,label:'PLAZAS DE ELIMINACIÓN'});
  }
  return '<section class="v501-board v501-standings">'+
@@ -638,7 +639,7 @@ window.addEventListener('resize',()=>{if(route()==='simulator')v515ApplySheetSna
 function mount(){
  if(rendering||route()!=='simulator')return;
  const screen=document.getElementById('screen');if(!screen)return;
- const sig=[catId(),view(),bracketStage(),localStorage.getItem('v501-sim-journey:'+catId())||'',localStorage.getItem(simKey())||'',db()?.captured_at_utc||''].join('|');
+ const sig=[catId(),view(),localStorage.getItem('v501-sim-journey:'+catId())||'',localStorage.getItem(simKey())||'',db()?.captured_at_utc||''].join('|');
  const current=screen.querySelector('[data-v501-simulator]');
  if(current&&current.dataset.sig===sig)return;
  rendering=true;

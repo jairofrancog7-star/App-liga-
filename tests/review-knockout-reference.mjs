@@ -17,6 +17,19 @@ try{
   const page=await browser.newPage({viewport:{width,height}});
   await page.goto('http://127.0.0.1:4173/#/simulator',{waitUntil:'domcontentloaded'});
   await page.locator('.v501-tabs [data-v501-view="bracket"]').waitFor();
+  await page.locator('.v501-tabs [data-v501-view="standings"]').click();
+  await page.locator('.v501-table-group').first().waitFor();
+  const surfaces=await page.locator('.v501-standings,.v501-table-head,.v501-table-row,.v501-table-label,.v501-table-group').evaluateAll(es=>es.map(e=>getComputedStyle(e).backgroundColor));
+  assert.ok(surfaces.every(c=>c==='rgb(0, 0, 64)'),`${name}: one navy table background`);
+  if(width>=1024)await page.evaluate(()=>window.scrollTo(0,220));
+  else await page.locator('#screen').evaluate(el=>{el.scrollTop=220});
+  await page.waitForTimeout(150);
+  const sticky=await page.locator('.v501-standings').evaluate(el=>({header:el.querySelector('.v501-table-head').getBoundingClientRect().y,label:el.querySelector('.v501-table-label').getBoundingClientRect().y,top:document.querySelector('.v501-top').getBoundingClientRect().bottom}));
+  assert.ok(Math.abs(sticky.header-sticky.top)<2,`${name}: table columns remain below header`);
+  assert.ok(Math.abs(sticky.label-sticky.header-26)<2,`${name}: group label follows below columns`);
+  await page.screenshot({path:`${folder}/${name}-standings-scroll.png`});
+  if(width>=1024)await page.evaluate(()=>window.scrollTo(0,0));
+  else await page.locator('#screen').evaluate(el=>{el.scrollTop=0});
   await page.locator('.v501-tabs [data-v501-view="bracket"]').click();
   await page.locator('.ljr-knockout').waitFor();
   const root=page.locator('.ljr-knockout');
@@ -38,6 +51,14 @@ try{
    }
    await page.screenshot({path:`${folder}/${name}-${stage}.png`});
   }
+  await page.locator('.ljr-ko-tabs [data-ko-stage="playoff"]').click();
+  await page.waitForTimeout(500);
+  const swipeOffset=await root.evaluate(el=>{const sc=el.querySelector('.ljr-ko-scroll'),col=el.querySelector('[data-ko-column="octavos"]');sc.dispatchEvent(new Event('touchstart'));const offset=col.offsetLeft+35;sc.scrollLeft=offset;return offset});
+  await page.waitForTimeout(200);
+  assert.equal(await root.getAttribute('data-ko-stage'),'octavos');
+  assert.ok(await root.evaluate((el,x)=>Math.abs(el.querySelector('.ljr-ko-scroll').scrollLeft-x)<2,swipeOffset),'Stage label updates without repositioning the swipe');
+  await page.locator('.ljr-ko-tabs [data-ko-stage="final"]').click();
+  await page.waitForTimeout(500);
   const layout=await root.evaluate(el=>({width:el.clientWidth,color:getComputedStyle(el).backgroundColor,clubs:[...el.querySelectorAll('.ljr-ko-club')].map(n=>({width:n.clientWidth,height:n.clientHeight,overflow:n.scrollWidth>n.clientWidth}))}));
   assert.equal(layout.color,'rgb(0, 0, 64)');assert.ok(layout.clubs.every(c=>c.height===54));
   assert.equal(await page.locator('#v514-simulator-competition-mirror').count(),0);
@@ -64,6 +85,10 @@ try{
   else await page.locator('#screen > .tabs .tab').filter({hasText:/^Cuadro$/}).click();
   await page.locator('.ljr-knockout[data-ko-mode="competition"]').waitFor();
   assert.equal(await page.locator('.ljr-knockout[data-ko-mode="competition"]').count(),1);
+  if(width<1024){
+   const tabs=await page.locator('#screen > .tabs').evaluate(el=>({radius:getComputedStyle(el).borderRadius,background:getComputedStyle(el.querySelector('.tab.active')).backgroundColor,color:getComputedStyle(el.querySelector('.tab.active')).color}));
+   assert.equal(tabs.radius,'0px');assert.equal(tabs.background,'rgba(0, 0, 0, 0)');assert.equal(tabs.color,'rgb(0, 222, 239)');
+  }
   assert.match(await page.locator('.ljr-ko-note').textContent(),/Cruces oficiales por definir/);
   assert.ok(await page.locator('.ljr-ko-club img').count()>0,'Competition starts with real league entrants');
   for(const stage of ['playoff','octavos','cuartos','semifinal','final']){
