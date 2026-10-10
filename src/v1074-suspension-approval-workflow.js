@@ -413,8 +413,13 @@ function boot(){
  window.addEventListener('ljr:auto-notice',()=>{const p=$('.v425-suspension',screen);if(p)refresh(p)});
  window.addEventListener('hashchange',queueRedraw);
  window.addEventListener('liga:admin',queueRedraw);
+ document.addEventListener('liga:admin',queueRedraw);
  window.addEventListener('pageshow',queueRedraw);
- window.addEventListener('focus',()=>{if(route()==='suspensionTool'){const p=$('.v425-suspension',screen);if(p)refresh(p)}});
+ window.addEventListener('focus',()=>{
+  if(route()!=='suspensionTool')return;
+  const p=$('.v425-suspension',screen);
+  if(p){panel(p);if(window.LJR_MEDIA?.admin)refresh(p)}
+ });
  queueRedraw();
 }
 window.LJR_SUSPENSION_WORKFLOW={canSchedule:isAuthorized};
