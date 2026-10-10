@@ -12,20 +12,22 @@ const pad=v=>String(v).padStart(2,'0');
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=(s,r=document)=>r.querySelector(s);
 const all=(s,r=document)=>Array.from(r.querySelectorAll(s));
-let watchRoot=null,options=[],fieldList=null;
+let watchRoot=null,options=[],fieldList=null,fieldPromise=null,fixtureCacheData=null,fixtureCache=[];
 function parseDate(raw){
   const m=String(raw||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
   return m?{date:m[3]+'-'+pad(m[2])+'-'+pad(m[1]),time:m[4]?pad(m[4])+':'+m[5]:''}:{date:'',time:''};
 }
-function fixtures(){
+function fixtures(data=window.LJR_OFFICIAL_DATA){
+  if(data&&data===fixtureCacheData)return fixtureCache;
   const output=[];
-  for(const [cat,c] of Object.entries(window.LJR_OFFICIAL_DATA?.categories||{})){
+  for(const [cat,c] of Object.entries(data?.categories||{})){
     (c.fixtures||[]).forEach((block,bi)=>(block.rows||[]).forEach((r,ri)=>{
       if(!r?.[2]&&!r?.[6])return;
       const when=parseDate(r[8]);
-      output.push({id:cat+'-'+bi+'-'+ri,category:c.name||cat,home:String(r[2]||''),away:String(r[6]||''),venue:String(r[7]||''),date:when.date,time:when.time});
+      output.push({id:cat+'-'+bi+'-'+ri,cat,round:String(r[1]||''),category:c.name||cat,home:String(r[2]||''),away:String(r[6]||''),venue:String(r[7]||''),date:when.date,time:when.time});
     }));
   }
+  if(data){fixtureCacheData=data;fixtureCache=output}
   return output;
 }
 function selected(root){
@@ -51,16 +53,18 @@ function minutes(date,time){
 }
 function conflicts(n){
   const at=minutes(n.nextDate,n.nextTime);
-  if(!Number.isFinite(at)||!n.nextVenue||n.type==='Suspensión')return [];
+  if(!Number.isFinite(at)||n.type==='Suspensión')return {fields:[],teams:[]};
   const saved=(()=>{try{return JSON.parse(localStorage.getItem('ljr-schedule-changes-v1')||'[]')}catch{return []}})();
   const latest=new Map();
   for(const old of saved)if(old?.matchId)latest.set(old.matchId,old);
-  const current=fixtures().map(f=>{
+  const localTeam=[norm(n.home),norm(n.away)].filter(Boolean);
+  const near=fixtures().map(f=>{
     const change=latest.get(f.id);
     return {...f,date:change?.newDate||f.date,time:change?.newTime||f.time,venue:change?.newVenue||f.venue};
-  });
-  return current.filter(f=>f.id!==n.id&&norm(f.venue)===norm(n.nextVenue)&&Number.isFinite(minutes(f.date,f.time))&&Math.abs(minutes(f.date,f.time)-at)<120)
-    .slice(0,4).map(f=>f.home+' vs '+f.away+' ('+f.time+' h)');
+  }).filter(f=>f.id!==n.id&&Number.isFinite(minutes(f.date,f.time))&&Math.abs(minutes(f.date,f.time)-at)<120);
+  const fields=near.filter(f=>n.nextVenue&&norm(f.venue)===norm(n.nextVenue)).slice(0,4).map(f=>f.home+' vs '+f.away+' ('+f.time+' h)');
+  const teams=near.filter(f=>localTeam.some(t=>t===norm(f.home)||t===norm(f.away))).slice(0,4).map(f=>f.home+' vs '+f.away+' ('+f.time+' h)');
+  return {fields,teams};
 }
 function analyze(n){
   if(!n)return {level:'neutral',text:'Elige un partido oficial para empezar.',warnings:[],changes:[]};
@@ -75,7 +79,8 @@ function analyze(n){
     if(!changes.length)warnings.push('No hay diferencias respecto del partido seleccionado.');
   }
   const hits=conflicts(n);
-  if(hits.length)warnings.push('Posible cruce de cancha (menos de 2 horas): '+hits.join(', ')+'.');
+  if(hits.fields.length)warnings.push('Posible cruce de cancha (menos de 2 horas): '+hits.fields.join(', ')+'.');
+  if(hits.teams.length)warnings.push('Posible conflicto de equipo (menos de 2 horas): '+hits.teams.join(', ')+'.');
   return {level:warnings.length?'warning':changes.length||n.type==='Suspensión'?'ok':'neutral',
     text:changes.length?'Cambio detectado: '+changes.join(' · ')+'.':'Todavía no hay cambios nuevos.',
     warnings,changes};
@@ -120,17 +125,19 @@ function filter(root){
   else {sel.value='';const base=$('[data-v129-current]',root);if(base)base.innerHTML='<b>Selecciona un partido</b><small>Elige un partido de los resultados filtrados.</small>'}
   update(root);
 }
-async function maps(root){
-  const n=draft(root);const venue=n?.nextVenue||n?.venue;
+function warmFields(){
+  if(fieldList||fieldPromise)return fieldPromise;
+  fieldPromise=fetch('./data/fields-v38-22.json',{cache:'force-cache'})
+    .then(r=>r.ok?r.json():null).then(d=>{fieldList=d?.fields||[];return fieldList})
+    .catch(()=>{fieldList=[];return fieldList});
+  return fieldPromise;
+}
+function maps(root){
+  const n=draft(root),venue=n?.nextVenue||n?.venue;
   if(!venue){announce(root,'Selecciona primero una cancha.');return}
-  try{
-    if(!fieldList){
-      const r=await fetch('./data/fields-v38-22.json',{cache:'force-cache'});
-      if(r.ok)fieldList=(await r.json()).fields||[];
-    }
-  }catch(_){}
   const field=(fieldList||[]).find(f=>[f.name,...(f.aliases||[])].some(a=>norm(a)===norm(venue)));
   const place=field?.mapsQuery||field?.address||venue+', Juventino Rosas, Guanajuato';
+  // Abrir dentro del gesto de clic: en Chrome Android los popups tras await pueden bloquearse.
   window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(place),'_blank','noopener,noreferrer');
 }
 function calendar(root){
@@ -201,7 +208,7 @@ function init(root){
   $('[data-v1220-search]',root).addEventListener('input',()=>filter(root));
   if(!root.__ljrV1220EventsBound){
     root.__ljrV1220EventsBound=true;
-  root.addEventListener('input',e=>{if(e.target.closest('.v129-editor'))update(root)});
+  root.addEventListener('input',e=>{if(e.target.closest('.v129-editor')&&!e.target.matches('[data-v129-reason]'))update(root)});
   root.addEventListener('change',e=>{if(e.target.closest('.v129-editor'))setTimeout(()=>update(root),0)});
   root.addEventListener('click',e=>{
     const button=e.target.closest('button');if(!button)return;
@@ -215,7 +222,7 @@ function init(root){
   root.addEventListener('click',e=>{
     if(!e.target.closest('[data-v129-save],[data-v129-generate]'))return;
     const n=draft(root),report=analyze(n);
-    const blocking=report.warnings.filter(w=>!w.startsWith('Posible cruce'));
+    const blocking=report.warnings.filter(w=>!w.startsWith('Posible '));
     if(blocking.length){
       e.preventDefault();e.stopImmediatePropagation();
       announce(root,blocking.join(' '));update(root);return;
@@ -227,6 +234,7 @@ function init(root){
   const observer=new MutationObserver(()=>decoratePreview(root));
   observer.observe(root,{childList:true,subtree:true});
   }
+  warmFields();
   update(root);decoratePreview(root);
 }
 function boot(){
