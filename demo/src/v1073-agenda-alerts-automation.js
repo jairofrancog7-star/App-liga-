@@ -61,11 +61,15 @@ const escICS=s=>String(s||'').replace(/\\/g,'\\\\').replace(/\r?\n/g,'\\n').repl
 const stamp=v=>new Date(v).toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
 function calendar(){
  const all=summary().all.filter(x=>Number.isFinite(datetime(x.start))&&x.home&&x.away);
- if(!all.length)return toast('Primero guarda al menos un partido con equipos y horario');
- const rows=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Liga Juventino Rosas//Agenda local//ES','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Agenda local de jornada'];
- all.forEach((m,i)=>{const start=datetime(m.start),end=start+Math.min(360,Math.max(30,Number(m.duration)||120))*60000;
- rows.push('BEGIN:VEVENT','UID:'+stamp(start)+'-'+i+'-ljr-local@agenda.invalid','DTSTAMP:'+stamp(Date.now()),'DTSTART:'+stamp(start),'DTEND:'+stamp(end),'SUMMARY:'+escICS(m.home+' vs '+m.away),'LOCATION:'+escICS(m.field),'DESCRIPTION:'+escICS('Borrador local. Confirmar con la Liga antes del partido.'),'END:VEVENT')});
- rows.push('END:VCALENDAR','');download(rows.join('\r\n'),'text/calendar;charset=utf-8','Agenda_Juventino_Rosas.ics');toast('Calendario descargado para importar en tu teléfono');
+ const next=selected();
+ if(next.home&&next.away&&Number.isFinite(datetime(next.start))&&!all.some(x=>x.start===next.start&&x.home===next.home&&x.away===next.away))all.unshift(next);
+ if(!all.length)return toast('Primero selecciona los dos equipos y el horario del partido.');
+ const events=all.map(m=>({
+  title:m.home+' - '+m.away,iso:m.start.slice(0,10),time:m.start.slice(11,16),
+  duration:Math.min(360,Math.max(30,Number(m.duration)||120)),venue:m.field,
+  description:'Liga Juventino Rosas · Borrador local, pendiente de confirmación oficial.'
+ }));
+ window.LJR_GOOGLE_CALENDAR_GLOBAL.choose(events,'Selecciona el partido de la agenda');
 }
 function syncPanel(){
  if(route()!=='agendaBuilder')return;
@@ -89,7 +93,7 @@ function mount(){
  '<div class="ag1073-info" data-ag1073-info aria-live="polite"></div>'+
  '<div class="ag1073-actions">'+
  '<button type="button" data-ag1073-action="notice">'+agAction('notice','Preparar aviso')+'</button>'+
- '<button type="button" data-ag1073-action="calendar">'+agAction('calendar','Calendario (.ics)')+'</button>'+
+ '<button type="button" data-ag1073-action="calendar">'+agAction('calendar','Google Calendar')+'</button>'+
  '<button type="button" data-ag1073-action="last">'+agAction('last','Reutilizar campo')+'</button>'+
  '<button type="button" data-ag1073-action="weather">'+agAction('weather','Revisar clima')+'</button></div>'+
  '<div data-ag1073-warnings class="ag1073-warnings" aria-live="polite"></div>'+
