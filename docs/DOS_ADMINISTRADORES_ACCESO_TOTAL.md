@@ -30,3 +30,23 @@ Ambos deben poder editar los módulos administrativos, incluidos publicaciones, 
 - Las dos cuentas conservan sesiones y contraseñas separadas; las operaciones quedan auditadas.
 
 > No marcar como habilitado el segundo acceso hasta que lo confirme el backend. El formulario de registro y los cambios en la vista solamente preparan el flujo.
+
+## V1208 (10 oct 2026): segundo principal, Avisos y Juntas
+- Código aplicado: `server/notifications/principals-schema.sql`, `bootstrap.mjs`, `authorization.mjs`, `index.mjs`, `src/v1208-coadmins-ui.js` y estilos compactos.
+- **El propietario original** sigue siendo quien tiene `owner=true` desde el CMS remoto.
+- **Segundo principal**: cuando exista una cuenta administrativa activa e independiente en el CMS, el propietario original puede seleccionarla en Administración → Dos administradores y aprobarla. Se guarda solo el ID ya autenticado en PostgreSQL. Un registro local o la coincidencia del correo/teléfono NO otorga permisos.
+- El segundo principal recibe permisos equivalentes a `presidente` **solo dentro de Avisos, Juntas y Cédulas servidos por Railway**; el propietario original mantiene su acceso.
+- El segundo principal puede administrar avisos, leer la auditoría y utilizar las rutas protegidas por permisos de ese servicio. El propietario original puede revocar la segunda cuenta; el sistema audita aprobación y revocación.
+- La tabla admite **máximo una segunda cuenta**, mediante restricción de base de datos y bloqueo transaccional. El segundo principal sigue necesitando sesión propia válida del CMS al realizar cada acción.
+- Seguridad: `GET /admin/principals` solo para roles autorizados. `POST/DELETE /admin/principals` solo para el propietario original. La concesión valida el usuario activo contra `GET /api/admins` del CMS con el token de sesión del propietario.
+- CI: `tests/dual-principals.test.mjs` verifica privilegios, requisito de aprobación, migración y controles del cliente.
+
+### Todavía no equivale a acceso total a toda la app
+El CMS remoto principal de medios / contenido / resultados aún debe admitir a ambas identidades como administradores globales. El acceso de **GitHub** y el rol de **Railway** no cambian automáticamente la base de datos ni los controles del CMS privado. Configurar ese servicio sigue pendiente y no debe presentarse como terminado.
+
+### Cómo terminar
+1. Crear la cuenta independiente del presidente en la administración **real del CMS** con contraseña propia.
+2. Comprobar la titularidad del correo y teléfono fuera del navegador público.
+3. Iniciar sesión como el propietario original; seleccionar la cuenta presidencial en **Administración → Dos administradores** para Avisos y Juntas.
+4. En el CMS privado, habilitar también las dos cuentas para todas las operaciones y verificar `/api/me` para ambas, sin reemplazar ni revocar al dueño original.
+5. Comprobar en dos navegadores/dispositivos separados que ambas sesiones operan con sus propios tokens, y que usuarios normales no tienen acceso.
