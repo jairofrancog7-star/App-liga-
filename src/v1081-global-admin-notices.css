@@ -1,0 +1,51 @@
+/* V1081 · Herramientas privadas y noticias globales, compactas, sin columnas encimadas. */
+.liga-media-modal>section.v1081-dialog{background:linear-gradient(155deg,#112b76 0%,#091856 100%)!important;}
+.liga-media-modal .v1081,.liga-media-modal .v1081 *{box-sizing:border-box;min-width:0}
+.liga-media-modal .v1081{display:grid;gap:12px;color:#f3f9ff;font:500 13px/1.4 system-ui,Roboto,sans-serif}
+.liga-media-modal .v1081-note{margin:0;padding:10px;border:1px solid rgba(96,170,238,.3);border-radius:11px;background:#0b2767;color:#bcd8fa;font-size:11px;line-height:1.48}
+.liga-media-modal .v1081 form{display:grid;gap:10px;margin:0}
+.liga-media-modal .v1081 form>label,.liga-media-modal .v1081-two>label{display:grid;gap:5px;color:#dcedfc;font-size:12px;font-weight:700;margin:0}
+.liga-media-modal .v1081-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.liga-media-modal .v1081 :is(input,textarea,select){width:100%;height:auto;min-height:40px;padding:10px;border-radius:10px;border:1px solid #5282be;background:#091957;color:white;font:500 13px/1.35 system-ui,sans-serif}
+.liga-media-modal .v1081 textarea{resize:vertical;min-height:86px}
+.liga-media-modal .v1081 input::placeholder,.liga-media-modal .v1081 textarea::placeholder{color:#9ab4d9}
+.liga-media-modal .v1081 .v1081-check{display:flex;align-items:center;gap:7px;color:#bde0f6;font-size:11px}
+.liga-media-modal .v1081 .v1081-check input{width:17px;min-height:17px;height:17px;accent-color:#37d5e8;flex:none}
+.liga-media-modal .v1081-preview{padding:9px 10px;margin:0;border-left:3px solid #40ddf0;background:#163975;color:#bfdefb;border-radius:8px;font-size:11px}
+.liga-media-modal .v1081-actions{display:flex;gap:8px;margin:0}
+.liga-media-modal .v1081 button{margin:0;border:1px solid #4899d6;background:#173b80;color:#edf9ff;border-radius:10px;min-height:38px;padding:8px 11px;font-size:12px;font-weight:750}
+.liga-media-modal .v1081 button:focus-visible{outline:2px solid #47ecfa;outline-offset:2px}
+.liga-media-modal .v1081 button:disabled{opacity:.5;cursor:wait}
+.liga-media-modal .v1081-actions button{flex:1}
+.liga-media-modal .v1081-actions [data-v1081-save],.liga-media-modal .v1081-role button{background:linear-gradient(130deg,#117cbe,#165995);border-color:#67d6ee;color:white}
+.liga-media-modal .v1081-list{display:grid;gap:8px;border-top:1px solid #557ab955;padding-top:11px}
+.liga-media-modal .v1081-list-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.liga-media-modal .v1081-list-head strong{font-size:14px}
+.liga-media-modal .v1081-list [data-v1081-items]{display:grid;gap:7px;max-height:300px;overflow-y:auto}
+.liga-media-modal .v1081-item{display:flex;justify-content:space-between;align-items:center;gap:9px;border:1px solid #496cab7a;border-radius:11px;padding:10px;background:#122567}
+.liga-media-modal .v1081-item strong,.liga-media-modal .v1081-role strong,.liga-media-modal .v1081-audit-row strong{display:block;font-size:12px;color:#f9fdff;overflow-wrap:anywhere}
+.liga-media-modal .v1081-item small,.liga-media-modal .v1081-audit-row small{display:block;color:#afc7ed;font-size:10px;line-height:1.4;margin-top:4px;overflow-wrap:anywhere}
+.liga-media-modal .v1081-item-actions{display:flex;flex-wrap:wrap;gap:6px;flex:none}
+.liga-media-modal .v1081-item-actions button{min-height:33px;padding:6px 8px;font-size:10px}
+.liga-media-modal .v1081-item-actions .is-danger{color:#ffd2e2;background:#402050;border-color:#a36383}
+.liga-media-modal .v1081-status{min-height:0;margin:0;color:#87effb;font-size:11px;overflow-wrap:anywhere}
+.liga-media-modal .v1081-role{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;align-items:center;gap:8px;border-bottom:1px solid #639ad13d;padding:10px 0}
+.liga-media-modal .v1081-role select{min-height:36px;font-size:11px}
+.liga-media-modal .v1081-role button{font-size:11px;min-height:35px;padding:7px}
+.liga-media-modal .v1081-audit-row{border:1px solid #4971b47d;border-radius:9px;padding:9px;background:#132969;margin-bottom:6px}
+/* Noticias globales aparecen únicamente si existe backend conectado y hay contenido o Push disponible. */
+body[data-app-route="news"] #screen .v1081-public,
+body[data-app-route="notifications"] #screen .v1081-public,
+#screen .v1081-public{box-sizing:border-box;width:100%;margin:12px 0;padding:12px;border:1px solid #386abc8c;border-radius:17px;background:linear-gradient(153deg,#132e83,#0a1a5b);color:#fff;font-family:Inter,Roboto,system-ui,sans-serif}
+#screen .v1081-public *{box-sizing:border-box;min-width:0}
+#screen .v1081-public-header h3{font-size:15px;font-weight:850;color:#f7feff;margin:0 0 8px}
+#screen .v1081-public-card{margin-top:7px;background:#102c70;border:1px solid #5c8aba60;border-left:3px solid #3edceb;border-radius:10px;padding:10px}
+#screen .v1081-public-card small{display:block;font-size:10px;color:#81e9f4;margin-bottom:5px}
+#screen .v1081-public-card strong{display:block;font-size:13px;color:#fff}
+#screen .v1081-public-card p{margin:4px 0 0;font-size:11px;color:#d7e9fb;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
+#screen .v1081-public-actions{display:grid;grid-template-columns:minmax(100px,1fr) minmax(110px,1fr);gap:8px;margin:10px 0 0}
+#screen .v1081-public-actions button,#screen .v1081-public-actions select{width:100%;min-height:37px;padding:7px 8px;font-size:11px;border-radius:9px;border:1px solid #57acd6;background:#103c80;color:white;font-family:inherit}
+#screen .v1081-public-actions small{grid-column:1/-1;font-size:10px;color:#bbd5f4}
+@media(max-width:430px){.liga-media-modal .v1081-item{align-items:stretch;flex-direction:column}.liga-media-modal .v1081-role{grid-template-columns:1fr 1fr}.liga-media-modal .v1081-role button{grid-column:1/-1}}
+@media(max-width:360px){.liga-media-modal .v1081-two{grid-template-columns:1fr}#screen .v1081-public-actions{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.liga-media-modal .v1081 button{transition:none!important}}
