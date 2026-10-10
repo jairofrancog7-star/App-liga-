@@ -1,0 +1,27 @@
+/* V1220 - Cambios de horario y sedes: diseño legible y azul unificado. */
+body[data-app-route="scheduleChanges"] .v1220-search-tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:13px}
+body[data-app-route="scheduleChanges"] .v1220-search-tools label{min-width:0;margin:0}
+body[data-app-route="scheduleChanges"] .v1220-assistant{display:grid;gap:10px;margin:12px 0 19px;padding:15px;border:1px solid rgba(100,154,255,.36);border-radius:18px;background:linear-gradient(155deg,#153d97,#102b73 62%,#0b205a);color:#eef5ff}
+body[data-app-route="scheduleChanges"] .v1220-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:7px}
+body[data-app-route="scheduleChanges"] .v1220-head strong{font-size:15px;color:#fff}
+body[data-app-route="scheduleChanges"] .v1220-head span{font-size:10px;color:#bdd5ff}
+body[data-app-route="scheduleChanges"] [data-v1220-status]{margin:0;font-size:13px;line-height:1.45;font-weight:750;color:#b4ddff}
+body[data-app-route="scheduleChanges"] [data-v1220-status][data-state="ok"]{color:#d6ebff}
+body[data-app-route="scheduleChanges"] [data-v1220-status][data-state="warning"]{color:#ffdfaa}
+body[data-app-route="scheduleChanges"] .v1220-risks{display:grid;gap:6px}
+body[data-app-route="scheduleChanges"] .v1220-risks p{margin:0;padding:8px 10px;border-radius:11px;background:rgba(2,15,59,.52);font-size:12px;line-height:1.4;color:#dbe6ff}
+body[data-app-route="scheduleChanges"] .v1220-assistant button,
+body[data-app-route="scheduleChanges"] .v1220-extras button{min-height:43px;padding:9px 13px;border-radius:12px;border:1px solid #548df0;background:#1749a8;color:#fff;font-size:12px;font-weight:800;cursor:pointer}
+body[data-app-route="scheduleChanges"] .v1220-assistant button{justify-self:start}
+body[data-app-route="scheduleChanges"] .v1220-extras{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
+body[data-app-route="scheduleChanges"] .v1220-feedback{color:#bdd0f9;font-size:11px;line-height:1.5;margin:9px 2px 12px}
+body[data-app-route="scheduleChanges"] .v129-editor select,
+body[data-app-route="scheduleChanges"] .v129-editor input{font-size:clamp(13px,3.2vw,15px)}
+body[data-app-route="scheduleChanges"] .v129-publish button{min-height:44px;font-size:12px}
+body[data-app-route="scheduleChanges"] .v129-saved small{overflow-wrap:anywhere}
+@media(max-width:560px){
+ body[data-app-route="scheduleChanges"] .v1220-search-tools{grid-template-columns:minmax(0,1fr);gap:0}
+ body[data-app-route="scheduleChanges"] .v1220-extras{grid-template-columns:minmax(0,1fr)}
+ body[data-app-route="scheduleChanges"] .v1220-assistant{padding:13px}
+ body[data-app-route="scheduleChanges"] .v129-top h1{max-width:100%;overflow-wrap:normal}
+}
