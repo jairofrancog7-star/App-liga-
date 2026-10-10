@@ -20,13 +20,25 @@ test('55 accesos reales de PC, incluidos servicios y administración recientes',
  const tools=loadModel().window.__test.toolGroups.flatMap(([,cards])=>cards);
  assert.equal(tools.length,55);
  assert.equal(new Set(tools.map(x=>x[2])).size,55);
- for(const r of ['pc-fixtures','pc-standings','pc-scorers','pc-calendar','v38Weekly','matchday','venues','cedulas','refereeOffline','appInstall','weatherFields','recruitment','scheduleChanges','accountLogin','publicationCenter','compareTeams','tool:meeting','tool:sponsors','tool:incidents','tool:officials','tool:new-sanction','tool:motm','tool:delegates','tool:backup-export','tool:audit']){
+ for(const r of ['pc-fixtures','pc-standings','pc-scorers','pc-calendar','v38Weekly','matchday','venues','cedulas','refereeOffline','appInstall','weatherFields','recruitment','scheduleChanges','accountLogin','publicationCenter','pc-team-compare','tool:meeting','tool:sponsors','tool:incidents','tool:officials','tool:new-sanction','tool:motm','tool:delegates','tool:backup-export','tool:audit']){
   assert.ok(tools.some(x=>x[2]===r),'missing PC tool '+r);
  }
  assert.match(runtime,/data-ljpc-tools-find/);
  assert.match(runtime,/ljpc-hub-copy/);
  assert.match(runtime,/data-ljpc-tools-counter/);
 });
+test('comparador PC muestra categorías y estadísticas oficiales para dos equipos',()=>{
+ const bridge=read('src/desktop-mobile-function-bridge.js');
+ assert.match(bridge,/pc-team-compare/);
+ assert.match(bridge,/function renderTeamCompare\(catId=activeCat\)/);
+ assert.match(bridge,/standingsRows\(catId\)/);
+ assert.match(bridge,/Partidos jugados/);
+ assert.match(bridge,/Goles a favor/);
+ assert.match(bridge,/data-ljpc-compare-a/);
+ assert.match(bridge,/data-ljpc-compare-b/);
+ assert.match(bridge,/window\.LJR_OFFICIAL_API\.openTeam\(name\)/);
+});
+
 test('las acciones privadas no se ejecutan sin sesión válida',()=>{
  const ctx=loadModel();
  let opens=0,logins=0;
