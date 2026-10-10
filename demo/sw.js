@@ -2,7 +2,8 @@
    PWA / Web Push: HTML y datos oficiales siempre intentan la red;
    solamente assets versionados (JS/CSS) usan cache-first.
    No intercepta endpoints API, peticiones privadas ni otros dominios. */
-const CACHE='liga-juventino-v1230-mobile-fast';
+const CACHE='liga-juventino-v1231-mobile-fast';
+const DATA_CACHE='liga-juventino-v1231-official-offline';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 const LIMIT=250,MAX_SIZE=750000;
 let writes=0;
@@ -13,13 +14,13 @@ self.addEventListener('install',event=>{
 });
 self.addEventListener('activate',event=>{
   event.waitUntil(caches.keys()
-    .then(keys=>Promise.all(keys.filter(k=>k!==CACHE&&!k.startsWith('ljr-referee-offline-')).map(k=>caches.delete(k))))
+    .then(keys=>Promise.all(keys.filter(k=>k!==CACHE&&k!==DATA_CACHE&&!k.startsWith('ljr-referee-offline-')).map(k=>caches.delete(k))))
     .then(()=>self.clients.claim()));
 });
 function isAsset(url){
   // Las versiones ?v=... y las compilaciones con hash evitan CSS/JS antiguos.
   if(!/\.(?:js|css)$/i.test(url.pathname))return false;
-  return url.searchParams.has('v')||/[-.][\da-f]{8,}\.(?:js|css)$/i.test(url.pathname);
+  return url.searchParams.has('v')||/\/assets\/[^/]+[-.][\w-]{8,}\.(?:js|css)$/i.test(url.pathname);
 }
 function cacheable(response){
   if(!response||!response.ok||response.type==='opaque')return false;
@@ -30,7 +31,7 @@ async function saveAsset(request,response){
   if(!cacheable(response))return;
   try{
     const cache=await caches.open(CACHE);
-    await cache.put(request,response.clone());
+    await cache.put(request,response);
     if(++writes%24===0){
       prunePromise=prunePromise.then(async()=>{
         const keys=await cache.keys();
@@ -52,13 +53,31 @@ self.addEventListener('fetch',event=>{
       .catch(()=>caches.match('./index.html').then(r=>r||Response.error())));
     return;
   }
+  if(/\/data\/official-live\.json$/i.test(url.pathname)){
+    // Única copia oficial de respaldo: actualizada con red, disponible sin señal.
+    event.respondWith((async()=>{
+      const key=url.origin+url.pathname;
+      try{
+        const response=await fetch(request,{cache:'no-cache'});
+        if(response.ok){
+          const copy=response.clone();
+          event.waitUntil(caches.open(DATA_CACHE).then(cache=>cache.put(key,copy)).catch(()=>{}));
+        }
+        return response;
+      }catch(_){
+        const offline=await caches.match(key);
+        return offline||Response.error();
+      }
+    })());
+    return;
+  }
   if(isAsset(url)){
     event.respondWith((async()=>{
       const cached=await caches.match(request);
       if(cached)return cached;
       try{
         const response=await fetch(request,{cache:'default'});
-        if(cacheable(response))event.waitUntil(saveAsset(request,response));
+        if(cacheable(response))event.waitUntil(saveAsset(request,response.clone()));
         return response;
       }catch(_){return Response.error()}
     })());
@@ -66,7 +85,7 @@ self.addEventListener('fetch',event=>{
   }
   // Imágenes, vídeos, documentos y datos oficiales: caché HTTP normal.
   // Evita descargas forzadas en cada visita; las versiones nuevas siguen accesibles.
-  event.respondWith(fetch(request,{cache:'default'})
+  event.respondWith(fetch(request,{cache:/\.json$/i.test(url.pathname)?'no-cache':'default'})
     .catch(()=>caches.match(request).then(r=>r||Response.error())));
 });
 
