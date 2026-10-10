@@ -1,0 +1,46 @@
+name: Revisar paleta de Administración en Android
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/v1310-admin-paleta-unificada.css'
+      - 'src/v1335-admin-app-colors.css'
+      - 'src/v1340-admin-mobile-visual-unified.css'
+      - 'src/v1246-content-studio.css'
+      - 'tests/admin-palette-android-v1353.mjs'
+      - '.github/workflows/admin-mobile-palette-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: admin-palette-mobile
+  cancel-in-progress: true
+
+jobs:
+  verify-admin-mobile:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Chromium test tooling
+        run: |
+          npm install --no-save playwright --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Check Android viewport colors and controls
+        run: node tests/admin-palette-android-v1353.mjs
+      - name: Keep mobile screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: admin-mobile-v1353
+          path: artifacts/admin-mobile-v1353/*.png
+          if-no-files-found: ignore
+          retention-days: 14
