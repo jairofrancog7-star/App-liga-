@@ -28,7 +28,18 @@ export function guessMapping(headers,type){
  return mapped;
 }
 function validDate(value){
- return /^\d{4}-\d{2}-\d{2}$/.test(value)||/^\d{1,2}[/-]\d{1,2}[/-]\d{4}$/.test(value);
+ const v=String(value??'').trim();
+ let year,month,day;
+ const iso=/^(\d{4})-(\d{2})-(\d{2})$/.exec(v);
+ if(iso){year=Number(iso[1]);month=Number(iso[2]);day=Number(iso[3]);}
+ else{
+  const regional=/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/.exec(v);
+  if(!regional)return false;
+  day=Number(regional[1]);month=Number(regional[2]);year=Number(regional[3]);
+ }
+ if(year<100||month<1||month>12||day<1||day>31)return false;
+ const check=new Date(Date.UTC(year,month-1,day));
+ return check.getUTCFullYear()===year&&check.getUTCMonth()===month-1&&check.getUTCDate()===day;
 }
 export function analyzeCsv(parsed,type,mapping){
  const spec=SCHEMAS[type];
@@ -191,6 +202,8 @@ export function openCsvImporter({modal,toast,log,officialTeams}){
   const normalizer=$('[data-csv-normalize]');normalizer.addEventListener('change',e=>{normalizeCategories=e.target.checked;renderTable();});
   els.result.querySelectorAll('[data-map]').forEach(select=>select.addEventListener('change',()=>{
    const field=select.dataset.map,idx=Number(select.value);
+   // Evita asignar simultáneamente una columna a dos campos distintos.
+   if(idx>=0)for(const key of Object.keys(mapping))if(key!==field&&mapping[key]===idx)mapping[key]=-1;
    mapping[field]=idx;
    if(idx>=0){
     keepCsvLearning(typeof localStorage==='undefined'?null:localStorage,els.type.value,parsed.headers[idx],field);
