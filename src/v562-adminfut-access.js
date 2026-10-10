@@ -146,7 +146,7 @@ function controlMarkup(){
     card('review','Revisar avisos','Consultar borradores y publicaciones','data-v563-cms="review"')+
     card('editPage','Editar páginas','Modificar información y diseño sin programar','data-v563-cms="pages"')+
     card('manage','Administrar accesos','Gestionar administradores autorizados','data-v563-cms="manage"')+
-    card('backup','Respaldo oficial','Exportación privada para cuentas principales verificadas','data-v563-cms="backup"')+
+    card('backup','Respaldo oficial','Cifrado privado, revisión de datos y recordatorios','data-v563-cms="backup"')+
     '</div></div>'+
    '</section>'+
  '</section>';
