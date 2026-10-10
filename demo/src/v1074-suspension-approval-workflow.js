@@ -73,11 +73,12 @@ function panel(p){
  '<label class="v1074-confirm"><input type="checkbox" data-v1074-agree><span>Confirmo que recibí autorización real y revisé los datos. Este registro local no verifica identidad.</span></label>'+
  '<button type="button" data-v1074-authorize>Guardar constancia local</button></div></div>'+
  '<div class="v1074-group"><b>03 · Programación</b><p>Elige cuándo publicar en el programador existente. Nada se envía hasta que confirmes allí.</p>'+
- '<div class="v1074-buttons"><button type="button" data-v1074-schedule>Programador local</button><button type="button" data-v1074-official>Editor oficial</button><button type="button" data-v1074-global>Programar envío global (Push / SMS / WhatsApp)</button></div>'+
+ '<div class="v1074-buttons"><button type="button" data-v1074-schedule>Programador local</button><button type="button" data-v1074-official>Editor oficial</button><button type="button" data-v1074-global>Programar avisos en app / Push / Twilio</button></div>'+
  '<small data-v1074-schedule-status></small><button type="button" data-v1074-cancel hidden>Cancelar programación local anterior</button></div>'+
- '<div class="v1074-group"><b>04 · Avisar a los equipos</b><p>Usa los equipos del rol oficial. Cada envío y recepción se registra manualmente en este teléfono.</p>'+
- '<button type="button" data-v1074-export>Descargar registro CSV</button><div class="v1074-recipients" data-v1074-teams></div></div>'+
- '<small class="v1074-disclaimer">Las marcas “enviado” o “recibido” no se verifican con WhatsApp. Las notificaciones automáticas fuera del teléfono requieren un servicio autenticado y configuración adicional.</small>'+
+ '<div class="v1074-group"><b>04 · Avisar a los equipos</b><p>Comparte con WhatsApp normal desde tu teléfono. La app prepara el mensaje, pero tú eliges el chat y pulsas Enviar. No se envía automáticamente.</p>'+
+ '<div class="v1074-buttons"><button type="button" data-v1074-wa-manual>WhatsApp normal · compartir aviso</button><button type="button" data-v1074-export>Descargar registro CSV</button></div>'+
+ '<div class="v1074-recipients" data-v1074-teams></div></div>'+
+ '<small class="v1074-disclaimer">WhatsApp normal: envío manual, sin acceso automático a los chats. Las marcas “enviado” o “recibido” se anotan manualmente y no prueban entrega real. Twilio exige WhatsApp Business aprobado.</small>'+
  '</div>';
  anchor.before(details);
  refresh(p);
@@ -105,6 +106,8 @@ function refresh(p){
  if(official)official.disabled=!isAuthorized(p);
  const global=$('[data-v1074-global]',ui);
  if(global)global.disabled=!isAuthorized(p);
+ const whatsApp=$('[data-v1074-wa-manual]',ui);
+ if(whatsApp)whatsApp.disabled=!isAuthorized(p);
  const cancel=$('[data-v1074-cancel]',ui);
  const previous=st.s.previousScheduledId||(!st.notice?st.s.scheduledId:null);
  if(cancel)cancel.hidden=!previous||!queue().some(x=>String(x.id)===String(previous)&&!x.published);
@@ -237,6 +240,34 @@ function drawTeams(p){
   mark.textContent=s.sentAt?(s.receivedAt?'Reiniciar':'Recibido'):'Enviado';
   mark.disabled=!auth;
   row.append(title,status,send,mark);host.append(row);
+ }
+}
+async function shareNormalWhatsApp(p){
+ if(!isAuthorized(p)){message(p,'Revisa y registra primero una autorización real para compartir el aviso.');return}
+ const s=fields(p);
+ const lines=[
+  'LIGA MUNICIPAL DE FÚTBOL JUVENTINO ROSAS A. C.',
+  (s.type||'AVISO').toUpperCase(),
+  s.cat+' · Jornada '+s.round,
+  s.match&&s.match!=='Todos los partidos'?'Partido: '+s.match:'',
+  s.venue&&s.venue!=='Todos los campos'?'Campo: '+s.venue:'',
+  s.reason?'Motivo: '+s.reason:'',
+  'Fecha efectiva: '+s.date+' '+s.time,
+  s.message
+ ].filter(Boolean);
+ const msg=lines.join('\n');
+ // WhatsApp personal: abrir el compositor, NUNCA usar Twilio ni envío silencioso.
+ const url='https://api.whatsapp.com/send?text='+encodeURIComponent(msg);
+ try{
+  // En móviles, abrir WhatsApp o su página para que el administrador
+  // seleccione el destinatario y pulse Enviar manualmente.
+  const w=window.open(url,'_blank','noopener,noreferrer');
+  if(!w)window.location.assign(url);
+  message(p,'Se preparó WhatsApp normal. Elige el chat y confirma Enviar; no se registró ningún envío automático.');
+ }catch(_){
+  try{await navigator.clipboard?.writeText(msg);
+   message(p,'El navegador bloqueó WhatsApp. Copiamos el texto; abre WhatsApp y pégalo manualmente.');
+  }catch(__){message(p,'No se pudo abrir WhatsApp; utiliza Compartir texto desde el teléfono.')}
  }
 }
 async function prepare(p,name){
@@ -397,7 +428,7 @@ function boot(){
   const b=e.target.closest('button');
   if(!b)return;
   // La aprobación en localStorage no es una credencial; exigir además sesión del servidor.
-  if(b.matches('[data-v1074-review],[data-v1074-ask],[data-v1074-authorize],[data-v1074-schedule],[data-v1074-official],[data-v1074-global],[data-v1074-share],[data-v1074-mark],[data-v1074-cancel]')){
+  if(b.matches('[data-v1074-review],[data-v1074-ask],[data-v1074-authorize],[data-v1074-schedule],[data-v1074-official],[data-v1074-global],[data-v1074-wa-manual],[data-v1074-share],[data-v1074-mark],[data-v1074-cancel]')){
    if(!await verifyAdminSession()){
     const flow=$('[data-v1074-flow]',p);if(flow)flow.open=true;
     message(p,'Inicia sesión en Administración: este control requiere permiso verificado del servidor.');
@@ -413,6 +444,7 @@ function boot(){
   else if(b.matches('[data-v1074-schedule]'))schedule(p);
   else if(b.matches('[data-v1074-official]'))openOfficialEditor(p);
   else if(b.matches('[data-v1074-global]'))openGlobalNotice(p);
+  else if(b.matches('[data-v1074-wa-manual]'))shareNormalWhatsApp(p);
   else if(b.matches('[data-v1074-export]'))exportLog(p);
   else if(b.matches('[data-v1074-cancel]'))cancelLocalSchedule(p);
   else if(b.matches('[data-v1074-share]'))prepare(p,b.dataset.v1074Share);
