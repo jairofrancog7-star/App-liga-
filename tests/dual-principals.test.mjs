@@ -72,3 +72,13 @@ test('diagnóstico de cuentas muestra por separado CMS y Railway',()=>{
  assert.match(ui,/Permisos verificados directamente con el CMS y Railway/);
  assert.match(backup,/response\?\.admin\?\.owner!==true/);
 });
+
+test('inicio de sesion no suplanta al presidente con correo local',()=>{
+ const client=read('public/media-client.js');
+ const login=client.slice(client.indexOf('async function login(after){'),client.indexOf('async function manage()'));
+ assert.match(login,/const preferredUser=phone\|\|'';/);
+ assert.match(login,/api\('login',\{method:'POST',body:b\}\)/);
+ assert.doesNotMatch(login,/b\.username=phone\|\|'presidente'/);
+ assert.doesNotMatch(login,/localEmail/);
+ assert.match(login,/El servidor valida cada identificador con su propia contraseña/);
+});
