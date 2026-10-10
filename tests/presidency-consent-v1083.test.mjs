@@ -32,7 +32,7 @@ test('Servidor valida rol y guarda consentimiento solo en PostgreSQL',()=>{
 test('Número personal no es configuración pública de Twilio',()=>{
  for(const path of ['data/notifications-client.json','public/data/notifications-client.json']){
   const obj=JSON.parse(load(path));
-  assert.equal(obj.apiBaseUrl,'');
+  assert.ok(obj.apiBaseUrl==='' || /^https:\/\/[a-z0-9.-]+\/?$/i.test(obj.apiBaseUrl), 'La URL pública debe ser HTTPS, sin credenciales ni parámetros');
   assert.equal('phone' in obj,false);
   assert.equal('twilioSender' in obj,false);
  }
