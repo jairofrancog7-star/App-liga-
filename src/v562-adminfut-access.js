@@ -187,7 +187,7 @@ function bind(root){
    if(backup)backup.hidden=!Boolean(window.LJR_MEDIA?.admin?.owner);
  }
  syncAdmin();window.addEventListener('liga:admin',syncAdmin,{signal:root.v563Controller?.signal});
- $('[data-v563-route]',root).forEach(b=>b.addEventListener('click',()=>go(b.dataset.v563Route)));
+ $$('[data-v563-route]',root).forEach(b=>b.addEventListener('click',()=>go(b.dataset.v563Route)));
  const search=$('[data-v563-tool-search]',root);
  if(search){
    const cards=()=>[...root.querySelectorAll('[data-v563-management-list] > .v562-card, [data-v563-admin-direct] .v562-card')];
@@ -205,7 +205,7 @@ function bind(root){
    if(typeof window.LJR_V105_OPEN_TOOL==='function'&&window.LJR_V105_OPEN_TOOL(name))return;
    toast('La herramienta no pudo abrirse. Actualiza la página e inténtalo de nuevo.');
  };
- $('[data-v563-tool]',root).forEach(b=>b.addEventListener('click',()=>{
+ $$('[data-v563-tool]',root).forEach(b=>b.addEventListener('click',()=>{
    const name=b.dataset.v563Tool;
    if(!name)return;
    if(privateTools.has(name)&&!window.LJR_MEDIA?.admin){
@@ -224,7 +224,7 @@ function bind(root){
    manage:()=>window.LJR_MEDIA?.manage,
    backup:()=>window.LJR_EDITOR_CENTER?.exportBackup
  };
- $('[data-v563-cms]',root).forEach(b=>b.addEventListener('click',()=>{
+ $$('[data-v563-cms]',root).forEach(b=>b.addEventListener('click',()=>{
    if(!window.LJR_MEDIA?.admin){toast('Inicia sesión como administrador para continuar');return}
    const name=b.dataset.v563Cms;
    if(name==='backup'&&!window.LJR_MEDIA.admin.owner){toast('Solo el presidente puede exportar el respaldo oficial');return}
@@ -234,7 +234,7 @@ function bind(root){
      handler.call(name==='manage'?window.LJR_MEDIA:window.LJR_EDITOR_CENTER);
    }catch(error){console.error('[JR Control] Acción administrativa',error);toast('No fue posible abrir esta función')}
  }));
- $('[data-v563-action]',root).forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.v563Action;if(a==='positions')openPositions();else if(a==='fixtures')openFixtures();else if(a==='cards')openDiscipline('cards');else if(a==='suspensions')openDiscipline('suspensions')}));
+ $$('[data-v563-action]',root).forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.v563Action;if(a==='positions')openPositions();else if(a==='fixtures')openFixtures();else if(a==='cards')openDiscipline('cards');else if(a==='suspensions')openDiscipline('suspensions')}));
  $$('[data-v563-install]',root).forEach(b=>b.addEventListener('click',install));
  $('[data-v563-share]',root)?.addEventListener('click',share);
  $('[data-v563-builds]',root)?.addEventListener('click',()=>window.open(ACTIONS,'_blank','noopener,noreferrer'));
