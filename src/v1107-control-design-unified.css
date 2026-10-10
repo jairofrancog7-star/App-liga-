@@ -865,3 +865,124 @@ html body > .v105-modal.v1130-calendar-pro .v1130-exports .v105-btn:first-child{
   background:linear-gradient(135deg,#2b93f1 0%,#1c69d4 52%,#0d47a1 100%)!important;
 }
 html body > .v105-modal.v1130-calendar-pro .v1130-notice{color:#adc1e8!important}
+
+
+/* V1198 — Calendarios oficiales: tarjetas de lectura cómoda y azul de la app. */
+html body > .v105-modal.v1130-calendar-pro {
+  padding:clamp(6px,2vw,14px)!important;
+  background:rgba(0,7,46,.92)!important;
+}
+html body > .v105-modal.v1130-calendar-pro .v105-dialog {
+  box-sizing:border-box!important;
+  width:min(100%,850px)!important;max-width:850px!important;
+  max-height:95dvh!important;
+  padding:clamp(12px,3vw,23px)!important;
+  border:1px solid #356bc1!important;border-radius:20px!important;
+  background:linear-gradient(180deg,#103e95 0%,#0d2b79 32%,#0a1e61 70%,#071347 100%)!important;
+  color:#f8fbff!important;
+}
+html body > .v105-modal.v1130-calendar-pro .v1130-local-source:not([hidden]){
+  display:block!important;box-sizing:border-box!important;
+  padding:12px 14px!important;margin:12px 0 8px!important;
+  border:1px solid #4275d3!important;border-left:4px solid #76b6ff!important;
+  border-radius:13px!important;
+  background:linear-gradient(125deg,#1853b3,#103681)!important;
+  color:#fff!important;font:750 13px/1.4 Inter,Arial,sans-serif!important;
+}
+html body > .v105-modal.v1130-calendar-pro [hidden]{display:none!important}
+html body > .v105-modal.v1130-calendar-pro .v1107-calendar-output{
+  max-height:min(57dvh,700px)!important;
+  padding:10px!important;margin-top:11px!important;
+  background:#0b2368!important;border:1px solid #345dac!important;
+  border-radius:15px!important;
+}
+html body > .v105-modal.v1130-calendar-pro .v1107-fixtures{
+  display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:12px!important;
+}
+html body > .v105-modal.v1130-calendar-pro .v1107-fixture.v1130-fixture{
+  box-sizing:border-box!important;width:100%!important;max-width:none!important;
+  margin:0!important;padding:15px 15px 14px!important;gap:13px!important;
+  border:1px solid rgba(105,153,240,.46)!important;border-radius:18px!important;
+  background:linear-gradient(142deg,#1a459c 0%,#153783 46%,#0d256d 100%)!important;
+}
+html body > .v105-modal.v1130-calendar-pro .v1107-fixture-top{
+  display:flex!important;justify-content:space-between!important;gap:12px!important;
+  align-items:center!important;font-size:13px!important;color:#ecf2ff!important;
+}
+html body > .v105-modal.v1130-calendar-pro .v1107-fixture-top strong{
+  display:inline-flex!important;min-height:32px!important;align-items:center!important;
+  padding:5px 11px!important;border-radius:10px!important;background:#18438e!important;
+  color:#91c8ff!important;font-size:13px!important;
+}
+html body > .v105-modal.v1130-calendar-pro .v1107-fixture-teams.v1130-teams{
+  grid-template-columns:minmax(0,1fr) minmax(32px,auto) minmax(0,1fr)!important;
+  gap:clamp(7px,2vw,16px)!important;min-width:0!important;
+}
+html body > .v105-modal.v1130-calendar-pro .v1130-team{gap:10px!important}
+html body > .v105-modal.v1130-calendar-pro .v1130-team b{
+  font:850 clamp(12px,2.8vw,15px)/1.2 Inter,Arial,sans-serif!important;
+  text-wrap:balance!important;
+}
+html body > .v105-modal.v1130-calendar-pro .v1130-crest{
+  flex:0 0 clamp(38px,9vw,54px)!important;width:clamp(38px,9vw,54px)!important;
+  height:clamp(38px,9vw,54px)!important;
+  object-fit:contain!important;border:0!important;border-radius:0!important;
+  background:transparent!important;box-shadow:none!important;filter:none!important;
+}
+html body > .v105-modal.v1130-calendar-pro .v1107-fixture-teams em{
+  font:900 clamp(14px,3vw,19px)/1 Inter,Arial,sans-serif!important;color:#9cc5ff!important;
+}
+html body > .v105-modal.v1130-calendar-pro .v1130-meta small{
+  font-size:clamp(12px,2.6vw,14px)!important;color:#d9e6ff!important;
+}
+html body > .v105-modal.v1130-calendar-pro .v1130-state{
+  background:#20519b!important;color:#e1efff!important;font-size:11px!important;
+  padding:6px 9px!important;
+}
+html body > .v105-modal.v1130-calendar-pro .v1130-card-actions{
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:8px!important;
+}
+html body > .v105-modal.v1130-calendar-pro .v1130-card-actions button{
+  box-sizing:border-box!important;min-height:46px!important;
+  padding:10px 6px!important;border-radius:12px!important;
+  border:1px solid #477ac6!important;
+  background:linear-gradient(180deg,#1d50aa,#123781)!important;
+  color:#fff!important;font:800 clamp(11px,2.6vw,13px)/1.2 Inter,Arial,sans-serif!important;
+}
+html body > .v105-modal.v1130-calendar-pro .v1130-card-actions button:focus-visible,
+html body > .v105-modal.v1130-calendar-pro .v1130-exports button:focus-visible{
+  outline:2px solid #aed6ff!important;outline-offset:3px!important;
+}
+html body > .v105-modal.v1130-calendar-pro .v1130-details{
+  padding:7px 0!important;font-size:13px!important;color:#c9dbf4!important;
+}
+html body > .v105-modal.v1130-calendar-pro .v1130-details summary{
+  font-size:13px!important;color:#b5d6ff!important;
+}
+html body > .v105-modal.v1130-calendar-pro .v105-actions.v1130-exports{
+  gap:10px!important;
+}
+html body > .v105-modal.v1130-calendar-pro .v1130-exports .v105-btn{
+  width:100%!important;min-height:48px!important;padding:10px!important;
+  border-radius:12px!important;font-size:clamp(11px,2.8vw,13px)!important;
+  background:linear-gradient(180deg,#1d51b0,#10337f)!important;color:#fff!important;
+}
+html body > .v105-modal.v1130-calendar-pro .v1130-exports .v105-btn[data-open]{
+  background:linear-gradient(180deg,#236ed2 0%,#1350a6 100%)!important;
+}
+@media(max-width:550px){
+ html body > .v105-modal.v1130-calendar-pro{padding:6px!important}
+ html body > .v105-modal.v1130-calendar-pro .v105-dialog{
+   width:100%!important;padding:15px 10px 18px!important;border-radius:17px!important
+ }
+ html body > .v105-modal.v1130-calendar-pro .v1107-calendar-output{
+   padding:8px!important;max-height:min(58dvh,650px)!important
+ }
+ html body > .v105-modal.v1130-calendar-pro .v1107-fixture.v1130-fixture{
+   padding:13px 10px!important;gap:12px!important;border-radius:15px!important
+ }
+ html body > .v105-modal.v1130-calendar-pro .v1130-team{gap:6px!important}
+ html body > .v105-modal.v1130-calendar-pro .v1130-card-actions{gap:6px!important}
+ html body > .v105-modal.v1130-calendar-pro .v1130-summary span{font-size:10px!important}
+}
