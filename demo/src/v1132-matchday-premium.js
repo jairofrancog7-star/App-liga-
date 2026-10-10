@@ -57,99 +57,31 @@ items.push({id,catId,category:String(cat.name||'Categoría'),round:String(r?.[1]
 }}
 return items.sort((a,b)=>a.time-b.time||a.id.localeCompare(b.id));
 }
-// V1180 — usar exactamente el registro que alimenta Equipos y Siguiendo.
-// No imponer el antiguo catálogo fijo: el registro conoce escudos, alias y ajustes.
-function logo(name){
+// V1193: Jornada utiliza primero los mismos archivos del directorio visible
+// de Equipos (V27), con categoría, antes de consultar los catálogos antiguos.
+function logo(name,category){
  let src='';
- try{src=window.LJR_TEAM_LOGOS?.get?.(name)||'';}catch(_){}
+ try{src=window.LJR_TEAMS_CURRENT_LOGO?.get?.(name,category)||'';}catch(_){}
  if(!src)try{src=window.LJR_SEASON_LOGOS?.get?.(name)||'';}catch(_){}
+ if(!src)try{src=window.LJR_TEAM_LOGOS?.get?.(name)||'';}catch(_){}
  if(!src)try{src=window.LJR_OFFICIAL_API?.getLogo?.(name)||'';}catch(_){}
  if(!src)try{src=window.V66_OFFICIAL_DIRECTORY?.logoFor?.(name)||'';}catch(_){}
  src=String(src||'').trim();
  return /^(https?:\/\/|data:image\/|\.?\.?\/|assets\/)/i.test(src)?src:'';
 }
-/* V1182 · Quitar únicamente el lienzo liso pegado a los bordes.
-   El escudo y sus colores no reciben CSS filters ni máscaras geométricas.
-   Los WEBP/PNG ya transparentes permanecen intactos. */
-const crestImageCache=new Map();
-function crestWithoutSolidBackground(img){
- const source=img.currentSrc||img.src;
- if(crestImageCache.has(source))return crestImageCache.get(source);
- crestImageCache.set(source,source);
- try{
-  // El catálogo de Equipos usa imágenes locales. No dibujar escudos
-  // externos sin permiso CORS, pues contaminaría el canvas.
-  if(new URL(source,document.baseURI).origin!==location.origin)return source;
-  const w=Math.max(1,Math.round(img.naturalWidth*Math.min(1,384/img.naturalWidth,384/img.naturalHeight)));
-  const h=Math.max(1,Math.round(img.naturalHeight*Math.min(1,384/img.naturalWidth,384/img.naturalHeight)));
-  if(w<8||h<8)return source;
-  const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
-  const ctx=canvas.getContext('2d',{willReadFrequently:true});
-  if(!ctx)return source;
-  ctx.drawImage(img,0,0,w,h);
-  const pixels=ctx.getImageData(0,0,w,h),bytes=pixels.data;
-  const cornerIds=[0,w-1,(h-1)*w,h*w-1];
-  const corners=cornerIds.map(i=>Array.from(bytes.slice(i*4,i*4+4)));
-  // Sólo mates neutros y opacos (blanco, gris casi blanco o negro).
-  const neutral=c=>c[3]>235&&Math.max(c[0],c[1],c[2])-Math.min(c[0],c[1],c[2])<22
-    &&(Math.max(c[0],c[1],c[2])<48||Math.min(c[0],c[1],c[2])>222);
-  const matte=corners.find(c=>neutral(c)&&corners.filter(p=>neutral(p)&&
-    Math.max(Math.abs(p[0]-c[0]),Math.abs(p[1]-c[1]),Math.abs(p[2]-c[2]))<28).length>=3);
-  if(!matte)return source;
-  const matches=i=>{
-   const p=i*4;
-   return bytes[p+3]>180&&Math.max(
-    Math.abs(bytes[p]-matte[0]),Math.abs(bytes[p+1]-matte[1]),Math.abs(bytes[p+2]-matte[2]))<32;
-  };
-  const visited=new Uint8Array(w*h),queue=new Int32Array(w*h);
-  let head=0,tail=0;
-  function add(i){
-   if(visited[i])return;
-   visited[i]=1;
-   if(matches(i))queue[tail++]=i;
-  }
-  // Flood-fill sólo desde el perímetro, nunca los blancos encerrados
-  // dentro de letras, balones o los detalles propios del escudo.
-  for(let x=0;x<w;x++){add(x);add((h-1)*w+x);}
-  for(let y=1;y<h-1;y++){add(y*w);add(y*w+w-1);}
-  while(head<tail){
-   const i=queue[head++],p=i*4,x=i%w;
-   bytes[p+3]=0;
-   if(x>0)add(i-1);
-   if(x<w-1)add(i+1);
-   if(i>=w)add(i-w);
-   if(i<w*(h-1))add(i+w);
-  }
-  // Un pequeño borde blanco puede formar parte del diseño: no tocarlo.
-  if(tail<w*h*0.025)return source;
-  ctx.putImageData(pixels,0,0);
-  const result=canvas.toDataURL('image/png');
-  crestImageCache.set(source,result);
-  return result;
- }catch(_){return source;}
-}
+// No recortar colores ni quitar fondos por canvas/filtros: el escudo
+// transparente viene directamente de Equipos. Un archivo roto muestra siglas.
 function prepareMatchdayCrests(root){
  root.querySelectorAll('.md1132-crest img').forEach(img=>{
-  img.style.visibility='hidden';
-  img.addEventListener('error',()=>{img.remove();},{once:true});
-  const ready=()=>{
-   if(!img.isConnected)return;
-   const clean=crestWithoutSolidBackground(img);
-   if(clean&&clean!==img.src){
-    img.addEventListener('load',()=>{img.style.visibility='';},{once:true});
-    img.src=clean;
-   }else img.style.visibility='';
-  };
-  if(img.complete){
-   if(img.naturalWidth)ready();
-   else img.style.visibility='';
-  }else img.addEventListener('load',ready,{once:true});
+  const broken=()=>{if(img.isConnected)img.remove();};
+  img.addEventListener('error',broken,{once:true});
+  if(img.complete&&!img.naturalWidth)broken();
  });
 }
 
-function crest(name){
+function crest(name,category){
  const initials=String(name).split(/\s+/).filter(Boolean).slice(0,2).map(v=>v[0]).join('').toUpperCase();
- const src=logo(name);
+ const src=logo(name,category);
  // Missing image -> initials only; never fall back to an outdated crest.
  return '<span class="md1132-crest" data-md1132-team="'+esc(name)+'"><span class="md1132-crest-fallback">'+esc(initials||'EQ')+'</span>'+
   (src?'<img src="'+esc(src)+'" alt="Escudo de '+esc(name)+'" loading="lazy" decoding="async">':'')+'</span>';
@@ -170,7 +102,7 @@ function card(g){
 if(!g)return '<div class="md1132-empty">Aún no hay partidos oficiales con fecha y hora disponibles.</div>';
 const state=status(g);
 return '<div class="md1132-cardtop"><span class="md1132-caption">PARTIDO DE LA JORNADA</span><span class="md1132-status '+state.type+'">'+esc(state.name)+'</span></div>'+
-'<div class="md1132-versus"><button type="button" class="md1132-team" data-md-team="'+esc(g.home)+'" aria-label="Ver equipo '+esc(g.home)+'">'+crest(g.home)+'<b>'+esc(g.home)+'</b></button><div class="md1132-mid"><strong>VS</strong><small>'+esc(g.category)+'</small></div><button type="button" class="md1132-team" data-md-team="'+esc(g.away)+'" aria-label="Ver equipo '+esc(g.away)+'">'+crest(g.away)+'<b>'+esc(g.away)+'</b></button></div>'+
+'<div class="md1132-versus"><button type="button" class="md1132-team" data-md-team="'+esc(g.home)+'" aria-label="Ver equipo '+esc(g.home)+'">'+crest(g.home,g.category)+'<b>'+esc(g.home)+'</b></button><div class="md1132-mid"><strong>VS</strong><small>'+esc(g.category)+'</small></div><button type="button" class="md1132-team" data-md-team="'+esc(g.away)+'" aria-label="Ver equipo '+esc(g.away)+'">'+crest(g.away,g.category)+'<b>'+esc(g.away)+'</b></button></div>'+
 '<div class="md1132-clock" data-md-clock aria-live="off">--:--:--</div>'+
 '<p class="md1132-meta">'+esc([g.round?'Jornada '+g.round:'',g.venue||'Campo por confirmar',g.date].filter(Boolean).join(' · '))+'</p>'+
 '<div class="md1132-actions">'+
