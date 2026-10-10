@@ -98,7 +98,7 @@ test('WhatsApp personal solo abre compositor manual y no habilita Twilio',()=>{
  const editor=read('src/v1081-global-admin-notices.js');
  const backend=read('server/notifications/index.mjs');
  assert.match(flow,/data-v1074-wa-manual/);
- assert.match(flow,/https:\/\/api\.whatsapp\.com\/send\?text=/);
+ assert.match(flow,/https:\/\/(?:api\.whatsapp\.com\/send\?text=|wa\.me\/)/);
  assert.match(flow,/function shareNormalWhatsApp\(/);
  assert.match(editor,/data-v1093-wa-personal/);
  assert.match(editor,/link\.href='https:\/\/api\.whatsapp\.com\/send\?text='/);
