@@ -72,7 +72,7 @@ function card(g){
 if(!g)return '<div class="md1132-empty">Aún no hay partidos oficiales con fecha y hora disponibles.</div>';
 const state=status(g);
 return '<div class="md1132-cardtop"><span class="md1132-caption">PARTIDO DE LA JORNADA</span><span class="md1132-status '+state.type+'">'+esc(state.name)+'</span></div>'+
-'<div class="md1132-versus"><div class="md1132-team">'+crest(g.home)+'<b>'+esc(g.home)+'</b></div><div class="md1132-mid"><strong>VS</strong><small>'+esc(g.category)+'</small></div><div class="md1132-team">'+crest(g.away)+'<b>'+esc(g.away)+'</b></div></div>'+
+'<div class="md1132-versus"><button type="button" class="md1132-team" data-md-team="'+esc(g.home)+'" aria-label="Ver equipo '+esc(g.home)+'">'+crest(g.home)+'<b>'+esc(g.home)+'</b></button><div class="md1132-mid"><strong>VS</strong><small>'+esc(g.category)+'</small></div><button type="button" class="md1132-team" data-md-team="'+esc(g.away)+'" aria-label="Ver equipo '+esc(g.away)+'">'+crest(g.away)+'<b>'+esc(g.away)+'</b></button></div>'+
 '<div class="md1132-clock" data-md-clock aria-live="off">--:--:--</div>'+
 '<p class="md1132-meta">'+esc([g.round?'Jornada '+g.round:'',g.venue||'Campo por confirmar',g.date].filter(Boolean).join(' · '))+'</p>'+
 '<div class="md1132-actions">'+
@@ -127,6 +127,7 @@ catch(e){if(e?.name!=='AbortError')toast('No fue posible compartir desde este na
 }
 function onClick(e){
 if(route()!=='matchday'||!host?.contains(e.target))return;
+const team=e.target.closest('[data-md-team]');if(team){const name=team.dataset.mdTeam;localStorage.setItem('v62-team-name',name);localStorage.setItem('v42-team-tab','summary');if(window.LJR_OFFICIAL_API?.openTeam)window.LJR_OFFICIAL_API.openTeam(name);else go('teamDetail');return;}
 const filter=e.target.closest('[data-md-filter]');if(filter){category=filter.dataset.mdFilter;const a=all.filter(g=>category==='all'||g.catId===category);if(!a.some(g=>g.id===current))current=(a.find(g=>g.time>Date.now())||a[0])?.id||'';render();return;}
 const select=e.target.closest('[data-md-select]');if(select){current=select.dataset.mdSelect;const g=match();if(g){history.replaceState(null,'',location.pathname+location.search+'#/matchday?game='+encodeURIComponent(g.id));}render();return;}
 const action=e.target.closest('[data-md-action]');if(!action)return;
