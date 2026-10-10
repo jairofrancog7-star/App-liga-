@@ -1,29 +1,37 @@
-/* Mantiene demo y producción coherentes para CSS de avisos y Administración.
-   Vite agrupa CSS en assets: las pruebas y la demo requieren enlaces locales.
-   No altera lógica, permisos, resultados ni la configuración del servidor. */
+/* Sincroniza los estilos de demo con los reales de producción.
+   El cache-buster viene de index.html, no de una versión antigua hardcodeada.
+   No modifica funciones, permisos ni avisos oficiales. */
 import {readFileSync,writeFileSync,copyFileSync,mkdirSync} from 'node:fs';
-const file='demo/index.html';
-let html=readFileSync(file,'utf8');
-if(!html.includes('</head>'))throw new Error('Falta </head> en demo/index.html');
+const demoFile='demo/index.html';
+let demo=readFileSync(demoFile,'utf8');
+const prod=readFileSync('index.html','utf8');
+if(!demo.includes('</head>')||!prod.includes('</head>'))
+ throw new Error('Falta el encabezado de HTML.');
 mkdirSync('demo/src',{recursive:true});
 const styles=[
- {name:'v1211-notice-recurrence.css',version:'20261010-v1212'},
- {name:'v1212-notice-series-cancel.css',version:'20261010-v1212'},
- {name:'v1310-admin-paleta-unificada.css',version:'20261010-v1310-admin-navy'}
+ 'v1211-notice-recurrence.css',
+ 'v1212-notice-series-cancel.css',
+ 'v1310-admin-paleta-unificada.css'
 ];
-for(const {name,version} of styles){
- const source='src/'+name,target='demo/src/'+name;
+for(const name of styles){
+ const source='src/'+name;
+ const target='demo/src/'+name;
+ const prodLine=prod.split(/\r?\n/).find(line=>
+  line.includes('<link')&&line.includes('rel="stylesheet"')&&
+  line.includes('href="./src/'+name+'?v='));
+ const href=prodLine?.match(/href="([^"]+)"/)?.[1];
+ if(!href||!href.startsWith('./src/'+name+'?v='))
+  throw new Error('No se encuentra la versión oficial de '+name+' en index.html');
  copyFileSync(source,target);
- const href='./src/'+name+'?v='+version;
- if(!html.includes(href)){
-  // Idempotente aun cuando Vite haya creado un enlace antiguo de este módulo.
-  const escaped=name.replace(/[.*+?^$\x7b\x7d()|[\]\\]/g,'\\$&');
-  const stale=new RegExp('^[^\\n]*<link[^>]+href="[^"]*'+escaped+'[^"]*"[^>]*>\\s*\\n?','gm');
-  html=html.replace(stale,'');
-  html=html.replace('</head>','  <link rel="stylesheet" href="'+href+'" />\n</head>');
- }
+ // Elimina únicamente los enlaces antiguos de este estilo. Al reconstruir
+ // con Vite, la demo conserva una sola versión, idéntica a producción.
+ demo=demo.split('\n').filter(line=>!(
+  line.includes('<link')&&line.includes('rel="stylesheet"')&&
+  line.includes('/src/'+name+'?')
+ )).join('\n');
+ demo=demo.replace('</head>','  <link rel="stylesheet" href="'+href+'" />\n</head>');
  if(readFileSync(source,'utf8')!==readFileSync(target,'utf8'))
   throw new Error('CSS fuera de sincronía: '+name);
 }
-writeFileSync(file,html);
-console.log('Demo: CSS de avisos y paleta V1310 sincronizados.');
+writeFileSync(demoFile,demo);
+console.log('Demo: colores y versiones de CSS idénticos a la producción.');
