@@ -8,7 +8,7 @@ function view(ctx){
  '<div class="mh-buttons"><button type="button" data-mh-action="sync-check">Comprobar servidor</button><button type="button" data-mh-action="sync-upload">Guardar en servidor</button><button type="button" data-mh-action="sync-download">Recuperar del servidor</button></div>'+
  '<p class="mh-tip">Antes de recuperar una versión ajena se descargará una copia JSON de seguridad de la junta actual. No se sobrescribirá otra versión más reciente sin advertencia.</p>'+ 
  '<div class="mh-buttons"><button type="button" data-mh-action="sync-restore-local">Restaurar copia previa</button><input type="file" hidden accept=".json,application/json" data-mh-file="sync-backup"></div>'+
- '<p class="mh-tip">Necesita que la presidencia active una única instancia privada con PostgreSQL y configure la URL HTTPS en la app. Hasta entonces, sigue funcionando el modo local.</p>';
+ '<p class="mh-tip">El servicio HTTPS de la Liga ya está configurado. Usa «Comprobar servidor» con una sesión autorizada para confirmar tu acceso antes de sincronizar. Si el servidor no responde, los datos locales siguen disponibles.</p>';
 }
 async function authorized(permission,ctx){
  const api=window.LJR_MEDIA?.notifyAPI;
