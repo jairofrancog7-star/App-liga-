@@ -169,11 +169,11 @@ function open(){
     matchLabel:bounded(raw.matchLabel,280),at:bounded(raw.at,64),updatedAt:bounded(raw.updatedAt,64)});
    known.add(id);
   }
-  if(!add.length){status('El respaldo no contiene registros nuevos validos.');return {ok:true,added:0}}
+  if(!add.length){status('El respaldo no contiene registros nuevos validos.');return {ok:true,added:0,addedIds:[]}}
   const before=entries;entries=[...entries,...add];
   if(!save(entries)){entries=before;status('No queda espacio para importar el respaldo.');return {ok:false,added:0}}
   undo=null;reset();render();
-  return {ok:true,added:add.length};
+  return {ok:true,added:add.length,addedIds:add.map(x=>x.id)};
  }
  q('[data-cat]').addEventListener('change',()=>{matchOptions();reset();render()});
  q('[data-match]').addEventListener('change',()=>{teamOptions();reset();render();status('')});
