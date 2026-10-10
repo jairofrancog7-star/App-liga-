@@ -153,13 +153,12 @@ function openGoogleCalendar(row){
  const m=String(row?.[8]||'').match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})/);
  if(!m){window.alert('El partido todavía no tiene fecha y hora confirmadas.');return;}
  const pad=n=>String(n).padStart(2,'0');
- const dt=new Date(+m[3],+m[2]-1,+m[1],+m[4],+m[5]);if(Number.isNaN(dt.getTime()))return;
- const stamp=d=>d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'T'+pad(d.getHours())+pad(d.getMinutes())+'00';
- const query=new URLSearchParams({action:'TEMPLATE',text:String(row?.[2]||'')+' vs '+String(row?.[6]||'')+' · Liga Juventino Rosas',
- dates:stamp(dt)+'/'+stamp(new Date(dt.getTime()+2*3600000)),ctz:'America/Mexico_City',stz:'America/Mexico_City',etz:'America/Mexico_City',
- details:'Jornada '+String(row?.[1]||'')+' · Liga Juventino Rosas',location:String(row?.[7]||'')});
- const href='https://calendar.google.com/calendar/render?'+query.toString();
- window.open(href,'_blank','noopener,noreferrer')||location.assign(href);
+ window.LJR_GOOGLE_CALENDAR_GLOBAL.open({
+  title:String(row?.[2]||'')+' - '+String(row?.[6]||''),
+  iso:m[3]+'-'+pad(m[2])+'-'+pad(m[1]),time:pad(m[4])+':'+m[5],
+  duration:120,venue:String(row?.[7]||''),
+  description:'Liga Juventino Rosas · Jornada '+String(row?.[1]||'')+' · Consulta la programación oficial.'
+ });
 }
 document.addEventListener('click',function(event){
  if(!(event.target instanceof Element))return;

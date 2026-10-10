@@ -56,7 +56,7 @@
       '</div>'+
       '<div class="v1131-dates"><label><span>DESDE</span><input type="date" aria-label="Fecha desde" data-v1131-from value="'+esc(state.from)+'"></label><label><span>HASTA</span><input type="date" aria-label="Fecha hasta" data-v1131-to value="'+esc(state.to)+'"></label><label><span>ORDENAR</span><select data-v1131-sort aria-label="Ordenar partidos"><option value="original"'+(state.sort==='original'?' selected':'')+'>Orden oficial</option><option value="recent"'+(state.sort==='recent'?' selected':'')+'>Más recientes</option><option value="oldest"'+(state.sort==='oldest'?' selected':'')+'>Más antiguos</option><option value="team"'+(state.sort==='team'?' selected':'')+'>Equipo A–Z</option></select></label></div>'+
       '<div class="v1131-toolbar"><button type="button" data-v1131-reset class="v1131-reset">Limpiar filtros</button><span data-v1131-count aria-live="polite">Calculando…</span></div>'+
-      '<div class="v1131-actions"><button type="button" data-v1131-ics title="Exportar encuentros con fecha válida a calendario"><span aria-hidden="true">▦</span> Calendario</button><button type="button" data-v1131-csv title="Descargar el rol filtrado en CSV"><span aria-hidden="true">⇩</span> CSV</button><button type="button" data-v1131-share title="Compartir encuentros seleccionados"><span aria-hidden="true">↗</span> Compartir</button></div>'+
+      '<div class="v1131-actions"><button type="button" data-v1131-ics title="Elegir encuentro y preparar evento de Google Calendar"><span aria-hidden="true">▦</span> Calendario</button><button type="button" data-v1131-csv title="Descargar el rol filtrado en CSV"><span aria-hidden="true">⇩</span> CSV</button><button type="button" data-v1131-share title="Compartir encuentros seleccionados"><span aria-hidden="true">↗</span> Compartir</button></div>'+
       '<small class="v1131-disclaimer">Esta lista contiene <b>partidos del rol</b>. No confirma que exista una cédula firmada, entregada o aprobada. Las descargas son una copia de consulta, no cambian resultados oficiales.</small>'+
       '<output class="v1131-feedback" data-v1131-feedback aria-live="polite"></output>'+
     '</section>';
@@ -157,21 +157,16 @@
   }
   function icsEsc(s){return String(s||'').replace(/\\/g,'\\\\').replace(/\r?\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;')}
   function exportICS(root){
-    var data=(apply(root)||[]).filter(function(x){return x.when});
-    if(!data.length){say(root,'Ningún partido filtrado tiene fecha válida para el calendario.');return}
-    var now=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
-    var lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Liga Juventino Rosas//Rol consultivo//ES','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Liga Juventino Rosas - Rol'];
-    data.forEach(function(x,i){
-      var id=stableKey(x.el).split('').reduce(function(acc,c){return ((acc<<5)-acc+c.charCodeAt(0))|0},0);
-      lines.push('BEGIN:VEVENT','UID:ljr-'+Math.abs(id)+'-'+i+'@juventinorosasliga.com','DTSTAMP:'+now,
-        'DTSTART'+(x.when.hasTime?':'+x.when.ics+'':' ;VALUE=DATE:'+x.when.ics).replace(' ;',';'),
-        'SUMMARY:'+icsEsc(x.home+' vs '+x.away),
-        'DESCRIPTION:'+icsEsc(x.cat+' · Jornada '+(x.round||'sin confirmar')+' · Horario y cancha sujetos a confirmación oficial'),
-        'LOCATION:'+icsEsc(x.field==='Por confirmar'?'':x.field),'END:VEVENT');
+    var data=(apply(root)||[]).filter(function(x){return x.when&&x.when.hasTime});
+    var events=data.map(function(x){
+      var time=x.when.ics.match(/T(\d\d)(\d\d)00$/);
+      return {title:x.home+' - '+x.away,iso:x.when.date,time:time[1]+':'+time[2],
+        duration:120,venue:x.field==='Por confirmar'?'':x.field,
+        description:'Liga Juventino Rosas · '+x.cat+' · Jornada '+(x.round||'sin confirmar')+' · Consulta el rol oficial.'};
     });
-    lines.push('END:VCALENDAR');
-    download('liga-juventino-rol.ics',lines.join('\r\n')+'\r\n','text/calendar;charset=utf-8');
-    say(root,'Calendario descargado: '+data.length+' encuentros. Verifica fechas antes de compartirlo.');
+    if(window.LJR_GOOGLE_CALENDAR_GLOBAL.choose(events,'Selecciona el partido de la cédula')){
+      say(root,'Google Calendar abrirá con los datos del partido. Pulsa Guardar para añadirlo.');
+    }
   }
   async function share(root){
     var data=apply(root)||[];

@@ -46,11 +46,11 @@ function viewSummary(ctx){
  '<small class="mh-adv-footnote">'+(s.reviewed?'Revisado y guardado: '+esc(s.reviewed):'Pendiente de revisión por un administrador.')+'</small>';
 }
 function viewCalendar(ctx,base){
- return base+'<div class="mh-adv-extra"><h5>Recordatorios de la junta</h5><p class="mh-tip">Exporta alarmas a tu calendario o programa un aviso oficial en la app si el servidor privado está activo.</p>'+
+ return base+'<div class="mh-adv-extra"><h5>Recordatorios de la junta</h5><p class="mh-tip">Prepara la junta en Google Calendar o programa un aviso oficial en la app si el servidor privado está activo.</p>'+
  '<label>Anticipación<select data-mh-advanced="hours"><option value="24">24 horas antes</option><option value="2">2 horas antes</option><option value="1">1 hora antes</option></select></label>'+
  '<label class="mh-check"><input type="checkbox" data-mh-advanced="weekly"> Repetir todos los martes (calendario)</label>'+
- '<div class="mh-buttons"><button type="button" data-mh-action="adv-ics-reminders">Descargar .ics con alarmas</button><button type="button" data-mh-action="adv-server-reminder">Programar aviso oficial en app</button></div>'+
- '<p class="mh-tip">Google Calendar permite ajustar las alarmas al importar. WhatsApp sigue siendo un envío manual y voluntario. El aviso de la app usa permisos de servidor.</p></div>';
+ '<div class="mh-buttons"><button type="button" data-mh-action="adv-ics-reminders">Guardar junta en Google Calendar</button><button type="button" data-mh-action="adv-server-reminder">Programar aviso oficial en app</button></div>'+
+ '<p class="mh-tip">Configura las alarmas en Google Calendar antes de guardar. WhatsApp sigue siendo un envío manual y voluntario. El aviso de la app usa permisos de servidor.</p></div>';
 }
 function viewMinutes(ctx,base){
  const sign=ctx.item().sign||{},imgs=sign.images||{};
@@ -121,15 +121,14 @@ function clock(ctx){
 }
 function alarmCalendar(ctx){
  const x=clock(ctx);if(!x)return ctx.msg('Introduce una fecha válida de junta.');
- const hours=Number($('[data-mh-advanced="hours"]',ctx.host)?.value)||24;
  const weekly=!!$('[data-mh-advanced="weekly"]',ctx.host)?.checked;
- const endDate=x.end.toLocaleDateString('sv-SE',{timeZone:'America/Mexico_City'});
- const localEnd=x.end.toLocaleString('sv-SE',{timeZone:'America/Mexico_City',hour:'2-digit',minute:'2-digit',hour12:false}).replace(':','');
- const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Liga Juventino Rosas//Junta Semanal//ES','CALSCALE:GREGORIAN','BEGIN:VEVENT','UID:ljr-junta-'+x.d+'@juventinorosasliga.local','DTSTAMP:'+stamp(),'DTSTART;TZID=America/Mexico_City:'+x.local(x.d),'DTEND;TZID=America/Mexico_City:'+endDate.replace(/-/g,'')+'T'+localEnd+'00','SUMMARY:Junta de la Liga Juventino Rosas','LOCATION:'+icsEsc(x.m.place),'DESCRIPTION:'+icsEsc(x.m.agenda)];
- if(weekly)lines.push('RRULE:FREQ=WEEKLY;BYDAY=TU');
- lines.push('BEGIN:VALARM','TRIGGER:-PT'+hours+'H','ACTION:DISPLAY','DESCRIPTION:Recordatorio de junta de la Liga','END:VALARM','END:VEVENT','END:VCALENDAR');
- ctx.download('junta-recordatorios-'+x.d+'.ics',lines.join('\r\n'),'text/calendar;charset=utf-8');
- ctx.msg('Archivo con alarma descargado. Importa al calendario para recibir el recordatorio.');
+ const hours=Number($('[data-mh-advanced="hours"]',ctx.host)?.value)||24;
+ const opened=window.LJR_GOOGLE_CALENDAR_GLOBAL.open({
+   title:'Junta de la Liga Juventino Rosas',iso:x.d,time:x.t,duration:60,
+   venue:x.m.place||'',weekly,
+   description:(x.m.agenda||'Orden del día por confirmar')+' · Recordatorio sugerido: '+hours+' horas antes. Ajusta los avisos al guardar.'
+ });
+ if(opened)ctx.msg('Google Calendar se abrió con la junta. Revisa los avisos y pulsa Guardar.');
 }
 async function serverReminder(ctx){
  const x=clock(ctx);if(!x)return ctx.msg('Introduce una fecha válida.');
