@@ -1,0 +1,17 @@
+/* V1140 — firmas y documentos en la Junta de la Liga, consistente con el azul oficial. */
+.v875-meeting-modal .ljr-meeting-hub .mh-adv-extra{display:grid;grid-column:1/-1;gap:10px;padding:12px;background:linear-gradient(150deg,#133776,#09184c);border:1px solid #315dba;border-radius:14px}
+.v875-meeting-modal .ljr-meeting-hub .mh-adv-extra h5{color:#f6fbff!important;font-size:14px!important;font-weight:800!important;margin:0 0 2px!important;line-height:1.25}
+.v875-meeting-modal .ljr-meeting-hub .mh-adv-summary{box-sizing:border-box;display:block;width:100%!important;min-width:0;min-height:230px!important;background:#0b215a!important;border:1px solid #466ebf!important;color:#effaff!important;border-radius:12px!important;resize:vertical!important;font-family:inherit!important;font-size:12px!important;line-height:1.5!important;padding:12px!important}
+.v875-meeting-modal .ljr-meeting-hub .mh-adv-pad{display:grid;gap:8px;border:1px solid #31599f;border-radius:12px;padding:10px;background:#10285e}
+.v875-meeting-modal .ljr-meeting-hub .mh-adv-pad-head{display:flex;gap:8px;justify-content:space-between;align-items:center}
+.v875-meeting-modal .ljr-meeting-hub .mh-adv-pad-head b{font-size:12px;color:#fff}
+.v875-meeting-modal .ljr-meeting-hub .mh-adv-pad-head button{min-height:31px!important;padding:6px 8px!important;font-size:10px!important}
+.v875-meeting-modal .ljr-meeting-hub .mh-adv-pad canvas{display:block;width:100%;height:auto;max-height:150px;aspect-ratio:480/145;border-radius:9px;border:2px solid #57a8e6;background:#fff;touch-action:none;cursor:crosshair}
+.v875-meeting-modal .ljr-meeting-hub .mh-adv-pad small,.v875-meeting-modal .ljr-meeting-hub .mh-adv-footnote{display:block;font-size:10px;color:#b5d6f8;line-height:1.5}
+.v875-meeting-modal .ljr-meeting-hub input[type=file]:not([hidden]){padding:8px!important;font-size:11px!important;background:#0b215a!important;border:1px dashed #5281cf!important;color:#fff!important;border-radius:10px!important}
+.v875-meeting-modal .ljr-meeting-hub input[type=file][hidden]{display:none!important}
+.v875-meeting-modal .ljr-meeting-hub .mh-adv-extra .mh-buttons>button{flex:1 1 45%}
+.v875-meeting-modal .ljr-meeting-hub .mh-tip,.v875-meeting-modal .ljr-meeting-hub .mh-adv-footnote{overflow-wrap:anywhere}
+.v875-meeting-modal .ljr-meeting-hub button,.v875-meeting-modal .ljr-meeting-hub input,.v875-meeting-modal .ljr-meeting-hub textarea{max-width:100%}
+.v875-meeting-modal .ljr-meeting-hub .mh-tabs{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+@media(max-width:375px){.v875-meeting-modal .ljr-meeting-hub .mh-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
