@@ -59,10 +59,18 @@ async function admin(req,res,next){
   const subject=String(identity.id??identity.username??'').trim();
   if(!safeSubject(subject))return res.status(403).json({error:'Identificador administrativo inválido'});
   const isOwner=identity.owner===true;
-  let stored='lector';
-  if(!isOwner){const result=await pool.query('SELECT role FROM ljr_admin_roles WHERE subject=$1',[subject]);stored=result.rows[0]?.role;}
-  const role=roleFor(identity,stored);
-  req.actor={subject,role,owner:isOwner,permissions:ROLE_PERMS[role]};
+  let secondary=false,stored='lector';
+  if(!isOwner){
+   // Grants persist only in PostgreSQL and require explicit primary-owner approval.
+   const grant=await pool.query('SELECT 1 FROM ljr_co_principals WHERE subject=$1',[subject]);
+   secondary=grant.rowCount>0;
+   if(!secondary){
+    const result=await pool.query('SELECT role FROM ljr_admin_roles WHERE subject=$1',[subject]);
+    stored=result.rows[0]?.role;
+   }
+  }
+  const role=roleFor(identity,stored,secondary);
+  req.actor={subject,role,owner:isOwner,secondary,permissions:ROLE_PERMS[role]};
   next();
  }catch(e){
   console.warn('Verificación de sesión no disponible:',e?.name||'Error');
@@ -166,7 +174,69 @@ app.post('/admin/notices',admin,requirePermission('notices:write'),async(req,res
  res.status(201).json({ok:true,id,sendAt:new Date(when).toISOString(),status:'queued',revision:1});
  }catch(e){apiError(e,res)}
 });
-app.get('/admin/me',admin,(req,res)=>res.json({actor:{id:req.actor.subject,role:req.actor.role,owner:req.actor.owner,permissions:req.actor.permissions}}));
+app.get('/admin/me',admin,(req,res)=>res.json({actor:{id:req.actor.subject,role:req.actor.role,owner:req.actor.owner,secondary:req.actor.secondary,permissions:req.actor.permissions}}));
+// 2 principales: propietario del CMS + un segundo administrador confirmado por propietario.
+// No admite privilegios por coincidencia de correo, teléfono o cambios de localStorage.
+app.get('/admin/principals',admin,requirePermission('roles:write'),async(req,res)=>{
+ try{
+  const r=await pool.query('SELECT subject,approved_at FROM ljr_co_principals LIMIT 1');
+  res.json({primarySource:'media-server',secondary:r.rows[0]||null,expected:2,
+   current:1+(r.rowCount?1:0),canAuthorize:req.actor.owner===true});
+ }catch(e){apiError(e,res)}
+});
+app.post('/admin/principals',admin,requirePermission('roles:write'),async(req,res)=>{
+ if(req.actor.owner!==true)return res.status(403).json({error:'Solo el propietario original puede autorizar otro principal'});
+ const subject=String(req.body?.subject||'').trim();
+ if(!safeSubject(subject)||subject===req.actor.subject)return res.status(400).json({error:'Identificador de cuenta inválido'});
+ // Consulta los administradores reales del CMS: no se aceptan emails ni números como prueba de identidad.
+ try{
+  const bearer=req.get('Authorization');
+  const response=await fetch(E.LJR_MEDIA_AUTH_BASE+'/api/admins',{
+   headers:{Authorization:bearer,Accept:'application/json'},
+   signal:AbortSignal.timeout(8000),redirect:'error'
+  });
+  if(!response.ok)return res.status(503).json({error:'No se pudo comprobar el administrador en el servidor de la Liga'});
+  const data=await response.json();
+  const target=Array.isArray(data.admins)?data.admins.find(x=>x&&String(x.id)===subject&&x.active===true&&!x.owner):null;
+  if(!target)return res.status(422).json({error:'Primero registra y autoriza la cuenta independiente del presidente en la administración de la Liga'});
+  const db=await pool.connect();
+  try{
+   await db.query('BEGIN');
+   await db.query('LOCK TABLE ljr_co_principals IN EXCLUSIVE MODE');
+   const exists=await db.query('SELECT subject FROM ljr_co_principals LIMIT 1');
+   if(exists.rowCount&&exists.rows[0].subject!==subject){
+    await db.query('ROLLBACK');
+    return res.status(409).json({error:'Ya existe un segundo administrador principal. Revócalo primero si necesitas reemplazarlo'});
+   }
+   if(!exists.rowCount){
+    await db.query('INSERT INTO ljr_co_principals(subject,approved_by) VALUES($1,$2)',[subject,req.actor.subject]);
+    await db.query('INSERT INTO ljr_admin_audit(actor,role,action,target,detail) VALUES($1,$2,$3,$4,$5)',
+     [req.actor.subject,req.actor.role,'principals:approve',subject,JSON.stringify({scope:'notifications-meetings'})]);
+   }
+   await db.query('COMMIT');
+   res.json({ok:true,subject,secondary:true,scope:'notifications-meetings'});
+  }catch(err){await db.query('ROLLBACK').catch(()=>{});apiError(err,res)}
+  finally{db.release()}
+ }catch(e){apiError(e,res)}
+});
+app.delete('/admin/principals/:subject',admin,requirePermission('roles:write'),async(req,res)=>{
+ if(req.actor.owner!==true)return res.status(403).json({error:'Solo el propietario original puede revocar este acceso'});
+ const subject=String(req.params.subject||'');
+ if(!safeSubject(subject)||subject===req.actor.subject)return res.status(400).json({error:'Identificador no válido'});
+ const db=await pool.connect().catch(e=>{apiError(e,res);return null});
+ if(!db)return;
+ try{
+  await db.query('BEGIN');
+  const removed=await db.query('DELETE FROM ljr_co_principals WHERE subject=$1 RETURNING subject',[subject]);
+  if(!removed.rowCount){await db.query('ROLLBACK');return res.status(404).json({error:'No existe ese segundo principal'})}
+  await db.query('INSERT INTO ljr_admin_audit(actor,role,action,target,detail) VALUES($1,$2,$3,$4,$5)',
+   [req.actor.subject,req.actor.role,'principals:revoke',subject,JSON.stringify({scope:'notifications-meetings'})]);
+  await db.query('COMMIT');
+  res.json({ok:true,subject,revoked:true});
+ }catch(e){await db.query('ROLLBACK').catch(()=>{});apiError(e,res)}
+ finally{db.release()}
+});
+
 app.get('/admin/roles',admin,requirePermission('roles:write'),async(req,res)=>{
  try{
   const r=await pool.query('SELECT subject,role,updated_at FROM ljr_admin_roles ORDER BY subject LIMIT 100');
