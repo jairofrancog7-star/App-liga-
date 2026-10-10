@@ -1,6 +1,6 @@
 /* Parsing CSV en segundo plano: evita bloquear la interfaz móvil.
    Worker local de Vite; sin acceso a red ni modificación de datos oficiales. */
-import {parseDelimited,detectDelimiter} from './v1212-csv-import-pro.js';
+import {parseDelimited,detectDelimiter} from './v1222-csv-parser-core.js';
 self.onmessage=event=>{
  try{
   const {text,delimiter}=event.data||{};
