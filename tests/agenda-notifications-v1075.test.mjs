@@ -5,13 +5,14 @@ import {resolve} from 'node:path';
 const root=resolve(import.meta.dirname,'..');
 const read=p=>readFileSync(resolve(root,p),'utf8');
 
-test('calendar link, alarmas ICS y Web Push con consentimiento',()=>{
+test('Google Calendar unificado y Web Push con consentimiento',()=>{
  const js=read('src/v1074-agenda-integrations.js');
  new Function(js);
  assert.match(js,/agendaBuilder/);
  assert.match(js,/calendar\.google\.com\/calendar\/render/);
  assert.match(js,/America\/Mexico_City/);
- assert.match(js,/VALARM/);
+ assert.match(js,/LJR_GOOGLE_CALENDAR_GLOBAL\.choose/);
+ assert.doesNotMatch(js,/Agenda_Liga_Juventino_Alertas\.ics/);
  assert.match(js,/pushManager\.subscribe/);
  assert.match(js,/push\/unsubscribe/);
 });
