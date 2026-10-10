@@ -78,8 +78,10 @@ function makeAdminForm(prefill){
   '<div class="v1081-channel-options">'+
   '<label class="v1081-check"><input type="checkbox" name="push" disabled> Push a seguidores suscritos</label>'+
   '<label class="v1081-check"><input type="checkbox" name="sms" disabled> SMS por Twilio</label>'+
-  '<label class="v1081-check"><input type="checkbox" name="whatsapp" disabled> WhatsApp Business (plantilla aprobada)</label>'+
+  '<label class="v1081-check"><input type="checkbox" name="whatsapp" disabled> WhatsApp Business automático (no usa WhatsApp normal)</label>'+
   '</div><small class="v1081-channel-note" data-v1091-channel-status>Consultando canales disponibles…</small>'+
+  '<a class="v1093-wa-personal" data-v1093-wa-personal target="_blank" rel="noopener noreferrer" href="https://api.whatsapp.com/send">WhatsApp normal · preparar mensaje manual</a>'+
+  '<small class="v1081-channel-note">Se abrirá WhatsApp para elegir el contacto y pulsar Enviar. No programa ni envía automáticamente.</small>'+
   '<p class="v1081-preview">Se publicará en Noticias; los mensajes externos requieren canal aprobado y consentimiento individual. Nada se envía al guardar.</p>'+
   '<div class="v1081-actions"><button type="button" data-v1081-reset>Limpiar</button><button type="submit" data-v1081-save>Programar publicación</button></div>'+
   '</form><div class="v1081-list"><div class="v1081-list-head"><strong>Publicaciones programadas</strong><button type="button" data-v1081-refresh>Actualizar</button></div><div data-v1081-items>Cargando...</div></div>'+
@@ -224,6 +226,32 @@ function makeAdminForm(prefill){
   }catch(err){message(modal,'No se guardó: '+err.message)}
   finally{busy=false;save.disabled=false}
  };
+ // Acceso manual gratuito: usa el teléfono personal y no la API de Twilio.
+ // La web sólo prepara el texto. Ni programa ni confirma envío/lectura.
+ $('[data-v1093-wa-personal]',modal).addEventListener('click',event=>{
+  const link=event.currentTarget;
+  if(!active()){
+   event.preventDefault();message(modal,'Inicia sesión como administrador para preparar avisos.');return;
+  }
+  const title=String(form.elements.title.value||'').trim();
+  const body=String(form.elements.body.value||'').trim();
+  if(!title||body.length<15){
+   event.preventDefault();message(modal,'Escribe un título y un aviso de al menos 15 caracteres antes de abrir WhatsApp.');return;
+  }
+  const fields=[
+   'LIGA MUNICIPAL DE FÚTBOL JUVENTINO ROSAS A. C.',
+   title,
+   'Categoría: '+form.elements.category.value,
+   form.elements.team.value.trim()?'Equipo: '+form.elements.team.value.trim():'',
+   form.elements.field.value.trim()?'Campo: '+form.elements.field.value.trim():'',
+   body
+  ].filter(Boolean).join('\n');
+  if(!window.confirm('¿Abrir WhatsApp normal con el aviso preparado? Elige personalmente los destinatarios y pulsa Enviar.')){
+   event.preventDefault();return;
+  }
+  link.href='https://api.whatsapp.com/send?text='+encodeURIComponent(fields);
+  message(modal,'Mensaje preparado. Debes elegir el chat y enviarlo manualmente desde WhatsApp.');
+ });
  $('[data-v1081-reset]',modal).onclick=clear;
  $('[data-v1081-refresh]',modal).onclick=()=>{loadChannels();refresh()};
  loadChannels();refresh();
