@@ -16,7 +16,7 @@ test('el editor exige sesión y verificación real en el servicio externo',()=>{
  const code=src('src/v1075-admin-editor-center.js');
  assert.match(code,/await media\(\)\.api\('me'\)/);
  assert.match(code,/if\(!admin\(\)\)throw Error/);
- assert.match(code,/if\(!who\.owner\)throw Error/);
+ assert.match(code,/if\(who\.owner!==true\)throw Error/);
  assert.match(code,/if\(saving\|\|!form\.reportValidity\(\)\)return/);
  assert.match(code,/await verified\(\)/);
 });
