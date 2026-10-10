@@ -135,7 +135,7 @@ function setup(root){
       '<div class="v1210-preview"><div class="v1210-previewtop"><span>VISTA PREVIA</span><span data-v1210-count>0 caracteres</span></div>'+
         '<strong data-v1210-title></strong><p data-v1210-body></p><small data-v1210-meta></small></div>'+
       '<div class="v1210-audit" data-v1210-audit role="status" aria-live="polite"></div>'+
-      '<small class="v1210-draft" data-v1210-draft>Los cambios del borrador se guardan en este dispositivo.</small>'+
+      '<small class="v1210-draft" data-v1210-draft>Los cambios del borrador se guardan solo en este dispositivo.</small>'+
     '</section>');
   const review=$('[data-v1210-review]',root);
   const notify=msg=>{const el=$('[data-v1210-draft]',root);if(el)el.textContent=msg;};
