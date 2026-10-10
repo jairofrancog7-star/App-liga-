@@ -1,3 +1,4 @@
+import {suggestCsvMapping,guessCsvType,csvLocalInsights,readCsvLearning,keepCsvLearning,standardCategory} from './v1222-csv-local-ai.js';
 /* Importador CSV local y seguro — Liga Juventino Rosas. Sin escritura de datos oficiales. */
 const SCHEMAS={
  equipos:{label:'Equipos',fields:[['nombre','Nombre del equipo',true,['equipo','club','team','nombre equipo','nombre']],['categoria','Categoría',true,['categoria','division','liga','category']],['campo','Campo',false,['sede','cancha','estadio','campo local','campo']],['ciudad','Ciudad / comunidad',false,['localidad','comunidad','municipio','ciudad']]]},
@@ -118,24 +119,49 @@ function downloadCSV(rows,name){
  a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
  setTimeout(()=>URL.revokeObjectURL(url),1500);
 }
+async function parseCsvBackground(text,chosen){
+ const direct=()=>{const delimiter=chosen==='auto'?detectDelimiter(text):chosen==='tab'?'\t':chosen;return {parsed:parseDelimited(text,delimiter),delimiter};};
+ if(typeof Worker==='undefined')return direct();
+ let worker;
+ try{
+  worker=new Worker(new URL('./v1222-csv-parser-worker.js',import.meta.url),{type:'module'});
+  const result=await new Promise((resolve,reject)=>{
+   const expiry=setTimeout(()=>reject(new Error('Tiempo de espera del analizador local')),8000);
+   worker.onmessage=e=>{clearTimeout(expiry);if(e.data?.ok)resolve(e.data);else reject(Error(e.data?.error||'Error en el analizador'));};
+   worker.onerror=()=>{clearTimeout(expiry);reject(Error('Worker CSV no disponible'));};
+   worker.postMessage({text,delimiter:chosen});
+  });
+  return result;
+ }catch(_){return direct();}
+ finally{if(worker)worker.terminate();}
+}
 export function openCsvImporter({modal,toast,log}){
  const m=modal('Importar CSV','Analiza y prepara datos de la Liga. La revisión es local: no se publican cambios oficiales.',
  '<div class="csvpro">'+
  '<div class="csvpro-head"><div class="csvpro-step">1 <span>ARCHIVO Y TIPO</span></div><div class="csvpro-privacy">🔒 Sin subir datos</div></div>'+
+ '<div class="csvpro-aiintro"><span class="csvpro-aiicon" aria-hidden="true">✦</span><div><b>Asistente inteligente local</b><small>Detecta datos, aprende de tus columnas y revisa errores automáticamente. Sin internet ni modelos pesados.</small></div></div>'+
  '<label class="csvpro-field"><span>¿Qué vas a revisar?</span><select data-csv-type><option value="equipos">Equipos</option><option value="jugadores">Jugadores</option><option value="resultados">Partidos y resultados</option></select></label>'+
  '<label class="csvpro-drop" data-csv-drop tabindex="0" role="button" aria-label="Seleccionar o soltar archivo CSV"><span class="csvpro-upload">⇧</span><b>Seleccionar o arrastrar CSV</b><small data-csv-name>CSV o TSV · máximo 5 MB · hasta 12 000 filas</small><input type="file" accept=".csv,.tsv,text/csv,text/tab-separated-values" data-csv-file></label>'+
  '<div class="csvpro-line"><label class="csvpro-field"><span>Separador</span><select data-csv-delimiter><option value="auto">Automático</option><option value=",">Coma (,)</option><option value=";">Punto y coma (;)</option><option value="tab">Tabulador</option><option value="|">Barra (|)</option></select></label><button class="csvpro-button csvpro-ghost" type="button" data-csv-template>↓ Plantilla CSV</button></div>'+
  '<div class="csvpro-actions"><button class="csvpro-button csvpro-primary" type="button" data-csv-parse disabled>Analizar archivo</button><button class="csvpro-button csvpro-ghost" type="button" data-csv-reset>Limpiar</button></div>'+
+ '<div class="csvpro-localrow"><small>El aprendizaje guarda solo encabezados corregidos, nunca los datos del archivo.</small><button class="csvpro-forget" data-csv-forget type="button">Olvidar aprendizaje</button></div>'+
  '<p role="status" class="csvpro-status" data-csv-status>Selecciona un archivo o descarga una plantilla para comenzar.</p>'+
  '<div data-csv-result></div></div>');
  m.classList.add('v1212-csv-modal');
  const $=selector=>m.querySelector(selector);
  const els={type:$('[data-csv-type]'),file:$('[data-csv-file]'),drop:$('[data-csv-drop]'),delimiter:$('[data-csv-delimiter]'),name:$('[data-csv-name]'),status:$('[data-csv-status]'),result:$('[data-csv-result]'),parse:$('[data-csv-parse]')};
  let selected=null,parsed=null,mapping={},analysis=null,query='',filter='all',shown=25,activeFile=0;
+ let smart=null,insights=null,normalizeCategories=false,typeChanged=false;
+ let learning=readCsvLearning(typeof localStorage==='undefined'?null:localStorage);
+ const propose=()=>{
+  smart=suggestCsvMapping(parsed.headers,parsed.rows,els.type.value,SCHEMAS,learning);
+  mapping={...smart.mapping};
+ };
  const setStatus=(message,problem=false)=>{els.status.textContent=message;els.status.classList.toggle('csvpro-error',problem);};
  const process=()=>{
   if(!parsed)return;
   analysis=analyzeCsv(parsed,els.type.value,mapping);
+  insights=csvLocalInsights(parsed,els.type.value,mapping,analysis);
   render();
  };
  const choose=file=>{
@@ -156,12 +182,15 @@ export function openCsvImporter({modal,toast,log}){
    try{decoded=new TextDecoder('utf-8',{fatal:true}).decode(bytes);}
    catch(_){decoded=new TextDecoder('windows-1252').decode(bytes);}
    if(revision!==activeFile)return;
-   const delimiter=els.delimiter.value==='auto'?detectDelimiter(decoded):els.delimiter.value==='tab'?'\t':els.delimiter.value;
-   parsed=parseDelimited(decoded,delimiter);
+   const {parsed:nextParsed,delimiter}=await parseCsvBackground(decoded,els.delimiter.value);
+   if(revision!==activeFile)return;
+   parsed=nextParsed;
    if(!parsed.headers.length||!parsed.rows.length)throw Error('El CSV necesita encabezados y al menos una fila de datos.');
-   mapping=guessMapping(parsed.headers,els.type.value);shown=25;filter='all';query='';
+   const detected=guessCsvType(parsed.headers,parsed.rows,SCHEMAS);
+   if(detected.type&&!typeChanged)els.type.value=detected.type;
+   propose();shown=25;filter='all';query='';
    process();
-   setStatus('Análisis local completado · '+parsed.rows.length+' registros · separador '+(delimiter==='\t'?'tabulador':delimiter));
+   setStatus('Revisión automática lista: '+parsed.rows.length+' registros · '+(detected.type?'tipo sugerido: '+SCHEMAS[detected.type].label+' · ':'')+'separador '+(delimiter==='\t'?'tabulador':delimiter));
    if(typeof log==='function')log('CSV analizado localmente sin modificar datos oficiales');
   }catch(err){
    parsed=null;analysis=null;els.result.innerHTML='';
@@ -173,15 +202,21 @@ export function openCsvImporter({modal,toast,log}){
   const {valid,invalid,missing,results}=analysis;
   const fields=SCHEMAS[els.type.value].fields;
   const mapUI=fields.map(([key,label,mandatory])=>
-   '<label class="csvpro-map-item"><span>'+html(label)+(mandatory?' *':'')+'</span><select data-map="'+html(key)+'"><option value="-1">Sin asignar</option>'+
+   '<label class="csvpro-map-item"><span>'+html(label)+(mandatory?' *':'')+'</span><small class="csvpro-confidence">'+html(mapping[key]>=0?'IA local · '+(smart?.confidence?.[key]||'revisada'):'Sin coincidencia segura')+'</small><select data-map="'+html(key)+'"><option value="-1">Sin asignar</option>'+
     parsed.headers.map((h,i)=>'<option value="'+i+'" '+(mapping[key]===i?'selected':'')+'>'+html(h||'(sin nombre)')+' · '+(i+1)+'</option>').join('')+'</select></label>').join('');
   const warning=[...parsed.warnings,...missing.map(n=>'Falta asignar: '+n)];
   const warningUI=warning.length?'<details class="csvpro-warnings"><summary>Revisar '+warning.length+' aviso(s)</summary><ul>'+warning.slice(0,35).map(w=>'<li>'+html(w)+'</li>').join('')+'</ul></details>':'';
+  const aiReport='<div class="csvpro-aireport" aria-label="Diagnóstico automático">'+
+   '<div class="csvpro-aireport-head"><b>✦ Diagnóstico local</b><strong>'+insights.quality+'% filas correctas</strong></div>'+
+   '<div class="csvpro-meter" role="progressbar" aria-label="Filas correctas" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+insights.quality+'"><span style="width:'+insights.quality+'%"></span></div>'+
+   '<ul>'+insights.notes.map(n=>'<li>'+html(n)+'</li>').join('')+'</ul></div>';
   els.result.innerHTML=
+   aiReport+
    '<div class="csvpro-step csvpro-section">2 <span>ASIGNAR COLUMNAS</span></div>'+
    '<div class="csvpro-map">'+mapUI+'</div>'+
    '<div class="csvpro-summary"><div><b>'+results.length+'</b><small>Filas</small></div><div><b>'+valid.length+'</b><small>Correctas</small></div><div><b>'+invalid.length+'</b><small>Con errores</small></div></div>'+
    warningUI+
+   '<label class="csvpro-normalize"><input type="checkbox" data-csv-normalize '+(normalizeCategories?'checked':'')+'><span><b>Normalizar nombres de categorías</b><small>Sólo modifica el archivo CSV exportado, nunca los datos oficiales.</small></span></label>'+
    '<div class="csvpro-step csvpro-section">3 <span>VISTA PREVIA Y REVISIÓN</span></div>'+
    '<div class="csvpro-filters"><input data-csv-search placeholder="Buscar equipo, jugador o fecha…" aria-label="Buscar registros" value="'+html(query)+'"><select data-csv-filter aria-label="Filtrar filas"><option value="all">Todos</option><option value="valid">Correctos</option><option value="invalid">Con errores</option></select></div>'+
    '<div data-csv-table></div>'+
@@ -189,15 +224,25 @@ export function openCsvImporter({modal,toast,log}){
    '<button type="button" class="csvpro-button csvpro-ghost" data-csv-errors '+(!invalid.length?'disabled':'')+'>↓ Reporte de errores ('+invalid.length+')</button></div>'+
    '<p class="csvpro-note">Vista previa privada. Ningún botón de esta ventana modifica equipos, jugadores ni resultados oficiales.</p>';
   const f=$('[data-csv-filter]');f.value=filter;
+  const normalizer=$('[data-csv-normalize]');normalizer.addEventListener('change',e=>{normalizeCategories=e.target.checked;renderTable();});
   els.result.querySelectorAll('[data-map]').forEach(select=>select.addEventListener('change',()=>{
-   mapping[select.dataset.map]=Number(select.value);shown=25;process();
+   const field=select.dataset.map,idx=Number(select.value);
+   mapping[field]=idx;
+   if(idx>=0){
+    keepCsvLearning(typeof localStorage==='undefined'?null:localStorage,els.type.value,parsed.headers[idx],field);
+    learning=readCsvLearning(typeof localStorage==='undefined'?null:localStorage);
+    smart.confidence[field]='aprendida';
+   }
+   shown=25;process();
   }));
   $('[data-csv-search]').addEventListener('input',e=>{query=e.target.value;shown=25;renderTable();});
   f.addEventListener('change',()=>{filter=f.value;shown=25;renderTable();});
   $('[data-csv-valid]').addEventListener('click',()=>{
    if(missing.length)return toast('Asigna primero los campos obligatorios.');
    const keys=fields.map(f=>f[0]);
-   downloadCSV([fields.map(f=>f[1]),...valid.map(r=>keys.map(k=>r.data[k]))],'Liga_'+els.type.value+'_revisados.csv');
+   downloadCSV([fields.map(f=>f[1]),...valid.map(r=>keys.map(k=>{
+    const v=r.data[k];return normalizeCategories&&k==='categoria'?(standardCategory(v)||v):v;
+   }))],'Liga_'+els.type.value+'_revisados.csv');
   });
   $('[data-csv-errors]').addEventListener('click',()=>{
    downloadCSV([['Fila','Errores',...fields.map(f=>f[1])],...invalid.map(r=>[r.line,r.errors.join(' | '),...fields.map(f=>r.data[f[0]])])],'Liga_'+els.type.value+'_errores.csv');
@@ -221,9 +266,14 @@ export function openCsvImporter({modal,toast,log}){
  };
  els.file.addEventListener('change',()=>choose(els.file.files?.[0]));
  els.parse.onclick=()=>void readFile();
- els.type.addEventListener('change',()=>{if(parsed){mapping=guessMapping(parsed.headers,els.type.value);process();}});
+ els.type.addEventListener('change',()=>{typeChanged=true;if(parsed){propose();process();}});
  els.delimiter.addEventListener('change',()=>{if(selected)void readFile();});
- $('[data-csv-reset]').onclick=()=>{activeFile++;selected=null;parsed=null;analysis=null;els.file.value='';els.name.textContent='CSV o TSV · máximo 5 MB · hasta 12 000 filas';els.parse.disabled=true;els.result.innerHTML='';setStatus('Selecciona un archivo o descarga una plantilla para comenzar.');};
+ $('[data-csv-reset]').onclick=()=>{activeFile++;selected=null;parsed=null;analysis=null;smart=null;insights=null;typeChanged=false;normalizeCategories=false;els.file.value='';els.name.textContent='CSV o TSV · máximo 5 MB · hasta 12 000 filas';els.parse.disabled=true;els.result.innerHTML='';setStatus('Selecciona un archivo o descarga una plantilla para comenzar.');};
+ $('[data-csv-forget]').onclick=()=>{
+  try{localStorage.removeItem('ljr-csv-local-learning-v1');}catch(_){}
+  learning={};if(parsed){propose();process();}
+  setStatus('Aprendizaje local borrado. Los archivos y los datos oficiales no se modificaron.');
+ };
  $('[data-csv-template]').onclick=()=>{
   const type=els.type.value,headers=SCHEMAS[type].fields.map(f=>f[1]);
   const samples={equipos:['Galácticos de Pozos','Primera','Campo Municipal','Pozos'],
