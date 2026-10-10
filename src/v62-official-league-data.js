@@ -5,7 +5,7 @@ import {defaultDefeatedTeam} from './competition-data.js';
 (function(){
 'use strict';
 
-const BUILD='20261008-v968-global-official-coherence';
+const BUILD='20261010-v1114-official-weekly-safe';
 const LOCAL_DATA='./data/official-live.json?v='+BUILD;
 const REMOTE_DATA='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v='+BUILD;
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
