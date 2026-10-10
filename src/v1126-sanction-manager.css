@@ -1,0 +1,44 @@
+/* V1126: interfaz de sanciones local, compacta y aislada */
+html body > .v105-modal.v1126-sanction-modal .v1126-sanction {width:100%;min-width:0;display:grid;gap:12px;font-family:inherit;color:#f9fbff}
+html body > .v105-modal.v1126-sanction-modal .v1126-sanction *{box-sizing:border-box}
+html body > .v105-modal.v1126-sanction-modal .v1126-sanction [hidden]{display:none!important}
+html body > .v105-modal.v1126-sanction-modal .v1126-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:2px 0 1px}
+html body > .v105-modal.v1126-sanction-modal .v1126-steps button{border:1px solid #294d91;background:#11265e;color:#bdcee8;border-radius:10px;padding:11px 3px;font-size:12px;font-weight:800;min-width:0}
+html body > .v105-modal.v1126-sanction-modal .v1126-steps button.is-active{border-color:#6bdef3;background:#1761ae;color:#fff}
+html body > .v105-modal.v1126-sanction-modal .v1126-stage{min-width:0;padding:14px;border:1px solid rgba(101,164,245,.32);border-radius:17px;background:linear-gradient(165deg,rgba(28,66,154,.53),rgba(10,29,86,.57));display:grid;gap:12px}
+html body > .v105-modal.v1126-sanction-modal .v1126-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+html body > .v105-modal.v1126-sanction-modal .v1126-field{display:grid;min-width:0;gap:6px;color:#cfddf7;font-weight:700;font-size:12px}
+html body > .v105-modal.v1126-sanction-modal .v1126-field :is(input,select,textarea){width:100%;min-width:0;min-height:46px;padding:10px 11px;border:1px solid #4d6fb8;border-radius:11px;background:#0c2060;color:#fff;font-size:14px;font-weight:600;outline:none;overflow:hidden;text-overflow:ellipsis}
+html body > .v105-modal.v1126-sanction-modal .v1126-field textarea{min-height:80px;resize:vertical;overflow:auto}
+html body > .v105-modal.v1126-sanction-modal .v1126-field :is(input,select,textarea):focus-visible{border-color:#6de7fa;box-shadow:0 0 0 2px rgba(90,230,250,.25)}
+html body > .v105-modal.v1126-sanction-modal .v1126-found{color:#8ce7f4;font-size:11px;font-weight:800}
+html body > .v105-modal.v1126-sanction-modal .v1126-results{display:grid;gap:6px;max-height:250px;overflow-y:auto;overscroll-behavior:contain}
+html body > .v105-modal.v1126-sanction-modal .v1126-results>button{display:grid;grid-template-columns:34px minmax(0,1fr) 15px;align-items:center;gap:9px;text-align:left;min-width:0;padding:9px;background:#0b205f;color:#fff;border:1px solid rgba(93,149,229,.36);border-radius:11px}
+html body > .v105-modal.v1126-sanction-modal .v1126-results>button strong{font-size:12px;display:block;overflow:hidden;text-overflow:ellipsis}
+html body > .v105-modal.v1126-sanction-modal .v1126-results>button small{font-size:10px;color:#bbd2f0;display:block;margin-top:3px;overflow:hidden;text-overflow:ellipsis}
+html body > .v105-modal.v1126-sanction-modal .v1126-results>p{font-size:12px;color:#b7c9e9}
+html body > .v105-modal.v1126-sanction-modal .v1126-avatar{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#1b4eaa}
+html body > .v105-modal.v1126-sanction-modal .v1126-selected{display:grid;gap:5px;padding:11px;border-radius:12px;background:#07194f;border:1px solid #3e78bf;font-size:12px;color:#d4e6f9;overflow-wrap:anywhere}
+html body > .v105-modal.v1126-sanction-modal .v1126-selected span{font-size:12px}
+html body > .v105-modal.v1126-sanction-modal .v1126-selected button{justify-self:start;color:#8debf5;border:0;background:transparent;text-decoration:underline;padding:3px;font-weight:700}
+html body > .v105-modal.v1126-sanction-modal .v1126-hint{font-size:11px;line-height:1.5;color:#bbd0eb;margin:0}
+html body > .v105-modal.v1126-sanction-modal .v1126-counter{font-size:12px;line-height:1.4;color:#8debf5;background:#0a2c66;padding:10px;border-radius:11px;margin:0}
+html body > .v105-modal.v1126-sanction-modal .v1126-feedback{padding:10px;border-radius:10px;background:#51331c;border:1px solid #e8ac5a;color:#fff0d5;font-size:12px}
+html body > .v105-modal.v1126-sanction-modal .v1126-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:12px 0;position:sticky;bottom:-1px;background:linear-gradient(180deg,#09195b,#07134b);z-index:2}
+html body > .v105-modal.v1126-sanction-modal .v1126-actions button{min-height:45px;font-size:12px;font-weight:850;border-radius:11px;padding:8px;overflow-wrap:anywhere}
+html body > .v105-modal.v1126-sanction-modal .v1126-primary{background:#60e2f1;color:#071a55;border:1px solid #78effc}
+html body > .v105-modal.v1126-sanction-modal .v1126-secondary{background:#1c3b82;color:#f9fdff;border:1px solid #557fc7}
+html body > .v105-modal.v1126-sanction-modal .v1126-preview{display:grid;gap:2px}
+html body > .v105-modal.v1126-sanction-modal .v1126-draft-mark{text-align:center;border:1px solid #b9a16a;border-radius:9px;background:#573d20;color:#fff4ca;padding:9px;font-size:12px;font-weight:900}
+html body > .v105-modal.v1126-sanction-modal .v1126-preview-row{display:grid;gap:5px;padding:9px 3px;border-bottom:1px solid rgba(129,174,239,.24);overflow-wrap:anywhere}
+html body > .v105-modal.v1126-sanction-modal .v1126-preview-row span{font-size:10px;color:#a9c4e9}
+html body > .v105-modal.v1126-sanction-modal .v1126-preview-row strong{font-size:13px;font-weight:700}
+html body > .v105-modal.v1126-sanction-modal .v1126-footer{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+html body > .v105-modal.v1126-sanction-modal .v1126-footer button{background:none;border:0;color:#7de9f5;font-size:12px;font-weight:800;text-decoration:underline;padding:7px 0}
+html body > .v105-modal.v1126-sanction-modal .v1126-history{display:grid;gap:8px;padding:12px;border:1px solid #326eaf;border-radius:12px;background:#07194c}
+html body > .v105-modal.v1126-sanction-modal .v1126-history h4{margin:0 0 3px;font-size:14px}
+html body > .v105-modal.v1126-sanction-modal .v1126-history article{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:7px;border-bottom:1px solid #274578;padding:8px 0}
+html body > .v105-modal.v1126-sanction-modal .v1126-history article strong,html body > .v105-modal.v1126-sanction-modal .v1126-history article small{display:block;overflow-wrap:anywhere;font-size:11px}
+html body > .v105-modal.v1126-sanction-modal .v1126-history article small{font-size:10px;color:#bcd0ea;margin-top:4px}
+html body > .v105-modal.v1126-sanction-modal .v1126-history article button{background:#163778;color:#fff;border:1px solid #557fc7;border-radius:8px;min-height:34px;font-size:11px;padding:6px}
+@media(max-width:440px){html body > .v105-modal.v1126-sanction-modal .v1126-grid{grid-template-columns:minmax(0,1fr)}html body > .v105-modal.v1126-sanction-modal .v1126-stage{padding:11px}html body > .v105-modal.v1126-sanction-modal .v1126-history article{grid-template-columns:minmax(0,1fr) auto auto}}
