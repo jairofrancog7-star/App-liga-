@@ -119,14 +119,14 @@ async function unsubscribe(req,res){
 app.post('/push/unsubscribe',throttle,unsubscribe);
 app.post('/api/push/unsubscribe',throttle,unsubscribe);
 app.post('/admin/recipients',admin,requirePermission('recipients:write'),async(req,res)=>{
- const {number,channel,consentAt,consentSource,category:cat}=req.body||{};
- if(!phone(number)||!['sms','whatsapp'].includes(channel)||!consentSource||!consentAt||!Number.isFinite(Date.parse(consentAt)))
+ const {number,channel,consentAt,consentSource,contactRole='general',category:cat}=req.body||{};
+ if(!phone(number)||!['sms','whatsapp'].includes(channel)||!['general','delegado','presidencia'].includes(contactRole)||!consentSource||!consentAt||!Number.isFinite(Date.parse(consentAt)))
  return res.status(400).json({error:'Requiere teléfono E.164, canal y consentimiento documentado'});
- try{await pool.query(`INSERT INTO ljr_message_consent(phone,channel,category,consent_at,consent_source,opted_out_at)
- VALUES($1,$2,$3,$4,$5,NULL)
- ON CONFLICT(phone,channel) DO UPDATE SET category=EXCLUDED.category,consent_at=EXCLUDED.consent_at,consent_source=EXCLUDED.consent_source,opted_out_at=NULL`,
- [number,channel,category(cat),consentAt,text(consentSource,300)]);
- await audit(req,'recipients:save',hash(number),{channel,category:category(cat)});
+ try{await pool.query(`INSERT INTO ljr_message_consent(phone,channel,category,consent_at,consent_source,opted_out_at,contact_role)
+ VALUES($1,$2,$3,$4,$5,NULL,$6)
+ ON CONFLICT(phone,channel) DO UPDATE SET category=EXCLUDED.category,consent_at=EXCLUDED.consent_at,consent_source=EXCLUDED.consent_source,opted_out_at=NULL,contact_role=EXCLUDED.contact_role`,
+ [number,channel,category(cat),consentAt,text(consentSource,300),contactRole]);
+ await audit(req,'recipients:save',hash(number),{channel,category:category(cat),contactRole});
  res.status(201).json({ok:true})}catch(e){apiError(e,res)}
 });
 app.post('/admin/optout',admin,requirePermission('recipients:write'),async(req,res)=>{
