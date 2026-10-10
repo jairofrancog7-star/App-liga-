@@ -81,6 +81,7 @@ try{
   const dims=await page.evaluate(()=>({doc:document.documentElement.scrollWidth,w:innerWidth,panel:(()=>{const r=document.querySelector('.ljr-studio').getBoundingClientRect();return {left:r.left,right:r.right}})()}));
   assert.ok(dims.doc<=dims.w+1&&dims.panel.left>=0&&dims.panel.right<=dims.w+1,'Desbordamiento móvil '+JSON.stringify(dims));
   await page.screenshot({path:resolve(out,'studio-'+width+'.png'),animations:'disabled'});
+  await page.locator('.liga-media-modal [data-close]').tap();
   await page.locator('[data-studio-close]').tap();
   assert.equal(await page.locator('#title').innerText(),'Jornada oficial','Al cerrar debe revertir la vista previa');
   assert.deepEqual(failures,[],JSON.stringify(failures));
