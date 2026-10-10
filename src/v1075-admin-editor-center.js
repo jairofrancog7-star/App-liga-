@@ -42,12 +42,13 @@ function showComposer(prefill){
   '<div class="ljr-editor-two">'+
   '<label>Tipo de aviso<select name="type">'+choices+'</select></label>'+
   '<label>Categoría<select name="category">'+CATS.map(x=>'<option value="'+x[0]+'">'+esc(x[1])+'</option>').join('')+'</select></label>'+
-  '<label>Jornada (opcional)<input name="round" inputmode="numeric" type="number" min="1" max="60" placeholder="Ej. 12"></label>'+
+  '<label>Jornada (opcional)<select name="round" aria-label="Elegir jornada"><option value="">Elegir jornada</option></select></label>'+
   '<label>Fecha del evento (opcional)<input type="date" name="date"></label>'+
   '<label>Hora (opcional)<input type="time" name="time"></label>'+
-  '<label>Cancha / sede (opcional)<input name="field" maxlength="110" placeholder="Ej. Campo 3"></label>'+ 
-  '<label>Equipo afectado (opcional)<input name="team" maxlength="90" placeholder="Ej. Manchester"></label>'+
+  '<label>Cancha / sede (opcional)<select name="field" aria-label="Elegir cancha"><option value="">Elegir cancha</option></select></label>'+ 
+  '<label>Equipo afectado (opcional)<select name="team" aria-label="Elegir equipo"><option value="">Elegir equipo</option></select></label>'+
   '</div>'+
+  '<div class="ljr-editor-autofill"><button type="button" data-editor-match-autofill>↗ Completar desde el rol</button><small data-editor-match-hint aria-live="polite">Selecciona categoría, jornada y equipo.</small></div>'+ 
   '<label>Detalles confirmados<textarea name="details" rows="2" maxlength="1200" placeholder="Escribe el cambio o la información oficial. No se inventan resultados."></textarea></label>'+
   '<div class="ljr-editor-tools"><button type="button" data-generate="formal">✎ Comunicado</button><button type="button" data-generate="short">☰ Versión corta</button><button type="button" data-generate="urgent">⚠ Urgente</button></div>'+
   '<label>Título<input name="title" required maxlength="160"></label>'+
@@ -64,62 +65,95 @@ function showComposer(prefill){
  const title=$('[name=title]',form),body=$('[name=body]',form);
  let savedId='', savedRevision=0, saving=false;
  // Los catálogos son públicos y solo sugieren nombres; nunca alteran los permisos de publicación.
- const fieldInput=form.elements.field,teamInput=form.elements.team;
- const fieldList=document.createElement('datalist'),teamList=document.createElement('datalist');
- const uid='ljr-aviso-'+Math.random().toString(36).slice(2);
- fieldList.id=uid+'-fields';teamList.id=uid+'-teams';
- fieldInput.setAttribute('list',fieldList.id);teamInput.setAttribute('list',teamList.id);
- form.append(fieldList,teamList);
- const knownFields=[
-  'Campo 1 · Unidad Deportiva Sur','Campo 2 · Unidad Deportiva Sur','Campo 3 · Unidad Deportiva Sur',
-  'Campo 4 · Emiliano Zapata','Campo Cerrito de Gasca','Campo de Tavera','Campo San Juan de la Cruz',
-  'Unidad Deportiva Santiago de Cuenda','Campo San Antonio de Romerillo','Campo Fraccionamiento Comontuoso',
-  'Campo de Fútbol de Pozos','Campo Rincón de Centeno','Campo San José de la Montaña','Campo San Julián Tierra Blanca'
- ];
- let categoryTeams=new Map(),availableTeamNames=[];
- const normalizeName=x=>String(x||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('es').trim();
- function fillList(list,items){
-  const seen=new Set();
-  list.replaceChildren();
-  items.forEach(value=>{
-   value=String(value||'').trim();
-   const key=normalizeName(value);
-   if(!value||seen.has(key))return;
-   seen.add(key);
-   const option=document.createElement('option');option.value=value;list.append(option);
-  });
+ const fieldInput=form.elements.field,teamInput=form.elements.team,roundInput=form.elements.round;
+ const normalizeName=x=>String(x||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
+ const canon=x=>window.LJR_FIELDS?.canonical?.(String(x||'').trim())||String(x||'').trim();
+ const localFields=['Campo 1 · Unidad Deportiva Sur','Campo 2 · Unidad Deportiva Sur','Campo 3 · Unidad Deportiva Sur','Campo 4 · Emiliano Zapata','Campo Cerrito de Gasca','Campo de Tavera','Campo San Juan de la Cruz','Unidad Deportiva Santiago de Cuenda','Campo San Antonio de Romerillo','Campo Fraccionamiento Comontuoso','Campo de Fútbol de Pozos','Campo Rincón de Centeno','Campo San José de la Montaña','Campo San Julián Tierra Blanca'];
+ let categoryTeams=new Map(),categoryRounds=new Map(),categoryGames=new Map(),availableTeamNames=[],knownFields=localFields.slice(),catalogLoaded=false;
+ function pickOptions(select,values,placeholder,preserve=true){
+  const old=select.value,seen=new Set();
+  select.replaceChildren(new Option(placeholder,''));
+  values.forEach(raw=>{const value=String(raw||'').trim(),key=normalizeName(value);if(value&&!seen.has(key)){seen.add(key);select.add(new Option(value,value));}});
+  if(old&&[...select.options].some(o=>o.value===old))select.value=old;
+  else if(old&&preserve){select.add(new Option(old+' · revisar',old));select.value=old;}
  }
- function teamOptions(clearInvalid=false){
+ function roundOptions(clear=false){
   const cat=form.elements.category.value;
-  const names=cat==='all'?[...new Set([...categoryTeams.values()].flat())]:(categoryTeams.get(cat)||[]);
-  availableTeamNames=names.sort((a,b)=>a.localeCompare(b,'es'));
-  fillList(teamList,availableTeamNames);
-  if(clearInvalid&&teamInput.value.trim()&&availableTeamNames.length&&!availableTeamNames.some(x=>normalizeName(x)===normalizeName(teamInput.value)))teamInput.value='';
+  const rounds=cat==='all'?[...new Set([...categoryRounds.values()].flat())]:(categoryRounds.get(cat)||[]);
+  const options=rounds.length?rounds:Array.from({length:30},(_,i)=>String(i+1));
+  pickOptions(roundInput,options.sort((a,b)=>+a- +b),'Elegir jornada',!clear);
+  [...roundInput.options].forEach(x=>{if(x.value)x.textContent='Jornada '+x.value});
+  roundInput.dataset.official=rounds.length?'1':'0';
+ }
+ function teamOptions(clear=false){
+  const cat=form.elements.category.value;
+  availableTeamNames=(cat==='all'?[...new Set([...categoryTeams.values()].flat())]:(categoryTeams.get(cat)||[])).sort((a,b)=>a.localeCompare(b,'es'));
+  pickOptions(teamInput,availableTeamNames,'Elegir equipo',!clear);
+ }
+ function fieldOptions(){
+  pickOptions(fieldInput,[...new Set([...knownFields,...(window.LJR_FIELDS?.catalog||[]).map(x=>x.name)].map(canon))]
+    .filter(x=>x&&!/^(?:-{1,3}|por confirmar|sin campo|por definir|pendiente)$/i.test(x)).sort((a,b)=>a.localeCompare(b,'es')),'Elegir cancha');
+ }
+ function decodeDate(text){
+  const m=/^(\d\d)\/(\d\d)\/(\d{4})\s+([01]\d|2[0-3]):([0-5]\d)/.exec(String(text||''));
+  if(!m)return {date:'',time:''};
+  const date=m[3]+'-'+m[2]+'-'+m[1],d=new Date(date+'T12:00:00');
+  return Number.isFinite(+d)&&d.getFullYear()===+m[3]&&d.getMonth()+1===+m[2]&&d.getDate()===+m[1]?{date,time:m[4]+':'+m[5]}:{date:'',time:''};
  }
  async function loadCatalogs(){
-  fillList(fieldList,knownFields);
-  try{
-   const r=await fetch('./data/fields-v38-22.json',{cache:'force-cache'});
-   if(r.ok){
-    const data=await r.json();
-    if(Array.isArray(data.fields))fillList(fieldList,[...data.fields.map(x=>x?.name).filter(Boolean),...knownFields]);
-   }
-  }catch(_){/* El campo sigue siendo editable si el catálogo no carga. */}
+  fieldOptions();roundOptions();teamOptions();
   try{
    let data=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA;
-   if(!data?.categories){
-    const r=await fetch('./data/official-live.json',{cache:'force-cache'});
-    if(r.ok)data=await r.json();
+   if(!data?.categories){const r=await fetch('./data/official-live.json',{cache:'no-store'});if(!r.ok)throw Error('Sin rol');data=await r.json();}
+   const venues=[];
+   for(const [id,cat] of Object.entries(data.categories||{})){
+    const teams=[],rounds=[],games=[];
+    (cat.teams||[]).forEach(v=>teams.push(typeof v==='string'?v:v?.name));
+    Object.keys(cat.rosters||{}).forEach(v=>teams.push(v));
+    (cat.standings||[]).forEach(tab=>(tab.rows||[]).forEach(row=>{if(row[1])teams.push(row[1]);}));
+    (cat.fixtures||[]).forEach(tab=>(tab.rows||[]).forEach(row=>{
+     if(!Array.isArray(row)||row.length<9)return;
+     const round=String(row[1]||''),home=String(row[2]||'').trim(),away=String(row[6]||'').trim(),field=canon(row[7]),date=decodeDate(row[8]);
+     if(home)teams.push(home);if(away)teams.push(away);
+     if(/^\d+$/.test(round)&&Number(round)<=60)rounds.push(round);
+     if(field&&!/^(?:-{1,3}|por confirmar|por definir|sin campo|pendiente)$/i.test(field))venues.push(field);
+     if(/^\d+$/.test(round))games.push({round,home,away,field,date:date.date,time:date.time});
+    }));
+    categoryTeams.set(id,[...new Set(teams.map(x=>String(x||'').trim()).filter(Boolean))]);
+    categoryRounds.set(id,[...new Set(rounds)]);
+    categoryGames.set(id,games);
    }
-   for(const [id,cat] of Object.entries(data?.categories||{})){
-    const teams=[];
-    (cat?.teams||[]).forEach(x=>teams.push(typeof x==='string'?x:x?.name));
-    Object.keys(cat?.rosters||{}).forEach(x=>teams.push(x));
-    const unique=[...new Set(teams.map(x=>String(x||'').trim()).filter(Boolean))];
-    categoryTeams.set(String(id),unique);
+   knownFields=[...new Set([...localFields,...venues])];catalogLoaded=true;
+   fieldOptions();roundOptions();teamOptions();matchHint();
+  }catch(_){const h=$('[data-editor-match-hint]',form);if(h)h.textContent='Sin conexión al rol: revisa manualmente los datos antes de publicar.';}
+ }
+ function matchingGames(){
+  const f=form.elements;
+  if(f.category.value==='all'||!f.team.value||!f.round.value)return [];
+  return (categoryGames.get(f.category.value)||[]).filter(g=>g.round===f.round.value&&
+   (normalizeName(g.home)===normalizeName(f.team.value)||normalizeName(g.away)===normalizeName(f.team.value)));
+ }
+ function matchHint(){
+  const hint=$('[data-editor-match-hint]',form);if(!hint)return;
+  const f=form.elements,games=matchingGames();
+  if(f.category.value==='all'||!f.round.value||!f.team.value)hint.textContent='Elige categoría específica, jornada y equipo para buscar su partido.';
+  else if(games.length===1)hint.textContent='Rol: '+games[0].home+' vs '+games[0].away+
+   (games[0].date?' · '+games[0].date:'')+(games[0].time?' · '+games[0].time:'')+(games[0].field?' · '+games[0].field:'');
+  else hint.textContent=!catalogLoaded?'Esperando rol oficial…':games.length?'Hay varios partidos; verifica los datos.':'No hay un partido coincidente en el rol consultado.';
+ }
+ function autofillMatch(){
+  const games=matchingGames();
+  if(games.length!==1)return status(modal,'Elige una categoría, jornada y equipo con un solo partido oficial.');
+  const g=games[0],f=form.elements,filled=[];
+  for(const [key,val,label] of [['field',g.field,'cancha'],['date',g.date,'fecha'],['time',g.time,'hora']]){
+   if(val&&!f[key].value){
+    if(key==='field'&&![...fieldInput.options].some(o=>o.value===val))fieldInput.add(new Option(val,val));
+    f[key].value=val;filled.push(label);
    }
-   teamOptions();
-  }catch(_){/* Equipo sigue siendo editable; no se inventa un catálogo. */}
+  }
+  updatePreview();checkNotice();matchHint();
+  status(modal,filled.length?'Sugeridos desde el rol: '+filled.join(', ')+'. Confirma antes de publicar.':
+   'No se sobrescribieron datos ni se inventó información.');
  }
  function qualityNotes(){
   const f=form.elements,warnings=[],details=f.details.value.trim();
@@ -130,6 +164,7 @@ function showComposer(prefill){
   if(f.type.value==='junta'&&(!f.date.value||!f.time.value))warnings.push('Para convocar una junta conviene indicar fecha y hora.');
   if(Boolean(f.date.value)!==Boolean(f.time.value))warnings.push('Comprueba la fecha y la hora; una de ellas está vacía.');
   if(f.category.value!=='all'&&f.team.value.trim()&&availableTeamNames.length&&!availableTeamNames.some(x=>normalizeName(x)===normalizeName(f.team.value)))warnings.push('El equipo no coincide con el catálogo de la categoría seleccionada.');
+  if(f.category.value!=='all'&&f.round.value&&roundInput.dataset.official==='1'&&!(categoryRounds.get(f.category.value)||[]).includes(f.round.value))warnings.push('Jornada no encontrada en el rol de esa categoría.');
   return warnings;
  }
  function checkNotice(){
@@ -140,7 +175,10 @@ function showComposer(prefill){
   return warnings;
  }
  loadCatalogs();
- form.elements.category.addEventListener('change',()=>{teamOptions(true);checkNotice();});
+ form.elements.category.addEventListener('change',()=>{roundOptions(true);teamOptions(true);matchHint();checkNotice();});
+ roundInput.addEventListener('change',matchHint);
+ teamInput.addEventListener('change',matchHint);
+ $('[data-editor-match-autofill]',form).onclick=autofillMatch;
  $('[data-editor-check]',form).onclick=checkNotice;
  $('[data-editor-schedule]',form).onclick=()=>openScheduler($('[data-editor-schedule]',form));
  $('[data-editor-copy]',form).onclick=async()=>{
@@ -220,7 +258,7 @@ function showComposer(prefill){
   updatePreview();
  }
  form.querySelectorAll('[data-generate]').forEach(b=>b.onclick=()=>generate(b.dataset.generate));
- form.addEventListener('input',()=>{updatePreview();checkNotice();});form.addEventListener('change',()=>{updatePreview();checkNotice();});
+ form.addEventListener('input',()=>{updatePreview();checkNotice();});form.addEventListener('change',()=>{updatePreview();checkNotice();matchHint();});
  generate('formal');checkNotice();
  // V1077: importación opcional del aviso de suspensión, sin publicar ni eludir la API.
  // Solo se rellenan campos del formulario; el administrador debe revisar y pulsar Publicar.
@@ -228,13 +266,17 @@ function showComposer(prefill){
   const values={type:'suspension',category:String(prefill.category||'all'),round:String(prefill.round||''),date:String(prefill.date||''),time:String(prefill.time||''),field:String(prefill.field||'').slice(0,110),team:String(prefill.team||'').slice(0,90)};
   for(const [key,value] of Object.entries(values)){
    const field=form.elements[key];if(!field)continue;
-   if(field.tagName==='SELECT'&&![...field.options].some(o=>o.value===value))continue;
+   if(field.tagName==='SELECT'&&![...field.options].some(o=>o.value===value)){
+    if(value&&['round','team','field'].includes(key))field.add(new Option(value,value));
+    else continue;
+   }
    field.value=value;
+   if(key==='category'){roundOptions();teamOptions();}
   }
   form.elements.details.value=String(prefill.details||'').slice(0,1200);
   title.value=String(prefill.title||'Aviso de suspensión').slice(0,160);
   body.value=String(prefill.body||'').slice(0,4000);
-  updatePreview();
+  updatePreview();matchHint();
  }
  async function save(published){
   if(saving||!form.reportValidity())return;
