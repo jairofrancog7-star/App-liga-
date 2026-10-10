@@ -1,0 +1,225 @@
+/* V1175 — Patrocinadores, paleta azul oficial Liga Juventino Rosas.
+   SOLO presentación del modal patrocinadores; no toca datos, callbacks ni exportaciones.
+   Azul nocturno #070e44 · azul liga #0d47a1 · azul intenso #1c69d4 · hielo #a8c9ff.
+   Todas las cuatro pestañas quedan bajo el mismo estilo, incluidos formularios y avisos. */
+@media screen {
+  html body .v105-modal.v105-sponsors-modal {
+    background:rgba(2,7,42,.89)!important;
+    color:#f5f9ff!important;
+  }
+  html body .v105-modal.v105-sponsors-modal > .v105-dialog{
+    border:1px solid rgba(95,149,241,.49)!important;
+    background:radial-gradient(80% 36% at 94% 0%,rgba(35,104,226,.24),transparent 75%),
+      linear-gradient(170deg,#102b7b 0%,#0b1d65 54%,#070e44 100%)!important;
+    background-color:#0b1d65!important;
+    box-shadow:0 18px 55px rgba(0,4,43,.42),inset 0 1px rgba(172,198,255,.10)!important;
+    color:#f7faff!important;
+    scrollbar-color:rgba(78,132,227,.67) transparent!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .v105-dialog > h3 {
+    color:#fff!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .v105-dialog > p{
+    color:#c4d3f0!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .v105-close{
+    border-color:rgba(108,162,243,.48)!important;
+    background:linear-gradient(145deg,#1a448e,#0d2365)!important;
+    color:#f8fbff!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro {
+    --sp-br:rgba(94,150,239,.41)!important;
+    --sp-sub:#bfceef!important;
+    --sp-surface:#0a205d!important;
+    --sp-cyan:#a8c9ff!important;
+    color:#f5f9ff!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-intro{
+    border-color:rgba(103,157,242,.43)!important;
+    background:linear-gradient(125deg,#173d95 0%,#102c7a 55%,#0b205e 100%)!important;
+    box-shadow:inset 0 1px rgba(177,206,255,.08)!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-intro-icon{
+    color:#f7faff!important;
+    background:linear-gradient(155deg,#2878e1,#1453b3)!important;
+    border:1px solid rgba(143,189,253,.58)!important;
+    box-shadow:inset 0 1px rgba(242,248,255,.13)!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-intro :is(b,small){
+    color:#f3f7ff!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-intro small{color:#c4d5f5!important;}
+  /* Uniformes: los cuatro controles son azules. El activo es azul brillante, no verde. */
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-tabs button{
+    color:#d7e5ff!important;
+    border-color:rgba(85,134,223,.42)!important;
+    background:linear-gradient(170deg,#122d77,#0b1b5b)!important;
+    box-shadow:inset 0 1px rgba(181,205,255,.06)!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-tabs button[aria-selected="true"]{
+    color:#fff!important;
+    border-color:#78a9ff!important;
+    background:linear-gradient(145deg,#2778e3,#1552b9)!important;
+    box-shadow:0 5px 14px rgba(8,43,140,.25),inset 0 1px rgba(255,255,255,.14)!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-tabs :is(button,button[aria-selected="true"]) svg{
+    color:inherit!important;stroke:currentColor!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-metric{
+    color:#f6f9ff!important;
+    border-color:rgba(89,139,231,.42)!important;
+    background:linear-gradient(165deg,#0c2671,#081956)!important;
+    box-shadow:inset 0 1px rgba(160,190,251,.05)!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-metric b{
+    color:#a9c9ff!important;
+    text-shadow:none!important;
+    font-variant-numeric:tabular-nums;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-metric small{
+    color:#c2d3f2!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-graph,
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-alerts{
+    border-color:rgba(100,149,230,.42)!important;
+    background:linear-gradient(155deg,#0c2471,#0a1855)!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-graph span{
+    color:#cbd9f6!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-graph span b{
+    color:#a8c9ff!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-graph > div{
+    background:#162d75!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-graph i{
+    background:linear-gradient(90deg,#2465cb,#649bf1)!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-alerts > b,
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-ok{
+    color:#bfd7ff!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-alerts > div span{
+    color:#eaf2ff!important;
+    background:#12357d!important;
+    border:1px solid rgba(112,154,234,.22)!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-alerts svg{
+    color:#93bbff!important;
+  }
+  /* Filtros, búsqueda y formularios: fondo azul uniforme con bordes azules. */
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-search{
+    border-color:rgba(98,149,236,.44)!important;
+    background:#0b205f!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-search svg{
+    color:#a5c7ff!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro :is(input:not([type=checkbox]):not([type=file]),select,textarea){
+    color:#f5f9ff!important;
+    background:#0b205f!important;
+    border-color:rgba(98,149,236,.45)!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-search input[type=search]{
+    background:transparent!important;
+    border:0!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro :is(input,textarea)::placeholder{
+    color:#b1c5ea!important;
+    opacity:1!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro :is(input,select,textarea,button,summary):focus-visible,
+  html body .v105-modal.v105-sponsors-modal .v105-close:focus-visible {
+    outline:2px solid #8bb9ff!important;
+    outline-offset:2px!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro input[type=checkbox]{
+    accent-color:#2470df!important;
+  }
+  /* Botones: misma familia azul en toda la pantalla y en cada pestaña. */
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-btn,
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-item-actions button,
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-log-row button,
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-import-area input[type=file]::file-selector-button,
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-form input[type=file]::file-selector-button{
+    color:#f3f8ff!important;
+    background:linear-gradient(155deg,#18428f,#102c71)!important;
+    border-color:rgba(110,155,234,.48)!important;
+    box-shadow:inset 0 1px rgba(199,218,255,.07)!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-btn.sp-primary{
+    color:#fff!important;
+    background:linear-gradient(145deg,#2677df,#1752b4)!important;
+    border-color:#5796ee!important;
+    box-shadow:0 7px 17px rgba(4,37,116,.25),inset 0 1px rgba(255,255,255,.12)!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro :is(.sp-btn,.sp-item-actions button,.sp-log-row button) svg{
+    color:inherit!important;stroke:currentColor!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro :is(.sp-btn,.sp-tabs button):active{
+    filter:brightness(1.08)!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-item-actions .sp-danger{
+    color:#ffccd4!important;
+    border-color:rgba(237,111,134,.45)!important;
+    background:rgba(103,28,55,.72)!important;
+  }
+  /* Tarjetas, reportes, datos, convenios, publicidad y contenido interno. */
+  html body .v105-modal.v105-sponsors-modal .sp-pro :is(.sp-item,.sp-log-row,.sp-qr-inner,
+      .sp-import-area details,.sp-form .sp-approve,.sp-spaces label,.sp-balance,.sp-foot){
+    border-color:rgba(95,144,225,.41)!important;
+    background:linear-gradient(155deg,#112f79,#0a1b5b)!important;
+    color:#e7f1ff!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-item-details > span{
+    color:#dbe8ff!important;
+    background:rgba(34,88,176,.36)!important;
+    border-color:rgba(103,154,241,.3)!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-status{
+    border-color:rgba(122,167,245,.41)!important;
+    color:#a9c9ff!important;
+    background:rgba(17,56,126,.4)!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-placeholder{
+    color:#a9c9ff!important;
+    border-color:rgba(119,158,231,.33)!important;
+    background:#09205e!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro :is(.sp-title,.sp-subheading,.sp-history > b,.sp-balance,.sp-foot > b,.sp-art-kicker,.sp-qr-inner a){
+    color:#c0d9ff!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro :is(.sp-title > b,.sp-subheading){
+    color:#f9fbff!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-art{
+    background:radial-gradient(circle at 82% 0%,rgba(29,92,202,.6),transparent 55%),
+      linear-gradient(150deg,#173c92,#07164e)!important;
+    border-color:rgba(112,166,244,.52)!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-art small{
+    color:#bed6ff!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-empty{
+    color:#ceddff!important;
+    border-color:rgba(112,158,234,.45)!important;
+    background:rgba(6,23,83,.35)!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-qr-inner a{
+    text-decoration-color:#95bfff!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-history small{
+    color:#c2d1ee!important;
+  }
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-foot span,
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-item-head small,
+  html body .v105-modal.v105-sponsors-modal .sp-pro .sp-log-row small{
+    color:#bfcfec!important;
+  }
+  html body .sp-toast{
+    color:#f5f9ff!important;
+    border-color:rgba(116,167,244,.6)!important;
+    background:linear-gradient(145deg,#1a438f,#0b215f)!important;
+  }
+}
