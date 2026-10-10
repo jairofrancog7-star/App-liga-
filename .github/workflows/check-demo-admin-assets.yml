@@ -1,0 +1,36 @@
+name: Comprobar recursos de demo para Pages
+on:
+  push:
+    branches:
+      - fix/demo-admin-v1310-ci-v1321-20261010
+      - main
+    paths:
+      - 'scripts/ensure-demo-notice-css.mjs'
+      - 'src/v1310-admin-paleta-unificada.css'
+      - 'src/v1321-suspension-android-fields.css'
+      - 'tests/v1310-admin-paleta.test.mjs'
+      - '.github/workflows/check-demo-admin-assets.yml'
+  pull_request:
+    paths:
+      - 'scripts/ensure-demo-notice-css.mjs'
+      - 'src/v1310-admin-paleta-unificada.css'
+      - 'src/v1321-suspension-android-fields.css'
+      - 'tests/v1310-admin-paleta.test.mjs'
+      - '.github/workflows/check-demo-admin-assets.yml'
+permissions:
+  contents: read
+jobs:
+  verify-demo:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Sincronizar CSS previos a Pages
+        run: node scripts/ensure-demo-notice-css.mjs
+      - name: Repetir prueba que bloqueo Pages
+        run: node --test tests/v1310-admin-paleta.test.mjs
+      - name: Comprobar CSS V1321 generado para demo
+        run: cmp src/v1321-suspension-android-fields.css demo/src/v1321-suspension-android-fields.css
