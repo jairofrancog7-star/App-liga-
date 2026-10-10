@@ -267,3 +267,18 @@ html body :is(.liga-media-modal .ljr-editor-dialog,.v105-modal.v1212-csv-modal,.
 html body > .v105-modal.v105-poll-modal .v105-poll-grid > .v105-card{
   grid-template-columns:48px minmax(0,1fr) 26px!important;
 }
+
+/* Iconografía vectorial en incidencias: tamaño uniforme en Android y sin emojis. */
+html body > .v105-modal.v1111-incidents-modal .v1111-shortcuts button{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  gap:9px!important;min-height:52px!important;
+}
+html body > .v105-modal.v1111-incidents-modal .v1111-shortcuts button .v1340-incident-icon{
+  box-sizing:border-box!important;display:block!important;
+  width:23px!important;height:23px!important;flex:0 0 23px!important;
+  min-width:23px!important;max-width:23px!important;
+}
+html body > .v105-modal.v1111-incidents-modal .v1111-shortcuts button span{
+  display:inline-block!important;font-size:13px!important;
+  font-weight:750!important;line-height:1.2!important;
+}
