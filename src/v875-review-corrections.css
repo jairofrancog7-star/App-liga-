@@ -1071,7 +1071,7 @@ html body > .v105-modal.v875-meeting-modal{
   overflow:hidden!important;
   padding:max(9px,env(safe-area-inset-top,0px)) 9px 10px!important;
 }
-html body > .v105-modal.v875-meeting-modal > .v105-dialog{
+html body > .v105-modal.v875-meeting-modal .v105-dialog{
   box-sizing:border-box!important;
   position:relative!important;
   flex:0 1 720px!important;
