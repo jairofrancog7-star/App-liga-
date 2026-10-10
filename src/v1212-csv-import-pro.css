@@ -246,3 +246,26 @@ html body > .v105-modal.v1107-admin-modal.v1212-csv-modal .csvpro-chip{
  white-space:nowrap!important;text-align:center!important;
  padding:5px 7px!important;
 }
+
+/* V1223: mantener la tabla ancha SOLO dentro de su scroll horizontal.
+   Los tracks implícitos auto de los dos grids estiraban el resumen a 538px. */
+html body > .v105-modal.v1107-admin-modal.v1212-csv-modal .csvpro,
+html body > .v105-modal.v1107-admin-modal.v1212-csv-modal [data-csv-result]{
+ box-sizing:border-box!important;
+ display:grid!important;
+ grid-template-columns:minmax(0,1fr)!important;
+ width:100%!important;max-width:100%!important;
+ min-width:0!important;overflow-x:clip!important;
+}
+html body > .v105-modal.v1107-admin-modal.v1212-csv-modal .csvpro-tablewrap{
+ box-sizing:border-box!important;
+ display:block!important;
+ grid-column:1!important;
+ width:100%!important;min-width:0!important;max-width:100%!important;
+ overflow-x:auto!important;
+}
+html body > .v105-modal.v1107-admin-modal.v1212-csv-modal .csvpro-filters,
+html body > .v105-modal.v1107-admin-modal.v1212-csv-modal .csvpro-page,
+html body > .v105-modal.v1107-admin-modal.v1212-csv-modal [data-csv-table]{
+ min-width:0!important;max-width:100%!important;
+}
