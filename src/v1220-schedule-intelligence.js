@@ -85,6 +85,63 @@ function analyze(n){
     text:changes.length?'Cambio detectado: '+changes.join(' · ')+'.':'Todavía no hay cambios nuevos.',
     warnings,changes};
 }
+/* Detección local de diferencias del rol oficial al entrar en esta sección.
+ * No modifica datos oficiales ni envía notificaciones sin aprobación. */
+const SNAP_KEY='ljr-schedule-fixture-snapshot-v1224',POLL_KEY='ljr-schedule-fixture-check-v1224';
+function officialSnapshot(data){
+  const fmt=new Intl.DateTimeFormat('sv-SE',{timeZone:'America/Mexico_City',year:'numeric',month:'2-digit',day:'2-digit'});
+  const now=Date.now(),today=fmt.format(now),until=fmt.format(now+100*86400000);
+  const upcoming=fixtures(data).filter(f=>f.date>=today&&f.date<=until).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,250);
+  const result={};
+  for(const f of upcoming){
+    const key=[f.cat,norm(f.round),norm(f.home),norm(f.away)].join('|');
+    result[key]={label:f.home+' vs '+f.away+' · '+f.category,date:f.date,time:f.time,venue:f.venue};
+  }
+  return result;
+}
+function monitorSnapshot(root,data){
+  const status=$('[data-v1224-status]',root);
+  if(!status)return;
+  if(!data?.categories){status.textContent='No se pudieron leer los partidos oficiales.';return}
+  const current=officialSnapshot(data);
+  let old=null;
+  try{old=JSON.parse(localStorage.getItem(SNAP_KEY)||'null')}catch(_){}
+  const updates=[];
+  if(old)for(const [key,match] of Object.entries(current)){
+    const previous=old[key];if(!previous)continue;
+    const changes=[];
+    if(previous.date!==match.date||previous.time!==match.time)changes.push('fecha/hora');
+    if(norm(previous.venue)!==norm(match.venue))changes.push('sede');
+    if(changes.length)updates.push(match.label+': '+changes.join(' y '));
+  }
+  try{localStorage.setItem(SNAP_KEY,JSON.stringify(current))}catch(_){}
+  status.textContent=!old
+    ?'Referencia local guardada. Cuando la programación cambie, se mostrarán las diferencias.'
+    :updates.length
+      ?'Hay '+updates.length+' posible(s) cambio(s) del rol oficial para revisar:\n'+updates.slice(0,5).join('\n')+(updates.length>5?'\nY otros más.':'')
+      :'No se detectaron diferencias respecto de la última revisión guardada.';
+}
+async function reviewOfficial(root,force=false){
+  if(route()!=='scheduleChanges'||!root.isConnected)return;
+  let shouldFetch=force;
+  try{if(!force)shouldFetch=Date.now()-Number(localStorage.getItem(POLL_KEY)||0)>30*60000}catch(_){shouldFetch=true}
+  if(!shouldFetch)return;
+  const btn=$('[data-v1224-refresh]',root);
+  const status=$('[data-v1224-status]',root);
+  if(btn){btn.disabled=true;btn.textContent='Revisando…'}
+  if(status)status.textContent='Comparando la programación disponible…';
+  try{
+    const response=await fetch('./data/official-live.json?check='+Date.now(),{cache:'no-store'});
+    if(!response.ok)throw Error('Error HTTP '+response.status);
+    const data=await response.json();
+    if(!data?.categories)throw Error('Datos oficiales incompletos');
+    if(route()!=='scheduleChanges'||!root.isConnected)return;
+    monitorSnapshot(root,data);
+    try{localStorage.setItem(POLL_KEY,String(Date.now()))}catch(_){}
+  }catch(_){if(status)status.textContent='No se pudo revisar la fuente actual. Se conserva el último historial local.'}
+  finally{if(btn){btn.disabled=false;btn.textContent='Revisar rol oficial'}}
+}
+
 function update(root){
   const status=$('[data-v1220-status]',root),list=$('[data-v1220-risks]',root);
   if(!status||!list)return;
@@ -204,6 +261,12 @@ function init(root){
     '<button type="button" data-v1220-calendar>Google Calendar</button>'+
     '<button type="button" data-v1220-maps>Ver cancha en Maps</button></div>'+
     '<p class="v1220-feedback" role="status" aria-live="polite" data-v1220-message>Las sugerencias y comprobaciones no publican ni reprograman partidos oficiales.</p>');
+  const searchPanel=$('[data-v1220-controls]',root);
+  searchPanel.insertAdjacentHTML('afterend','<section class="v1224-watch" aria-label="Revisión de cambios en el rol">'+
+    '<strong>Revisión automática de jornadas</strong>'+
+    '<small>Al abrir esta pantalla compara los próximos partidos. No publica cambios sin autorización.</small>'+
+    '<p role="status" aria-live="polite" data-v1224-status>Preparando revisión local…</p>'+
+    '<button type="button" data-v1224-refresh>Revisar rol oficial</button></section>');
   $('[data-v1220-category]',root).addEventListener('change',()=>filter(root));
   $('[data-v1220-search]',root).addEventListener('input',()=>filter(root));
   if(!root.__ljrV1220EventsBound){
@@ -212,6 +275,7 @@ function init(root){
   root.addEventListener('change',e=>{if(e.target.closest('.v129-editor'))setTimeout(()=>update(root),0)});
   root.addEventListener('click',e=>{
     const button=e.target.closest('button');if(!button)return;
+    if(button.matches('[data-v1224-refresh]'))reviewOfficial(root,true);
     if(button.matches('[data-v1220-suggest]'))suggest(root);
     if(button.matches('[data-v1220-calendar]'))calendar(root);
     if(button.matches('[data-v1220-maps]'))maps(root);
@@ -235,6 +299,8 @@ function init(root){
   observer.observe(root,{childList:true,subtree:true});
   }
   warmFields();
+  monitorSnapshot(root,window.LJR_OFFICIAL_DATA);
+  reviewOfficial(root,false);
   update(root);decoratePreview(root);
 }
 function boot(){
