@@ -11,9 +11,11 @@ try{
  for(const width of [360,412]){
   const page=await browser.newPage({viewport:{width,height:820},isMobile:true,hasTouch:true});
   const failures=[];page.on('pageerror',e=>failures.push(e.message));
-  await page.setContent('<!doctype html><html lang="es"><head><meta name="viewport" content="width=device-width,initial-scale=1"></head>'+
+  const pageHtml='< !doctype html>'.replace(' ','')+'<html lang="es"><head><meta name="viewport" content="width=device-width,initial-scale=1"></head>'+
    '<body style="background:#061a47;color:#fff;margin:0"><main id="screen" style="padding:16px;min-height:600px">'+
-   '<section><p id="title">Jornada oficial</p><button id="fixture">Ver jornada</button><img alt="Escudo oficial" src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22/%3E"></section></main></body></html>');
+   '<section><p id="title">Jornada oficial</p><button id="fixture">Ver jornada</button><img alt="Escudo oficial" src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22/%3E"></section></main></body></html>';
+  await page.route('http://localhost:9175/**',route=>route.fulfill({status:200,contentType:'text/html',body:pageHtml}));
+  await page.goto('http://localhost:9175/');
   await page.evaluate(()=>{
    const records=[];
    window.__cms={records,puts:[],publications:0};
@@ -61,7 +63,7 @@ try{
   await page.locator('[data-studio-reset]').tap();
   assert.equal(await page.locator('#title').innerText(),'Jornada oficial','No restablece');
   await page.locator('[data-studio-restore]').tap();
-  assert.equal(await page.locator('#title').innerText(),'Jornada revisada','No recupera borrador');
+  assert.equal(await page.locator('#title').innerText(),'Jornada revisada','No recupera borrador: '+await page.locator('[data-studio-note]').innerText());
   await page.locator('[data-studio-cms]').tap();
   await page.locator('[data-studio-server-draft]').waitFor();
   assert.equal(await page.locator('[name=route]').inputValue(),'home');
