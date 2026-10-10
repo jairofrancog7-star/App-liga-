@@ -59,3 +59,23 @@ Una etiqueta JSON **no verifica la identidad por sí misma**. Además del PR apr
 - `node --check src/v1081-global-admin-notices.js`
 
 Los reportes de Github Actions se conservan 14 días; no sustituyen la verificación de jugadores, cédulas, goles, sanciones y permisos por parte de la directiva.
+
+
+## Autorizar un aviso programado desde GitHub sin copiar secretos
+
+Esta ruta es **solo para avisos almacenados en `public/data/scheduled-notices.json`**. Los avisos creados desde Administración en el móvil se aprueban en el servidor privado por Presidencia, sin este flujo de GitHub.
+
+1. En GitHub, entra a **Settings → Secrets and variables → Actions → New repository secret**. Guarda una clave aleatoria de al menos 32 caracteres en `LJR_OFFICIAL_NOTICE_APPROVAL_SECRET`. Genera la clave de forma privada con un administrador de contraseñas o `openssl rand -hex 32`. **No escribas la clave en esta conversación, archivos JSON, commits ni capturas**.
+2. Crea un borrador completo en `public/data/scheduled-notices.json`, una lista JSON válida, con ID único, título, mensaje de al menos 15 caracteres, categoría, fecha futura ISO 8601 y `channels` (por ejemplo `{"app": true}`). No incluyas una aprobación ficticia.
+3. La cuenta propietaria `jairofrancog7-star` abre **Actions → Autorizar aviso oficial (Presidencia) → Run workflow** en la rama `main`. Introduce el ID, el título exacto después de revisarlo y la confirmación **AUTORIZAR AVISO OFICIAL**.
+4. El flujo comprueba la cuenta propietaria, que la clave esté configurada, el ID único, el título, el cuerpo, la fecha futura y los canales. Firma el título, contenido, categoría, fecha, canales, **identidad y hora del aprobador** sin exponer la clave. Solo guarda la aprobación; **no publica ni envía mensajes durante la firma**.
+5. El proceso separado de avisos se ejecuta cada cinco minutos y solo considera avisos cuya fecha haya llegado y cuya firma todavía sea válida. Cualquier cambio al texto, categoría, fecha, canales o identidad del aprobador invalida la firma. Si otro commit modificó `main` durante la aprobación, el flujo debe fallar y requerir volver a revisar, en vez de sobrescribir cambios.
+
+La clave privada **no se puede configurar mediante el conector GitHub disponible en este chat**. Sin esa configuración, esta ruta de avisos queda bloqueada de forma segura; la administración del servidor privado continúa siendo independiente. El diseño no garantiza que alguien recibió o leyó Push/WhatsApp: comprobar esos canales requiere un dispositivo suscrito y consentimiento.
+
+### Protección adicional
+
+- El procesador rechaza JSON inválido o una estructura distinta de lista, en lugar de fingir que no hay avisos.
+- Los archivos PNG solo se vuelven a cargar desde la carpeta generada para el propio ID del aviso. No se aceptan rutas arbitrarias.
+- Las pruebas de GitHub verifican firmas, modificaciones posteriores, identidad, títulos, fechas, JSON válido y bloqueos por falta de clave.
+

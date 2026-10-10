@@ -1,0 +1,68 @@
+name: Autorizar aviso oficial (Presidencia)
+
+# La autorización la inicia manualmente el propietario del repositorio.
+# No envía mensajes. El cron separado publicará únicamente cuando llegue la fecha.
+on:
+  workflow_dispatch:
+    inputs:
+      notice_id:
+        description: "ID exacto del borrador en scheduled-notices.json"
+        required: true
+        type: string
+      expected_title:
+        description: "Título completo que revisaste y autorizas"
+        required: true
+        type: string
+      confirmation:
+        description: "Escribe exactamente: AUTORIZAR AVISO OFICIAL"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: scheduled-notices
+  cancel-in-progress: false
+
+jobs:
+  approve:
+    if: github.actor == 'jairofrancog7-star' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verificar validaciones y firmas de ejemplo
+        run: python -m unittest discover -s .github/scripts -p 'test_*.py'
+      - name: Firmar el borrador aprobado, sin publicar mensajes
+        env:
+          NOTICE_ID: ${{ inputs.notice_id }}
+          EXPECTED_TITLE: ${{ inputs.expected_title }}
+          APPROVAL_CONFIRMATION: ${{ inputs.confirmation }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          LJR_OFFICIAL_NOTICE_APPROVAL_SECRET: ${{ secrets.LJR_OFFICIAL_NOTICE_APPROVAL_SECRET }}
+        run: python .github/scripts/approve_official_notice.py
+      - name: Registrar únicamente la aprobación firmada
+        shell: bash
+        run: |
+          git add -- public/data/scheduled-notices.json
+          if git diff --cached --quiet; then
+            echo "No hubo cambios en el borrador."
+            exit 1
+          fi
+          git config user.name "Liga Juventino Rosas · Presidencia"
+          git config user.email "actions@users.noreply.github.com"
+          git commit -m "approve(notices): autorización manual firmada"
+          # Sin rebase automático: si otra persona editó el aviso, exigir revisión de nuevo.
+          git push origin HEAD:main
+          {
+            echo "### Aviso aprobado"
+            echo "La firma se guardó en el repositorio. **No se enviaron mensajes** en este paso."
+            echo "La publicación automática requiere la fecha futura y la validación HMAC."
+          } >> "$GITHUB_STEP_SUMMARY"

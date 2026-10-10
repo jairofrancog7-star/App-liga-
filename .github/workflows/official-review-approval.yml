@@ -41,7 +41,7 @@ jobs:
           node --check server/notifications/bootstrap.mjs
           node --check src/v1081-global-admin-notices.js
           node --test tests/review-official-safety.test.mjs .github/scripts/dispatch-notifications.test.mjs
-          python3 -m unittest discover -s .github/scripts -p 'test_process_scheduled_notices.py'
+          python3 -m unittest discover -s .github/scripts -p 'test_*.py'
       - name: Generar diagnóstico sin publicar nada
         id: audit
         shell: bash

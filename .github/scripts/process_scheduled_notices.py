@@ -13,9 +13,13 @@ def parse_dt(v):
     try:return datetime.fromisoformat(v.replace('Z','+00:00')).astimezone(timezone.utc)
     except Exception:return None
 
-def load(path,default):
-    try:return json.loads(path.read_text(encoding='utf-8'))
-    except Exception:return default
+def load(path,default,strict=False):
+    try:
+        return json.loads(path.read_text(encoding='utf-8'))
+    except (OSError,ValueError) as exc:
+        if strict:
+            raise ValueError('Archivo de avisos ausente o JSON inválido: '+path.name) from exc
+        return default
 
 def save(path,obj):
     path.parent.mkdir(parents=True,exist_ok=True)
@@ -76,6 +80,8 @@ def approval_signature(item, secret):
     """Firma todos los campos del aviso menos la autorización y el estado local."""
     payload={key:item.get(key) for key in
         ('id','title','body','message','category','channels','publish_at','publishAt','type')}
+    approval=item.get('approval') if isinstance(item.get('approval'),dict) else {}
+    payload['approval']={key:approval.get(key) for key in ('status','by','at')}
     msg=json.dumps(payload,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode('utf-8')
     return hmac.new(secret.encode('utf-8'),msg,hashlib.sha256).hexdigest()
 
@@ -94,11 +100,11 @@ def approved(item):
 
 def main():
     now=datetime.now(timezone.utc)
-    schedule=load(SCHEDULE,[])
+    schedule=load(SCHEDULE,[],strict=True)
     active=load(ACTIVE,[])
     if isinstance(active,dict):active=active.get('items',[])
     if not isinstance(active,list):active=[]
-    if not isinstance(schedule,list):schedule=[]
+    if not isinstance(schedule,list):raise ValueError('scheduled-notices.json debe contener una lista de avisos')
     active=[x for x in active if isinstance(x,dict)]
     changed=False
     existing={str(x.get('id')) for x in active if x.get('id')}
@@ -115,7 +121,9 @@ def main():
         if channels.get('png') and not item.get('png_generated'):
             png_path=make_png(item)
             if png_path:item['png_generated']=True;item['png_path']='/generated/notices/'+png_path.name;changed=True
-        elif item.get('png_path'):png_path=ROOT/'public'/str(item['png_path']).lstrip('/')
+        elif item.get('png_generated') and item.get('png_path')=='/generated/notices/'+item_id+'.png':
+            candidate=OUT/(item_id+'.png')
+            if candidate.is_file():png_path=candidate
         if channels.get('app') and item_id not in existing and not item.get('app_published'):
             active.append({'id':item_id,'type':item.get('type','Aviso'),'title':item.get('title','Aviso importante'),'body':item.get('body') or item.get('message',''),'category':item.get('category','Todas'),'published_at':now.isoformat(),'publishAt':item.get('publish_at') or item.get('publishAt'),'png':item.get('png_path','')})
             existing.add(item_id);item['app_published']=True;changed=True

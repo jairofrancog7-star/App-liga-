@@ -88,6 +88,14 @@ class ScheduledNoticeTests(unittest.TestCase):
         module.main()
         self.assertEqual(self.load(module.ACTIVE),[])
 
+    def test_invalid_json_does_not_publish_or_silently_reset(self):
+        module.SCHEDULE.write_text('[]\\n',encoding='utf8')
+        self.write(module.ACTIVE,[])
+        with self.assertRaises(ValueError):module.main()
+        self.assertEqual(self.load(module.ACTIVE),[])
+        module.SCHEDULE.write_text('{"items":[]}',encoding='utf8')
+        with self.assertRaises(ValueError):module.main()
+
     def test_prunes_expired_even_if_there_are_no_due_announcements(self):
         self.write(module.SCHEDULE,[])
         self.write(module.ACTIVE,[{"id":"old","published_at":"2000-01-01T00:00:00+00:00"}])
