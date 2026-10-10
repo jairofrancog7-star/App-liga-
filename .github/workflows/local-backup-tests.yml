@@ -1,0 +1,30 @@
+name: Validar respaldos locales y archivos IndexedDB
+on:
+  pull_request:
+    paths:
+      - 'src/v1212-local-backup-center.js'
+      - 'src/v1213-indexeddb-backup.js'
+      - 'tests/local-backup-center.test.mjs'
+      - 'tests/indexeddb-backup.test.mjs'
+      - '.github/workflows/local-backup-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/v1212-local-backup-center.js'
+      - 'src/v1213-indexeddb-backup.js'
+      - 'tests/local-backup-center.test.mjs'
+      - 'tests/indexeddb-backup.test.mjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Comprobar exportación, cifrado, archivos y restauración
+        run: node --test tests/local-backup-center.test.mjs tests/indexeddb-backup.test.mjs
