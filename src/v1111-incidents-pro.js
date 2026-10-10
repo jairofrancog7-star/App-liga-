@@ -7,6 +7,7 @@ if(window.LJR_INCIDENTS_PRO)return;
 const KEY='v105-incidents';
 const esc=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const get=(root,s)=>root.querySelector(s);
+const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const ALL_TYPES=['Gol','Gol en propia puerta','Tarjeta amarilla','Segunda amarilla','Tarjeta roja','Sustitución','Lesión','Penal marcado','Penal fallado','Gol anulado','Fuera de juego','Suspensión por lluvia','Interrupción','Reanudación','Inicio de tiempo','Final de tiempo','Observación'];
 const data=()=>{try{return window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{}}catch(_){return window.LJR_OFFICIAL_DATA||{}}};
 const records=()=>{try{const raw=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(raw)?raw.filter(x=>x&&typeof x==='object').map((x,i)=>Object.assign({},x,{id:String(x.id||'anterior-'+i)})):[]}catch(_){return []}};
@@ -29,19 +30,47 @@ function fixtures(){
  });
  return out.slice(0,1400);
 }
+/* Igual que Equipos/Siguiendo: clubes tomados del registro oficial por categoría.
+   También funciona en la bitácora general, sin elegir un partido. */
+function categoryTeams(cat){
+ const db=data(),out=[],seen=new Set();
+ const add=value=>{
+  const name=String(value||'').trim(),key=norm(name);
+  if(!key||/^(sin equipo|descansa|libre|por definir|pendiente|sin asignar)$/.test(key)||
+    /goles? en temporada/.test(key)||/^\d+ goles?$/.test(key)||seen.has(key))return;
+  seen.add(key);out.push(name);
+ };
+ const ids=cat==='all'?Object.keys(db.categories||{}):[String(cat)];
+ ids.forEach(id=>{
+  const c=db.categories?.[id];if(!c)return;
+  Object.keys(c.rosters||{}).forEach(add);
+  Object.keys(c.player_profiles||{}).forEach(add);
+  (c.standings||[]).forEach(group=>(group?.rows||[]).forEach(r=>add(r?.[1])));
+  (c.fixtures||[]).forEach(group=>(group?.rows||[]).forEach(r=>{add(r?.[2]);add(r?.[6])}));
+ });
+ try{
+  (window.V66_OFFICIAL_DIRECTORY?.teamList?.()||[]).forEach(x=>{
+   if(cat==='all'||String(x?.cat||'')===String(cat))add(x?.name);
+  });
+ }catch(_){}
+ return out.sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
+}
 function players(team,cat){
  if(!team)return [];
  let ps=[];
  try{ps=window.V66_OFFICIAL_DIRECTORY?.playerList?.()||[]}catch(_){}
- if(!Array.isArray(ps)||!ps.length){
-  const c=data().categories?.[cat]||{};
+ if(!Array.isArray(ps))ps=[];
+ const db=data(),ids=cat==='all'?Object.keys(db.categories||{}):[String(cat)];
+ ids.forEach(id=>{
+  const c=db.categories?.[id];if(!c)return;
   Object.entries(c.rosters||{}).forEach(([name,arr])=>{
-   if(name===team)(arr||[]).forEach(x=>ps.push({name:typeof x==='string'?x:x?.name,team:name,cat}));
+   if(norm(name)!==norm(team)||!Array.isArray(arr))return;
+   arr.forEach(x=>ps.push({name:typeof x==='string'?x:x?.name,team:name,cat:id}));
   });
- }
+ });
  const seen=new Set();
- return ps.filter(x=>x&&String(x.team||'').trim()===team&&(!x.cat||String(x.cat)===String(cat)))
-  .map(x=>String(x.name||'').trim()).filter(x=>{if(!x||seen.has(x))return false;seen.add(x);return true}).slice(0,220);
+ return ps.filter(x=>x&&norm(x.team)===norm(team)&&(cat==='all'||!x.cat||String(x.cat)===String(cat)))
+  .map(x=>String(x.name||'').trim()).filter(x=>{const key=norm(x);if(!key||seen.has(key))return false;seen.add(key);return true}).slice(0,220);
 }
 function csvFile(list,name){
  const cols=['Minuto','Tipo','Equipo','Jugador','Asistencia o entra','Detalle','Partido','Fecha de registro'];
@@ -55,7 +84,14 @@ function csvFile(list,name){
 }
 function open(){
  const old=document.querySelector('.v105-modal');if(old)old.remove();
- const matchList=fixtures(),cats=[...new Map(matchList.map(x=>[x.cat,{id:x.cat,name:x.category}])).values()];
+ let matchList=fixtures();
+ const categoryChoices=()=>{
+  const map=new Map(Object.entries(data().categories||{}).map(([id,c])=>[String(id),{id:String(id),name:c?.name||'Categoría '+id}]));
+  matchList.forEach(x=>{if(!map.has(x.cat))map.set(x.cat,{id:x.cat,name:x.category})});
+  const order=['3','5','4','2','1'];
+  return [...map.values()].sort((a,b)=>(order.indexOf(a.id)<0?99:order.indexOf(a.id))-(order.indexOf(b.id)<0?99:order.indexOf(b.id)));
+ };
+ const cats=categoryChoices();
  let entries=records(),editing=null,undo=null,filter='all';
  const modal=document.createElement('div');
  modal.className='v105-modal v1107-admin-modal v1111-incidents-modal';
@@ -72,7 +108,7 @@ function open(){
  '<label><span>Minuto *</span><input data-min type="number" min="0" max="130" step="1" inputmode="numeric" placeholder="Ej. 45"></label>'+
  '<label><span>Adicional (+)</span><input data-extra type="number" min="0" max="30" step="1" inputmode="numeric" placeholder="Ej. 2"></label>'+
  '<label class="v1111-span"><span>Tipo de incidencia</span><select data-type>'+ALL_TYPES.map(t=>'<option>'+esc(t)+'</option>').join('')+'</select></label>'+
- '<label><span>Equipo</span><select data-team><option value="">Sin equipo</option></select></label>'+
+ '<label><span>Equipo</span><select data-team aria-label="Equipo de la categoría"><option value="">Selecciona un equipo</option></select></label>'+
  '<label><span>Jugador (opcional)</span><input data-player list="v1111-players" placeholder="Elegir o escribir nombre" autocomplete="off"><datalist id="v1111-players"></datalist></label>'+
  '<label class="v1111-span" data-secondary-wrap><span data-secondary-label>Asistencia / participante</span><input data-secondary placeholder="Nombre del jugador (opcional)"></label>'+
  '<label class="v1111-span"><span>Detalle (opcional)</span><textarea data-note rows="2" maxlength="900" placeholder="Qué sucedió durante el partido..."></textarea></label></div>'+
@@ -97,15 +133,19 @@ function open(){
   teamOptions();
  }
  function teamOptions(){
-  const m=chosen(),prior=q('[data-team]').value;
-  q('[data-team]').innerHTML='<option value="">Sin equipo</option>'+
-   (m?[m.home,m.away].map(t=>'<option value="'+esc(t)+'">'+esc(t)+'</option>').join(''):'');
-  if(m&&[m.home,m.away].includes(prior))q('[data-team]').value=prior;
+  const m=chosen(),cat=m?.cat||q('[data-cat]').value,prior=q('[data-team]').value;
+  const names=m?[m.home,m.away].filter(Boolean):categoryTeams(cat);
+  const unique=[...new Map(names.map(name=>[norm(name),name])).values()];
+  q('[data-team]').innerHTML='<option value="">'+(unique.length?'Selecciona un equipo':'Sin equipos registrados')+'</option>'+
+   unique.map(t=>'<option value="'+esc(t)+'">'+esc(t)+'</option>').join('');
+  const retained=unique.find(name=>norm(name)===norm(prior));
+  if(retained)q('[data-team]').value=retained;
+  else q('[data-player]').value='';
   fillPlayers();
  }
  function fillPlayers(){
-  const m=chosen(),team=q('[data-team]').value;
-  q('#v1111-players').innerHTML=(m?players(team,m.cat):[]).map(name=>'<option value="'+esc(name)+'"></option>').join('');
+  const m=chosen(),team=q('[data-team]').value,cat=m?.cat||q('[data-cat]').value;
+  q('#v1111-players').innerHTML=players(team,cat).map(name=>'<option value="'+esc(name)+'"></option>').join('');
  }
  function secondaryLabel(){
   const t=q('[data-type]').value,w=q('[data-secondary-wrap]');
@@ -236,12 +276,21 @@ function open(){
   catch(err){if(err?.name==='AbortError')return}
   window.prompt('Copia el resumen local:',txt);
  });
- function close(){document.removeEventListener('keydown',keys);modal.remove()}
+ function close(){document.removeEventListener('keydown',keys);window.removeEventListener('ljr:official-data',refreshOfficial);modal.remove()}
+ function refreshOfficial(){
+  const selectedCat=q('[data-cat]').value;
+  matchList=fixtures();
+  q('[data-cat]').innerHTML='<option value="all">Todas</option>'+
+   categoryChoices().map(c=>'<option value="'+esc(c.id)+'">'+esc(c.name)+'</option>').join('');
+  if(selectedCat==='all'||categoryChoices().some(c=>c.id===selectedCat))q('[data-cat]').value=selectedCat;
+  matchOptions();render();
+ }
  function keys(e){if(e.key==='Escape')close()}
  q('[data-close]').addEventListener('click',close);
  modal.addEventListener('click',e=>{if(e.target===modal)close()});
  document.addEventListener('keydown',keys);
  matchOptions();secondaryLabel();render();
+ window.addEventListener('ljr:official-data',refreshOfficial);
  window.LJR_INCIDENTS_MEDIA?.attach?.({modal,getEntries:()=>entries,getVisible:visible,getChosen:chosen,merge:mergeIncoming,status});
  if(!matchList.length)status('Aún no hay partidos oficiales cargados. Puedes usar la bitácora general.');
 }
