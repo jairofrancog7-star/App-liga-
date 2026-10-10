@@ -13,6 +13,8 @@ const SNAP='ljr-match-notify-snapshot-v840';
 const INBOX='ljr-match-notify-inbox-v840';
 const PERM='ljr-native-notifications-v840';
 const MAX_INBOX=28;
+const VIEW_KEY='ljr-notifications-feed-view-v1202';
+const READ_KEY='ljr-notifications-feed-read-v1202';
 let remoteData=null,polling=false,renderTimer=0;
 
 const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9+]+/g,' ').trim();
@@ -22,6 +24,11 @@ const num=v=>/^\s*-?\d+\s*$/.test(String(v??''))?Number(v):null;
 const read=(k,d)=>{try{return JSON.parse(localStorage.getItem(k)||'null')??d}catch(_){return d}};
 const write=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(_){}};
 const hash=s=>{let h=2166136261;for(const ch of String(s||'')){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
+const view=Object.assign({type:'all',category:'all',more:false},read(VIEW_KEY,{}));
+function saveView(){write(VIEW_KEY,view)}
+function readIds(){const data=read(READ_KEY,[]);return Array.isArray(data)?data:[]}
+function markRead(id){const previous=readIds();if(!previous.includes(id))write(READ_KEY,[id,...previous].slice(0,150))}
+function markAllRead(){write(READ_KEY,inbox().map(e=>e.id).filter(Boolean).slice(0,150))}
 
 function data(){
   try{return remoteData||window.LJR_V508_OFFICIAL?.getData?.()||window.LJR_OFFICIAL_DATA||null}catch(_){return remoteData}
@@ -149,6 +156,25 @@ async function requestPermission(){
     const ok=p==='granted';write(PERM,{granted:ok,at:Date.now()});renderFeed();return ok;
   }catch(_){return false}
 }
+async function webNotify(title,options,targetRoute){
+  if(!('Notification'in window)||Notification.permission!=='granted')return false;
+  const path=String(targetRoute||'notifications').replace(/^#\/?/,'').replace(/^\/+/,'').replace(/[^a-zA-Z0-9_/?=&-]/g,'');
+  const url=new URL('./#/'+path,location.href).href;
+  if('serviceWorker'in navigator){
+    try{
+      const registration=await navigator.serviceWorker.register('./sw.js');
+      await registration.showNotification(title,{...options,data:{url}});
+      return true;
+    }catch(_){}
+  }
+  // Algunos escritorios todavía admiten el constructor; Android requiere SW.
+  try{
+    const notice=new Notification(title,options);
+    notice.onclick=()=>{try{window.focus();location.hash='#/'+path;notice.close()}catch(_){}};
+    return true;
+  }catch(_){return false}
+}
+
 async function systemNotify(e){
   if(!shouldAlert(e.type))return false;
   const title=e.category||'Liga Juventino';
@@ -168,20 +194,12 @@ async function systemNotify(e){
       return true;
     }catch(_){return false}
   }
-  if('Notification'in window&&Notification.permission==='granted'){
-    try{
-      const targetRoute=String(e.route||'competition');
-      const n=new Notification(title,{
-        body,tag:'ljr-'+e.id,renotify:true,
-        icon:e.homeLogo||'./assets/reference/predictor-v36/liga-crest-white.webp',
-        badge:'./assets/reference/predictor-v36/liga-crest-white.webp',
-        vibrate:prefs().vibration!==false?[220,100,220]:[]
-      });
-      n.onclick=()=>{try{window.focus();location.hash='#/'+targetRoute.replace(/^#\/?/,'').replace(/^\//,'');n.close()}catch(_){}};
-      return true;
-    }catch(_){}
-  }
-  return false;
+  return await webNotify(title,{
+    body,tag:'ljr-'+e.id,renotify:true,
+    icon:e.homeLogo||'./assets/branding/escudo-liga-azul-sin-fondo-v1007.png',
+    badge:'./assets/branding/escudo-liga-azul-sin-fondo-v1007.png',
+    vibrate:prefs().vibration!==false?[220,100,220]:[]
+  },String(e.route||'competition'));
 }
 
 async function sendRichNotification(input={}){
@@ -209,19 +227,13 @@ async function sendRichNotification(input={}){
     const ok=await requestPermission();
     if(!ok)return false;
   }
-  try{
-    const n=new Notification(title,{
-      body,
-      tag:'ljr-rich-'+id,
-      renotify:true,
-      icon:iconUrl||'./assets/reference/predictor-v36/liga-crest-white.webp',
-      image:imageUrl||undefined,
-      badge:'./assets/reference/predictor-v36/liga-crest-white.webp',
-      vibrate:prefs().vibration!==false?[220,100,220]:[]
-    });
-    n.onclick=()=>{try{window.focus();location.hash='#/'+route.replace(/^#\/?/,'').replace(/^\//,'');n.close()}catch(_){}};
-    return true;
-  }catch(_){return false}
+  return await webNotify(title,{
+    body,tag:'ljr-rich-'+id,renotify:true,
+    icon:iconUrl||'./assets/branding/escudo-liga-azul-sin-fondo-v1007.png',
+    image:imageUrl||undefined,
+    badge:'./assets/branding/escudo-liga-azul-sin-fondo-v1007.png',
+    vibrate:prefs().vibration!==false?[220,100,220]:[]
+  },route);
 }
 
 async function pushLive(input={}){
@@ -255,13 +267,12 @@ async function pushLive(input={}){
 
 async function sendSampleRich(){
   const latest=inbox()[0];
-  if(latest){
-    return systemNotify({...latest,id:'sample-rich-'+Date.now(),type:'test',status:'Vista previa de notificación'});
-  }
   return sendRichNotification({
-    title:'Liga Juventino Rosas',
-    body:'Notificación con imagen grande, agrupación y vista expandible activada.',
-    iconUrl:'./assets/reference/predictor-v36/liga-crest-white.webp',
+    title:'Liga Juventino Rosas · Vista previa',
+    body:latest?scoreText(latest)+' · '+latest.status:'Los avisos de partidos aparecerán aquí cuando se publiquen datos oficiales.',
+    iconUrl:latest?.homeLogo||'./assets/branding/escudo-liga-azul-sin-fondo-v1007.png',
+    imageUrl:latest?.awayLogo||'',
+    route:latest?.route||'notifications',
     group:'liga-pruebas'
   });
 }
@@ -303,7 +314,7 @@ function scoreText(e){
 }
 function timeText(e){
   const t=e.stamp||e.ts;if(!t)return '';
-  try{return new Intl.DateTimeFormat('es-MX',{hour:'numeric',minute:'2-digit'}).format(new Date(t))}catch(_){return ''}
+  try{return new Intl.DateTimeFormat('es-MX',{day:'2-digit',month:'short',hour:'numeric',minute:'2-digit'}).format(new Date(t))}catch(_){return ''}
 }
 function logoPair(e){
   const fallback='<span class="v840-logo-fallback">⚽</span>';
@@ -313,32 +324,72 @@ function logoPair(e){
   '</span>';
 }
 function feedMarkup(){
-  const rows=inbox().slice(0,12),native=Capacitor.isNativePlatform(),perm=read(PERM,{});
-  return '<section class="v840-match-feed" data-v840-feed>'+
-    '<div class="v840-feed-head"><div><small>PARTIDOS</small><h3>Actividad reciente</h3><p>Resultados y avisos de la Liga con los escudos de ambos equipos.</p></div>'+
-      '<div class="v840-head-actions"><button type="button" data-v840-permission class="'+(perm.granted?'on':'')+'">'+
-        (perm.granted?'Avisos del APK activos':native?'Activar avisos del APK':'Activar avisos')+
-      '</button><button type="button" data-v851-rich-test>Probar aviso con imagen</button></div></div>'+
-    '<div class="v840-feed-list">'+
-      (rows.length?rows.map(e=>'<button type="button" class="v840-notice-row" data-v840-match="'+esc(e.key)+'" data-v840-route="'+esc(e.route||'competition')+'">'+
-        logoPair(e)+'<span class="v840-notice-copy"><span><b>'+esc(e.category)+'</b><small>'+esc(timeText(e))+'</small></span>'+
-        '<strong>'+esc(scoreText(e))+'</strong><em>'+esc(e.status)+(e.field?' · '+esc(e.field):'')+'</em></span><i>›</i></button>').join(''):
-        '<div class="v840-empty">Cuando haya resultados o cambios de marcador aparecerán aquí.</div>')+
+  const all=inbox();
+  const native=Capacitor.isNativePlatform(),permission=read(PERM,{});
+  const granted=native?!!permission.granted:('Notification'in window&&Notification.permission==='granted');
+  const denied=!native&&'Notification'in window&&Notification.permission==='denied';
+  const readSet=new Set(readIds());
+  const unread=all.filter(e=>!readSet.has(e.id)).length;
+  const categories=[...new Set(all.map(e=>e.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+  const filtered=all.filter(e=>
+    (view.category==='all'||e.category===view.category)&&
+    (view.type==='all'||(view.type==='goal'&&e.type==='goal')||
+     (view.type==='final'&&(e.type==='final'||e.status==='Finalizado'))||
+     (view.type==='live'&&(e.live||e.type==='live')))
+  );
+  const rows=filtered.slice(0,view.more?MAX_INBOX:5);
+  const filters=[['all','Todos'],['goal','Goles'],['final','Resultados'],['live','En vivo']];
+  const status=granted?'Avisos permitidos en este dispositivo':denied?'Avisos bloqueados: cambia el permiso desde el navegador.':'Activa avisos para recibir alertas del dispositivo.';
+  return '<section class="v840-match-feed" data-v840-feed aria-label="Actividad reciente de la Liga">'+
+    '<div class="v840-feed-head">'+
+      '<div class="v840-feed-title"><small>PARTIDOS · LIGA JUVENTINO ROSAS</small><h3>Actividad reciente</h3>'+
+        '<p>Marcadores y avisos oficiales por categoría.</p>'+
+        '<span class="v840-permission-status '+(granted?'allowed':denied?'denied':'')+'">'+(granted?'✓':'○')+' '+esc(status)+'</span></div>'+
+      '<div class="v840-head-actions"><button type="button" data-v840-permission class="'+(granted?'on':'')+'" aria-label="Activar permisos de avisos">'+
+        (granted?'Avisos activos':denied?'Ver permisos':native?'Activar avisos':'Activar avisos')+
+      '</button><button type="button" data-v851-rich-test>Probar aviso</button></div>'+
     '</div>'+
+    '<div class="v840-feed-tools"><div class="v840-feed-tabs" role="group" aria-label="Filtrar avisos">'+
+      filters.map(([key,label])=>'<button type="button" data-v840-type="'+key+'" aria-pressed="'+(view.type===key?'true':'false')+'" class="'+(view.type===key?'selected':'')+'">'+label+'</button>').join('')+
+    '</div><label class="v840-feed-category"><span>Categoría</span><select data-v840-category aria-label="Filtrar por categoría">'+
+      '<option value="all">Todas las categorías</option>'+categories.map(cat=>'<option value="'+esc(cat)+'" '+(view.category===cat?'selected':'')+'>'+esc(cat)+'</option>').join('')+
+    '</select></label></div>'+
+    '<div class="v840-feed-subhead"><span>'+filtered.length+' '+(filtered.length===1?'aviso':'avisos')+' · '+unread+' sin leer</span>'+
+      (unread?'<button type="button" data-v840-readall>Marcar todos como leídos</button>':'')+'</div>'+
+    '<div class="v840-feed-list">'+
+      (rows.length?rows.map(e=>'<button type="button" class="v840-notice-row '+(!readSet.has(e.id)?'unread':'')+'" data-v840-id="'+esc(e.id)+'" data-v840-route="'+esc(e.route||'competition')+'" aria-label="'+esc(scoreText(e)+' · '+e.category+' · '+e.status)+'">'+
+        logoPair(e)+'<span class="v840-notice-copy"><span class="v840-notice-meta"><b>'+esc(e.category)+'</b><small>'+esc(timeText(e))+'</small></span>'+
+        '<strong>'+esc(scoreText(e))+'</strong><em>'+esc(e.status)+(e.field?' · '+esc(e.field):'')+'</em></span>'+
+        '<span class="v840-row-trail">'+(!readSet.has(e.id)?'<span class="v840-unread-dot" aria-label="Sin leer"></span>':'')+'<i aria-hidden="true">›</i></span></button>').join(''):
+        '<div class="v840-empty">No hay avisos para este filtro. Elige otra categoría o consulta más tarde.</div>')+
+    '</div>'+
+    (filtered.length>rows.length?'<button type="button" class="v840-feed-more" data-v840-more>Ver '+(filtered.length-rows.length)+' avisos más ↓</button>':
+       view.more&&filtered.length>5?'<button type="button" class="v840-feed-more" data-v840-more>Mostrar menos ↑</button>':'')+
   '</section>';
 }
+
 function renderFeed(){
   if(route()!=='notifications')return;
   const host=document.querySelector('.v46-ref-notifications-main')||
              document.querySelector('.v414-notifications')||
              document.querySelector('[data-v46-account="notifications"]');
   if(!host)return;
-  host.querySelector('[data-v840-feed]')?.remove();
+  const markup=feedMarkup(),signature=String(hash(markup));
+  const previous=host.querySelector('[data-v840-feed]');
+  // Evita el bucle de cambios del MutationObserver y perder el scroll al actualizar.
+  if(previous?.dataset.v840Signature===signature)return;
+  previous?.remove();
   const device=host.querySelector('.v46-ref-device,.v414-device-card');
-  if(device)device.insertAdjacentHTML('afterend',feedMarkup());
-  else host.insertAdjacentHTML('afterbegin',feedMarkup());
+  if(device)device.insertAdjacentHTML('afterend',markup);
+  else host.insertAdjacentHTML('afterbegin',markup);
   const root=host.querySelector('[data-v840-feed]');
+  if(root)root.dataset.v840Signature=signature;
   root?.querySelector('[data-v840-permission]')?.addEventListener('click',async e=>{
+    if(!Capacitor.isNativePlatform()&&'Notification'in window&&Notification.permission==='denied'){
+      const message=root.querySelector('.v840-permission-status');
+      if(message)message.textContent='En Chrome: icono junto a la dirección → Permisos → Notificaciones → Permitir.';
+      return;
+    }
     e.currentTarget.disabled=true;
     const ok=await requestPermission();
     e.currentTarget.disabled=false;
@@ -351,13 +402,25 @@ function renderFeed(){
     e.currentTarget.disabled=true;
     const ok=await sendSampleRich();
     e.currentTarget.disabled=false;
-    e.currentTarget.textContent=ok?'Aviso enviado':'Activa notificaciones';
+    e.currentTarget.textContent=ok?'Aviso de prueba enviado':'Revisa los permisos';
     setTimeout(()=>{if(e.currentTarget)e.currentTarget.textContent='Probar aviso con imagen'},1800);
   });
-  root?.querySelectorAll('[data-v840-match]').forEach(b=>b.addEventListener('click',()=>{
+  root?.querySelectorAll('[data-v840-type]').forEach(b=>b.addEventListener('click',()=>{
+    view.type=b.dataset.v840Type||'all';view.more=false;saveView();renderFeed();
+  }));
+  root?.querySelector('[data-v840-category]')?.addEventListener('change',e=>{
+    view.category=e.target.value||'all';view.more=false;saveView();renderFeed();
+  });
+  root?.querySelector('[data-v840-more]')?.addEventListener('click',()=>{
+    view.more=!view.more;saveView();renderFeed();
+  });
+  root?.querySelector('[data-v840-readall]')?.addEventListener('click',()=>{markAllRead();renderFeed()});
+  root?.querySelectorAll('[data-v840-id]').forEach(b=>b.addEventListener('click',()=>{
+    markRead(b.dataset.v840Id||'');
     const target=String(b.dataset.v840Route||'competition');
     if(target==='competition')try{localStorage.setItem('competitionTab','fixtures')}catch(_){}
     location.hash='#/'+target.replace(/^#\/?/,'').replace(/^\//,'');
+    renderFeed();
   }));
 }
 function interceptDeviceButtons(){
