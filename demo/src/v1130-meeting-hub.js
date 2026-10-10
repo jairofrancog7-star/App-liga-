@@ -97,7 +97,7 @@ const icsEsc=s=>String(s||'').replace(/\\/g,'\\\\').replace(/\r?\n/g,'\\n').repl
 function when(d,t){return d.replace(/-/g,'')+'T'+(t||'19:00').replace(':','')+'00'}
 function eventInfo(){
  const d=date(),record=snapshot(),time=String(record.time||'').trim();
- if(!validDate(d)||!/^([01]\\d|2[0-3]):[0-5]\\d$/.test(time))return null;
+ if(!validDate(d)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(time))return null;
  return {iso:d,time,name:'Junta de la Liga Juventino Rosas',place:record.place||'',description:'Orden del día: '+(record.agenda||'Por confirmar')};
 }
 function doCalendar(mode){
