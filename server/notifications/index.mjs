@@ -24,7 +24,9 @@ const vapidReady=Boolean(E.VAPID_PUBLIC_KEY&&E.VAPID_PRIVATE_KEY&&E.VAPID_SUBJEC
 if(vapidReady)webpush.setVapidDetails(E.VAPID_SUBJECT,E.VAPID_PUBLIC_KEY,E.VAPID_PRIVATE_KEY);
 const twilioReady=Boolean(E.TWILIO_ACCOUNT_SID&&E.TWILIO_API_KEY&&E.TWILIO_API_SECRET);
 const smsReady=twilioReady&&/^MG[0-9a-f]{32}$/i.test(E.TWILIO_MESSAGING_SERVICE_SID||'');
-const whatsappReady=twilioReady&&/^whatsapp:\+[1-9]\d{7,14}$/.test(E.TWILIO_WHATSAPP_SENDER||'')&&/^HX[0-9a-f]{32}$/i.test(E.TWILIO_WHATSAPP_CONTENT_SID||'');
+// El número configurado puede ser candidato: habilitar solo tras alta REAL en Twilio/Meta.
+// La bandera es manual; no reemplaza el estado de aprobación verificado por el proveedor.
+const whatsappReady=twilioReady&&E.TWILIO_WHATSAPP_ACTIVATED==='true'&&/^whatsapp:\+[1-9]\d{7,14}$/.test(E.TWILIO_WHATSAPP_SENDER||'')&&/^HX[0-9a-f]{32}$/i.test(E.TWILIO_WHATSAPP_CONTENT_SID||'');
 const client=twilioReady?twilio(E.TWILIO_API_KEY,E.TWILIO_API_SECRET,{accountSid:E.TWILIO_ACCOUNT_SID}):null;
 app.use((req,res,next)=>{res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Cache-Control','no-store');
  const requestOrigin=req.get('Origin');
