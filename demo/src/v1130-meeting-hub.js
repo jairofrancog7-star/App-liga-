@@ -11,6 +11,7 @@ const read=()=>{try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');return x
 const state=read();
 const drafts={};
 const advanced=()=>window.LJR_MEETING_ADVANCED_V1140;
+const sync=()=>window.LJR_MEETING_SYNC_V1150;
 let form=null,host=null,tab='attendance',qrValue='',scanner=null,search='';
 function date(){return $('input[data-x="date"]',form)?.value||''}
 function validDate(d){if(!/^\d{4}-\d{2}-\d{2}$/.test(d))return false;const x=new Date(d+'T12:00:00');return !isNaN(x)&&x.getDay()===2}
@@ -74,13 +75,13 @@ function calendar(){
  const s=snapshot();
  return '<p class="mh-tip">Crea un evento en Google Calendar o descarga un archivo .ics para invitar a los delegados. El envío de WhatsApp requiere confirmación manual.</p><div class="mh-overview"><b>'+fmt(date())+'</b><small>'+esc(s.time||'Hora por definir')+' · '+esc(s.place||'Lugar por definir')+'</small></div><div class="mh-buttons">'+button('google','Abrir Google Calendar')+button('ics','Descargar invitación .ics')+button('whatsapp','Compartir convocatoria')+'</div><p class="mh-tip">Los recordatorios recurrentes y sincronización multiusuario necesitan un backend con consentimiento.</p>';
 }
-const advancedCtx={get host(){return host},KEY,state,date,item,snapshot,preserve,persist,render,go,download,validDate,fmt,esc,msg};
+const advancedCtx={get host(){return host},KEY,state,date,item,snapshot,preserve,persist,render,go,download,validDate,fmt,esc,msg,applyMinute};
 function render(){
  if(!host?.isConnected)return;
- const choices=[['attendance','Asistencia'],['tasks','Acuerdos'],['votes','Votaciones'],['minutes','Acta'],['history','Historial'],['calendar','Calendario'],['summary','Resumen'],['files','Archivos']];
+ const choices=[['attendance','Asistencia'],['tasks','Acuerdos'],['votes','Votaciones'],['minutes','Acta'],['history','Historial'],['calendar','Calendario'],['summary','Resumen'],['files','Archivos'],['sync','Servidor']];
  const views={attendance,tasks,votes,minutes,history,calendar};
  const base=views[tab]?.()||'';
- const replacement=advanced()?.view?.(tab,advancedCtx,base);
+ const replacement=tab==='sync'?sync()?.view?.(advancedCtx):advanced()?.view?.(tab,advancedCtx,base);
  const body=replacement??base;
  host.innerHTML='<div class="mh-header"><div><small>GESTIÓN DE JUNTAS</small><h4>Control de delegados</h4></div><span>Local</span></div><div class="mh-tabs" role="tablist" aria-label="Herramientas de junta">'+choices.map(([id,label])=>'<button type="button" role="tab" aria-selected="'+(id===tab)+'" data-mh-action="tab" data-tab="'+id+'" class="'+(id===tab?'active':'')+'">'+label+'</button>').join('')+'</div><div class="mh-body">'+body+'</div><p class="mh-status" aria-live="polite" data-mh-status>Los registros nuevos se guardan solo en este navegador.</p>';
  advanced()?.afterRender?.(tab,advancedCtx);
@@ -119,6 +120,7 @@ function stopCamera(){if(scanner){scanner.active=false;scanner.stream.getTracks(
 function handle(action,target){
  if(!window.LJR_MEDIA?.admin)return msg('Inicia sesión de administración para modificar la junta.');
  if(action==='tab')return go(target.dataset.tab);
+ if(sync()?.handle?.(action,target,advancedCtx))return;
  if(advanced()?.handle?.(action,target,advancedCtx))return;
  if(action==='close-camera'){stopCamera();return}
  if(action==='camera')return camera();
