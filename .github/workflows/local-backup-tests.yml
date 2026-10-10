@@ -6,6 +6,7 @@ on:
       - 'src/v1213-indexeddb-backup.js'
       - 'tests/local-backup-center.test.mjs'
       - 'tests/indexeddb-backup.test.mjs'
+      - 'tests/indexeddb-browser-smoke.mjs'
       - '.github/workflows/local-backup-tests.yml'
   push:
     branches: [main]
@@ -28,3 +29,19 @@ jobs:
           node-version: '22'
       - name: Comprobar exportación, cifrado, archivos y restauración
         run: node --test tests/local-backup-center.test.mjs tests/indexeddb-backup.test.mjs
+
+  browser:
+    name: Probar archivos reales en Chromium
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar Chromium de prueba
+        run: |
+          npm install --no-save playwright@1.56.1 --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Verificar fotos, documentos, carpeta y restauración
+        run: node tests/indexeddb-browser-smoke.mjs
