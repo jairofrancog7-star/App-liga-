@@ -266,7 +266,7 @@ function attach({modal,getEntries,getVisible,getChosen,merge,status}){
    if(!confirm('Importar incidencias en este dispositivo? Se conservaran los registros existentes; no se modifica ninguna cedula oficial.'))return;
    const result=merge(backup.entries);
    if(!result?.ok)return;
-   const validIds=new Set(backup.entries.map(x=>String(x?.id||'')));
+   const validIds=new Set(result.addedIds||[]); // No sobrescribir fotos de registros locales existentes.
    let photos=0;
    for(const [id,url] of Object.entries(backup.photos||{})){
     if(!validIds.has(id))continue;
