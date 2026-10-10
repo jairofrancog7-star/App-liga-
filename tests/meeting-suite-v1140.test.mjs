@@ -74,7 +74,7 @@ test('meeting calendar opens prefilled Google event with optional Tuesday recurr
  assert.equal(x.opened[0].time,'19:00');
  assert.equal(x.opened[0].weekly,true);
  assert.equal(x.opened[0].venue,'Campo Municipal');
- assert.match(x.status,/Pulsa Guardar/);
+ assert.match(x.status,/pulsa Guardar/i);
  assert.match(x.api.view('calendar',x.ctx,''),/Guardar junta en Google Calendar/);
 });
 test('automatic app reminder calls a role-checked server endpoint only',async()=>{
