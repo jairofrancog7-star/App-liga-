@@ -35,25 +35,14 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
-      - name: Build GitHub Pages version
-        run: npm run build -- --base=/App-liga-/
-
       - name: Install Playwright Chromium
         run: |
           npm install --no-save playwright --no-audit --no-fund
           npx playwright install --with-deps chromium
 
-      - name: Start local preview
-        run: |
-          npx vite preview --host 127.0.0.1 --port 4173 --strictPort > /tmp/install-preview.log 2>&1 &
-          for i in $(seq 1 30); do
-            if curl -fsS http://127.0.0.1:4173/App-liga-/ > /dev/null; then exit 0; fi
-            sleep 2
-          done
-          cat /tmp/install-preview.log
-          exit 1
-
       - name: Verify install colors, buttons and 393px/360px mobile screenshots
+        env:
+          LJR_INSTALL_TEST_URL: https://jairofrancog7-star.github.io/App-liga-/
         run: node tests/install-center-mobile-visual-v1241.mjs
 
       - name: Upload mobile screenshots and findings
