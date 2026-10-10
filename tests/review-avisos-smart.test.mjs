@@ -20,6 +20,10 @@ test('filtros, acciones y estados de revisión están conectados',()=>{
  assert.match(code,/method:'DELETE'/);
  assert.match(code,/if\(!confirm\(/);
  assert.ok(code.includes('data-review-type'));
+ assert.ok(code.includes('Completa el título y un mensaje de al menos 15 caracteres'));
+ assert.ok(code.includes('Aviso publicado en el servidor de la Liga.'));
+ assert.ok(code.includes('El aviso fue retirado del servidor.'));
+ assert.ok(code.includes("typeof window.LJR_CMS?.editor==='function'"));
  assert.ok(code.includes('data-review-clear'));
  assert.ok(code.includes('ljr-review-feedback'));
  assert.ok(code.includes('borrador privado'));
