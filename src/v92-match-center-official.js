@@ -929,6 +929,7 @@ function rosterColumn(m,team){
 }
 function mvpKey(m){return 'v92-mvp-local:'+String(m?.key||'match')}
 function mvpSelection(m){
+  try{const records=JSON.parse(localStorage.getItem('v1126-motm-records')||'[]');const saved=Array.isArray(records)?records.find(x=>x?.key===m?.key):null;if(saved?.player)return saved}catch(_){}
   try{return JSON.parse(localStorage.getItem(mvpKey(m))||'null')}catch(_){return null}
 }
 function mvpPlayers(m){
@@ -951,6 +952,7 @@ function mvpCard(m){
   '</section>';
 }
 function openMvpVote(m){
+  if(window.LJR_MOTM_STUDIO?.open){window.LJR_MOTM_STUDIO.open({matchKey:m.key,catId:m.catId});return}
   document.querySelector('.v92-mvp-modal')?.remove();
   const players=mvpPlayers(m);
   const r=m.r,home=r[2],away=r[6];
