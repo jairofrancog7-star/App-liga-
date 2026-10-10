@@ -16,12 +16,31 @@ async function open(){
  if(!d)return;
  const status=d.querySelector('[data-v1208-status]'),host=d.querySelector('[data-v1208-content]');
  try{
-  const [me,principals]=await Promise.all([
-   media().notifyAPI('/admin/me'),
-   media().notifyAPI('/admin/principals')
+  const [cms,me]=await Promise.all([
+   media().api('me'),
+   media().notifyAPI('/admin/me')
   ]);
-  if(!me?.actor?.permissions?.includes('roles:write'))throw Error('No tienes autorización para gestionar las cuentas principales.');
-  status.textContent='Los permisos se consultan en el servidor privado, no en este navegador.';
+  const cmsAdmin=cms?.admin||{};
+  const cmsStatus=document.createElement('p');
+  cmsStatus.textContent='CMS principal de la Liga: '+(cmsAdmin.owner===true
+   ? 'Acceso principal confirmado por su servidor.'
+   : 'Cuenta administrativa sin rol principal confirmado. El CMS aún debe autorizarla para editar toda la página.');
+  host.append(cmsStatus);
+  const isPrincipal=me?.actor?.permissions?.includes('roles:write')===true;
+  const notificationsStatus=document.createElement('p');
+  notificationsStatus.textContent='Avisos, Juntas y Cédulas: '+(isPrincipal
+   ? 'Acceso principal confirmado por Railway.'
+   : 'Acceso limitado: '+String(me?.actor?.role||'lector')+'.');
+  host.append(notificationsStatus);
+  if(!isPrincipal){
+   const explanation=document.createElement('p');
+   explanation.textContent='No se pueden asignar permisos desde este dispositivo. Una cuenta principal verificada debe autorizar el acceso en el servidor.';
+   host.append(explanation);
+   status.textContent='Verificación completada sin modificar permisos.';
+   return;
+  }
+  const principals=await media().notifyAPI('/admin/principals');
+  status.textContent='Permisos verificados directamente con el CMS y Railway; cada cuenta utiliza su propia sesión.';
   const count=document.createElement('div');count.className='v1208-count';
   count.innerHTML='<b>'+Number(principals.current||1)+' / 2</b><span>cuentas principales para Avisos y Juntas</span>';
   host.append(count);
@@ -92,13 +111,10 @@ function mount(){
  if(!pane||!media()?.admin||pane.querySelector('[data-v1208-open]'))return;
  const button=document.createElement('button');button.type='button';button.dataset.v1208Open='';
  button.className='v1208-entry';
- button.innerHTML='<b>♙</b><span>Dos administradores<small>Cuenta propietaria y presidencia · acceso verificado</small></span>';
+ button.innerHTML='<b aria-hidden="true">♙</b><span>Dos administradores<small>Consultar y configurar permisos reales</small></span>';
  button.onclick=open;pane.append(button);
- // Solo las sesiones con permisos reales ven el control.
- button.hidden=true;
- media().notifyAPI('/admin/me').then(x=>{
-  if(button.isConnected&&x?.actor?.permissions?.includes('roles:write'))button.hidden=false;
- }).catch(()=>{});
+ // El estado de acceso se puede consultar; los botones de aprobación solo aparecen al propietario real.
+ // Esta visibilidad no concede permisos de escritura. Todos los cambios pasan por autorización del servidor.
 }
 let queued=false;
 function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;mount()})}
