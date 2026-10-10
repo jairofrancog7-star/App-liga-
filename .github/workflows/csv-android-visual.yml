@@ -1,0 +1,45 @@
+name: CSV - Android visual smoke
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tests/csv-android-visual.mjs'
+      - '.github/workflows/csv-android-visual.yml'
+permissions:
+  contents: read
+concurrency:
+  group: csv-android-visual
+  cancel-in-progress: false
+jobs:
+  csv-android:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar y compilar sitio real
+        run: |
+          npm install --no-audit --no-fund
+          npm run build -- --base=/App-liga-/
+      - name: Preparar navegador Chromium Android simulado
+        run: |
+          npm install --no-save playwright@1.56.1 --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Iniciar vista previa publicada localmente
+        run: |
+          npx vite preview --base=/App-liga-/ --host 127.0.0.1 --port 4173 > /tmp/csv-preview.log 2>&1 &
+          for i in $(seq 1 45); do curl --fail --silent http://127.0.0.1:4173/App-liga-/ > /dev/null && exit 0; sleep 1; done
+          cat /tmp/csv-preview.log
+          exit 1
+      - name: Verificar modal CSV en Android 360, 393 y 412px
+        run: node tests/csv-android-visual.mjs
+      - name: Adjuntar capturas de todas las pantallas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: csv-android-visual-screenshots
+          path: csv-android-artifacts/
+          if-no-files-found: ignore
