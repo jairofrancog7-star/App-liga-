@@ -17,6 +17,32 @@ test('No hay permisos de escritura en sesiones públicas o no registradas',()=>{
  assert.equal(roleFor({owner:true},'lector'),'presidente');
  assert.equal(Object.hasOwn(ROLE_PERMS,'__proto__'),false);
 });
+test('Los cargos Delegado y Árbitro conservan permisos mínimos verificados',()=>{
+ assert.equal(roleFor({owner:false},'delegado'),'delegado');
+ assert.equal(roleFor({owner:false},'arbitro'),'arbitro');
+ assert.equal(can('delegado','notices:read'),true);
+ for(const permission of ['notices:write','meetings:write','roles:write','cedulas:write','cedulas:sign','cedulas:publish']){
+  assert.equal(can('delegado',permission),false,permission);
+ }
+ assert.equal(can('arbitro','cedulas:sign'),true);
+ assert.equal(can('arbitro','cedulas:write'),true);
+ assert.equal(can('arbitro','cedulas:publish'),false);
+ assert.equal(can('arbitro','roles:write'),false);
+ assert.equal(can('arbitro','notices:write'),false);
+ assert.equal(roleFor({owner:false},'presidente'),'lector');
+});
+test('Migraciones privadas admiten Delegado y Árbitro sin conceder acceso presidente',()=>{
+ const schema=read('server/notifications/schema.sql');
+ const cedulas=read('server/notifications/cedula-schema.sql');
+ for(const source of [schema,cedulas]){
+  assert.match(source,/CHECK\s*\(role IN \('secretario','editor','disciplina','arbitro','delegado','lector'\)\)/);
+  assert.doesNotMatch(source,/CHECK\s*\(role IN \([^\n]*'presidente'/);
+ }
+ const ui=read('src/v1081-global-admin-notices.js');
+ assert.match(ui,/delegado:'Delegado/);
+ assert.match(ui,/arbitro:'Árbitro/);
+ assert.match(ui,/allowedRoles\.has\(value\)/);
+});
 test('Identificadores de administradores: solo valores acotados',()=>{
  assert.equal(safeSubject('admin_123-5'),true);
  assert.equal(safeSubject('../user'),false);
