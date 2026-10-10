@@ -1,0 +1,300 @@
+/* V1310 · Liga Juventino Rosas
+   Armonización EXCLUSIVAMENTE visual de los cuadros administrativos.
+   No modifica JS, rutas, permisos, formularios, servicios ni reproducción. */
+html body .liga-media-modal > section:is(
+ .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,
+ .ljr-admin-studio,.ljr-editor-dialog,.v1081-dialog
+){
+ --ljr1310-bg:#091849;
+ --ljr1310-surface:#11265c;
+ --ljr1310-card:#152f6d;
+ --ljr1310-input:#0c2053;
+ --ljr1310-edge:#4a73bc;
+ --ljr1310-ink:#f5f9ff;
+ --ljr1310-muted:#bed0ed;
+ --ljr1310-focus:#91c8ff;
+ box-sizing:border-box!important;
+ background:linear-gradient(170deg,#10275f 0%,#0c2056 37%,#071540 100%)!important;
+ border-color:var(--ljr1310-edge)!important;
+ color:var(--ljr1310-ink)!important;
+ box-shadow:0 18px 52px rgba(2,7,33,.45),inset 0 1px 0 rgba(210,230,255,.09)!important;
+ color-scheme:dark;
+}
+
+/* Una sola barra, integrada con el resto del cuadro. */
+html body .liga-media-modal > section:is(
+ .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,
+ .ljr-admin-studio,.ljr-editor-dialog,.v1081-dialog
+) > header{
+ background:linear-gradient(180deg,#193976 0%,#122b66 100%)!important;
+ background-image:linear-gradient(180deg,#193976,#122b66)!important;
+ border-bottom:1px solid rgba(115,158,224,.38)!important;
+ color:var(--ljr1310-ink)!important;
+}
+html body .liga-media-modal > section:is(
+ .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,
+ .ljr-admin-studio,.ljr-editor-dialog,.v1081-dialog
+) > header h2{
+ color:var(--ljr1310-ink)!important;
+ font-weight:800!important;
+ font-size:clamp(18px,4.5vw,24px)!important;
+ line-height:1.23!important;
+ letter-spacing:-.02em!important;
+ overflow-wrap:break-word!important;
+ min-width:0!important;
+}
+html body .liga-media-modal > section:is(
+ .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,
+ .ljr-admin-studio,.ljr-editor-dialog,.v1081-dialog
+) > header [data-close]{
+ flex:0 0 42px!important;
+ display:grid!important;
+ place-items:center!important;
+ width:42px!important;height:42px!important;
+ min-width:42px!important;min-height:42px!important;
+ padding:0!important;
+ border:1px solid #5d84c8!important;
+ border-radius:13px!important;
+ background:#1a3977!important;
+ color:#ecf4ff!important;
+ box-shadow:none!important;
+ font:800 23px/1 system-ui,sans-serif!important;
+}
+
+/* Tarjetas administrativas y de revisión: mismo azul oscuro, sin otros tonos. */
+html body .liga-media-modal :is(
+ .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-friendly,.ljr-editor-dialog,.v1081-dialog
+) :is(
+ .ljr-admin-area,.ljr-simple-intro,.ljr-admin-intro,.ljr-guide,
+ .ljr-editor-hub,.ljr-editor-note,.ljr-editor-preview,
+ .ljr-review-insights,.ljr-review-card,.ljr-review-empty,
+ .v1081-note,.v1081-item,.v1081-role,.v1081-preview,.v1081-channel-note,
+ .v1222-office-finder
+){
+ background:linear-gradient(160deg,#142e6b,#0d2053)!important;
+ background-image:linear-gradient(160deg,#142e6b,#0d2053)!important;
+ border-color:rgba(92,136,206,.65)!important;
+ box-shadow:none!important;
+ color:var(--ljr1310-ink,#f5f9ff)!important;
+}
+html body .liga-media-modal :is(
+ .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,.ljr-editor-dialog,.v1081-dialog
+) :is(p,small,.ljr-admin-section-sub,.ljr-simple-tile-note,.ljr-editor-security,.v1081-note){
+ line-height:1.47!important;
+}
+html body .liga-media-modal :is(
+ .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-friendly,.ljr-editor-dialog,.v1081-dialog
+) :is(.ljr-admin-section-sub,.ljr-editor-security,.ljr-simple-intro p,.v1081-note,.v1081-item small,.ljr-review-meta,.ljr-editor-note){
+ color:var(--ljr1310-muted,#bed0ed)!important;
+}
+
+/* Tarjetas del centro de administración: iconos consistentes y texto legible. */
+html body .liga-media-modal :is(.ljr-admin-manage,.ljr-admin-cms)
+ :is(.ljr-editor-hub-grid > button,.ljr-admin-action-grid > button,.ljr-admin-tile){
+ border:1px solid #5d83c9!important;
+ background:linear-gradient(155deg,#183b7e,#11285e)!important;
+ background-image:linear-gradient(155deg,#183b7e,#11285e)!important;
+ color:#f6faff!important;
+ box-shadow:inset 0 1px rgba(230,240,255,.08)!important;
+ border-radius:14px!important;
+}
+html body .liga-media-modal :is(.ljr-admin-manage,.ljr-admin-cms)
+ :is(.ljr-admin-tile-icon,.ljr-editor-hub-grid > button > b){
+ display:grid!important;
+ place-items:center!important;
+ border:1px solid rgba(133,175,235,.44)!important;
+ border-radius:10px!important;
+ background:#1b417f!important;
+ color:#d2e7ff!important;
+ box-shadow:none!important;
+}
+html body .liga-media-modal :is(.ljr-admin-manage,.ljr-admin-cms)
+ :is(.ljr-admin-tile-icon,.ljr-editor-hub-grid > button > b) svg{
+ width:21px!important;height:21px!important;
+ max-width:100%!important;
+ display:block!important;
+ stroke:currentColor;
+}
+html body .liga-media-modal :is(.ljr-admin-manage,.ljr-admin-cms)
+ :is(.ljr-admin-tile-label,.ljr-editor-hub-grid > button > span){
+ color:#f5f9ff!important;
+ white-space:normal!important;
+ word-break:normal!important;
+ overflow-wrap:break-word!important;
+ hyphens:none!important;
+ line-height:1.32!important;
+}
+html body .liga-media-modal :is(.ljr-admin-manage,.ljr-admin-cms)
+ :is(.ljr-admin-tile-next,.v1222-next){color:#bedcff!important;}
+
+/* Formularios: conserva name, value, autocomplete, onchange y eventos originales. */
+html body .liga-media-modal > section:is(
+ .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,
+ .ljr-admin-studio,.ljr-editor-dialog,.v1081-dialog
+) :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),select,textarea){
+ box-sizing:border-box!important;
+ max-width:100%!important;
+ min-width:0!important;
+ border:1px solid #5278bd!important;
+ background:#0c2053!important;
+ background-image:none!important;
+ color:#f5f9ff!important;
+ border-radius:12px!important;
+ box-shadow:none!important;
+ font-family:system-ui,Roboto,sans-serif!important;
+ font-size:clamp(12px,3.4vw,14px)!important;
+ line-height:1.4!important;
+}
+html body .liga-media-modal > section:is(
+ .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,
+ .ljr-admin-studio,.ljr-editor-dialog,.v1081-dialog
+) :is(input,textarea)::placeholder{
+ color:#a7bcdb!important;
+ opacity:1!important;
+}
+html body .liga-media-modal > section:is(
+ .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,
+ .ljr-admin-studio,.ljr-editor-dialog,.v1081-dialog
+) :is(input:not([type="checkbox"]),select,textarea,button):focus-visible{
+ outline:2px solid #91c8ff!important;
+ outline-offset:2px!important;
+}
+html body .liga-media-modal > section:is(
+ .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,
+ .ljr-admin-studio,.ljr-editor-dialog,.v1081-dialog
+) :is(input[type="checkbox"],input[type="radio"]){
+ accent-color:#4087db!important;
+}
+html body .liga-media-modal > section:is(
+ .ljr-admin-manage,.ljr-admin-cms,.ljr-admin-child,.ljr-admin-friendly,
+ .ljr-admin-studio,.ljr-editor-dialog,.v1081-dialog
+) label{
+ color:#d9e8ff!important;
+ overflow-wrap:break-word!important;
+}
+
+/* Los botones principales no cambian de función y no se tocan controles del reproductor. */
+html body .liga-media-modal :is(.v1081-dialog,.ljr-editor-dialog,.ljr-admin-friendly,.ljr-admin-cms)
+ :is(.v1081-actions button,.v1081-role button,.ljr-editor-tools button,.ljr-editor-smart-tools button,.ljr-editor-bottom button,.ljr-admin-submit,.ljr-simple-tile button){
+ background:linear-gradient(160deg,#1a448a,#14336f)!important;
+ background-image:linear-gradient(160deg,#1a448a,#14336f)!important;
+ border:1px solid #638bc8!important;
+ border-radius:12px!important;
+ color:#f5f9ff!important;
+ box-shadow:none!important;
+ min-height:42px!important;
+ white-space:normal!important;
+ overflow-wrap:break-word!important;
+}
+html body .liga-media-modal > section:is(.ljr-admin-child,.ljr-admin-cms)
+ :is(form > button,form > div > button,.liga-media-actions > button){
+ border-color:#638bc8!important;
+ background:linear-gradient(155deg,#1a448a,#14336f)!important;
+ color:#f5f9ff!important;
+ border-radius:12px!important;
+ box-shadow:none!important;
+}
+/* Preservar las indicaciones de peligro, cierre de sesión y acciones destructivas. */
+html body .liga-media-modal :is(.ljr-admin-manage,.ljr-admin-child,.ljr-admin-cms)
+ :is(.ljr-admin-tile-danger,[data-logout],[data-revoke],button.ljr-review-danger){
+ background:#372552!important;
+ border-color:#985d90!important;
+ color:#ffcfdb!important;
+}
+
+/* Estadísticas, filtros e IA local de Revisar avisos. */
+html body .liga-media-modal .ljr-editor-dialog :is(
+ .ljr-review-stats > div,.ljr-review-tabs button,.ljr-review-automation button,
+ .ljr-review-device-controls button,.ljr-review-filters input,.ljr-review-filters select
+){
+ background:#122b66!important;
+ border-color:#557fc4!important;
+ color:#f5f9ff!important;
+ box-shadow:none!important;
+}
+html body .liga-media-modal .ljr-editor-dialog .ljr-review-tabs button[aria-pressed="true"]{
+ background:#22519b!important;
+ border-color:#94b9ed!important;
+}
+html body .liga-media-modal .ljr-editor-dialog .ljr-review-filters{
+ gap:10px!important;
+ align-items:end!important;
+}
+html body .liga-media-modal .ljr-editor-dialog .ljr-review-filters select{
+ width:100%!important;
+ padding:10px 9px!important;
+ min-width:0!important;
+ font-size:12px!important;
+ text-overflow:ellipsis;
+}
+html body .liga-media-modal .ljr-editor-dialog .ljr-review-automation{
+ gap:9px!important;
+}
+html body .liga-media-modal .ljr-editor-dialog .ljr-review-automation button{
+ flex:1 1 145px!important;
+ min-width:0!important;
+}
+html body .liga-media-modal .ljr-editor-dialog .ljr-review-automation label{
+ flex:1 1 100%!important;
+ min-width:0!important;
+}
+
+/* Adjuntos: nombre visible, botón proporcional, sin texto montado. */
+html body .liga-media-modal > section:is(
+ .ljr-admin-child,.ljr-admin-cms,.ljr-admin-studio,.ljr-admin-manage,.ljr-editor-dialog
+) input[type="file"]{
+ box-sizing:border-box!important;
+ width:100%!important;
+ max-width:100%!important;
+ min-width:0!important;
+ height:auto!important;
+ min-height:58px!important;
+ padding:9px!important;
+ border:1px solid #537cc3!important;
+ border-radius:12px!important;
+ background:#0c2053!important;
+ color:#d8e7fa!important;
+ font:500 12px/1.35 system-ui,sans-serif!important;
+ overflow:hidden!important;
+}
+html body .liga-media-modal > section:is(
+ .ljr-admin-child,.ljr-admin-cms,.ljr-admin-studio,.ljr-admin-manage,.ljr-editor-dialog
+) input[type="file"]::file-selector-button{
+ border:1px solid #6c99d8!important;
+ background:#1e4b91!important;
+ color:white!important;
+ border-radius:10px!important;
+ padding:9px!important;
+ max-width:57%!important;
+ font:700 12px/1.3 system-ui,sans-serif!important;
+ margin-right:9px!important;
+}
+
+/* Pantallas angostas: los nombres no quedan cortados y la revisión se puede tocar. */
+@media(max-width:380px){
+ html body .liga-media-modal .ljr-editor-dialog .ljr-review-filters{
+  grid-template-columns:1fr!important;
+ }
+ html body .liga-media-modal .ljr-editor-dialog .ljr-review-filters .ljr-review-search{
+  grid-column:auto!important;
+ }
+ html body .liga-media-modal .ljr-admin-manage .ljr-admin-action-grid{
+  grid-template-columns:1fr!important;
+ }
+ html body .liga-media-modal .ljr-admin-manage .ljr-admin-action-grid > button{
+  min-height:68px!important;
+  display:flex!important;
+  flex-direction:row!important;
+  text-align:left!important;
+  justify-content:flex-start!important;
+  gap:10px!important;
+  padding:10px 12px!important;
+ }
+ html body .liga-media-modal .ljr-admin-manage .ljr-admin-action-grid .ljr-admin-tile-label{
+  width:auto!important;
+  flex:1 1 auto!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ html body .liga-media-modal .ljr-admin-manage .ljr-admin-tile{transition:none!important;}
+}
