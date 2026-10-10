@@ -1,0 +1,60 @@
+/* V1094 · «Más herramientas»: quitar cola vacía mostrada bajo Facebook.
+   No modifica la navegación fija, las rutas ni los botones de publicaciones.
+   #screen reserva UNA sola vez el área táctil de la barra inferior. */
+@media (max-width:1023px) {
+  html body[data-app-route="leagueTools"] #screen {
+    min-height:0!important;
+    height:auto!important;
+    max-height:none!important;
+    display:block!important;
+    padding-top:0!important;
+    padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))!important;
+    margin-bottom:0!important;
+    scroll-padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))!important;
+  }
+
+  /* Los estilos históricos v60/v66/v100/v726 duplicaban min-height de viewport
+     y hasta 118px de padding incluso cuando ya lo tenía la superficie #screen. */
+  html body[data-app-route="leagueTools"] #screen > .v60-tool-page.v726-tools-page {
+    min-height:0!important;
+    height:auto!important;
+    max-height:none!important;
+    margin-top:0!important;
+    margin-bottom:0!important;
+    padding-bottom:12px!important;
+    align-content:start!important;
+  }
+  html body[data-app-route="leagueTools"] #screen .v726-tools-page > [data-v74-facebook-source="tools"]:last-child {
+    display:grid!important;
+    position:relative!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin-top:10px!important;
+    margin-bottom:0!important;
+    padding-bottom:12px!important;
+  }
+  /* La tarjeta mantiene sus dos acciones funcionales; sin separaciones nuevas. */
+  html body[data-app-route="leagueTools"] #screen .v74-fb-actions {
+    margin-bottom:0!important;
+  }
+  /* No permitir una segunda reserva en elementos de relleno VACÍOS. */
+  html body[data-app-route="leagueTools"] #screen > :is(.v73-below-native,.v105-bottom,#v105-bottom):empty {
+    display:none!important;
+    min-height:0!important;
+    height:0!important;
+    margin:0!important;
+    padding:0!important;
+  }
+}
+@media(min-width:1024px) {
+  html body[data-app-route="leagueTools"] #screen > .v60-tool-page.v726-tools-page {
+    min-height:0!important;
+    height:auto!important;
+    margin-bottom:0!important;
+    padding-bottom:16px!important;
+  }
+  html body[data-app-route="leagueTools"] #screen [data-v74-facebook-source="tools"]:last-child {
+    margin-bottom:0!important;
+  }
+}
