@@ -9,7 +9,7 @@ const root=resolve(import.meta.dirname,'..');
 const output=resolve(root,'artifacts/v1232-suspension-android');
 mkdirSync(output,{recursive:true});
 const browser=await chromium.launch({headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
-const html=`<!doctype html><html lang="es"><head><meta name="viewport" content="width=device-width,initial-scale=1">
+const html=`<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Aviso de suspensión · prueba</title><style>
 html,body{margin:0;max-width:100%;background:#060c46;color:white;font:14px system-ui}
 #screen{padding:12px;box-sizing:border-box;min-height:900px}
