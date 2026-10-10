@@ -1,0 +1,31 @@
+name: Diseños distintos y selector de imágenes móvil
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/v1246-content-*'
+      - 'src/v776-design-studio.js'
+      - 'public/content-assets.json'
+      - 'tests/content-studio-*'
+      - '.github/workflows/content-studio-mobile-v1246.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mobile-designs:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-audit --no-fund playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - run: node tests/content-studio-mobile-v1246.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: content-studio-mobile-v1246
+          path: artifacts/content-studio-v1246/
+          if-no-files-found: ignore

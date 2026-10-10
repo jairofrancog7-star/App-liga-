@@ -1,0 +1,1720 @@
+{
+  "version": "20261010-v1246",
+  "assets": [
+    {
+      "name": "Veteranos Pozos",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-0.webp"
+    },
+    {
+      "name": "Herrera FC",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-1.webp"
+    },
+    {
+      "name": "Terrícolas",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-2.webp"
+    },
+    {
+      "name": "Promesas FC",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-3.webp"
+    },
+    {
+      "name": "Célticos",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-4.webp"
+    },
+    {
+      "name": "Fútbol Tapatío",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-5.webp"
+    },
+    {
+      "name": "Fútbol Tapatío grande",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-6.webp"
+    },
+    {
+      "name": "Zapata",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-7.webp"
+    },
+    {
+      "name": "San Juan FC",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-8.webp"
+    },
+    {
+      "name": "Deportivo La Luz",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-9.webp"
+    },
+    {
+      "name": "Linces",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-10.webp"
+    },
+    {
+      "name": "Leyendas FC San José",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-11.webp"
+    },
+    {
+      "name": "San Julián",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-12.webp"
+    },
+    {
+      "name": "Veteranos 35",
+      "kind": "category",
+      "url": "./assets/content-studio/logo-13.webp",
+      "category": "2"
+    },
+    {
+      "name": "Abejas",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-14.webp"
+    },
+    {
+      "name": "Malvinas",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-15.webp"
+    },
+    {
+      "name": "La Huerta",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-16.webp"
+    },
+    {
+      "name": "Deportivo Santiago de Cuenda",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-17.webp"
+    },
+    {
+      "name": "Franco Tavera JR",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-18.webp"
+    },
+    {
+      "name": "Galácticos Pozos",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-19.webp"
+    },
+    {
+      "name": "Franco FC",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-20.webp"
+    },
+    {
+      "name": "Atlético Galeana",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-21.webp"
+    },
+    {
+      "name": "Los Capibara",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-22.webp"
+    },
+    {
+      "name": "La Canchita",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-23.webp"
+    },
+    {
+      "name": "Huracán",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-24.webp"
+    },
+    {
+      "name": "Manchester United",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-25.webp"
+    },
+    {
+      "name": "Napoli",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-26.webp"
+    },
+    {
+      "name": "PSV",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-27.webp"
+    },
+    {
+      "name": "La Esperanza",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-28.webp"
+    },
+    {
+      "name": "Deportivo CDG",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-29.webp"
+    },
+    {
+      "name": "Aguilares",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-30.webp"
+    },
+    {
+      "name": "Boca Juniors",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-31.webp"
+    },
+    {
+      "name": "Osasuna",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-32.webp"
+    },
+    {
+      "name": "Liverpool MFC",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-33.webp"
+    },
+    {
+      "name": "Juventus",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-34.webp"
+    },
+    {
+      "name": "Boavista",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-35.webp"
+    },
+    {
+      "name": "Dynamo",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-36.webp"
+    },
+    {
+      "name": "La Trinidad",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-37.webp"
+    },
+    {
+      "name": "Pachangas",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-38.webp"
+    },
+    {
+      "name": "La Cuadrilla",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-39.webp"
+    },
+    {
+      "name": "Deportivo Nopalero",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-40.webp"
+    },
+    {
+      "name": "Segunda Fuerza",
+      "kind": "category",
+      "url": "./assets/content-studio/logo-41.webp",
+      "category": "4"
+    },
+    {
+      "name": "San José JR",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-42.webp"
+    },
+    {
+      "name": "Maravillas",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-43.webp"
+    },
+    {
+      "name": "San Antonio",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-44.webp"
+    },
+    {
+      "name": "San José de la Montaña",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-45.webp"
+    },
+    {
+      "name": "Tavera FC",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-46.webp"
+    },
+    {
+      "name": "Hermanos",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-47.webp"
+    },
+    {
+      "name": "Veteranos 50",
+      "kind": "category",
+      "url": "./assets/content-studio/logo-48.webp",
+      "category": "1"
+    },
+    {
+      "name": "Leyendas FC San José variante",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-49.webp"
+    },
+    {
+      "name": "San Antonio FC",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-50.webp"
+    },
+    {
+      "name": "Populares",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-51.webp"
+    },
+    {
+      "name": "Intermedia",
+      "kind": "category",
+      "url": "./assets/content-studio/logo-52.webp",
+      "category": "5"
+    },
+    {
+      "name": "Primera Fuerza",
+      "kind": "category",
+      "url": "./assets/content-studio/logo-53.webp",
+      "category": "3"
+    },
+    {
+      "name": "Aguilares variante",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-54.webp"
+    },
+    {
+      "name": "Club América JR",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-55.webp"
+    },
+    {
+      "name": "Barcelona",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-56.webp"
+    },
+    {
+      "name": "Aldama",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-57.webp"
+    },
+    {
+      "name": "Lobos CDG",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-58.webp"
+    },
+    {
+      "name": "Toros Cuenda",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-59.webp"
+    },
+    {
+      "name": "La Canchita variante",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-60.webp"
+    },
+    {
+      "name": "Veteranos 35 variante",
+      "kind": "logo",
+      "url": "./assets/content-studio/logo-61.webp"
+    },
+    {
+      "name": "Escudo oficial de la Liga",
+      "kind": "league",
+      "url": "./assets/branding/escudo-liga-camisetas-unificado-v1122.png"
+    },
+    {
+      "name": "premiacion historica",
+      "kind": "photo",
+      "url": "./assets/history/premiacion-historica.jpg"
+    },
+    {
+      "name": "juventus campeon 2019",
+      "kind": "photo",
+      "url": "./assets/history/juventus-campeon-2019.jpg"
+    },
+    {
+      "name": "tecos campeon historico",
+      "kind": "photo",
+      "url": "./assets/history/tecos-campeon-historico.jpg"
+    },
+    {
+      "name": "lobos cdg superlider 03 may 2026",
+      "kind": "photo",
+      "url": "./assets/history/lobos-cdg-superlider-03-may-2026.webp"
+    },
+    {
+      "name": "manchester campeon campeones 26 abr 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v225/manchester-campeon-campeones-26-abr-2025.webp"
+    },
+    {
+      "name": "juventus campeon campeones 21 sep 2024",
+      "kind": "photo",
+      "url": "./assets/history/archive-v225/juventus-campeon-campeones-21-sep-2024.webp"
+    },
+    {
+      "name": "hermanos campeon relampago libre 08 oct 2023",
+      "kind": "photo",
+      "url": "./assets/history/archive-v247/hermanos-campeon-relampago-libre-08-oct-2023.jpg"
+    },
+    {
+      "name": "real dhp campeon copa intermedia 31 dic 2017",
+      "kind": "photo",
+      "url": "./assets/history/archive-v271/real-dhp-campeon-copa-intermedia-31-dic-2017.webp"
+    },
+    {
+      "name": "pozos fc campeon liga veteranos35 15 sep 2024",
+      "kind": "photo",
+      "url": "./assets/history/archive-v239/pozos-fc-campeon-liga-veteranos35-15-sep-2024.webp"
+    },
+    {
+      "name": "lobos cdg campeon copa intermedia 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v196/lobos-cdg-campeon-copa-intermedia-2025.webp"
+    },
+    {
+      "name": "galacticos pozos campeon copa 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v196/galacticos-pozos-campeon-copa-2025.jpg"
+    },
+    {
+      "name": "juventus campeon primera 26 nov 2012",
+      "kind": "photo",
+      "url": "./assets/history/archive-v261/juventus-campeon-primera-26-nov-2012.webp"
+    },
+    {
+      "name": "la esperanza campeon campeones veteranos 22 jun 2019",
+      "kind": "photo",
+      "url": "./assets/history/archive-v250/la-esperanza-campeon-campeones-veteranos-22-jun-2019.webp"
+    },
+    {
+      "name": "san julian campeon copa segunda 18 feb 2024",
+      "kind": "photo",
+      "url": "./assets/history/archive-v218/san-julian-campeon-copa-segunda-18-feb-2024.jpg"
+    },
+    {
+      "name": "mineros fc campeon intermedia 25 feb 2024",
+      "kind": "photo",
+      "url": "./assets/history/archive-v218/mineros-fc-campeon-intermedia-25-feb-2024.jpg"
+    },
+    {
+      "name": "pozos fc campeon liga veteranos35 15 sep 2024",
+      "kind": "photo",
+      "url": "./assets/history/archive-v199/pozos-fc-campeon-liga-veteranos35-15-sep-2024.jpg"
+    },
+    {
+      "name": "campeon campeones segunda 27 mar 2016",
+      "kind": "photo",
+      "url": "./assets/history/archive-v246/campeon-campeones-segunda-27-mar-2016.jpg"
+    },
+    {
+      "name": "la esperanza campeon veteranos 28 feb 2016",
+      "kind": "photo",
+      "url": "./assets/history/archive-v246/la-esperanza-campeon-veteranos-28-feb-2016.jpg"
+    },
+    {
+      "name": "terricolas seder campeon copa 18 sep 2022",
+      "kind": "photo",
+      "url": "./assets/history/archive-v246/terricolas-seder-campeon-copa-18-sep-2022.webp"
+    },
+    {
+      "name": "boavista campeon primera 11 ene 2015",
+      "kind": "photo",
+      "url": "./assets/history/archive-v316/boavista-campeon-primera-11-ene-2015.webp"
+    },
+    {
+      "name": "manchester veteranos50 copa 09 nov 2024",
+      "kind": "photo",
+      "url": "./assets/history/archive-v227/manchester-veteranos50-copa-09-nov-2024.webp"
+    },
+    {
+      "name": "promesas campeon 2024",
+      "kind": "photo",
+      "url": "./assets/history/archive-v117/promesas-campeon-2024.webp"
+    },
+    {
+      "name": "mineros finalista 2024",
+      "kind": "photo",
+      "url": "./assets/history/archive-v117/mineros-finalista-2024.webp"
+    },
+    {
+      "name": "dep maravillas semifinal 2024",
+      "kind": "photo",
+      "url": "./assets/history/archive-v117/dep-maravillas-semifinal-2024.webp"
+    },
+    {
+      "name": "franco fc campeon de campeones 2026",
+      "kind": "photo",
+      "url": "./assets/history/archive-v132/franco-fc-campeon-de-campeones-2026.jpg"
+    },
+    {
+      "name": "juventus campeon liga veteranos 35 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v132/juventus-campeon-liga-veteranos-35-2025.jpg"
+    },
+    {
+      "name": "la esperanza subcampeon intermedia 2026",
+      "kind": "photo",
+      "url": "./assets/history/archive-v132/la-esperanza-subcampeon-intermedia-2026.jpg"
+    },
+    {
+      "name": "canchita deportes campeon segunda 2026",
+      "kind": "photo",
+      "url": "./assets/history/archive-v132/canchita-deportes-campeon-segunda-2026.jpg"
+    },
+    {
+      "name": "la esperanza campeon 23 mayo 2026",
+      "kind": "photo",
+      "url": "./assets/history/archive-v132/la-esperanza-campeon-23-mayo-2026.jpg"
+    },
+    {
+      "name": "franco fc campeon intermedia 2026",
+      "kind": "photo",
+      "url": "./assets/history/archive-v132/franco-fc-campeon-intermedia-2026.jpg"
+    },
+    {
+      "name": "galacticos subcampeon primera 2026",
+      "kind": "photo",
+      "url": "./assets/history/archive-v132/galacticos-subcampeon-primera-2026.jpg"
+    },
+    {
+      "name": "salvajes campeon copa 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v132/salvajes-campeon-copa-2025.jpg"
+    },
+    {
+      "name": "linces campeon primera 2026",
+      "kind": "photo",
+      "url": "./assets/history/archive-v132/linces-campeon-primera-2026.jpg"
+    },
+    {
+      "name": "manchester campeon campeones 26 abr 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v220/manchester-campeon-campeones-26-abr-2025.webp"
+    },
+    {
+      "name": "salvajes subcampeon veteranos35 20 sep 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v305/salvajes-subcampeon-veteranos35-20-sep-2025.webp"
+    },
+    {
+      "name": "romerillo tercer lugar intermedia 23 nov 2013",
+      "kind": "photo",
+      "url": "./assets/history/archive-v293/romerillo-tercer-lugar-intermedia-23-nov-2013.jpg"
+    },
+    {
+      "name": "terricolas seder campeon copa 18 sep 2022",
+      "kind": "photo",
+      "url": "./assets/history/archive-v254/terricolas-seder-campeon-copa-18-sep-2022.webp"
+    },
+    {
+      "name": "universidad campeon veteranos 09 mar 2013",
+      "kind": "photo",
+      "url": "./assets/history/archive-v291/universidad-campeon-veteranos-09-mar-2013.webp"
+    },
+    {
+      "name": "la esperanza campeon copa veteranos50 08 nov 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v213/la-esperanza-campeon-copa-veteranos50-08-nov-2025.jpg"
+    },
+    {
+      "name": "manchester campeon campeones 26 abr 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v210/manchester-campeon-campeones-26-abr-2025.webp"
+    },
+    {
+      "name": "psv campeon copa veteranos 17 nov 2019",
+      "kind": "photo",
+      "url": "./assets/history/archive-v249/psv-campeon-copa-veteranos-17-nov-2019.webp"
+    },
+    {
+      "name": "linces jr campeon liga 2019",
+      "kind": "photo",
+      "url": "./assets/history/archive-v249/linces-jr-campeon-liga-2019.jpg"
+    },
+    {
+      "name": "la pandilla morales campeon liga 2019",
+      "kind": "photo",
+      "url": "./assets/history/archive-v249/la-pandilla-morales-campeon-liga-2019.jpg"
+    },
+    {
+      "name": "juventus campeon liga primera 17 abr 2022",
+      "kind": "photo",
+      "url": "./assets/history/archive-v268/juventus-campeon-liga-primera-17-abr-2022.webp"
+    },
+    {
+      "name": "boavista campeon primera 11 ene 2015",
+      "kind": "photo",
+      "url": "./assets/history/archive-v286/boavista-campeon-primera-11-ene-2015.webp"
+    },
+    {
+      "name": "linces primer lugar tabla general 2022 primera",
+      "kind": "photo",
+      "url": "./assets/history/archive-v286/linces-primer-lugar-tabla-general-2022-primera.jpg"
+    },
+    {
+      "name": "legacy 2015 psv",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/legacy-2015-psv.webp"
+    },
+    {
+      "name": "legacy 2015 cerrito",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/legacy-2015-cerrito.webp"
+    },
+    {
+      "name": "legacy 2015 hermanos",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/legacy-2015-hermanos.webp"
+    },
+    {
+      "name": "tecos",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/tecos.webp"
+    },
+    {
+      "name": "legacy 2015 mazacotes",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/legacy-2015-mazacotes.webp"
+    },
+    {
+      "name": "real de roque",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/real-de-roque.webp"
+    },
+    {
+      "name": "olimpicos pozos original",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/olimpicos-pozos-original.jpg"
+    },
+    {
+      "name": "legacy 2015 abejas",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/legacy-2015-abejas.webp"
+    },
+    {
+      "name": "salvajes",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/salvajes.webp"
+    },
+    {
+      "name": "legacy 2015 chelsea",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/legacy-2015-chelsea.webp"
+    },
+    {
+      "name": "legacy 2015 puros cuates",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/legacy-2015-puros-cuates.webp"
+    },
+    {
+      "name": "legacy 2015 linces",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/legacy-2015-linces.webp"
+    },
+    {
+      "name": "universidad pumas",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/universidad-pumas.webp"
+    },
+    {
+      "name": "legacy 2015 el alto",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/legacy-2015-el-alto.webp"
+    },
+    {
+      "name": "legacy 2015 la esperanza",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/legacy-2015-la-esperanza.webp"
+    },
+    {
+      "name": "legacy 2015 boavista",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/legacy-2015-boavista.webp"
+    },
+    {
+      "name": "xolos jaralillo",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/xolos-jaralillo.webp"
+    },
+    {
+      "name": "legacy 2015 napoli",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/legacy-2015-napoli.webp"
+    },
+    {
+      "name": "legacy 2015 san antonio romerillo",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/legacy-2015-san-antonio-romerillo.webp"
+    },
+    {
+      "name": "legacy 2015 olimpicos pozos",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp"
+    },
+    {
+      "name": "legacy 2015 juventus",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/legacy-2015-juventus.webp"
+    },
+    {
+      "name": "legacy 2015 la pandilla",
+      "kind": "photo",
+      "url": "./assets/history/team-logos/legacy-2015-la-pandilla.webp"
+    },
+    {
+      "name": "juventus campeon copa primera 2022",
+      "kind": "photo",
+      "url": "./assets/history/archive-v133/juventus-campeon-copa-primera-2022.jpg"
+    },
+    {
+      "name": "barza campeon copa intermedia 2022",
+      "kind": "photo",
+      "url": "./assets/history/archive-v133/barza-campeon-copa-intermedia-2022.jpg"
+    },
+    {
+      "name": "barza campeon campeones intermedia 2022 2023",
+      "kind": "photo",
+      "url": "./assets/history/archive-v133/barza-campeon-campeones-intermedia-2022-2023.jpg"
+    },
+    {
+      "name": "la esperanza campeon copa veteranos50 08 nov 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v224/la-esperanza-campeon-copa-veteranos50-08-nov-2025.webp"
+    },
+    {
+      "name": "boavista campeon campeones 18 ene 2015",
+      "kind": "photo",
+      "url": "./assets/history/archive-v256/boavista-campeon-campeones-18-ene-2015.webp"
+    },
+    {
+      "name": "la esperanza campeon liga veteranos 25 sep 2021",
+      "kind": "photo",
+      "url": "./assets/history/archive-v256/la-esperanza-campeon-liga-veteranos-25-sep-2021.webp"
+    },
+    {
+      "name": "boavista campeon campeones 18 ene 2015",
+      "kind": "photo",
+      "url": "./assets/history/archive-v272/boavista-campeon-campeones-18-ene-2015.jpg"
+    },
+    {
+      "name": "la esperanza campeon copa veteranos50 08 nov 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v214/la-esperanza-campeon-copa-veteranos50-08-nov-2025.jpg"
+    },
+    {
+      "name": "juventus campeon copa veteranos35 01 feb 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v214/juventus-campeon-copa-veteranos35-01-feb-2025.webp"
+    },
+    {
+      "name": "juventus campeon liga primera 17 abr 2022",
+      "kind": "photo",
+      "url": "./assets/history/archive-v269/juventus-campeon-liga-primera-17-abr-2022.webp"
+    },
+    {
+      "name": "juventus campeon liga primera 17 abr 2022",
+      "kind": "photo",
+      "url": "./assets/history/archive-v269/juventus-campeon-liga-primera-17-abr-2022.jpg"
+    },
+    {
+      "name": "galacticos campeon campeones 09 feb 2025 clean",
+      "kind": "photo",
+      "url": "./assets/history/archive-v244/galacticos-campeon-campeones-09-feb-2025-clean.jpg"
+    },
+    {
+      "name": "juventus campeon primera 26 nov 2012",
+      "kind": "photo",
+      "url": "./assets/history/archive-v259/juventus-campeon-primera-26-nov-2012.webp"
+    },
+    {
+      "name": "manchester campeon copa v50 09 nov 2024",
+      "kind": "photo",
+      "url": "./assets/history/archive-v237/manchester-campeon-copa-v50-09-nov-2024.webp"
+    },
+    {
+      "name": "tavera campeon copa segunda 11 dic 2012",
+      "kind": "photo",
+      "url": "./assets/history/archive-v260/tavera-campeon-copa-segunda-11-dic-2012.webp"
+    },
+    {
+      "name": "dhp campeon copa segunda 22 feb 2014",
+      "kind": "photo",
+      "url": "./assets/history/archive-v260/dhp-campeon-copa-segunda-22-feb-2014.webp"
+    },
+    {
+      "name": "universidad vs dinamo final veteranos 09 mar 2013",
+      "kind": "photo",
+      "url": "./assets/history/archive-v260/universidad-vs-dinamo-final-veteranos-09-mar-2013.webp"
+    },
+    {
+      "name": "puros cuates campeon copa intermedia 22 feb 2014",
+      "kind": "photo",
+      "url": "./assets/history/archive-v260/puros-cuates-campeon-copa-intermedia-22-feb-2014.webp"
+    },
+    {
+      "name": "universidad 2013 team 720",
+      "kind": "photo",
+      "url": "./assets/history/archive-v275/universidad-2013-team-720.webp"
+    },
+    {
+      "name": "juventus campeon copa veteranos35 17 feb 2024",
+      "kind": "photo",
+      "url": "./assets/history/archive-v202/juventus-campeon-copa-veteranos35-17-feb-2024.webp"
+    },
+    {
+      "name": "boca jrs campeon liga v50 04 may 2024",
+      "kind": "photo",
+      "url": "./assets/history/archive-v202/boca-jrs-campeon-liga-v50-04-may-2024.webp"
+    },
+    {
+      "name": "linces campeon copa 04 mar 2024",
+      "kind": "photo",
+      "url": "./assets/history/archive-v202/linces-campeon-copa-04-mar-2024.webp"
+    },
+    {
+      "name": "tavera campeon intermedia 2022",
+      "kind": "photo",
+      "url": "./assets/history/archive-v185/tavera-campeon-intermedia-2022.webp"
+    },
+    {
+      "name": "la esperanza ascenso segunda 2022",
+      "kind": "photo",
+      "url": "./assets/history/archive-v185/la-esperanza-ascenso-segunda-2022.webp"
+    },
+    {
+      "name": "galacticos campeon segunda 2022",
+      "kind": "photo",
+      "url": "./assets/history/archive-v185/galacticos-campeon-segunda-2022.webp"
+    },
+    {
+      "name": "tecos campeon historico",
+      "kind": "photo",
+      "url": "./assets/history/archive-v120/tecos-campeon-historico.jpg"
+    },
+    {
+      "name": "juventus campeon liga veteranos 35 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v120/juventus-campeon-liga-veteranos-35-2025.jpg"
+    },
+    {
+      "name": "malvinas campeon campeones intermedia 2016",
+      "kind": "photo",
+      "url": "./assets/history/archive-v120/malvinas-campeon-campeones-intermedia-2016.jpg"
+    },
+    {
+      "name": "magisterio campeon copa 2016",
+      "kind": "photo",
+      "url": "./assets/history/archive-v120/magisterio-campeon-copa-2016.jpg"
+    },
+    {
+      "name": "herreras fc campeon relampago intermedia 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v120/herreras-fc-campeon-relampago-intermedia-2025.jpg"
+    },
+    {
+      "name": "galacticos pozos campeon copa 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v120/galacticos-pozos-campeon-copa-2025.jpg"
+    },
+    {
+      "name": "boavista fc campeon 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v120/boavista-fc-campeon-2025.jpg"
+    },
+    {
+      "name": "la esperanza campeon copa veteranos 2014",
+      "kind": "photo",
+      "url": "./assets/history/archive-v120/la-esperanza-campeon-copa-veteranos-2014.jpg"
+    },
+    {
+      "name": "real cerrito campeon 2013",
+      "kind": "photo",
+      "url": "./assets/history/archive-v120/real-cerrito-campeon-2013.jpg"
+    },
+    {
+      "name": "deportivo cg campeon liga 2025 2026",
+      "kind": "photo",
+      "url": "./assets/history/archive-v120/deportivo-cg-campeon-liga-2025-2026.jpg"
+    },
+    {
+      "name": "oklahoma city campeon",
+      "kind": "photo",
+      "url": "./assets/history/archive-v120/oklahoma-city-campeon.jpg"
+    },
+    {
+      "name": "campeones copa 14 abr 2015",
+      "kind": "photo",
+      "url": "./assets/history/archive-v279/campeones-copa-14-abr-2015.jpg"
+    },
+    {
+      "name": "real cerrito campeon segunda 15 dic 2013",
+      "kind": "photo",
+      "url": "./assets/history/archive-v279/real-cerrito-campeon-segunda-15-dic-2013.jpg"
+    },
+    {
+      "name": "boavista campeon primera 11 ene 2015",
+      "kind": "photo",
+      "url": "./assets/history/archive-v315/boavista-campeon-primera-11-ene-2015.webp"
+    },
+    {
+      "name": "abejas tercer lugar 03 nov 2019",
+      "kind": "photo",
+      "url": "./assets/history/archive-v315/abejas-tercer-lugar-03-nov-2019.webp"
+    },
+    {
+      "name": "tavera campeon liga intermedia 10 abr 2022",
+      "kind": "photo",
+      "url": "./assets/history/archive-v253/tavera-campeon-liga-intermedia-10-abr-2022.webp"
+    },
+    {
+      "name": "galacticos pozos campeon copa 2025 entrega",
+      "kind": "photo",
+      "url": "./assets/history/archive-v204/galacticos-pozos-campeon-copa-2025-entrega.webp"
+    },
+    {
+      "name": "universidad campeon veteranos 09 mar 2013",
+      "kind": "photo",
+      "url": "./assets/history/archive-v232/universidad-campeon-veteranos-09-mar-2013.webp"
+    },
+    {
+      "name": "america campeon liga veteranos 10 sep 2023",
+      "kind": "photo",
+      "url": "./assets/history/archive-v223/america-campeon-liga-veteranos-10-sep-2023.jpg"
+    },
+    {
+      "name": "manchester campeon copa v50 09 nov 2024",
+      "kind": "photo",
+      "url": "./assets/history/archive-v222/manchester-campeon-copa-v50-09-nov-2024.webp"
+    },
+    {
+      "name": "juventus subcampeon copa 20 dic 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v310/juventus-subcampeon-copa-20-dic-2025.webp"
+    },
+    {
+      "name": "manchester veteranos50 copa 09 nov 2024 hq",
+      "kind": "photo",
+      "url": "./assets/history/archive-v231/manchester-veteranos50-copa-09-nov-2024-hq.webp"
+    },
+    {
+      "name": "galacticos campeon campeones 09 feb 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg"
+    },
+    {
+      "name": "la huerta cuenda campeon segunda 29 jun 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v203/la-huerta-cuenda-campeon-segunda-29-jun-2025.jpg"
+    },
+    {
+      "name": "valencia campeon copa intermedia 03 dic 2012",
+      "kind": "photo",
+      "url": "./assets/history/archive-v282/valencia-campeon-copa-intermedia-03-dic-2012.webp"
+    },
+    {
+      "name": "premiacion historica",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/premiacion-historica.jpg"
+    },
+    {
+      "name": "juventus campeon 2019",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/juventus-campeon-2019.jpg"
+    },
+    {
+      "name": "tecos campeon historico",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/tecos-campeon-historico.jpg"
+    },
+    {
+      "name": "tavera campeon copa segunda 2019 2020",
+      "kind": "photo",
+      "url": "./assets/history/archive-v134/tavera-campeon-copa-segunda-2019-2020.jpg"
+    },
+    {
+      "name": "la esperanza campeon liga veteranos 2020 2021",
+      "kind": "photo",
+      "url": "./assets/history/archive-v134/la-esperanza-campeon-liga-veteranos-2020-2021.jpg"
+    },
+    {
+      "name": "psv campeon campeones veteranos 2020 2021",
+      "kind": "photo",
+      "url": "./assets/history/archive-v134/psv-campeon-campeones-veteranos-2020-2021.jpg"
+    },
+    {
+      "name": "el alto campeon copa intermedia 2020",
+      "kind": "photo",
+      "url": "./assets/history/archive-v134/el-alto-campeon-copa-intermedia-2020.jpg"
+    },
+    {
+      "name": "juventus campeon copa primera 2019 2020",
+      "kind": "photo",
+      "url": "./assets/history/archive-v134/juventus-campeon-copa-primera-2019-2020.jpg"
+    },
+    {
+      "name": "herreras fc campeon relampago intermedia 09 feb 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v208/herreras-fc-campeon-relampago-intermedia-09-feb-2025.webp"
+    },
+    {
+      "name": "manchester campeon campeones 26 abr 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v216/manchester-campeon-campeones-26-abr-2025.webp"
+    },
+    {
+      "name": "lobos jrs campeon segunda 23 sep 2026",
+      "kind": "photo",
+      "url": "./assets/history/archive-v212/lobos-jrs-campeon-segunda-23-sep-2026.jpg"
+    },
+    {
+      "name": "puros cuates campeon intermedia 11 ene 2015",
+      "kind": "photo",
+      "url": "./assets/history/archive-v258/puros-cuates-campeon-intermedia-11-ene-2015.webp"
+    },
+    {
+      "name": "juventus campeon copa 01 feb 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v197/juventus-campeon-copa-01-feb-2025.jpg"
+    },
+    {
+      "name": "psv campeon copa veteranos 17 nov 2019",
+      "kind": "photo",
+      "url": "./assets/history/archive-v248/psv-campeon-copa-veteranos-17-nov-2019.webp"
+    },
+    {
+      "name": "terricolas seder campeon copa 18 sep 2022",
+      "kind": "photo",
+      "url": "./assets/history/archive-v248/terricolas-seder-campeon-copa-18-sep-2022.webp"
+    },
+    {
+      "name": "universidad campeon veteranos 09 mar 2013 equipo",
+      "kind": "photo",
+      "url": "./assets/history/archive-v274/universidad-campeon-veteranos-09-mar-2013-equipo.webp"
+    },
+    {
+      "name": "herreras fc campeon liga primera 04 feb 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v207/herreras-fc-campeon-liga-primera-04-feb-2025.webp"
+    },
+    {
+      "name": "lobos jrs campeon relampago segunda 16 feb 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v207/lobos-jrs-campeon-relampago-segunda-16-feb-2025.webp"
+    },
+    {
+      "name": "lobos cdg campeon copa intermedia 15 jun 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v207/lobos-cdg-campeon-copa-intermedia-15-jun-2025.webp"
+    },
+    {
+      "name": "boavista subcampeon liga 03 nov 2019",
+      "kind": "photo",
+      "url": "./assets/history/archive-v252/boavista-subcampeon-liga-03-nov-2019.webp"
+    },
+    {
+      "name": "magisterio campeon 09 jun 2018",
+      "kind": "photo",
+      "url": "./assets/history/archive-v266/magisterio-campeon-09-jun-2018.jpg"
+    },
+    {
+      "name": "boavista campeon de campeones primera 18 ene 2015",
+      "kind": "photo",
+      "url": "./assets/history/archive-v278/boavista-campeon-de-campeones-primera-18-ene-2015.jpg"
+    },
+    {
+      "name": "boavista xxv 2012",
+      "kind": "photo",
+      "url": "./assets/history/archive-v119/boavista-xxv-2012.jpg"
+    },
+    {
+      "name": "tavera finalista 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v119/tavera-finalista-2025.jpg"
+    },
+    {
+      "name": "lobos cdg campeon copa 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v119/lobos-cdg-campeon-copa-2025.jpg"
+    },
+    {
+      "name": "la huerta finalista 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v119/la-huerta-finalista-2025.jpg"
+    },
+    {
+      "name": "juventus campeon campeones 21 sep 2024",
+      "kind": "photo",
+      "url": "./assets/history/archive-v201/juventus-campeon-campeones-21-sep-2024.jpg"
+    },
+    {
+      "name": "juventus campeon copa veteranos35 17 sep 2024",
+      "kind": "photo",
+      "url": "./assets/history/archive-v201/juventus-campeon-copa-veteranos35-17-sep-2024.webp"
+    },
+    {
+      "name": "aldama fc subcampeon segunda 07 jun 2026",
+      "kind": "photo",
+      "url": "./assets/history/archive-v304/aldama-fc-subcampeon-segunda-07-jun-2026.webp"
+    },
+    {
+      "name": "boavista campeon primera 11 ene 2015",
+      "kind": "photo",
+      "url": "./assets/history/archive-v251/boavista-campeon-primera-11-ene-2015.jpg"
+    },
+    {
+      "name": "galacticos pozos campeon copa 08 jun 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v205/galacticos-pozos-campeon-copa-08-jun-2025.webp"
+    },
+    {
+      "name": "manchester campeon copa v50 09 nov 2024 user",
+      "kind": "photo",
+      "url": "./assets/history/archive-v240/manchester-campeon-copa-v50-09-nov-2024-user.webp"
+    },
+    {
+      "name": "universidad campeon veteranos 09 mar 2013",
+      "kind": "photo",
+      "url": "./assets/history/archive-v264/universidad-campeon-veteranos-09-mar-2013.webp"
+    },
+    {
+      "name": "la huerta cuenda campeon segunda 2025",
+      "kind": "photo",
+      "url": "./assets/history/archive-v195/la-huerta-cuenda-campeon-segunda-2025.jpg"
+    },
+    {
+      "name": "la esperanza campeon veteranos50 2025 2026",
+      "kind": "photo",
+      "url": "./assets/history/archive-v195/la-esperanza-campeon-veteranos50-2025-2026.jpg"
+    },
+    {
+      "name": "abejas pozos campeon copa primera 22 feb 2014",
+      "kind": "photo",
+      "url": "./assets/history/archive-v290/abejas-pozos-campeon-copa-primera-22-feb-2014.webp"
+    },
+    {
+      "name": "manchester campeon campeones 26 abr 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v225/manchester-campeon-campeones-26-abr-2025.webp"
+    },
+    {
+      "name": "juventus campeon campeones 21 sep 2024",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v225/juventus-campeon-campeones-21-sep-2024.webp"
+    },
+    {
+      "name": "hermanos campeon relampago libre 08 oct 2023",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v247/hermanos-campeon-relampago-libre-08-oct-2023.jpg"
+    },
+    {
+      "name": "real dhp campeon copa intermedia 31 dic 2017",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v271/real-dhp-campeon-copa-intermedia-31-dic-2017.webp"
+    },
+    {
+      "name": "pozos fc campeon liga veteranos35 15 sep 2024",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v239/pozos-fc-campeon-liga-veteranos35-15-sep-2024.webp"
+    },
+    {
+      "name": "lobos cdg campeon copa intermedia 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v196/lobos-cdg-campeon-copa-intermedia-2025.webp"
+    },
+    {
+      "name": "galacticos pozos campeon copa 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v196/galacticos-pozos-campeon-copa-2025.jpg"
+    },
+    {
+      "name": "juventus campeon primera 26 nov 2012",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v261/juventus-campeon-primera-26-nov-2012.webp"
+    },
+    {
+      "name": "la esperanza campeon campeones veteranos 22 jun 2019",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v250/la-esperanza-campeon-campeones-veteranos-22-jun-2019.webp"
+    },
+    {
+      "name": "san julian campeon copa segunda 18 feb 2024",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v218/san-julian-campeon-copa-segunda-18-feb-2024.jpg"
+    },
+    {
+      "name": "mineros fc campeon intermedia 25 feb 2024",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v218/mineros-fc-campeon-intermedia-25-feb-2024.jpg"
+    },
+    {
+      "name": "pozos fc campeon liga veteranos35 15 sep 2024",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v199/pozos-fc-campeon-liga-veteranos35-15-sep-2024.jpg"
+    },
+    {
+      "name": "campeon campeones segunda 27 mar 2016",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v246/campeon-campeones-segunda-27-mar-2016.jpg"
+    },
+    {
+      "name": "la esperanza campeon veteranos 28 feb 2016",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v246/la-esperanza-campeon-veteranos-28-feb-2016.jpg"
+    },
+    {
+      "name": "terricolas seder campeon copa 18 sep 2022",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v246/terricolas-seder-campeon-copa-18-sep-2022.webp"
+    },
+    {
+      "name": "boavista campeon primera 11 ene 2015",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v316/boavista-campeon-primera-11-ene-2015.webp"
+    },
+    {
+      "name": "manchester veteranos50 copa 09 nov 2024",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v227/manchester-veteranos50-copa-09-nov-2024.webp"
+    },
+    {
+      "name": "promesas campeon 2024",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v117/promesas-campeon-2024.webp"
+    },
+    {
+      "name": "mineros finalista 2024",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v117/mineros-finalista-2024.webp"
+    },
+    {
+      "name": "dep maravillas semifinal 2024",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v117/dep-maravillas-semifinal-2024.webp"
+    },
+    {
+      "name": "franco fc campeon de campeones 2026",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v132/franco-fc-campeon-de-campeones-2026.jpg"
+    },
+    {
+      "name": "juventus campeon liga veteranos 35 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v132/juventus-campeon-liga-veteranos-35-2025.jpg"
+    },
+    {
+      "name": "la esperanza subcampeon intermedia 2026",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v132/la-esperanza-subcampeon-intermedia-2026.jpg"
+    },
+    {
+      "name": "canchita deportes campeon segunda 2026",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v132/canchita-deportes-campeon-segunda-2026.jpg"
+    },
+    {
+      "name": "la esperanza campeon 23 mayo 2026",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v132/la-esperanza-campeon-23-mayo-2026.jpg"
+    },
+    {
+      "name": "franco fc campeon intermedia 2026",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v132/franco-fc-campeon-intermedia-2026.jpg"
+    },
+    {
+      "name": "galacticos subcampeon primera 2026",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v132/galacticos-subcampeon-primera-2026.jpg"
+    },
+    {
+      "name": "salvajes campeon copa 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v132/salvajes-campeon-copa-2025.jpg"
+    },
+    {
+      "name": "linces campeon primera 2026",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v132/linces-campeon-primera-2026.jpg"
+    },
+    {
+      "name": "manchester campeon campeones 26 abr 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v220/manchester-campeon-campeones-26-abr-2025.webp"
+    },
+    {
+      "name": "salvajes subcampeon veteranos35 20 sep 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v305/salvajes-subcampeon-veteranos35-20-sep-2025.webp"
+    },
+    {
+      "name": "romerillo tercer lugar intermedia 23 nov 2013",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v293/romerillo-tercer-lugar-intermedia-23-nov-2013.jpg"
+    },
+    {
+      "name": "terricolas seder campeon copa 18 sep 2022",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v254/terricolas-seder-campeon-copa-18-sep-2022.webp"
+    },
+    {
+      "name": "universidad campeon veteranos 09 mar 2013",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v291/universidad-campeon-veteranos-09-mar-2013.webp"
+    },
+    {
+      "name": "la esperanza campeon copa veteranos50 08 nov 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v213/la-esperanza-campeon-copa-veteranos50-08-nov-2025.jpg"
+    },
+    {
+      "name": "manchester campeon campeones 26 abr 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v210/manchester-campeon-campeones-26-abr-2025.webp"
+    },
+    {
+      "name": "psv campeon copa veteranos 17 nov 2019",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v249/psv-campeon-copa-veteranos-17-nov-2019.webp"
+    },
+    {
+      "name": "linces jr campeon liga 2019",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v249/linces-jr-campeon-liga-2019.jpg"
+    },
+    {
+      "name": "la pandilla morales campeon liga 2019",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v249/la-pandilla-morales-campeon-liga-2019.jpg"
+    },
+    {
+      "name": "juventus campeon liga primera 17 abr 2022",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v268/juventus-campeon-liga-primera-17-abr-2022.webp"
+    },
+    {
+      "name": "boavista campeon primera 11 ene 2015",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v286/boavista-campeon-primera-11-ene-2015.webp"
+    },
+    {
+      "name": "linces primer lugar tabla general 2022 primera",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v286/linces-primer-lugar-tabla-general-2022-primera.jpg"
+    },
+    {
+      "name": "juventus campeon copa primera 2022",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v133/juventus-campeon-copa-primera-2022.jpg"
+    },
+    {
+      "name": "barza campeon copa intermedia 2022",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v133/barza-campeon-copa-intermedia-2022.jpg"
+    },
+    {
+      "name": "barza campeon campeones intermedia 2022 2023",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v133/barza-campeon-campeones-intermedia-2022-2023.jpg"
+    },
+    {
+      "name": "la esperanza campeon copa veteranos50 08 nov 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v224/la-esperanza-campeon-copa-veteranos50-08-nov-2025.webp"
+    },
+    {
+      "name": "boavista campeon campeones 18 ene 2015",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v256/boavista-campeon-campeones-18-ene-2015.webp"
+    },
+    {
+      "name": "la esperanza campeon liga veteranos 25 sep 2021",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v256/la-esperanza-campeon-liga-veteranos-25-sep-2021.webp"
+    },
+    {
+      "name": "boavista campeon campeones 18 ene 2015",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v272/boavista-campeon-campeones-18-ene-2015.jpg"
+    },
+    {
+      "name": "la esperanza campeon copa veteranos50 08 nov 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v214/la-esperanza-campeon-copa-veteranos50-08-nov-2025.jpg"
+    },
+    {
+      "name": "juventus campeon copa veteranos35 01 feb 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v214/juventus-campeon-copa-veteranos35-01-feb-2025.webp"
+    },
+    {
+      "name": "juventus campeon liga primera 17 abr 2022",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v269/juventus-campeon-liga-primera-17-abr-2022.webp"
+    },
+    {
+      "name": "juventus campeon liga primera 17 abr 2022",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v269/juventus-campeon-liga-primera-17-abr-2022.jpg"
+    },
+    {
+      "name": "galacticos campeon campeones 09 feb 2025 clean",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v244/galacticos-campeon-campeones-09-feb-2025-clean.jpg"
+    },
+    {
+      "name": "juventus campeon primera 26 nov 2012",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v259/juventus-campeon-primera-26-nov-2012.webp"
+    },
+    {
+      "name": "manchester campeon copa v50 09 nov 2024",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v237/manchester-campeon-copa-v50-09-nov-2024.webp"
+    },
+    {
+      "name": "tavera campeon copa segunda 11 dic 2012",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v260/tavera-campeon-copa-segunda-11-dic-2012.webp"
+    },
+    {
+      "name": "dhp campeon copa segunda 22 feb 2014",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v260/dhp-campeon-copa-segunda-22-feb-2014.webp"
+    },
+    {
+      "name": "universidad vs dinamo final veteranos 09 mar 2013",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v260/universidad-vs-dinamo-final-veteranos-09-mar-2013.webp"
+    },
+    {
+      "name": "puros cuates campeon copa intermedia 22 feb 2014",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v260/puros-cuates-campeon-copa-intermedia-22-feb-2014.webp"
+    },
+    {
+      "name": "universidad 2013 team 720",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v275/universidad-2013-team-720.webp"
+    },
+    {
+      "name": "juventus campeon copa veteranos35 17 feb 2024",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v202/juventus-campeon-copa-veteranos35-17-feb-2024.webp"
+    },
+    {
+      "name": "boca jrs campeon liga v50 04 may 2024",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v202/boca-jrs-campeon-liga-v50-04-may-2024.webp"
+    },
+    {
+      "name": "linces campeon copa 04 mar 2024",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v202/linces-campeon-copa-04-mar-2024.webp"
+    },
+    {
+      "name": "tavera campeon intermedia 2022",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v185/tavera-campeon-intermedia-2022.webp"
+    },
+    {
+      "name": "la esperanza ascenso segunda 2022",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v185/la-esperanza-ascenso-segunda-2022.webp"
+    },
+    {
+      "name": "galacticos campeon segunda 2022",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v185/galacticos-campeon-segunda-2022.webp"
+    },
+    {
+      "name": "tecos campeon historico",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v120/tecos-campeon-historico.jpg"
+    },
+    {
+      "name": "juventus campeon liga veteranos 35 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v120/juventus-campeon-liga-veteranos-35-2025.jpg"
+    },
+    {
+      "name": "malvinas campeon campeones intermedia 2016",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v120/malvinas-campeon-campeones-intermedia-2016.jpg"
+    },
+    {
+      "name": "magisterio campeon copa 2016",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v120/magisterio-campeon-copa-2016.jpg"
+    },
+    {
+      "name": "herreras fc campeon relampago intermedia 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v120/herreras-fc-campeon-relampago-intermedia-2025.jpg"
+    },
+    {
+      "name": "galacticos pozos campeon copa 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v120/galacticos-pozos-campeon-copa-2025.jpg"
+    },
+    {
+      "name": "boavista fc campeon 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v120/boavista-fc-campeon-2025.jpg"
+    },
+    {
+      "name": "la esperanza campeon copa veteranos 2014",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v120/la-esperanza-campeon-copa-veteranos-2014.jpg"
+    },
+    {
+      "name": "real cerrito campeon 2013",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v120/real-cerrito-campeon-2013.jpg"
+    },
+    {
+      "name": "deportivo cg campeon liga 2025 2026",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v120/deportivo-cg-campeon-liga-2025-2026.jpg"
+    },
+    {
+      "name": "oklahoma city campeon",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v120/oklahoma-city-campeon.jpg"
+    },
+    {
+      "name": "campeones copa 14 abr 2015",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v279/campeones-copa-14-abr-2015.jpg"
+    },
+    {
+      "name": "real cerrito campeon segunda 15 dic 2013",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v279/real-cerrito-campeon-segunda-15-dic-2013.jpg"
+    },
+    {
+      "name": "boavista campeon primera 11 ene 2015",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v315/boavista-campeon-primera-11-ene-2015.webp"
+    },
+    {
+      "name": "abejas tercer lugar 03 nov 2019",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v315/abejas-tercer-lugar-03-nov-2019.webp"
+    },
+    {
+      "name": "tavera campeon liga intermedia 10 abr 2022",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v253/tavera-campeon-liga-intermedia-10-abr-2022.webp"
+    },
+    {
+      "name": "galacticos pozos campeon copa 2025 entrega",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v204/galacticos-pozos-campeon-copa-2025-entrega.webp"
+    },
+    {
+      "name": "universidad campeon veteranos 09 mar 2013",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v232/universidad-campeon-veteranos-09-mar-2013.webp"
+    },
+    {
+      "name": "america campeon liga veteranos 10 sep 2023",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v223/america-campeon-liga-veteranos-10-sep-2023.jpg"
+    },
+    {
+      "name": "manchester campeon copa v50 09 nov 2024",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v222/manchester-campeon-copa-v50-09-nov-2024.webp"
+    },
+    {
+      "name": "juventus subcampeon copa 20 dic 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v310/juventus-subcampeon-copa-20-dic-2025.webp"
+    },
+    {
+      "name": "manchester veteranos50 copa 09 nov 2024 hq",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v231/manchester-veteranos50-copa-09-nov-2024-hq.webp"
+    },
+    {
+      "name": "galacticos campeon campeones 09 feb 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg"
+    },
+    {
+      "name": "la huerta cuenda campeon segunda 29 jun 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v203/la-huerta-cuenda-campeon-segunda-29-jun-2025.jpg"
+    },
+    {
+      "name": "valencia campeon copa intermedia 03 dic 2012",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v282/valencia-campeon-copa-intermedia-03-dic-2012.webp"
+    },
+    {
+      "name": "tavera campeon copa segunda 2019 2020",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v134/tavera-campeon-copa-segunda-2019-2020.jpg"
+    },
+    {
+      "name": "la esperanza campeon liga veteranos 2020 2021",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v134/la-esperanza-campeon-liga-veteranos-2020-2021.jpg"
+    },
+    {
+      "name": "psv campeon campeones veteranos 2020 2021",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v134/psv-campeon-campeones-veteranos-2020-2021.jpg"
+    },
+    {
+      "name": "el alto campeon copa intermedia 2020",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v134/el-alto-campeon-copa-intermedia-2020.jpg"
+    },
+    {
+      "name": "juventus campeon copa primera 2019 2020",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v134/juventus-campeon-copa-primera-2019-2020.jpg"
+    },
+    {
+      "name": "herreras fc campeon relampago intermedia 09 feb 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v208/herreras-fc-campeon-relampago-intermedia-09-feb-2025.webp"
+    },
+    {
+      "name": "manchester campeon campeones 26 abr 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v216/manchester-campeon-campeones-26-abr-2025.webp"
+    },
+    {
+      "name": "lobos jrs campeon segunda 23 sep 2026",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v212/lobos-jrs-campeon-segunda-23-sep-2026.jpg"
+    },
+    {
+      "name": "puros cuates campeon intermedia 11 ene 2015",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v258/puros-cuates-campeon-intermedia-11-ene-2015.webp"
+    },
+    {
+      "name": "juventus campeon copa 01 feb 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v197/juventus-campeon-copa-01-feb-2025.jpg"
+    },
+    {
+      "name": "psv campeon copa veteranos 17 nov 2019",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v248/psv-campeon-copa-veteranos-17-nov-2019.webp"
+    },
+    {
+      "name": "terricolas seder campeon copa 18 sep 2022",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v248/terricolas-seder-campeon-copa-18-sep-2022.webp"
+    },
+    {
+      "name": "universidad campeon veteranos 09 mar 2013 equipo",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v274/universidad-campeon-veteranos-09-mar-2013-equipo.webp"
+    },
+    {
+      "name": "herreras fc campeon liga primera 04 feb 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v207/herreras-fc-campeon-liga-primera-04-feb-2025.webp"
+    },
+    {
+      "name": "lobos jrs campeon relampago segunda 16 feb 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v207/lobos-jrs-campeon-relampago-segunda-16-feb-2025.webp"
+    },
+    {
+      "name": "lobos cdg campeon copa intermedia 15 jun 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v207/lobos-cdg-campeon-copa-intermedia-15-jun-2025.webp"
+    },
+    {
+      "name": "boavista subcampeon liga 03 nov 2019",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v252/boavista-subcampeon-liga-03-nov-2019.webp"
+    },
+    {
+      "name": "magisterio campeon 09 jun 2018",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v266/magisterio-campeon-09-jun-2018.jpg"
+    },
+    {
+      "name": "boavista campeon de campeones primera 18 ene 2015",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v278/boavista-campeon-de-campeones-primera-18-ene-2015.jpg"
+    },
+    {
+      "name": "boavista xxv 2012",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v119/boavista-xxv-2012.jpg"
+    },
+    {
+      "name": "tavera finalista 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v119/tavera-finalista-2025.jpg"
+    },
+    {
+      "name": "lobos cdg campeon copa 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v119/lobos-cdg-campeon-copa-2025.jpg"
+    },
+    {
+      "name": "la huerta finalista 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v119/la-huerta-finalista-2025.jpg"
+    },
+    {
+      "name": "juventus campeon campeones 21 sep 2024",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v201/juventus-campeon-campeones-21-sep-2024.jpg"
+    },
+    {
+      "name": "juventus campeon copa veteranos35 17 sep 2024",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v201/juventus-campeon-copa-veteranos35-17-sep-2024.webp"
+    },
+    {
+      "name": "aldama fc subcampeon segunda 07 jun 2026",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v304/aldama-fc-subcampeon-segunda-07-jun-2026.webp"
+    },
+    {
+      "name": "boavista campeon primera 11 ene 2015",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v251/boavista-campeon-primera-11-ene-2015.jpg"
+    },
+    {
+      "name": "galacticos pozos campeon copa 08 jun 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v205/galacticos-pozos-campeon-copa-08-jun-2025.webp"
+    },
+    {
+      "name": "manchester campeon copa v50 09 nov 2024 user",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v240/manchester-campeon-copa-v50-09-nov-2024-user.webp"
+    },
+    {
+      "name": "universidad campeon veteranos 09 mar 2013",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v264/universidad-campeon-veteranos-09-mar-2013.webp"
+    },
+    {
+      "name": "la huerta cuenda campeon segunda 2025",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v195/la-huerta-cuenda-campeon-segunda-2025.jpg"
+    },
+    {
+      "name": "la esperanza campeon veteranos50 2025 2026",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v195/la-esperanza-campeon-veteranos50-2025-2026.jpg"
+    },
+    {
+      "name": "abejas pozos campeon copa primera 22 feb 2014",
+      "kind": "photo",
+      "url": "./assets/history/enhanced-v326/archive-v290/abejas-pozos-campeon-copa-primera-22-feb-2014.webp"
+    }
+  ]
+}

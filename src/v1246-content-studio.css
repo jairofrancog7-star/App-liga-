@@ -1,0 +1,19 @@
+html body .liga-media-modal>section.ljr-content-studio{width:min(960px,calc(100vw - 20px));max-height:94dvh;overflow:auto;box-sizing:border-box}
+html body .liga-media-modal>section.ljr-content-studio .cms-design-presets{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+html body .liga-media-modal>section.ljr-content-studio .cms-design-presets button,html body .liga-media-modal>section.ljr-content-studio button{font-size:14px;line-height:1.35;min-height:44px;padding:12px;word-break:normal;overflow-wrap:break-word}
+html body .liga-media-modal>section.ljr-content-studio input,html body .liga-media-modal>section.ljr-content-studio select,html body .liga-media-modal>section.ljr-content-studio textarea{width:100%;min-width:0;box-sizing:border-box;font-size:16px;line-height:1.4}
+html body .liga-media-modal>section.ljr-content-studio label{min-width:0;font-size:14px}
+html body .liga-media-modal .ljr-layout-gallery{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:12px 0}
+html body .liga-media-modal .ljr-layout-gallery button{background:#122858;border:2px solid #496895;border-radius:12px;min-width:0;color:#fff}
+html body .liga-media-modal .ljr-layout-gallery button[aria-pressed=true]{border-color:#66e5ee;background:#174971}
+html body .liga-media-modal .ljr-layout-gallery canvas{display:block;width:100%;height:auto;background:#081426;border-radius:6px;margin-bottom:8px}
+html body .liga-media-modal>section.ljr-content-studio .cms-poster-preview canvas{max-width:100%;width:100%;height:auto}
+html body .liga-media-modal>section.ljr-content-studio .cms-design-two,html body .liga-media-modal>section.ljr-content-studio .liga-media-actions,html body .ljr-studio-assets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+html body .ljr-asset-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:14px 0}
+html body .ljr-asset-grid img{width:100%;height:110px;object-fit:contain;background:#112449;border-radius:10px}
+html body .ljr-asset-grid span{display:block;font-size:13px;margin-top:7px}
+html body .ljr-table-pages{display:flex;align-items:center;justify-content:center;gap:12px;margin:12px 0}
+html body .ljr-content-preview{width:100%;max-height:280px;object-fit:contain;background:#102447;margin:12px 0}
+html body .liga-media-modal>section.ljr-content-studio .liga-media-actions label{overflow:hidden}
+html body .liga-media-modal>section.ljr-content-studio input[type=file]{font-size:13px;padding:9px;overflow:hidden}
+@media(max-width:600px){html body .liga-media-modal>section.ljr-content-studio .cms-design-presets{grid-template-columns:repeat(2,minmax(0,1fr))}html body .liga-media-modal .ljr-layout-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}html body .ljr-asset-grid{grid-template-columns:repeat(3,minmax(0,1fr))}html body .liga-media-modal>section.ljr-content-studio .cms-design-intro{font-size:14px;line-height:1.5}html body .liga-media-modal>section.ljr-content-studio .cms-design-two{grid-template-columns:1fr}}

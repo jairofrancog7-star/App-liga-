@@ -35,6 +35,8 @@ function copyStaticReferences() {
       // Historia usa rutas dinámicas en JS, por eso Vite no las detecta como assets importados.
       // Copiamos completa la carpeta para que las fotos reales de campeones/trofeos
       // sí existan tanto en GitHub Pages como dentro del build Android.
+      // Image URLs from the reusable resource catalog are resolved dynamically.
+      for(const directory of ['assets/content-studio','assets/branding']){if(existsSync(resolve(directory)))cpSync(resolve(directory),resolve('dist',directory),{recursive:true,force:true})}
       const historyFrom = resolve('assets/history');
       const historyTo = resolve('dist/assets/history');
       if (existsSync(historyFrom)) {
