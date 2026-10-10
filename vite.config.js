@@ -9,6 +9,9 @@ function copyStaticReferences() {
       const files = [
         ['src/v606-control-registro-tools.js', 'dist/src/v606-control-registro-tools.js'],
         ['src/v606-control-registro-tools.css', 'dist/src/v606-control-registro-tools.css'],
+        // Fuentes CSS de la barra de jornada: deben sobrevivir al build demo/APK.
+        ['src/v1153-matchday-fullwidth-safe-crests.css', 'dist/src/v1153-matchday-fullwidth-safe-crests.css'],
+        ['src/v1167-matchday-centered-official-crests.css', 'dist/src/v1167-matchday-centered-official-crests.css'],
         ['src/vendor/QRCODE-LICENSE.txt', 'dist/src/vendor/QRCODE-LICENSE.txt'],
         ['assets/liga-logo-original.webp', 'dist/assets/liga-logo-original.webp'],
         ['assets/liga-logo.webp', 'dist/assets/liga-logo.webp'],
