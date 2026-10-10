@@ -66,7 +66,8 @@ try{
   assert.equal(await page.locator('#title').innerText(),'Jornada revisada','No recupera borrador: '+await page.locator('[data-studio-note]').innerText());
   await page.locator('[data-studio-cms]').tap();
   await page.locator('[data-studio-server-draft]').waitFor();
-  assert.equal(await page.locator('[name=route]').inputValue(),'home');
+  const debugging=await page.evaluate(()=>({route:document.querySelector('[data-studio-server-draft] [name=route]')?.value,values:[...document.querySelectorAll('[data-studio-server-draft] [name]')].map(x=>({name:x.name,value:x.value})),status:document.querySelector('[data-studio-note]')?.textContent}));
+  assert.equal(await page.locator('[data-studio-server-draft] [name=route]').inputValue(),'home','Formulario: '+JSON.stringify(debugging));
   assert.match(await page.locator('[name=selector]').inputValue(),/^#screen > section:nth-of-type\(1\) > p:nth-of-type\(1\)$/);
   assert.equal(await page.locator('[name=text]').inputValue(),'Jornada revisada');
   assert.equal(await page.evaluate(()=>window.__cms.puts.length),0,'El formulario no debe guardar solo');
