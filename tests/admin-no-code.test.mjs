@@ -29,3 +29,31 @@ test('programación local no habilitada para usuarios públicos',()=>{
  const feed=src('src/v1073-news-notice-center.js');
  assert.match(feed,/if\(!window\.LJR_MEDIA\?\.admin\)return \[\]/);
 });
+
+
+test('el selector de páginas recuerda la última sección y permite buscar sin salir del sitio',()=>{
+ const code=src('src/v1075-admin-editor-center.js');
+ assert.match(code,/data-page-search/);
+ assert.match(code,/data-page-preview/);
+ assert.match(code,/data-page-analyze/);
+ assert.match(code,/data-page-copy/);
+ assert.match(code,/ljr-editor-last-section-v1/);
+ assert.match(code,/select\.options\.length\?SECTIONS/);
+});
+test('el diagnóstico es de solo lectura y admite IA integrada opcional',()=>{
+ const code=src('src/v1075-admin-editor-center.js');
+ assert.match(code,/function inspectEditorScreen\(item\)/);
+ assert.match(code,/imagenesSinCargar:broken/);
+ assert.match(code,/controlesPequenos:small/);
+ assert.match(code,/desbordeHorizontal:overflowing/);
+ assert.match(code,/API\.availability\(options\)/);
+ assert.match(code,/availability!=='available'/);
+ assert.match(code,/aiOutput\.textContent=/);
+ assert.match(code,/await verified\(\);remember\(\)/);
+});
+test('la vista renovada mantiene controles accesibles en móvil',()=>{
+ const css=src('src/v1075-admin-editor-center.css');
+ assert.match(css,/ljr-editor-page-panel/);
+ assert.match(css,/ljr-editor-audit-summary/);
+ assert.match(css,/@media\(max-width:380px\)/);
+});
