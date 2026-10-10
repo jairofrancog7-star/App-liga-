@@ -104,7 +104,7 @@ def main():
     active=load(ACTIVE,[])
     if isinstance(active,dict):active=active.get('items',[])
     if not isinstance(active,list):active=[]
-    if not isinstance(schedule,list):schedule=[]
+    if not isinstance(schedule,list):raise ValueError('scheduled-notices.json debe contener una lista de avisos')
     active=[x for x in active if isinstance(x,dict)]
     changed=False
     existing={str(x.get('id')) for x in active if x.get('id')}
