@@ -12,6 +12,28 @@ window.LJR_SANCTION_ENHANCE=function(api){
  const distinct=new Set();
  const players=rawPlayers.filter(p=>{if(!p?.name||distinct.has(key(p)))return false;distinct.add(key(p));return true}).sort((a,b)=>String(a.name).localeCompare(String(b.name),'es'));
  const catName=v=>cats.find(c=>String(c.id)===String(v))?.name||'Sin categoría';
+ // El rol oficial es una sugerencia de captura, no una sanción ni un resultado confirmado.
+ const officialFixtures=person=>{
+  if(!person)return [];
+  let category;
+  try{category=(window.LJR_OFFICIAL_DATA||window.LJR_OFFICIAL_API?.getData?.()||{}).categories?.[String(person.cat||'')]}catch(_){}
+  const rows=[],seen=new Set();
+  for(const block of (category?.fixtures||[])){
+   for(const r of (Array.isArray(block?.rows)?block.rows:[])){
+    if(!Array.isArray(r)||!r[2]||!r[6]||![r[2],r[6]].some(t=>norm(t)===norm(person.team)))continue;
+    const raw=String(r[8]||'').trim(),parts=raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    let date='',sort=0;
+    if(parts){const d=Number(parts[1]),m=Number(parts[2]),y=Number(parts[3]);const check=new Date(y,m-1,d);if(check.getFullYear()===y&&check.getMonth()===m-1&&check.getDate()===d){date=y+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0');sort=check.getTime()}}
+    const fixture={id:String(person.cat)+'|'+String(r[0]||'')+'|'+norm(r[2])+'|'+norm(r[6])+'|'+raw,
+     cat:String(person.cat),round:String(r[1]||''),match:String(r[2])+' vs '+String(r[6]),
+     venue:String(r[7]||'').trim(),referee:/^(---?|por definir)$/i.test(String(r[9]||'').trim())?'':String(r[9]||'').trim(),
+     date,sort,raw};
+    if(seen.has(fixture.id))continue;
+    seen.add(fixture.id);rows.push(fixture);
+   }
+  }
+  return rows.sort((a,b)=>b.sort-a.sort||a.match.localeCompare(b.match,'es')).slice(0,120);
+ };
  const option=(v,t)=>'<option value="'+esc(v)+'">'+esc(t)+'</option>';
  const label=(arr,v)=>arr.find(x=>x[0]===v)?.[1]||'—';
  const safeRead=()=>{const a=read(KEY,[]);return Array.isArray(a)?a.filter(x=>x&&typeof x==='object'&&typeof x.player==='string').slice(0,100):[]};
@@ -38,6 +60,8 @@ window.LJR_SANCTION_ENHANCE=function(api){
     '<div class="v1126-selected" data-selected aria-live="polite">Elige un jugador para continuar. No se selecciona nadie automáticamente.</div>'+
   '</div>'+
   '<div class="v1126-stage" data-panel="1" hidden>'+
+    '<label class="v1126-field"><span>Vincular partido del rol oficial (opcional)</span><select data-official-match>'+option('','Sin vincular · capturar manualmente')+'</select></label>'+
+    '<p class="v1126-hint" data-fixture-hint>Los partidos se consultan en el calendario oficial; la selección solo rellena este borrador.</p>'+
     '<div class="v1126-grid">'+
       '<label class="v1126-field"><span>Fecha del incidente</span><input type="date" data-incident-date></label>'+
       '<label class="v1126-field"><span>Jornada</span><input data-round maxlength="32" placeholder="Ej. Jornada 12"></label>'+
@@ -73,6 +97,10 @@ window.LJR_SANCTION_ENHANCE=function(api){
   '</div>'+
   '<div class="v1126-footer"><button type="button" data-history-toggle>Mis borradores locales (<span data-draft-count>0</span>)</button>'+
     '<button type="button" data-discipline>Ver disciplina oficial</button></div>'+
+  '<div class="v1126-history-filter" data-history-filter hidden><label class="v1126-field"><span>Buscar en mis borradores</span><input data-history-search type="search" placeholder="Jugador, equipo, categoría o motivo"></label>'+
+    '<div class="v1126-backup-actions"><button type="button" data-backup>Descargar respaldo JSON</button><button type="button" data-import>Importar respaldo JSON</button></div>'+
+    '<input type="file" data-import-file accept=".json,application/json" hidden>'+
+    '<p class="v1126-hint">El respaldo contiene información disciplinaria sensible. Guárdalo en un lugar privado; nunca se sube a la Liga automáticamente.</p></div>'+
   '<section class="v1126-history" data-history hidden aria-label="Historial de borradores"></section>'+
   '</div>');
  m.classList.add('v639-sanction-modal','v1126-sanction-modal');
@@ -85,6 +113,15 @@ window.LJR_SANCTION_ENHANCE=function(api){
   const ts=[...new Set(players.filter(p=>!wanted||String(p.cat||'')===wanted).map(p=>String(p.team||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
   $('[data-team]').innerHTML=option('','Todos los equipos')+ts.map(n=>option(n,n)).join('');
   $('[data-team]').value=ts.includes(current)?current:'';
+ }
+ function syncOfficialMatches(wanted=''){
+  const select=$('[data-official-match]'),fixtures=officialFixtures(selected);
+  select.innerHTML=option('','Sin vincular · capturar manualmente')+
+   fixtures.map(x=>option(x.id,(x.date?x.date+' · ':'')+'J'+(x.round||'—')+' · '+x.match+(x.venue?' · '+x.venue:''))).join('');
+  select.value=fixtures.some(x=>x.id===wanted)?wanted:'';
+  $('[data-fixture-hint]').textContent=fixtures.length?
+   fixtures.length+' partido(s) del rol encontrados para este equipo y categoría. Seleccionar rellena los campos; puedes dejarlos manuales.':
+   'No hay partidos del rol que coincidan con este equipo. Puedes capturar los datos manualmente.';
  }
  function selectedHtml(){
   const box=$('[data-selected]');
@@ -102,7 +139,7 @@ window.LJR_SANCTION_ENHANCE=function(api){
     '<span class="v1126-avatar" aria-hidden="true">⚽</span><span><strong>'+esc(p.name)+'</strong><small>'+esc(p.team||'Sin equipo')+' · '+esc(catName(p.cat))+'</small></span><span aria-hidden="true">›</span></button>').join('')||'<p>No se encontraron jugadores registrados con estos filtros.</p>';
   $$('[data-pick]').forEach(btn=>btn.addEventListener('click',()=>{
     const p=list[Number(btn.dataset.pick)];if(!p)return;
-    selected=p;selectedHtml();feedback('');
+    selected=p;selectedHtml();syncOfficialMatches();feedback('');
     const catSel=$('[data-cat]');catSel.value=String(p.cat||'');
     teams();if([...$('[data-team]').options].some(o=>o.value===p.team))$('[data-team]').value=p.team||'';
     listPlayers();
@@ -134,6 +171,7 @@ window.LJR_SANCTION_ENHANCE=function(api){
    reasonDetail:value('[data-detail]'),matches:(type==='matches'||type==='red')&&Number.isInteger(matches)&&matches>0?matches:0,
    served:(type==='matches'||type==='red')&&Number.isInteger(served)&&served>=0?Math.min(served,matches||0):0,
    until:type==='until'?value('[data-until]'):'',
+   officialFixtureId:value('[data-official-match]'),fixtureSource:value('[data-official-match]')?'Rol oficial (referencia local)':'Captura manual',
    incidentDate:value('[data-incident-date]'),round:value('[data-round]'),match:value('[data-match]'),
    venue:value('[data-venue]'),referee:value('[data-referee]'),report:value('[data-report]'),
    evidence:value('[data-evidence]'),notes:value('[data-notes]'),
@@ -148,7 +186,7 @@ window.LJR_SANCTION_ENHANCE=function(api){
   $('[data-preview]').innerHTML='<div class="v1126-draft-mark">BORRADOR LOCAL · NO OFICIAL</div>'+
    line('Jugador',x.player)+line('Equipo y categoría',x.team+' · '+x.category)+line('Tipo',x.sanctionLabel)+
    line('Motivo',x.reasonLabel)+line('Partidos pendientes',pending)+line('Fecha límite',x.until)+
-   line('Fecha del incidente',x.incidentDate)+line('Jornada / partido',x.round+' · '+x.match)+
+   line('Fecha del incidente',x.incidentDate)+line('Origen del partido',x.fixtureSource)+line('Jornada / partido',x.round+' · '+x.match)+
    line('Cancha / árbitro',x.venue+' · '+x.referee)+line('Cédula',x.report)+line('Evidencia',x.evidence)+line('Observaciones',x.notes);
  }
  function view(n){
@@ -193,19 +231,22 @@ window.LJR_SANCTION_ENHANCE=function(api){
   $('[data-search]').value=x.player||'';
   $('[data-cat]').value=selected?String(selected.cat||''):'';
   teams();if(selected)$('[data-team]').value=selected.team||'';
+  syncOfficialMatches(x.officialFixtureId||'');
   selectedHtml();listPlayers();duration();showHistory=false;renderHistory();
   view(selected?1:0);
   if(!selected)feedback('No se encontró un único jugador coincidente. Selecciónalo antes de guardar.');
  }
  function renderHistory(){
   $('[data-draft-count]').textContent=String(drafts.length);
-  const box=$('[data-history]');box.hidden=!showHistory;if(!showHistory)return;
-  box.innerHTML='<h4>Borradores guardados en este dispositivo</h4>'+
-   (drafts.length?drafts.slice(0,30).map(x=>
+  const box=$('[data-history]');box.hidden=!showHistory;$('[data-history-filter]').hidden=!showHistory;if(!showHistory)return;
+  const search=norm(value('[data-history-search]'));
+  const filtered=drafts.filter(x=>!search||norm([x.player,x.team,x.category,x.sanctionLabel,x.reasonLabel,x.match,x.round].join(' ')).includes(search));
+  box.innerHTML='<h4>Borradores guardados en este dispositivo · '+filtered.length+' encontrado(s)</h4>'+
+   (filtered.length?filtered.slice(0,80).map(x=>
     '<article><div><strong>'+esc(x.player)+'</strong><small>'+esc(x.team||'Sin equipo')+' · '+esc(x.sanctionLabel||label(TYPES,x.sanctionType))+
     ' · '+esc(new Date(x.updatedAt||Date.now()).toLocaleDateString('es-MX'))+'</small></div>'+
     '<button type="button" data-edit="'+esc(x.id)+'">Editar</button><button type="button" data-delete="'+esc(x.id)+'">Eliminar</button></article>').join(''):
-    '<p>Aún no tienes borradores guardados.</p>');
+    '<p>No hay borradores con estos filtros.</p>');
   $$('[data-edit]').forEach(b=>b.onclick=()=>{const x=drafts.find(y=>y.id===b.dataset.edit);if(x)restore(x)});
   $$('[data-delete]').forEach(b=>b.onclick=()=>{
    const x=drafts.find(y=>y.id===b.dataset.delete);
@@ -242,8 +283,27 @@ window.LJR_SANCTION_ENHANCE=function(api){
   cv.toBlob(blob=>{if(!blob)return toast('No se pudo exportar el PNG');dl(blob,'borrador-sancion-'+norm(x.player).replace(/\s+/g,'-')+'.png');toast('PNG del borrador descargado')},'image/png');
  }
  $('[data-search]').addEventListener('input',listPlayers);
- $('[data-cat]').addEventListener('change',()=>{selected=null;teams();selectedHtml();listPlayers()});
- $('[data-team]').addEventListener('change',()=>{selected=null;selectedHtml();listPlayers()});
+ $('[data-cat]').addEventListener('change',()=>{selected=null;teams();syncOfficialMatches();selectedHtml();listPlayers()});
+ $('[data-team]').addEventListener('change',()=>{selected=null;syncOfficialMatches();selectedHtml();listPlayers()});
+ $('[data-official-match]').addEventListener('change',()=>{
+  const f=officialFixtures(selected).find(x=>x.id===value('[data-official-match]'));
+  if(!f){feedback('');return}
+  $('[data-round]').value=f.round;
+  $('[data-match]').value=f.match;
+  $('[data-incident-date]').value=f.date;
+  $('[data-venue]').value=f.venue;
+  $('[data-referee]').value=f.referee;
+  $('[data-fixture-hint]').textContent='Partido del rol cargado como referencia. Verifica el acta antes de preparar una sanción.';
+  feedback('');
+ });
+ for(const field of ['[data-round]','[data-match]','[data-incident-date]','[data-venue]','[data-referee]']){
+  $(field).addEventListener('input',()=>{
+   if(value('[data-official-match]')){
+    $('[data-official-match]').value='';
+    $('[data-fixture-hint]').textContent='Datos ajustados manualmente. Se eliminó el vínculo para no atribuir cambios al rol oficial.';
+   }
+  });
+ }
  $('[data-type]').addEventListener('change',duration);
  $('[data-reason]').addEventListener('change',duration);
  $('[data-matches]').addEventListener('input',duration);
@@ -275,8 +335,39 @@ window.LJR_SANCTION_ENHANCE=function(api){
   }catch(e){if(e?.name!=='AbortError')feedback('No se pudo abrir Compartir. Puedes descargar el PNG.')}
  };
  $('[data-history-toggle]').onclick=()=>{showHistory=!showHistory;renderHistory()};
+ $('[data-history-search]').addEventListener('input',renderHistory);
+ $('[data-backup]').onclick=()=>{
+  if(!drafts.length){feedback('No tienes borradores para respaldar.');return}
+  const payload={format:'ljr-sanction-local-backup-v1',exportedAt:new Date().toISOString(),drafts};
+  const file=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  dl(file,'liga-borradores-sanciones-'+new Date().toISOString().slice(0,10)+'.json');
+  toast('Respaldo JSON descargado (datos privados)');
+ };
+ $('[data-import]').onclick=()=>$('[data-import-file]').click();
+ $('[data-import-file]').addEventListener('change',async e=>{
+  const file=e.target.files?.[0];if(!file)return;
+  try{
+   if(file.size>1024*1024)throw Error('Máximo 1 MB por respaldo.');
+   const data=JSON.parse(await file.text());
+   if(data?.format!=='ljr-sanction-local-backup-v1'||!Array.isArray(data.drafts)||data.drafts.length>100)throw Error('El archivo no es un respaldo válido de sanciones.');
+   const seen=new Set(drafts.map(x=>x.id)),add=[];
+   const allowed=['player','team','cat','category','sanctionType','sanctionLabel','reason','reasonLabel','reasonDetail','matches','served','until','incidentDate','round','match','venue','referee','report','evidence','notes','officialFixtureId','fixtureSource','createdAt','updatedAt'];
+   for(const entry of data.drafts){
+    if(!entry||typeof entry!=='object'||Array.isArray(entry)||typeof entry.player!=='string'||!entry.player.trim()||entry.player.length>150)throw Error('El respaldo contiene registros inválidos.');
+    const n={id:typeof entry.id==='string'&&entry.id.length<150?entry.id:id(),status:'Borrador local'};
+    for(const key of allowed)if(typeof entry[key]==='string')n[key]=entry[key].slice(0,1800);
+    else if((key==='matches'||key==='served')&&Number.isInteger(entry[key])&&entry[key]>=0&&entry[key]<=999)n[key]=entry[key];
+    if(!seen.has(n.id)){seen.add(n.id);add.push(n)}
+   }
+   if(!add.length){toast('Todos los borradores ya estaban importados');return}
+   if(!window.confirm('¿Importar '+add.length+' borrador(es) privados en este dispositivo? No se publicarán.'))return;
+   drafts=[...add,...drafts].slice(0,100);
+   write(KEY,drafts);renderHistory();toast(add.length+' borrador(es) importados');
+  }catch(err){feedback(err.message||'No se pudo importar el respaldo')}
+  finally{e.target.value=''}
+ });
  $('[data-discipline]').onclick=()=>{m.remove();go('discipline')};
- teams();selectedHtml();listPlayers();duration();renderHistory();view(0);
+ teams();syncOfficialMatches();selectedHtml();listPlayers();duration();renderHistory();view(0);
  return m;
 };
 })();
