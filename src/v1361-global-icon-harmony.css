@@ -36,16 +36,26 @@ html body .bottom-nav .nav-item:not(.active) .nav-icon{opacity:.86!important}
 html body .bottom-nav .nav-item.active .nav-icon{opacity:1!important}
 html body .bottom-nav .nav-item .nav-icon svg.ljr-icon{color:inherit!important}
 
-/* Iconos vectoriales que son HIJOS DIRECTOS de controles, no ilustraciones
-   en tarjetas. Solo pictogramas con viewBox estándar; nunca fotos o logos. */
+/* Sólo normalizar vectores identificados explícitamente como iconos.
+   Un SVG de 24 unidades también puede ser una gráfica, cancha o ilustración;
+   por eso NO se redimensionan todos los SVG hijos de botones. */
 html body :is(#screen,.liga-media-modal,.v105-modal,.ljr-install-page,.ljr-install-overlay)
-:is(button,a,[role="button"]) >
-:is(svg[viewBox="0 0 24 24"],svg[viewBox="0 0 28 28"],svg[viewBox="0 0 32 32"]){
+:is(button,a,[role="button"]) > svg[data-ljr-icon]{
   box-sizing:border-box!important;
-  width:min(23px,72%)!important;
-  height:auto!important;
+  display:inline-block!important;
+  max-width:24px!important;
+  max-height:24px!important;
+  flex-shrink:0!important;
+  vertical-align:middle!important;
+  margin-block:auto!important;
+}
+
+/* Los símbolos SVG de acciones explícitas mantienen su caja de toque.
+   No alterar SVG especiales (QR, canchas, estadísticas ni logos). */
+html body .liga-media-modal
+:is(.ljr-editor-tools,.ljr-editor-bottom,.ljr-editor-smart-tools) button > svg:not([data-illustration]){
+  max-width:23px!important;
   max-height:23px!important;
-  aspect-ratio:1/1;
   flex-shrink:0!important;
   vertical-align:middle!important;
 }
@@ -118,40 +128,40 @@ html body .liga-media-modal .ljr-admin-tile-icon svg{
    Mantiene la superficie azul de la liga y da jerarquía a cada símbolo. */
 html body .liga-media-modal
 :is(.cms-kind-grid,.ljr-editor-hub-grid,.ljr-admin-tool-grid,.ljr-admin-tools-grid)
-> :nth-child(5n + 1) .ljr-admin-tile-icon,
-html body .liga-media-modal .ljr-admin-tile:nth-of-type(5n + 1) .ljr-admin-tile-icon{
+> :nth-child(5n + 1):not(.ljr-admin-tile-danger) .ljr-admin-tile-icon,
+html body .liga-media-modal .ljr-admin-tile:nth-of-type(5n + 1):not(.ljr-admin-tile-danger) .ljr-admin-tile-icon{
   color:var(--ljr-glyph-gold)!important;
   background:rgba(249,209,119,.12)!important;
   border-color:rgba(249,209,119,.35)!important;
 }
 html body .liga-media-modal
 :is(.cms-kind-grid,.ljr-editor-hub-grid,.ljr-admin-tool-grid,.ljr-admin-tools-grid)
-> :nth-child(5n + 2) .ljr-admin-tile-icon,
-html body .liga-media-modal .ljr-admin-tile:nth-of-type(5n + 2) .ljr-admin-tile-icon{
+> :nth-child(5n + 2):not(.ljr-admin-tile-danger) .ljr-admin-tile-icon,
+html body .liga-media-modal .ljr-admin-tile:nth-of-type(5n + 2):not(.ljr-admin-tile-danger) .ljr-admin-tile-icon{
   color:var(--ljr-glyph-mint)!important;
   background:rgba(119,225,179,.12)!important;
   border-color:rgba(119,225,179,.35)!important;
 }
 html body .liga-media-modal
 :is(.cms-kind-grid,.ljr-editor-hub-grid,.ljr-admin-tool-grid,.ljr-admin-tools-grid)
-> :nth-child(5n + 3) .ljr-admin-tile-icon,
-html body .liga-media-modal .ljr-admin-tile:nth-of-type(5n + 3) .ljr-admin-tile-icon{
+> :nth-child(5n + 3):not(.ljr-admin-tile-danger) .ljr-admin-tile-icon,
+html body .liga-media-modal .ljr-admin-tile:nth-of-type(5n + 3):not(.ljr-admin-tile-danger) .ljr-admin-tile-icon{
   color:var(--ljr-glyph-coral)!important;
   background:rgba(255,154,155,.12)!important;
   border-color:rgba(255,154,155,.35)!important;
 }
 html body .liga-media-modal
 :is(.cms-kind-grid,.ljr-editor-hub-grid,.ljr-admin-tool-grid,.ljr-admin-tools-grid)
-> :nth-child(5n + 4) .ljr-admin-tile-icon,
-html body .liga-media-modal .ljr-admin-tile:nth-of-type(5n + 4) .ljr-admin-tile-icon{
+> :nth-child(5n + 4):not(.ljr-admin-tile-danger) .ljr-admin-tile-icon,
+html body .liga-media-modal .ljr-admin-tile:nth-of-type(5n + 4):not(.ljr-admin-tile-danger) .ljr-admin-tile-icon{
   color:var(--ljr-glyph-violet)!important;
   background:rgba(196,175,255,.12)!important;
   border-color:rgba(196,175,255,.35)!important;
 }
 html body .liga-media-modal
 :is(.cms-kind-grid,.ljr-editor-hub-grid,.ljr-admin-tool-grid,.ljr-admin-tools-grid)
-> :nth-child(5n + 5) .ljr-admin-tile-icon,
-html body .liga-media-modal .ljr-admin-tile:nth-of-type(5n + 5) .ljr-admin-tile-icon{
+> :nth-child(5n + 5):not(.ljr-admin-tile-danger) .ljr-admin-tile-icon,
+html body .liga-media-modal .ljr-admin-tile:nth-of-type(5n + 5):not(.ljr-admin-tile-danger) .ljr-admin-tile-icon{
   color:var(--ljr-glyph-sky)!important;
   background:rgba(175,205,251,.12)!important;
   border-color:rgba(175,205,251,.35)!important;
