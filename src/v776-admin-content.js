@@ -85,13 +85,32 @@
  function teamNames(category){const db=snapshot(),names=[];for(const [id,c]of Object.entries(db.categories||{})){if(category&&id!==category)continue;for(const name of Object.keys(c.rosters||{}))names.push(name);for(const row of c.standings?.[0]?.rows||[])if(row[1])names.push(row[1])}return [...new Set(names)].sort()}
  function tableEditor(kind,all=[],rec){
   const source={scorers:'scorers',standings:'standings',fixture:'fixtures',sanction:'suspensions'}[kind];
-  const n=modal(kindNames[kind],'<label>Categoría<select data-category>'+catOptions(rec?.payload.category)+'</select></label><div class="cms-table-actions"><button data-add-row>Añadir fila</button>'+(kind==='fixture'?'<label>Reprogramar jornada<input type="number" min="1" data-round placeholder="Jornada"></label><label>Nueva fecha<input type="date" data-date></label><button data-postpone>Aplicar fecha a jornada</button>':'')+'</div><div class="cms-table-wrap"><table class="cms-edit-table"></table></div><button data-save-table>Guardar tabla para todos</button>');
+  const n=modal(kindNames[kind],'<label>Categoría<select data-category>'+catOptions(rec?.payload.category)+'</select></label><div class="cms-table-actions"><button type="button" data-add-row>Añadir fila</button>'+(kind==='fixture'?'<label>Reprogramar jornada<input type="number" min="1" data-round placeholder="Jornada"></label><label>Nueva fecha<input type="date" data-date></label><button type="button" data-postpone>Aplicar fecha a jornada</button>':'')+'</div><div class="cms-table-wrap"><table class="cms-edit-table"></table></div><button type="button" data-save-table>Guardar tabla para todos</button>');
   let selected=rec,headers=[],rows=[];
   const select=n.querySelector('[data-category]');
   function load(){selected=all.find(x=>x.kind===kind&&String(x.payload.category)===select.value)||null;const block=selected?.payload||snapshot().categories?.[select.value]?.[source]?.[0]||{headers:kind==='sanction'?['Jugador','Equipo','Motivo','Hasta']:['#','Jugador','Equipo','Goles'],rows:[]};headers=block.headers;rows=structuredClone(block.rows||[]);if(kind==='sanction'&&headers.length===1){headers=['Jugador','Equipo','Motivo','Hasta'];rows=[]}draw()}
-  function draw(){n.querySelector('table').innerHTML='<thead><tr>'+headers.map(h=>'<th>'+esc(h)+'</th>').join('')+'<th></th></tr></thead><tbody>'+rows.map((row,i)=>'<tr>'+headers.map((h,j)=>'<td><input aria-label="'+esc(h)+' fila '+(i+1)+'" data-row="'+i+'" data-col="'+j+'" value="'+esc(row[j])+'" '+(/Equipo|Local|Visitante/.test(h)?'list="cms-table-teams"':'')+'></td>').join('')+'<td><button data-delete-row="'+i+'" aria-label="Quitar fila">×</button></td></tr>').join('')+'</tbody>';n.querySelectorAll('[data-row]').forEach(input=>input.oninput=()=>rows[Number(input.dataset.row)][Number(input.dataset.col)]=input.value);n.querySelectorAll('[data-delete-row]').forEach(b=>b.onclick=()=>{rows.splice(Number(b.dataset.deleteRow),1);draw()});let dl=n.querySelector('datalist');if(!dl){dl=document.createElement('datalist');dl.id='cms-table-teams';n.querySelector('section').append(dl)}dl.innerHTML=teamNames(select.value).map(t=>'<option>'+esc(t)+'</option>').join('')}
+  function draw(){n.querySelector('table').innerHTML='<thead><tr>'+headers.map(h=>'<th>'+esc(h)+'</th>').join('')+'<th></th></tr></thead><tbody>'+rows.map((row,i)=>'<tr>'+headers.map((h,j)=>'<td><input aria-label="'+esc(h)+' fila '+(i+1)+'" data-row="'+i+'" data-col="'+j+'" value="'+esc(row[j])+'" '+(/Equipo|Local|Visitante/.test(h)?'list="cms-table-teams"':'')+'></td>').join('')+'<td><button type="button" data-delete-row="'+i+'" aria-label="Quitar fila">×</button></td></tr>').join('')+'</tbody>';n.querySelectorAll('[data-row]').forEach(input=>input.oninput=()=>rows[Number(input.dataset.row)][Number(input.dataset.col)]=input.value);n.querySelectorAll('[data-delete-row]').forEach(b=>b.onclick=()=>{rows.splice(Number(b.dataset.deleteRow),1);draw()});let dl=n.querySelector('datalist');if(!dl){dl=document.createElement('datalist');dl.id='cms-table-teams';n.querySelector('section').append(dl)}dl.innerHTML=teamNames(select.value).map(t=>'<option>'+esc(t)+'</option>').join('')}
   select.onchange=load;n.querySelector('[data-add-row]').onclick=()=>{rows.push(headers.map(()=>''));draw()};
-  n.querySelector('[data-postpone]')?.addEventListener('click',()=>{const round=n.querySelector('[data-round]').value,date=n.querySelector('[data-date]').value;if(!round||!date)return;n.querySelector('[data-status]').textContent='Fecha aplicada en la vista previa. Guarda para publicar.';const [y,m,d]=date.split('-');rows.forEach(r=>{if(String(r[1])===round)r[8]=d+'/'+m+'/'+y+' '+(String(r[8]).split(' ')[1]||'08:00')});draw()});
+  n.querySelector('[data-postpone]')?.addEventListener('click',()=>{
+   const round=String(n.querySelector('[data-round]')?.value||'').trim();
+   const date=n.querySelector('[data-date]')?.value||'';
+   const status=n.querySelector('[data-status]');
+   if(!/^[1-9]\\d*$/.test(round)||!/^\\d{4}-\\d{2}-\\d{2}$/.test(date)){
+     status.textContent='Escribe el número de jornada y selecciona una fecha válida.';return;
+   }
+   const dateColumn=headers.findIndex(h=>/fecha|\\bd[ií]a\\b/i.test(String(h)));
+   const index=dateColumn>=0?dateColumn:8;
+   const matching=rows.filter(r=>String(r[1]??'').trim()===round);
+   if(!matching.length){status.textContent='No se encontraron partidos de la jornada '+round+' en esta categoría. Revisa el número.';return}
+   if(!confirm('¿Aplicar la nueva fecha a '+matching.length+' partido(s) de la jornada '+round+'? Todavía deberás guardar para publicar.'))return;
+   const [y,m,d]=date.split('-');
+   matching.forEach(r=>{
+     const time=String(r[index]||'').match(/\\b([01]\\d|2[0-3]):[0-5]\\d\\b/)?.[0]||'';
+     r[index]=d+'/'+m+'/'+y+(time?' '+time:'');
+   });
+   status.textContent='Fecha aplicada a '+matching.length+' partido(s) en la vista previa. Pulsa Guardar tabla para todos para publicar.';
+   draw();
+  });
   n.querySelector('[data-save-table]').onclick=async()=>{const b=n.querySelector('[data-save-table]');b.disabled=true;try{const id=selected?.id||'table:'+kind+':'+select.value;const result=await api('content/'+encodeURIComponent(id),{method:'PUT',body:{kind,payload:{category:select.value,headers,rows},revision:selected?.revision||0,published:true}});selected={id,kind,revision:result.revision,payload:{category:select.value,headers,rows},published:1};await refresh();n.querySelector('[data-status]').textContent='Tabla publicada. Se aplica a las pantallas y a las exportaciones.'}catch(err){n.querySelector('[data-status]').textContent=err.message}finally{b.disabled=false}};load();
  }
  function editPage(){
