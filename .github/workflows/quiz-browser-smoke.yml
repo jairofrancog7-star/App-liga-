@@ -10,6 +10,16 @@ on:
       - 'src/v1063-quiz-drive-pixel-perfect.css'
       - 'tests/quiz-browser-v1071.mjs'
       - '.github/workflows/quiz-browser-smoke.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'src/v531-quiz-moreless-drive-reference.js'
+      - 'src/v1070-quiz-flow-blue-exit.css'
+      - 'src/v1063-quiz-drive-pixel-perfect.css'
+      - 'src/v1360-mobile-visual-fixes.css'
+      - 'tests/quiz-browser-v1071.mjs'
+      - '.github/workflows/quiz-browser-smoke.yml'
 permissions:
   contents: read
 concurrency:
