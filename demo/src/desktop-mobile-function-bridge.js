@@ -26,7 +26,7 @@ const ALIASES={
   'competition':'pc-fixtures'
 };
 const OWN=new Set(['pc-calendar','pc-notifications','pc-scorers','pc-standings','pc-fixtures']);
-let db=null,loading=null,monthShift=0,calendarCat='3',selectedDate='';
+let db=null,loading=null,monthShift=0,calendarCat='3',selectedDate='',fixtureView='upcoming';
 const CAT_STORAGE_KEY='ljpc-selected-category';
 function savedCat(){
   try{const value=sessionStorage.getItem(CAT_STORAGE_KEY);return CAT_ORDER.includes(value)?value:'3'}catch(_){return '3'}
@@ -67,6 +67,7 @@ function injectStyle(){
   .ljpc-toggle b{display:block;color:#14233b;font-size:13px}.ljpc-toggle small{display:block;color:#7d8797;margin-top:4px}
   .ljpc-switch{appearance:none;width:44px;height:24px;border-radius:999px;background:#c9d2de;position:relative;cursor:pointer;transition:.2s;flex:0 0 auto}.ljpc-switch:before{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;left:3px;top:3px;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.25)}.ljpc-switch:checked{background:#0055a5}.ljpc-switch:checked:before{transform:translateX(20px)}
   .ljpc-cat-tabs{display:flex;gap:7px;flex-wrap:wrap}.ljpc-chip.active{background:#0055a5;color:#fff;border-color:#0055a5}
+  .ljpc-official-link{font:700 12px/1.3 system-ui;color:#1368ba;text-decoration:none;padding:7px 3px}.ljpc-official-link:hover{text-decoration:underline}
   .ljpc-table{width:100%;border-collapse:collapse;background:#fff}.ljpc-table th{font:800 10px/1 system-ui;color:#65738a;text-transform:uppercase;text-align:left;padding:11px;border-bottom:1px solid #dfe6ef}.ljpc-table td{padding:11px;border-bottom:1px solid #edf1f5;color:#16243a;font-size:12px}.ljpc-table tr:hover td{background:#f8fbff}.ljpc-rank{font-weight:900;color:#0055a5}
   .ljpc-home-tools{margin:18px 0 0;background:#071b3d;border:1px solid rgba(71,164,255,.25);border-radius:14px;padding:16px}.ljpc-home-tools h2{color:#fff;margin:0 0 5px}.ljpc-home-tools p{color:#a9bdd8;margin:0 0 13px;font-size:12px}.ljpc-home-tools .ljpc-btn{background:#0d2e5e;color:#fff;border-color:#214b7e}
   @media(max-width:1180px){.ljpc-grid{grid-template-columns:repeat(7,minmax(70px,1fr))}.ljpc-match{grid-template-columns:1fr 90px 1fr}.ljpc-actions{grid-column:1/-1;justify-content:flex-start}}
@@ -149,7 +150,10 @@ function renderCalendar(){
   const first=new Date(y,m,1),days=new Date(y,m+1,0).getDate(),offset=(first.getDay()+6)%7;
   const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
   if(!selectedDate||selectedDate.slice(0,7)!==(y+'-'+pad(m+1))){
-    const hit=list.find(x=>x.date.getFullYear()===y&&x.date.getMonth()===m);
+    // Mostrar primero el próximo partido del mes, no una jornada ya pasada.
+    const today=iso(new Date());
+    const inMonth=list.filter(x=>x.date.getFullYear()===y&&x.date.getMonth()===m);
+    const hit=inMonth.find(x=>!x.played&&iso(x.date)>=today)||inMonth.find(x=>iso(x.date)===today)||inMonth[0];
     selectedDate=hit?iso(hit.date):iso(new Date(y,m,1));
   }
   const cells=[];
@@ -222,13 +226,40 @@ function renderStandings(catId=activeCat){
  wrap.querySelectorAll('[data-ljpc-standing-cat]').forEach(b=>b.addEventListener('click',()=>renderStandings(rememberCat(b.dataset.ljpcStandingCat))));
  wrap.querySelector('[data-ljpc-fixtures]')?.addEventListener('click',()=>go('pc-fixtures'));
 }
+function desktopFixtureRows(catId,view='upcoming',referenceDate=new Date()){
+ const all=fixtures(catId);
+ const today=new Date(referenceDate.getFullYear(),referenceDate.getMonth(),referenceDate.getDate());
+ if(view==='upcoming')return all.filter(x=>!x.played&&x.date>=today).slice(0,100);
+ if(view==='results')return all.filter(x=>x.played).reverse().slice(0,100);
+ return all.slice().reverse().slice(0,100);
+}
 function renderFixtures(catId=activeCat,bracket=false){
  rememberCat(catId);
- const wrap=ensureOwnHost('Partidos y resultados','Rol y marcadores oficiales de la Liga Juventino Rosas.');
+ const wrap=ensureOwnHost('Partidos y resultados','Jornadas, horarios, canchas y marcadores de la fuente oficial.');
  if(!wrap)return;
- const matches=fixtures(catId);
- wrap.innerHTML='<div class="ljpc-function-root" data-ljpc-function-route="pc-fixtures"><div class="ljpc-toolbar"><div class="ljpc-cat-tabs">'+CAT_ORDER.map(id=>'<button class="ljpc-chip '+(id===catId?'active':'')+'" data-ljpc-fixture-cat="'+id+'">'+esc(categoryName(id))+'</button>').join('')+'</div><div class="ljpc-toolbar-group"><button class="ljpc-btn" data-ljpc-to-calendar>Calendario</button><button class="ljpc-btn primary" data-ljpc-to-standings>Clasificación</button><button class="ljpc-btn" data-ljpc-bracket>Cuadro</button></div></div><section class="ljpc-panel">'+(matches.length?matches.slice(-100).reverse().map(x=>'<div class="ljpc-match"><div class="ljpc-team">'+crest(x.home)+'<span>'+esc(pretty(x.home))+'</span></div><div class="ljpc-score"><b>'+esc(x.played?x.homeScore+' – '+x.awayScore:x.rawDate.match(/\\s(\\d{1,2}:\\d{2})/)?.[1]||'Por confirmar')+'</b><small>'+esc(formatDate(x.date))+' · J'+esc(x.round)+'</small></div><div class="ljpc-team">'+crest(x.away)+'<span>'+esc(pretty(x.away))+'</span></div><div class="ljpc-muted">'+esc(x.venue||'Sede por confirmar')+'</div></div>').join(''):'<p class="ljpc-muted">Sin partidos oficiales publicados.</p>')+'</section></div>';
- wrap.querySelectorAll('[data-ljpc-fixture-cat]').forEach(b=>b.addEventListener('click',()=>renderFixtures(rememberCat(b.dataset.ljpcFixtureCat),bracket)));
+ const matches=desktopFixtureRows(catId,fixtureView);
+ const source='https://www.juventinorosasliga.com/reporte-semanal/';
+ const rowHtml=matches.map(x=>{
+   const time=x.rawDate.match(/\s(\d{2}:\d{2})$/)?.[1]||'Hora por confirmar';
+   const label=x.played?x.homeScore+' – '+x.awayScore:time;
+   const kind=x.played?'Resultado':'Programado / pendiente de resultado';
+   return '<div class="ljpc-match" data-ljpc-match-round="'+esc(x.round)+'" data-ljpc-match-date="'+esc(x.rawDate)+'">'+
+     '<div class="ljpc-team">'+crest(x.home)+'<span>'+esc(pretty(x.home))+'</span></div>'+
+     '<div class="ljpc-score"><b>'+esc(label)+'</b><small>'+esc(formatDate(x.date))+' · Jornada '+esc(x.round)+'</small><small>'+kind+'</small></div>'+
+     '<div class="ljpc-team">'+crest(x.away)+'<span>'+esc(pretty(x.away))+'</span></div>'+
+     '<div class="ljpc-muted">'+esc(x.venue||'Sede por confirmar')+'</div></div>';
+ }).join('');
+ const viewTabs=[['upcoming','Próximos'],['results','Resultados'],['all','Todos']];
+ wrap.innerHTML='<div class="ljpc-function-root" data-ljpc-function-route="pc-fixtures">'+
+   '<div class="ljpc-toolbar"><div class="ljpc-cat-tabs">'+CAT_ORDER.map(id=>'<button class="ljpc-chip '+(id===catId?'active':'')+'" data-ljpc-fixture-cat="'+id+'">'+esc(categoryName(id))+'</button>').join('')+'</div>'+
+   '<div class="ljpc-toolbar-group"><button class="ljpc-btn" data-ljpc-to-calendar>Calendario</button><button class="ljpc-btn primary" data-ljpc-to-standings>Clasificación</button><button class="ljpc-btn" data-ljpc-bracket>Cuadro</button></div></div>'+
+   '<div class="ljpc-toolbar"><div class="ljpc-toolbar-group">'+viewTabs.map(([id,label])=>'<button class="ljpc-chip '+(fixtureView===id?'active':'')+'" data-ljpc-fixture-view="'+id+'">'+label+'</button>').join('')+
+   '</div><a class="ljpc-official-link" href="'+source+'" target="_blank" rel="noopener noreferrer">Consultar reporte oficial ↗</a></div>'+
+   '<section class="ljpc-panel"><h3>'+esc(categoryName(catId))+' · '+matches.length+' '+(fixtureView==='upcoming'?'partidos próximos':fixtureView==='results'?'resultados':'encuentros')+'</h3>'+
+   (rowHtml||'<p class="ljpc-muted">No hay partidos publicados en este filtro. Puedes consultar otra categoría o ver Todos.</p>')+
+   '</section></div>';
+ wrap.querySelectorAll('[data-ljpc-fixture-cat]').forEach(b=>b.addEventListener('click',()=>{fixtureView='upcoming';renderFixtures(rememberCat(b.dataset.ljpcFixtureCat),false)}));
+ wrap.querySelectorAll('[data-ljpc-fixture-view]').forEach(b=>b.addEventListener('click',()=>{fixtureView=b.dataset.ljpcFixtureView;renderFixtures(catId,false)}));
  if(bracket&&window.LJR_KNOCKOUT){
   wrap.querySelector('.ljpc-panel').outerHTML=window.LJR_KNOCKOUT.render({showEntrants:true,category:db?.categories?.[catId],categoryId:catId,logoFor:logoUrl});
   window.LJR_KNOCKOUT.init(wrap.querySelector('.ljr-knockout'));
@@ -273,6 +304,8 @@ function rerouteLegacy(){
 
 document.addEventListener('click',e=>{
   if(!isDesktop())return;
+  const quick=e.target.closest('[data-ljpc-week-second]');
+  if(quick){e.preventDefault();e.stopPropagation();rememberCat('4');fixtureView='upcoming';go('pc-fixtures');return}
   const b=e.target.closest('[data-ds-route],[data-lj-route]');
   if(!b)return;
   const raw=b.dataset.dsRoute||b.dataset.ljRoute;
