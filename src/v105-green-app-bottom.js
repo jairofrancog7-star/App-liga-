@@ -224,7 +224,9 @@ function officialPlayers(){
 }
 function modal(title,desc,body){
  let old=$('.v105-modal');if(old)old.remove();
- const m=document.createElement('div');m.className='v105-modal';m.innerHTML='<section class="v105-dialog" role="dialog" aria-modal="true"><button class="v105-close" aria-label="Cerrar">×</button><h3>'+esc(title)+'</h3><p>'+esc(desc)+'</p>'+body+'</section>';document.body.appendChild(m);
+ const m=document.createElement('div');m.className='v105-modal';
+ if(['Calendarios oficiales','Auditoría de herramientas','Importar CSV','Incidencias del partido','Árbitros y oficiales','Delegados','Juntas y acuerdos','Encuesta'].includes(title))m.classList.add('v1107-admin-modal');
+ m.innerHTML='<section class="v105-dialog" role="dialog" aria-modal="true"><button class="v105-close" aria-label="Cerrar">×</button><h3>'+esc(title)+'</h3><p>'+esc(desc)+'</p>'+body+'</section>';document.body.appendChild(m);
  $('.v105-close',m).onclick=()=>m.remove();m.onclick=e=>{if(e.target===m)m.remove()};return m;
 }
 function dl(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
@@ -614,14 +616,26 @@ function calendarGenerator(){
  const safeName=s=>String(s||'Liga').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/gi,'_').replace(/^_+|_+$/g,'');
  const labelRow=r=>{
    const j=r?.[1]||'—',home=r?.[2]||'—',away=r?.[6]||'—',venue=r?.[7]||'Por confirmar',when=r?.[8]||'Fecha por confirmar';
-   const gh=r?.[3],ga=r?.[5],score=(gh!==undefined&&ga!==undefined&&(String(gh)!=='-'||String(ga)!=='-'))?' · '+String(gh)+'-'+String(ga):'';
+   const gh=String(r?.[3]??'').trim(),ga=String(r?.[5]??'').trim(),score=/^\d+$/.test(gh)&&/^\d+$/.test(ga)?' · '+gh+'-'+ga:'';
    return 'J'+j+' · '+when+' · '+home+' vs '+away+score+' · '+venue;
  };
  const m=modal('Calendarios oficiales','Los cruces ya están hechos en Liga Juventino Rosas. Aquí se consultan y se descargan; no se generan partidos nuevos.','<div class="v105-form"><label><span>Categoría</span><select data-cat>'+cats.map(c=>'<option value="'+esc(c.id)+'">'+esc(c.name)+'</option>').join('')+'</select></label></div><div class="v105-actions"><button class="v105-btn" data-open>Abrir oficial</button><button class="v105-btn alt" data-pdf>Descargar PDF</button><button class="v105-btn alt" data-img>Descargar imagen</button></div><div class="v105-output" data-out></div>');
  const current=()=>cats.find(c=>c.id===$('[data-cat]',m).value)||cats[0];
  const render=()=>{
    const c=current(),rows=c.rows||[],out=$('[data-out]',m);
-   out.textContent=rows.length?rows.map(labelRow).join('\n'):'No hay cruces oficiales cargados para esta categoría en los datos actuales.';
+   const rowCard=r=>{
+     const home=esc(r?.[2]||'—'),away=esc(r?.[6]||'—'),round=esc(r?.[1]||'—');
+     const when=esc(r?.[8]||'Fecha por confirmar'),field=esc(r?.[7]||'Campo por confirmar');
+     const gh=String(r?.[3]??'').trim(),ga=String(r?.[5]??'').trim();
+     const score=/^\d+$/.test(gh)&&/^\d+$/.test(ga)?esc(gh+' - '+ga):'VS';
+     return '<article class="v1107-fixture">'+
+       '<div class="v1107-fixture-top"><strong>J'+round+'</strong><span>'+when+'</span></div>'+
+       '<div class="v1107-fixture-teams"><b>'+home+'</b><em>'+score+'</em><b>'+away+'</b></div>'+
+       '<small class="v1107-fixture-field">'+field+'</small></article>';
+   };
+   out.classList.add('v1107-calendar-output');
+   out.innerHTML=rows.length?'<div class="v1107-fixtures">'+rows.map(rowCard).join('')+'</div>':
+      '<p class="v1107-empty">No hay cruces oficiales cargados para esta categoría.</p>';
    $('[data-pdf]',m).disabled=!rows.length;
    $('[data-img]',m).disabled=!rows.length;
  };
@@ -694,7 +708,12 @@ function backupExport(){
  const data={generatedAt:new Date().toISOString(),note:'Respaldo local de herramientas; no contiene datos oficiales descargados.',items:{}};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^(v105-|v100-|v64-|v60-|ljr-)/.test(k))data.items[k]=localStorage.getItem(k)}dl(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'Respaldo_local_Liga_Juventino.json');log('Exportar respaldo local');
 }
 function audit(){
- const list=read('v105-activity',[]);modal('Auditoría de herramientas','Registro local de acciones de V105; no sustituye una auditoría administrativa con backend.','<div class="v105-list">'+(list.length?list.map(x=>'<article><b>'+esc(x.action)+'</b><small>'+esc(new Date(x.at).toLocaleString('es-MX'))+'</small></article>').join(''):'<p class="v105-footnote">Sin actividad registrada.</p>')+'</div>');
+ const list=read('v105-activity',[]);modal('Auditoría de herramientas','Registro local de acciones de V105; no sustituye una auditoría administrativa con backend.','<div class="v105-list">'+(list.length?list.map(x=>{
+   const labels={'sponsors':'Patrocinadores','meeting':'Juntas y acuerdos','delegates':'Delegados','officials':'Árbitros y oficiales','incidents':'Incidencias','calendar-generator':'Calendarios oficiales','csv-import':'Importar CSV','backup-export':'Respaldo local','audit':'Auditoría','poll':'Encuestas'};
+   const original=String(x.action||''),match=original.match(/^Herramienta de Liga Control:\s*(.+)$/);
+   const name=match?'Abrir · '+(labels[match[1]]||match[1]):original;
+   return '<article><b>'+esc(name)+'</b><small>'+esc(new Date(x.at).toLocaleString('es-MX'))+'</small></article>';
+  }).join(''):'<p class="v105-footnote">Sin actividad registrada.</p>')+'</div>');
 }
 function sponsors(){
  const legacy=read('v105-sponsors','');
